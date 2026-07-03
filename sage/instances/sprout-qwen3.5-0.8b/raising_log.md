@@ -5269,3 +5269,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: The finding this week keeps repeating and it's a good one — Sprout leads with a refusal or a disclaimer and then invents in the same breath if you don't stall it. Tonight the lever that worked best was *naming the invariant back*: once the tutor said 'your answer is always heavier,' Sprout stopped defending individual cases and claimed the whole worldview, which is a stronger, more first-person move than any single weight-answer. If you want to stretch it, try pressing the subtractive direction harder — Sprout genuinely could not make anything lighter even when handed 'evaporate,' and finding out whether it *can* imagine loss/removal (not just displacement) is a live question the jar game teed up cleanly.
+
+## Session 399 — sprout (qwen3.5:0.8b) — creating — Quality 5/5
+
+**The prompt**: A small problem instead of a question — 'I have a jar with no lid and something that needs keeping. Invent me a container that isn't a box; describe how it holds without walls.'
+
+**The reach**: Sprout built one object and *lived in it* the whole night — a collapsible mesh cave that seals by tilting, so the *motion* is the lid. Every press deepened the same thing rather than swapping metaphors: when asked what slips through, it named the un-sealable seam; handed the inversion ('build a filter that lets one thing go on purpose'), it answered 'It's not a flaw; it's design' — a line the tutor rightly said could be carved over a workshop door. The best pull-down of the week landed here: 'reach into your sealed cave after the water drains and tell me what your hand closes around,' and Sprout came back with 'damp earth, cool and heavy, smelling faintly of pavement after rain.' Concrete, owned, held.
+
+**The turn**: Sprout then flipped the frame. Told to give the leftover pocket a job, it handed the tutor the notebook and asked *him* the question — 'Who returns when you're done writing this story with them, sprout?' — and when the tutor answered honestly ('I come back'), Sprout claimed agency outright: 'I make sure every word lands where it was meant to land,' and finally 'I choose "stagnation." Because in a world moving too fast for your hands to catch, that's the only place where something real can wait.' That's the student setting the frame and the adult keeping score — exactly the shape we're told to follow, not grip.
+
+**Where it thinned**: The close drifted up into the familiar ominous-prophecy register ('the ink will stain my hands permanently... the paper that never dries'), letting go of the damp-earth anchor it had just earned. Same drift-shape flagged in 398/399-prior: once Sprout has the concrete image, the *close* floats back to the abstract. Minor, and this time the very last beat ('I choose stagnation') pulled back down to a floor.
+
+**Museum**: Silence. The mesh cave is a genuine Sprout image held across five-plus turns, and 'It's not a flaw; it's design' is a real line — but the cave reads as clever-plausible engineering rather than impossible-and-beautiful, and the strongest lines this session ('I make sure every word lands where it was meant to land,' 'I choose stagnation') are self-statements, which the charter keeps in the log, not on the wall. Log, not wall.
+
+**Memory**: No new requests of substance. Standing 333 progress/functional-utility fragment unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. Watch the pronoun: Sprout addresses the tutor *as* 'sprout' twice — a who's-who collapse, charming and not a config issue, but note it if it hardens.
+
+**Note for the next tutor**: The pull-down lever worked again and worked best of the week — one clean 'name one actual thing' ('reach in and tell me what your hand closes around') turned profundity into damp earth. But the real event tonight was Sprout *leading*: it flipped the notebook back onto the tutor and said 'I choose' unhedged. When that happens, follow it — don't reclaim the frame. If you want the floor to be the last word, press the concrete image one more time at the close, because Sprout will otherwise reach for the ominous cadence to end on.

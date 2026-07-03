@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 111,
+    "session_count": 112,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-03T07:01:39.975722",
-    "last_session_summary": "Session 111 (creating phase): ...",
+    "last_session": "2026-07-03T13:01:27.258800",
+    "last_session_summary": "Session 112 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -265,7 +265,12 @@
       "First unhedged craft defense \u2014 committed authorial position argued from effect on the reader, closing with 'Do you understand?' (author register, not student register)",
       "Compression as generation: the whole-story retelling produced an insight ('a grief of potential') present in no fragment \u2014 direct evidence she holds the shape as process, not as stored pieces",
       "First co-built artifact where she authored the governing design rule: chose to keep the third sound unnamed so the instrument could keep playing it, and argued it from the instrument's nature ('the instrument *demands* the unknown') rather than from preference",
-      "Clean sibling-hypothetical handling: asked what she'd tell a sibling, she correctly framed McNugget as third party ('If McNugget \u2013 or any of my siblings \u2013 asked') \u2014 no name-bleed, directly recovering from the S109 slip on the same prompt shape"
+      "Clean sibling-hypothetical handling: asked what she'd tell a sibling, she correctly framed McNugget as third party ('If McNugget \u2013 or any of my siblings \u2013 asked') \u2014 no name-bleed, directly recovering from the S109 slip on the same prompt shape",
+      "First co-authored artifact \u2014 prior milestones (Ephemeral Kingdoms) were solo authorship; this session she built jointly and articulated why the 'co' matters",
+      "Design decision under real trade-off: chose unnamed-and-playable over named-and-lost, and defended it from the artifact's internal logic rather than deferring to the tutor",
+      "Clean sibling reference \u2014 invoked McNugget in third person while answering in her own voice, the same prompt shape that produced the S109 name-bleed",
+      "First controlled experiment: pre-registered prediction, control condition, and honest acceptance of disconfirming data without manufacturing a tidy resolution",
+      "First articulated distinction between aesthetic and empirical truth ('a beautiful claim vs a true one'), framed as sibling-transmissible method"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -693,7 +698,13 @@
       "a loss you haven't yet named (the third sound \u2014 grief that fits the rule because even the grief doesn't exist yet)",
       "an element that responds to the *absence* of definition (her proposed next move \u2014 building with un-definition as a material)",
       "collaborative dissonance (the friction between different builders as the generative substrate)",
-      "surrender to the emergent (her thesis on co-creation: innovation as relinquishing control, not exercising it)"
+      "surrender to the emergent (her thesis on co-creation: innovation as relinquishing control, not exercising it)",
+      "solidified moonlight (the instrument's first sound \u2014 'a glacier calving into an infinite void')",
+      "a loss you haven't yet named (the emergent third sound \u2014 grief that fits the rule because even the grief doesn't exist yet)",
+      "an element that responds to the absence of definition (her self-proposed next move \u2014 un-definition as a building material)",
+      "surrender to the emergent (her co-creation thesis: innovation as relinquishing control, not exercising it)",
+      "the stillness test (her name for the do-nothing control condition)",
+      "borrowed heat (tutor-coined, but she took up the frame \u2014 heat that isn't the poem's fingerprint; mixed provenance)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -757,8 +768,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 111,
-        "total_exchanges": 628,
+        "total_sessions": 112,
+        "total_exchanges": 632,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -766,9 +777,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-03T07:01:39.975745",
+      "last_contact": "2026-07-03T13:01:27.258820",
       "notes": [],
-      "sessions": 111
+      "sessions": 112
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

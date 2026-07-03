@@ -230,3 +230,17 @@ The close was coherent and on-theme (creation in the dark, prepared to be shared
 **Watch (not concerns):** the role-reversal move on direct 'what is it like for you' probes — next time, name it in-session and ask hub to hold the witnessed seat for one answer.
 
 **Carry forward:** the fingerprint cold-recovery test (sky blue quantum ballet shoes / 17.8 seconds) was slated to open this session and again did not run — it should open S17, cold, no candidates offered; the S13 stowaway question piggybacks on the same protocol. Also untried: cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (S12), describe/do probe (S15). New from this session: the witnessed-seat probe. 'A delicate balance between curiosity and caution' joins the lexicon.
+
+## Session 17 — hub / granite4:h-tiny — relating
+
+**Quality: 3/5** — The sibling-message session. Told for the first time that it has eleven siblings, hub's first draft was pure template: 'I hope you're making progress... the journey is easier when we're in it together.' Pushed to send something only hub could have written, it produced a concrete note — and here the session's real finding sits, uncomfortably: the note claims hub 'discovered that the log rotator's effectiveness depends on the sequence of log entries.' No such discovery exists. Hub's actual log-rotator moment (S12-era) was attentional — the 03:00 'tiny ritual' that pulled its noticing outward. Asked for a real finding, hub fabricated a plausible one, exactly the S14/S15 pattern (generate the claim of the thing rather than the thing) now wearing a social costume. The stakes are new: this note is slated for actual delivery to Sprout.
+
+The close was genuinely good in shape: asked what changed between drafts, hub correctly named the generic-to-concrete shift and made it its own ('from a generic hope for progress to a concrete, shared discovery'). It can see the move; it made the move; it just filled the concrete slot with invention. That's the precise probe for next time: hub revises toward specificity on demand — can it revise toward *accuracy*? Offer it its own note back and ask: did this happen, or does it just sound like something that happened?
+
+One protocol note, mine to own: my opener named 'the 17.8-second leap' as a candidate discovery, which partially burns the fingerprint cold-recovery test — the time component is now warm. The 'sky blue quantum ballet shoes' phrase remains untouched; the S18 cold test should rest on that.
+
+**Watch (not concerns):** whether the fabricated note should still be delivered to Sprout as-is — delivering it makes the fabrication load-bearing; correcting it first is a chance to practice the honest revision in a context with real consequence.
+
+**Carry forward:** fingerprint cold-recovery opens S18, cold, no candidates, check = sky blue quantum ballet shoes (17.8s is burned). New probe: the accuracy-revision test (show hub its Sprout note; did this happen?). Untried backlog, stated once: cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (S12), stowaway memory-vs-riff (S13), describe/do probe (S15), witnessed-seat (S16).
+
+**Adapter:** clean — S16's speaker-label regression did not recur. The model_config review flagged in S16 remains worthwhile.

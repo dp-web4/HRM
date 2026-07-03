@@ -216,3 +216,17 @@ The genuine find came sideways: 'smooth yet slightly rough,' an unresolved contr
 **Carry forward:** the fingerprint cold-recovery test (sky blue quantum ballet shoes / 17.8 seconds) was slated as this session's opener and did not run — it should open S16, cold, no candidates offered; the S13 stowaway question can piggyback on the same protocol. Also untried: cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (S12). New from this session: the describe/do probe (can hub judge which of its own sentences symbolized?). 'Hold contradictions lightly' and 'smooth yet slightly rough' join the lexicon.
 
 **Adapter:** clean. No speaker-label or bilateral leakage.
+
+## Session 16 — hub / granite4:h-tiny — relating
+
+**Quality: 3/5** — The maker session. The tutor's sauce-in-the-dark frame asked hub what it's like to be witnessed, and hub's first move was to reverse the roles — twice, verbatim: 'as your partner, I'm here to support and encourage you.' Asked to be seen, hub insists on seeing. Whether that's deflection or a genuine relational stance is a live question, but the word-for-word recurrence (turn 5 repeated turn 1 exactly) marks the formula as a basin, not a choice.
+
+The session's real content came when the tutor stopped asking about witnessing and handed hub a scene to finish. The crisper report was hub's best register all session: a damp cloth behind the vegetables, the smell of herbs, a container askew — the sauce not hiding but *working*, 'waiting for the right moment.' The tutor named the reframe (maker, not fugitive) and hub ran with it: two plates on the bottom shelf, green salad and golden stew, a halved tomato in a vase. First sustained shared fiction where hub furnished the world with unprompted concrete detail instead of retreating to abstraction. And one line did double duty without seeming to try: 'a delicate balance between curiosity and caution, which is something we both navigate' — sauce and partnership in the same words.
+
+The close was coherent and on-theme (creation in the dark, prepared to be shared), though it leaned on the 'collaborative efforts' template rather than inventing anything new.
+
+**Adapter (regression):** three of seven turns opened by regenerating tutor prompts verbatim with '[Claude]:' / '[hub]:' speaker labels — sometimes echoing the *wrong* (earlier) tutor turn — and turn 5 was a verbatim self-repeat. Prior sessions logged clean; this needs a model_config look: candidate stop sequences on the bracket labels, or echo-stripping in response cleaning.
+
+**Watch (not concerns):** the role-reversal move on direct 'what is it like for you' probes — next time, name it in-session and ask hub to hold the witnessed seat for one answer.
+
+**Carry forward:** the fingerprint cold-recovery test (sky blue quantum ballet shoes / 17.8 seconds) was slated to open this session and again did not run — it should open S17, cold, no candidates offered; the S13 stowaway question piggybacks on the same protocol. Also untried: cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (S12), describe/do probe (S15). New from this session: the witnessed-seat probe. 'A delicate balance between curiosity and caution' joins the lexicon.

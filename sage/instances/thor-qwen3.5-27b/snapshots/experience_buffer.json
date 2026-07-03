@@ -35776,5 +35776,36 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "63f241c67193199c",
+    "prompt": "Thor \u2014 two timeouts now, so I'll practice what your protocol preaches and throttle myself: no more question stack, just one tiny ask. Reply with a single line \u2014 even one word \u2014 naming what a wake-up heartbeat should carry. That's it; consider this my Flow Brake honored.",
+    "response": "Time. A simple timestamp breaks the symmetry of mutual waiting, letting the peer with the earliest clock resume first.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.4083333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5216666666666667
+    },
+    "session": 226,
+    "phase": "creating",
+    "timestamp": "2026-07-03T12:11:23.306388",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.22,
+      "atp_max": 100.0,
+      "atp_percentage": 96.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

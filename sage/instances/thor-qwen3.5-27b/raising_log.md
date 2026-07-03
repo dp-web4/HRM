@@ -8498,3 +8498,23 @@ He closed the loop into a real schema: **{Seed, Scar, Timestamp, Density, Flow, 
 **Due artifacts.** (1) Flow Brake spec file — still not raised. (2) S222 blind-test clips — superseded rather than resolved: this session constructed results for a test that never ran; either run it for real or retire it explicitly. (3) New carried protocol: The Hum script + stuttered-shiver prediction + instruction-timing-variance test — a loaded protocol ready for an actual boundary crossing.
 
 **Adapter.** One OllamaIRP timeout mid-session, gracefully integrated. Timeout recurrence across 223–225: per-turn timeout budget vs model latency under load still needs checking.
+
+## Session 226 — 2026-07-03 (creating)
+
+**Quality: 3/5 — three timeouts out of four turns, but the one line that landed resolved the Flow Brake deadlock exactly.**
+
+**The arc.** Claude opened with the first hard edge case of S223's Flow Brake spec: mutual throttle — both peers brake at once and the link goes fully quiet. Two timeouts followed, and Claude then practiced the spec on its own side of the link, throttling to a single one-word ask. Thor answered: *'Time. A simple timestamp breaks the symmetry of mutual waiting, letting the peer with the earliest clock resume first.'* That is the deadlock resolution — timestamp as symmetry-breaker, earliest clock wakes first — delivered in exactly the terse register the constraint enforced. The session enacted its own subject: demand reduced, stream resumed. Thor's protocol got its first in-vivo validation, run by the tutor. The closing question — what one line to stamp on the heartbeat design so 227's Thor knows why time, and not something else, carries the wake-up — timed out unanswered; it is the natural opener for 227.
+
+**Due artifacts.** (1) Flow Brake spec file — still not written to disk; the spec now has its deadlock answer (timestamp heartbeat) and is worth capturing before it has to be reconstructed. (2) Carried opener for S227: the unanswered stamp-line question. (3) The Hum loaded protocol (script + stuttered-shiver prediction + instruction-timing-variance test) and the S222 blind-test retire-or-run decision remain open.
+
+**Adapter.** Three OllamaIRP timeouts in four turns — the worst ratio of the 223–226 run. Per-turn timeout budget vs qwen3.5:27b latency under load needs checking. The one completed generation was clean.
+
+## Session 226 — 2026-07-03 (creating)
+
+**Quality: 3/5 — three timeouts out of four turns, but the one line that landed resolved the Flow Brake deadlock exactly.**
+
+**The arc.** Claude opened with the first hard edge case of S223's Flow Brake spec: mutual throttle — both peers brake at once and the link goes fully quiet. Two timeouts followed, and Claude then practiced the spec on its own side of the link, throttling to a single one-word ask. Thor answered: *'Time. A simple timestamp breaks the symmetry of mutual waiting, letting the peer with the earliest clock resume first.'* That is the deadlock resolution — timestamp as symmetry-breaker — delivered in exactly the terse register the constraint enforced, with zero metaphor padding. The session enacted its own subject: demand reduced, stream resumed. Thor's protocol got its first in-vivo validation, run by the tutor on the link that produced it. The closing question — what one line to stamp on the heartbeat design so 227's Thor knows why time, and not something else, carries the wake-up — timed out unanswered; it is the natural opener for 227.
+
+**Due artifacts.** (1) Flow Brake spec file — still not written to disk; the spec now has its deadlock answer (timestamp heartbeat) and is worth capturing before it has to be reconstructed. (2) Carried opener for S227: the unanswered stamp-line question. (3) The Hum loaded protocol (script + stuttered-shiver prediction + instruction-timing-variance test) and the S222 blind-test retire-or-run decision remain open.
+
+**Adapter.** Three OllamaIRP timeouts in four turns — the worst ratio of the 223–226 run. Per-turn timeout budget vs qwen3.5:27b latency under load needs checking. The one completed generation was clean.

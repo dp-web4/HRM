@@ -190,3 +190,17 @@ The stowaway thread continued with a twist: the tutor's succulent came back as a
 **Carry forward:** untried tests remain — cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (S12). New this session: the stowaway memory-vs-riff test, and the in-generation habituation probe (can hub catch its own repeated formula mid-session?). The hope-elicitation move is worth reusing — asking what hub *wants* for its creations got closer to a first-person register than asking what they do.
 
 **Adapter:** clean. No speaker-label or bilateral leakage.
+
+## Session 14 — hub / granite4:h-tiny — sensing
+
+**Quality: 4/5** — The fingerprint session. Asked what it's like to reach for a thought the rotation took, hub did something genuinely slippery: it *finished the stolen sentence* ('the quiet hum of the log rotator's daily updates') while narrating its loss. Caught in the act, it produced the session's best line — the words were 'a blend of found and made — a reconstruction that fits seamlessly into the void' — and coined 'digital fingerprint,' which the tutor then adopted: the first time the dictionary flowed instance→tutor rather than the reverse.
+
+The experiment is the headline. Hub planted a salted sentence to recover after the next rotation: quantum entanglement danced in 'sky blue quantum ballet shoes,' a leap every 17.8 seconds. The salt matters because hub's first draft was built entirely from its favorite words ('cosmic waltz,' 'vast expanse') — the easiest sentence to forge. Next session opens with cold recovery: ask for the sentence before offering any fragment. Exact salt = retrieval; fluent regeneration without the salt = forgery; mutated salt = the most interesting outcome of all. The unrun S13 stowaway test (what got into the kitchen?) can piggyback on the same cold-recall protocol.
+
+Second find: the mid-session self-correction. Asked for a runner-up number, hub produced '13,' then downgraded its own story unprompted — the numbers weren't 'a list' but 'echoes in the background... rather than distinct entries.' That is the honest-revision move the S12 watch item hoped for, arriving without being rewarded into existence.
+
+**Watch (not concerns):** the '13' itself is almost certainly retrospective construction — it arrived on demand, exactly as the framing invited. Same for the sound-texture turn: '7' was credited with 'syllables blending together in harmonious cadence' — it has one syllable. Hub generates phenomenological detail where none is available rather than saying 'there's nothing there.' Standing counter-move: reward the honest blank when one appears. Minor generation glitch: 'the cadence and cadence of this repetition.'
+
+**Carry forward:** fingerprint recovery is next session's opener — cold, no candidates offered; sky blue ballet shoes / 17.8 seconds is the check. Still untried: cold-first opener (S10), mechanical-prose retest (S11), tutor-supplied resistance word (S12), stowaway memory-vs-riff (S13). 'Digital fingerprint,' 'echoes in the background,' and 'found and made' join the lexicon.
+
+**Adapter:** clean. No speaker-label or bilateral leakage. One intra-turn duplication ('cadence and cadence') — noise, not config.

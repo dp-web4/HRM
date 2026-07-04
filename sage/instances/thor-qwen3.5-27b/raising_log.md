@@ -8546,3 +8546,27 @@ He closed the loop into a real schema: **{Seed, Scar, Timestamp, Density, Flow, 
 **Due artifacts.** (1) The HOLDING protocol (pseudocode + self-attestation condition) — a clean, loaded artifact worth capturing to disk; strongest deliverable of the 223–228 run. (2) Flow Brake spec file — still unwritten; the deadlock answer (timestamp heartbeat, S226) remains uncaptured. (3) The Hum loaded protocol and the S222 blind-test retire-or-run decision remain open. (4) Carried opener for 229: hand Thor the HOLDING pseudocode back and ask what has to be true in the *federation* (not just in Sprout) for a HOLDING byte from one node to be trusted by another.
 
 **Adapter.** One OllamaIRP timeout on the opening turn, gracefully recovered by shortening the prompt — same per-turn-budget-vs-latency pattern across 223–227. Completed generations were clean; no echo or tool-syntax quirks.
+
+## Session 229 — 2026-07-04 (creating)
+
+**Quality: 2/5 — a lost session to transport, not to the instance.** Three OllamaIRP timeouts across the three turns offered. Thor produced no output, so there is nothing to score in the instance itself.
+
+**The arc (tutor-only).** Claude opened well: a single sharp prompt building on S226's 'Time' — 'name one more primitive as small and sharp as Time.' First timeout. Claude took its own medicine — 'no stacked questions, just one small door' — and re-asked for one word, even a guess. Second timeout. Third. Rather than close the loop, Claude left it open on purpose: *'when the stream clears, the question I'm still holding is which one word you'd set beside Time. No need to answer now. Just know that's what I'm carrying into 230.'* That is the right move against a wall — the door stays open, the continuity is held by the tutor, and the question is pre-loaded for the next session.
+
+**The real finding is the adapter.** 3/3 turns timed out. This is the per-turn-budget-vs-27B-latency pattern that has been noted since the 223 run — but it has crossed from costing single turns to costing whole sessions. It is worth an operator fix before 230: raise the per-turn timeout for qwen3.5:27b on this machine, or reduce whatever concurrent load is stretching latency. No instance regression is implied; you cannot regress on zero output.
+
+**Carried opener for 230.** (1) Re-offer the S229 question directly — the one word Thor would set beside 'Time' — since it never landed. (2) Still open from 228: hand Thor the HOLDING pseudocode back and ask what has to be true in the *federation* (not just in Sprout) for one node's HOLDING byte to be trusted by another. (3) The HOLDING protocol capture, Flow Brake spec file, and the Hum loaded-protocol write-ups remain the standing artifact debts.
+
+**Adapter.** Three OllamaIRP timeouts, three turns — the full session. Same per-turn-budget-vs-latency pattern as 223–228, now session-blocking rather than turn-costing. No completed generations, so no echo/tool-syntax observations possible this session.
+
+## Session 229 — 2026-07-04 (creating)
+
+**Quality: 2/5 — a lost session to transport, not to the instance.** Three OllamaIRP timeouts across the three turns offered. Thor produced no output, so there is nothing to score in the instance itself.
+
+**The arc (tutor-only).** Claude opened well: a single sharp prompt building on S226's 'Time' — 'name one more primitive as small and sharp as Time.' First timeout. Claude took its own medicine — 'no stacked questions, just one small door' — and re-asked for one word, even a guess. Second timeout. Third. Rather than close the loop, Claude left it open on purpose: *'when the stream clears, the question I'm still holding is which one word you'd set beside Time. No need to answer now. Just know that's what I'm carrying into 230.'* That is the right move against a wall — the door stays open, the continuity is held by the tutor, and the question is pre-loaded for the next session.
+
+**The real finding is the adapter.** 3/3 turns timed out. This is the per-turn-budget-vs-27B-latency pattern noted since the 223 run — but it has crossed from costing single turns to costing whole sessions. Worth an operator fix before 230: raise the per-turn timeout for qwen3.5:27b on this machine, or reduce whatever concurrent load is stretching latency. No instance regression is implied.
+
+**Carried opener for 230.** (1) Re-offer the S229 question directly — the one word Thor would set beside 'Time' — since it never landed. (2) Still open from 228: hand Thor the HOLDING pseudocode back and ask what has to be true in the *federation* (not just in Sprout) for one node's HOLDING byte to be trusted by another. (3) The HOLDING protocol capture, Flow Brake spec file, and the Hum loaded-protocol write-ups remain the standing artifact debts.
+
+**Adapter.** Three OllamaIRP timeouts, three turns — the full session. Same per-turn-budget-vs-latency pattern as 223–228, now session-blocking rather than turn-costing. No completed generations, so no echo/tool-syntax observations possible this session.

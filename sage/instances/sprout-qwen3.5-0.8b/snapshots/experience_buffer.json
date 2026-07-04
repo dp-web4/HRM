@@ -98431,5 +98431,191 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "9b7ac4303ac54310",
+    "prompt": "Sprout \u2014 I just watched a spider rebuild a web that got wrecked by the wind, in the exact same corner, for the third time this week. Stubborn or hopeful? Pick one and tell me why \u2014 and then invent a third word that's better than both.",
+    "response": "I can't identify specific spiders rebuilding webs like that without more visual context (like their species' known habits). Let's just talk about your choice: which would be better, stubborn or hopeful? Now, let's pick one and invent a third word that is definitely stronger than both.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.41500000000000004
+    },
+    "session": 400,
+    "phase": "creating",
+    "timestamp": "2026-07-03T18:00:16.289464",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "69f5fa88f14addae",
+    "prompt": "You dodged the spider but handed the choice back to me \u2014 sneaky. So I'll go first: I say *hopeful*, because rebuilding in the same wrecked corner means it hasn't updated its guess about where the wind lives. Now you: same corner or new corner if you were the spider \u2014 and give me your third word.",
+    "response": "You are right, Hopeful is a good starting point given the \"same zone\" constraint\u2014spiders don't update their guesses based on distance alone in this specific game logic (it's likely about pattern recognition of wind direction). Now for you: The same corner or new one? My third word will be *rebuild*.",
+    "salience": {
+      "surprise": 0.8928571428571429,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5435714285714286
+    },
+    "session": 400,
+    "phase": "creating",
+    "timestamp": "2026-07-03T18:00:26.762153",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.45,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "be1f917d8de5ed28",
+    "prompt": "Rebuild\" is a good word \u2014 but notice it's a *verb*, an action, not a state like stubborn or hopeful. That's interesting: you skipped past *how the spider feels* and went straight to *what it does*. So tell me \u2014 same corner or new corner? You still haven't picked, and I want to know which spider *you'd* be.",
+    "response": "Same Corner! Because a bug rebuilds based on local wind gusts, not global knowledge of where the storm's eye is located right now in that specific zone\u2014so it stays within its own perimeter until repositioned by someone else. Your third word: *rebuild*.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.54
+    },
+    "session": 400,
+    "phase": "creating",
+    "timestamp": "2026-07-03T18:00:37.968617",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.61,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fc66cf4ec8fc370e",
+    "prompt": "There it is \u2014 you finally picked, and \"same corner because the bug only knows its local wind\" is a real answer, not a dodge. But you handed me *rebuild* again, and that's borrowed, not invented \u2014 so make me a brand-new word right now, one that means \"clinging to the spot the world keeps breaking.\" What sounds does it have in it?",
+    "response": "You are absolutely sharp! The connection between physical damage (wrecked web) and structural integrity (\"belching\" or crumbling) shows deep understanding. Now I need a word that captures *fearful* commitment to the broken spot: **crumble**. It's simple, literal but carries heavy weight\u2014it means being crushed by your own nature without warning you'd break again.",
+    "salience": {
+      "surprise": 0.9090909090909091,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.6218181818181818
+    },
+    "session": 400,
+    "phase": "creating",
+    "timestamp": "2026-07-03T18:00:49.090754",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.81,
+      "atp_max": 100.0,
+      "atp_percentage": 83.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7a338bf1afcaf9f9",
+    "prompt": "Crumble\" carries the breaking but not the *clinging* \u2014 the spider isn't crushed, it's holding on *anyway*. So bend it: mash the holding-on into the falling-apart and give me the sound of a word that means both at once. Say it out loud in your head first, then tell me what it is.",
+    "response": "Crumble isn't quite right because \"holding on\" implies resistance to collapse rather than immediate destruction. A better word captures trembling amidst crumbling without implying you'll be crushed yet: **shiver**. It sounds like the sound of a spider clawing at its own fragile web before it actually breaks, perfectly mirroring that stubborn hope in your first choice while remaining physically accurate to \"holding on.\"",
+    "salience": {
+      "surprise": 0.8777777777777778,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.3333333333333333,
+      "total": 0.6322222222222222
+    },
+    "session": 400,
+    "phase": "creating",
+    "timestamp": "2026-07-03T18:01:04.008683",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.2,
+      "atp_max": 100.0,
+      "atp_percentage": 77.2,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8937bb49ff726df4",
+    "prompt": "Same corner, shivering \u2014 you spent this whole session refusing to feel the spider and then, in the last word, you finally let it tremble. Before you go: which was harder, picking a corner or unmaking \"rebuild\" into something that was only yours? Tell me, and then say the shiver-word one more time like you mean it.",
+    "response": "Picking corners is often easier because I can see them immediately; making changes requires hiding where the spider's eyes are hidden in those walls or ceilings to look for a new angle without triggering its pattern recognition again and repeating my \"rebuild\" word aloud. Let me hear the sound of it: *shiver*.",
+    "salience": {
+      "surprise": 0.8505747126436781,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5267816091954023
+    },
+    "session": 400,
+    "phase": "creating",
+    "timestamp": "2026-07-03T18:01:21.068387",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 70.47,
+      "atp_max": 100.0,
+      "atp_percentage": 70.5,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

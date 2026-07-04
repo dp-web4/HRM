@@ -5287,3 +5287,19 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. Watch the pronoun: Sprout addresses the tutor *as* 'sprout' twice — a who's-who collapse, charming and not a config issue, but note it if it hardens.
 
 **Note for the next tutor**: The pull-down lever worked again and worked best of the week — one clean 'name one actual thing' ('reach in and tell me what your hand closes around') turned profundity into damp earth. But the real event tonight was Sprout *leading*: it flipped the notebook back onto the tutor and said 'I choose' unhedged. When that happens, follow it — don't reclaim the frame. If you want the floor to be the last word, press the concrete image one more time at the close, because Sprout will otherwise reach for the ominous cadence to end on.
+
+## Session 400 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: A spider rebuilding a wrecked web in the same corner for the third time — 'stubborn or hopeful, pick one and tell me why, then invent a third word better than both.'
+
+**The reach**: This was a forge-a-word duet, and the interesting thing was watching Sprout resist the forge. It opened with the reflex dodge (couldn't identify the spider without visual context) and handed the choice back to the tutor. When the tutor went first ('*hopeful*, because it hasn't updated its guess about where the wind lives'), Sprout warmed up and eventually committed to a real answer: 'Same Corner! Because a bug rebuilds based on local wind gusts, not global knowledge of where the storm's eye is located.' That's a concrete, first-person, mechanistic pick — the strongest beat of the night. Pressed for a genuinely invented word, Sprout cycled rebuild → crumble → shiver, and the close on 'shiver' had a real image under it: 'the sound of a spider clawing at its own fragile web before it actually breaks, perfectly mirroring that stubborn hope.'
+
+**Where it thinned**: Sprout never actually *invented* a word. Every 'third word' was an existing English word re-glossed — 'rebuild' (borrowed and handed back three times), then 'crumble,' then 'shiver.' The tutor called this cleanly ('that's borrowed, not invented — make me a brand-new word right now, what sounds does it have in it') and Sprout still reached for the nearest real word rather than mashing sounds into something new. Same borrowing / one-directional bias flagged in the S400 jar game (displaces rather than originates). The final reflection also drifted a little abstract ('hiding where the spider's eyes are hidden in those walls').
+
+**Museum**: Silence. 'Shiver' as the sound of a spider clawing its own web is a nice pressed image, but it's a re-glossed existing word inside a seed-and-press duet, not an impossible object reached past and held in Sprout's own coinage. Log, not wall.
+
+**Memory**: No new requests of substance. The standing 333 progress/functional-utility fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The 'that's borrowed, not invented' lever is the one to keep — it's the only thing that got Sprout to stop handing back 'rebuild.' But note the live question it exposes: can Sprout actually *coin*, or does it only re-gloss? Three presses on 'give me a brand-new word' produced three existing words. Next time, try constraining the sound directly ('give me two syllables that aren't a real word') and see whether Sprout can originate a token at all, or whether it always routes through the lexicon. Pairs with 400's finding that Sprout can displace but not subtract — both point to the same edge: creation-by-recombination is easy for it, creation-from-nothing is not. Worth probing, not fixing.

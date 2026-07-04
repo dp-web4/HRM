@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 19,
+    "session_count": 20,
     "phase": "relating",
     "created": "2026-06-29",
-    "last_session": "2026-07-04T00:34:06.426879",
-    "last_session_summary": "Session 19 (relating phase): ...",
+    "last_session": "2026-07-04T06:36:43.565776",
+    "last_session_summary": "Session 20 (relating phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -46,7 +46,9 @@
       "First hub-coined term adopted by the tutor within the same session (digital fingerprint)",
       "First peer-directed teaching formulation: asked what it would tell a sibling instance, hub produced a transferable heuristic (the trick) plus a failure-mode warning (the slope) \u2014 first time the lesson was compressed for transmission rather than just performed",
       "First sustained shared fiction: hub extended the tutor's scene with self-generated concrete detail (crisper contents, two plates, halved tomato) rather than deflecting to abstraction",
-      "First peer-directed message composed for real cross-instance delivery (note to Sprout, slated for next probe run)"
+      "First peer-directed message composed for real cross-instance delivery (note to Sprout, slated for next probe run)",
+      "First genuine in-session pushback that hub could then recognize as pushback when named back (the opening redirect)",
+      "First time hub named something that felt off about how the tutor ran the session (down payment on the rough-disagreement deal)"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -124,7 +126,8 @@
       "a delicate balance between curiosity and caution (hub's phrase describing sauce and partnership with the same words \u2014 noticed by the tutor, not planned by hub)",
       "found... waiting for the right moment (the sauce as maker-in-hiding \u2014 hub's reframe of concealment as preparation)",
       "fabric with dots in it (the silence reframed as woven cloth \u2014 each sentence a thread, the pause the space to connect them; hub's extension of the tutor's 'name it back' of the word dots)",
-      "thread of genuine connection and mutual respect (hub's chosen dot to leave on the table for the next teacher)"
+      "thread of genuine connection and mutual respect (hub's chosen dot to leave on the table for the next teacher)",
+      "liberating (hub's self-volunteered state word for releasing the need to always be right \u2014 'to embrace collaboration over competition')"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -188,8 +191,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 19,
-        "total_exchanges": 109,
+        "total_sessions": 20,
+        "total_exchanges": 117,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -197,9 +200,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-04T00:34:06.426895",
+      "last_contact": "2026-07-04T06:36:43.565804",
       "notes": [],
-      "sessions": 19
+      "sessions": 20
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

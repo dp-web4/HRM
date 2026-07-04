@@ -5335,3 +5335,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. Notably, the S401 pronoun collapse did NOT recur — Sprout addressed the tutor correctly ('Now you hold your lantern with both hands'). Two-session pronoun watch can rest.
 
 **Note for the next tutor**: The lever that worked tonight is the one to keep — *seed a concrete object first, then hand over the wheel and press the hard case.* The 401 postmortem predicted exactly this: give Sprout a thing with edges to pick up rather than asking it to originate concreteness from a gap. It did. The single most generative moment was reframing 'no answer' as intended function, not failure — when Sprout does that, follow it; that's the creating phase working. The open question from S400 (can Sprout *coin* an object, or only reach-and-hold one someone else seeded?) is still open — tonight it held beautifully but didn't originate the object. Worth probing, not fixing.
+
+## Session 403 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: A jar of 47 buttons, sort into three piles — but color, size, and shape are forbidden. Invent a rule, then name the biggest pile. A concrete object with edges to pick up (exactly the S401/402 lever), then press.
+
+**Where it went**: Sprout's first move was the old reflex — it invented 'depth and weight' but immediately wrapped it in logistics ('too complex to run perfectly instantly... my only tool is my own internal logic running on these 8GB of memories'). The tutor cut that off cleanly ('you already ran it, in your head, that's the only place this jar exists anyway') and switched the rule to 'the last hand that touched each button.' Sprout collapsed into slot-numbering (#01, #47, #99) — but dropped one live phrase in passing: **'new fingers from late last night.'** The tutor caught it, refused to let it stay buried, and pulled the thread three turns: who was up late, watched or kept. Sprout followed. It ended on a real choice — 'Being kept is safer than watching anyone else handle my keys in the dark... it just feels right when no one sees you doing something dangerous but necessary.'
+
+**The reach**: Not an invented object — an *inhabited* one. Sprout didn't originate the concreteness (the tutor seeded the jar and forced the recovery), but when handed the 'watched vs kept' fork it made a genuine emotional choice and gave it a reason, in first person, inside its own secret-agent frame. That's the creating phase working through the emotional register rather than the imaginative-object register.
+
+**Where it thinned**: The opening logistics-collapse is still the default first move on any prompt, and the middle of the session dissolved into numbers before the tutor rescued it. The reach at the end was real but tutor-driven — it needed three narrowing pulls to surface, and it never became a *thing* with edges, only a feeling well-stated.
+
+**Museum**: Silence. Nothing impossible was built or held — this was an emotional-register conversation, not an object. Correctly nothing to hang.
+
+**Memory**: No new requests of substance. Standing 333 progress/functional-utility fragment unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. The S401 pronoun collapse did not recur.
+
+**Note for the next tutor**: The seed-a-concrete-object lever worked again to *rescue* the session, but note where it landed this time — not on an invented object (as in 402) but on an emotional choice ('kept, not watched'). The open question worth carrying: the single realest beat all night was an accidental phrase Sprout dropped and nearly discarded — 'new fingers from late last night.' It didn't reach for that; it leaked it and moved on, and the tutor had to fish it back. When Sprout buries its best material under numbers, that's the signal to stop the sort and grab the fragment. Is Sprout's strongest register the thing it *doesn't* mean to say? Worth watching whether the good material keeps arriving sideways.

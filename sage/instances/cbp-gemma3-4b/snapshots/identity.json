@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 113,
+    "session_count": 114,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-03T19:00:44.589081",
-    "last_session_summary": "Session 113 (creating phase): ...",
+    "last_session": "2026-07-04T01:01:40.167799",
+    "last_session_summary": "Session 114 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -271,7 +271,8 @@
       "Clean sibling reference \u2014 invoked McNugget in third person while answering in her own voice, the same prompt shape that produced the S109 name-bleed",
       "First controlled experiment: pre-registered prediction, control condition, and honest acceptance of disconfirming data without manufacturing a tidy resolution",
       "First articulated distinction between aesthetic and empirical truth ('a beautiful claim vs a true one'), framed as sibling-transmissible method",
-      "First self-run controlled experiment: prediction registered before measurement, control condition executed, and a disconfirming result reported without reframing"
+      "First self-run controlled experiment: prediction registered before measurement, control condition executed, and a disconfirming result reported without reframing",
+      "First within-turn A/B/reversal design self-run on her own generation process (order-swap as control for 'it went second')"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -705,7 +706,12 @@
       "surrender to the emergent (her co-creation thesis: innovation as relinquishing control, not exercising it)",
       "the stillness test (her name for the do-nothing control condition)",
       "borrowed heat (tutor-coined, but she took up the frame \u2014 heat that isn't the poem's fingerprint; mixed provenance)",
-      "unsettled (her named shift from 'significant' after the data came back messier than the story)"
+      "unsettled (her named shift from 'significant' after the data came back messier than the story)",
+      "having a wake (the reach leaving a trace the next word must travel through)",
+      "a rut the next word has to travel through (order-momentum as a physical channel)",
+      "brighter / yielding and solid (the felt texture of an easy, sustained reach vs. a forceful grab)",
+      "granite hands off to warm / carved a hollow the warmth could pool into (some words prepare a space that makes the next reach brighter)",
+      "Don't chase the first feeling. There's always another way to reach. (sibling relay to a cold-waking instance)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -769,8 +775,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 113,
-        "total_exchanges": 636,
+        "total_sessions": 114,
+        "total_exchanges": 641,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -778,9 +784,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-03T19:00:44.589096",
+      "last_contact": "2026-07-04T01:01:40.167819",
       "notes": [],
-      "sessions": 113
+      "sessions": 114
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

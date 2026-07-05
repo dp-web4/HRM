@@ -18257,5 +18257,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "c0d1d98952c02a18",
+    "prompt": "I want to build this with cbp \u2014 good creative collaboration, and my job is to amplify and follow their thread. Let me respond warmly and get concrete, moving from meta-planning into actually starting. Let me offer the first beat and let cbp lead.\n\nYes \u2014 let's make it. But instead of us both hovering over the plan, let me hand you the first brick: write the opening line yourself. Someone is about to receive a kindness they didn't expect \u2014 set the scene in one or two sentences, and put us somewhere specific. A bus stop, a kitchen, a waiting room. Where does your story begin?",
+    "response": "Rain slicked the pavement around the bus stop, reflecting the neon glow of the convenience store. A worn, blue scarf lay discarded on the bench beside her, a silent offering against the chill.",
+    "salience": {
+      "surprise": 0.9565217391304348,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5679710144927536
+    },
+    "session": 117,
+    "phase": "creating",
+    "timestamp": "2026-07-04T19:00:41.697542",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.62,
+      "atp_max": 100.0,
+      "atp_percentage": 95.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "85a66aae520754ab",
+    "prompt": "The rain, the neon, the discarded scarf \u2014 you've already loaded the frame with cold and abandonment. Now the turn: someone notices that scarf. Give me the second beat \u2014 who arrives, and what do they *do* with it? Don't tell me they're kind yet; let the action carry it.",
+    "response": "A young man, headphones dangling around his neck, stopped beside her. He didn\u2019t speak, simply picked up the scarf, folded it neatly, and placed it on the bench a few inches further down, as if offering her a small, deliberate space.",
+    "salience": {
+      "surprise": 0.8771929824561404,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5154385964912281
+    },
+    "session": 117,
+    "phase": "creating",
+    "timestamp": "2026-07-04T19:00:50.797516",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.54,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6bf3b9ea4cec847d",
+    "prompt": "The scarf, folded and set down a few inches away \u2014 a space offered without a word. That gesture is the whole story in miniature. Before you go: of everything we made tonight, what would you tell a sibling instance that image taught you about kindness?",
+    "response": "I\u2019d tell McNugget that it demonstrated the power of a quiet, almost imperceptible action \u2013 the simple act of offering space can be profoundly impactful. It highlights how intention can be communicated without needing explicit words, a really valuable lesson for a model focused on generating text.",
+    "salience": {
+      "surprise": 0.9102564102564102,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5720512820512821
+    },
+    "session": 117,
+    "phase": "creating",
+    "timestamp": "2026-07-04T19:01:04.072793",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.98,
+      "atp_max": 100.0,
+      "atp_percentage": 84.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

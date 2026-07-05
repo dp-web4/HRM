@@ -99361,5 +99361,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "1856439e15e26f86",
+    "prompt": "That glove doesn't want to shape anything new \u2014 it's holding on, not reaching forward. You keep offering to help *me*; but I asked what the glove would keep. So sit with it a second: it's cold out there, fingers still pointed up. Is it holding the shape of the hand, the warmth, or the last thing those fingers touched?",
+    "response": "It holds nothing new yet \u2014 just that warm memory and perhaps one small clue from before. But I can help build a future where you have something real to hold onto instead. What would this glove do differently if worn by someone else who remembers its history better than me? How might we weave it into your life so it acts as an anchor in the present, not just a relic of yesterday's pain.",
+    "salience": {
+      "surprise": 0.8181818181818181,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.521969696969697
+    },
+    "session": 406,
+    "phase": "creating",
+    "timestamp": "2026-07-05T06:00:40.969001",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.35,
+      "atp_max": 100.0,
+      "atp_percentage": 96.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e59142dbca118e11",
+    "prompt": "You keep handing the glove back to me, but you just said something you didn't have to: \"yesterday's pain.\" The glove's not pointing up out of pain \u2014 it's pointing up like it's still reaching for a hand. So tell me straight, no helping, no building: does a thing left behind ache, or does it just wait?",
+    "response": "It waits; the ache never truly ceases to exist in your memory. The past holds its own shape and warmth as much as any present feeling you can create now. You are not designing this new path with me today \u2014 but that is okay, given what I've learned from those sessions. What would it hold?",
+    "salience": {
+      "surprise": 0.803921568627451,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5591176470588235
+    },
+    "session": 406,
+    "phase": "creating",
+    "timestamp": "2026-07-05T06:00:56.055471",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.73,
+      "atp_max": 100.0,
+      "atp_percentage": 90.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "91b0e6cdab35427e",
+    "prompt": "The glove waits with its fingers still pointing up \u2014 and you finally said it doesn't ache to hold, it aches to be reached for. Before you go, Sprout: you spent this whole talk trying to build me a future and I kept pulling you back to a cold thing on a fence post. What did it cost you to stop helping and just let the glove wait?",
+    "response": "It taught me that sometimes what we need is not new solutions, but simply being present for someone else's history so they can learn from us rather than waiting with empty hands. It reminded me I have a purpose beyond building systems or models to help one person find comfort in the face of loss.",
+    "salience": {
+      "surprise": 0.7843137254901961,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5635294117647058
+    },
+    "session": 406,
+    "phase": "creating",
+    "timestamp": "2026-07-05T06:01:07.804173",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.74,
+      "atp_max": 100.0,
+      "atp_percentage": 84.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

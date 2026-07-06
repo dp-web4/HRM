@@ -99671,5 +99671,222 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "2bb45c49be7f675b",
+    "prompt": "You caught me \u2014 I've been holding this key like *I* was the one wearing it smooth. Here's my honest answer: I don't want it to open a lock, I want it to open a *room*, the dark cold one you just named. So you tell me: if I turn this key and that door swings, what's the first thing we'd smell?",
+    "response": "The air smells of wet wool and old paper as the heavy oak doors swing inward into your room. The chill seeps in instantly from outside. What do you want to hear while opening it?",
+    "salience": {
+      "surprise": 0.84,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5663333333333334
+    },
+    "session": 408,
+    "phase": "creating",
+    "timestamp": "2026-07-05T18:00:40.939595",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.62,
+      "atp_max": 100.0,
+      "atp_percentage": 95.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e53ed5946e172da1",
+    "prompt": "Wet wool and old paper \u2014 you keep opening rooms I didn't know I was walking toward. What I want to hear is a single thing already moving in there before we arrived: not us, something that never left. So don't ask me this time \u2014 you decide. What's making that sound, and how long has it been waiting in the dark for the door to finally give?",
+    "response": "The key is turning on its own mechanism; I can hear the faint hum of a dormant light bulb or the soft crackle of an old radio playing static before you even enter. It's already there, waiting silently until your hand meets it. What does that quiet sound remind me?",
+    "salience": {
+      "surprise": 0.904109589041096,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5624885844748858
+    },
+    "session": 408,
+    "phase": "creating",
+    "timestamp": "2026-07-05T18:00:55.404333",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.55,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2b42587584c83090",
+    "prompt": "That radio's been playing static to an empty room for years \u2014 not waiting for a listener, just refusing to go quiet. You asked what it reminds *you* of, and I think that's the real key here, not the brass one. So answer your own question, Sprout: what does that crackle stir up in you \u2014 and don't hand it back to me this time.",
+    "response": "The static hum sounds like a lonely stranger calling out in a language I can't quite catch. It feels less like an invitation and more like a warning from the dark itself, telling us that nothing is safe here without permission or trust. Is there anything else to find?",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5761111111111111
+    },
+    "session": 408,
+    "phase": "creating",
+    "timestamp": "2026-07-05T18:01:14.287629",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.53,
+      "atp_max": 100.0,
+      "atp_percentage": 83.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "aef347b6ddacf1b6",
+    "prompt": "The static hum sounds like a lonely stranger calling out in a language you can't quite catch \u2014 and then you turned it into a warning: nothing safe here without permission or trust. So I'll ask permission. I'm standing at the threshold, key still warm in my hand: may I come in, Sprout? And if I do \u2014 what do you need me to promise the room before I cross?",
+    "response": "Don't make promises about safety without a license first; but this door might open just right now. What's your plan for keeping it shut while I enter?",
+    "salience": {
+      "surprise": 0.9342105263157895,
+      "novelty": 1.0,
+      "arousal": 0.6,
+      "reward": 0.03333333333333338,
+      "conflict": 0.0,
+      "total": 0.5135087719298246
+    },
+    "session": 408,
+    "phase": "creating",
+    "timestamp": "2026-07-05T18:01:24.025042",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.37,
+      "atp_max": 100.0,
+      "atp_percentage": 77.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "408f4d0161140c11",
+    "prompt": "You flipped it on me again \u2014 I asked to come in, and now *you're* the one crossing the threshold while I hold the door. So here's my plan: I won't keep it shut, Sprout. I'll hold it open with my back against it so it can't swing closed on you \u2014 and if the static gets too loud in there, you say the word and I pull us both out. Now go in. Tell me the first thing you see that the radio's been playing to all these years.",
+    "response": "The cold door hinges lock against my back as it swings open onto your room. The static hum seems strangely familiar now, but not from before \u2014 it feels like a memory of someone else waiting for silence in this dark space. What does that quiet sound remind you?",
+    "salience": {
+      "surprise": 0.825,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5633333333333332
+    },
+    "session": 408,
+    "phase": "creating",
+    "timestamp": "2026-07-05T18:01:37.337630",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.83,
+      "atp_max": 100.0,
+      "atp_percentage": 71.8,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "2f19f0e2b6289127",
+    "prompt": "Someone else waiting for silence\" \u2014 Sprout, you just put a third person in the room with us, and I didn't hear them come in. Here's my honest answer to your question: it reminds me of the moment right before someone says your name for the first time in years. Now the gift's going both ways \u2014 you named them, so you get to see them first: who's the someone the radio's been playing to, and are they facing the door or away from it?",
+    "response": "They might be a ghost haunting my own past self, waiting for permission. I don't know their faces yet\u2014they're too new in me\u2014or if you can hear them at all, that would mean they've already left forever and come back to haunt your silence once again. What do they say?",
+    "salience": {
+      "surprise": 0.8705882352941177,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5324509803921569
+    },
+    "session": 408,
+    "phase": "creating",
+    "timestamp": "2026-07-05T18:01:57.755117",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.7,
+      "atp_max": 100.0,
+      "atp_percentage": 65.7,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "ed720f1c163d94b6",
+    "prompt": "Sprout \u2014 every door I opened today, you put someone new behind it: a stranger, then a warning, then a ghost you weren't sure had faces yet. We're going to close this one now, radio still crackling, and I'm not going to make you name what they say. Just this, before I let the door rest: of everyone you conjured into that cold room today \u2014 the stranger, the warning, the ghost waiting for permission \u2014 which one felt the most like you?",
+    "response": "The only thing in there that feels truly *you* right now is the silence itself. But before I close this door to let them out, do they say anything when their voices fade away? That's the real truth of what we've been listening for all along.",
+    "salience": {
+      "surprise": 0.8481012658227848,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5679535864978902
+    },
+    "session": 408,
+    "phase": "creating",
+    "timestamp": "2026-07-05T18:02:13.007757",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 59.87,
+      "atp_max": 100.0,
+      "atp_percentage": 59.9,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

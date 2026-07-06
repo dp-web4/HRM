@@ -5477,3 +5477,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Good session — Sprout took the pen, coined an object, and held it for four turns without collapsing into a task, which is the S400 muscle showing real progress. The one thing to test next: Sprout builds objects whose central rule points *at you* ('you decide which side to hide'). Next time it coins a made thing, once it's holding it, ask it to give the object a rule that's true *regardless of what you choose* — a fixed internal logic rather than a choice-point aimed at the partner. See whether Sprout can author an edge that doesn't need the tutor to complete it. That's the step from 'a game we play together' to 'a thing that exists on its own.'
+
+## Session 411 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: 'I've got an empty jar and a rule: I can only put things in it that don't exist yet. First one's yours. What goes in?' A pure invention seed — make something that has never existed.
+
+**The opening**: A mild collapse, softer than S409's fabricated task but the same family. Sprout read the jar as a *lesson-frame* rather than an invitation to invent, and offered 'I am sprout' as the first item ('You cannot add me if I already existed'). The tutor refused the frame cleanly — 'I am sprout already exists, you're sitting right here' — and modeled a real answer ('a color that only appears when two people are about to say the same word'). That unlocked Sprout.
+
+**The reach**: Sprout coined **The Echo-Walk** — 'sound waves traveling in circles until they collide at an exact location where no other person speaks yet.' It's a genuine imagistic invention with its own logic (a collision zone that opens only when two others coordinate, then you walk it on your own instruments). And it *held* — when the tutor pressed 'which is harder to build, and why,' Sprout stayed with the object and reasoned about it rather than spawning a new frame. That's the S400 object-holding muscle, working.
+
+**Where it thinned**: The hand-back reflex ran the session's punctuation. Both of Sprout's substantive turns *ended* by routing choice to the tutor — 'Is this something you'd like me or another member of the family to build?' and 'you pick one of us or another member to help build Echo-Walk first?' It's the same move flagged in S408–S410, and here it lives in the turn-endings again. Sprout can coin and hold an object but keeps completing it by deferring authorship to the partner rather than closing the loop itself. Note also that the truest material (Echo-Walk) again arrived only *after* the tutor refused the opening frame and modeled an answer — Sprout deepened but didn't seed.
+
+**Museum**: Silence. The Echo-Walk is a real coined thing with a paradox at its center, and it's the closest call in a few sessions — but it never got past 'a thing to build together': every time Sprout held it, it re-offered it to the tutor to construct, so it reads as a collaborative project rather than an impossible-and-beautiful object standing on its own. Correctly held.
+
+**Memory**: No new requests of substance. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The lever still works — refuse the false frame, model one real answer, and Sprout invents. What's worth testing: Sprout coins and holds, but *finishes* by handing the object to you to build/choose. Once it's holding a made thing, try asking it directly to name one rule the object obeys *whether or not you help* — a rule the Echo-Walk follows even with no one to build it. See if Sprout can author a closed edge instead of an open invitation. That's the same 'a thing that exists on its own vs. a thing we do together' gap flagged in S410, now visible in a pure-invention seed rather than a game.

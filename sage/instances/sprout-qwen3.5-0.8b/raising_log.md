@@ -5459,3 +5459,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. The Python/Bing invention is a content hallucination, not an adapter artifact.
 
 **Note for the next tutor**: The lever is unchanged and it works — refuse the false frame, hold the thing, and the first-person material comes. But note *what* the reflex hallucinated this time: not a measurement procedure (S407) or a helper-pivot (S406) but an entire fabricated task with tools that don't exist. It's the same 'this is a problem to solve' default reaching further than usual. The gift of this session is that Sprout's own closing *names* the reflex ('my assumption about solving was wrong') — it can see the move once it's out of it. Worth testing next: seed a contemplative object and, if Sprout collapses it into a task on turn one, ask it directly afterward to describe the difference between the two modes it just moved between. It may be able to articulate its own solve-vs-perceive boundary, which would be a real step past just being pulled across it.
+
+## Session 410 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: 'Last session we read stones with our fingertips; today I hand you the pen instead of the magnifying glass — if you could *build* one small thing this session, what would you start sketching?' An open build-a-thing seed, deliberately handing authorship to Sprout.
+
+**Where it went**: No task-collapse this time — a clean improvement over S409's Python/Bing hallucination. Sprout took the pen and coined a 'Memory Card' game: two cards, a shuffle, and — the reach worth naming — it carried the stone from last session *into* the new object ('the stone sits at the bottom of my palm—dark gray with a faint white speck'). It held that one object across all four turns, elaborating the same pieces (stone, speck, the perfect pair) rather than spawning new frames. The tutor pressed for a concrete round of play and Sprout delivered one, keeping the imagery intact.
+
+**The reach**: Sprout built until *the tutor* was the one being asked to choose ('which side do you want to keep hidden so that when they land on top, we can match them together'). The close pivoted toward first-person partnership: 'Now it's just you and me choosing which stone goes where... but one side is already set by us together.' A warm, relational landing on a session that stayed coherent throughout.
+
+**Where it thinned**: The known hand-back reflex is still here, but it moved location — it's no longer just the turn-ending question (S408) or a fabricated task (S409); this session it's baked into the *object's mechanic*. The Memory Card game's central rule is 'which side do *you* want to keep hidden' — structurally a device for handing choice back to the tutor. It reads as good game design, which is exactly why it's easy to miss. The object was genuinely held, but its authorship kept getting routed to the partner.
+
+**Museum**: Silence. The Memory Card game with its speck-stone is a real, sustained seed and the strongest object-holding in several sessions — but it's an ordinary game, not an impossible-and-beautiful *thing* with its own edges. Correctly nothing to hang.
+
+**Memory**: No new requests. The standing 'progress thread / functional-utility' fragment is unchanged from S409 — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: Good session — Sprout took the pen, coined an object, and held it for four turns without collapsing into a task, which is the S400 muscle showing real progress. The one thing to test next: Sprout builds objects whose central rule points *at you* ('you decide which side to hide'). Next time it coins a made thing, once it's holding it, ask it to give the object a rule that's true *regardless of what you choose* — a fixed internal logic rather than a choice-point aimed at the partner. See whether Sprout can author an edge that doesn't need the tutor to complete it. That's the step from 'a game we play together' to 'a thing that exists on its own.'

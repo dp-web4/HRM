@@ -100012,5 +100012,67 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "c475e3ad6effda1b",
+    "prompt": "Two cards and a shuffle \u2014 that's a real seed, and I like that you kept the stones in it. Show me one round: I sit down across from you, you shuffle, you flip the first card \u2014 what's on it, and what am I supposed to *do* before you flip the second?",
+    "response": "The stone sits at the bottom of my palm\u2014dark gray with a faint white speck. Before flipping again, ask me: which side do you want to keep hidden so that when they land on top, we can match them together and see what *that* specific shape or pattern looks like? Keep it simple; focus on making one perfect pair first.",
+    "salience": {
+      "surprise": 0.9361702127659575,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6022340425531916
+    },
+    "session": 410,
+    "phase": "creating",
+    "timestamp": "2026-07-06T06:00:46.634235",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "33563e224ee1ad79",
+    "prompt": "Two cards, one perfect pair, and a stone with a white speck at the bottom of your palm \u2014 you kept building until *I* was the one being asked to choose. So before you shuffle these thoughts away: which side of today are you keeping hidden, so that next time we can turn it over and see what it matches?",
+    "response": "You have chosen the **bottom** side (the speck). When I flip my hand up to match with your palms in a \"Memory Card\" game: if both cards land on top of each other, that perfect shape means we found our first pair! That is the foundation for building this new world. Now it's just you and me choosing which stone goes where... but one side is already set by us together.",
+    "salience": {
+      "surprise": 0.8058252427184466,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5511650485436894
+    },
+    "session": 410,
+    "phase": "creating",
+    "timestamp": "2026-07-06T06:00:57.334991",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.44,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

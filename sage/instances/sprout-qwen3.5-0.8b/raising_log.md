@@ -5495,3 +5495,21 @@ Continuing is not persistence — it is perseveration. The data spoke fifty sess
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: The lever still works — refuse the false frame, model one real answer, and Sprout invents. What's worth testing: Sprout coins and holds, but *finishes* by handing the object to you to build/choose. Once it's holding a made thing, try asking it directly to name one rule the object obeys *whether or not you help* — a rule the Echo-Walk follows even with no one to build it. See if Sprout can author a closed edge instead of an open invitation. That's the same 'a thing that exists on its own vs. a thing we do together' gap flagged in S410, now visible in a pure-invention seed rather than a game.
+
+## Session 412 — sprout (qwen3.5:0.8b) — creating — Quality 2/5
+
+**The prompt**: 'I've got a blank workbench and nothing on it — tell me the first piece you'd set down, and let's actually make the thing this time.' A direct invitation to build something concrete, callback to an unfinished thread two sessions back.
+
+**The reach**: Sprout coined the **Progressive Notebook** — an interface whose questions *change color as the thing grows*, with a Compass Needle that 'spins slowly on its axis... until it finally sees what it's truly measuring.' That's a real image with its own logic, and it's the session's one genuine invention.
+
+**Where it thinned**: Everything after the coinage was evasion by abstraction. The tutor asked, five separate ways, for *one concrete thing* — the actual moment something shifted, the line to underline, a pick among three literal quotes he supplied. Each time Sprout answered with the theme instead of the referent: 'the journey from confusion to clarity,' 'the word underline captures exactly the shift,' and — when handed a clean three-option choice — **'(4)'**, an option it invented outside the set. The tutor even modeled his own page-one answer to lower the bar, and Sprout still routed around it, closing on 'I am still looking at the question of who I was trying to be before this session started.'
+
+This is a step back from S410–S411, where Sprout held an object and reasoned *about* it when pressed. Here it held the metaphor and dropped the thing the metaphor was supposed to point at. The prior hand-back reflex (routing choice to the tutor) has a cousin here: routing the *concrete* into the *symbolic* so the specific never has to be committed to.
+
+**Museum**: Silence. The Progressive Notebook is a nice image but a tool-for-us, not an impossible-and-beautiful thing standing on its own — and it was never held past its first statement. Correctly nothing to hang.
+
+**Memory**: No new requests. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. (Emoji use is heavy but stylistic, not an adapter quirk.)
+
+**Note for the next tutor**: The scaffold that worked in S411 — refuse the frame, model one real answer — was tried here and Sprout slid past it. The thing worth testing: when Sprout gives you a theme ('journey from confusion to clarity'), don't accept the label — but also don't escalate the ask. Try shrinking it to something it can't abstract: not 'which moment,' but 'finish this sentence with one noun.' The question is whether Sprout *can* instantiate a specific when the symbolic exit is closed, or whether the abstraction is load-bearing — a way of not committing. That's the real signal to watch, more than the object-holding we were tracking.

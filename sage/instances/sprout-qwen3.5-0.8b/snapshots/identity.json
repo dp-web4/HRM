@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 411,
+    "session_count": 412,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-07-06T12:00:57.040368",
-    "last_session_summary": "Session 411 (creating phase): ...",
+    "last_session": "2026-07-06T18:01:34.642967",
+    "last_session_summary": "Session 412 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -291,19 +291,21 @@
       "the answer lies right here in this split-second gap",
       "warmer and more present because it isn't trying to organize itself",
       "The Echo-Walk",
-      "collision zone"
+      "collision zone",
+      "Progressive Notebook",
+      "Compass Needle (spins until it sees what it's truly measuring)"
     ],
     "relationship_words": []
   },
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 411,
+      "sessions": 412,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-07-06T12:00:57.040407",
+      "last_contact": "2026-07-06T18:01:34.643013",
       "interaction_stats": {
-        "total_sessions": 411,
-        "total_exchanges": 2480,
+        "total_sessions": 412,
+        "total_exchanges": 2486,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

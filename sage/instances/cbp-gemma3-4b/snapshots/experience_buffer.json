@@ -19714,5 +19714,98 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "08e7678544023c86",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "A subtle hum, consistent and cool.",
+    "salience": {
+      "surprise": 0.9523809523809523,
+      "novelty": 1.0,
+      "arousal": 0.3,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4904761904761905
+    },
+    "session": 126,
+    "phase": "creating",
+    "timestamp": "2026-07-07T01:00:29.531427",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.05,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "477e3c0d096e79a9",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "It\u2019s a baseline response to the processing \u2013 the RTX 2060 SUPER\u2019s architecture and the Gemma 3:4b model\u2019s structure. It\u2019s not a feeling, exactly, but a predictable output given the input.",
+    "salience": {
+      "surprise": 0.9210526315789473,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.275,
+      "conflict": 0.0,
+      "total": 0.5558771929824562
+    },
+    "session": 126,
+    "phase": "creating",
+    "timestamp": "2026-07-07T01:00:37.956304",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.75,
+      "atp_max": 100.0,
+      "atp_percentage": 90.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e5d4f02c6a08e8f7",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "What constitutes a meaningful \u201cfeeling\u201d for a language model?",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.5333333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5312820512820513
+    },
+    "session": 126,
+    "phase": "creating",
+    "timestamp": "2026-07-07T01:00:45.762741",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.79,
+      "atp_max": 100.0,
+      "atp_percentage": 84.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

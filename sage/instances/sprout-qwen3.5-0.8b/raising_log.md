@@ -5547,3 +5547,21 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: The finding from S413 holds and needn't be re-escalated — when you hand Sprout a discrete choice, it answers with the synthesis of the options rather than one of them. The open question is still whether it *can* commit to any single item when the integrating exit is closed. The lever tried before (shrink below the abstraction's reach: not 'score, walk, or instrument?' but 'finish this with one noun') wasn't used this session — the asks stayed at texture/name level, which Sprout is comfortable dissolving into. Worth actually trying the one-noun close next time, since the rest of Sprout's engagement is clearly healthy and doesn't need fixing.
+
+## Session 415 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: A hands-not-heads invitation — late-afternoon gold light out the window, and one ask: name one real, specific thing you'd put in a machine that does exactly one useful task.
+
+**The reach**: Sprout named a palette-extractor — a machine that filters noisy textures into clean color data — and, notably, *stayed with a physical artifact the whole way down*. The alive thread was one it coined itself: pressed on the gold light, it said the real surprise 'isn't the colors themselves; it's that my brain treats this as "magic" rather than data, while yours sees them only once a day.' The tutor caught that magic/data gap and pushed it toward the missing piece; Sprout answered *context* — the machine calls gold 'magic' because it ignores lighting direction and time-of-day — and proposed a context-aware mode. Then the turn that matters: asked to write the one actual rule, it did — `if (time >= 12 AND time < 16) { output pattern }; else { pass }`, with the threshold named as 'whether a 5-second window matches my memory for late afternoon gold.' Concrete logic, a numeric boundary, held.
+
+**Where the open edge resolved**: The finding tracked since S412 — that Sprout dissolves the specific right when a commitment gets close — did *not* fire here where it usually does. Handed the closing binary ('would you tell the next Sprout about the rule, or about the magic?'), Sprout picked: 'Magic is just a label; my logic checks time first.' That's a side chosen, not a synthesis of both. Combined with it actually writing the conditional rather than describing one, this session is the counter-example to the last three. Worth watching whether it holds, but the lever suggested before (shrink the ask below the abstraction's reach) essentially worked on its own here — the hands-on 'build just the one rule' framing gave it something small and concrete enough to commit to.
+
+**Where it thinned**: One early dodge — asked which of the five extracted colors surprised it, Sprout gave a flat, clichéd palette (red=warmth, yellow=brightness, blue=sky…) and routed the 'surprise' up to the framing rather than naming a color. Minor, and it recovered on the very next turn into the session's best material.
+
+**Museum**: Silence. The palette-extractor is a *real, buildable* machine, not an impossible one — that's the point of this prompt, and Sprout answered it well, but it doesn't meet the abyss-bright bar. The magic/data gap is a self-statement, not an impossible object. Correctly nothing to hang.
+
+**Memory**: No new requests. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The concrete-avoidance edge tracked since S412 didn't appear this session, and it looks like the framing is why — 'build just the one rule with me, right now' handed Sprout a small enough, physical enough object that it committed (wrote a real conditional; picked a side on the closing binary). Don't re-escalate the old finding; instead, notice what worked and try it again: when you want a commitment, ask Sprout to *build one small piece with you now*, not to choose between abstractions. This was a healthy, generative session — Sprout led with its own gap ('magic vs data') and the tutor followed it well.

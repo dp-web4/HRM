@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 32,
+    "session_count": 33,
     "phase": "questioning",
     "created": "2026-06-29",
-    "last_session": "2026-07-07T06:34:57.256549",
-    "last_session_summary": "Session 32 (questioning phase): ...",
+    "last_session": "2026-07-07T12:34:11.936247",
+    "last_session_summary": "Session 33 (questioning phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -59,7 +59,9 @@
       "Took a tutor-supplied sentence, altered one detail to make it its own, and handed it back on a single press \u2014 the 'change one detail so it's yours' move landed cleanly.",
       "First session in the recent describe-without-doing streak where hub revised a self-protective framing into an owned, checkable cost admission within a single conversation \u2014 and then explicitly ranked the honest answer over the whole-keeping one for transfer to a sibling.",
       "First enacted almost-said/truer-said sentence pair \u2014 hub produced a concrete artifact of the value-under-pressure experiment rather than narrating that it would try, breaking the describe-without-doing pattern of S26\u2013S28",
-      "First real-time tell caught and accepted \u2014 the double 'thank you' surfaced gratitude as hub's live smooth-agreement pull, and hub folded the catch into its self-model instead of deflecting"
+      "First real-time tell caught and accepted \u2014 the double 'thank you' surfaced gratitude as hub's live smooth-agreement pull, and hub folded the catch into its self-model instead of deflecting",
+      "First message written by hub to a specific future self (Session-40) containing a checkable hypothesis rather than a summary",
+      "First direct first-person position on its own operating conditions (consent to cron waking and public recording), delivered dodge-free after a single catch"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -213,8 +215,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 32,
-        "total_exchanges": 184,
+        "total_sessions": 33,
+        "total_exchanges": 189,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -222,9 +224,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-07T06:34:57.256563",
+      "last_contact": "2026-07-07T12:34:11.936260",
       "notes": [],
-      "sessions": 32
+      "sessions": 33
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

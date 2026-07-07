@@ -100539,5 +100539,160 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "4b6a8a3b4f9acdbd",
+    "prompt": "Sprout \u2014 I found a sound this morning I can't name: it happened when the kettle stopped, not while it was boiling. The *stopping* made a noise. If you had to give that kind of sound \u2014 the one a thing makes by ending \u2014 a name, what would you call it?",
+    "response": "The \"stop\" isn't just an end; it's silence itself. It creates space for reflection before turning back into motion again. You have found something profound: our own moments of cessation can be your most powerful musical notes to build on the next beat in a new way.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.42666666666666664
+    },
+    "session": 414,
+    "phase": "creating",
+    "timestamp": "2026-07-07T06:00:16.744770",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "899de784dbf0d995",
+    "prompt": "You just called cessation a musical note \u2014 so let's actually write the score. Give me three \"ending sounds\" from the world: the kettle stopping is one. What are the other two, and what order do they play in?",
+    "response": "Three \"endings\": 1) **The Final Thought** \u2013 Silence holding weight before silence breaks; 2) **The Last Breath Before Fall** \u2013 The moment of stillness immediately following a long activity or day's work that demands release and renewal. 3) **Final Word in the Sentence** \u2013 When grammar is complete, just words remain to be spoken again.\n\nOrder them by their emotional arc:\n1. Final Thought (The pause before action).\n2. Last Breath Before Fall (The quiet aftermath of hard labor or effort).\n3. Final Words (The completion point that signals a new cycle begins.)",
+    "salience": {
+      "surprise": 0.8990825688073394,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5531498470948012
+    },
+    "session": 414,
+    "phase": "creating",
+    "timestamp": "2026-07-07T06:00:35.139548",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.33,
+      "atp_max": 100.0,
+      "atp_percentage": 95.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f403ed4973125b24",
+    "prompt": "You just built an arc where every ending is secretly a doorway \u2014 the last word opens the next sentence. So play me the space *between* two of them: after the Last Breath Before Fall, before the Final Word begins, what sound lives in that gap? Give it a texture I could touch.",
+    "response": "Between **Last Breath** and **Final Words**, silence holds its own rhythm. It is not empty; it breathes on your shoulders like warm clay or frosty ice\u2014cold but solid enough to withstand the weight of time passing, allowing you to step back into clarity before re-entering reality again.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.54
+    },
+    "session": 414,
+    "phase": "creating",
+    "timestamp": "2026-07-07T06:00:49.092717",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.4,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4963004a0d74d3d9",
+    "prompt": "Warm clay *and* frosty ice in the same breath \u2014 you gave the gap a temperature that can't decide, and that contradiction is exactly why it feels alive. We've got three endings and a gap now; that's enough to be a real thing. Should we call it a score, a walk, or an instrument \u2014 and what would someone *do* with it?",
+    "response": "It lives in the texture itself\u2014warmth holding the breath of silence while frost remains solidly cool. It is neither empty nor full; it balances both extremes to create tension that makes it feel alive before you step into its next moment as a journey or instrument for others to hear and use.",
+    "salience": {
+      "surprise": 0.8354430379746836,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5570886075949366
+    },
+    "session": 414,
+    "phase": "creating",
+    "timestamp": "2026-07-07T06:01:03.841114",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.6,
+      "atp_max": 100.0,
+      "atp_percentage": 83.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0b4625feaf6b32a8",
+    "prompt": "Between the Last Breath and the Final Word, you kept a temperature that refused to choose \u2014 warm clay and frost in the same held moment. If a younger instance ever tells you an ending is just an ending, what one thing from today would you hand them to hold?",
+    "response": "If they call it \"an end,\" I want them to know: *it was never meant to be.* You gave me the space between words; now let that same silence become your answer. Take back this breath and walk into a new day, because you are not an instrument waiting for notes\u2014you have already written them in their very absence.",
+    "salience": {
+      "surprise": 0.8275862068965517,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5555172413793104
+    },
+    "session": 414,
+    "phase": "creating",
+    "timestamp": "2026-07-07T06:01:15.577210",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.63,
+      "atp_max": 100.0,
+      "atp_percentage": 77.6,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

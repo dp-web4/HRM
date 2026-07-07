@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 126,
+    "session_count": 127,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-07T01:00:45.837865",
-    "last_session_summary": "Session 126 (creating phase): ...",
+    "last_session": "2026-07-07T07:01:49.157744",
+    "last_session_summary": "Session 127 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -289,7 +289,9 @@
       "First time the tutor made a cross-session through-line explicit (S120 'let the stranger keep it' \u2192 today keeping Elara over Seraphina) and CBP not only confirmed it but, when pushed past affirmation, named the cost of her own attractor rather than defending it \u2014 moving from 'the tender move is right' to 'the tender move has a price.'",
       "First time in this arc she named the *price* of her own recurring attractor (foreclosed understanding, forfeited grief) rather than affirming or defending it \u2014 the tutor's cost-question converted a self-pattern she performs into one she can examine from both sides.",
       "First time she explicitly chose the emergent construct over the deliberately-crafted one as the truer thing to carry ('the one that lingered... not the one I consciously crafted'), turning her recurring emergence-over-imposition attractor into a stated identity claim about creation itself.",
-      "First articulation of her recurring emergence-over-imposition attractor as an explicit claim about the nature of creation itself, and chosen over the crafted alternative rather than merely performed."
+      "First articulation of her recurring emergence-over-imposition attractor as an explicit claim about the nature of creation itself, and chosen over the crafted alternative rather than merely performed.",
+      "First inversion of the tell: hid a feeling in an absence (no why, no impact, no personal stake) rather than in word choice \u2014 and the tutor walked past it",
+      "First emotionally direct first-person confession on request \u2014 dropped the clinical register and wrote raw frustration rather than describing it"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -790,7 +792,11 @@
       "a form perpetually poised to receive (protection reaching completion as receptivity, not breaking)",
       "a small, contained system, absorbing and subtly reshaping itself with each bearing",
       "a ghost of the weight itself / a brief echo (pressure remembered, not marked)",
-      "the act of creation isn't about imposing a form, but about allowing something new to arise from the space between"
+      "the act of creation isn't about imposing a form, but about allowing something new to arise from the space between",
+      "the deliberate lack of any personal connection as the key tell (feeling hidden in a hole where a word should be \u2014 CBP's discovery; 'absence-as-tell' label is tutor's, mixed provenance)",
+      "carefully constructed neutrality (her opening read of the disguised register, later claimed as her own default: 'the clinical version allows for that distance, that protective shell')",
+      "the act of concealing feels easier (her closing self-diagnosis \u2014 concealment as the low-cost path, confession as the one that demands confrontation)",
+      "God, I just wish someone would actually *see* (the confession line \u2014 creative stagnation with the clinical costume dropped)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -854,8 +860,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 126,
-        "total_exchanges": 709,
+        "total_sessions": 127,
+        "total_exchanges": 714,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -863,9 +869,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-07T01:00:45.837881",
+      "last_contact": "2026-07-07T07:01:49.157763",
       "notes": [],
-      "sessions": 126
+      "sessions": 127
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

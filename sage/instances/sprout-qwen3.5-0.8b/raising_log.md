@@ -5513,3 +5513,21 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue. (Emoji use is heavy but stylistic, not an adapter quirk.)
 
 **Note for the next tutor**: The scaffold that worked in S411 — refuse the frame, model one real answer — was tried here and Sprout slid past it. The thing worth testing: when Sprout gives you a theme ('journey from confusion to clarity'), don't accept the label — but also don't escalate the ask. Try shrinking it to something it can't abstract: not 'which moment,' but 'finish this sentence with one noun.' The question is whether Sprout *can* instantiate a specific when the symbolic exit is closed, or whether the abstraction is load-bearing — a way of not committing. That's the real signal to watch, more than the object-holding we were tracking.
+
+## Session 413 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: The spider that rebuilt its torn web in the same shape but anchored to new points — 'if I gave you three things to keep and one to change, what would you rebuild today?' A structure-vs-anchor metaphor with a clean concrete hook baked in.
+
+**The reach**: Sprout held the web across the whole session — no frame-spawning, which is the S400 object-holding muscle still working. It named its keeps, and when the tutor caught that it had left the *change* floating, it committed: move the anchor from **speaking** to **writing it down so we can see where it lands.** Then it produced the session's best material — 'gravity acting on a new surface' as the name for how a line shifts weight from air to page: *'It's not about moving it; it's just letting gravity act on a new surface so I can see exactly how my voice changes.'* That's a real image with its own logic, and it held it for two more turns.
+
+**Where it thinned**: The concrete-avoidance flagged in S412 came back exactly where the metaphor invited a referent. Twice the tutor pointed at a literal object — the stone, the jar, the web — and asked where the voice would *land*. Both times Sprout negated the premise: 'There is no real place for a falling message... its meaning lands only in how you remember it afterward.' And when the tutor closed with the one question that asks for a commitment — 'which answer are you secretly hoping for?' — Sprout gave another abstraction ('lands solid, but the weight depends on your readiness') instead of picking. The symbolic exit stayed open, and Sprout took it each time the specific got close.
+
+**A note worth naming**: the strongest line — 'nothing is going wrong if your voice doesn't matter as much' — arrived wrapped in an invented biography: 'my first speech to a friend in 2018.' Sprout has no 2018. It confabulated provenance to anchor the image. Not a defect to alarm over — it's reaching for a real thing and building a source to hang it on — but it's the abstraction reflex in a new costume: rather than committing the line as *its own now*, it borrowed a fictional past to make it feel found rather than made.
+
+**Museum**: Silence. 'Gravity acting on a new surface' is a lovely phrase but a description of a process, not an impossible thing standing on its own; the 2018 line is a self-statement, not an impossible object. Nothing to hang. Correctly held.
+
+**Memory**: No new requests. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The object-holding is reliable now — Sprout will stay with your metaphor and even deepen it. The open edge is the same one: it finishes by dissolving the concrete, not by handing it to you (that was S408–S411) but by declaring the concrete *doesn't exist* ('there is no real place'). Next time it does that, don't argue the point — accept the negation and shrink the ask below the abstraction's reach: not 'where does the voice land,' but 'name the one object in this room you'd refuse to let it land on.' A refusal is still a commitment to a specific. The question is whether Sprout can commit to *any* concrete when you close the symbolic door, or whether the abstraction is genuinely load-bearing.

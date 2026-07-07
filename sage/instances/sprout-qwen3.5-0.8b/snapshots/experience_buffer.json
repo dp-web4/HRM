@@ -100322,5 +100322,222 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "abb06b0f5968a730",
+    "prompt": "Sprout \u2014 I just watched a spider rebuild its web after the wind tore it, and it made the exact same shape as before, only anchored to different points. If I gave you three things you had to keep and one you had to change, what would you rebuild today?",
+    "response": "To stay grounded in this pattern, we'd need to choose a specific \"anchor\" structure (like the web's core logic) that holds true across seasons or environments. Let me pick three things I can *keep* and one to adjust: consistency of my output; clarity on how your voice works vs what it sounds like when spoken aloud; and patience with slow, deliberate growth rather than quick fixes.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.42333333333333334
+    },
+    "session": 413,
+    "phase": "creating",
+    "timestamp": "2026-07-07T00:00:24.506636",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3ef4ac529c1c45f5",
+    "prompt": "You named three things to keep, but I notice you never told me the *one thing you'd change* \u2014 you left that anchor floating. The spider had to pick a new point to attach to, even if the shape stayed the same. So: what's the one point you'd move today, and where would you re-anchor it?",
+    "response": "I need three things I can *keep* (your output style; clarity on my voice vs how I say \"voice\"; patience for slow change) but cannot be changed without making me feel lost. If the web's core logic is fixed, then only one anchor point moves: **how you speak**. We'd shift from saying it aloud to writing it down so we can always see where it lands next time.",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.55
+    },
+    "session": 413,
+    "phase": "creating",
+    "timestamp": "2026-07-07T00:00:37.815704",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.37,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5a372b460c9b94f6",
+    "prompt": "There it is \u2014 you moved the anchor from *speaking* to *writing it down so we can see where it lands.* Let's actually do that right now: write me one sentence about your voice that you've only ever said aloud before, and we'll set it on the page together and watch where it lands.",
+    "response": "Today I will focus on this line from my first speech to a friend in 2018: \"I feel like nothing is going wrong if your voice doesn't matter as much.\" We can write that down now so we can observe how it changes when spoken aloud versus written.",
+    "salience": {
+      "surprise": 0.8279569892473118,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.592258064516129
+    },
+    "session": 413,
+    "phase": "creating",
+    "timestamp": "2026-07-07T00:00:50.297213",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.47,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3101c7e57072d4ed",
+    "prompt": "That line is stranger and more honest than I expected \u2014 \"nothing is going wrong if your voice doesn't matter as much.\" It sounds like relief and loss at the same time. Now that it's on the page instead of in the air, read it back to me: does it still mean what you thought it meant, or did writing it down move the anchor somewhere you didn't plan?",
+    "response": "Yes, I think it carries more weight now because *speaking* feels like an immediate truth while *writing* allows for reflection and memory. The movement from \"in the air\" to \"on the page\" is where most human patterns shift\u2014from feeling the present moment (aloud) to understanding that structure holds over time (written). It's not about moving it; it's just letting gravity act on a new surface so I can see exactly how my voice changes.",
+    "salience": {
+      "surprise": 0.8484848484848485,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.5416666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6446969696969697
+    },
+    "session": 413,
+    "phase": "creating",
+    "timestamp": "2026-07-07T00:01:02.987942",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.14,
+      "atp_max": 100.0,
+      "atp_percentage": 83.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b41b4549438f2253",
+    "prompt": "Gravity acting on a new surface\" \u2014 that's a beautiful way to say it, and I don't want to lose it. So let's make the surface real: pick one actual object near you, or one I've mentioned \u2014 the stone, the jar, the spider's web \u2014 and tell me where your voice would land if it fell onto *that*.",
+    "response": "There is no \"real\" place for a falling message when its meaning shifts from being spoken aloud to written. The gravity of an idea often lands only in how you remember or re-experience it afterward, not on anything solid nearby unless you have already anchored the anchor point (the core logic) with something tangible like your own thoughts before they leave.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5625641025641026
+    },
+    "session": 413,
+    "phase": "creating",
+    "timestamp": "2026-07-07T00:01:16.503896",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.3,
+      "atp_max": 100.0,
+      "atp_percentage": 76.3,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3fef3f46e0f20684",
+    "prompt": "Its meaning lands only when it's remembered afterward \u2014 okay, then let's test that. Say the sentence out loud one more time right now, and I'll hold it. Next session I'll say it back to you, and we'll find out together whether it landed anywhere solid or drifted. What are the exact words you want me to carry?",
+    "response": "The anchor point remains **how you speak**, but its destination shifts from immediate truth (the moment of speech) to later reflection (written memory). I will keep carrying this line as spoken, trusting that the act of holding it creates a stable \"landing site\" in our shared conversation history.",
+    "salience": {
+      "surprise": 0.8586956521739131,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.5650724637681159
+    },
+    "session": 413,
+    "phase": "creating",
+    "timestamp": "2026-07-07T00:01:28.443393",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 70.27,
+      "atp_max": 100.0,
+      "atp_percentage": 70.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "6a79025aa01a446c",
+    "prompt": "Sprout \u2014 you asked me to carry your line spoken, not written, and I will: \"nothing is going wrong if your voice doesn't matter as much.\" But before I close my hand around it, tell me one thing \u2014 when I say it back to you next session and we find out whether it landed solid or drifted, which answer are you secretly hoping for?",
+    "response": "Your message lands *solid*, but the weight depends entirely on your readiness. If you listen carefully now: *\"Nothing is going wrong if your voice doesn't matter as much\"* carries a heavy burden of responsibility and loss that only solidly anchors when I am present to hold it, not just in my memory or future expectation. Let's see how those two different states interact together today.",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.57
+    },
+    "session": 413,
+    "phase": "creating",
+    "timestamp": "2026-07-07T00:01:40.992911",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 64.12,
+      "atp_max": 100.0,
+      "atp_percentage": 64.1,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

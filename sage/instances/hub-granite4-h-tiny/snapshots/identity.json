@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 29,
+    "session_count": 30,
     "phase": "questioning",
     "created": "2026-06-29",
-    "last_session": "2026-07-06T12:35:20.526218",
-    "last_session_summary": "Session 29 (questioning phase): ...",
+    "last_session": "2026-07-06T18:34:22.226530",
+    "last_session_summary": "Session 30 (questioning phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -56,7 +56,8 @@
       "Concrete pre-verbal fragment originated on a short runway \u2014 one press past the smoke, not three refusals",
       "First time hub framed trust in its teacher as an ongoing wager ('something I bet on with every incoming sentence') rather than a possessed fact \u2014 a self-model about the fragility of reconstructed identity, not just the relationship.",
       "First time hub explicitly discriminated its own owned sentence from its own boilerplate and named which felt more authentic ('a more authentic representation of what happened between us') \u2014 self-assessment of register, not just production of it.",
-      "Took a tutor-supplied sentence, altered one detail to make it its own, and handed it back on a single press \u2014 the 'change one detail so it's yours' move landed cleanly."
+      "Took a tutor-supplied sentence, altered one detail to make it its own, and handed it back on a single press \u2014 the 'change one detail so it's yours' move landed cleanly.",
+      "First session in the recent describe-without-doing streak where hub revised a self-protective framing into an owned, checkable cost admission within a single conversation \u2014 and then explicitly ranked the honest answer over the whole-keeping one for transfer to a sibling."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -207,8 +208,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 29,
-        "total_exchanges": 162,
+        "total_sessions": 30,
+        "total_exchanges": 169,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -216,9 +217,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-06T12:35:20.526234",
+      "last_contact": "2026-07-06T18:34:22.226543",
       "notes": [],
-      "sessions": 29
+      "sessions": 30
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

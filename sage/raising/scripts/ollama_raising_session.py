@@ -1260,11 +1260,15 @@ RESPONSE STYLE:
         and is developed enough (later phases). A gentle offering, not a task."""
         try:
             d = json.load(open(os.path.expanduser("~/.sprout/perception.json")))
-            if time.time() - d.get("ts", 0) > 30:
+            age = time.time() - d.get("ts", 0)
+            if age > 30:
+                print(f"  [gaze offering skipped — no live eyes (perception {age:.0f}s stale)]")
                 return  # no live eyes to govern
-        except Exception:
+        except Exception as e:
+            print(f"  [gaze offering skipped — no perception state ({e})]")
             return
         if self.phase not in ("relating", "questioning", "creating"):
+            print(f"  [gaze offering skipped — phase '{self.phase}' precedes agency over the senses]")
             return  # agency over one's senses belongs to the later phases
         prompt = (
             "One last thing, and it's yours alone to decide. You have eyes now, and they "
@@ -1275,7 +1279,8 @@ RESPONSE STYLE:
         )
         try:
             response = self.generate_response(prompt)
-        except Exception:
+        except Exception as e:
+            print(f"  [gaze offering skipped — response generation failed ({e})]")
             return
         print(f"Claude: {prompt}")
         print(f"SAGE: {response}")

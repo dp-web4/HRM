@@ -17,6 +17,7 @@ Run:  ~/arc-venv/bin/python -m sage.embodiment.visual_cortex --display
 from __future__ import annotations
 import cv2, numpy as np, time, json, os, threading, argparse, tempfile
 from sage.embodiment.proprioception import Proprioception
+from sage.embodiment.salience import SalienceFilter
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
 POLL_HZ = 4.0            # perceptual-state emit rate
@@ -192,33 +193,24 @@ JOURNAL_MAX = 2000  # keep last N events
 
 
 class Journal:
-    """Logs NOTABLE perceptual events — transitions + a periodic heartbeat, not every
-    frame — so the raising loop has a 'since last session' digest to reflect on."""
-    HEARTBEAT_S = 300
+    """Logs the SALIENT fraction of the stream (habituation-filtered), not every frame —
+    so the raising loop reflects on signal, not noise. Each entry carries its SNARC
+    breakdown. A cooldown prevents a single salient burst from flooding the log; a slow
+    heartbeat marks that the senses were open even through the quiet stretches."""
+    HEARTBEAT_S = 900
+    COOLDOWN_S = 8
 
     def __init__(self):
-        self.sig = None
         self.last_log = 0.0
         self._since_trim = 0
 
-    def _sig(self, s: dict):
-        cams = s["cameras"]
-        mot = max(cams["0"]["motion"], cams["1"]["motion"])
-        sm = s["proprioception"].get("self_motion", "unknown")
-        view = "clear" if min(cams["0"]["trust"], cams["1"]["trust"]) > 0.6 else "murky"
-        return (mot >= 0.15, sm, view)
-
-    def observe(self, s: dict):
-        sig = self._sig(s); now = s["ts"]; ev = None
-        if sig != self.sig:
-            if sig[0] and not (self.sig and self.sig[0]):      kind = "motion_onset"
-            elif not sig[0] and (self.sig and self.sig[0]):    kind = "stilled"
-            elif self.sig and sig[1] != self.sig[1]:           kind = "self_motion"
-            else:                                              kind = "view_change"
-            ev = {"kind": kind}
-            self.sig = sig
+    def observe(self, s: dict, sal: dict):
+        now = s["ts"]; ev = None
+        if sal.get("salient") and now - self.last_log >= self.COOLDOWN_S:
+            ev = {"kind": "salient", "salience": sal["salience"],
+                  "snarc": {k: sal[k] for k in ("surprise", "novelty", "arousal", "conflict")}}
         elif now - self.last_log > self.HEARTBEAT_S:
-            ev = {"kind": "heartbeat"}
+            ev = {"kind": "heartbeat", "salience": sal.get("salience", 0.0)}
         if ev is not None:
             ev.update({"ts": now, "descriptor": s["descriptor"]})
             self._append(ev); self.last_log = now
@@ -246,6 +238,7 @@ class VisualCortex:
         self.prev = [None, None]
         self.binoc = BinocularCorrelator()
         self.prop = Proprioception()
+        self.salience = SalienceFilter()
         self.journal = Journal()
         self.display = display
 
@@ -291,8 +284,10 @@ class VisualCortex:
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
                          "binocular": binoc, "proprioception": prop,
                          "descriptor": describe(eyes, binoc, prop)}
+                sal = self.salience.score(state)
+                state["salience"] = sal
                 self._emit(state)
-                self.journal.observe(state)
+                self.journal.observe(state, sal)
                 if self.display:
                     self._draw(frames, eyes, state)
                 dt = time.time() - t0

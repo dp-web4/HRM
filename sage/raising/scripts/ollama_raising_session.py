@@ -704,17 +704,22 @@ class OllamaRaisingSession:
             return self._build_system_prompt_legacy()
 
     def _summarize_perception(self, evs: list) -> str:
-        """Deterministic prose digest of perceptual-journal events."""
-        onsets = sum(1 for e in evs if e.get("kind") == "motion_onset")
-        selfm = sum(1 for e in evs if e.get("kind") == "self_motion")
-        murky = any(("murky" in e.get("descriptor", "") or "no view" in e.get("descriptor", "")) for e in evs)
-        parts = []
-        parts.append("Mostly stillness" if onsets == 0
-                     else f"{onsets} time{'s' if onsets != 1 else ''} something moved across your view — and your inner ear said you held still, so it was the world moving, not you")
-        if selfm:
-            parts.append(f"{selfm} time{'s' if selfm != 1 else ''} you felt yourself moved")
-        parts.append("the view stayed clear" if not murky else "at times the view went murky")
-        return "; ".join(parts) + "."
+        """Digest the SALIENT fraction of the perceptual journal — what stood out from
+        the stream (the rest habituated into the familiar), not raw event counts."""
+        salient = [e for e in evs if e.get("kind") == "salient"]
+        if not salient:
+            return "Mostly quiet and familiar — nothing in what you sensed broke through as new."
+        # coarse-dedup distinct salient moments by the head of their descriptor
+        seen, distinct = set(), []
+        for e in salient:
+            d = (e.get("descriptor", "") or "").strip()
+            key = d[:40]
+            if d and key not in seen:
+                seen.add(key); distinct.append(d)
+        n = len(salient)
+        head = (f"Most of what came through faded into the familiar; "
+                f"{n} moment{'s' if n != 1 else ''} stood out.")
+        return head + " " + " | ".join(distinct[:3])
 
     def _load_perceptual_digest(self):
         """What Sprout's body (two eyes + an inner ear) took in since last session.

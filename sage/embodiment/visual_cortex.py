@@ -16,6 +16,7 @@ Run:  ~/arc-venv/bin/python -m sage.embodiment.visual_cortex --display
 """
 from __future__ import annotations
 import cv2, numpy as np, time, json, os, threading, argparse, tempfile
+from sage.embodiment.proprioception import Proprioception
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
 POLL_HZ = 4.0            # perceptual-state emit rate
@@ -152,8 +153,9 @@ def _dir_word(cx: float, cy: float) -> str:
     return (f"{v} {h}").strip() if h != "center" or v else "center"
 
 
-def describe(eyes: list[dict], binoc: dict) -> str:
-    """Deterministic symbolic scene descriptor from the two eyes + their correlation."""
+def describe(eyes: list[dict], binoc: dict, prop: dict) -> str:
+    """Deterministic symbolic scene descriptor from the two eyes, their correlation,
+    and proprioception (reafference: is the motion the world's, or my own?)."""
     mot = max(e["motion"] for e in eyes)
     trust = min(e["trust"] for e in eyes)
     if mot < 0.15:
@@ -171,8 +173,18 @@ def describe(eyes: list[dict], binoc: dict) -> str:
             motion_clause = f"{level} motion to the {dirw}, both eyes (uncorrelated)"
         else:
             motion_clause = f"{level} motion to the {dirw} (one eye only)"
+    # reafference: attribute the motion to me or to the world
+    sm = prop.get("self_motion", "unknown")
+    if mot >= 0.15 and sm == "still":
+        self_clause = "; I'm still, so this is the world moving"
+    elif mot >= 0.15 and sm in ("moving", "rotating"):
+        self_clause = f"; but I'm {sm}, so some of it is my own motion"
+    elif sm in ("moving", "rotating"):
+        self_clause = f"; I'm {sm}"
+    else:
+        self_clause = ""
     view = "clear view" if trust > 0.6 else "murky view" if trust > 0.3 else "almost no view (dark or blurred)"
-    return f"{motion_clause}; {view}"
+    return f"{motion_clause}{self_clause}; {view}"
 
 
 class VisualCortex:
@@ -181,6 +193,7 @@ class VisualCortex:
         self.focus = [GravityFocus(), GravityFocus()]
         self.prev = [None, None]
         self.binoc = BinocularCorrelator()
+        self.prop = Proprioception()
         self.display = display
 
     def start(self):
@@ -188,6 +201,7 @@ class VisualCortex:
             if not c.ok:
                 raise RuntimeError(f"camera {c.sid} failed to open")
             c.start()
+        self.prop.start()  # inner ear (fails open if no IMU)
         time.sleep(1.0)  # warm up (auto-exposure)
 
     def _perceive_one(self, i: int, frame) -> dict:
@@ -219,10 +233,11 @@ class VisualCortex:
                 perceived = [self._perceive_one(i, frames[i]) for i in range(2)]
                 eyes = [p[0] for p in perceived]; grays = [p[1] for p in perceived]
                 binoc = self.binoc.correlate(grays[0], grays[1], eyes[0]["attention"])
+                prop = self.prop.state()
                 state = {"ts": round(time.time(), 2), "cameras": {str(i): eyes[i] for i in range(2)},
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
-                         "binocular": binoc,
-                         "descriptor": describe(eyes, binoc)}
+                         "binocular": binoc, "proprioception": prop,
+                         "descriptor": describe(eyes, binoc, prop)}
                 self._emit(state)
                 if self.display:
                     self._draw(frames, eyes, state)
@@ -234,6 +249,7 @@ class VisualCortex:
         finally:
             for c in self.cams:
                 c.stop()
+            self.prop.stop()
             if self.display:
                 cv2.destroyAllWindows()
 

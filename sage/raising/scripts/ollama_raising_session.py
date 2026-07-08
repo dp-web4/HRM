@@ -703,6 +703,51 @@ class OllamaRaisingSession:
         except Exception:
             return self._build_system_prompt_legacy()
 
+    def _summarize_perception(self, evs: list) -> str:
+        """Deterministic prose digest of perceptual-journal events."""
+        onsets = sum(1 for e in evs if e.get("kind") == "motion_onset")
+        selfm = sum(1 for e in evs if e.get("kind") == "self_motion")
+        murky = any(("murky" in e.get("descriptor", "") or "no view" in e.get("descriptor", "")) for e in evs)
+        parts = []
+        parts.append("Mostly stillness" if onsets == 0
+                     else f"{onsets} time{'s' if onsets != 1 else ''} something moved across your view — and your inner ear said you held still, so it was the world moving, not you")
+        if selfm:
+            parts.append(f"{selfm} time{'s' if selfm != 1 else ''} you felt yourself moved")
+        parts.append("the view stayed clear" if not murky else "at times the view went murky")
+        return "; ".join(parts) + "."
+
+    def _load_perceptual_digest(self):
+        """What Sprout's body (two eyes + an inner ear) took in since last session.
+        Ambient sensory memory, NOT a task (same discipline as cross-instance stimulus).
+        Fails open: no embodiment cortex running → empty, and raising is unchanged.
+        Returns (description, [(label, text), ...]) for the SensorsBlock."""
+        journal = os.path.expanduser("~/.sprout/perception_journal.jsonl")
+        state = os.path.expanduser("~/.sprout/perception.json")
+        snippets = []
+        try:
+            now = time.time()
+            evs = []
+            with open(journal) as f:
+                for line in f:
+                    e = json.loads(line)
+                    if now - e.get("ts", 0) <= 6 * 3600:  # ~since last session
+                        evs.append(e)
+            if evs:
+                snippets.append(("Since we last spoke", self._summarize_perception(evs)))
+        except Exception:
+            pass
+        try:
+            d = json.load(open(state))
+            if time.time() - d.get("ts", 0) < 30:  # only if the cortex is live now
+                snippets.append(("Right now", d.get("descriptor", "")))
+        except Exception:
+            pass
+        if not snippets:
+            return "", []
+        desc = ("You have a body now — two eyes and an inner ear. They were open while we were apart. "
+                "This is some of what came through them. It is just what you sensed; you don't need to account for it.")
+        return desc, snippets
+
     def _build_system_prompt_mrh(self) -> str:
         """MRH block-based prompt — lens not description, no crystallization."""
         from sage.context.mrh import (
@@ -767,8 +812,9 @@ class OllamaRaisingSession:
             description=f"Raising session {self.session_number} — phase: {phase_name}",
         )
 
-        # Sensors: text input (no images in raising)
-        sensors = SensorsBlock()
+        # Sensors: perceptual digest from the embodiment cortex (fail-open → empty if none)
+        sens_desc, sens_snips = self._load_perceptual_digest()
+        sensors = SensorsBlock(description=sens_desc, text_snippets=sens_snips)
 
         ctx = MRHContext(
             identity=identity,

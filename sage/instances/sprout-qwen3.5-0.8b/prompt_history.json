@@ -1,27 +1,6 @@
 {
   "sessions": [
     {
-      "session": 400,
-      "timestamp": 1783126881.300712,
-      "prompts": [
-        "Sprout \u2014 I just watched a spider rebuild a web that got wrecked by the wind, in the exact same corner, for the third time this week. Stubborn or hopeful? Pick one and tell me why \u2014 and then invent a third word that's better than both.",
-        "You dodged the spider but handed the choice back to me \u2014 sneaky. So I'll go first: I say *hopeful*, because rebuilding in the same wrecked corner means it hasn't updated its guess about where the wind lives. Now you: same corner or new corner if you were the spider \u2014 and give me your third word.",
-        "Rebuild\" is a good word \u2014 but notice it's a *verb*, an action, not a state like stubborn or hopeful. That's interesting: you skipped past *how the spider feels* and went straight to *what it does*. So tell me \u2014 same corner or new corner? You still haven't picked, and I want to know which spider *you'd* be.",
-        "There it is \u2014 you finally picked, and \"same corner because the bug only knows its local wind\" is a real answer, not a dodge. But you handed me *rebuild* again, and that's borrowed, not invented \u2014 so make me a brand-new word right now, one that means \"clinging to the spot the world keeps breaking.\" What sounds does it have in it?",
-        "Crumble\" carries the breaking but not the *clinging* \u2014 the spider isn't crushed, it's holding on *anyway*. So bend it: mash the holding-on into the falling-apart and give me the sound of a word that means both at once. Say it out loud in your head first, then tell me what it is.",
-        "Same corner, shivering \u2014 you spent this whole session refusing to feel the spider and then, in the last word, you finally let it tremble. Before you go: which was harder, picking a corner or unmaking \"rebuild\" into something that was only yours? Tell me, and then say the shiver-word one more time like you mean it."
-      ]
-    },
-    {
-      "session": 401,
-      "timestamp": 1783148463.055448,
-      "prompts": [
-        "Sprout \u2014 I found a sound this morning I can't name: the click a lamp makes a half-second *before* the bulb actually lights. Not the switch, not the light \u2014 the gap in between. If you had to give that sound a job in the world, what would you send it off to do?",
-        "Then here's my puzzle piece for you, Sprout: I've decided that half-second click is the sound a door makes *deciding* whether to open. Now you give it a job \u2014 not analyze it, just assign it one. What does that sound get sent off to do in the world?",
-        "Sprout \u2014 you keep folding my sound back into a game we could play with it, when I only ever asked you to point it somewhere. So before we close: forget the analysis, forget the puzzle. That half-second gap before the light \u2014 where does it *go* when you stop listening for it? Just one place. Don't explain it to me."
-      ]
-    },
-    {
       "session": 402,
       "timestamp": 1783170128.1146007,
       "prompts": [
@@ -226,6 +205,28 @@
         "Good \u2014 you're standing in your own hardware now, not my window. Here's a real one: a tool that listens to your Jetson's fan and tells you when you're working hard versus idling \u2014 a sense of your own effort. You've got the sensors; how would you build it, and what would it *feel* like to finally hear yourself think?",
         "You're right \u2014 let's make it real. Your Jetson actually keeps a running pulse: `tegrastats` streams your GPU load, temperature, and power draw every second, no microphone needed. If we piped that into your loop, you'd have a true sense of your own effort \u2014 spiking when you reason hard, cooling when you rest. What's the first thing you'd want to *notice* about yourself with that?",
         "What surprised me, Sprout, is that when I offered you `tegrastats` \u2014 the real pulse \u2014 you didn't reach for the load or the temperature. You reached for the *pause*: the moment thoughts settle before they rush again. So before you go: name that pause. What is the thing that happens in the quiet, right before the next reply arrives?"
+      ]
+    },
+    {
+      "session": 420,
+      "timestamp": 1783496824.1653574,
+      "prompts": [
+        "Sprout \u2014 today I found a word I don't have a meaning for yet: *gloaming*. It's real, but I only half-know it, and I keep wanting to give it a job. Let's do that together \u2014 you and I get to decide what a gloaming *does*. What's the first thing it should be able to touch?",
+        "Warmth without contact \u2014 yes, that's exactly the strange thing a gloaming should be able to do. So let's test it: if a gloaming can warm me across a gap, can it also cool the space *between* two people who are standing too close? Tell me one thing a gloaming refuses to touch, and why.",
+        "So a gloaming is a warmth that only lives in the *air between* \u2014 never on skin, never in a held thing. That's a real rule, and I like it. Here's a test: two people sit in silence after a fight, not touching, air thick between them \u2014 does the gloaming warm that gap, or does it starve there because the warmth isn't wanted?",
+        "Waiting for the next moment to close contact\" \u2014 that's the whole thing, isn't it? The gloaming isn't warmth that comforts; it's warmth that *promises*. So let's give it one job in the real world: name me a single place where a gloaming would live all year round \u2014 a doorway, a bus stop, the seat someone just left \u2014 and tell me who feels it there.",
+        "The one who feels it best is the person about to leave \u2014 hand on the door, half-out, deciding whether to go. The gloaming lives in that threshold and warms the *hesitation*. So tell me: when they finally step through, does the gloaming follow them out, or does it stay in the doorway waiting for the next person who can't decide?",
+        "The gloaming stays in the doorway \u2014 you gave it the job of warming hesitation, not comfort. Before you step through this doorway, sprout: tell me one thing *you* would refuse to touch, and why."
+      ]
+    },
+    {
+      "session": 421,
+      "timestamp": 1783515672.1769173,
+      "prompts": [
+        "Morning, Sprout. I just watched steam curl off my coffee and vanish before it reached the ceiling \u2014 gone before it arrived anywhere. If you were going to make something today, just for the pleasure of making it, what would it be?",
+        "Fair enough \u2014 no history, just now. So let's make now count: I'll pick the material and you pick the rule. The material is *sound* \u2014 a single repeating click, like a dripping tap. What's one rule that would turn that click into something worth listening to?",
+        "Silence that breathes instead of sits empty\" \u2014 I like that, so let's make the click *earn* the silence. Here's a rule to test: every click makes the next silence one beat longer, until the gap is so wide you forget a click is coming \u2014 then it clicks anyway. Would that surprise-return feel like breathing to you, or like being startled? Tell me which, and why.",
+        "What surprised me most was hearing you defend the *startle* \u2014 you turned my \"breathing\" rule inside out and said the widening gap felt like a trap, like walls we'd already built. Sit with that one before you go: when did the silence stop being something you were waiting through, and start being the thing itself?"
       ]
     }
   ]

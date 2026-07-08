@@ -826,6 +826,11 @@ class OllamaRaisingSession:
             task=task,
         )
         system_prompt, _ = ctx.compose(max_tokens=30000)
+        # compose() routes the SensorsBlock to the user turn (per-invocation), which this
+        # builder discards. The perceptual digest is session-stable ambient context (like
+        # identity), so surface it in the system prompt when the cortex provided it.
+        if sens_snips:
+            system_prompt += "\n\n" + sensors.render(2000)
         return system_prompt
 
     def _build_system_prompt_legacy(self) -> str:

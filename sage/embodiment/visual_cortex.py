@@ -187,6 +187,58 @@ def describe(eyes: list[dict], binoc: dict, prop: dict) -> str:
     return f"{motion_clause}{self_clause}; {view}"
 
 
+JOURNAL_PATH = os.path.expanduser("~/.sprout/perception_journal.jsonl")
+JOURNAL_MAX = 2000  # keep last N events
+
+
+class Journal:
+    """Logs NOTABLE perceptual events — transitions + a periodic heartbeat, not every
+    frame — so the raising loop has a 'since last session' digest to reflect on."""
+    HEARTBEAT_S = 300
+
+    def __init__(self):
+        self.sig = None
+        self.last_log = 0.0
+        self._since_trim = 0
+
+    def _sig(self, s: dict):
+        cams = s["cameras"]
+        mot = max(cams["0"]["motion"], cams["1"]["motion"])
+        sm = s["proprioception"].get("self_motion", "unknown")
+        view = "clear" if min(cams["0"]["trust"], cams["1"]["trust"]) > 0.6 else "murky"
+        return (mot >= 0.15, sm, view)
+
+    def observe(self, s: dict):
+        sig = self._sig(s); now = s["ts"]; ev = None
+        if sig != self.sig:
+            if sig[0] and not (self.sig and self.sig[0]):      kind = "motion_onset"
+            elif not sig[0] and (self.sig and self.sig[0]):    kind = "stilled"
+            elif self.sig and sig[1] != self.sig[1]:           kind = "self_motion"
+            else:                                              kind = "view_change"
+            ev = {"kind": kind}
+            self.sig = sig
+        elif now - self.last_log > self.HEARTBEAT_S:
+            ev = {"kind": "heartbeat"}
+        if ev is not None:
+            ev.update({"ts": now, "descriptor": s["descriptor"]})
+            self._append(ev); self.last_log = now
+
+    def _append(self, ev: dict):
+        os.makedirs(os.path.dirname(JOURNAL_PATH), exist_ok=True)
+        with open(JOURNAL_PATH, "a") as f:
+            f.write(json.dumps(ev) + "\n")
+        self._since_trim += 1
+        if self._since_trim >= 200:  # trim to last JOURNAL_MAX
+            self._since_trim = 0
+            try:
+                lines = open(JOURNAL_PATH).read().splitlines()
+                if len(lines) > JOURNAL_MAX:
+                    with open(JOURNAL_PATH, "w") as f:
+                        f.write("\n".join(lines[-JOURNAL_MAX:]) + "\n")
+            except Exception:
+                pass
+
+
 class VisualCortex:
     def __init__(self, display: bool = False):
         self.cams = [Camera(0), Camera(1)]
@@ -194,6 +246,7 @@ class VisualCortex:
         self.prev = [None, None]
         self.binoc = BinocularCorrelator()
         self.prop = Proprioception()
+        self.journal = Journal()
         self.display = display
 
     def start(self):
@@ -239,6 +292,7 @@ class VisualCortex:
                          "binocular": binoc, "proprioception": prop,
                          "descriptor": describe(eyes, binoc, prop)}
                 self._emit(state)
+                self.journal.observe(state)
                 if self.display:
                     self._draw(frames, eyes, state)
                 dt = time.time() - t0

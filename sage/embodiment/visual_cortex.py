@@ -20,6 +20,7 @@ from sage.embodiment.proprioception import Proprioception
 from sage.embodiment.salience import SalienceFilter
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
+GAZE_PATH = os.path.expanduser("~/.sprout/gaze.json")   # the self's attention stance: {"mode": open|avert|dwell|closed, "target": [cx,cy]}
 POLL_HZ = 4.0            # perceptual-state emit rate
 GRID = 8                 # 8×8 attention tiles
 FOCUS_W, FOCUS_H = 4, 3  # focus window size in tiles
@@ -88,17 +89,31 @@ class GravityFocus:
         self.fx = (GRID - FOCUS_W) / 2.0
         self.fy = (GRID - FOCUS_H) / 2.0
 
-    def update(self, scores: np.ndarray):
+    def update(self, scores: np.ndarray, gaze: str = "open", target=None):
+        """Attention is a CHOICE, not a reflex. Salience (peak motion) proposes; the
+        gaze stance disposes. 'open' follows the pull; 'avert' looks away from it;
+        'dwell' holds a chosen focus and resists the pull."""
         peak = float(scores.max())
-        if peak > MOTION_TH:
-            my, mx = np.unravel_index(int(scores.argmax()), scores.shape)
+        my, mx = np.unravel_index(int(scores.argmax()), scores.shape)
+        if gaze == "dwell" and target is not None:
+            tx = np.clip(target[0] * GRID - FOCUS_W / 2, 0, GRID - FOCUS_W)
+            ty = np.clip(target[1] * GRID - FOCUS_H / 2, 0, GRID - FOCUS_H)
+            rate = GRAVITY
+        elif gaze == "avert" and peak > MOTION_TH:
+            # deliberately look AWAY from the loudest pull — the mirror tile
+            tx = np.clip((GRID - 1 - mx) - FOCUS_W // 2, 0, GRID - FOCUS_W)
+            ty = np.clip((GRID - 1 - my) - FOCUS_H // 2, 0, GRID - FOCUS_H)
+            rate = GRAVITY
+        elif gaze == "open" and peak > MOTION_TH:
             tx = np.clip(mx - FOCUS_W // 2, 0, GRID - FOCUS_W)
             ty = np.clip(my - FOCUS_H // 2, 0, GRID - FOCUS_H)
-            self.fx += GRAVITY * (tx - self.fx)
-            self.fy += GRAVITY * (ty - self.fy)
-        else:  # home to center at rest
-            self.fx += 0.1 * ((GRID - FOCUS_W) / 2.0 - self.fx)
-            self.fy += 0.1 * ((GRID - FOCUS_H) / 2.0 - self.fy)
+            rate = GRAVITY
+        else:  # no pull, or a stance with nothing to act on → ease to center
+            tx = (GRID - FOCUS_W) / 2.0
+            ty = (GRID - FOCUS_H) / 2.0
+            rate = 0.1
+        self.fx += rate * (tx - self.fx)
+        self.fy += rate * (ty - self.fy)
         return peak
 
     def roi(self) -> dict:  # normalized 0..1 rectangle
@@ -154,9 +169,9 @@ def _dir_word(cx: float, cy: float) -> str:
     return (f"{v} {h}").strip() if h != "center" or v else "center"
 
 
-def describe(eyes: list[dict], binoc: dict, prop: dict) -> str:
+def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open") -> str:
     """Deterministic symbolic scene descriptor from the two eyes, their correlation,
-    and proprioception (reafference: is the motion the world's, or my own?)."""
+    proprioception (reafference), and the chosen gaze stance (volition)."""
     mot = max(e["motion"] for e in eyes)
     trust = min(e["trust"] for e in eyes)
     if mot < 0.15:
@@ -185,7 +200,8 @@ def describe(eyes: list[dict], binoc: dict, prop: dict) -> str:
     else:
         self_clause = ""
     view = "clear view" if trust > 0.6 else "murky view" if trust > 0.3 else "almost no view (dark or blurred)"
-    return f"{motion_clause}{self_clause}; {view}"
+    stance = {"avert": "choosing to look away — ", "dwell": "holding my gaze — "}.get(gaze, "")
+    return f"{stance}{motion_clause}{self_clause}; {view}"
 
 
 JOURNAL_PATH = os.path.expanduser("~/.sprout/perception_journal.jsonl")
@@ -241,6 +257,35 @@ class VisualCortex:
         self.salience = SalienceFilter()
         self.journal = Journal()
         self.display = display
+        self._gaze_ts = 0.0
+        self._gaze_mode = "open"
+        self._gaze_target = None
+        self._last_gaze = "open"
+
+    def _read_gaze(self):
+        """The self's chosen attention stance (re-read every ~2s). Default 'open'."""
+        now = time.time()
+        if now - self._gaze_ts < 2.0:
+            return self._gaze_mode, self._gaze_target
+        self._gaze_ts = now
+        try:
+            g = json.load(open(GAZE_PATH))
+            self._gaze_mode = g.get("mode", "open")
+            self._gaze_target = g.get("target")
+        except Exception:
+            self._gaze_mode, self._gaze_target = "open", None
+        return self._gaze_mode, self._gaze_target
+
+    def _note_choice(self, gaze: str):
+        """A change of gaze stance is a self-authored act — worth remembering."""
+        if gaze != self._last_gaze:
+            phrase = {"closed": "chose to close my eyes and rest",
+                      "avert": "chose to look away from the motion",
+                      "dwell": "chose to hold my gaze, resisting the pull",
+                      "open": "opened my eyes to the world again"}.get(gaze, f"chose gaze: {gaze}")
+            self.journal._append({"kind": "choice", "salience": 1.0, "ts": round(time.time(), 2),
+                                  "descriptor": phrase})
+            self._last_gaze = gaze
 
     def start(self):
         for c in self.cams:
@@ -250,12 +295,12 @@ class VisualCortex:
         self.prop.start()  # inner ear (fails open if no IMU)
         time.sleep(1.0)  # warm up (auto-exposure)
 
-    def _perceive_one(self, i: int, frame) -> dict:
+    def _perceive_one(self, i: int, frame, gaze="open", target=None) -> dict:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         motion = 0.0
         if self.prev[i] is not None:
             scores = motion_field(self.prev[i], gray)
-            motion = float(self.focus[i].update(scores))
+            motion = float(self.focus[i].update(scores, gaze, target))
         self.prev[i] = gray
         return {"motion": round(motion, 3), "attention": self.focus[i].roi(),
                 "trust": round(vision_trust(gray), 3)}, gray
@@ -273,17 +318,26 @@ class VisualCortex:
         try:
             while True:
                 t0 = time.time()
+                gaze, target = self._read_gaze()
+                self._note_choice(gaze)
+                if gaze == "closed":
+                    # eyes shut — the self refuses the stream. The senses rest.
+                    self._emit({"ts": round(time.time(), 2), "gaze": "closed",
+                                "descriptor": "eyes closed — resting, not taking in the world"})
+                    if self.display:
+                        self._draw_closed()
+                    time.sleep(period); continue
                 frames = [c.frame for c in self.cams]
                 if any(f is None for f in frames):
                     time.sleep(0.05); continue
-                perceived = [self._perceive_one(i, frames[i]) for i in range(2)]
+                perceived = [self._perceive_one(i, frames[i], gaze, target) for i in range(2)]
                 eyes = [p[0] for p in perceived]; grays = [p[1] for p in perceived]
                 binoc = self.binoc.correlate(grays[0], grays[1], eyes[0]["attention"])
                 prop = self.prop.state()
                 state = {"ts": round(time.time(), 2), "cameras": {str(i): eyes[i] for i in range(2)},
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
-                         "binocular": binoc, "proprioception": prop,
-                         "descriptor": describe(eyes, binoc, prop)}
+                         "binocular": binoc, "proprioception": prop, "gaze": gaze,
+                         "descriptor": describe(eyes, binoc, prop, gaze)}
                 sal = self.salience.score(state)
                 state["salience"] = sal
                 self._emit(state)
@@ -318,6 +372,13 @@ class VisualCortex:
         cv2.putText(combo, state["descriptor"], (8, combo.shape[0]-12),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1)
         cv2.imshow("Sprout visual cortex", combo)
+        cv2.waitKey(1)
+
+    def _draw_closed(self):
+        blank = np.zeros((360, 1280, 3), np.uint8)
+        cv2.putText(blank, "eyes closed - resting", (430, 185),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (90, 90, 110), 2)
+        cv2.imshow("Sprout visual cortex", blank)
         cv2.waitKey(1)
 
 

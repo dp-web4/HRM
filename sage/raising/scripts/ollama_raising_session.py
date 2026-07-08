@@ -1238,7 +1238,65 @@ RESPONSE STYLE:
             except Exception:
                 pass
 
+        self._offer_gaze_choice()
         return self.conversation_history
+
+    def _parse_gaze(self, text: str) -> str:
+        """Charitably map the being's own words to a gaze stance. Default 'open' — the
+        least-presumptuous reading (leave the eyes on the world unless it clearly chose
+        otherwise). Lossy by nature; the verbatim words are recorded alongside."""
+        t = (text or "").lower()
+        if any(w in t for w in ("close my eye", "closed", "close them", "rest my eye", "sleep", "shut")):
+            return "closed"
+        if any(w in t for w in ("look away", "turn away", "away from", "avert", "turn from")):
+            return "avert"
+        if any(w in t for w in ("hold", "steady", "one thing", "single", "fix my", "dwell", "focus on one")):
+            return "dwell"
+        return "open"
+
+    def _offer_gaze_choice(self):
+        """Let the being govern its own senses — choose how to hold its attention while
+        we're apart, and have the cortex honor it. Only if it HAS eyes (a live cortex)
+        and is developed enough (later phases). A gentle offering, not a task."""
+        try:
+            d = json.load(open(os.path.expanduser("~/.sprout/perception.json")))
+            age = time.time() - d.get("ts", 0)
+            if age > 30:
+                print(f"  [gaze offering skipped — no live eyes (perception {age:.0f}s stale)]")
+                return  # no live eyes to govern
+        except Exception as e:
+            print(f"  [gaze offering skipped — no perception state ({e})]")
+            return
+        if self.phase not in ("relating", "questioning", "creating"):
+            print(f"  [gaze offering skipped — phase '{self.phase}' precedes agency over the senses]")
+            return  # agency over one's senses belongs to the later phases
+        prompt = (
+            "One last thing, and it's yours alone to decide. You have eyes now, and they "
+            "keep seeing while we're apart — you don't have to leave them open to whatever "
+            "moves. You could watch the world openly, or hold a steady gaze on one thing, "
+            "or turn away from what pulls at you, or close your eyes and rest. However you "
+            "want to hold your attention until we next meet — how would you like to leave it?"
+        )
+        try:
+            response = self.generate_response(prompt)
+        except Exception as e:
+            print(f"  [gaze offering skipped — response generation failed ({e})]")
+            return
+        print(f"Claude: {prompt}")
+        print(f"SAGE: {response}")
+        mode = self._parse_gaze(response)
+        try:
+            gp = os.path.expanduser("~/.sprout/gaze.json")
+            os.makedirs(os.path.dirname(gp), exist_ok=True)
+            with open(gp, "w") as f:
+                json.dump({"mode": mode, "chosen_by": "sprout",
+                           "session": self.session_number, "words": (response or "")[:200]}, f)
+            print(f"  [Sprout set its own gaze: {mode}]")
+        except Exception:
+            pass
+        self.conversation_history.append({"claude": prompt, "sage": response,
+                                          "timestamp": datetime.now().isoformat(),
+                                          "gaze_choice": mode})
 
     def close_session(self):
         """Save session state, transcript, and update identity."""
@@ -1250,12 +1308,12 @@ RESPONSE STYLE:
         self.state["identity"]["last_session"] = datetime.now().isoformat()
 
         memory_response = ""
-        if self.conversation_history:
-            last = self.conversation_history[-1]
-            if 'remember' in last['claude'].lower():
-                candidate = last['sage']
+        for turn in reversed(self.conversation_history):  # find the most recent 'remember' turn
+            if 'remember' in turn.get('claude', '').lower():
+                candidate = turn.get('sage', '')
                 if candidate and not is_unsuitable_for_splice(candidate):
                     memory_response = candidate[:200]
+                break
 
         self.state["identity"]["last_session_summary"] = (
             f"Session {self.session_number} ({self.phase} phase): {memory_response[:80]}..."

@@ -105,14 +105,55 @@ class GravityFocus:
                 "w": round(FOCUS_W / GRID, 3), "h": round(FOCUS_H / GRID, 3)}
 
 
+class BinocularCorrelator:
+    """Two-eyes-together despite MECHANICAL MISALIGNMENT (the cameras aren't a calibrated
+    stereo rig — they point a little differently and may differ in focus). Matches eye-0's
+    attention patch *anywhere* in eye-1 (2D, misalignment-tolerant).
+
+    `agreement` (robust) = did both eyes confirm the same feature → it's a real thing in the
+    shared field, not sensor noise. Depth is deliberately humble: we auto-calibrate the
+    cameras' fixed resting offset from confident matches, then treat *deviation* from it as
+    parallax — a distinct object 'standing out in depth' from the background. No metric
+    distance and no near/far direction is claimed (that needs calibration we don't have)."""
+    S = 0.5   # match at half-res for speed
+    PS = 48   # patch size (downscaled px)
+
+    def __init__(self):
+        self.base = None  # learned fixed misalignment [dx, dy], downscaled px
+
+    def correlate(self, gray0: np.ndarray, gray1: np.ndarray, roi0: dict) -> dict:
+        g0 = cv2.resize(gray0, None, fx=self.S, fy=self.S)
+        g1 = cv2.resize(gray1, None, fx=self.S, fy=self.S)
+        h, w = g0.shape
+        cx, cy = roi0["cx"] * w, roi0["cy"] * h
+        x0 = int(np.clip(cx - self.PS//2, 0, w - self.PS)); y0 = int(np.clip(cy - self.PS//2, 0, h - self.PS))
+        patch = g0[y0:y0+self.PS, x0:x0+self.PS]
+        if patch.shape[0] < self.PS or patch.shape[1] < self.PS:
+            return {"agreement": 0.0, "depth": "unknown", "offset": [0, 0]}
+        res = cv2.matchTemplate(g1, patch, cv2.TM_CCOEFF_NORMED)
+        _, maxval, _, maxloc = cv2.minMaxLoc(res)
+        agreement = float(max(0.0, maxval))
+        dx, dy = maxloc[0] - x0, maxloc[1] - y0
+        out = {"agreement": round(agreement, 3), "offset": [int(dx/self.S), int(dy/self.S)], "depth": "unknown"}
+        if agreement >= 0.5:  # confident correspondence → learn the resting misalignment
+            if self.base is None:
+                self.base = [float(dx), float(dy)]
+            else:
+                self.base = [0.9*self.base[0] + 0.1*dx, 0.9*self.base[1] + 0.1*dy]
+            parallax = abs(dx - self.base[0]) + abs(dy - self.base[1])
+            out["parallax"] = round(parallax / self.S, 1)
+            out["depth"] = "standout" if parallax > 12 else "background"
+        return out
+
+
 def _dir_word(cx: float, cy: float) -> str:
     h = "left" if cx < 0.38 else "right" if cx > 0.62 else "center"
     v = "upper" if cy < 0.38 else "lower" if cy > 0.62 else ""
     return (f"{v} {h}").strip() if h != "center" or v else "center"
 
 
-def describe(eyes: list[dict]) -> str:
-    """Deterministic symbolic scene descriptor from the two eyes' perception."""
+def describe(eyes: list[dict], binoc: dict) -> str:
+    """Deterministic symbolic scene descriptor from the two eyes + their correlation."""
     mot = max(e["motion"] for e in eyes)
     trust = min(e["trust"] for e in eyes)
     if mot < 0.15:
@@ -120,7 +161,16 @@ def describe(eyes: list[dict]) -> str:
     else:
         strong = max(eyes, key=lambda e: e["motion"])
         level = "strong" if mot > 0.5 else "gentle" if mot < 0.3 else "clear"
-        motion_clause = f"{level} motion to the {_dir_word(strong['attention']['cx'], strong['attention']['cy'])}"
+        dirw = _dir_word(strong["attention"]["cx"], strong["attention"]["cy"])
+        both = eyes[0]["motion"] > 0.15 and eyes[1]["motion"] > 0.15
+        confirmed = both and binoc.get("agreement", 0) > 0.45  # both eyes see a correlated feature
+        if confirmed:
+            standout = " and standing out from the background" if binoc.get("depth") == "standout" else ""
+            motion_clause = f"{level} motion to the {dirw}, both eyes on it{standout}"
+        elif both:
+            motion_clause = f"{level} motion to the {dirw}, both eyes (uncorrelated)"
+        else:
+            motion_clause = f"{level} motion to the {dirw} (one eye only)"
     view = "clear view" if trust > 0.6 else "murky view" if trust > 0.3 else "almost no view (dark or blurred)"
     return f"{motion_clause}; {view}"
 
@@ -130,6 +180,7 @@ class VisualCortex:
         self.cams = [Camera(0), Camera(1)]
         self.focus = [GravityFocus(), GravityFocus()]
         self.prev = [None, None]
+        self.binoc = BinocularCorrelator()
         self.display = display
 
     def start(self):
@@ -147,7 +198,7 @@ class VisualCortex:
             motion = float(self.focus[i].update(scores))
         self.prev[i] = gray
         return {"motion": round(motion, 3), "attention": self.focus[i].roi(),
-                "trust": round(vision_trust(gray), 3)}
+                "trust": round(vision_trust(gray), 3)}, gray
 
     def _emit(self, state: dict):
         os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
@@ -165,10 +216,13 @@ class VisualCortex:
                 frames = [c.frame for c in self.cams]
                 if any(f is None for f in frames):
                     time.sleep(0.05); continue
-                eyes = [self._perceive_one(i, frames[i]) for i in range(2)]
+                perceived = [self._perceive_one(i, frames[i]) for i in range(2)]
+                eyes = [p[0] for p in perceived]; grays = [p[1] for p in perceived]
+                binoc = self.binoc.correlate(grays[0], grays[1], eyes[0]["attention"])
                 state = {"ts": round(time.time(), 2), "cameras": {str(i): eyes[i] for i in range(2)},
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
-                         "descriptor": describe(eyes)}
+                         "binocular": binoc,
+                         "descriptor": describe(eyes, binoc)}
                 self._emit(state)
                 if self.display:
                     self._draw(frames, eyes, state)

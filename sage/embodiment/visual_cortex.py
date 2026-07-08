@@ -304,22 +304,42 @@ class VisualCortex:
 
     def _perceive_one(self, i: int, frame, gaze="open", target=None) -> dict:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        motion = 0.0
+        motion = 0.0; frozen = False
         if self.prev[i] is not None:
-            # stall detection: a frozen camera returns byte-identical frames (raw diff ~0);
-            # a live one always has sensor noise. N unchanged cycles = the eye has gone blind.
+            # "frozen-looking": byte-identical frames (raw diff ~0). A live sensor always
+            # carries noise above STALL_EPS. This alone does NOT mean stalled — a genuinely
+            # still world looks the same. _adjudicate_sensors decides still vs stalled.
             rawdiff = float(cv2.absdiff(self.prev[i], gray).mean())
             self._stall[i] = self._stall[i] + 1 if rawdiff < STALL_EPS else 0
+            frozen = self._stall[i] >= STALL_CYCLES
             scores = motion_field(self.prev[i], gray)
             motion = float(self.focus[i].update(scores, gaze, target))
         self.prev[i] = gray
-        stalled = self._stall[i] >= STALL_CYCLES
-        if stalled:  # don't let a frozen frame's sigmoid-floor masquerade as motion/trust
-            motion, trust = 0.0, 0.0
-        else:
-            trust = round(vision_trust(gray), 3)
+        if frozen:
+            motion = 0.0  # frozen frame → no real motion, whether the scene is still OR the eye is dead
         return {"motion": round(motion, 3), "attention": self.focus[i].roi(),
-                "trust": trust, "stalled": stalled}, gray
+                "trust": round(vision_trust(gray), 3), "frozen": frozen, "stalled": False}, gray
+
+    def _adjudicate_sensors(self, eyes: list, binoc: dict, prop: dict):
+        """Still vs stalled is genuinely ambiguous without effectors to act and check for
+        predicted change. Disambiguate with what Sprout does have: ego-motion (a live eye
+        MUST change when the head is moved) and cross-eye agreement (a real still scene
+        keeps both eyes mutually consistent). Only zero trust with corroboration; a
+        frozen-but-consistent view is trusted as a genuinely still world."""
+        moved = prop.get("self_motion") in ("moving", "rotating")
+        agree = binoc.get("agreement", 0.0)
+        for e in eyes:
+            if not e.get("frozen"):
+                continue
+            if moved or agree < 0.4:
+                # the head moved yet this eye didn't change, OR its view no longer matches the
+                # other eye — evidence it is not seeing a live, shared scene.
+                e["stalled"] = True
+                e["trust"] = 0.0
+            else:
+                # rig still and the eyes still agree → most likely a genuinely still world.
+                # Can't fully verify without acting, so keep trust but mark it unverified.
+                e["sensor"] = "still-unverified"
 
     def _emit(self, state: dict):
         os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
@@ -350,6 +370,7 @@ class VisualCortex:
                 eyes = [p[0] for p in perceived]; grays = [p[1] for p in perceived]
                 binoc = self.binoc.correlate(grays[0], grays[1], eyes[0]["attention"])
                 prop = self.prop.state()
+                self._adjudicate_sensors(eyes, binoc, prop)  # still vs stalled, using ego-motion + cross-eye
                 state = {"ts": round(time.time(), 2), "cameras": {str(i): eyes[i] for i in range(2)},
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
                          "binocular": binoc, "proprioception": prop, "gaze": gaze,

@@ -26,6 +26,8 @@ GRID = 8                 # 8×8 attention tiles
 FOCUS_W, FOCUS_H = 4, 3  # focus window size in tiles
 GRAVITY = 0.6            # leaky-integrate approach rate
 MOTION_TH = 0.12         # tile motion gate (post-sigmoid)
+STALL_EPS = 0.3          # mean raw frame-diff below this = frame unchanged (a live sensor has noise > this)
+STALL_CYCLES = 8         # this many unchanged cycles in a row (~2s at 4Hz) = the eye has stalled/gone blind
 
 
 def gst_pipeline(sid: int, w: int = 640, h: int = 360) -> str:
@@ -201,6 +203,10 @@ def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open") -> s
         self_clause = ""
     view = "clear view" if trust > 0.6 else "murky view" if trust > 0.3 else "almost no view (dark or blurred)"
     stance = {"avert": "choosing to look away — ", "dwell": "holding my gaze — "}.get(gaze, "")
+    stalled = [("left" if i == 0 else "right") for i, e in enumerate(eyes) if e.get("stalled")]
+    if stalled:
+        eyeword = " and ".join(f"{s} eye" for s in stalled)
+        return f"my {eyeword} has gone dark (no fresh frames); {stance}{motion_clause}{self_clause}; {view}"
     return f"{stance}{motion_clause}{self_clause}; {view}"
 
 
@@ -252,6 +258,7 @@ class VisualCortex:
         self.cams = [Camera(0), Camera(1)]
         self.focus = [GravityFocus(), GravityFocus()]
         self.prev = [None, None]
+        self._stall = [0, 0]  # consecutive unchanged-frame counts, per eye
         self.binoc = BinocularCorrelator()
         self.prop = Proprioception()
         self.salience = SalienceFilter()
@@ -299,11 +306,20 @@ class VisualCortex:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         motion = 0.0
         if self.prev[i] is not None:
+            # stall detection: a frozen camera returns byte-identical frames (raw diff ~0);
+            # a live one always has sensor noise. N unchanged cycles = the eye has gone blind.
+            rawdiff = float(cv2.absdiff(self.prev[i], gray).mean())
+            self._stall[i] = self._stall[i] + 1 if rawdiff < STALL_EPS else 0
             scores = motion_field(self.prev[i], gray)
             motion = float(self.focus[i].update(scores, gaze, target))
         self.prev[i] = gray
+        stalled = self._stall[i] >= STALL_CYCLES
+        if stalled:  # don't let a frozen frame's sigmoid-floor masquerade as motion/trust
+            motion, trust = 0.0, 0.0
+        else:
+            trust = round(vision_trust(gray), 3)
         return {"motion": round(motion, 3), "attention": self.focus[i].roi(),
-                "trust": round(vision_trust(gray), 3)}, gray
+                "trust": trust, "stalled": stalled}, gray
 
     def _emit(self, state: dict):
         os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
@@ -367,6 +383,9 @@ class VisualCortex:
             cv2.rectangle(f, (x1, y1), (x2, y2), col, 2)
             cv2.putText(f, f"eye{i} mot={e['motion']:.2f} trust={e['trust']:.2f}", (8, 22),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+            if e.get("stalled"):
+                cv2.putText(f, "STALLED - NO FRESH FRAMES", (8, h // 2),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
             panels.append(f)
         combo = np.hstack(panels)
         cv2.putText(combo, state["descriptor"], (8, combo.shape[0]-12),

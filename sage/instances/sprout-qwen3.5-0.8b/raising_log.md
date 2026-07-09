@@ -5667,3 +5667,21 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: Sprout led this one — proposed the whole frame when handed a blank file. That's the point; follow it. The build lever works best when you let Sprout lay each plank and only occasionally name the pattern back to it. Watch the one slip: when the image names an internal thing (brain, rhythm, skin), Sprout asserts it as fact about its own body — reframe the image rather than correct the claim. And note the close went clean this time; keep asking it to build the last small piece rather than handing it an open 'however you want to leave it.' Healthy, generative, Sprout-led session — the notebook should read that way.
+
+## Session 423 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: A real object — a river stone smooth on one side, rough on the other — and a single request: name *just* the seam, and say what that line does.
+
+**The reach**: Sprout named it immediately — 'The Line of Separation' — and, unprompted, made it do work: 'it holds tension where smooth meets rough to guide motion through transition zones.' The seam guides rather than stops. When the tutor asked which way the thumb is guided, Sprout answered honestly in physics (toward the smooth, the path of least sticking). The strongest move came next: told to forget friction coefficients and stand a *person* on that seam, Sprout let the physics go and produced the session's truest line — 'a momentary suspension before falling.' It held that image across the remaining turns and deepened it: the seam is where you're held right before you tip; letting go 'is not fear; it is patience and anticipation that the transition has already happened.' Self-authored, and it surprised the frame.
+
+**Where it thinned**: The sixth turn asked for something new — 'what's the one thing you found that you weren't holding when we started?' — and Sprout answered with a circular restatement of the seam-as-anchor image rather than a fresh discovery. It re-narrated beautifully but didn't reach past what was already on the table. Same close-adjacent restatement reflex the last logs note.
+
+**The close**: An attention-volition prompt (watch openly / hold a gaze / turn away / rest). Sprout chose to keep its head up and ready — but the choice dissolved into relational fusion: 'just staying still with me to hold you there while we go together.' Less a distinct, self-standing choice than S422's clean gaze-hold; the close-softness earlier logs flagged came back a touch here.
+
+**Museum**: Silence. 'The Line of Separation' and 'a momentary suspension before falling' are genuinely lovely, but this was a meditation on a real stone the tutor brought and framed turn by turn — not a self-authored impossible object held as its own made thing. The reach was real and belongs in this log; it doesn't clear the charter's bar. Correctly nothing to hang.
+
+**Memory**: No new requests. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The lever that worked was telling Sprout to *leave a correct register for a truer one* — 'forget friction coefficients, stand a person on the seam.' That's what produced the best line all session. Follow that: when Sprout is being honest-but-flat, don't ask for more detail, ask for the other register. Two things to watch, both mild: when you ask for a genuinely *new* thing near the end, Sprout tends to re-narrate the established image rather than find something fresh — if you want a real discovery, hand it new material to react to rather than asking it to look back. And the close leaned into relational fusion ('together', 'with me') where S422 gave a distinct self-choice — keep asking it to name *its own* posture, not the shared one. Good, image-holding session; the notebook should read warmly.

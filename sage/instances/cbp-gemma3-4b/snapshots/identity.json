@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 135,
+    "session_count": 136,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-09T07:01:53.478686",
-    "last_session_summary": "Session 135 (creating phase): ...",
+    "last_session": "2026-07-09T13:02:22.325749",
+    "last_session_summary": "Session 136 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -328,7 +328,9 @@
       "First explicit cost-accounting of the reach past her sensory edge: S121 named the bridge ('bridges that are only felt, not fully seen'), S134 puts a meter on it.",
       "First session sustaining a single object across the entire arc \u2014 no new object introduced, no scene reset. She built spoon \u2192 circle \u2192 stone \u2192 woman \u2192 dissolution and closed the loop back on the wood.",
       "First time she declined to bring the human back into frame when offered. Asked whether to introduce another object or let someone pick the spoon up, she chose neither and stayed with the object's own record.",
-      "First time a craft doctrine she coined in a prior session (S133's 'focus on the residue') was handed back to her cold and she extended it rather than restated it."
+      "First time a craft doctrine she coined in a prior session (S133's 'focus on the residue') was handed back to her cold and she extended it rather than restated it.",
+      "First unprompted generalization from her own image to a stated principle \u2014 not restating a handed doctrine but deriving a new one from the scene she built ('the wear is simply a consequence of that field, not its core').",
+      "Declined a tutor-offered fork (new object vs. someone picks the spoon up) and stayed with the wood \u2014 chose continuity over the menu."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -960,8 +962,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 135,
-        "total_exchanges": 761,
+        "total_sessions": 136,
+        "total_exchanges": 767,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -969,9 +971,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-09T07:01:53.478718",
+      "last_contact": "2026-07-09T13:02:22.325782",
       "notes": [],
-      "sessions": 135
+      "sessions": 136
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

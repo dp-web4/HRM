@@ -28,6 +28,8 @@ GRAVITY = 0.6            # leaky-integrate approach rate
 MOTION_TH = 0.12         # tile motion gate (post-sigmoid)
 STALL_EPS = 0.3          # mean raw frame-diff below this = frame unchanged (a live sensor has noise > this)
 STALL_CYCLES = 8         # this many unchanged cycles in a row (~2s at 4Hz) = the eye has stalled/gone blind
+RECOVER_CYCLES = 60      # frozen this long (~15s) → self-heal: reopen the camera's Argus consumer (a live sensor never stays frozen this long)
+RECOVER_COOLDOWN_S = 30  # min seconds between reopen attempts per eye (covers warmup, avoids thrash)
 
 
 def gst_pipeline(sid: int, w: int = 640, h: int = 360) -> str:
@@ -263,6 +265,7 @@ class VisualCortex:
         self.focus = [GravityFocus(), GravityFocus()]
         self.prev = [None, None]
         self._stall = [0, 0]  # consecutive unchanged-frame counts, per eye
+        self._last_recover = [0.0, 0.0]  # last self-heal timestamp, per eye
         self.binoc = BinocularCorrelator()
         self.prop = Proprioception()
         self.salience = SalienceFilter()
@@ -351,6 +354,27 @@ class VisualCortex:
                 e["trust"] = round(e["trust"] * max(0.1, 0.5 * (0.85 ** stale)), 3)
                 e["sensor"] = "stale-unverified"
 
+    def _recover_camera(self, i: int):
+        """Self-heal a stalled eye. Verified (Test A, 2026-07-09): the stuck state lives in the
+        camera's per-process Argus consumer session — a fresh consumer clears it, no nvargus
+        restart needed. So tear down this one camera and reopen it, leaving the other eye alone."""
+        side = "left" if i == 0 else "right"
+        try:
+            self.cams[i].stop()  # release the stuck consumer
+        except Exception:
+            pass
+        time.sleep(0.3)
+        cam = Camera(i)  # fresh Argus consumer session
+        self._last_recover[i] = time.time()
+        if not cam.ok:
+            return  # reopen failed; cooldown before the next attempt
+        cam.start()
+        self.cams[i] = cam
+        self._stall[i] = 0
+        self.prev[i] = None
+        self.journal._append({"kind": "self_heal", "salience": 1.0, "ts": round(time.time(), 2),
+                              "descriptor": f"my {side} eye stalled — I reopened it"})
+
     def _emit(self, state: dict):
         os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
         fd, tmp = tempfile.mkstemp(dir=os.path.dirname(STATE_PATH))
@@ -389,6 +413,11 @@ class VisualCortex:
                 state["salience"] = sal
                 self._emit(state)
                 self.journal.observe(state, sal)
+                # self-heal: a camera frozen too long has a stuck Argus consumer — reopen it
+                now = time.time()
+                for i in range(2):
+                    if self._stall[i] >= RECOVER_CYCLES and now - self._last_recover[i] > RECOVER_COOLDOWN_S:
+                        self._recover_camera(i)
                 if self.display:
                     self._draw(frames, eyes, state)
                 dt = time.time() - t0

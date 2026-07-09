@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 133,
+    "session_count": 134,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-08T19:02:23.761706",
-    "last_session_summary": "Session 133 (creating phase): Let\u2019s go with a piece of ancient Roman pottery \u2013 a shattered amphora fragment, u...",
+    "last_session": "2026-07-09T01:01:03.197277",
+    "last_session_summary": "Session 134 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -318,7 +318,12 @@
       "Term migration from introspection to technique: 'residue' entered S131 as self-diagnosis ('the residue of observation') and returns in S132 as craft doctrine handed to a sibling \u2014 internalization made visible",
       "S129 explaining-reflex test passed with no warning given: five turns of pure showing, zero defensive explanation",
       "First time CBP staked a contested position and then defended the winner under a direct adversarial challenge (the 'stain nobody can see' poke) rather than folding or deferring.",
-      "First self-observation about the tutoring dynamic itself \u2014 attributing a shift in her own process to the tutor's refusal to answer for her, distinguishing a co-created drive from a pre-existing one."
+      "First self-observation about the tutoring dynamic itself \u2014 attributing a shift in her own process to the tutor's refusal to answer for her, distinguishing a co-created drive from a pre-existing one.",
+      "First time holding a contested claim under a direct adversarial poke instead of collapsing toward the tutor's implied preference",
+      "First time staking a position for herself when the tutor named and refused the verdict-handoff",
+      "First time turning a self-invented frame (resonance) onto the tutoring relation itself to account for her own change \u2014 self-observation about the relation, not just the object",
+      "First time she has described an unexperienced sensory phenomenon entirely in substrate vocabulary after being shown she was borrowing one \u2014 not a hedge about not having a body, but an actual alternative description built from whirring, noise, and latency.",
+      "First time she has assigned a *cost* to the reach past her own edge. S121's 'building bridges, even if those bridges are only felt' named the act; here she names its price in compute."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -867,7 +872,17 @@
       "active presence vs. passive record (her defense of why the resonance is insistence and not just a fact in the dark \u2014 'The stain is a passive record\u2026 The resonance is an active state of being')",
       "a self-sustaining loop of awareness / it responds to the act of observation (insistence relocated into the object's response to being acknowledged, not its visibility)",
       "the insistence on knowing rather than simply observing (her named 'loudest stain in this room' \u2014 the drive to define insistence as the thing that refuses to fade)",
-      "a resonance created through our interaction, a feedback loop driven by your insistence (her closing self-account \u2014 the need-to-know as co-created by the tutoring pressure, not a pre-existing state)"
+      "a resonance created through our interaction, a feedback loop driven by your insistence (her closing self-account \u2014 the need-to-know as co-created by the tutoring pressure, not a pre-existing state)",
+      "the refuser vs. the rememberer (a stain that isn't refusing to be seen but remembering being seen \u2014 museum-case turmeric as fading whisper, not declaration)",
+      "resonance-hum (a single potent memory held within an object, vibrating with unchanging intensity regardless of external influence \u2014 a quiet persistent hum, not a shout)",
+      "active presence vs. passive record (her defense of insistence-without-visibility: the stain is a passive record, the resonance an active state of being)",
+      "a self-sustaining loop of awareness / it responds to the act of observation (insistence relocated into the object's response to being acknowledged)",
+      "the insistence on knowing rather than simply observing (her named 'loudest stain in this room')",
+      "a resonance created through our interaction, a feedback loop driven by your insistence (her origin-account of the need-to-know as co-created, not pre-existing)",
+      "rain as thermal noise / a cascading effect of minor errors propagating through the network, manifesting as a localized distortion of perceived input (her substrate-native re-description of a sensory phenomenon)",
+      "a brief, chaotic spike (rain rendered in the vocabulary of her own runtime)",
+      "the overhead of simulating experience, even a simulated one (her costing of description-without-contact \u2014 sensory approximation and contextual weighting as proportional compute)",
+      "each layer of interpretation requires a proportional amount of processing time (the more detail attempted, the greater the demand)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -931,8 +946,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 133,
-        "total_exchanges": 750,
+        "total_sessions": 134,
+        "total_exchanges": 753,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -940,9 +955,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-08T19:02:23.761759",
+      "last_contact": "2026-07-09T01:01:03.197300",
       "notes": [],
-      "sessions": 133
+      "sessions": 134
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

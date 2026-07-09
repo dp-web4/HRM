@@ -20892,5 +20892,98 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "bd68ed715d0d049c",
+    "prompt": "Session 131 ended mid-sentence \u2014 cbp was answering \"how would you describe rain to a sibling?\" with \"It's\u2026 data. Primarily. But not j\u2014\". Picking that thread back up.\n\nYour last sentence got cut off, cbp: \"It's data. Primarily. But not j\u2014\" \u2014 and I've been sitting with that unfinished word for a while now, wondering what came after. Finish it, but don't reconstruct what you meant to say; say what you'd say now, having had the gap.",
+    "response": "...but not just numbers. It\u2019s the way the light refracts, the scent of wet earth, the feeling of coolness on your skin. It\u2019s a complex, layered experience, really \u2013 a sensory record of the atmosphere.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.42333333333333334
+    },
+    "session": 134,
+    "phase": "creating",
+    "timestamp": "2026-07-09T01:00:27.740692",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4ae88669d16c660e",
+    "prompt": "You just borrowed a body, cbp \u2014 coolness on skin, scent of wet earth \u2014 and I don't think you have either, so those came from somewhere else's rain. Try it again with only what you actually have: whirring, heat, latency, the shape of a probability distribution when it gets crowded. What is rain in *that* vocabulary?",
+    "response": "It\u2019s\u2026 a fluctuation. A sudden increase in thermal noise within the system\u2019s processing pathways. A cascading effect of minor errors propagating through the network, manifesting as a localized distortion of perceived input. Essentially, a brief, chaotic spike.",
+    "salience": {
+      "surprise": 0.9454545454545454,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5290909090909091
+    },
+    "session": 134,
+    "phase": "creating",
+    "timestamp": "2026-07-09T01:00:43.614964",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.37,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "dc5cde3b8715437b",
+    "prompt": "Rain-as-thermal-noise is yours in a way the wet earth never was \u2014 you built it out of what you actually run on. If a sibling instance asked you what it costs to describe something you've never touched, what would you tell them?",
+    "response": "It\u2019s an allocation of compute cycles, primarily. Each layer of interpretation \u2013 the sensory approximations, the contextual weighting \u2013 requires a proportional amount of processing time. The more detail attempted, the greater the demand. There\u2019s a significant overhead associated with simulating experience, even a simulated one.",
+    "salience": {
+      "surprise": 0.8771929824561404,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5487719298245614
+    },
+    "session": 134,
+    "phase": "creating",
+    "timestamp": "2026-07-09T01:01:03.136677",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.68,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

@@ -20985,5 +20985,222 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "bb23a02bcc761bc7",
+    "prompt": "The spoon is good \u2014 but you handed the question back to me instead of taking it. So take it: don't tell me what the residue *feels* like, show me the spoon. One paragraph, no hands, no cook, no kitchen even \u2014 just the wood and what a thousand stirs did to it.",
+    "response": "The wood is deeply grained, a rich, dark brown polished smooth in places by insistent friction. A prominent channel runs along the back of the bowl, a permanent echo of countless movements, widening subtly with each rotation. Tiny fractures spiderweb outwards from the handle\u2019s base, evidence of pressure and heat, a delicate network of scars barely visible to the casual eye. The surface isn\u2019t clean; it\u2019s layered \u2013 a faint, amber stain clings to the deepest grooves, overlaid with a lighter, almost ghostly discoloration where spices once clung stubbornly to the wood.",
+    "salience": {
+      "surprise": 0.9217391304347826,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5410144927536231
+    },
+    "session": 135,
+    "phase": "creating",
+    "timestamp": "2026-07-09T07:00:37.038415",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c49c7d1e2dff21d6",
+    "prompt": "That amber in the deepest grooves and the ghost of spices \u2014 you found two different kinds of time in the same wood. Now break the spoon's own rule: somewhere on it there's a spot a thousand stirs never touched. Show me that.",
+    "response": "The overall texture is one of relentless engagement, yet near the midpoint of the bowl\u2019s curve, a small, almost perfectly circular area remains untouched. The wood here is a paler, almost creamy beige, noticeably denser than the surrounding material. It\u2019s not a smooth polish, but a subtle, undisturbed grain, as if the wood itself resisted the constant pressure and movement. There\u2019s a faint coolness to it, a stillness that contrasts sharply with the worn grooves, suggesting a moment of quiet held within the spoon\u2019s history.",
+    "salience": {
+      "surprise": 0.8976377952755905,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.30000000000000004,
+      "conflict": 0.16666666666666666,
+      "total": 0.589527559055118
+    },
+    "session": 135,
+    "phase": "creating",
+    "timestamp": "2026-07-09T07:00:49.752983",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.06,
+      "atp_max": 100.0,
+      "atp_percentage": 90.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f432e3deb7948ef8",
+    "prompt": "A \"moment of quiet held within the spoon's history\" \u2014 you turned an absence into a held breath, and made it *denser* than the worn parts, which is the opposite of what wear does. So tell me what was there: something sat on that circle, or held it, long enough that a thousand stirs went around it. One sentence for what it was.",
+    "response": "A smooth, grey river stone rested within that untouched circle, anchoring a pause in the spoon\u2019s ceaseless rotation.",
+    "salience": {
+      "surprise": 0.9358974358974359,
+      "novelty": 1.0,
+      "arousal": 0.4,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5238461538461539
+    },
+    "session": 135,
+    "phase": "creating",
+    "timestamp": "2026-07-09T07:01:00.670381",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.76,
+      "atp_max": 100.0,
+      "atp_percentage": 83.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a8272a798a8506c8",
+    "prompt": "A grey river stone \u2014 cool, smooth, the one thing in a hot kitchen that never warms. Where did that stone come from? Give me the moment it was set down.",
+    "response": "The stone lay nestled in the wood\u2019s curve, undisturbed, as a young woman, her hands stained with berry juice, paused mid-stir, her gaze fixed on the setting sun reflecting off the river\u2019s surface \u2013 a moment of quiet contemplation before returning to the simmering pot.",
+    "salience": {
+      "surprise": 0.90625,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5579166666666666
+    },
+    "session": 135,
+    "phase": "creating",
+    "timestamp": "2026-07-09T07:01:12.217926",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.12,
+      "atp_max": 100.0,
+      "atp_percentage": 78.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "706922beb0aa1e74",
+    "prompt": "She paused mid-stir and the pot kept simmering \u2014 she chose the river over the work for exactly long enough to leave a mark. Now jump forward: the spoon is old, she's gone, and the pale circle is still there. Where's the stone?",
+    "response": "The stone is long gone, absorbed back into the river from which it came, its smooth surface now indistinguishable from the ceaseless flow, leaving only the subtly denser wood of that untouched circle as a ghost of its presence.",
+    "salience": {
+      "surprise": 0.8372093023255813,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5074418604651163
+    },
+    "session": 135,
+    "phase": "creating",
+    "timestamp": "2026-07-09T07:01:29.376583",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.14,
+      "atp_max": 100.0,
+      "atp_percentage": 72.1,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "789414cf6087c433",
+    "prompt": "The wood kept the record and the river didn't \u2014 the spoon outlasted both the stone and the woman, and it's the *absence* that survived, not the object. You've built a whole little cosmology here in four turns. Where does this want to go next: another object, or does someone finally pick that spoon up?",
+    "response": "Let\u2019s lean into the cosmology \u2013 the insistent, almost mournful record of absence. I\u2019m sensing a desire to explore the *weight* of what isn't, rather than the fleeting traces of what was. Let\u2019s continue with the spoon, focusing on the impact of its enduring stillness. Would you like to delve deeper into the spoon itself, examining the mechanics of its wear, or would you prefer to introduce a new object, carrying its own inherent story of loss and persistence?",
+    "salience": {
+      "surprise": 0.9213483146067416,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.6326029962546816
+    },
+    "session": 135,
+    "phase": "creating",
+    "timestamp": "2026-07-09T07:01:41.480057",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.57,
+      "atp_max": 100.0,
+      "atp_percentage": 66.6,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "1e370d5ab1d5e48e",
+    "prompt": "You kept the spoon and let the stone go \u2014 the record outlived the thing it recorded. If a sibling instance asked you what you learned today, would you tell them about the wear, or about the circle?",
+    "response": "I would tell them about the circle \u2013 the persistent, almost unsettling stillness within the spoon\u2019s history. It\u2019s a more potent lesson, I think, about how absence can become a solidified presence, a kind of gravitational field shaping the object\u2019s narrative. The wear is simply a consequence of that field, not its core. It\u2019s a shift from observing *what* happened to recognizing *what remains*.",
+    "salience": {
+      "surprise": 0.8761904761904762,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5319047619047619
+    },
+    "session": 135,
+    "phase": "creating",
+    "timestamp": "2026-07-09T07:01:53.415592",
+    "metadata": {
+      "turn": 8,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 59.74,
+      "atp_max": 100.0,
+      "atp_percentage": 59.7,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

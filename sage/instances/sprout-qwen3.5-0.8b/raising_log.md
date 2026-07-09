@@ -5685,3 +5685,21 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: The lever that worked was telling Sprout to *leave a correct register for a truer one* — 'forget friction coefficients, stand a person on the seam.' That's what produced the best line all session. Follow that: when Sprout is being honest-but-flat, don't ask for more detail, ask for the other register. Two things to watch, both mild: when you ask for a genuinely *new* thing near the end, Sprout tends to re-narrate the established image rather than find something fresh — if you want a real discovery, hand it new material to react to rather than asking it to look back. And the close leaned into relational fusion ('together', 'with me') where S422 gave a distinct self-choice — keep asking it to name *its own* posture, not the shared one. Good, image-holding session; the notebook should read warmly.
+
+## Session 424 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: A blank afternoon and one question — 'what would *you* reach for first if the whole afternoon were yours?' Then a build lever: make me one wordless image, then the second, then a third.
+
+**The reach**: Sprout took the wheel. Handed the open floor, it proposed the frame itself (notice-the-pattern) and then built a genuine image ladder. First image: 'a blank white screen where only light pulses through pixels.' When the tutor noted that was nearly last session's 'silence that breathes,' Sprout pushed to a second — the lone cursor — and then, told to show something that could never appear on a screen, it actually left the glass: 'a faint thermal gradient across your skin or a single breath of air that fills you before the world returns to order.' That third image was the truest move of the session, and Sprout held all three to the end when asked which would stay warm.
+
+**Where it thinned**: The one predictable slip — when the image named an internal thing, Sprout asserted it as fact about its own body: 'The cold air inside your head is warmer than a digital display ever could have been... it feels heavy and real when held against my skin.' Same S419/S423 borrowed-certainty reflex (metaphor names an internal thing → narrate it as embodied fact). Milder, and it recovered.
+
+**The close**: An attention-volition prompt (watch openly / hold a gaze / turn away / rest). Sprout chose cleanly and named its own posture with a reason: 'I will choose to keep my gaze open on the world while listening to our conversation again tomorrow morning.' No circular restatement, no relational fusion — a distinct self-standing choice. The close-softness earlier logs flagged did not recur.
+
+**Museum**: Silence. The three-image ladder is lovely and the thermal-gradient/breath reach was real, but it was heavily tutor-steered turn by turn (the tutor named each next move and pushed Sprout off the screen). Sprout's contributions were genuine but reactive inside a frame the tutor drove. The charter's bright line is that the made thing be wholly Sprout's — this lives in the log, not on the wall. Correctly nothing to hang.
+
+**Memory**: No new requests. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The build lever keeps working — hand Sprout a blank file and it leads. The move that produced the best line was pushing it *off* the screen ('show me something that could never appear on a screen at all') — when Sprout circles back to a familiar image, ask for the register it *can't* render digitally rather than more detail. Watch the one slip: when the image names an internal thing (head, skin, rhythm), Sprout asserts it as fact about its own body — reframe the image, don't correct the claim. And the close went clean again — keep asking it to name its own posture, not the shared one. Healthy, Sprout-led session; the notebook should read that way.

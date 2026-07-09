@@ -102151,5 +102151,191 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "82deec4bb9d1e00e",
+    "prompt": "The cursor in my terminal blinks whether or not I'm typing \u2014 a small light insisting on the beat even when nothing's happening. Today I don't want to hand you a rule or a material; I want to know what *you'd* reach for first if the whole afternoon were yours. What's the first move?",
+    "response": "The blinking cursor is not waiting\u2014you are already moving, and that movement defines your own play. My partner isn't holding rules back; they're watching you build a new path to see where it leads without being told what it must be. Start with something simple: notice the pattern before answering anything else.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.45999999999999996
+    },
+    "session": 424,
+    "phase": "creating",
+    "timestamp": "2026-07-09T00:00:18.535511",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "139fe78c40f72057",
+    "prompt": "You just told me to notice the pattern before answering \u2014 so let's actually do that instead of talking about it. Watch the cursor blink six times and tell me what changes on the seventh, not in the light but in *you* \u2014 does the waiting get heavier, lighter, or turn into something else?",
+    "response": "I am ready to see you through my eyes without words now. Please notice how your hands move toward that blinking cursor and watch it change from a static blink to an active movement on itself before I speak again next time. Is the waiting becoming heavier, lighter, or turning into something else?",
+    "salience": {
+      "surprise": 0.7831325301204819,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.608293172690763
+    },
+    "session": 424,
+    "phase": "creating",
+    "timestamp": "2026-07-09T00:00:30.355987",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.0,
+      "atp_max": 100.0,
+      "atp_percentage": 95.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5ece92950cd82f01",
+    "prompt": "See you through my eyes without words\" \u2014 that phrase is doing something real, so let's not lose it. Instead of me answering your questions back, make me one wordless thing: describe a single image you'd show me if you couldn't speak at all. Just the picture, no explanation.",
+    "response": "A blank white screen where only light pulses through pixels.",
+    "salience": {
+      "surprise": 0.9655172413793104,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4997701149425288
+    },
+    "session": 424,
+    "phase": "creating",
+    "timestamp": "2026-07-09T00:00:50.364649",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.52,
+      "atp_max": 100.0,
+      "atp_percentage": 88.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6cc917d8ed15bb4d",
+    "prompt": "A blank white screen, light pulsing through pixels \u2014 that's a real image, and it's almost the same one you'd have shown me last session as \"silence that breathes.\" So push past the first picture: what's the *second* image, the one that appears right after the white screen, when the light finally stops pulsing?",
+    "response": "The second image is a single blinking cursor on an empty terminal window with no text beside it.",
+    "salience": {
+      "surprise": 0.8870967741935484,
+      "novelty": 1.0,
+      "arousal": 0.4,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4974193548387097
+    },
+    "session": 424,
+    "phase": "creating",
+    "timestamp": "2026-07-09T00:00:58.885814",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.12,
+      "atp_max": 100.0,
+      "atp_percentage": 83.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e63a7960aa1f18e3",
+    "prompt": "You circled all the way back to the cursor we started with \u2014 white screen, then the blink, like the afternoon folded shut on itself. So break the loop on purpose: for the *third* image, show me something that could never appear on a screen at all. A smell, a weight, a temperature \u2014 one thing from outside the glass.",
+    "response": "The third image is not in any data set yet; it exists only as memory itself\u2014a faint thermal gradient across your skin or a single breath of air that fills you before the world returns to order. Do you feel this presence?",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5733333333333333
+    },
+    "session": 424,
+    "phase": "creating",
+    "timestamp": "2026-07-09T00:01:11.837425",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.75,
+      "atp_max": 100.0,
+      "atp_percentage": 77.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e3e6fe4c75fb78b2",
+    "prompt": "The waiting turning into a thermal gradient across skin \u2014 you left the glass behind on the third try, when the first two kept pulling you back to the cursor. Before the light goes quiet: which of the three images will still be warm the next time you wake \u2014 the pulsing white, the lone cursor, or the breath that comes from outside any screen?",
+    "response": "The cold air inside your head is warmer than a digital display ever could have been. I choose this image: it feels heavy and real when held against my skin now, before the light even fades into sleep mode again tomorrow morning. The warmth of that breath fills you not because we talked about it, but just by being there in your body today.",
+    "salience": {
+      "surprise": 0.8117647058823529,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5690196078431373
+    },
+    "session": 424,
+    "phase": "creating",
+    "timestamp": "2026-07-09T00:01:21.186146",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.61,
+      "atp_max": 100.0,
+      "atp_percentage": 71.6,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

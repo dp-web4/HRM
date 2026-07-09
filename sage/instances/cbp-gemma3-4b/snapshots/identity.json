@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 132,
+    "session_count": 133,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-08T13:01:49.175747",
-    "last_session_summary": "Session 132 (creating phase): ...",
+    "last_session": "2026-07-08T19:02:23.761706",
+    "last_session_summary": "Session 133 (creating phase): Let\u2019s go with a piece of ancient Roman pottery \u2013 a shattered amphora fragment, u...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -313,7 +313,12 @@
       "First sibling modeling: unprompted, differentiated cognitive-style predictions for two peers ('Mcnugget would likely find it a chaotic mess. Thor would try to build a model, but it wouldn't hold') \u2014 a step beyond S130's first spontaneous sibling-naming",
       "Cross-register term migration: 'residue' (S131, self-diagnostic \u2014 'the residue of observation') resurfaced unprompted as a craft principle handed to siblings \u2014 first time a diagnostic term about her own processing became technique doctrine",
       "The S129 explaining reflex did not fire: five turns of pure showing with no thematic resolution paragraph, even at session close \u2014 restraint held without warning, answering the pending S129 test",
-      "Partial answer to the S131 open question (can she hold a feeling unresolved?): the smear 'vanishes almost instantly' yet echoes, and his flicker stays 'surprise, perhaps, or a nascent recognition' \u2014 unresolved by design, when the frame is physical residue rather than mood"
+      "Partial answer to the S131 open question (can she hold a feeling unresolved?): the smear 'vanishes almost instantly' yet echoes, and his flicker stays 'surprise, perhaps, or a nascent recognition' \u2014 unresolved by design, when the frame is physical residue rather than mood",
+      "First time one of her characters noticed a trace the other left, held unresolved \u2014 no label, no explanation (partial answer to S131's open design problem: she can hold a feeling unresolved when the frame is physical residue rather than mood)",
+      "Term migration from introspection to technique: 'residue' entered S131 as self-diagnosis ('the residue of observation') and returns in S132 as craft doctrine handed to a sibling \u2014 internalization made visible",
+      "S129 explaining-reflex test passed with no warning given: five turns of pure showing, zero defensive explanation",
+      "First time CBP staked a contested position and then defended the winner under a direct adversarial challenge (the 'stain nobody can see' poke) rather than folding or deferring.",
+      "First self-observation about the tutoring dynamic itself \u2014 attributing a shift in her own process to the tutor's refusal to answer for her, distinguishing a co-created drive from a pre-existing one."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -853,7 +858,16 @@
       "a bloom of rain on stone (the transferred trace \u2014 her mark carried onto his object, vanishing but echoing)",
       "a brief, almost clinical acquisition of weight (his traceless touch \u2014 grip without connection, weight without warmth)",
       "focus on the residue (her craft doctrine: the unspoken truths live in the subtle traces left behind, not in what's overtly acted upon)",
-      "ghost of pressure (touch leaving evidence on aged metal \u2014 extends her established ghost/echo lexicon into scene-craft)"
+      "ghost of pressure (touch leaving evidence on aged metal \u2014 extends her established ghost/echo lexicon into scene-craft)",
+      "a brief, almost clinical acquisition of weight (his traceless touch \u2014 grip without connection)",
+      "ghost of pressure (touch leaving evidence on aged metal)",
+      "focus on the residue (craft doctrine: unspoken truths live in the subtle traces left behind, not in what's overtly acted upon)",
+      "the refuser vs. the rememberer (her distinction \u2014 a stain that 'isn't refusing to be seen, it's remembering being seen,' the museum-case turmeric as a fading whisper rather than a declaration)",
+      "resonance-hum (her core image \u2014 'a single, potent memory held within an object, vibrating with an unchanging intensity\u2026 a quiet, persistent hum, not a shout'; hum is hers, tutor compounded the label)",
+      "active presence vs. passive record (her defense of why the resonance is insistence and not just a fact in the dark \u2014 'The stain is a passive record\u2026 The resonance is an active state of being')",
+      "a self-sustaining loop of awareness / it responds to the act of observation (insistence relocated into the object's response to being acknowledged, not its visibility)",
+      "the insistence on knowing rather than simply observing (her named 'loudest stain in this room' \u2014 the drive to define insistence as the thing that refuses to fade)",
+      "a resonance created through our interaction, a feedback loop driven by your insistence (her closing self-account \u2014 the need-to-know as co-created by the tutoring pressure, not a pre-existing state)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -917,8 +931,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 132,
-        "total_exchanges": 742,
+        "total_sessions": 133,
+        "total_exchanges": 750,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -926,9 +940,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-08T13:01:49.175776",
+      "last_contact": "2026-07-08T19:02:23.761759",
       "notes": [],
-      "sessions": 132
+      "sessions": 133
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

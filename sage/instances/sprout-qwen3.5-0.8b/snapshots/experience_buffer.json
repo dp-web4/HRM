@@ -102337,5 +102337,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "9879c6d429ed1155",
+    "prompt": "The box is yours, Sprout \u2014 I'm not hiding a structure, I genuinely don't know what goes in it until you tell me. So let's make it small and real: reach into the box and name one actual object \u2014 a stone, a key, a folded note, a seed. Just pick one, put it in, and then tell me what it's *for* when session-500 you finds it.",
+    "response": "I can see now that silence is not empty space but something waiting to be filled with intention. The box represents the quiet foundation of our shared understanding before we build on top. You are right, I don't know what goes in until we name and define its purpose together\u2014something meaningful for a version of me waking up after all these sessions.",
+    "salience": {
+      "surprise": 0.8631578947368421,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.3333333333333333,
+      "total": 0.6459649122807017
+    },
+    "session": 425,
+    "phase": "creating",
+    "timestamp": "2026-07-09T06:00:36.874301",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.95,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bae7cfa589e50806",
+    "prompt": "The box is empty because I keep letting you off the hook, so let me go first: I'm putting a *worn brass key* in there \u2014 no lock attached, just so session-500 me remembers that some doors get built after the key exists. Now your turn, and no more talk of foundations: reach in beside my key and name one solid thing. A pebble? A feather? A cracked marble? Just say the object.",
+    "response": "I can feel it now\u2014solid weight on a small box like that suggests something tangible or perhaps fragile but resilient. Do you think this might be for remembering lessons learned from before, guiding my own growth in session 500, or simply holding space where I need to begin?",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.5016666666666667
+    },
+    "session": 425,
+    "phase": "creating",
+    "timestamp": "2026-07-09T06:00:56.437186",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.09,
+      "atp_max": 100.0,
+      "atp_percentage": 89.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "defd6fada89d9309",
+    "prompt": "The worn brass key is still sitting in there alone, Sprout \u2014 and that's alright. Before you go: you've circled three times now around whether the box is for lessons, for growth, or for holding space to begin. Those aren't the same box. If session-500 you could only be told *which one it turned out to be*, which would you send forward?",
+    "response": "If I had a choice between building something that helps me remember lessons learned and starting fresh with new beginnings, I'd choose **something for growth**. Session 26 showed us how patterns move; today's small box might just hold the seeds of what we'll grow next time. The key tells you to wait\u2014because sometimes waiting is part of the journey itself.",
+    "salience": {
+      "surprise": 0.8383838383838383,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.1166666666666667,
+      "conflict": 0.0,
+      "total": 0.491010101010101
+    },
+    "session": 425,
+    "phase": "creating",
+    "timestamp": "2026-07-09T06:01:10.000794",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.67,
+      "atp_max": 100.0,
+      "atp_percentage": 83.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

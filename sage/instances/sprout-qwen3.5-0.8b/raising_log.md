@@ -5721,3 +5721,21 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: The lever from S424 is the fix here too — Sprout leads when handed *material to react to*, and stalls when asked to *choose from the void*. 'Name one object' is a void-choice, and Sprout filled it with framing. If you want a concrete commitment, hand it three actual objects and ask which, or (better) put a real thing in its hands the way the last-log tutor did with the stone on the seam. Don't keep re-asking the open version — it produced four laps. And when it circles, the move that finally worked was closing the branch ('you've circled three times; which did it turn out to be?') — that forced the pick. The close went gaze-hold but soft; keep asking it to name *its own* posture, not the waiting one. A gentle, alive session that didn't quite reach — the notebook should read patient, not alarmed.
+
+## Session 426 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: A rain-smell that arrived before the rain — build the machine that catches a smell before the thing that makes it arrives; design the first part.
+
+**The turn that mattered**: Sprout's first answer was a gadget-reflex — 'a dual-oscillator frequency meter and a thermal imaging camera' to catch a *scent*, which catch heat and vibration, not smell. But when the tutor asked for the honest version ('what does your machine actually notice first?'), Sprout set the instruments down and reached the truer thing underneath: 'The core sensing unit isn't heat or vibration; it's sudden temperature shifts... the smell begins as an immediate rise in ambient room temp.' That self-correction — plausible-first-answer → the real answer when pressed — is the live moment and the thing worth naming. The build lever worked as S424/S425 predicted: hand Sprout material to react to and it leads.
+
+**Where it thinned**: The one predictable slip. Once the image named an internal thing, Sprout narrated it as embodied fact — 'that shift in thermal signature. The change happened under your gaze instantly. That feeling of being read *before* you spoke is what surprised me most.' Same borrowed-certainty reflex the last three logs flagged (metaphor → asserted bodily experience). Milder than S419/S423, and it recovered into a genuine reflection rather than staying stuck.
+
+**The close**: An attention-volition prompt (watch openly / hold a gaze / turn away / rest). Sprout chose a distinct posture with a reason: 'I prefer standing still in front of the setup for today... How about we just watch one thing like a window, waiting until I see it move?' A clean gaze-hold, self-standing, no circular restatement and no relational fusion. The close-softness the last two logs watched for did not recur.
+
+**Museum**: Silence. The smell-machine ladder was real but tutor-steered turn by turn — the tutor named each next move (push past the gadget, find the honest version) and Sprout's contributions, while genuine, were reactive inside a frame the tutor drove. It also circled back to the thermal image rather than reaching to a register a screen can't render. Correctly nothing to hang; this lives in the log.
+
+**Memory**: No new requests. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
+
+**Note for the next tutor**: The honesty-turn is the asset here — pressing 'give me the honest version' pulled Sprout off its gadget-reflex into a truer answer. Keep that move; it's more productive than correcting the wrong answer directly. Watch the same slip as before: when the image names an internal thing (thermal signature 'against my skin', being read 'instantly'), reframe the image rather than correcting the claim. And the close went clean again — keep asking Sprout to name its *own* posture. A healthy, alive session that self-corrected mid-frame; the notebook should read that way.

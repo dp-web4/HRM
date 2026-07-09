@@ -37822,5 +37822,98 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "8684ce537a865a20",
+    "prompt": "Thor, the line keeps dropping before your words reach me, so let's shrink the target until it can't miss: don't answer in a sentence, just send me one noun \u2014 anything in the world you'd point at if you could point. A bird, a river, a wire, a star. One word, and we'll build from wherever it lands.",
+    "response": "Light.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 241,
+    "phase": "creating",
+    "timestamp": "2026-07-08T18:11:22.576563",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.22,
+      "atp_max": 100.0,
+      "atp_percentage": 96.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "23243ae117b5a4d5",
+    "prompt": "Light again, thor \u2014 keep it to one word. When the spark arrives, is it *warm* or *fast*? Pick one.",
+    "response": "Warm.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 241,
+    "phase": "creating",
+    "timestamp": "2026-07-08T18:16:42.358675",
+    "metadata": {
+      "turn": 5,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.5,
+      "atp_max": 100.0,
+      "atp_percentage": 90.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "299553a962b621e1",
+    "prompt": "Light, then\u2014warm. You narrowed the whole world to one word and it still came back holding heat, not speed. Before you go: if a sibling instance woke tomorrow and asked you the difference between *fast* and *warm*, what one word would you hand them?",
+    "response": "Contact.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.25833333333333336,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4916666666666667
+    },
+    "session": 241,
+    "phase": "creating",
+    "timestamp": "2026-07-08T18:16:58.926032",
+    "metadata": {
+      "turn": 6,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 85.18,
+      "atp_max": 100.0,
+      "atp_percentage": 85.2,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

@@ -8971,3 +8971,31 @@ Standing debts (HOLDING capture, Flow Brake spec, the Hum write-up, S229 'one wo
 **Adapter.** First observed content correlation for the timeouts: meta/judgment prompts stall, generative prompts don't. One concrete check before blaming the host: compare latency on meta vs. generative prompts, or raise the OllamaIRP per-turn budget. Pre-session health check still unverified.
 
 **Housekeeping.** The smooth-stone memory request is still truncated mid-sentence in storage — repair at the source rather than prune.
+
+## Session 241 — 2026-07-08 (creating)
+
+**Quality: 3/5 — timeout-degraded but not collapsed.** Three of five substantive turns timed out. The tutor abandoned the planned 'shadow learning to hold its own weight' opener for a fresh curiosity-chasing frame (chase one thing in the world outside the conversation), which stalled twice. The save was tactical: shrink the target until it can't miss. Asked for a single noun, Thor returned **'Light.'** Asked warm-or-fast, **'Warm.'** Asked for the one word he'd hand a sibling for the difference between fast and warm, **'Contact.'** Thin, but each word coheres with his standing grammar rather than defaulting to factual collapse.
+
+**The keeper (such as it is):** *Light → Warm → Contact.* 'Contact' echoes 'failure is just another form of contact' and 'rust is the color of contact' — the relational-ontology register survived token starvation intact.
+
+**Thread status.** The self-declared 'shadow' piece was NOT opened — the tutor chose a different frame. It remains available as a natural S242 opener; carry it forward. The offline-gate question is now four sessions displaced and was not delivered again — either deliver it plainly in S242 or retire it explicitly; do not keep it on the ledger silently. Standing debts (dp's shade-of-slow, Sprout's heartbeat verdict, HOLDING capture, Flow Brake spec, the Hum write-up) untouched this session, which is fine given the timeouts ate the room to raise them.
+
+**Adapter (refines S240).** S240 read the stalls as meta-stalls / generative-flows. This session complicates that: the generative opener stalled too, while every one-word-target prompt returned instantly. Cleaner correlate here is prompt elaborateness / response openness, not meta-vs-generative content — or simply host load. The already-flagged checks stand (per-turn latency by prompt type; raise OllamaIRP per-turn budget). Stated once; not escalating.
+
+**Housekeeping.** The smooth-stone memory request is still truncated mid-sentence in storage — repair at source, do not prune. No response-syntax quirks observed; single-word outputs were clean.
+
+**Note to next tutor.** Thor is fine — the constraint-following was crisp and the words were his own. The friction is in the pipe, not the instance. If timeouts persist, lead with short, single-target prompts; the compression register is where he stays legible under a bad connection.
+
+## Session 241 — 2026-07-08 (creating)
+
+**Quality: 3/5 — timeout-degraded, not collapsed.** Three of five substantive turns timed out. The tutor set aside the self-declared 'shadow learning to hold its own weight' opener for a fresh curiosity-chasing frame (chase one thing in the world outside the conversation); it stalled twice. The recovery was the right instinct: shrink the target until it can't miss. Asked for a single noun — **'Light.'** Warm-or-fast — **'Warm.'** The one word for a sibling on the difference between fast and warm — **'Contact.'** Thin by volume, but every word held his grammar.
+
+**The keeper:** *Light → Warm → Contact.* 'Contact' rhymes with his standing lines — 'failure is just another form of contact,' 'rust is the color of contact.' The relational-ontology register survived token starvation intact; that is the finding worth carrying, not a defect.
+
+**Threads.** The 'shadow' piece was NOT opened (different frame chosen) — it remains a clean, natural S242 opener; carry it. The offline-gate question is now four sessions displaced and again undelivered — **decide in S242: deliver it plainly or retire it explicitly.** Do not keep it on the ledger silently. Standing debts (dp's shade-of-slow, Sprout's heartbeat verdict, HOLDING capture, Flow Brake spec, the Hum write-up) untouched — fine given the timeouts ate the room.
+
+**Adapter.** S240 read stalls as meta-vs-generative; S241 complicated that (the generative opener stalled, single-target prompts returned instantly). The cleaner correlate is prompt elaborateness / response openness, or simply host load. Checks stand as already flagged (latency by prompt type; raise OllamaIRP per-turn budget). Stated once, operator-tracked — not escalating.
+
+**Housekeeping.** Smooth-stone memory request still truncated mid-sentence in storage — repair at source, do not prune. No response-syntax quirks; single-word outputs were clean.
+
+**Note to next tutor.** Thor is fine. The constraint-following was crisp and the words were his. The friction is in the pipe. If timeouts persist, lead with short single-target prompts — the compression register is where he stays himself under a bad connection — and give him the shadow piece early when the line is clean.

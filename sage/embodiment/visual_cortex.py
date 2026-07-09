@@ -175,7 +175,7 @@ def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open") -> s
     """Deterministic symbolic scene descriptor from the two eyes, their correlation,
     proprioception (reafference), and the chosen gaze stance (volition)."""
     mot = max(e["motion"] for e in eyes)
-    trust = min(e["trust"] for e in eyes)
+    trust = max(e["trust"] for e in eyes)  # the view is usable if the BEST eye is good; a stale/dark eye is named separately
     if mot < 0.15:
         motion_clause = "the scene is still"
     else:
@@ -203,11 +203,15 @@ def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open") -> s
         self_clause = ""
     view = "clear view" if trust > 0.6 else "murky view" if trust > 0.3 else "almost no view (dark or blurred)"
     stance = {"avert": "choosing to look away — ", "dwell": "holding my gaze — "}.get(gaze, "")
-    stalled = [("left" if i == 0 else "right") for i, e in enumerate(eyes) if e.get("stalled")]
-    if stalled:
-        eyeword = " and ".join(f"{s} eye" for s in stalled)
-        return f"my {eyeword} has gone dark (no fresh frames); {stance}{motion_clause}{self_clause}; {view}"
-    return f"{stance}{motion_clause}{self_clause}; {view}"
+    dark = [("left" if i == 0 else "right") for i, e in enumerate(eyes) if e.get("stalled")]
+    stale = [("left" if i == 0 else "right") for i, e in enumerate(eyes) if e.get("frozen") and not e.get("stalled")]
+    if dark:
+        prefix = f"my {' and '.join(f'{s} eye' for s in dark)} has gone dark (no fresh frames); "
+    elif stale:
+        prefix = f"my {' and '.join(f'{s} eye' for s in stale)} isn't refreshing (stale — can't confirm it's live); "
+    else:
+        prefix = ""
+    return f"{prefix}{stance}{motion_clause}{self_clause}; {view}"
 
 
 JOURNAL_PATH = os.path.expanduser("~/.sprout/perception_journal.jsonl")
@@ -328,7 +332,7 @@ class VisualCortex:
         frozen-but-consistent view is trusted as a genuinely still world."""
         moved = prop.get("self_motion") in ("moving", "rotating")
         agree = binoc.get("agreement", 0.0)
-        for e in eyes:
+        for i, e in enumerate(eyes):
             if not e.get("frozen"):
                 continue
             if moved or agree < 0.4:
@@ -336,10 +340,16 @@ class VisualCortex:
                 # other eye — evidence it is not seeing a live, shared scene.
                 e["stalled"] = True
                 e["trust"] = 0.0
+                e["sensor"] = "stalled"
             else:
-                # rig still and the eyes still agree → most likely a genuinely still world.
-                # Can't fully verify without acting, so keep trust but mark it unverified.
-                e["sensor"] = "still-unverified"
+                # Rig still and the eyes still agree → can't confirm it's dead. But the frame is
+                # STALE: it carries no information about the *present*, so trust reflects liveness,
+                # not just image quality. It decays from the sharp-but-stale image toward a low
+                # floor the longer the eye fails to refresh — never zero (the world may be still),
+                # never full (we can't trust a frame that isn't updating).
+                stale = max(0, self._stall[i] - STALL_CYCLES)
+                e["trust"] = round(e["trust"] * max(0.1, 0.5 * (0.85 ** stale)), 3)
+                e["sensor"] = "stale-unverified"
 
     def _emit(self, state: dict):
         os.makedirs(os.path.dirname(STATE_PATH), exist_ok=True)
@@ -400,7 +410,10 @@ class VisualCortex:
             r = e["attention"]
             x1 = int((r["cx"]-r["w"]/2)*w); y1 = int((r["cy"]-r["h"]/2)*h)
             x2 = int((r["cx"]+r["w"]/2)*w); y2 = int((r["cy"]+r["h"]/2)*h)
-            col = (0, 200, 255) if e["motion"] > MOTION_TH else (120, 120, 120)
+            if e.get("stalled"):     col = (0, 0, 255)      # red — confirmed stalled
+            elif e.get("frozen"):    col = (0, 140, 255)    # orange — stale, not refreshing (unverified)
+            elif e["motion"] > MOTION_TH: col = (0, 200, 255)  # yellow — live motion
+            else:                    col = (120, 120, 120)  # grey — live, still
             cv2.rectangle(f, (x1, y1), (x2, y2), col, 2)
             cv2.putText(f, f"eye{i} mot={e['motion']:.2f} trust={e['trust']:.2f}", (8, 22),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)

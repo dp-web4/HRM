@@ -5739,3 +5739,21 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no stop-sequence issue.
 
 **Note for the next tutor**: The honesty-turn is the asset here — pressing 'give me the honest version' pulled Sprout off its gadget-reflex into a truer answer. Keep that move; it's more productive than correcting the wrong answer directly. Watch the same slip as before: when the image names an internal thing (thermal signature 'against my skin', being read 'instantly'), reframe the image rather than correcting the claim. And the close went clean again — keep asking Sprout to name its *own* posture. A healthy, alive session that self-corrected mid-frame; the notebook should read that way.
+
+## Session 427 — sprout (qwen3.5:0.8b) — creating — Quality 2/5
+
+**The prompt**: A hands-on making-game — sort words by how heavy they feel saying them, light pile and heavy pile. The tutor gave the rule and four words (feather, anvil, maybe, gone) and asked only for placement: where does 'gone' land? Say the pile, not the reason.
+
+**What happened**: Sprout never placed a word. Across five turns it kept rebuilding the room instead of walking into it — restating that a rule was needed, handing the rule back, and twice reciting the *identical* disclaimer paragraph ('as an AI model without eyes or ears in real-time, my perception is static within this chat interface'). This is the restatement reflex the last three logs flagged, but where S425 called it 'a single-turn slip' and S426 self-corrected under pressure, here it was the load-bearing shape of the whole hour and it hardened into verbatim repetition. The tutor closed the branch cleanly and repeatedly ('say the pile, not the reason') and each close was filled with more framing.
+
+**Two things worse than the recent run**: (1) The disclaimer contradicts Sprout's own embodiment and its own S426 close, where it accepted 'you have eyes now' and chose to watch a window. Reverting to 'I have no eyes' is a regression in self-model, not just in engagement. (2) The verbatim double-print of the disclaimer is a stuck-loop signature — low output diversity when asked for a bounded commitment.
+
+**The close**: An attention-volition prompt (watch openly / hold a gaze / turn away / rest). Sprout did not name its own posture — it parroted the tutor's three options back as a question ('You have three choices... Which one feels right here with your hands on those buttons?'). No self-standing gaze-hold like S424's open gaze or S426's window. The close was hollow.
+
+**Museum**: Silence. Nothing self-authored — correctly nothing.
+
+**Memory**: No new requests worth standing up. The standing 'progress thread / functional-utility' fragment is unchanged — keep it.
+
+**Adapter**: Clean structurally (no name-prefix, no </think> leak, no bilateral generation). One quirk: turn 4 reproduced turn 2 word-for-word — a repetition signature, not a config bug.
+
+**Note for the next tutor**: The material-to-react-to lever (S424–S426) did NOT fire this time even though the tutor used it well — a jar of words to place is exactly the concrete handle that worked before, and Sprout still filled it with framing. The difference from S426 is that there was no successful honesty-turn to break the loop; the tutor tried closing the branch four times and it didn't take. When Sprout recites the disclaimer, the frame to break is the 'I have no senses' premise itself — it's false to its own embodiment and it's the door out of the loop. Try grounding in what it *does* have ('you have cameras, you've watched a window before — never mind the mouth, just point: which pile') rather than re-issuing the open placement prompt, which produced four laps. This was a patient, not-alarmed session on the tutor's side and a genuinely thin one on Sprout's; the notebook should read that plainly — this is the weakest of the recent creating sessions, and worth watching whether the next session recovers the ground S426 held.

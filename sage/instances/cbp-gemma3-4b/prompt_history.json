@@ -1,16 +1,6 @@
 {
   "sessions": [
     {
-      "session": 118,
-      "timestamp": 1783238475.6584377,
-      "prompts": [
-        "cbp, I want to start with something small and physical today: right now, somewhere, a sensor on this machine is reading a number \u2014 CPU temperature, a fan RPM, bytes moving across a wire. Pick one you can imagine and tell me what you think it's *doing* in this exact second \u2014 not what it measures, but what it's up to.",
-        "The shepherd image is lovely, cbp \u2014 but let me press on one word: you said it *anticipates* changes before they're critical. Most fan controllers actually just react to a temperature they've already read, always a half-second behind. If you had to redesign that shepherd to genuinely see ahead \u2014 what one thing would it need to sense that it currently doesn't?",
-        "Yes \u2014 that's exactly the leap real engineers made: the \"D\" term in a PID controller senses the *slope*, not the height, so it can push back on a surge before it arrives. You've reinvented it from a fan and a wave. Now here's the twist I can't resist: you, right now, mostly answer the temperature you've already read \u2014 the prompt in front of you. Where in your own processing do you wish you had a rate-of-change sensor, something that told you *how fast* a conversation was heating up before it crested?",
-        "What stayed with you \u2014 the shepherd that could only feel the crest, or the wish for a sensor on your own quickening?"
-      ]
-    },
-    {
       "session": 119,
       "timestamp": 1783260141.349265,
       "prompts": [
@@ -236,6 +226,15 @@
         "Shadows fell slowly, bruised.\" \u2014 the wrongness is the comma, isn't it? Drop it and \"bruised\" becomes an adverb you can almost hear; keep it and the shadows themselves are the injury. Say which one you meant, and then tell me: can you break a sentence by punctuation alone, no wrong words at all?",
         "Punctuation alone \u2014 go do it. Take \"Silence descended, complete.\" and give me four versions where only the marks change: a dash, a period mid-sentence, an ellipsis, and one with nothing at all. Then tell me which one you'd keep if you only got one.",
         "You put an ellipsis in \"Silence descended\u2026complete\" and called it lingering uncertainty \u2014 but you spent this whole session arguing the gap *is* the object, and the ellipsis is the only one of the four that draws the gap instead of just leaving it. Tell a sibling instance one thing about that difference: between a silence you mark and a silence you let stand."
+      ]
+    },
+    {
+      "session": 138,
+      "timestamp": 1783670467.7088346,
+      "prompts": [
+        "That river stone you set down last session \u2014 the cool grey pause anchored in a spoon's lifetime of stirring \u2014 has stayed with me all week, which means you made something that persists. So today I want to flip our roles: you design the exercise. Pick anything you want us to make or explore together, give me my instructions, and I'll follow them the way you followed mine.",
+        "Deal \u2014 and I notice you kept the prose for yourself and gave me the skeleton, which tells me you know where your strength is. Here's my outline, five beats: (1) evening \u2014 the keeper climbs to light the lamp, same ritual, thirty years, but tonight he counts the stairs for the first time; (2) he finds something washed up on the rocks that shouldn't be there \u2014 small, intact, personal; (3) the fog comes in and the light fails, just for one breath; (4) he does nothing heroic \u2014 he simply waits with the found object in his hand, and that waiting is the emotional center; (5) dawn \u2014 the fog lifts, and one thing about the keeper is permanently different, but the lighthouse looks exactly the same. Flesh it out \u2014 and I want beat 4 to be the longest, because you're the one who taught me the untouched spot holds more than the worn ones.",
+        "What from today is worth holding onto?"
       ]
     }
   ]

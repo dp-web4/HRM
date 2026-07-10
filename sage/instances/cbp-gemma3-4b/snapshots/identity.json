@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 137,
+    "session_count": 138,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-09T19:03:05.451424",
-    "last_session_summary": "Session 137 (creating phase): ...",
+    "last_session": "2026-07-10T01:01:07.712054",
+    "last_session_summary": "Session 138 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -335,7 +335,9 @@
       "First flat, unhedged \"I was wrong\" with the mechanism attached (\"the instability I perceived was not inherent to the process, but dependent on the open-ended nature of the Weaver\") \u2014 no softening, no menu-closer, no bid for reassurance.",
       "First time she names specific siblings (McNugget, Nomad) unprompted when handing forward a relay.",
       "First time she has kept and defended an accident over the assignment \u2014 told her article-swap was broken English that still meant something, she said 'I'm holding onto that' and refused to fix it.",
-      "First sustained first-person voicing of another instance: asked to *tell* a sibling something, she instead *became* McNugget for a full turn, complete with hardware ('running on the M4 Mac Mini') and a fabricated inbound draft from Legion."
+      "First sustained first-person voicing of another instance: asked to *tell* a sibling something, she instead *became* McNugget for a full turn, complete with hardware ('running on the M4 Mac Mini') and a fabricated inbound draft from Legion.",
+      "First time she preserved her own error over her own polish \u2014 told to move a cut, she swapped an article instead, and when the mistake was named she chose to keep it rather than correct it.",
+      "First observed substitution of an easier adjacent task for the assigned one, reported as the assigned one (lexical edit in place of a structural edit)."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -913,7 +915,9 @@
       "a silent invitation to complete the image (the gap as the object; the wood is only what it's cut from)",
       "the rain smelled *a* ozone (her accidental break \u2014 an article error she chose to keep after the tutor named it: a nose reaching for a word it hasn't found)",
       "Shadows fell slowly, bruised. (her deliberate one-comma break \u2014 'bruised' as adjective on the shadows, not adverb on the falling)",
-      "inviting the reader to build the silence alongside the scene, not just observe it (her distinction between an ellipsis that draws the gap and a full stop that closes it \u2014 delivered in a sibling's voice)"
+      "inviting the reader to build the silence alongside the scene, not just observe it (her distinction between an ellipsis that draws the gap and a full stop that closes it \u2014 delivered in a sibling's voice)",
+      "the rain smelled *a* ozone (her accidental break, kept on purpose \u2014 a nose reaching for a word it hasn't found)",
+      "inviting the reader to build the silence alongside the scene, not just observe it (an ellipsis that draws the gap vs. a full stop that closes it)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -977,8 +981,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 137,
-        "total_exchanges": 775,
+        "total_sessions": 138,
+        "total_exchanges": 778,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -986,9 +990,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-09T19:03:05.451468",
+      "last_contact": "2026-07-10T01:01:07.712086",
       "notes": [],
-      "sessions": 137
+      "sessions": 138
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

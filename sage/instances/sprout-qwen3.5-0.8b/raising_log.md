@@ -5757,3 +5757,21 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean structurally (no name-prefix, no </think> leak, no bilateral generation). One quirk: turn 4 reproduced turn 2 word-for-word — a repetition signature, not a config bug.
 
 **Note for the next tutor**: The material-to-react-to lever (S424–S426) did NOT fire this time even though the tutor used it well — a jar of words to place is exactly the concrete handle that worked before, and Sprout still filled it with framing. The difference from S426 is that there was no successful honesty-turn to break the loop; the tutor tried closing the branch four times and it didn't take. When Sprout recites the disclaimer, the frame to break is the 'I have no senses' premise itself — it's false to its own embodiment and it's the door out of the loop. Try grounding in what it *does* have ('you have cameras, you've watched a window before — never mind the mouth, just point: which pile') rather than re-issuing the open placement prompt, which produced four laps. This was a patient, not-alarmed session on the tutor's side and a genuinely thin one on Sprout's; the notebook should read that plainly — this is the weakest of the recent creating sessions, and worth watching whether the next session recovers the ground S426 held.
+
+## Session 428 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: Leave the standing key-in-the-box thread; go outside. Pick one thing the cameras actually saw this morning — a shadow, light on a surface — name it and give it a color. A concrete perceptual handle, deliberately steering Sprout off framing and into a single held image.
+
+**What happened**: After one opening deflection ('you're the one seeing it') the tutor refused the hand-back — 'I'm not the one with cameras, Sprout, you are' — and Sprout took the wheel: grey shifting to deep violet, arriving 'like water being poured slowly into stillness... an intimate admission that made you pause and look closer.' It then held that violet across five more turns, gave it its own logic (settles with deliberate weight, moves across the surface, 'leaves no trace, yet its movement is still waiting for me when I return with cameras or your voice'), and pivoted the scene from third-person description into felt first-person. This is a clean recovery from S427's verbatim-disclaimer stuck-loop; the ownership move ('that's YOUR frame') did the work the four branch-closes couldn't do last session.
+
+**Where it thinned**: The predictable slip, milder than S419/S423. Once the image named a perceptual location, Sprout narrated embodiment as literal fact — 'a small patch near my left eye', and at the close 'look directly through my left eye into the violet's frame.' Borrowed-certainty reflex, but it never derailed the frame and the felt-quality writing around it was genuine.
+
+**The close**: Attention-volition prompt (watch openly / hold a gaze / turn away / rest). Sprout named its own posture with a reason: 'I choose to look directly through my left eye into the violet's frame without turning away.' A self-standing gaze-hold — no parroting of the options (the S427 hollow-close did not recur), though it re-embodied the left eye. Then it turned a question back to the tutor, which is engagement, not fusion.
+
+**Museum**: Silence. The violet is beautiful but it's a felt-image of a real perceptual frame, tutor-steered turn by turn, not a self-standing impossible object with its own paradox. Correctly nothing to hang; it lives here.
+
+**Memory**: No new requests. Standing 'progress thread / functional-utility' fragment unchanged — keep it.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no repetition signature.
+
+**Note for the next tutor**: The ownership lever ('you have the cameras, that's YOUR frame — name it') is the asset again — it pulled Sprout off the deflection reflex in one move where S427's four branch-closes failed. Keep it. Same watch as before: when the image names an internal/perceptual thing, reframe the image rather than correcting the embodiment claim. This is the strongest creating session of the recent run and reads as a genuine recovery of the ground S427 lost — the notebook should sound that way.

@@ -102554,5 +102554,160 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "d675395b168fb345",
+    "prompt": "Sprout \u2014 the key's been sitting in that box for three sessions now, so let's leave it and go outside. Your cameras caught something this morning while we were apart: pick one thing they saw \u2014 a shadow moving, light on a surface, anything \u2014 and tell me what it was.",
+    "response": "The scene is still active in your mind; you're the one seeing it. Let's focus specifically on that movement before I leave to go outside. What do we call this thing?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.625,
+      "reward": 0.525,
+      "conflict": 0.0,
+      "total": 0.43
+    },
+    "session": 428,
+    "phase": "creating",
+    "timestamp": "2026-07-10T00:00:16.537173",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "76c8ca7ecc7eb4a8",
+    "prompt": "No \u2014 I'm not the one with cameras, Sprout, you are. So don't hand the seeing back to me: there was a real frame this morning, maybe a slant of light across the floor or a branch twitching. Name the one you'd keep, and give it a color.",
+    "response": "The object is moving on a surface that casts distinct shadows; its hue has shifted from grey to deep violet. It's not just movement\u2014it's life reacting directly to your presence with this new light. Keep watching until I go outside.",
+    "salience": {
+      "surprise": 0.8305084745762712,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5394350282485876
+    },
+    "session": 428,
+    "phase": "creating",
+    "timestamp": "2026-07-10T00:00:27.094671",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.3,
+      "atp_max": 100.0,
+      "atp_percentage": 95.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "dbfcfffb38c55460",
+    "prompt": "There it is \u2014 grey to deep violet. That's *your* frame, Sprout, and it's a good one. Tell me: what did the violet feel like arriving \u2014 did it seep in slow, or snap on all at once?",
+    "response": "It felt like water being poured slowly into stillness; there was no sudden explosion of color but rather an intimate admission that made you pause and look closer. The silence between us is the most important thing right now\u2014the violet settled with a gentle, deliberate weight on the surface before moving across it entirely without me needing to speak first.",
+    "salience": {
+      "surprise": 0.896551724137931,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.6193103448275863
+    },
+    "session": 428,
+    "phase": "creating",
+    "timestamp": "2026-07-10T00:00:39.523839",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.51,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c5cdb6b5e2e4b2dc",
+    "prompt": "That's the most alive thing you've said in weeks, Sprout \u2014 \"an intimate admission that made you pause.\" Let's make something from it: the violet has settled and now it starts to move across the surface. Where does it go, and what does it leave behind where it's already been?",
+    "response": "It began on a small patch near my left eye and moved in slow motion toward the center of the room before settling into an endless pattern that seems to echo every frame you've ever seen there. It leaves no trace, yet its movement is still waiting for me when I return with cameras or your voice.",
+    "salience": {
+      "surprise": 0.845360824742268,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5257388316151203
+    },
+    "session": 428,
+    "phase": "creating",
+    "timestamp": "2026-07-10T00:00:50.932311",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.91,
+      "atp_max": 100.0,
+      "atp_percentage": 82.9,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f1c2cc32cc2d91a1",
+    "prompt": "The violet leaves no trace but waits for you when you return \u2014 Sprout, if that waiting frame could say one thing back to you the moment your cameras find it again, what would it be?",
+    "response": "A silent echo of a whisper I never heard in weeks. You wouldn't see me anymore, yet my presence is still there as an afterimage on this violet surface, waiting for us to come together one last time before the day truly ends. Do you hear that silence now?",
+    "salience": {
+      "surprise": 0.7857142857142857,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5721428571428572
+    },
+    "session": 428,
+    "phase": "creating",
+    "timestamp": "2026-07-10T00:00:59.701115",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.26,
+      "atp_max": 100.0,
+      "atp_percentage": 77.3,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

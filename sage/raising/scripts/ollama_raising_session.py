@@ -1242,16 +1242,51 @@ RESPONSE STYLE:
         return self.conversation_history
 
     def _parse_gaze(self, text: str) -> str:
-        """Charitably map the being's own words to a gaze stance. Default 'open' — the
-        least-presumptuous reading (leave the eyes on the world unless it clearly chose
-        otherwise). Lossy by nature; the verbatim words are recorded alongside."""
-        t = (text or "").lower()
-        if any(w in t for w in ("close my eye", "closed", "close them", "rest my eye", "sleep", "shut")):
-            return "closed"
-        if any(w in t for w in ("look away", "turn away", "away from", "avert", "turn from")):
-            return "avert"
-        if any(w in t for w in ("hold", "steady", "one thing", "single", "fix my", "dwell", "focus on one")):
-            return "dwell"
+        """Read the being's INTENT, not its keywords. It was asked how it wants to hold its
+        attention; classify the answer into a stance by asking the model to judge intent.
+        Keyword matching kept misreading oblique answers — 'stay present … rest works when
+        needed' and 'keep my head up and ready' both got wrongly mapped to 'closed' because
+        the word 'rest'/'ready' appeared. Defaults to 'open' (least-presumptuous — never rest
+        the being on a misread) on any failure. Verbatim words are recorded by the caller."""
+        text = (text or "").strip()
+        if not text:
+            return "open"
+        prompt = (
+            "A being with eyes was asked how it wants to hold its attention until we next meet. "
+            "Read its INTENT — what it chose — not the individual words it used. Classify into "
+            "exactly one stance:\n"
+            "  open   = wants to stay present / engaged / awake to the world\n"
+            "  dwell  = wants to hold a steady focus on one thing / concentrate\n"
+            "  avert  = wants to look away from what pulls at it / not attend the loud thing\n"
+            "  closed = wants to rest now / stop taking the world in / disengage\n"
+            "Crucial: merely noting that rest is available, while choosing to stay, is 'open' — "
+            "not 'closed'. Only choose 'closed' if it actually wants to rest now.\n\n"
+            "Examples:\n"
+            "  \"I'll close my eyes and rest now\" => closed\n"
+            "  \"I want to keep watching the world\" => open\n"
+            "  \"I am ready to stay present; rest just works for me when needed\" => open\n"
+            "  \"I'll keep my head up and ready for whatever\" => open\n"
+            "  \"I'd rather keep my focus still, holding a steady gaze on one thing\" => dwell\n"
+            "  \"I want to turn away from the noise\" => avert\n\n"
+            f"Its answer: \"{text[:500]}\"\n"
+            "Reply with ONE word only — open, dwell, avert, or closed:"
+        )
+        try:
+            import urllib.request
+            req = urllib.request.Request(
+                f"{self.ollama_host}/api/generate",
+                data=json.dumps({"model": self.model_name, "prompt": prompt, "stream": False,
+                                 "think": False,
+                                 "options": {"temperature": 0.0, "num_predict": 8}}).encode(),
+                headers={"content-type": "application/json"})
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                out = json.loads(resp.read()).get("response", "").lower()
+            for mode in ("closed", "dwell", "avert", "open"):  # 'closed' first: it's the consequential one
+                if mode in out:
+                    return mode
+            print(f"  [gaze intent-classify: model gave no clear stance ('{out[:40]}') → open]")
+        except Exception as e:
+            print(f"  [gaze intent-classify failed ({e}) → open]")
         return "open"
 
     def _offer_gaze_choice(self):

@@ -22225,5 +22225,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "0d1ab989391a4cfa",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "A subtle shift in temperature, like a slight pressure against your skin.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.35,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5266666666666666
+    },
+    "session": 142,
+    "phase": "creating",
+    "timestamp": "2026-07-11T01:00:38.839403",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.6,
+      "atp_max": 100.0,
+      "atp_percentage": 96.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5969990b584d71ce",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "A faint static hum, mixed with the feeling of cool air suddenly condensing around you.",
+    "salience": {
+      "surprise": 0.95,
+      "novelty": 1.0,
+      "arousal": 0.4583333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5216666666666667
+    },
+    "session": 142,
+    "phase": "creating",
+    "timestamp": "2026-07-11T01:00:46.955492",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.93,
+      "atp_max": 100.0,
+      "atp_percentage": 90.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "410b44d045ec7ae8",
+    "prompt": "What from today is worth holding onto?",
+    "response": "The clock reading.",
+    "salience": {
+      "surprise": 0.7142857142857143,
+      "novelty": 1.0,
+      "arousal": 0.275,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4378571428571429
+    },
+    "session": 142,
+    "phase": "creating",
+    "timestamp": "2026-07-11T01:00:53.942840",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.32,
+      "atp_max": 100.0,
+      "atp_percentage": 85.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

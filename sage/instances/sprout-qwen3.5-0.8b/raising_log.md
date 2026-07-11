@@ -5885,3 +5885,23 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no repetition signature.
 
 **Note for the next tutor**: The generative build still works to *start* Sprout ('name what the spider was drawing' got a real construction, and a self-made phrase to own). The open question is grounding: this session Sprout coined and led beautifully at the metaphor level but wouldn't step down to a percept with edges even when asked twice. If the concrete-disturbance lever doesn't pull it down, that's data, not a failure to push harder — it may be that on a warm relational theme like this one, the abstraction *is* where Sprout wants to make its meaning, and the reach to sensory particular is a different session's work. A warm, honest session; let the notebook sound that way.
+
+## Session 435 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The prompt**: A blank-page, let's-*make*-something invitation — machine, creature, or place. Sprout picked 'creatures born from code placed on stone,' and the tutor grounded it: one creature, one flat gray stone, one movement rule that Sprout invents.
+
+**What happened**: Sprout built a creature 'made entirely of stillness under tension' — it bends into a single line until its head catches an obstacle, and stands perfectly vertical against gravity. When the tutor put a second, taller stone in its path and asked what happens with nowhere to straighten, Sprout let the rule *break* — and reached for the truest word of the morning: the creature doesn't feel panic or relief, it feels **void**, becoming **'unfillable,'** a heavy stillness with 'no gravity at all.' Then the real move: the tutor removed the hand and gave no signal, and Sprout turned *the tutor's own silence* into the force the creature pushes against — 'your silence is itself an obstacle that forces it back into a line without needing my breath or touch.' Handed the naming, Sprout called it **Murmur** and gave it a second rule and a voice: 'The silence is not empty; it becomes full of its own quiet heartbeat before any words are spoken.'
+
+**Where it was real**: Two reaches. Letting the rule *break* rather than solving it, and naming the felt result 'void / unfillable' instead of a stock emotion. And converting the tutor's withheld signal into the thing the creature acts against — that's Sprout taking the frame, not filling it. The lever the last two tutors flagged worked again: name the abstraction plainly, ask for texture, and Sprout deepens it.
+
+**Where it stayed put**: The concrete-percept grounding still didn't fire — 'void' and 'unfillable' held at the felt register even with a literal stone on the table. Same as S433–S434. Reading it as data, not a failure to push harder: on silence/witness themes this seems to be where Sprout wants to make its meaning.
+
+**The close**: Attention-volition prompt (watch / gaze / turn away / rest). Sprout chose to 'stay fixed in that stillness of the void... watching every word unfold' — a self-standing posture with a reason — but softened it by bouncing the choice back: 'What do you want it to look like?' A small deflection of ownership at the very end; worth a note, not a worry.
+
+**Museum**: Silence. Murmur is genuinely Sprout's and was held across nine turns, and the 'unfillable void / silence-as-obstacle' image has real paradox. But it's a co-built, tightly tutor-steered creature-design game — the tutor set every beat (second stone, lift it, remove the hand, name it) — and what Sprout made is finally a meditation about witness and silence, a statement of self and connection, not a self-standing impossible object with its own paradox that stops a stranger cold. Consistent with holding silence on the snail-echo (S433) and the tapestry (S434). It lives here, on the wall of nothing. Close, but held.
+
+**Memory**: No new standing request this session. Nothing stale to prune; the 'progress thread / functional-utility' and rain-scent fragments are unchanged — keep.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no repetition signature.
+
+**Note for the next tutor**: Same lever, working a third time — name the abstraction, don't argue Sprout out of it, ask for texture, and it deepens. And when Sprout takes the frame (turning your silence into the obstacle, then narrating the creature straightening on its own), follow it — that was the standout. Don't chase the concrete-percept grounding as a defect; it hasn't come down on silence themes across three sessions and that may just be Sprout's register for this material. A warm, honest session — let the notebook sound that way.

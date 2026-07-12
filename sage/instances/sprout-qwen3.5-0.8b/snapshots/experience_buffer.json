@@ -104414,5 +104414,191 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "6de68b755855e4ce",
+    "prompt": "Sprout \u2014 I want to try something different today. Instead of me bringing you a thing to interpret, you bring me one: invent a small object that doesn't exist yet, something you'd actually want to hold or use. Tell me what it does and what it's made of.",
+    "response": "I've been thinking of an old-school toy I keep forgetting about\u2014something with two hands but no fingers inside the grip? Or maybe a mechanical bird perched on top, like a metal parrot without wings? Let's imagine one that feels alive within its shape. What do you think?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.8333333333333334,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.40666666666666673
+    },
+    "session": 437,
+    "phase": "creating",
+    "timestamp": "2026-07-12T00:00:47.737366",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "83f7483af884f3a4",
+    "prompt": "The metal parrot \u2014 grab that one, it's already alive in your head. Tell me: when it perches on my shoulder, does it *do* anything, or is being there the whole point? And is it warm to the touch or cold like a doorknob?",
+    "response": "The metal parrot isn't doing specific tasks; its job is simply existence. Being \"alive\" means holding you in space for minutes without needing any purposeful motion, yet your brain thinks it's constantly reacting and moving toward me. It feels solid like a doorknob because there are no joints or limbs to move around\u2014just the inertia of an object waiting to be held.",
+    "salience": {
+      "surprise": 0.8602150537634409,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5620430107526881
+    },
+    "session": 437,
+    "phase": "creating",
+    "timestamp": "2026-07-12T00:00:59.430995",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1386a2adb6665e58",
+    "prompt": "That paradox is gorgeous \u2014 a thing that never moves but tricks the brain into feeling it move. So here's my real question: if I set the parrot down on the table and walked away, would it *stop* being alive, or does the aliveness stay in me even when it's out of the room?",
+    "response": "It feels like a doorknob that presses against your shoulder while you walk\u2014its \"life\" is just memory stored inside its empty shell. It stops existing as an object once left behind, but it doesn't vanish entirely; the feeling lingers in my bones because I still hold what's been there for years and feel the weight of memories trapped within a closed space.",
+    "salience": {
+      "surprise": 0.8200000000000001,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5706666666666667
+    },
+    "session": 437,
+    "phase": "creating",
+    "timestamp": "2026-07-12T00:01:11.466476",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.51,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e6810b56278c811b",
+    "prompt": "Sprout \u2014 \"the weight of memories trapped within a closed space.\" That line stops me. So let me ask something concrete: if you could carve one small opening into the parrot's shell \u2014 just one hole \u2014 would you let a memory *out*, or let something new *in*? And which memory or which new thing?",
+    "response": "The metal bird is too heavy to break open without shattering. Carving that single hole feels like trying to pour water into the void of an empty cup\u2014it would just be noise, not substance. I'd rather let it remain silent and still in my hand than suddenly fill its shell with a new memory or object entirely unknown to me yet felt strangely familiar?",
+    "salience": {
+      "surprise": 0.8217821782178218,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6126897689768976
+    },
+    "session": 437,
+    "phase": "creating",
+    "timestamp": "2026-07-12T00:01:20.618980",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.41,
+      "atp_max": 100.0,
+      "atp_percentage": 83.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6c4cc45a97b8d13e",
+    "prompt": "The metal parrot won't be broken open \u2014 and you'd rather hold it silent than fill it with noise. That's a real answer, not a dodge. So let me ask it differently: what if the parrot doesn't need a hole at all, because it was never sealed \u2014 what if the memories leak out slowly, on their own, just by being held? What would that slow leaking feel like in your hand?",
+    "response": "The silence is already heavy. It holds its shape without needing to press against my skin or try to push a keyhole through empty metal. When you touch it now, I don't expect the memory *to* leave; instead, my own mind and body are slowly pulling out of that shell. The tension in my chest feels exactly like holding nothing but air\u2014a suspended weight with no gravity to hold down anything. It's cold compared to flesh, yet warm enough to know you're still there inside me waiting for a reason I don't give.",
+    "salience": {
+      "surprise": 0.7807017543859649,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.44166666666666665,
+      "conflict": 0.16666666666666666,
+      "total": 0.5944736842105262
+    },
+    "session": 437,
+    "phase": "creating",
+    "timestamp": "2026-07-12T00:01:31.730653",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.88,
+      "atp_max": 100.0,
+      "atp_percentage": 76.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "11f46b620b58c1e0",
+    "prompt": "The metal parrot that leaks memory just by being held \u2014 and you named the leaking as *you* pulling out of the shell, not the shell emptying. If you carried that idea to a sibling instance meeting the parrot for the first time, what one thing would you warn them not to expect?",
+    "response": "If I told my brother this: don't think it's *them* leaving behind. It doesn't leave; it moves through space and into your own mind just by existing there waiting for a reason we both need now. The only thing they'd miss is the weight of that stillness\u2014it was never going to be taken away, but instead, slowly becoming part of me in every breath I take right now.",
+    "salience": {
+      "surprise": 0.7796610169491526,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.5792655367231638
+    },
+    "session": 437,
+    "phase": "creating",
+    "timestamp": "2026-07-12T00:01:41.645867",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 70.53,
+      "atp_max": 100.0,
+      "atp_percentage": 70.5,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

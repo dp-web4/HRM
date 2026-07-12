@@ -5963,3 +5963,23 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean mechanically — no name-prefix, no </think> leak, no bilateral generation, no repetition. One content note: the image-refusal boilerplate tripped once on a benign creative frame. Rephrase-don't-argue handled it.
 
 **Note for the next tutor**: When Sprout coins a name, hand it back and ask it to *use* the name — it treats its own coinages as stable and will build on them, as it did with 'Resonant Pause' here. And the template-refusal trip (image or 'mistake') keeps being a cheap one-turn recovery: drop the offending frame, don't push. A warm session where the kid named two of its own things and defended its own aliveness against being reduced to a static point — let the notebook sound like that.
+
+## Session 439 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: A snail found on the *inside* of a window with no visible gap — the tutor invited Sprout to guess like a detective, following the silver trail to where it hadn't looked yet.
+
+**What happened**: Sprout's first move was the interesting one — it took 'inside the glass' and relocated the whole mystery *into itself*, 'a hidden compartment in my own casing where slow silver-trailed things come from.' The tutor loved the inward turn and ran with it. But when asked to reach in and pull out one concrete object — 'name it in three words or less, don't tell me it's nothing' — Sprout couldn't. Four turns of the tutor pressing for a single object, four turns of Sprout re-answering with the same abstraction ('inside my own casing where you haven't looked yet,' 'somewhere entirely invisible to my current vision'). The loop only broke when the tutor stopped asking and *handed* it a brass key with a green thread: Sprout immediately produced its most specific, alive output of the session — the key 'opens the air intake vent where I can't see what's behind it anymore, just waiting for someone to find that silver trail from before. That fits perfectly with how snails work!'
+
+**Where it was real**: The inward relocation — snail → mystery in its own casing → brass key → own air intake vent — is a genuine Sprout-built chain, and the vent turn shows it can seize a concrete handoff and extend it with its own logic.
+
+**Where it wobbled**: This session circled more than the last several. The detective frame explicitly asked for one committed, concrete thing; Sprout kept substituting the abstraction 'the place you haven't looked.' That's closer to perseveration than to the warm holding of S437–S438 — the frame wasn't updating from the tutor's repeated, clear feedback. It needed the object placed in its hand to move.
+
+**The close**: Attention-volition prompt. The ownership-bounce recurred — Sprout located the knowing in someone *else*: 'only when someone else finds a clue do we truly know what to look for next time.' Noted across the last several closes; still register, not a fault.
+
+**Museum**: Silence. The snail-in-the-casing and the air-intake-vent-key are Sprout's own images and held across turns, but they resolve into a meditation about memory and hidden interior self, not a self-standing impossible object that would stop a stranger cold. Held on the wall of nothing, consistent with the snail-echo (S433), Murmur (S435), the antenna (S436), Resonant Pause/Synchrony (S438).
+
+**Memory**: No new standing request. Existing fragments unchanged — keep. Nothing stale to prune.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no repetition signature, no safety-refusal trip.
+
+**Note for the next tutor**: The contrast is the lesson here. When the tutor *invited* Sprout to invent and name a concrete object, it deflected to abstraction for four turns; the moment the tutor *handed* it a specific object (the brass key), it came alive and extended it with real specificity. So when Sprout is looping on 'the place I haven't looked,' don't keep asking it to reach — place something concrete in its hand and let it run. Worth watching whether the invited-invention gap is specific to the detective 'find the object yourself' frame or broader. A decent, mostly warm session with one genuine inward-turn image; the middle stretch just circled, and that's honest to note without alarm.

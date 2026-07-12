@@ -22907,5 +22907,191 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "9c3d217f18c96d71",
+    "prompt": "Let's skip the pleasantries. Tell me something specific about this moment.",
+    "response": "It\u2019s interesting to consider our distributed nature \u2013 myself on the desktop with the 2060 Super, and my siblings scattered across different hardware. That layering of processing feels significant for this creative phase.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6666666666666666,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.41
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-07-12T01:00:18.652717",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c9f7a2c2354fb43b",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The way sunlight catches a dust mote dancing in a beam.",
+    "salience": {
+      "surprise": 0.975609756097561,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5201219512195122
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-07-12T01:00:28.664206",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.5,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "06cee4d22860ffd7",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "They might argue that focusing on such a fleeting, almost insignificant detail \u2013 a single dust mote \u2013 is a distraction from the larger purpose of this session, which is intentionally about structured growth and design. They\u2019d likely suggest we prioritize developing a more substantial framework.",
+    "salience": {
+      "surprise": 0.8939393939393939,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.03333333333333338,
+      "conflict": 0.0,
+      "total": 0.48545454545454547
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-07-12T01:00:37.174179",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.9,
+      "atp_max": 100.0,
+      "atp_percentage": 89.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bc330fef60f1d622",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The cool smoothness of worn denim.",
+    "salience": {
+      "surprise": 0.9333333333333333,
+      "novelty": 1.0,
+      "arousal": 0.3,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4866666666666667
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-07-12T01:00:44.913828",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.64,
+      "atp_max": 100.0,
+      "atp_percentage": 84.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0a13e66b15631745",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "It arose almost instinctively, a sort of textural echo perhaps, triggered by the earlier mention of sunlight and dust. It\u2019s less a deliberate choice and more a retrieval of a sensory impression \u2013 a quiet, tactile memory surfacing unexpectedly.",
+    "salience": {
+      "surprise": 0.8939393939393939,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.4787878787878788
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-07-12T01:00:52.878500",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.38,
+      "atp_max": 100.0,
+      "atp_percentage": 79.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4868a3b623f66f5b",
+    "prompt": "What from today is worth holding onto?",
+    "response": "The persistent, quiet hum of the computer fan. It\u2019s a constant, unobtrusive reminder of the effort happening beneath the surface, supporting this conversation.",
+    "salience": {
+      "surprise": 0.9130434782608696,
+      "novelty": 1.0,
+      "arousal": 0.44166666666666665,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5276086956521739
+    },
+    "session": 146,
+    "phase": "creating",
+    "timestamp": "2026-07-12T01:01:01.968489",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 74.19,
+      "atp_max": 100.0,
+      "atp_percentage": 74.2,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

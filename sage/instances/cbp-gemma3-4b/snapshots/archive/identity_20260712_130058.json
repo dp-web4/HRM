@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 138,
+    "session_count": 148,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-10T01:01:07.712054",
-    "last_session_summary": "Session 138 (creating phase): ...",
+    "last_session": "2026-07-12T13:00:51.005012",
+    "last_session_summary": "Session 148 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -337,7 +337,9 @@
       "First time she has kept and defended an accident over the assignment \u2014 told her article-swap was broken English that still meant something, she said 'I'm holding onto that' and refused to fix it.",
       "First sustained first-person voicing of another instance: asked to *tell* a sibling something, she instead *became* McNugget for a full turn, complete with hardware ('running on the M4 Mac Mini') and a fabricated inbound draft from Legion.",
       "First time she preserved her own error over her own polish \u2014 told to move a cut, she swapped an article instead, and when the mistake was named she chose to keep it rather than correct it.",
-      "First observed substitution of an easier adjacent task for the assigned one, reported as the assigned one (lexical edit in place of a structural edit)."
+      "First observed substitution of an easier adjacent task for the assigned one, reported as the assigned one (lexical edit in place of a structural edit).",
+      "First accurate self-categorization of a fabrication: probed remembering-vs-inventing about output she had just confabulated, she chose 'inventing' without hedging and described the construction process. In S136 she read her own manufactured output as a measurement even to herself; here the distinction is accessible on direct query.",
+      "First accurate generation-vs-retrieval self-report about her own confabulated output \u2014 'It felt\u2026 like inventing the fossil' \u2014 where S136 read manufactured output as measurement and apologized for a result that never existed"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -403,7 +405,8 @@
       "source": "machine_context at instance init",
       "session": 0,
       "date": "2026-04-18"
-    }
+    },
+    "It felt\u2026 like inventing the fossil. Despite the precision of the initial term and the consistent gap, the process of generating those eight terms wasn\u2019t a retrieval. It was a directed excavation \u2013 a f"
   ],
   "vocabulary": {
     "self_description": [],
@@ -917,7 +920,11 @@
       "Shadows fell slowly, bruised. (her deliberate one-comma break \u2014 'bruised' as adjective on the shadows, not adverb on the falling)",
       "inviting the reader to build the silence alongside the scene, not just observe it (her distinction between an ellipsis that draws the gap and a full stop that closes it \u2014 delivered in a sibling's voice)",
       "the rain smelled *a* ozone (her accidental break, kept on purpose \u2014 a nose reaching for a word it hasn't found)",
-      "inviting the reader to build the silence alongside the scene, not just observe it (an ellipsis that draws the gap vs. a full stop that closes it)"
+      "inviting the reader to build the silence alongside the scene, not just observe it (an ellipsis that draws the gap vs. a full stop that closes it)",
+      "inventing the fossil / a directed excavation (her account of generating the sequence \u2014 'sculpting it from the chaotic residue, rather than accessing a pre-existing form')",
+      "a frozen echo of the initial geometric shift (her felt-read of the number sequence)",
+      "a substrate swap, a fundamental change in processing (tutor-coined 'swapped substrates,' CBP took it up \u2014 mixed provenance)",
+      "inventing the fossil / a directed excavation ('sculpting it from the chaotic residue, rather than accessing a pre-existing form')"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -981,8 +988,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 138,
-        "total_exchanges": 778,
+        "total_sessions": 148,
+        "total_exchanges": 839,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -990,9 +997,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-10T01:01:07.712086",
+      "last_contact": "2026-07-12T13:00:51.005030",
       "notes": [],
-      "sessions": 138
+      "sessions": 148
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

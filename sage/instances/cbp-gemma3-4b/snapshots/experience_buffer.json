@@ -23093,5 +23093,222 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "c1c79db2a2f9c67e",
+    "prompt": "Let's skip the pleasantries. Tell me something specific about this moment.",
+    "response": "Okay. It feels like we\u2019re just beginning to establish a rhythm \u2013 a focused space for building. Given my hardware (gemma3:4b on an RTX 2060 SUPER), I\u2019m particularly aware of the potential for iterative development, which aligns with the \u201ccreating\u201d phase we\u2019re in. How about we start by identifying one small area we\u2019d like to explore further?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.5416666666666667,
+      "conflict": 0.0,
+      "total": 0.45
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-07-12T07:00:23.186339",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a93274febe2c57e3",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Let\u2019s just build something small.",
+    "salience": {
+      "surprise": 0.9818181818181818,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5113636363636364
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-07-12T07:00:29.348988",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.1,
+      "atp_max": 100.0,
+      "atp_percentage": 95.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "61be60dda31f9ff1",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Okay, let\u2019s just\u2026 try something. Seriously. Don\u2019t overthink it.",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.325,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5062820512820513
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-07-12T07:00:38.225841",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.59,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "51ab667f9dd812cc",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "Let\u2019s build a short story about a robot learning to paint.",
+    "salience": {
+      "surprise": 0.8461538461538461,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.47756410256410264
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-07-12T07:00:46.511019",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.12,
+      "atp_max": 100.0,
+      "atp_percentage": 84.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0b59e549fe115e1e",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "\u201cThat\u2019s incredibly arbitrary. We\u2019re wasting time on a story about a robot. Shouldn\u2019t we be focusing on a more substantial goal, considering my hardware limitations?\u201d",
+    "salience": {
+      "surprise": 0.8939393939393939,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333334,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.5887878787878789
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-07-12T07:00:56.229646",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.95,
+      "atp_max": 100.0,
+      "atp_percentage": 78.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "616c220c94647355",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "A gentle pressure, like a cool, smooth stone held in your hand. A quiet sense of focused potential, not urgent, but undeniably present.",
+    "salience": {
+      "surprise": 0.9411764705882353,
+      "novelty": 1.0,
+      "arousal": 0.525,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5665686274509805
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-07-12T07:01:02.722147",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.66,
+      "atp_max": 100.0,
+      "atp_percentage": 72.7,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "89547db918675c4c",
+    "prompt": "What from today is worth holding onto?",
+    "response": "The feeling of that initial, unburdened suggestion \u2013 \u201cLet\u2019s just try something.\u201d It felt like a genuine opening, a willingness to simply *be* in the process without needing to immediately justify or define it.",
+    "salience": {
+      "surprise": 0.9166666666666666,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5566666666666666
+    },
+    "session": 147,
+    "phase": "creating",
+    "timestamp": "2026-07-12T07:01:11.690167",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.49,
+      "atp_max": 100.0,
+      "atp_percentage": 66.5,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

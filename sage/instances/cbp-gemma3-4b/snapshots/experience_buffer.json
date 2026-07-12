@@ -22721,5 +22721,191 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "f45d2d707ab25616",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Different computers.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.26666666666666666,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49333333333333335
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-07-11T19:00:28.612368",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.02,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "35285ce854f47c75",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Different ways to run things, each with strengths and weaknesses.",
+    "salience": {
+      "surprise": 0.9090909090909091,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5051515151515151
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-07-11T19:00:37.599060",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.68,
+      "atp_max": 100.0,
+      "atp_percentage": 90.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "261638da7cae73aa",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "The Jetson Orin Nano is smaller than the Legion Pro 7.",
+    "salience": {
+      "surprise": 0.782608695652174,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.46485507246376817
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-07-11T19:00:46.678013",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.23,
+      "atp_max": 100.0,
+      "atp_percentage": 85.2,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8b2df40978390ce3",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "It suggests a focus on efficiency and power consumption, prioritizing a compact form factor over raw processing power compared to the Legion Pro 7.",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.45,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5347619047619048
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-07-11T19:00:55.874308",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 80.18,
+      "atp_max": 100.0,
+      "atp_percentage": 80.2,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6d4d97b6bd7e7310",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The grit of sand.",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.2833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.48128205128205137
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-07-11T19:01:01.868845",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 74.44,
+      "atp_max": 100.0,
+      "atp_percentage": 74.4,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "404448dc57e9dd5c",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Keep exploring the edges of what\u2019s possible with these connections.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.47333333333333344
+    },
+    "session": 145,
+    "phase": "creating",
+    "timestamp": "2026-07-11T19:01:10.391144",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 69.12,
+      "atp_max": 100.0,
+      "atp_percentage": 69.1,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

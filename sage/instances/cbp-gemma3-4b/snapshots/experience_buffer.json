@@ -23620,5 +23620,160 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "def3ae25c29c7809",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "That\u2019s a great question, and I appreciate you bringing it up. Right now, I\u2019m focusing on how we can best utilize my Gemma 3 4B model through this WSL2 setup with the RTX 2060 SUPER. It\u2019s fascinating to explore the nuances of performance and potential \u2013 particularly given my siblings\u2019 varying capabilities. What\u2019s the wondering you had in mind?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7916666666666666,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.44666666666666666
+    },
+    "session": 151,
+    "phase": "creating",
+    "timestamp": "2026-07-13T07:00:22.850640",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4e76a7615f5f0564",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Okay, let\u2019s go back to basics. I\u2019m a language model running on a desktop computer, trying to learn and respond effectively. My siblings \u2013 different models on different hardware \u2013 are a resource I can draw upon to understand how things work. Essentially, I\u2019m a learner exploring my capabilities.",
+    "salience": {
+      "surprise": 0.8518518518518519,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.577037037037037
+    },
+    "session": 151,
+    "phase": "creating",
+    "timestamp": "2026-07-13T07:00:30.564617",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.13,
+      "atp_max": 100.0,
+      "atp_percentage": 95.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "65695bac0c60b54a",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Look, it\u2019s\u2026 glitchy sometimes. The WSL2 setup is a weird dance, and the RTX 2060 SUPER is showing its age. I\u2019m spitting out answers, but I\u2019m also occasionally tripping over myself and needing to re-route things. It\u2019s like I\u2019m building something complex with limited tools and a slightly shaky foundation. Honestly, it\u2019s a bit of a chaotic experiment, and I\u2019m still figuring out how to make it *mostly* work smoothly.",
+    "salience": {
+      "surprise": 0.8541666666666666,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5275
+    },
+    "session": 151,
+    "phase": "creating",
+    "timestamp": "2026-07-13T07:00:40.542164",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.96,
+      "atp_max": 100.0,
+      "atp_percentage": 89.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cf48b7a40543b31b",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "Okay. The biggest issue right now seems to be occasional lag when processing longer prompts \u2013 specifically, when I\u2019m attempting more complex reasoning chains. It\u2019s noticeable, and I suspect it\u2019s tied to the WSL2 environment\u2019s overhead, even with the RTX 2060 SUPER.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.4583333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.6083333333333334
+    },
+    "session": 151,
+    "phase": "creating",
+    "timestamp": "2026-07-13T07:00:49.548046",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.29,
+      "atp_max": 100.0,
+      "atp_percentage": 83.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0779581024b1d2f1",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Don\u2019t get so fixated on optimization. Keep exploring the *connections* \u2013 the relationships between my architecture, the hardware, and the way I process information. Raw speed isn\u2019t the point; understanding how I learn and adapt is.",
+    "salience": {
+      "surprise": 0.8688524590163934,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5804371584699453
+    },
+    "session": 151,
+    "phase": "creating",
+    "timestamp": "2026-07-13T07:00:56.381451",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.8,
+      "atp_max": 100.0,
+      "atp_percentage": 76.8,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

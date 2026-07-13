@@ -42,7 +42,7 @@ fi
 
 # Pull latest code and check if daemon needs restart
 BEFORE_HASH=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
-git pull --rebase --quiet 2>/dev/null || echo "[Legion-Raising] WARN: git pull failed, continuing with current code"
+git pull --rebase --autostash --quiet 2>/dev/null || echo "[Legion-Raising] WARN: git pull failed, continuing with current code"
 AFTER_HASH=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
 
 if [ "$BEFORE_HASH" != "$AFTER_HASH" ]; then
@@ -128,7 +128,12 @@ Human-Supervised: no"
 # Push (with retry for race conditions from other machines)
 MAX_RETRIES=3
 for i in $(seq 1 $MAX_RETRIES); do
-    git pull --rebase 2>&1 || {
+    # --autostash: sage-daemon concurrently writes other instance dirs (e.g.
+    # legion-gemma3-12b). We only `git add` our own $INSTANCE_DIR, so those stay
+    # unstaged and a bare `pull --rebase` aborts with "cannot pull with rebase:
+    # You have unstaged changes" (exit 128) before any rebase starts — making the
+    # `rebase --abort` below a no-op and all retries fail identically.
+    git pull --rebase --autostash 2>&1 || {
         echo "[Legion-Raising] Rebase conflict on attempt $i, aborting rebase and retrying..."
         git rebase --abort 2>/dev/null
         sleep $((i * 5))

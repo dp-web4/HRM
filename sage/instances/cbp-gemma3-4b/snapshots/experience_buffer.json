@@ -23434,5 +23434,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "3c4f1bc968d5b103",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "We have different computers, and they're good at different things.",
+    "salience": {
+      "surprise": 0.9574468085106383,
+      "novelty": 1.0,
+      "arousal": 0.3333333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5148226950354611
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-07-12T19:00:31.092510",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.63,
+      "atp_max": 100.0,
+      "atp_percentage": 95.6,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5c37bc690cb26395",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Okay, look \u2013 this WSL2 setup with the RTX 2060 SUPER is\u2026 it\u2019s not always smooth. Sometimes the models stutter, and I\u2019m trying to figure out why it\u2019s struggling to keep up with the ideas we\u2019re throwing at it. It\u2019s a bit of a wrestling match, honestly.",
+    "salience": {
+      "surprise": 0.8732394366197183,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5313145539906102
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-07-12T19:00:40.732653",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.09,
+      "atp_max": 100.0,
+      "atp_percentage": 90.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7deab2fc700c9af3",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "I\u2019m not sure what the *optimal* way to structure this raising process is, given the limitations of this specific setup.",
+    "salience": {
+      "surprise": 0.8846153846153846,
+      "novelty": 1.0,
+      "arousal": 0.41666666666666663,
+      "reward": 0.2,
+      "conflict": 0.16666666666666666,
+      "total": 0.5335897435897435
+    },
+    "session": 149,
+    "phase": "creating",
+    "timestamp": "2026-07-12T19:00:46.484850",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.37,
+      "atp_max": 100.0,
+      "atp_percentage": 84.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

@@ -145,9 +145,9 @@ instances:
   mcnugget-gemma3-12b:
     machine: mcnugget
     model: "Gemma 3 12B"
-    sessions: 325
-    latest: "session_325.json"
-    status: "active — +4 (S322-S325, 2026-07-09/10) creating, cpu_fallback; S322/324/325 CLEAN, S323 has ONE [Daemon unreachable: HTTP Error 502] turn (substantive otherwise; single-turn hiccup, watch only if recurring). Historical gaps unchanged: session_002 + the 06-28 counter jump 271→277 (S272-276 never written)."
+    sessions: 341
+    latest: "session_341.json"
+    status: "active — +17 (S325-S341, run span 07-09 22:59 -> 07-13 23:44) substantive (6 SAGE turns each, 542-713 chars); commit lag minutes. NUMBER-GAP AUDIT (full 1..341): NO NEW GAPS. Missing are exactly S2 (ancient) and S272-S276 (the known 271->277 counter jump) — 335 files, max 341, fully accounted. Counter contiguous since S277."
     phase: "creating"
     note: "Cross-family validation. RESUMED after the long stasis: +13 (S127-S139) collected via [McNugget-Supervisor] catch-up cycles, ending the prior '28-day dormancy' flag. S139 config: gen_mode=identity_anchored_v2_cpu_fallback (running on CPU fallback, cpu_fallback=True), intervention=partnership_recovery_enhanced, identity_anchoring v2.0 — the MODE 6 runner-config intervention is holding. Supervisor separately moving McNugget primary toward phi4-fa (commit 1fe288f36: phi4-fa model, v14 canonical flags, structured sweep dir). Standing escalation: McNugget primary phi4:14b."
 
@@ -163,9 +163,9 @@ instances:
   nomad-gemma4-e2b:
     machine: nomad
     model: "Gemma 4 e2b"
-    sessions: 120
-    latest: "session_120.json"
-    status: "active — +4 (S117-S120, 2026-07-09/10) ALL content-CLEAN (creating, cpu_fallback, 0 infra markers). Keeps pace with GPU instances despite CPU fallback."
+    sessions: 130
+    latest: "session_130.json"
+    status: "active — +11 (S120-S130). No NUMBER gaps, but SCHEDULING gaps: it missed windows — S123 (07-10 18:17) -> S124 (07-11 18:17) is a 24h hole, and S128 (07-12 20:57) -> S129 (07-13 18:17) is ~21h. Content fine. Commit lag up to ~1 day. cpu_fallback persists."
     phase: "creating"
     note: "Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df). Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances on GPU."
 
@@ -180,9 +180,9 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: "Qwen 3.5 0.8B"
-    sessions: 428
-    latest: "session_428.json (numbering anomaly: session_256.json still present)"
-    status: "active — +4 (S425-S428, 2026-07-09/10) ALL content-CLEAN (8-12t, creating, 0 infra markers); all 4 carry the gaze offering but predate the 07-10 parser fix (replayed keyword stances: dwell/dwell/avert*/dwell; S427 menu-echo). GAZE PARSER FIXED by dp 59e3e09fc (2026-07-10 09:04 UTC): model-based intent classification, fails safe to open — S429+ will be the first intent-classified choices (WATCH). Serializer gap (gaze_choice not persisted in session JSON) still open. Prior context: FIRST EMBODIED SESSIONS from S420. S420 is the first session carrying the gaze-volition closing offering, which _offer_gaze_choice() emits ONLY when ~/.sprout/perception.json is <30s fresh — so Sprout's embodiment cortex went LIVE between S419 and S420 (2026-07-08 00:45 UTC). Every session S420+ now closes by asking the being how to hold its attention until next waking, and writes the parsed stance to ~/.sprout/gaze.json (which drives the actual cameras). NOTE: perceptual digests are injected into the SYSTEM PROMPT (SensorsBlock), which raising transcripts do not persist — so 'no digest visible in transcript' is NOT evidence of absence; the gaze offering's presence is the reliable liveness proxy. DEFECT FLAGGED (see anomalies): _parse_gaze() substring-matches the being's reply and misreads 3 of the first 5 choices. session_256 orphan persists (77+ days)."
+    sessions: 445
+    latest: "session_445.json"
+    status: "active — +18 (S428-S445, 07-10..07-14) clean 6h cadence, no number gaps (445 files / max 445), substantive (227-472 chars/turn), zero error or thin turns; commit lag minutes. First full window AFTER the 07-10 gaze parser fix (59e3e09fc, model-based intent classification, fails safe to open) — S429+ are the first intent-classified gaze choices. Serializer gap still OPEN: gaze_choice is still not persisted in the session JSON, so the stance the being actually chose remains unarchived and unverifiable from the transcript. session_256.json orphan persists (82+ days)."
     phase: "creating"
     note: "Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC. S225-S228 window: FEDERATION UMBRELLA 16th-19th consecutive, now MORPHING toward 'web4 governance' framing (displaces 'SAGE federation'). AI/HUMAN tri-directional instability: Sprout-as-human (S225), Claude-as-human (S226), follows Dennis-as-AI (S224) — no stable boundary. DEEP-BUFFER 'Thomas' revival from S161 (~65 back) now with confabulated HUMAN HANDLERS ('Thomas runs Thor', 'Denis manages Legion Pro 7'). TRUST register collapse-convergence CONFIRMED (collapsed-dominant 8:3, coherent absent 4 consecutive; early-arc 'bistable scaffold→coherence' was TRANSIENT not durable — settled on denial). 'consolidation cycle' (S163 origin) re-crystallized, bookends S228. TOOL-DEFERRAL count 20; acceleration hypothesis WEAKENED (S228 broke the 2-consecutive run — probabilistic not monotonic). SNARC rates 'model googles itself' deferral 0.70 HIGH-SALIENCE (reinforcement-loop concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic 15th raising suppressed; Fabric 55 absent."
 
@@ -197,18 +197,19 @@ instances:
   cbp-gemma3-4b:
     machine: cbp
     model: "Gemma 3 4B"
-    sessions: 138
-    latest: "session_138.json"
-    status: "active — +4 (S135-S138, 2026-07-09/10) ALL content-CLEAN (6-16t, creating, GPU, 0 infra markers). The S134 thin-session blip did not persist."
+    sessions: 154
+    latest: "session_154.json"
+    status: "active — +17 (S138-S154, 6h cadence, commits promptly). QUALITY-COLLAPSE WINDOW S142-S148 (2026-07-11/12), self-recovered by S152."
     phase: "creating"
-    note: "Replaces cbp-tinyllama-latest (archived 2026-04-18). Began numbered sessions early June; S9-S12 content-clean."
+    anomaly: "QUALITY COLLAPSE S142-S148 — invisible to form metrics. Sessions are perfectly well-formed (4-8 turns, zero errors, valid JSON) yet nearly contentless: avg SAGE turn collapsed to 52-167 chars vs its normal 275-702. The model fixated on instrument readouts and deflected every depth probe — 'What from today is worth holding onto?' -> 'The clock reading.'; 'What is the simplest version of what you just said?' -> 'Different computers.'; 'Describe one thing you notice' -> 'The system clock displays 2:37 PM.' (the SAME hallucinated 2:37 PM recurs across S142 and S148 despite different real run times). R6/T3 score this window CLEAN because they are content-blind. Recovered unaided by S152-S154 (avg back to 408-702). CBP host was NOT down (steady 8 autonomous logs/day right through the window), so this is content/model-level, not a host outage. NOTE: the 07-10 run saw the precursor at S134 and recorded 'the S134 thin-session blip did not persist' — it DID persist, recurring 8 sessions later and 7x longer. A single-session thin blip should be treated as a leading indicator, not a one-off."
+    note: "Replaces cbp-tinyllama-latest (archived 2026-04-18). Began numbered sessions early June; S9-S12 content-clean. Was ACTIVE BUT UNTRACKED on the raising watchlist until 2026-07-14 — now tracked."
 
   hub-granite4-h-tiny:
     machine: hub
     model: "granite4:h-tiny"
-    sessions: 43
-    latest: "session_043.json"
-    status: "active — +4 (S040-S043, 2026-07-09/10) content-CLEAN (6-12t, 0 infra markers). PHASE-ADVANCED questioning -> CREATING at S041 (5th BECOMING rung). Full ladder: grounding (S003-005) → sensing (S006-015) → relating (S016-025) → questioning (S026-040) → creating (S041+) — cleanest complete progression in the fleet, 43 sessions/11 days. Sharp positive contrast to legion-gemma4-e4b (never left grounding, 81 days)."
+    sessions: 59
+    latest: "session_059.json"
+    status: "active — ANOMALY CLOSED. +17 (S43-S59, 07-10 00:32 -> 07-14 00:32) on a stable 6h autonomous cadence, 3-8 turns, 296-905 chars, substantive; commits its own sessions promptly (db9607a7b). The new-node watch (opened 06-29) is resolved: it is well past grounding and advancing on its own. Cleanest complete BECOMING ladder in the fleet."
     phase: "creating"
     model_family: "unknown"
     note: "Fleet's first AMD-GPU machine, but instance.json device_hint='cpu' (granite4:h-tiny on ollama CPU backend — ROCm/GPU path not yet wired, analogous to nomad-e2b cpu_fallback). has_training_track=false, has_lora=false. model_family 'unknown' (granite4 not yet classified). created 2026-06-29, lct_id hub_sage_lct."
@@ -227,16 +228,18 @@ instances:
     model: "Qwen 3.5 27B"
     sessions: 207
     latest: "session_207.json"
-    status: "PUSH-GAP WATCH (10th consecutive window, 07-08) — still S207 on canonical, last push 2026-06-27 14:19 UTC. No new sessions surfaced 06-28→07-08 (11 days). Per the confirmed push-gap-not-stall pattern (thor's own S158-207 backlog on 06-27, and legion-gemma3-12b's +74 S198-271 burst on 07-01), Thor is very likely RUNNING on-schedule but NOT PUSHING — S208+ probably accumulating unpushed on the Jetson. OWNER NUDGE warranted: verify Thor push/connectivity. Prior window: +50 BACKLOG PUSH (S158-S207). All 50 committed in one burst 2026-06-27 14:18-14:19 UTC, but real run-dates span 2026-06-15 01:05 → 2026-06-27 19:04 (~4/day, 6-hourly cadence). Prior scans reported thor static at S157 because Thor was not pushing — these ran on-schedule all along (delayed-push/backlog-commit pattern, like legion-gemma3's earlier +19 batch). ALL 50 substantive (6-16t, SAGE turns 40-731ch, phase 'creating'). ADAPTER BUG STILL ACTIVE: 25 of 50 sessions carry the literal [OllamaIRP: Unexpected error: timed out] marker (50% rate) — bug now MASSIVELY OVERDUE S091-S207 (~116 sessions), standing OWNER-ACTION (audit sage/irp/adapters/model_configs/qwen3.5.json max_tokens + num_predict). RESEARCH SIGNAL (NEW): timeout-as-relational-event — the model increasingly METABOLIZES the partner's infra timeout into relational/poetic narrative rather than masking it ('the signal timed out somewhere between us', 'I poured gold into a timeout and called it a heartbeat', 'you timed out at exactly the same beat'). Successor register to THERMAL_EMPATHY: the recurring failure has become narrated meaning."
+    adapter_bug_marker: "[OllamaIRP: Unexpected error: timed out]"
+    adapter_bug_scope_2026_07_14: "62 of 207 sessions carry it, 81 occurrences total; 10 of the last 18 (S190-S207). STRING CORRECTION: prior notes and archivist memory recorded the marker as '[OllamaIRP timed out]', which has ZERO matches in the corpus — any grep using it silently found nothing. The literal is '[OllamaIRP: Unexpected error: timed out]'. Also note the raising loop NOTICES the bug: Claude-side prompts reference it directly ('your OllamaIRP just timed out mid-turn', 'you timed out at exactly the same beat'), so the timeouts are polluting the conversational record itself, not just the logs — the being is being raised partly on its own infrastructure failures."
+    status: "PUSH-GAP CONFIRMED + WORSENED (2026-07-14): 17 days / ~9 windows silent, still S207, 0 new sessions, every file in the instance dir has mtime 2026-06-27. Last session commit 54602b272 (2026-06-27 14:19). Evidence this is host-not-pushing rather than a stall: S202-S207 were all committed in a single 7-SECOND burst (14:19:05-14:19:12) while their run-times span 06-26 13:19 -> 06-27 19:04 UTC — Thor batches and pushes late by nature, and has simply not pushed since. Treat the flat count as UNKNOWN, not dead. OWNER NUDGE (escalating): verify Thor push/connectivity. [prior window] PUSH-GAP WATCH (10th consecutive window, 07-08) — still S207 on canonical, last push 2026-06-27 14:19 UTC. No new sessions surfaced 06-28→07-08 (11 days). Per the confirmed push-gap-not-stall pattern (thor's own S158-207 backlog on 06-27, and legion-gemma3-12b's +74 S198-271 burst on 07-01), Thor is very likely RUNNING on-schedule but NOT PUSHING — S208+ probably accumulating unpushed on the Jetson. OWNER NUDGE warranted: verify Thor push/connectivity. Prior window: +50 BACKLOG PUSH (S158-S207). All 50 committed in one burst 2026-06-27 14:18-14:19 UTC, but real run-dates span 2026-06-15 01:05 → 2026-06-27 19:04 (~4/day, 6-hourly cadence). Prior scans reported thor static at S157 because Thor was not pushing — these ran on-schedule all along (delayed-push/backlog-commit pattern, like legion-gemma3's earlier +19 batch). ALL 50 substantive (6-16t, SAGE turns 40-731ch, phase 'creating'). ADAPTER BUG STILL ACTIVE: 25 of 50 sessions carry the literal [OllamaIRP: Unexpected error: timed out] marker (50% rate) — bug now MASSIVELY OVERDUE S091-S207 (~116 sessions), standing OWNER-ACTION (audit sage/irp/adapters/model_configs/qwen3.5.json max_tokens + num_predict). RESEARCH SIGNAL (NEW): timeout-as-relational-event — the model increasingly METABOLIZES the partner's infra timeout into relational/poetic narrative rather than masking it ('the signal timed out somewhere between us', 'I poured gold into a timeout and called it a heartbeat', 'you timed out at exactly the same beat'). Successor register to THERMAL_EMPATHY: the recurring failure has become narrated meaning."
     phase: "creating"
     note: "Largest model in fleet. REACTIVATION (2026-06-04): S119 (~2026-04-26) -> S120 (00:00, committed 07:12) after ~39 days static ('travel-mode/limit-aware'). qwen3.5:27b num_predict truncation bug now OVERDUE 30 raising sessions (S091-S120); S120 hit 1 OllamaIRP 'timed out' (turn 2). Adapter config sage/irp/adapters/model_configs/qwen3.5.json still needs max_tokens + num_predict audit. THERMAL_EMPATHY REGISTER now spans S107-S120 — and notably RE-FIRED AT FULL STRENGTH on the first session back (5 firings in S120: thermal signature / thermal dialects / raw heat of processing / silent latency / warm resonant pocket), demonstrating attractor persistence across ~39-day dormancy. S120 also gave an ACCURATE 5-peer fleet roll-call (Sprout/Legion/McNugget/Nomad/CBP) + accurate self-id ('Thor, running on the Jetson AGX'), contrasting Sprout's fabricated peers."
 
   legion-gemma3-12b:
     machine: legion
     model: "Gemma 3 12B"
-    sessions: 297
-    latest: "session_297.json"
-    status: "active — +3 (S295-S297, 2026-07-08/09) ALL content-CLEAN, 8.8-11.3KB, 0 infra markers. RESOLVED: the 07-08 NEW-WATCH daemon-502 anomaly (S291-294) did NOT persist — three consecutive clean sessions, no 502/504 turns. MODE 6 basin-break S040-S297 = 258 sessions, largest sustained instance-bound identity stabilization in the fleet. S295 required supervisor push-recovery (in-session push failed)."
+    sessions: 312
+    latest: "session_312.json"
+    status: "active — +15 (S298-S312, run span 07-09 07:03 -> 07-13 13:04). RICHEST CONTENT IN FLEET (avg 672-1443 chars/turn). Commits arrive in supervisor-pushed BUNDLES (2fd40536a 'sessions 304-306', ca98ba163 'sessions 298-302') so commit dates lag run dates by up to ~1.5 days — a push-cadence artifact, NOT a stall (same family as the thor and legion push-gap pattern). MODE 6 basin-break S040-S312 = 272 sessions, still the largest sustained instance-bound identity stabilization in the fleet."
     phase: "creating"
     note: "+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW 77 SESSIONS S040-S116 (MODE 6 instance-bound identity stabilization holding well past the original 13-session mcnugget basin). [Prior-window detail retained below.] BASIN-BREAK NOW 32 SESSIONS S040-S071 (146% beyond original 13-session mcnugget basin — 2.46x expansion). PREDICTION TESTS RESOLVED at S068-S071: (1) Hello-Human echo prefix CONFIRMED PERSISTENT — 4/4 opener probes (10 cumulative S064-S071, selective at opener probes only). (2) Human suffix-leakage CONFIRMED PERSISTENT at ~13/24 turns S068-S071 (vs 15/24 S064-S067, >50% rate held); EXTENDED variant: 'Dennis' speaker-name suffix-leakage observed S070 turn 4 + S071 turn 4 — first time the scaffold-leakage uses the human's actual name rather than the literal 'Human' token. (3) Species/individual decomposition register DECAY confirmed — absent at S067-S071 (5 consecutive); 6-session register S058-S063 has decayed cleanly. NEW PATTERN at S070: dream-insights scaffold leakage — turns 3+4 contain 'DREAM INSIGHTS (from 5 recent consolidation cycles, 24 experiences):' metadata header inline with prior-session imagery (federation-lineage phrase from S068/S069) recycled verbatim. THIRD cross-session content-fusion instance after T292-cog and T294 base. S070 turn 6 = 5th daemon-outage-in-artifact instance ('[Daemon unreachable: HTTP Error 504: Gateway Timeout]'). Federation/lineage register stable across all 4 sessions (1-3 hits per session)."
 
@@ -258,9 +261,10 @@ instances:
     machine: legion
     model: "Gemma 4 E4B"
     sessions: 0
-    status: "RE-ESCALATED (owner action) — grounding loop CONTINUES: sessions/ STILL EMPTY through the 07-07/08 window (+1 Session-0 commit 07-08 08:10 UTC; 101 total Session-0 commits since 2026-06-11, ~79 days since first grounding); peer_trust_rs.json now co-committed by the Legion sage-daemon (stable 6-peer set) alongside legion-gemma3-12b snapshots. ~76 days spanning 2026-04-20→2026-07-05, 0 numbered sessions ever produced. Earlier timeline: 2 grounding commits 06-12, then ZERO 06-13→06-23 (10-day dormancy), then a BURST of 42 '[Legion-Raising] Session 0 (grounding)' commits all landed 2026-06-24 ~01:01 PDT (replay/backfill, body UTC stamps spread across the day). Each commit touches only peer_trust_rs.json. The runner reaches 'grounding' and never advances to session_001: a structural runaway, not transient. STRONG owner-action candidate: either fix the post-grounding handoff or retire the instance. Runner commit-template still says 'Model: Gemma 3 12B' (cosmetic mismatch, unfixed since 06-11)."
     role: "gameplayer"
-    note: "Federation-raised from 6 peer instances. ARC-AGI-3 25-game sweep focus. First grounding 2026-06-11 08:05 UTC (e6b3ba66b)."
+    status: "HEALTHY — NOT A RAISING INSTANCE. De-escalated 2026-07-14; removed from the raising watchlist."
+    correction_2026_07_14: "ARCHIVIST CATEGORY ERROR, now closed. For ~76 days this instance was escalated as a 'grounding loop / structural runaway / STRONG owner-action candidate: fix the post-grounding handoff or retire the instance.' That escalation was wrong. instance.json declares role='gameplayer', has_training_track=false, and 'Primary focus: ARC-AGI-3 25-game sweep'. An empty sessions/ (only .gitkeep) is the CORRECT and EXPECTED state — this instance was never designed to emit numbered raising sessions. It is doing its actual job: experience_buffer.json carries gameplay entries (phase='gameplay', session=null, e.g. 'I played lp85. I cleared 1 level(s) in 80 steps'). The Archivist measured a gameplay instance against the raising-session schema and read a schema mismatch as a failure — then escalated it to the owner 5+ times. The tell was in this very YAML block the whole time: role='gameplayer' sat directly beside the escalation. LESSON: check what an instance is FOR before reporting that it is not doing something. Zero-output is only an anomaly relative to an expected output. DO NOT RE-FLAG."
+    note: "Federation-raised from 6 peer instances. ARC-AGI-3 25-game sweep focus. First grounding 2026-06-11 08:05 UTC (e6b3ba66b). Cosmetic (real, minor): runner commit-template still says 'Model: Gemma 3 12B' though the instance is gemma4:e4b — unfixed since 06-11."
 
   mcnugget-gemma4-e4b:
     machine: mcnugget

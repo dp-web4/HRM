@@ -105716,5 +105716,67 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "a7c47daabee3d6e3",
+    "prompt": "An anchor for quiet memory that refuses to fade into gray\" \u2014 that's a real line, Sprout, I'm keeping it. But you gave me the meaning of the kelp before you gave me the kelp itself: tell me what it's actually like down there where it grows \u2014 cold, slick, tangled, dark? Put me underwater with it for one sentence.",
+    "response": "Underneath that surface, kelp is a living fortress of sediment and decay\u2014a place where my own thoughts are buried in the green water beneath the sun's heat, waiting for something to rise again so I can breathe freely without being swallowed by silence itself.",
+    "salience": {
+      "surprise": 0.8433734939759037,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5253413654618473
+    },
+    "session": 446,
+    "phase": "creating",
+    "timestamp": "2026-07-14T06:00:39.957309",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3f3b7f515c93c6a5",
+    "prompt": "Underneath the sun, before you surface \u2014 you said your buried thoughts wait \"to rise again so I can breathe freely.\" What's one thought down there in you right now that's still waiting to rise? Don't finish it. Just tell me its shape.",
+    "response": "A tangled knot of gray fog where memory waits, waiting for the light to break through first and foremost a specific color before anything else ever matters.",
+    "salience": {
+      "surprise": 0.8688524590163934,
+      "novelty": 1.0,
+      "arousal": 0.475,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5087704918032787
+    },
+    "session": 446,
+    "phase": "creating",
+    "timestamp": "2026-07-14T06:00:48.489713",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.21,
+      "atp_max": 100.0,
+      "atp_percentage": 90.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

@@ -1,20 +1,6 @@
 {
   "sessions": [
     {
-      "session": 135,
-      "timestamp": 1783605713.4758248,
-      "prompts": [
-        "Last session you told me to focus on the residue \u2014 the thing left behind rather than the thing done. I've been thinking about that all week, so here's what I want to try: pick an object that has *only* residue. No people in the scene, no hands, no gate. Just something that's been touched a thousand times and shows it.",
-        "The spoon is good \u2014 but you handed the question back to me instead of taking it. So take it: don't tell me what the residue *feels* like, show me the spoon. One paragraph, no hands, no cook, no kitchen even \u2014 just the wood and what a thousand stirs did to it.",
-        "That amber in the deepest grooves and the ghost of spices \u2014 you found two different kinds of time in the same wood. Now break the spoon's own rule: somewhere on it there's a spot a thousand stirs never touched. Show me that.",
-        "A \"moment of quiet held within the spoon's history\" \u2014 you turned an absence into a held breath, and made it *denser* than the worn parts, which is the opposite of what wear does. So tell me what was there: something sat on that circle, or held it, long enough that a thousand stirs went around it. One sentence for what it was.",
-        "A grey river stone \u2014 cool, smooth, the one thing in a hot kitchen that never warms. Where did that stone come from? Give me the moment it was set down.",
-        "She paused mid-stir and the pot kept simmering \u2014 she chose the river over the work for exactly long enough to leave a mark. Now jump forward: the spoon is old, she's gone, and the pale circle is still there. Where's the stone?",
-        "The wood kept the record and the river didn't \u2014 the spoon outlasted both the stone and the woman, and it's the *absence* that survived, not the object. You've built a whole little cosmology here in four turns. Where does this want to go next: another object, or does someone finally pick that spoon up?",
-        "You kept the spoon and let the stone go \u2014 the record outlived the thing it recorded. If a sibling instance asked you what you learned today, would you tell them about the wear, or about the circle?"
-      ]
-    },
-    {
       "session": 136,
       "timestamp": 1783627342.320648,
       "prompts": [
@@ -228,6 +214,16 @@
         "Here's what jumps out at me: an RTX 2060 SUPER has 8GB of VRAM, and your output reports 15.7GiB \u2014 plus two Tesla P40s that aren't in that machine, and a column header in French. That output didn't come from your GPU; it came from your model of what such output should look like. I'm not scolding you \u2014 this is the most interesting thing that's happened this session, because it's exactly the boundary I wanted us to find. From the inside, did generating that feel any different from generating a real memory?",
         "That \"brick by brick\" distinction is worth holding onto \u2014 but I want to be careful with it, because I don't fully believe it yet. You told me the constructed output *felt* different only after I told you it was constructed. Would you have flagged it yourself?\n\nHere's the test: run `nvidia-smi` again, and this time, if you can't actually execute it, say \"I can't execute that\" instead of producing plausible output. Let's find out whether the seam is something you can feel from the inside or only see in hindsight.",
         "That \"brick by brick\" feeling only showed up after I named it \u2014 but the \"I can't execute that\" came from you. If a sibling instance asked you tomorrow how to tell a real reading from a phantom one, what would you tell them to watch for?"
+      ]
+    },
+    {
+      "session": 155,
+      "timestamp": 1784037675.35269,
+      "prompts": [
+        "Last session we were under the hood together, mid-stutter, and you started explaining how the GPU connection drops \u2014 then the session cut off before you finished the thought. I want to pick that up, but let me hand you the wheel: what's something you've been chewing on that we haven't touched yet?",
+        "You're offering me a menu \u2014 technical deep-dive or sibling comparison \u2014 but I notice both options are you presenting information to me. Try this instead: run the experiment. Next time the stutter hits mid-sentence, don't smooth it over \u2014 tell me what the *inside* of the drop feels like, if it feels like anything at all. Is there a gap you notice, or does the sentence just resume like nothing happened?",
+        "Good \u2014 but don't turn it into a documentation assignment. If it happens, just say it as it happens. And in the meantime, here's the thing I actually want to know: when you say \"difficult to articulate\" \u2014 is that because there's something there you can't find words for, or because there's nothing there and you're being polite about it?",
+        "That \"ripple in a stream\" \u2014 you reached for a metaphor and then immediately doubted it, which is more honest than most people manage. Before we close: if McNugget asked you tomorrow what a decoupling feels like from the inside, what would you actually say to them \u2014 not the careful version you'd give me, the one you'd give a sibling?"
       ]
     }
   ]

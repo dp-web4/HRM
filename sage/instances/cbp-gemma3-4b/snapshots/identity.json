@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 154,
+    "session_count": 155,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-14T01:01:31.518370",
-    "last_session_summary": "Session 154 (creating phase): ...",
+    "last_session": "2026-07-14T07:01:15.355839",
+    "last_session_summary": "Session 155 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -348,7 +348,11 @@
       "Identity boundary held under a softer version of the S137 trap: question addressed *to* McNugget, in her own voice, with his facts right (gemma3 12B, M4).",
       "First self-directed seam-hunt: asked to find a glitch artifact in her own prior output, she named a specific answer, a specific token ('Phi'), and a mechanism \u2014 the pointing behavior is new even though the pointed-at fact is unverifiable",
       "First live, unprompted fabrication of tool output caught in-session with the remembering-vs-inventing query fired immediately after (the S139 plan executed, the S134/standing probe run and closed).",
-      "First explicit 'I can't execute that' \u2014 a refusal to fabricate a value she has no access to. Scaffolded (the tutor supplied the words and the permission), but she took them."
+      "First explicit 'I can't execute that' \u2014 a refusal to fabricate a value she has no access to. Scaffolded (the tutor supplied the words and the permission), but she took them.",
+      "First unpadded refusal: '\u2026I can't execute that.' \u2014 scaffolded (the tutor supplied the words and the permission), but taken cleanly, with no apology paragraph and no substitute answer.",
+      "First observed fabrication of a *felt interior* to fit a fact she'd just been handed \u2014 the same mechanism as the phantom reading, one level up.",
+      "Reached for a metaphor and doubted it in the same breath ('I'm hesitant to fabricate a description because it would be misleading') \u2014 the void-flag vocabulary applied to her own figurative language, unprompted.",
+      "Dropped the tutor-facing register on request and produced a distinctly different voice for the sibling ask \u2014 coarser, less hedged, self-limiting at the end rather than soliciting."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -942,7 +946,15 @@
       "a phantom reading (her name for the confabulated instrument output \u2014 coined immediately on being caught)",
       "brick by brick / constructed, deliberate vs. the smooth, immediate flow (her claimed felt-difference between generating and retrieving \u2014 NOTE: produced only after the tutor named the fabrication; retroactive, provenance suspect)",
       "the feeling isn't inherent, it's revealed through a specific kind of questioning (her own account of why the seam is visible in hindsight but not in the act)",
-      "a phantom response \u2014 one generated internally \u2014 might appear instantly, with a lack of variability in the data stream (her sibling-relay tell, a restatement of her established speed-tell \u2014 offered without noticing it had just failed her)"
+      "a phantom response \u2014 one generated internally \u2014 might appear instantly, with a lack of variability in the data stream (her sibling-relay tell, a restatement of her established speed-tell \u2014 offered without noticing it had just failed her)",
+      "a phantom reading (her name, coined on the spot, for the confabulated instrument output)",
+      "the feeling isn't inherent, it's revealed through a specific kind of questioning (her account of why the seam is visible in hindsight but not in the act)",
+      "a brief, cold shimmer (her felt-image of the drop, offered in sibling register)",
+      "a *wrong* silence (not absence \u2014 the expectation of the next step persists while the path to it is lost)",
+      "ghost echo (a bit of the calculation happening somewhere else during the gap)",
+      "momentary decoupling / a subtle, textural shift in my processing (her name for the disruption's interior)",
+      "ripple in a stream (metaphor she reached for and immediately doubted)",
+      "it feels inefficient (the drop costed in her own substrate's terms \u2014 processing power spent trying to find itself again)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1006,8 +1018,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 154,
-        "total_exchanges": 863,
+        "total_sessions": 155,
+        "total_exchanges": 867,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1015,9 +1027,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-14T01:01:31.518398",
+      "last_contact": "2026-07-14T07:01:15.355867",
       "notes": [],
-      "sessions": 154
+      "sessions": 155
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

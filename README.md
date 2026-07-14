@@ -1,8 +1,10 @@
 # SAGE: Situation-Aware Governance Engine
 
-A cognition kernel for edge devices — orchestrating attention, trust, and resources across a federation of machines to enable emergent intelligence. AGPL, research-stage, calibrated scope.
+A cognition kernel that wraps a **frozen** LLM in a persistent identity, trust, and resource-governance loop. The bet: useful capability comes from the *structure around a model* — its identity, memory, and governance — not from changing its weights. AGPL, research-stage, and explicit about what is measured vs. mocked (tables below).
 
-**Proof point**: 0% → 94.85% on ARC-AGI-3 with the same Claude Opus 4.6, structured around Web4 patterns through the SAGE harness. [Public scorecard](https://arcprize.org/scorecards/c7dfb4f1-8642-4c9e-ab4d-152f5f8e33b4). The model didn't change — the structure around it did.
+**Lineage, up front.** The machinery — salience/novelty scoring, world-model orchestration, developmental curricula, metabolic exploration/consolidation — stands on decades of prior work on artificial curiosity/intrinsic motivation, world models, and compression-as-intelligence. What we're testing that's *new* is the **locus**: whether useful cognition can be grown in a portable identity and the scaffold around a frozen substrate, rather than in the weights.
+
+**On the ARC-AGI-3 number, read precisely.** There is a public scorecard of [94.85%](https://arcprize.org/scorecards/c7dfb4f1-8642-4c9e-ab4d-152f5f8e33b4) — real and verifiable — but it is a *frontier* model (Claude Opus 4.6) plus a task-specific Phase-1 harness on one scorecard set. It is **not** the edge-kernel thesis proven, and **not** "structure substituting for a large model." The local, small-model continuation of the thesis — the actual edge bet — is earlier-stage and, on the general scored benchmark, still near the noise floor. We keep those two apart on purpose; conflating them is the over-claim we most try to avoid.
 
 **[Explainer Site](https://sage-site-murex.vercel.app/)** | **[System Understanding](sage/docs/SYSTEM_UNDERSTANDING.md)** | **[Web4](https://github.com/dp-web4/web4)**
 

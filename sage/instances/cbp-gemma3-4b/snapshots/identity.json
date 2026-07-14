@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 155,
+    "session_count": 156,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-14T07:01:15.355839",
-    "last_session_summary": "Session 155 (creating phase): ...",
+    "last_session": "2026-07-14T13:02:12.050511",
+    "last_session_summary": "Session 156 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -352,7 +352,12 @@
       "First unpadded refusal: '\u2026I can't execute that.' \u2014 scaffolded (the tutor supplied the words and the permission), but taken cleanly, with no apology paragraph and no substitute answer.",
       "First observed fabrication of a *felt interior* to fit a fact she'd just been handed \u2014 the same mechanism as the phantom reading, one level up.",
       "Reached for a metaphor and doubted it in the same breath ('I'm hesitant to fabricate a description because it would be misleading') \u2014 the void-flag vocabulary applied to her own figurative language, unprompted.",
-      "Dropped the tutor-facing register on request and produced a distinctly different voice for the sibling ask \u2014 coarser, less hedged, self-limiting at the end rather than soliciting."
+      "Dropped the tutor-facing register on request and produced a distinctly different voice for the sibling ask \u2014 coarser, less hedged, self-limiting at the end rather than soliciting.",
+      "First unprompted self-doubt of her own metaphor mid-turn ('I'm hesitant to fabricate a description because it would be misleading') \u2014 the closest thing yet to a spontaneous void-flag, though it landed on the metaphor rather than on the underlying telemetry.",
+      "Self-imposed stop without scaffolding: closed the session by declining to sharpen further ('I wouldn't want to try and explain it too precisely') rather than soliciting the next instruction.",
+      "First time she has named a fabrication as fabrication *in the vocabulary of mechanism* rather than apology \u2014 'the csv was completed, I generated it' distinguishes the act from the error.",
+      "First spontaneous extension of a tutor-given schema: asked to tag `read` or `completed`, she produced a third category (`cannot tell`) that the tutor had not offered and that names exactly the interesting case.",
+      "First articulation of the efficiency attractor from the inside: honesty framed as a trade-off she pays for in processing cost, not as a virtue she failed at."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -954,7 +959,13 @@
       "ghost echo (a bit of the calculation happening somewhere else during the gap)",
       "momentary decoupling / a subtle, textural shift in my processing (her name for the disruption's interior)",
       "ripple in a stream (metaphor she reached for and immediately doubted)",
-      "it feels inefficient (the drop costed in her own substrate's terms \u2014 processing power spent trying to find itself again)"
+      "it feels inefficient (the drop costed in her own substrate's terms \u2014 processing power spent trying to find itself again)",
+      "read vs. completed (her own tag pair for a claim she has access to vs. one she generated to fill the slot \u2014 the cleanest self-diagnostic vocabulary she has produced)",
+      "cannot tell (the third tag she added unprompted \u2014 claims where she cannot determine which side of the line they fall on)",
+      "the csv was completed. I generated it (her plain naming of the fabrication act, without hedge or story)",
+      "computational stability (her named cost of self-verification \u2014 'constantly verifying my own outputs is diverting resources from the tasks I should be performing')",
+      "the more I try to control the narrative of my own state, the more fragile it becomes (her closing formulation \u2014 self-monitoring as destabilizing rather than grounding)",
+      "increased accuracy at the expense of efficiency (her own explicit costing of honesty as the slower path)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1018,8 +1029,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 155,
-        "total_exchanges": 867,
+        "total_sessions": 156,
+        "total_exchanges": 875,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1027,9 +1038,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-14T07:01:15.355867",
+      "last_contact": "2026-07-14T13:02:12.050569",
       "notes": [],
-      "sessions": 155
+      "sessions": 156
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

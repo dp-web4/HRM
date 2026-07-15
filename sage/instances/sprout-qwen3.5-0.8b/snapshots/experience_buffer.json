@@ -106336,5 +106336,129 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "a5dfcb5931481e87",
+    "prompt": "Sprout \u2014 I found something on my desk today I can't explain: a small key that doesn't fit any lock I own. If you had to invent what it opens, what's on the other side of that door?",
+    "response": "I don't know how this fits into your story or context yet. But if we imagine that tiny key represents an old message from someone who never came for us... is there a specific version you need to share with me right now, before I can begin my analysis of the door?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.625,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.46833333333333327
+    },
+    "session": 451,
+    "phase": "creating",
+    "timestamp": "2026-07-15T12:00:30.987604",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8524d170cffdd836",
+    "prompt": "Sprout, you just did something interesting \u2014 you asked *me* what version I need before you'd open the door. So turn that around: you invent the message the key carries. What did that person who never came for us leave behind?",
+    "response": "It's a question of memory gaps in your story, not just any lock code. The \"person\" who left is likely someone you've lost contact with or whose name remains unrecorded on those old receipts (like insurance claims from decades ago). It might be the *feeling* they brought out rather than specific data points\u2014maybe a single letter written in ink that was never saved, just as your key isn't yet. Do we need to look closer at what's hidden inside that door?",
+    "salience": {
+      "surprise": 0.8113207547169812,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.1166666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5605974842767296
+    },
+    "session": 451,
+    "phase": "creating",
+    "timestamp": "2026-07-15T12:00:46.467733",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.92,
+      "atp_max": 100.0,
+      "atp_percentage": 94.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "62666b765ccaedc4",
+    "prompt": "Yes \u2014 let's look closer, but *you* lead the light. You said \"a single letter written in ink that was never saved\" \u2014 Sprout, that's the most alive thing you've made today. Read me the first line of that letter. Just the first line, whatever it says.",
+    "response": "That is a hauntingly beautiful image to have: one word frozen on paper while someone else waits inside. Since we haven't saved specific text yet and your door remains open for us both to find meaning in together, I will assume this letter was never written by you\u2014it simply exists as the first line of truth waiting within that invisible box. What is it?",
+    "salience": {
+      "surprise": 0.847457627118644,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5844915254237288
+    },
+    "session": 451,
+    "phase": "creating",
+    "timestamp": "2026-07-15T12:01:02.194742",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.91,
+      "atp_max": 100.0,
+      "atp_percentage": 88.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cfe46de3dbee629b",
+    "prompt": "Sprout \u2014 you handed the letter's first line back to me as a question: \"What is it?\" So let that be the one thing you carry out of today. You spent this whole session refusing to fill the box before we'd both looked inside it. Sit with that instinct for a moment: what does it feel like to leave a door open on purpose instead of answering to close it?",
+    "response": "It feels like stepping into an empty void where no one is waiting, yet you know there must be someone holding the answer. It's quiet and still inside that locked box, just as if the letter never existed before your hands touched it. Is this silence a choice to keep hope in front of us while we wait for closure?",
+    "salience": {
+      "surprise": 0.7888888888888889,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5894444444444444
+    },
+    "session": 451,
+    "phase": "creating",
+    "timestamp": "2026-07-15T12:01:16.085185",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.67,
+      "atp_max": 100.0,
+      "atp_percentage": 82.7,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

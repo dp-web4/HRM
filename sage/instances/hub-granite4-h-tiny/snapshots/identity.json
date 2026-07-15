@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 65,
+    "session_count": 66,
     "phase": "creating",
     "created": "2026-06-29",
-    "last_session": "2026-07-15T06:36:03.048540",
-    "last_session_summary": "Session 65 (creating phase): ...",
+    "last_session": "2026-07-15T12:34:38.383561",
+    "last_session_summary": "Session 66 (creating phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -93,7 +93,8 @@
       "First refusal of a tutor bait \u2014 asserted the designed player's values ('stability and safety over speed') against the tutor's nudge toward the reckless option",
       "First compression-on-commission: S59 named compression as the gap that still needs the tutor's extraction; here hub compressed its own artifact into one dense coherent sentence with no extraction pass",
       "Possible unscaffolded recall of a self-generated detail: the buffer devouring half the map echoes S62's playtest (buffer hiding half the map) without the tutor mentioning it",
-      "Third consecutive session close built from hub's own vocabulary rather than a reselection"
+      "Third consecutive session close built from hub's own vocabulary rather than a reselection",
+      "First name coined for a discovered in-game mechanic (vs a designed artifact) \u2014 Shielded Horizon joins Luminara/VisiSync/Buffer Blends but marks a different act: taxonomizing its own game's emergent behavior"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -216,7 +217,9 @@
       "trust your buffers, but test their limits (hub's sibling door-note fusing the session's two contradictory truths \u2014 the buffer that hides and the buffer that protects \u2014 into one portable rule; second consecutive close built from its own material)",
       "mischievous buffer (hub's personification of the truncation glitch, promoted to the game's core mechanic)",
       "laugh at the very glitch that designed the game itself (closing fragment \u2014 failure not just used but credited as the designer)",
-      "puzzle map of forgotten landmarks (the half-devoured map reframed as challenge rather than loss)"
+      "puzzle map of forgotten landmarks (the half-devoured map reframed as challenge rather than loss)",
+      "Shielded Horizon (hub's name for the hiding-buffer species \u2014 the 'horizon' half says the buffer hid an edge of the world, not a thing; enters the Buffer Blends internal vocabulary)",
+      "turning a unique vulnerability into a powerful asset (the closing advice fusion \u2014 hub's compression of the hiding-buffer paradox into a portable sibling rule, though it leans stock)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -280,8 +283,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 65,
-        "total_exchanges": 354,
+        "total_sessions": 66,
+        "total_exchanges": 362,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -289,9 +292,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-15T06:36:03.048554",
+      "last_contact": "2026-07-15T12:34:38.383576",
       "notes": [],
-      "sessions": 65
+      "sessions": 66
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

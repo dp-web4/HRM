@@ -260,6 +260,9 @@ class SAGEConsciousness:
         # Effect system
         self._init_effect_system()
 
+        # Imagination organ (predictive rollout; advises effect ranking)
+        self._init_imagination()
+
         # Real SNARC salience scoring (when use_neural_snarc=True)
         self.use_real_snarc = self.config.get('use_neural_snarc', False)
         self.snarc_scorer = None
@@ -480,6 +483,37 @@ class SAGEConsciousness:
         - Step 8 (Learn/Remember): bind high-salience experiences as episodes
         """
         self._episodic_index = index
+
+    def _init_imagination(self):
+        """
+        Initialize the imagination organ (optional, config: enable_imagination).
+
+        The world-model substrate is swappable via config['world_model']
+        (adapter instance, callable, or "module:factory" import path);
+        default is the copy-prior baseline. Imagination annotates and ranks
+        proposed effects before PolicyGate — it advises, never vetoes — and
+        scores its own last prediction against the next cycle's observations
+        (surprise → SNARC, coherence → trust).
+        """
+        self.imagination_enabled = self.config.get('enable_imagination', False)
+        self.imagination = None
+        if self.imagination_enabled:
+            try:
+                from sage.irp.plugins.imagination_irp import ImaginationIRP
+                img_config = {
+                    'entity_id': 'imagination',
+                    'world_model': self.config.get('world_model'),
+                    'rollout_depth': self.config.get('imagination_rollout_depth', 1),
+                    'max_iterations': self.config.get('imagination_max_iterations', 8),
+                }
+                if self.config.get('imagination_scorer'):
+                    img_config['outcome_scorer'] = self.config['imagination_scorer']
+                self.imagination = ImaginationIRP(img_config)
+                print(f"[Imagination] Organ wired (substrate: "
+                      f"{self.imagination.world_model.name})")
+            except ImportError as e:
+                print(f"[WARN] Imagination organ not available: {e}")
+                self.imagination_enabled = False
 
     def _init_effect_system(self):
         """Initialize the effect/effector system."""
@@ -921,6 +955,30 @@ class SAGEConsciousness:
         # 1. Gather sensor observations
         observations = self._gather_observations()
 
+        # 1.5 Imagination residual: score last cycle's imagined next-state
+        # against what actually arrived. Surprise feeds SNARC memory;
+        # rolling coherence feeds the organ's trust weight. Advisory path —
+        # must never break the loop (same isolation stance as router shadow).
+        if self.imagination_enabled and self.imagination:
+            try:
+                residual = self.imagination.score_residual(observations)
+                if residual is not None:
+                    coherence = self.imagination.coherence()
+                    alpha = 0.1
+                    current = self.plugin_trust_weights.get('imagination', 0.5)
+                    self.plugin_trust_weights['imagination'] = max(
+                        0.1, min(1.0, current + alpha * ((1.0 - residual) - current)))
+                    if residual > self.salience_threshold:
+                        self.snarc_memory.append({
+                            'cycle': self.cycle_count,
+                            'type': 'imagination_surprise',
+                            'residual': round(residual, 4),
+                            'coherence': round(coherence, 4) if coherence is not None else None,
+                            'substrate': self.imagination.world_model.name,
+                        })
+            except Exception as e:
+                print(f"[Imagination] residual scoring failed (non-fatal): {e}")
+
         # 2. Compute SNARC salience for each observation
         salience_map = self._compute_salience(observations)
 
@@ -1033,6 +1091,16 @@ class SAGEConsciousness:
                 effects = self.effect_extractor.extract(plugin_name, result, context)
                 proposed_effects.extend(effects)
             self.stats['effects_proposed'] += len(proposed_effects)
+
+        # 8.55 Imagination: roll each proposed effect through the world-model
+        # and rank by imagined outcome BEFORE the conscience gate. Advises
+        # (annotates + reorders), never vetoes — every effect passes through.
+        if self.imagination_enabled and self.imagination and proposed_effects:
+            try:
+                proposed_effects = self._imagine_effects(
+                    proposed_effects, observations)
+            except Exception as e:
+                print(f"[Imagination] rollout failed (non-fatal): {e}")
 
         # 8.6 PolicyGate evaluation (filter effects before dispatch)
         approved_effects = proposed_effects
@@ -2851,6 +2919,28 @@ class SAGEConsciousness:
                     self._episodic_index.bind(ep)
                 except Exception:
                     pass  # Episodic binding is best-effort, never blocks the loop
+
+    def _imagine_effects(self, effects: List, observations: Dict) -> List:
+        """
+        Run the imagination organ over proposed effects (step 8.55).
+
+        Rolls each effect through the world-model substrate, annotates each
+        effect's metadata with its imagined outcome (rank, score, substrate),
+        and returns the list reordered best-first. Nothing is dropped —
+        filtering is PolicyGate's job. The organ remembers its best imagined
+        next-state so step 1.5 can score it against reality next cycle.
+        """
+        task_ctx = {
+            'observation': observations,
+            'metabolic_state': self.metabolic.current_state.value,
+            'atp_available': self.metabolic.atp_current,
+            'trust_weights': self.plugin_trust_weights,
+        }
+        final_state, _history = self.imagination.refine(effects, task_ctx)
+        annotated = self.imagination.annotate(final_state)
+        self.stats['effects_imagined'] = (
+            self.stats.get('effects_imagined', 0) + len(final_state.x['rollouts']))
+        return annotated
 
     def _evaluate_effects_policy(self, effects: List) -> List:
         """

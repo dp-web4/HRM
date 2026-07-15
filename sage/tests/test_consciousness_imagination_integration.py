@@ -151,6 +151,23 @@ class TestResidualCoherence(unittest.TestCase):
         self.assertIsNotNone(organ.score_residual(obs))
         self.assertIsNone(organ.score_residual(obs))  # prediction spent
 
+    def test_14a_dict_observations_compare_by_shared_keys(self):
+        """Embodied observation shape: {sensor_name: array}."""
+        organ = ImaginationIRP({})
+        obs = {'vision': np.zeros((4, 4)), 'imu': np.zeros(3)}
+        organ.refine(make_effects(1), {'observation': obs})
+        # vision changed fully, imu unchanged -> mean residual ~0.5
+        actual = {'vision': np.ones((4, 4)), 'imu': np.zeros(3),
+                  'audio': np.ones(2)}  # extra key ignored (not shared)
+        residual = organ.score_residual(actual)
+        self.assertIsNotNone(residual)
+        self.assertAlmostEqual(residual, 0.5, places=2)
+
+    def test_14b_dict_no_comparable_keys_is_none(self):
+        organ = ImaginationIRP({})
+        organ.refine(make_effects(1), {'observation': {'a': np.zeros(2)}})
+        self.assertIsNone(organ.score_residual({'b': np.zeros(2)}))
+
     def test_14_snarc_scores_shape(self):
         organ = ImaginationIRP({})
         obs = np.zeros(3)

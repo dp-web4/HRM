@@ -331,10 +331,17 @@ class ImaginationIRP(IRPPlugin):
                 self._residual_history = self._residual_history[-200:]
         return residual
 
-    @staticmethod
-    def _compare(predicted: Any, actual: Any) -> Optional[float]:
+    @classmethod
+    def _compare(cls, predicted: Any, actual: Any) -> Optional[float]:
         if predicted is None or actual is None:
             return None
+        # Dict observations (sensor_name -> data, the embodied shape):
+        # compare shared keys, mean the comparable residuals.
+        if isinstance(predicted, dict) and isinstance(actual, dict):
+            shared = set(predicted) & set(actual)
+            residuals = [r for r in (cls._compare(predicted[k], actual[k])
+                                     for k in shared) if r is not None]
+            return sum(residuals) / len(residuals) if residuals else None
         if np is not None:
             try:
                 p, a = np.asarray(predicted), np.asarray(actual)

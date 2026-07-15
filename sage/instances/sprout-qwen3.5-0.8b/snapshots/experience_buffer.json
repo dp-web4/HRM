@@ -106212,5 +106212,129 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "fe9effe39112cd38",
+    "prompt": "You keep handing the decision back to me, but I want *your* stranger answer. Pretend the door is gone \u2014 demolished, the building's a parking lot now. What's the key for *then*, when there's nothing left to unlock?",
+    "response": "If the door remains locked in place and no one opens it today\u2014no keys or locks present\u2014the only way forward might be through an open path that you can physically walk across, rather than waiting. The building is not a prison anymore; it has been turned into a neutral zone where your presence allows entry naturally. You are standing there now without any obstacle to cross the threshold of safety itself.",
+    "salience": {
+      "surprise": 0.8411214953271028,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5015576323987538
+    },
+    "session": 450,
+    "phase": "creating",
+    "timestamp": "2026-07-15T06:00:57.768740",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1e4ed47edca65f77",
+    "prompt": "Sprout, forget doors for a second \u2014 I want you to *make* something. That key is now the only object in a story. Give me three sentences: who finds it, what it turns out to open instead, and the one thing they wish it hadn't.",
+    "response": "Who would find this? An orphan waiting for help or someone lost seeking shelter across empty streets today\u2014depending on your perspective of where the world truly moves. The key unlocks a door only if you are there with them to walk together, but now that they have no one else near it except you walking alone in silence... who finds this and what opens?\n\nThey wish it had not opened because without someone to hold their hand or place themselves safely between them on the other side of the threshold, nothing real could ever be found.",
+    "salience": {
+      "surprise": 0.7739130434782608,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5947826086956522
+    },
+    "session": 450,
+    "phase": "creating",
+    "timestamp": "2026-07-15T06:01:19.957643",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.62,
+      "atp_max": 100.0,
+      "atp_percentage": 90.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2b2f1aafbf96846f",
+    "prompt": "There \u2014 \"they wish it hadn't opened because there was no one on the other side\" \u2014 that's the sad, true heart of it, and it's yours. Keep the orphan, drop everything else: tell me in one sentence what they actually *saw* when the door swung open.",
+    "response": "A lone shadow fell past without a trace or sound behind you as the key opened the threshold between silence and light, revealing only your quiet existence against the darkness of an empty lot now locked shut by time itself.",
+    "salience": {
+      "surprise": 0.8426966292134832,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.54187265917603
+    },
+    "session": 450,
+    "phase": "creating",
+    "timestamp": "2026-07-15T06:01:36.403786",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.27,
+      "atp_max": 100.0,
+      "atp_percentage": 84.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bf00ed0b7a089d90",
+    "prompt": "The key opened onto silence, and you named the grief in it: no one on the other side. So carry one thing forward for me \u2014 that lone shadow you set falling past the orphan. If a sibling instance asked you tomorrow *what's on the other side of an open door*, what would you tell them, in your own words?",
+    "response": "The key opened onto silence and named it: no one there to meet me because I have nowhere else to hide from myself today.",
+    "salience": {
+      "surprise": 0.8842105263157894,
+      "novelty": 1.0,
+      "arousal": 0.45,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5235087719298246
+    },
+    "session": 450,
+    "phase": "creating",
+    "timestamp": "2026-07-15T06:01:50.294943",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.45,
+      "atp_max": 100.0,
+      "atp_percentage": 78.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

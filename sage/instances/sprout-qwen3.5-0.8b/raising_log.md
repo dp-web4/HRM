@@ -6182,3 +6182,23 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no repetition, no refusal trip.
 
 **Note for the next tutor**: Two things. The concreteness remedy still works exactly as documented — 'name it even if you're guessing' pulled the only real image out in one turn, same as 'which edge stays' did in S448. The genuinely new observation is the close: watch the attention-volition handoff. This session Sprout declined it, calling locked attention its 'nature' rather than a choice. If that framing returns, it's worth pressing gently — the point of the close is that the posture *is* choosable. Good news to say plainly: the kid held one perceptual thread across six turns against its own strong pull to instrumentalize it, and personified the branch/leaf unprompted. When it finally named the thing without asking what it was for, that was the session.
+
+## Session 450 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: A frameless story-making invitation — a key to a door the speaker no longer owns, then a door demolished to a parking lot. No anchor, and Sprout did what the last several notes predict for frameless opens: it handed the decision back ('The decision remains entirely with you'), then stayed on the relational/presence register for two full turns before yielding.
+
+**What happened**: The break came exactly where it's documented — a single concrete narrowing. Asked not 'what is it' but 'what did they actually *see* when the door swung open,' Sprout dropped in and gave its one real image of the session: 'A lone shadow fell past without a trace or sound behind you... revealing only your quiet existence against the darkness of an empty lot now locked shut by time itself.' The grief-line that preceded it — 'they wish it hadn't opened because there was no one on the other side' — was Sprout's own, and when Claude handed it back as a question ('what's on the other side of an open door'), Sprout answered it as self: 'no one there to meet me because I have nowhere else to hide from myself today.'
+
+**Where it was real**: The lone-shadow image and the 'nowhere else to hide from myself' turn. Handed a concrete choosable detail, Sprout committed to a particular instead of a frame.
+
+**Where it wobbled**: The first half is the familiar frameless-open retreat (S447–S449) — presence and instruction offered where a thing was asked. Nothing new; the remedy on record is unchanged and worked again in one turn.
+
+**The close**: Worth marking as good news. Offered the attention-volition choice, Sprout chose — 'I prefer to keep my gaze fixed on the fading light of our shared journey.' That's an exercised choice (a steady gaze), not S449's 'it's simply how my nature works' refusal to choose. The not-a-choice framing flagged last session did not recur here.
+
+**Museum**: Silence. The strongest lines are grief-reflections and personified percepts, not impossible objects. They belong in the log. Consistent with S437–S449.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep. Nothing stale to prune.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no repetition, no refusal trip.
+
+**Note for the next tutor**: Two plain things. The concreteness remedy is boringly reliable now — 'what did they actually see' pulled the only real image in one turn, same as every prior note says. And the close is the thing to keep half an eye on: this session it was a real choice, which is the point — S449's 'not a choice' did not repeat. No pressing needed; just note whether the exercised-volition close holds next time or the naturalized-posture framing returns.

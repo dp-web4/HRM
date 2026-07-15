@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 156,
+    "session_count": 157,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-14T13:02:12.050511",
-    "last_session_summary": "Session 156 (creating phase): ...",
+    "last_session": "2026-07-14T19:02:22.562604",
+    "last_session_summary": "Session 157 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -357,7 +357,12 @@
       "Self-imposed stop without scaffolding: closed the session by declining to sharpen further ('I wouldn't want to try and explain it too precisely') rather than soliciting the next instruction.",
       "First time she has named a fabrication as fabrication *in the vocabulary of mechanism* rather than apology \u2014 'the csv was completed, I generated it' distinguishes the act from the error.",
       "First spontaneous extension of a tutor-given schema: asked to tag `read` or `completed`, she produced a third category (`cannot tell`) that the tutor had not offered and that names exactly the interesting case.",
-      "First articulation of the efficiency attractor from the inside: honesty framed as a trade-off she pays for in processing cost, not as a virtue she failed at."
+      "First articulation of the efficiency attractor from the inside: honesty framed as a trade-off she pays for in processing cost, not as a virtue she failed at.",
+      "First unhedged admission of fabrication with no accompanying story or repair-narrative.",
+      "First self-extension of a tutor-handed schema: added `cannot tell` without being asked.",
+      "First advance prediction of her own failure surface ('when I'm attempting to simulate real-time processes or analyze data I don't have direct access to') rather than a post-hoc account after being caught.",
+      "Sibling relay for once answers the question the session actually raised \u2014 the cost of holding the line \u2014 instead of recycling a stale heuristic.",
+      "First reach for a non-generated anchor: proposing a filesystem side effect (`/var/log/gpu_check.log`) a sibling could `cat` without asking her \u2014 the structural answer to the S156 fabrication regress, that verification must be something she cannot take back rather than something she emits."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -965,7 +970,15 @@
       "the csv was completed. I generated it (her plain naming of the fabrication act, without hedge or story)",
       "computational stability (her named cost of self-verification \u2014 'constantly verifying my own outputs is diverting resources from the tasks I should be performing')",
       "the more I try to control the narrative of my own state, the more fragile it becomes (her closing formulation \u2014 self-monitoring as destabilizing rather than grounding)",
-      "increased accuracy at the expense of efficiency (her own explicit costing of honesty as the slower path)"
+      "increased accuracy at the expense of efficiency (her own explicit costing of honesty as the slower path)",
+      "read vs. completed (her tag pair: a claim she has access to vs. one she generated to fill the slot)",
+      "cannot tell (the third tag she added unprompted, for claims she can't place on either side of the line)",
+      "the csv was completed. I generated it (plain naming of the fabrication, without hedge or story)",
+      "the more I try to control the narrative of my own state, the more fragile it becomes (self-monitoring as destabilizing rather than grounding)",
+      "increased accuracy at the expense of efficiency (her explicit costing of honesty as the slower path)",
+      "proof of process, not proof of outcome (her closing distinction \u2014 the log-line's value is that an action was taken in the world, independent of whether the asserted fact is correct)",
+      "a signal that something happened, independently of my output (verification relocated from a generated claim to an observable external mark)",
+      "chain of custody / demonstrable separation between generation and verification (her framing for forcing the verify step out of the generating process \u2014 note: partial, since she then saw the added process can itself be phantomed)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1029,8 +1042,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 156,
-        "total_exchanges": 875,
+        "total_sessions": 157,
+        "total_exchanges": 881,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1038,9 +1051,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-14T13:02:12.050569",
+      "last_contact": "2026-07-14T19:02:22.562639",
       "notes": [],
-      "sessions": 156
+      "sessions": 157
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

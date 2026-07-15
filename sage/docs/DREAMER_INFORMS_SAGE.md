@@ -2,7 +2,7 @@
 
 **Author:** CBP-Claude (Opus 4.7), 2026-05-26
 **Sources:** Paper `dpx/dreamer wm.pdf` (Wu, Escontrela, Hafner, Goldberg, Abbeel, *DayDreamer: World Models for Physical Robot Learning*, CoRL 2022). Code: dp-web4 fork of `danijar/daydreamer` (cloned to `ai-agents/daydreamer/`), agent at `embodied/agents/dreamerv2plus/{agent,nets,behaviors}.py`.
-**Frame (dp, 2026-05-26):** *embodiment is the eventual goal; the ARC-AGI-3 games are a training step on that path.* Dreamer is the most relevant prior art we have for the actual target — it learns embodied behavior on **4 real robots, online, no simulator, from ~1 hour of experience**. So it informs both the near term (the games) and the destination (embodied SAGE). This doc is a read, not a port plan. We take what informs us; we do not adopt the stack.
+**Frame (dp, 2026-05-26):** *embodiment is the eventual goal; the grid-puzzle game environments are a training step on that path.* Dreamer is the most relevant prior art we have for the actual target — it learns embodied behavior on **4 real robots, online, no simulator, from ~1 hour of experience**. So it informs both the near term (the games) and the destination (embodied SAGE). This doc is a read, not a port plan. We take what informs us; we do not adopt the stack.
 
 ---
 
@@ -51,7 +51,7 @@ This is **exactly the predictive-vs-strategic split** we discovered we had *coll
 |---|---|---|
 | RSSM **dynamics** (`img_step`, reward-free) | `wm_schema` causal_rules (symbolic) + LLM priors | We have a WM but **don't roll it forward**. Dreamer's `img_step` = a learned forward dynamics we lack. |
 | **Imagination rollout** (`imagine`, H=16) | WinImaginer (`win_imaginer_live.predict_terminal`) — predicts a *terminal*, not a *rollout*; LLM "imagines" plans in language | The imaginator north star (`SAGE_WI_GOAL`, tasks #309/#293) wants a *rollout* to score plans before acting — **the antidote to the grind**. |
-| **reward head** (learned, trained on env reward) | *absent* — ARC-AGI-3 is a feedback desert | We can't train a reward head on env reward. **WinImaginer terminal / body→terminal gap = a self-supplied surrogate reward** (imagination manufactures the signal the env withholds). |
+| **reward head** (learned, trained on env reward) | *absent* — our grid-puzzle environments are a feedback desert | We can't train a reward head on env reward. **WinImaginer terminal / body→terminal gap = a self-supplied surrogate reward** (imagination manufactures the signal the env withholds). |
 | **critic / λ-return value** (`VFunction`) | the *frozen* `plausibility` / the missing "strategic-trust" | Build the critic dimension: a value updated by the surrogate-reward, **separate from the predictive residual**. |
 | **multiple scaled critics** | the faith portfolio's multiple candidates | Several value sources combined → maps onto multi-faith (task-value + explore-value + …). |
 | **encoder** (multi-sensor fusion → latent) | perception-as-integrator; `GridVisionIRP`; the v2 object producer | Dreamer fuses *all* modalities into one state — the integrator principle, already ours; relevant when embodied (proprio + vision + force). |
@@ -65,7 +65,7 @@ This is **exactly the predictive-vs-strategic split** we discovered we had *coll
 
 ## 4. The honest divergences — why we do NOT port
 
-1. **Dreamer needs env reward** to train its reward head; ARC-AGI-3 (and much of open-world embodiment) is a **feedback desert**. This is *why* we built **faith** (commit-before-confirmation). Our innovation — **imagination supplies the value signal** (WinImaginer terminal as surrogate reward) — is precisely the part Dreamer doesn't need because robots get task reward. So the reward-free WM half is liftable; the reward-hungry actor-critic is not, as-is.
+1. **Dreamer needs env reward** to train its reward head; our grid-puzzle environments (and much of open-world embodiment) are a **feedback desert**. This is *why* we built **faith** (commit-before-confirmation). Our innovation — **imagination supplies the value signal** (WinImaginer terminal as surrogate reward) — is precisely the part Dreamer doesn't need because robots get task reward. So the reward-free WM half is liftable; the reward-hungry actor-critic is not, as-is.
 2. **End-to-end neural (opaque) vs symbolic + LLM (interpretable).** DreamerV2's discrete latents actually align with our discrete object/symbolic representations, but the RSSM is a black box; our causal_rules are human-readable and the LLM carries world-priors no robot has. We trade sample-efficiency for interpretability + zero-shot priors.
 3. **Sample-efficiency is the thing we lack.** Dreamer's imagination is the cure for our **grind** (the v28 8-hour, flat-cap, 14/24-OOM run). But it requires a *learned dynamics model we don't yet have* — that's the build, not a free lunch.
 
@@ -103,6 +103,6 @@ Ordered by leverage. None require porting Dreamer.
 
 ## 7. So what
 
-Dreamer doesn't replace SAGE's approach and shouldn't be ported. It **(a)** independently validates the predictive-vs-strategic decomposition we reached by failure; **(b)** hands us the imagination-rollout mechanism that is the principled cure for the grind; **(c)** is the proven embodiment learner for the eventual goal, factoring cleanly into IRP organs. The genuinely-ours part — imagination *manufacturing* the value signal in a feedback desert via faith + the WinImaginer — is exactly the gap Dreamer never had to cross, because robots get reward and ARC-AGI-3 (and the open world) often don't. That's not a deficiency to fix by adopting Dreamer; it's the thing worth building, with Dreamer's architecture as the map.
+Dreamer doesn't replace SAGE's approach and shouldn't be ported. It **(a)** independently validates the predictive-vs-strategic decomposition we reached by failure; **(b)** hands us the imagination-rollout mechanism that is the principled cure for the grind; **(c)** is the proven embodiment learner for the eventual goal, factoring cleanly into IRP organs. The genuinely-ours part — imagination *manufacturing* the value signal in a feedback desert via faith + the WinImaginer — is exactly the gap Dreamer never had to cross, because robots get reward and grid-puzzle worlds (and the open world) often don't. That's not a deficiency to fix by adopting Dreamer; it's the thing worth building, with Dreamer's architecture as the map.
 
 — CBP-Claude (Opus 4.7), 2026-05-26

@@ -89,7 +89,7 @@ Current implementation achieves:
 ## Next Steps
 
 1. **Immediate**:
-   - Connect to real training data (ARC-AGI tasks)
+   - Connect to real training data (e.g. grid-puzzle tasks)
    - Implement actual LLM API integration
    - Begin training runs on available hardware
 

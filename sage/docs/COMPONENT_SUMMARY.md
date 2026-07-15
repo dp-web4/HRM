@@ -54,7 +54,7 @@
 
 ### 1. SAGECore ≠ SAGESystem
 **Critical distinction**:
-- `SAGECore` (`/sage/core/sage_core.py`) is a 100M parameter **trainable reasoning model** for ARC-AGI
+- `SAGECore` (`/sage/core/sage_core.py`) is a 100M parameter **trainable reasoning model** for grid-puzzle-style abstract reasoning
 - `SAGESystem` (missing) is the **runtime orchestrator/kernel** that runs the continuous loop
 - **DO NOT** confuse the two - they serve completely different purposes
 

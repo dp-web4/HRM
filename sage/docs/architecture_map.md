@@ -278,7 +278,7 @@ SAGE:
 
 **Training Data**:
 - 301MB training data pickle
-- ARC-AGI features from GR00T
+- Grid-puzzle task features from GR00T (feature set lives in the private playground repo)
 - Checkpoints in `checkpoints/sage/`
 
 **Relationships**:
@@ -329,7 +329,7 @@ orchestration/
 │   └── training/
 │       ├── groot-data-processor.py
 │       └── knowledge-distillation-coordinator.py
-├── groot_arc_setup/         # GR00T ARC experiment setup
+├── groot_arc_setup/         # GR00T grid-puzzle experiment setup
 ├── configs/                 # Configuration files
 ├── data/                    # Training data
 ├── checkpoints/             # Model checkpoints
@@ -424,9 +424,7 @@ coordination/
 
 **Contents**:
 - `cbp_federation_pipeline.py` (11.2KB) - Federation data pipeline
-- `arc_groot_features/` - ARC-AGI task features from GR00T
-  - `training_full/features/` - Full training set
-  - `validation_10/features/` - Validation subset
+- Grid-puzzle task features from GR00T (full training set + validation subset) - the feature-extractor module and data live in the private playground repo
 
 **Data Flow**:
 1. GR00T extracts features from raw data
@@ -898,7 +896,7 @@ Orchestration Layer (claude-flow)
 - `orchestration/AUTONOMOUS_ATTENTION.md` - Autonomous attention system
 - `orchestration/GROOT_INTEGRATION_FINDINGS.md` - Integration findings
 - `orchestration/STATUS.md` - Orchestration status
-- `orchestration/groot_arc_setup/SAGE_ARCHITECTURE.md` - ARC architecture
+- `orchestration/groot_arc_setup/SAGE_ARCHITECTURE.md` - grid-puzzle experiment architecture
 
 ### Deployment
 - `deployment/SPROUT_DELIVERY_EVALUATION.md` - Edge deployment evaluation
@@ -961,7 +959,7 @@ Orchestration Layer (claude-flow)
 
 **Data Available**:
 - 301MB training data
-- ARC-AGI features
+- Grid-puzzle task features (private playground repo)
 - Real GR00T demonstration episodes
 
 ---

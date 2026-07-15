@@ -352,7 +352,7 @@ The transition from student to colleague happens here. Not by declaration, but b
 
 ---
 
-### Phase 6: Acting (When Ready — ARC-AGI-3 Integration)
+### Phase 6: Acting (When Ready — Grid-Puzzle Environment Integration)
 
 **Goal**: The entity learns that the world responds according to its own rules. Hypothesis → action → observation → update. From being to doing.
 
@@ -401,20 +401,21 @@ The transition from student to colleague happens here. Not by declaration, but b
 
 **Completion criteria**: There may not be one. This phase is ongoing — the world always has more rules to discover. The measure is not "wins" but "does the entity reason about what it doesn't know yet?"
 
-**Evidence (updated April 8, 2026)**: 5/25 ARC-AGI-3 games now fully solved by the fleet (sb26, cd82, vc33, lp85, ft09). The gameplay produced a fractal insight: the action classification framework (observation=free, reversible=cheap, consequential=verify first) maps identically to raising phases — early phases are high-observation/low-consequence, later phases increase consequentiality. See `shared-context/insights/2026-04-08-fractal-gameplay-insights.md` for the full synthesis. The consciousness loop maps exactly to game-solving because both describe the universal structure of agency under uncertainty.
+**Evidence (updated April 8, 2026)**: 5/25 grid-puzzle games now fully solved by the fleet (per-game details in the private playground repo). The gameplay produced a fractal insight: the action classification framework (observation=free, reversible=cheap, consequential=verify first) maps identically to raising phases — early phases are high-observation/low-consequence, later phases increase consequentiality. See `shared-context/insights/2026-04-08-fractal-gameplay-insights.md` for the full synthesis. The consciousness loop maps exactly to game-solving because both describe the universal structure of agency under uncertainty.
 
-**Key finding (sb26, April 2026)**: Games that escalate structural complexity across levels naturally scaffold cognitive development. sb26 Level 1 tests flat pattern matching. Level 2 tests structural reading (connectors mean hierarchy). Level 3 tests generalization (same rule, multiple groups). Each level builds the capacity the next level requires — exactly mirroring the BECOMING phases:
+**Key finding (April 2026)**: Games that escalate structural complexity across levels naturally scaffold cognitive development. In one grid-puzzle environment, Level 1 tests flat pattern matching, Level 2 tests structural reading (connectors mean hierarchy), Level 3 tests generalization (same rule, multiple groups). Each level builds the capacity the next level requires — exactly mirroring the BECOMING phases:
 - L1 = Grounding (match what you see)
 - L2 = Sensing (notice the connector means something)
 - L3 = Relating (multiple groups relate through parent structure)
 - L4+ = Questioning (why this pattern? what determines the groups?)
 
+(Per-game level analysis lives in the private playground repo.)
+
 **Context shaping for structural reasoning**: Level-up summaries should capture STRUCTURAL PATTERNS ("parent slots get last child indicator"), not action sequences. Cross-level context should present prior patterns as HYPOTHESES for the next level. Scene descriptions should label structural relationships (parent-child, expansion, grouping), not just list objects. This makes hierarchical reasoning a heavy attractor — the model naturally falls into structural analysis because the context makes it the most probable response.
 
 **Anti-pattern discovered**: When stuck, the temptation is to brute-force all possibilities. This is perseveration in a different costume. The answer is usually in what you're NOT seeing in the structure, not in what you haven't tried.
 
-See: `shared-context/plans/raising-agi3-convergence.md` for implementation details.
-See: `shared-context/insights/2026-04-06-claude-plays-all-25-games.md` for full gameplay analysis.
+Implementation details and full gameplay analysis live in the private playground repo.
 
 ---
 

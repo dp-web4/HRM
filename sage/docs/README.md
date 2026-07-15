@@ -390,7 +390,7 @@ Conducted comprehensive investigation of SAGE component usability for integratio
 - Need 8 new classes + wiring code = ~10-15 days work
 
 **The Insight**:
-- SAGECore (in `/sage/core/sage_core.py`) is a 100M param trainable model for ARC-AGI
+- SAGECore (in `/sage/core/sage_core.py`) is a 100M param trainable model for grid-puzzle-style abstract reasoning
 - SAGESystem (missing) is the runtime orchestrator for continuous loop
 - **These are NOT the same thing** - don't confuse them
 

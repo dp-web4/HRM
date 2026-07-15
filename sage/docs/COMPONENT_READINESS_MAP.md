@@ -530,7 +530,7 @@ class SAGECore(nn.Module):
 
 ### **CRITICAL FINDING: Wrong Abstraction**
 
-This is a **trainable neural model** for abstract reasoning (like ARC-AGI), NOT the runtime orchestrator described in the vision document.
+This is a **trainable neural model** for abstract reasoning (grid-puzzle-style benchmarks), NOT the runtime orchestrator described in the vision document.
 
 **Vision document says**:
 > "SAGE is not a model - it's a loop"
@@ -540,7 +540,7 @@ This is a **trainable neural model** for abstract reasoning (like ARC-AGI), NOT 
 **SAGECore is**:
 - A transformer-based reasoning model
 - Takes token IDs and produces action logits
-- Designed for training on ARC-AGI style tasks
+- Designed for training on grid-puzzle-style abstract reasoning tasks
 - NOT a resource orchestrator
 
 ### What We Actually Need

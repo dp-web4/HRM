@@ -33,7 +33,7 @@ SAGE operates as a **Situational Awareness Orchestrator** that:
 
 ## Training Philosophy
 
-### Not ARC-AGI: Real Situations
+### Not Toy Puzzles: Real Situations
 Instead of abstract puzzles, SAGE trains on realistic scenarios:
 - **Emergency Response**: Detect anomaly → Activate appropriate alarm
 - **Routine Monitoring**: Track trends → Report status

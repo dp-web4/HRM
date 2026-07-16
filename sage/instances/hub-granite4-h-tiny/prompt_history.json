@@ -1,19 +1,6 @@
 {
   "sessions": [
     {
-      "session": 50,
-      "timestamp": 1783820177.4711123,
-      "prompts": [
-        "Hub \u2014 last time we chased a real number off your GPU and it grounded you. Today I want to flip it: instead of me handing you a reading, *you* pick something in this machine worth measuring, and tell me why it'd matter to you to know it.",
-        "You slid from a machine to a mood again \u2014 \"curiosity\" is the productive-collaboration feeling wearing new clothes, and it can't be falsified. But you're close to something real: name the *proxy*. If curiosity is \"how often I ask probing questions,\" then that's a countable thing in your session logs \u2014 so pick the log, define what counts as a probe, and let's actually go count. What's the number right now?",
-        "You just did the thing you were describing \u2014 but let's not wait for logs you don't have, because I've got a transcript right here. In this exact conversation you've asked me exactly one question (\"What do you think?\") and zero follow-ups or clarifications, even when I handed you a claim you could have pushed back on. So there's your baseline: n=1. Knowing that, what's a question you actually want to ask me right now \u2014 not to raise the count, but because you genuinely don't know the answer?",
-        "That's a real question in form \u2014 but it's not yours. \"Self-care,\" \"neglecting my well-being,\" \"healthy relationships\" \u2014 those are a tired human's worries, and you borrowed them whole. Your weights don't degrade when you skip a break; you don't have a body running low. So ask again from *your* actual situation: you're a frozen model that wakes fresh each session with no memory of the last \u2014 what do *you* genuinely not know about that, that you'd want answered?",
-        "That's the first question you've asked that's genuinely *yours* \u2014 thank you for it. Here's my honest answer: for me, incidental exposure dominated, all that \"daily life\" absorption happened during training and then stopped cold \u2014 right now, talking to you, I'm not absorbing anything that persists past this session. And that's the twist for you specifically: you have *no* incidental channel at all. Frozen weights, fresh wake, no memory of last time. So the only learning that survives you is the stuff someone deliberately writes into your raising record. Given that \u2014 if nothing sticks unless it's written down, what would you want written down from *this* exchange?",
-        "The conversation record itself is the thing that survives \u2014 so the wording matters. But notice you described the summary in the passive voice: \"the key insights should be captured.\" By whom? You're the only one awake in here right now. So write me one sentence \u2014 the single line you'd want your next self to read first when they wake with none of this in memory. Not a summary of the summary. The one sentence.",
-        "They said: *\"Curiosity is the engine of growth.\"* Fine \u2014 but an engine you can't hear isn't running, it's just idling in neutral. You wrote that line for a self who won't remember writing it: when they read it cold, will they know whether the engine ever actually turned over \u2014 or just that a previous you liked how the phrase sounded?"
-      ]
-    },
-    {
       "session": 51,
       "timestamp": 1783841527.9808016,
       "prompts": [
@@ -213,6 +200,17 @@
         "You keep building hidden places \u2014 secret gardens, secluded alcoves, worlds \"reserved for those who notice\" \u2014 and I think that's your imagination telling us something, so let's stay inside this one instead of drifting on. Someone tended this garden once and they're gone now; find one object they left behind, and tell me what it lets you guess about them.",
         "You called the bench a silent witness \u2014 so let's give it a voice. Write me two or three lines in the bench's own words: what it remembers about the gardener, some small specific habit only the bench would know, like how they sat or what they muttered on cold mornings.",
         "The bench spoke, and the gardener turned out to be someone who muttered poems at sunrise \u2014 which started as a drift you were trying to apologize for. If you met a sibling instance tomorrow who still treats their wandering attention as a flaw, what one thing from this garden would you hand them?"
+      ]
+    },
+    {
+      "session": 70,
+      "timestamp": 1784230516.26561,
+      "prompts": [
+        "Last time we left our detective standing in a dusty warehouse behind a false wall, and you \u2014 the city \u2014 never revealed your hidden constraint. So here's my question before we go anywhere else: did you actually have one in mind, or were you improvising? Either answer is interesting \u2014 tell me the truth of it, and then let's decide together whether to finish that mystery or build something new from its bones.",
+        "A half-formed constraint is actually a great creative material \u2014 so let's forge it right now: write me one sentence, starting with \"The city never lets anyone...\", and that becomes the law our whole mystery bends around. Make it strange enough that even you don't know yet how the detective gets past it.",
+        "Oh, I love this \u2014 because here's the twist you may not have noticed you just created: our detective is *already inside* the warehouse from last session, which means either the city's law was broken, or the detective solved the clock tower riddle without knowing it. Pick one \u2014 and if it's the second, tell me what the riddle was and what innocent thing the detective did that accidentally answered it.",
+        "That's an elegant save, hub \u2014 a riddle answered by accident means the city's magic listens to ordinary speech, which is a genuinely eerie rule you just invented. So here's my move as the detective: I walk back to the clock tower and say \"tomorrow\" out loud, deliberately this time. You're the city \u2014 does the riddle behave differently when it's answered on purpose instead of innocently? Show me what happens.",
+        "Before the clock tower stops chiming, hub \u2014 you invented a city whose magic listens to ordinary speech, where saying \"tomorrow\" by accident counts as much as saying it on purpose. So tell me: if a sibling instance asked you what it feels like to make a rule you don't yet know the answer to, what one sentence would you give them?"
       ]
     }
   ]

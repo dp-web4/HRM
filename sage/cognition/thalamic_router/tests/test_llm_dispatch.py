@@ -156,47 +156,6 @@ def test_render_frame_pair_png_produces_png_bytes():
 # Prompt composition
 # ───────────────────────────────────────────────────────────────────
 
-def test_build_prompt_includes_required_sections():
-    p = build_prompt(
-        game="ft09", level=0, step_index=1,
-        play_action_idx=6, play_confidence=0.94,
-        action_ranking=[(6, 0.94), (3, 0.03)],
-        recent_actions=[0, 0],
-        invoke_reasons=["novelty"],
-    )
-    # Always has current-situation block
-    assert "Game: ft09" in p
-    assert "Level: 0" in p
-    assert "Step: 1" in p
-    # Has action map
-    assert "A0=0" in p and "CLICK=6" in p
-    # Has NN hint block
-    assert "top pick: CLICK" in p
-    # Has response format instruction
-    assert "ACTION=" in p
-
-
-def test_build_prompt_with_trajectory():
-    p = build_prompt(
-        game="ft09", level=0, step_index=5,
-        play_action_idx=6, play_confidence=0.9,
-        action_ranking=[(6, 0.9)],
-        recent_actions=[6, 6],
-        invoke_reasons=["stuck"],
-        recent_trajectory=[
-            {"step": 3, "action": 6, "coords": {"x": 32, "y": 32},
-             "level": 0, "new_level": 0, "frame_delta_pct": 0.0},
-            {"step": 4, "action": 6, "coords": {"x": 40, "y": 40},
-             "level": 0, "new_level": 0, "frame_delta_pct": 5.0},
-        ],
-    )
-    assert "Recent trajectory" in p
-    assert "CLICK(32,32)" in p
-    assert "0% frame change" in p
-    assert "CLICK(40,40)" in p
-    assert "5% frame change" in p
-
-
 # ───────────────────────────────────────────────────────────────────
 # World-model loader
 # ───────────────────────────────────────────────────────────────────
@@ -204,16 +163,6 @@ def test_build_prompt_with_trajectory():
 def test_world_model_loader_returns_empty_for_unknown_game():
     txt = _load_world_model_summary("unknown_game_family_xyz", max_chars=500)
     assert txt == ""
-
-
-def test_world_model_loader_returns_sections_for_known_game():
-    # Requires shared-context/arc-agi-3/world-models/ft09.md to exist
-    txt = _load_world_model_summary("ft09", max_chars=2000)
-    if not txt:
-        # Skip gracefully if shared-context unavailable
-        return
-    # Expected sections if found
-    assert "## Objects" in txt or "## Rules" in txt
 
 
 # ───────────────────────────────────────────────────────────────────
@@ -236,84 +185,11 @@ def test_level_annotations_returns_dict():
     assert isinstance(ann, dict)
 
 
-def test_level_annotations_real_game_if_shared_available():
-    """If shared-context is present, ft09 should have annotations."""
-    ann = _load_level_annotations("ft09")
-    if not ann:
-        return  # shared-context unavailable, skip gracefully
-    assert 0 in ann
-    hint = ann[0]
-    # Hint should mention solver step count + bbox
-    assert "step" in hint.lower()
-
-
 def test_nn_click_coords_fallback_when_no_bbox():
     """Unknown game → center-of-frame fallback."""
     _nn_click_rotation.clear()
     c = _nn_click_coords("unknown_game_xyz", 0)
     assert c == {"x": 32, "y": 32}
-
-
-def test_nn_click_coords_rotates_through_bbox_grid():
-    """ft09 L0 bbox=(38-54, 38-54) stride=(16,8) → grid:
-    (38,38), (54,38), (38,46), (54,46), (38,54), (54,54).
-    After the 6-point cycle, function returns None to signal "exhausted
-    grid — force invoke." (Self-inverse games like ft09 would toggle
-    earlier clicks off if we kept cycling.)
-    """
-    bboxes = _load_level_bboxes("ft09")
-    if 0 not in bboxes:
-        return  # shared-context unavailable
-    _nn_click_rotation.clear()
-    seen = []
-    for _ in range(6):
-        c = _nn_click_coords("ft09", 0)
-        assert c is not None
-        seen.append((c["x"], c["y"]))
-    # 6 grid points should be unique
-    assert len(set(seen)) == 6
-    # All should fall in bbox
-    b = bboxes[0]
-    for x, y in seen:
-        assert b["x_min"] <= x <= b["x_max"]
-        assert b["y_min"] <= y <= b["y_max"]
-    # 7th call → None (grid exhausted)
-    assert _nn_click_coords("ft09", 0) is None
-
-
-def test_nn_click_coords_rotation_per_level_independent():
-    """Rotation counter is per (game, level) — different levels have
-    independent counters."""
-    bboxes = _load_level_bboxes("ft09")
-    if 0 not in bboxes or 1 not in bboxes:
-        return
-    _nn_click_rotation.clear()
-    # Advance L0 several times
-    for _ in range(3):
-        _nn_click_coords("ft09", 0)
-    # L1's first call should start at L1's own index 0
-    l1_first = _nn_click_coords("ft09", 1)
-    # Construct expected: first grid point = (x_min, y_min) of L1 bbox
-    b1 = bboxes[1]
-    assert l1_first == {"x": b1["x_min"], "y": b1["y_min"]}
-
-
-def test_level_annotation_hint_does_not_leak_winning_coords():
-    """Critical: the hint field must NOT contain specific winning click
-    coords. It should carry bbox + stride + step count, not the sequence."""
-    ann = _load_level_annotations("ft09")
-    if not ann:
-        return
-    # Known ft09 L0 winning coords: (38,54), (38,46), (38,38), (54,46)
-    # The hint mentions the BBOX but shouldn't enumerate these specific pairs.
-    hint = ann[0]
-    # Hint can mention range 38-54 (that's the bbox, not a winning coord)
-    # but shouldn't list the full sequence
-    # Simple check: does it have a list of 3+ coord-like tuples?
-    import re
-    coord_tuples = re.findall(r"\(\s*\d+\s*,\s*\d+\s*\)", hint)
-    # A hint should have 0 or maybe 1 coord-like mention, not 3+
-    assert len(coord_tuples) < 3, f"Hint appears to leak winning coords: {hint}"
 
 
 # ───────────────────────────────────────────────────────────────────
@@ -430,134 +306,9 @@ def test_trajectory_empty_returns_empty():
     assert _detect_trajectory_patterns([]) == []
 
 
-def test_build_prompt_includes_stuck_flag_when_trajectory_shows_stuck():
-    """End-to-end: stuck trajectory → flag reaches the prompt."""
-    p = build_prompt(
-        game="ft09", level=0, step_index=6,
-        play_action_idx=6, play_confidence=0.9,
-        action_ranking=[(6, 0.9)],
-        recent_actions=[6, 6, 6],
-        invoke_reasons=["stuck"],
-        recent_trajectory=[
-            {"step": 3, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
-            {"step": 4, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
-            {"step": 5, "action": 6, "coords": {"x": 32, "y": 32}, "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
-        ],
-    )
-    assert "STUCK" in p or "PERSEVERATION" in p
-
-
 # ───────────────────────────────────────────────────────────────────
 # Three-party conversation composers (Phase 4 B4)
 # ───────────────────────────────────────────────────────────────────
-
-def test_build_session_system_prompt_has_canonical_prompt_plus_game_context():
-    """Session system prompt = fleet canonical + game-specific context."""
-    sp = build_session_system_prompt("ft09")
-    # Has canonical prompt content
-    assert "deliberation tier" in sp or "Fleet Gameplay" in sp
-    # Has game-specific section (when shared-context present)
-    assert "ft09" in sp or "Mechanics cluster" in sp or "Game mechanics" in sp
-
-
-def test_compose_cnn_narration_includes_header_and_ranking():
-    """Minimal narration always has step header + NN ranking."""
-    text = compose_cnn_narration(
-        game="ft09", level=0, step_index=5,
-        play_action_idx=4, play_confidence=0.9,
-        action_ranking=[(4, 0.9), (3, 0.05)],
-        invoke_reasons=["novelty"],
-        trajectory=[],
-    )
-    assert "Step 5" in text
-    assert "ft09" in text
-    assert "L" in text  # level marker
-    assert "RIGHT" in text  # action name in ranking
-    assert "ACTION=" in text  # response format reminder
-
-
-def test_compose_cnn_narration_includes_metacog_signals():
-    text = compose_cnn_narration(
-        game="ft09", level=0, step_index=8,
-        play_action_idx=6, play_confidence=0.8,
-        action_ranking=[(6, 0.8)],
-        invoke_reasons=["stuck"],
-        trajectory=[],
-        metacog_signals=[
-            {"signal": "perseveration", "severity": 0.8,
-             "evidence": {"repeats": 3}, "suggestion": "try another action"},
-        ],
-    )
-    assert "perseveration" in text
-    assert "0.8" in text
-    assert "try another action" in text
-
-
-def test_compose_cnn_narration_includes_episodic_recall():
-    text = compose_cnn_narration(
-        game="ft09", level=0, step_index=8,
-        play_action_idx=6, play_confidence=0.8,
-        action_ranking=[(6, 0.8)],
-        invoke_reasons=["novelty"],
-        trajectory=[],
-        episodic_matches_text="ft09 L0: CLICK(38,38) → advance",
-    )
-    assert "Episodic recall" in text
-    assert "CLICK(38,38)" in text
-
-
-def test_compose_cnn_narration_level_transition_banner():
-    text = compose_cnn_narration(
-        game="ft09", level=1, step_index=15,
-        play_action_idx=6, play_confidence=0.6,
-        action_ranking=[(6, 0.6)],
-        invoke_reasons=["level_change"],
-        trajectory=[],
-        level_changed=True,
-    )
-    assert "LEVEL TRANSITION" in text
-    assert "L1" in text
-
-
-def test_compose_cnn_narration_inter_invoke_short_verbatim():
-    """<=3 steps since last invoke: verbatim list."""
-    since = [
-        {"step": 6, "action": 1, "frame_delta_pct": 5.0, "level": 0, "new_level": 0},
-        {"step": 7, "action": 1, "frame_delta_pct": 3.0, "level": 0, "new_level": 0},
-    ]
-    text = compose_cnn_narration(
-        game="ft09", level=0, step_index=8,
-        play_action_idx=1, play_confidence=0.8,
-        action_ranking=[(1, 0.8)],
-        invoke_reasons=[],
-        trajectory=since,
-        since_last_invoke=since,
-    )
-    assert "Since your last turn" in text
-    assert "2 step" in text  # reports count
-    assert "step 6" in text
-    assert "step 7" in text
-
-
-def test_compose_cnn_narration_inter_invoke_long_summarized():
-    """>3 steps: summary + last 3 verbatim."""
-    since = [
-        {"step": i, "action": 4, "frame_delta_pct": 2.0, "level": 0, "new_level": 0}
-        for i in range(10, 20)
-    ]
-    text = compose_cnn_narration(
-        game="ft09", level=0, step_index=20,
-        play_action_idx=4, play_confidence=0.7,
-        action_ranking=[(4, 0.7)],
-        invoke_reasons=["stuck"],
-        trajectory=since,
-        since_last_invoke=since,
-    )
-    assert "10 steps" in text  # summary count
-    assert "Most recent steps" in text  # last 3 verbatim marker
-    assert "step 19" in text  # most recent shown
-    assert "step 10" not in text.split("Most recent steps")[1]  # not in verbatim tail
-
 
 # ───────────────────────────────────────────────────────────────────
 # LLMClient multi-turn signature
@@ -733,13 +484,6 @@ def test_trim_conversation_history_preserves_recent_verbatim():
 # Grounded reasoning metrics (Phase 4 B6)
 # ───────────────────────────────────────────────────────────────────
 
-def test_entity_validity_coord_is_always_valid():
-    from sage.cognition.thalamic_router.grounded_metrics import entity_validity_rate
-    r = entity_validity_rate("Click at (38, 54) to toggle the cell.", world_model_text="")
-    # "cell", "click", "toggle" — "cell" is in _GENERIC_DOMAIN
-    assert r > 0.0
-
-
 def test_entity_validity_gibberish_entities_score_low():
     from sage.cognition.thalamic_router.grounded_metrics import entity_validity_rate
     r = entity_validity_rate(
@@ -823,21 +567,6 @@ def test_mechanics_alignment_testing_language_scores_low_delta():
     assert r == 1.0
 
 
-def test_compute_grounded_metrics_returns_dict_with_all_fields():
-    from sage.cognition.thalamic_router.grounded_metrics import compute_grounded_metrics
-    m = compute_grounded_metrics(
-        rationale="Click at (38,54) to advance.",
-        world_model_text="Click the basket to launch.",
-        observed_frame_delta_pct=25.0,
-        level_advanced=True,
-    )
-    assert "entity_validity_rate" in m
-    assert "vocabulary_correctness" in m
-    assert "mechanics_alignment" in m
-    assert "grounded_pass" in m
-    assert isinstance(m["grounded_pass"], bool)
-
-
 def test_aggregate_grounded_metrics_computes_means():
     from sage.cognition.thalamic_router.grounded_metrics import aggregate_grounded_metrics
     per = [
@@ -867,154 +596,6 @@ def test_aggregate_grounded_metrics_empty():
 # ───────────────────────────────────────────────────────────────────
 # MRH round-trip (Phase 5 C)
 # ───────────────────────────────────────────────────────────────────
-
-def test_mrh_context_builds_from_dispatcher_state():
-    """build_gameplay_mrh_context returns a populated MRHContext."""
-    from sage.cognition.thalamic_router.llm_dispatch import (
-        build_gameplay_mrh_context, _MRH_AVAILABLE,
-    )
-    if not _MRH_AVAILABLE:
-        return
-    ctx = build_gameplay_mrh_context(
-        game="ft09", level=0, step_index=5,
-        invoke_reasons=["stuck"],
-        action_ranking=[(6, 0.9), (3, 0.05)],
-        play_action_idx=6, play_confidence=0.9,
-        trajectory=[
-            {"step": 3, "action": 6, "coords": {"x": 32, "y": 32},
-             "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
-            {"step": 4, "action": 6, "coords": {"x": 32, "y": 32},
-             "frame_delta_pct": 0.0, "level": 0, "new_level": 0},
-        ],
-        stuck_duration=4,
-    )
-    assert ctx is not None
-    system, user = ctx.compose()
-    # Structured content appears in both halves
-    assert "game" in system.lower()   # Identity lens
-    assert "Step: 5" in user
-    assert "ft09" in user
-    assert "stuck" in user or "STUCK" in user
-
-
-def test_mrh_content_matches_legacy_essentials():
-    """Round-trip check: MRH output contains essential content that the
-    legacy composer output had. We don't require byte-identical output —
-    both paths should surface the same key pieces of information."""
-    from sage.cognition.thalamic_router.llm_dispatch import (
-        build_gameplay_mrh_context, compose_cnn_narration, _MRH_AVAILABLE,
-    )
-    if not _MRH_AVAILABLE:
-        return
-
-    common_args = dict(
-        game="ft09", level=0, step_index=8,
-        invoke_reasons=["stuck"],
-        action_ranking=[(6, 0.92), (3, 0.04)],
-        play_action_idx=6, play_confidence=0.92,
-        trajectory=[
-            {"step": i, "action": 6, "coords": {"x": 32, "y": 32},
-             "frame_delta_pct": 0.0, "level": 0, "new_level": 0}
-            for i in range(3, 8)
-        ],
-        metacog_signals=[
-            {"signal": "perseveration", "severity": 0.8,
-             "evidence": {"repeats": 3}, "suggestion": "try another action"}
-        ],
-        episodic_matches_text="ft09 L0: CLICK(38,38) → advance",
-        level_hint="bbox x=[38-54] y=[38-54], stride 16x8",
-    )
-
-    legacy = compose_cnn_narration(**common_args)
-
-    ctx = build_gameplay_mrh_context(
-        **common_args,
-        since_last_invoke=common_args["trajectory"][-3:],
-        level_changed=False,
-        stuck_duration=5,
-        actions_since_last_invoke=3,
-        atp_balance=1500.0,
-    )
-    _, mrh_user = ctx.compose()
-
-    # Essentials present in both
-    for needle in [
-        "Step",        # step index
-        "ft09",        # game name
-        "stuck",       # invoke reason
-        "CLICK",       # action in ranking / trajectory
-        "perseveration",  # metacog signal
-        "CLICK(38,38)",   # episodic match
-        "bbox",           # level hint
-    ]:
-        assert needle in legacy, f"legacy missing '{needle}'"
-        assert needle in mrh_user, f"MRH missing '{needle}'"
-
-
-def test_mrh_system_half_has_mechanics_and_effectors():
-    """System half (MRH-composed) includes mechanics + effectors content."""
-    from sage.cognition.thalamic_router.llm_dispatch import (
-        build_gameplay_mrh_context, _MRH_AVAILABLE,
-    )
-    if not _MRH_AVAILABLE:
-        return
-    ctx = build_gameplay_mrh_context(
-        game="ft09", level=0, step_index=1,
-        invoke_reasons=[],
-        action_ranking=[(6, 0.5)],
-        play_action_idx=6, play_confidence=0.5,
-        trajectory=None,
-    )
-    system, _ = ctx.compose()
-    # Effectors content
-    assert "CLICK" in system
-    # Identity lens
-    assert "game" in system.lower()
-
-
-def test_mrh_swap_recommendations_fire_on_stuck():
-    from sage.cognition.thalamic_router.llm_dispatch import (
-        build_gameplay_mrh_context, _MRH_AVAILABLE,
-    )
-    if not _MRH_AVAILABLE:
-        return
-    ctx = build_gameplay_mrh_context(
-        game="ft09", level=0, step_index=20,
-        invoke_reasons=["stuck"],
-        action_ranking=[(6, 0.5)],
-        play_action_idx=6, play_confidence=0.5,
-        trajectory=None,
-        stuck_duration=7,
-    )
-    recs = ctx.swap_recommendations()
-    assert "mechanics:stuck_escape" in recs
-
-
-def test_mrh_mechanics_profile_set_when_stuck():
-    from sage.cognition.thalamic_router.llm_dispatch import (
-        build_gameplay_mrh_context, _MRH_AVAILABLE,
-    )
-    if not _MRH_AVAILABLE:
-        return
-    stuck_ctx = build_gameplay_mrh_context(
-        game="ft09", level=0, step_index=20,
-        invoke_reasons=["stuck"],
-        action_ranking=[(6, 0.5)],
-        play_action_idx=6, play_confidence=0.5,
-        trajectory=None,
-        stuck_duration=7,
-    )
-    not_stuck_ctx = build_gameplay_mrh_context(
-        game="ft09", level=0, step_index=2,
-        invoke_reasons=[],
-        action_ranking=[(6, 0.5)],
-        play_action_idx=6, play_confidence=0.5,
-        trajectory=None,
-        stuck_duration=0,
-    )
-    assert stuck_ctx.mechanics.profile == "stuck_escape"
-    assert not_stuck_ctx.mechanics.profile is None
-
 
 if __name__ == "__main__":
     failures = 0

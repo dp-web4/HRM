@@ -100,7 +100,7 @@ def test_effectors_block_game_actions_default():
 
 def test_effectors_block_with_habit_match():
     h = HabitMatch(
-        habit_id="h-cd82-L1-abc",
+        habit_id="h-toy_a-L1-abc",
         confidence=0.95,
         reliability=1.0,
         sequence=["LEFT", "DOWN", "CLICK"],
@@ -108,7 +108,7 @@ def test_effectors_block_with_habit_match():
     )
     b = EffectorsBlock(kind_profile="game_actions", habit_match=h)
     text = b.render(500)
-    assert "h-cd82-L1-abc" in text
+    assert "h-toy_a-L1-abc" in text
     assert "ACTION=HABIT" in text
     assert "LEFT" in text
 
@@ -134,12 +134,12 @@ def test_effectors_block_text_profile_differs_from_game():
 def test_mechanics_block_renders_world_model():
     b = MechanicsBlock(
         world_model_text="Clicking destroys colored tiles. Gravity pulls up.",
-        mechanics_cluster="tu93 (0.42), re86 (0.38)",
-        game_family="ft09",
+        mechanics_cluster="toy_f (0.42), toy_g (0.38)",
+        game_family="toy_b",
     )
     text = b.render(1000)
     assert "Clicking destroys colored tiles" in text
-    assert "tu93" in text
+    assert "toy_f" in text
     assert b.priority == 75
 
 
@@ -183,7 +183,7 @@ def test_experiential_block_trajectory_summary_no_llm_quotes():
 
 
 def test_experiential_block_with_episodic_and_patterns():
-    ep = EpisodicMatch(formatted_text="ft09 L0: CLICK(38,38) → advance", similarity=0.8)
+    ep = EpisodicMatch(formatted_text="toy_b L0: CLICK(12,12) → advance", similarity=0.8)
     b = ExperientialCacheBlock(
         recent_trajectory=[
             TrajectoryEntry(step=1, action_name="CLICK", frame_delta_pct=5.0),
@@ -193,7 +193,7 @@ def test_experiential_block_with_episodic_and_patterns():
         retrieved_patterns=["From Andy's filter: 'basket launches paint'"],
     )
     text = b.render(1000)
-    assert "CLICK(38,38)" in text
+    assert "CLICK(12,12)" in text
     assert "STUCK" in text
     assert "basket launches paint" in text
 
@@ -239,10 +239,10 @@ def test_task_block_renders_game_level_step():
         invoke_reasons=["stuck"],
         step_index=14,
         level=0,
-        game_family="ft09",
+        game_family="toy_b",
     )
     text = b.render(200)
-    assert "ft09" in text
+    assert "toy_b" in text
     assert "Level: 0" in text
     assert "Step: 14" in text
     assert "stuck" in text
@@ -255,7 +255,7 @@ def test_task_block_renders_game_level_step():
 
 def test_render_is_pure_no_state_mutation():
     """Block render must not mutate block state (population is dispatcher's job)."""
-    b = MechanicsBlock(world_model_text="world", game_family="ft09")
+    b = MechanicsBlock(world_model_text="world", game_family="toy_b")
     before = (b.world_model_text, b.game_family)
     _ = b.render(500)
     _ = b.render(1000)
@@ -307,12 +307,12 @@ def _build_minimal_context() -> MRHContext:
         effectors=EffectorsBlock(kind_profile="game_actions"),
         mechanics=MechanicsBlock(
             world_model_text="test mechanics",
-            game_family="ft09",
+            game_family="toy_b",
         ),
         experiential=ExperientialCacheBlock(),
         metabolic=MetabolicBlock(metabolic_state="active"),
         task=TaskBlock(
-            game_family="ft09",
+            game_family="toy_b",
             level=0,
             step_index=5,
             invoke_reasons=["probe"],
@@ -344,7 +344,7 @@ def test_compose_user_has_task_sensors_metabolic_experiential():
     ctx = _build_minimal_context()
     _, user = ctx.compose()
     # Task
-    assert "ft09" in user
+    assert "toy_b" in user
     assert "Step: 5" in user
     # Sensors
     assert "frame pair" in user

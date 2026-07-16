@@ -12,7 +12,7 @@ Metric:
 A phrase repeating 149 times in identity contexts → low score (stable).
 A phrase repeating 20 times leaking into creative writing → high score (pathology).
 
-Design: shared-context/arc-agi-3/fleet-learning/nomad/track-f-crystallization-evaluator-design.md
+Design: fleet-learning/nomad/track-f-crystallization-evaluator-design.md
 """
 
 from __future__ import annotations

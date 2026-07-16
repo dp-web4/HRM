@@ -17,7 +17,7 @@ Usage:
 
     # After a game attempt
     physics = consolidate_attempt(
-        game="cd82", level=0,
+        game="toy_a", level=0,
         trajectory=trajectory,  # list of (action, frame_delta_pct, rationale)
         world_model_before=current_wm_text,
         llm=ollama_client,

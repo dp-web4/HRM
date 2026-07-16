@@ -25,7 +25,7 @@ JSONL loader. This module ADDS:
   the collinearity artifact Sprout's baseline surfaced)
 - JSON output for CI consumption
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
+Spec: phase2/brain-arch/thalamic-router-prd.md
       §0.2 (agent-zero), §4 Phase 1, §4.7 (SNARC integration),
       §7.10 (CI defenses)
 

@@ -9,7 +9,7 @@ loops that execute without LLM involvement.
 Brain architecture component: McNugget (extends cerebellum)
 Review pair: Sprout (router dispatches to skills)
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/motor-skills.md
+Spec: phase2/brain-arch/motor-skills.md
 """
 
 from sage.cognition.motor_skills.types import (

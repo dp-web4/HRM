@@ -5,11 +5,13 @@ information weight as the trust target. A rule whose residuals concentrate
 in a single bucket (degenerate noop-predicting rule) caps trust at near-zero;
 a rule with diverse residuals accumulates trust normally.
 
-Test data uses the actual residual sequences observed in
-`sweep_results/nomad_v37full_gemma4e2b_20260601_0754.log` on dc22 and cn04
-to validate the fix on real production data.
+Test data uses two synthetic residual sequences that isolate the property
+under test:
 
-Diagnosis: `forum/nomad-dc22-calibration-diagnosis-2026-06-01.md`.
+  - DEGENERATE_RESIDS: all confirms in a single bucket (zero information) —
+    the pathological case the flag must cap.
+  - INFORMATIVE_RESIDS: a diverse confirm-dominant mix with a few disconfirms
+    (near-1 bit per event) — the healthy case the flag must preserve.
 """
 
 from __future__ import annotations
@@ -39,68 +41,66 @@ def _replay(p: FaithPortfolio, cid: str, resids: list, conf: float = 0.50):
         )
 
 
-# Real v37 dc22 rule[CLICK] residuals (FAITH-BORN events with the predictor
-# trusted, i.e. confirm/disconfirm class — 17 confirms at resid=0 or 1.67).
-DC22_CLICK_RESIDS = [
-    1.67, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
-    0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
-]
+# Degenerate rule[CLICK] residuals: all confirms in a single bucket (resid=0).
+# Zero-entropy stream — the noop-predicting pathology the flag must cap.
+DEGENERATE_RESIDS = [0.00] * 17
 
-# Real v37 cn04 rule[DOWN] residuals — informative mix of 0 / 2 / 4 / 5px
-# (with some disconfirms at resid=5 that drop trust). Approximated from log.
-CN04_DOWN_RESIDS = [
-    0.00, 0.00, 0.00, 4.00, 0.00, 4.00, 0.00, 4.00, 0.00,
+# Informative rule[DOWN] residuals: a diverse mix of 0 / 2 / 4 / 5px
+# (with some disconfirms at resid=5 that drop trust). Confirm-dominant but
+# high-entropy — each event carries close to a full bit.
+INFORMATIVE_RESIDS = [
+    0.00, 2.00, 4.00, 0.00, 2.00, 4.00, 0.00, 2.00, 4.00,
     5.00,  # > theta=4, disconfirm
-    0.00, 5.00, 0.00, 4.00, 0.00, 4.00, 0.00, 5.00,
-    2.00, 0.00, 2.00, 0.00, 2.00, 0.00,
+    0.00, 5.00, 2.00, 4.00, 0.00, 2.00, 4.00, 5.00,
+    0.00, 2.00, 0.00, 4.00, 2.00, 0.00,
 ]
 
 
 def test_default_off_preserves_existing_symmetric_update():
     """When SAGE_FAITH_INFO_BOUNDED is unset, the symmetric update fires
-    normally — dc22's degenerate confirms accumulate trust to high values."""
+    normally — the degenerate confirms accumulate trust to high values."""
     os.environ.pop("SAGE_FAITH_INFO_BOUNDED", None)
     p = FaithPortfolio(commit_tau=0.45)
-    _add(p, "dc22__rule__CLICK")
-    _replay(p, "dc22__rule__CLICK", DC22_CLICK_RESIDS)
-    final = p.candidates["dc22__rule__CLICK"].trust
+    _add(p, "degenerate__rule__CLICK")
+    _replay(p, "degenerate__rule__CLICK", DEGENERATE_RESIDS)
+    final = p.candidates["degenerate__rule__CLICK"].trust
     # Symmetric update with 17 confirms drives trust very close to 1.0
     assert final > 0.95, (
         f"Default symmetric update should saturate near 1.0; got {final:.3f}"
     )
 
 
-def test_info_bounded_caps_degenerate_dc22_rule():
-    """With SAGE_FAITH_INFO_BOUNDED=1, dc22's degenerate rule[CLICK] (all
+def test_info_bounded_caps_degenerate_rule():
+    """With SAGE_FAITH_INFO_BOUNDED=1, the degenerate rule[CLICK] (all
     residuals at resid=0) stays at or below the commit threshold."""
     os.environ["SAGE_FAITH_INFO_BOUNDED"] = "1"
     try:
         p = FaithPortfolio(commit_tau=0.45)
-        _add(p, "dc22__rule__CLICK")
-        _replay(p, "dc22__rule__CLICK", DC22_CLICK_RESIDS)
-        final = p.candidates["dc22__rule__CLICK"].trust
+        _add(p, "degenerate__rule__CLICK")
+        _replay(p, "degenerate__rule__CLICK", DEGENERATE_RESIDS)
+        final = p.candidates["degenerate__rule__CLICK"].trust
         # Degenerate rule should not cross commit_tau under info-bounded update.
         assert final < 0.55, (
-            f"Info-bounded should cap dc22 degenerate rule below ~commit_tau; "
+            f"Info-bounded should cap the degenerate rule below ~commit_tau; "
             f"got {final:.3f}"
         )
     finally:
         os.environ.pop("SAGE_FAITH_INFO_BOUNDED", None)
 
 
-def test_info_bounded_preserves_informative_cn04_rule():
-    """With SAGE_FAITH_INFO_BOUNDED=1, cn04's informative rule[DOWN] (mixed
+def test_info_bounded_preserves_informative_rule():
+    """With SAGE_FAITH_INFO_BOUNDED=1, the informative rule[DOWN] (mixed
     residuals at 0, 2, 4, 5px) accumulates trust normally."""
     os.environ["SAGE_FAITH_INFO_BOUNDED"] = "1"
     try:
         p = FaithPortfolio(commit_tau=0.45)
-        _add(p, "cn04__rule__DOWN")
-        _replay(p, "cn04__rule__DOWN", CN04_DOWN_RESIDS)
-        final = p.candidates["cn04__rule__DOWN"].trust
+        _add(p, "informative__rule__DOWN")
+        _replay(p, "informative__rule__DOWN", INFORMATIVE_RESIDS)
+        final = p.candidates["informative__rule__DOWN"].trust
         # Informative rule should accumulate trust above commit_tau under
         # info-bounded update (its diverse residuals carry near-1 bit each).
         assert final > 0.45, (
-            f"Info-bounded should preserve cn04 informative rule above "
+            f"Info-bounded should preserve the informative rule above "
             f"commit_tau; got {final:.3f}"
         )
     finally:
@@ -108,21 +108,21 @@ def test_info_bounded_preserves_informative_cn04_rule():
 
 
 def test_info_bounded_separates_degenerate_from_informative():
-    """End-to-end separation check: in the same flag-on portfolio, dc22's
-    degenerate rule should end up well below cn04's informative rule."""
+    """End-to-end separation check: in the same flag-on portfolio, the
+    degenerate rule should end up well below the informative rule."""
     os.environ["SAGE_FAITH_INFO_BOUNDED"] = "1"
     try:
         p = FaithPortfolio(commit_tau=0.45)
-        _add(p, "dc22__rule__CLICK")
-        _add(p, "cn04__rule__DOWN")
-        _replay(p, "dc22__rule__CLICK", DC22_CLICK_RESIDS)
-        _replay(p, "cn04__rule__DOWN", CN04_DOWN_RESIDS)
-        dc22_trust = p.candidates["dc22__rule__CLICK"].trust
-        cn04_trust = p.candidates["cn04__rule__DOWN"].trust
-        separation = cn04_trust - dc22_trust
+        _add(p, "degenerate__rule__CLICK")
+        _add(p, "informative__rule__DOWN")
+        _replay(p, "degenerate__rule__CLICK", DEGENERATE_RESIDS)
+        _replay(p, "informative__rule__DOWN", INFORMATIVE_RESIDS)
+        degen_trust = p.candidates["degenerate__rule__CLICK"].trust
+        info_trust = p.candidates["informative__rule__DOWN"].trust
+        separation = info_trust - degen_trust
         assert separation > 0.10, (
             f"Info-bounded should clearly separate informative from degenerate; "
-            f"dc22={dc22_trust:.3f} cn04={cn04_trust:.3f} sep={separation:+.3f}"
+            f"degen={degen_trust:.3f} info={info_trust:.3f} sep={separation:+.3f}"
         )
     finally:
         os.environ.pop("SAGE_FAITH_INFO_BOUNDED", None)
@@ -164,8 +164,8 @@ def test_disconfirms_still_full_strength():
 if __name__ == "__main__":
     # Standalone smoke (no pytest dependency)
     test_default_off_preserves_existing_symmetric_update()
-    test_info_bounded_caps_degenerate_dc22_rule()
-    test_info_bounded_preserves_informative_cn04_rule()
+    test_info_bounded_caps_degenerate_rule()
+    test_info_bounded_preserves_informative_rule()
     test_info_bounded_separates_degenerate_from_informative()
     test_small_sample_full_weight()
     test_disconfirms_still_full_strength()

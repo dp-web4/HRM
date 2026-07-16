@@ -128,7 +128,7 @@ def test_full_wm_populates_all_channels_except_salient():
 def test_summary_one_line_format():
     """summary_one_line should be a tight space-separated mark sequence."""
     sr = SituationReport(
-        game="g50t", level=1, cycle=3,
+        game="toy_d", level=1, cycle=3,
         now={"x": 1}, then=None, laws={"a": 1, "b": 2},
         self_={"l": 0}, salient=None,
     )
@@ -156,7 +156,7 @@ def test_log_situation_report_does_not_crash():
     """log_situation_report should print without raising; format check via
     capture not required for V1."""
     sr = SituationReport(
-        game="r11l", level=0, cycle=2,
+        game="toy_e", level=0, cycle=2,
         now={"object_count": 3}, then=None, laws=None,
         self_={"level": 0}, salient=None,
     )

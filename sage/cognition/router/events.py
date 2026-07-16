@@ -11,7 +11,7 @@ The router pipeline is a heavy event source (one decision per tick on every
 machine) so the schema stays tiny on purpose — no heavy payloads, just a
 kind, ids, a timestamp, and an optional human-readable reason.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md §2.7
+Spec: phase2/brain-arch/thalamic-router-prd.md §2.7
 """
 
 from dataclasses import dataclass, asdict

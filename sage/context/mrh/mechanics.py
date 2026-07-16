@@ -46,10 +46,10 @@ class MechanicsBlock(MRHBlock):
 
     Attributes:
         world_model_text: authoritative per-game mechanics markdown.
-            Loaded from shared-context/arc-agi-3/world-models/{game}.md
+            Loaded from world-models/{game}.md
             by the dispatcher. Pure data, not strategy.
         mechanics_cluster: optional neighbor-game hint from the
-            mechanics encoder (e.g., "dynamics near tu93, re86").
+            mechanics encoder (e.g., "dynamics near toy_f, toy_g").
         profile: optional runtime profile name (e.g., "stuck_escape")
             that adds a secondary section. Used for metacog-triggered
             swaps per Nomad's swap_recommendations.

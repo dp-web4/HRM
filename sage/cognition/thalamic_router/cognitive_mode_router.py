@@ -19,7 +19,7 @@ stubbed (needs single-event signal extraction). Each landed as a separate sprint
 as the architecture matured.
 
 Why perseveration-break first: Nomad's local sweep (2026-05-09) showed
-gemma3:4b clicking obj_008 at (4, 32) 31 consecutive times on lp85 L=1
+gemma3:4b clicking obj_008 at (4, 32) 31 consecutive times on toy_a L=1
 with no progress. Same failure surface dp called out in the
 "reluctance-to-succeed" comment. This is the highest-frequency observed
 failure mode — break-out from action loops.

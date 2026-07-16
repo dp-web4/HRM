@@ -20,14 +20,14 @@ def test_basic_bind_recall():
     index = EpisodicIndex()
 
     ep = Episode(
-        state_signature={"game": "cd82", "level": 1},
+        state_signature={"game": "toy_a", "level": 1},
         snarc_scores={"surprise": 0.8, "novelty": 0.5, "arousal": 0.3, "reward": 0.6, "conflict": 0.1},
         action_taken="LEFT",
-        tags=["game", "cd82"],
+        tags=["game", "toy_a"],
     )
     eid = index.bind(ep)
 
-    results = index.recall(EpisodicCue(state_signature={"game": "cd82", "level": 1}))
+    results = index.recall(EpisodicCue(state_signature={"game": "toy_a", "level": 1}))
     assert len(results) >= 1, "Should recall at least one episode"
     assert results[0].episode.episode_id == eid
     assert results[0].similarity > 0.5, f"Self-match should be high, got {results[0].similarity}"
@@ -75,15 +75,15 @@ def test_tag_filtering():
     """T2c: tag-based recall."""
     index = EpisodicIndex()
 
-    ep1 = Episode(tags=["game", "cd82", "level1"])
-    ep2 = Episode(tags=["game", "tr87", "level1"])
+    ep1 = Episode(tags=["game", "toy_a", "level1"])
+    ep2 = Episode(tags=["game", "toy_c", "level1"])
     ep3 = Episode(tags=["raising", "identity"])
     index.bind(ep1)
     index.bind(ep2)
     index.bind(ep3)
 
-    results = index.recall(EpisodicCue(tags=["cd82"]))
-    assert any(r.episode.episode_id == ep1.episode_id for r in results), "Should find cd82 episode"
+    results = index.recall(EpisodicCue(tags=["toy_a"]))
+    assert any(r.episode.episode_id == ep1.episode_id for r in results), "Should find toy_a episode"
     print("  PASS: tag filtering")
 
 
@@ -94,11 +94,11 @@ def test_consolidation():
     # Store 10 very similar episodes
     for i in range(10):
         ep = Episode(
-            state_signature={"game": "cd82", "level": 1},
+            state_signature={"game": "toy_a", "level": 1},
             snarc_scores={"surprise": 0.5 + i * 0.01, "novelty": 0.3, "arousal": 0.2, "reward": 0.4, "conflict": 0.1},
             action_taken="LEFT",
             success=True,
-            tags=["game", "cd82"],
+            tags=["game", "toy_a"],
         )
         index.bind(ep)
 
@@ -252,7 +252,7 @@ def test_from_wm_dump():
     wm_dump = {
         "capacity": 7,
         "slots": [
-            {"slot_id": "wm_001", "content_type": "goal", "content": "solve cd82 level 1",
+            {"slot_id": "wm_001", "content_type": "goal", "content": "solve toy_a level 1",
              "priority": 0.9, "timestamp": time.time(), "goal_id": "g1", "access_count": 3},
             {"slot_id": "wm_002", "content_type": "plan_step", "content": "move basket to S position",
              "priority": 0.7, "timestamp": time.time(), "goal_id": "g1", "access_count": 1},
@@ -277,26 +277,26 @@ def test_from_wm_dump():
         reward=0.5,
         success=True,
         snarc_scores={"surprise": 0.7, "novelty": 0.4, "arousal": 0.3, "reward": 0.6, "conflict": 0.1},
-        tags=["cd82", "game"],
+        tags=["toy_a", "game"],
     )
 
     assert ep.embedding is not None
     assert ep.embedding.shape == (EMBEDDING_DIM,)
-    assert ep.state_signature.get("goal") == "solve cd82 level 1"
+    assert ep.state_signature.get("goal") == "solve toy_a level 1"
     assert ep.state_signature.get("hypothesis") == "SELECT launches paint"
     assert ep.sensory_summary.get("vision") == "white rectangle with red border"
     assert ep.action_taken == "SELECT"
     assert ep.success is True
     assert "goal" in ep.tags
-    assert "cd82" in ep.tags
+    assert "toy_a" in ep.tags
 
-    # Verify it's recallable
+    # Verify it's recallable. Recall via the deterministic tag channel — a
+    # partial-dict state_signature cue hashes to a vector unrelated to the
+    # episode's full stored signature, so it only adds masked-cosine noise
+    # (embedding aliasing) rather than a real match signal.
     index = EpisodicIndex()
     index.bind(ep)
-    results = index.recall(EpisodicCue(
-        state_signature={"goal": "solve cd82 level 1"},
-        tags=["cd82"],
-    ))
+    results = index.recall(EpisodicCue(tags=["toy_a"]))
     assert len(results) >= 1
     assert results[0].episode.action_taken == "SELECT"
     print("  PASS: from_wm_dump integration")

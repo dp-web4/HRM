@@ -12,9 +12,9 @@ query: "have we seen this metacog pattern before? what happened?"
 
 Entry format:
     {
-        "text": "[role:metacog] [signal:perseveration] [game:ft09] ...",
+        "text": "[role:metacog] [signal:perseveration] [game:toy_b] ...",
         "source": "metacog_observation",
-        "game": "ft09",
+        "game": "toy_b",
         "signal": "perseveration",
         "severity": 0.8,
         "machine": "nomad",
@@ -171,7 +171,7 @@ class MetacogCartridgeWriter:
         )
         # During gameplay:
         for sig in metacog.active_signals():
-            writer.observe(sig, game="ft09", context="step 42, stuck on L2")
+            writer.observe(sig, game="toy_b", context="step 42, stuck on L2")
 
         # At session end:
         writer.flush()

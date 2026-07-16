@@ -36,11 +36,11 @@ def _assert(cond: bool, msg: str) -> None:
 
 def test_append_assigns_sequence() -> None:
     print("test_append_assigns_sequence")
-    conv = Conversation(track="gameplay", session_id="cd82-test")
-    f1 = conv.append(make_system_frame(identity="I am CBP", session_id="cd82-test"))
-    f2 = conv.append(make_situation_frame(now="frame at L0", session_id="cd82-test"))
+    conv = Conversation(track="gameplay", session_id="toy_a-test")
+    f1 = conv.append(make_system_frame(identity="I am CBP", session_id="toy_a-test"))
+    f2 = conv.append(make_situation_frame(now="frame at L0", session_id="toy_a-test"))
     f3 = conv.append(make_plan_frame(steps=[{"do": "CLICK", "x": 36, "y": 4}],
-                                     session_id="cd82-test"))
+                                     session_id="toy_a-test"))
     seqs = [f1.sequence, f2.sequence, f3.sequence]
     _assert(seqs == [0, 1, 2], f"sequences are monotonic from 0; got {seqs}")
     _assert(conv.frames[0] is f1, "first frame stored is system")
@@ -53,9 +53,9 @@ def test_basic_render_three_wire_roles() -> None:
     # pairs as the conversation progresses. Render with a fresh
     # current_user_content (e.g., the next SITUATION the cortex hasn't
     # seen yet).
-    conv = Conversation(track="gameplay", session_id="ft09-test")
+    conv = Conversation(track="gameplay", session_id="toy_b-test")
     conv.append(make_system_frame(
-        identity="I am CBP playing ft09",
+        identity="I am CBP playing toy_b",
         wm_render="objects: [grid]; rules: [click cycles cells]",
     ))
     conv.append(make_situation_frame(
@@ -89,7 +89,7 @@ def test_basic_render_three_wire_roles() -> None:
 
 def test_predict_verify_pairing() -> None:
     print("test_predict_verify_pairing")
-    conv = Conversation(track="gameplay", session_id="cd82-test")
+    conv = Conversation(track="gameplay", session_id="toy_a-test")
     conv.append(make_system_frame(identity="I am CBP"))
     conv.append(make_situation_frame(now="initial frame"))
     plan = conv.append(make_plan_frame(

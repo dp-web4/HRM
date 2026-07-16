@@ -45,8 +45,8 @@ Branch → rationale_code map (see tests for the full matrix):
   - reflex tier chosen                    → ``reflex``
   - fallthrough invoke                    → ``default``
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
-Sprint: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md §Track 3
+Spec: phase2/brain-arch/thalamic-router-prd.md
+Sprint: phase2/brain-arch/router-sprint-1-phase-0.md §Track 3
 """
 
 from typing import Any, Dict, List, Optional

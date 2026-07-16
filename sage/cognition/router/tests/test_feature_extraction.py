@@ -143,7 +143,7 @@ class _RaisingStub:
 def _make_wm() -> WorkingMemory:
     """Real WM with a goal + plan step + hypothesis."""
     wm = WorkingMemory(capacity=7)
-    wm.add_item("goal", {"game": "cd82"}, priority=0.9, goal_id="g1")
+    wm.add_item("goal", {"game": "toy_a"}, priority=0.9, goal_id="g1")
     wm.add_item("plan_step", {"step": 1}, priority=0.7, goal_id="g1")
     wm.add_item("hypothesis", {"claim": "A"}, priority=0.5, goal_id="g1")
     return wm

@@ -19,7 +19,7 @@ class TaskBlock(MRHBlock):
 
     Attributes:
         goal: one-sentence goal for this invocation (e.g.,
-            "Pick the best next action on ft09 L0").
+            "Pick the best next action on toy_b L0").
         invoke_reasons: why the LLM is being consulted right now
             (e.g., ["stuck", "novelty"]).
         step_index: current step/turn number in the session.

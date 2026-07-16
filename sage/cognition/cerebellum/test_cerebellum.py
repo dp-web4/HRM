@@ -90,8 +90,8 @@ def test_habit_failure_demotion():
 def test_cross_level_no_match():
     """T3: Different levels should NOT match."""
     cb = Cerebellum()
-    state_l1 = make_state(domain="arc-game:cd82", level=1, sprites=10)
-    state_l2 = make_state(domain="arc-game:cd82", level=2, sprites=8)
+    state_l1 = make_state(domain="toy-game:toy_a", level=1, sprites=10)
+    state_l2 = make_state(domain="toy-game:toy_a", level=2, sprites=8)
     actions = make_actions()
 
     for _ in range(3):
@@ -149,7 +149,7 @@ def test_batch_compilation():
 def test_persistence():
     """Export and load round-trip."""
     cb = Cerebellum()
-    state = make_state(level=1, game="cd82")
+    state = make_state(level=1, game="toy_a")
     actions = make_actions()
 
     for _ in range(3):

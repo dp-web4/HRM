@@ -6,7 +6,7 @@ Item #7 from the SAGE-WM math-to-brain build order
 The math wants a perception update `μ̇ = −∂F/∂μ` that fuses all evidence
 channels into a unified per-model state estimate. The framing has been
 canonical since 2026-05-01
-(`arc-agi-3/phase2/brain-arch/perception-as-integrator-2026-05-01.md`):
+(`phase2/brain-arch/perception-as-integrator-2026-05-01.md`):
 
   Perception is not "what the frame says." Perception is "what the
   situation is, given everything I have access to right now."

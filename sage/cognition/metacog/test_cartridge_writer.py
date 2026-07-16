@@ -32,19 +32,19 @@ def _make_signal(
 class TestSignalToEntry:
     def test_basic_conversion(self):
         sig = _make_signal()
-        entry = signal_to_entry(sig, game="ft09", machine="nomad")
+        entry = signal_to_entry(sig, game="toy_b", machine="nomad")
         assert entry.signal == "perseveration"
-        assert entry.game == "ft09"
+        assert entry.game == "toy_b"
         assert entry.machine == "nomad"
         assert "[role:metacog]" in entry.text
         assert "[signal:perseveration]" in entry.text
-        assert "[game:ft09]" in entry.text
+        assert "[game:toy_b]" in entry.text
         assert "[machine:nomad]" in entry.text
 
     def test_tags_in_canonical_format(self):
         entry = signal_to_entry(
             _make_signal(signal="budget_critical"),
-            game="cd82", machine="cbp",
+            game="toy_a", machine="cbp",
         )
         # All tags should be [namespace:value] format
         assert "[role:metacog]" in entry.text
@@ -69,7 +69,7 @@ class TestSignalToEntry:
 
     def test_per_pattern_meta_has_signal_fields(self):
         sig = _make_signal(tick=99)
-        entry = signal_to_entry(sig, game="ft09")
+        entry = signal_to_entry(sig, game="toy_b")
         meta = entry.per_pattern_meta
         assert meta["signal"] == "perseveration"
         assert meta["severity"] == 0.8
@@ -83,12 +83,12 @@ class TestSignalToEntry:
 
     def test_json_roundtrip(self):
         entry = signal_to_entry(
-            _make_signal(), game="ft09", machine="nomad"
+            _make_signal(), game="toy_b", machine="nomad"
         )
         text = entry.to_json()
         restored = json.loads(text)
         assert restored["signal"] == "perseveration"
-        assert restored["game"] == "ft09"
+        assert restored["game"] == "toy_b"
         assert "[role:metacog]" in restored["text"]
 
 
@@ -97,18 +97,18 @@ class TestMetacogCartridgeWriter:
         writer = MetacogCartridgeWriter(
             output_dir="/tmp/test", machine="nomad"
         )
-        writer.observe(_make_signal(), game="ft09")
-        writer.observe(_make_signal(signal="budget_anxiety"), game="cd82")
+        writer.observe(_make_signal(), game="toy_b")
+        writer.observe(_make_signal(signal="budget_anxiety"), game="toy_a")
         assert writer.pending == 2
 
     def test_flush_writes_jsonl(self, tmp_path: Path):
         writer = MetacogCartridgeWriter(
             output_dir=tmp_path, machine="nomad"
         )
-        writer.observe(_make_signal(), game="ft09", context="stuck on L2")
+        writer.observe(_make_signal(), game="toy_b", context="stuck on L2")
         writer.observe(
             _make_signal(signal="exploration_starvation"),
-            game="cd82", outcome="tried new area",
+            game="toy_a", outcome="tried new area",
         )
         out = writer.flush()
         assert out.exists()
@@ -122,22 +122,22 @@ class TestMetacogCartridgeWriter:
 
     def test_flush_clears_buffer(self, tmp_path: Path):
         writer = MetacogCartridgeWriter(output_dir=tmp_path, machine="nomad")
-        writer.observe(_make_signal(), game="ft09")
+        writer.observe(_make_signal(), game="toy_b")
         writer.flush()
         assert writer.pending == 0
 
     def test_flush_appends_not_overwrites(self, tmp_path: Path):
         writer = MetacogCartridgeWriter(output_dir=tmp_path, machine="nomad")
-        writer.observe(_make_signal(), game="ft09")
+        writer.observe(_make_signal(), game="toy_b")
         writer.flush()
-        writer.observe(_make_signal(signal="budget_anxiety"), game="cd82")
+        writer.observe(_make_signal(signal="budget_anxiety"), game="toy_a")
         writer.flush()
         lines = (tmp_path / "metacog_observations.jsonl").read_text().strip().split("\n")
         assert len(lines) == 2
 
     def test_entries_returns_copy(self):
         writer = MetacogCartridgeWriter(output_dir="/tmp", machine="nomad")
-        writer.observe(_make_signal(), game="ft09")
+        writer.observe(_make_signal(), game="toy_b")
         entries = writer.entries()
         assert len(entries) == 1
         entries.clear()
@@ -160,7 +160,7 @@ class TestEndToEnd:
         for tick in range(3):
             signals = m.observe_tick(tick, action_taken=action, state_delta=None)
         for sig in signals:
-            writer.observe(sig, game="ft09", context="step 42")
+            writer.observe(sig, game="toy_b", context="step 42")
 
         # Trigger budget critical
         m.observe_tick(
@@ -169,7 +169,7 @@ class TestEndToEnd:
         )
         for sig in m.active_signals():
             if sig.tick == 10:
-                writer.observe(sig, game="ft09",
+                writer.observe(sig, game="toy_b",
                                outcome="switched to cheaper strategy")
 
         out = writer.flush()
@@ -180,7 +180,7 @@ class TestEndToEnd:
         for line in lines:
             d = json.loads(line)
             assert d["source"] == "metacog_observation"
-            assert d["game"] == "ft09"
+            assert d["game"] == "toy_b"
             assert d["machine"] == "nomad"
             assert "[role:metacog]" in d["text"]
             assert d["signal"] in ("perseveration", "budget_critical")

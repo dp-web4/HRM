@@ -20,26 +20,26 @@ from sage.cognition.thalamic_router.faith_portfolio import (  # noqa: E402
 )
 
 LOGI = frozenset({"class:logistics"})
-WA30_L0 = frozenset({"game:wa30", "lvl:0", "class:logistics"})
+SCENARIO_L0 = frozenset({"game:scenario", "lvl:0", "class:logistics"})
 NOVEL_LOGI = frozenset({"game:novel", "lvl:0", "class:logistics"})
 PUZZLE = frozenset({"game:zz", "class:puzzle"})
 
 
 def test_no_evidence_returns_prior():
     s = VeracityStore(prior=0.3)
-    assert s.veracity("deliver_via_helper", WA30_L0) == 0.3
+    assert s.veracity("deliver_via_helper", SCENARIO_L0) == 0.3
 
 
 def test_confirm_raises_disconfirm_lowers():
     s = VeracityStore()
-    base = s.veracity("strat", WA30_L0)
+    base = s.veracity("strat", SCENARIO_L0)
     for _ in range(4):
-        s.record("strat", WA30_L0, "confirm")
-    hi = s.veracity("strat", WA30_L0)
+        s.record("strat", SCENARIO_L0, "confirm")
+    hi = s.veracity("strat", SCENARIO_L0)
     assert hi > base, (hi, base)
     for _ in range(4):
-        s.record("strat", WA30_L0, "disconfirm")
-    lo = s.veracity("strat", WA30_L0)
+        s.record("strat", SCENARIO_L0, "disconfirm")
+    lo = s.veracity("strat", SCENARIO_L0)
     assert lo < hi, (lo, hi)
 
 
@@ -61,19 +61,19 @@ def test_unrelated_context_no_transfer():
 
 
 def test_similarity_containment():
-    assert _mrh_similarity(WA30_L0, LOGI) == 1.0            # broad ⊂ query -> full
-    assert _mrh_similarity(LOGI, WA30_L0) < 1.0             # query narrower than stored
+    assert _mrh_similarity(SCENARIO_L0, LOGI) == 1.0            # broad ⊂ query -> full
+    assert _mrh_similarity(LOGI, SCENARIO_L0) < 1.0             # query narrower than stored
     assert _mrh_similarity(PUZZLE, LOGI) == 0.0             # disjoint
-    assert _mrh_similarity(WA30_L0, frozenset()) == 1.0     # global ctx applies (weak prior)
+    assert _mrh_similarity(SCENARIO_L0, frozenset()) == 1.0     # global ctx applies (weak prior)
 
 
 def test_tau_budget_and_breadth():
     # scarce budget raises τ; ample budget lowers it
-    assert tau(WA30_L0, budget=0.0) > tau(WA30_L0, budget=1.0)
+    assert tau(SCENARIO_L0, budget=0.0) > tau(SCENARIO_L0, budget=1.0)
     # broad context -> slightly lower bar than a fine one (≥3 tags adds)
-    assert tau(frozenset({"class:logistics"})) < tau(WA30_L0)
+    assert tau(frozenset({"class:logistics"})) < tau(SCENARIO_L0)
     # bounded
-    assert 0.05 <= tau(WA30_L0, budget=0.0) <= 0.95
+    assert 0.05 <= tau(SCENARIO_L0, budget=0.0) <= 0.95
 
 
 def test_portfolio_seeds_trust_from_store():
@@ -91,16 +91,16 @@ def test_portfolio_seeds_trust_from_store():
 def test_portfolio_record_accrues_to_store_and_silence_doesnt():
     s = VeracityStore()
     p = FaithPortfolio(veracity_store=s)
-    p.add("c1", "h", strategy="strat", mrh=WA30_L0)
-    before = s.veracity("strat", WA30_L0)
+    p.add("c1", "h", strategy="strat", mrh=SCENARIO_L0)
+    before = s.veracity("strat", SCENARIO_L0)
     # silence: no record() -> store unchanged (faith rule)
-    assert s.veracity("strat", WA30_L0) == before
+    assert s.veracity("strat", SCENARIO_L0) == before
     p.record("c1", "confirm")
-    assert s.veracity("strat", WA30_L0) > before
+    assert s.veracity("strat", SCENARIO_L0) > before
     # should_commit_in uses τ(mrh, budget)
     for _ in range(6):
         p.record("c1", "confirm")
-    assert p.should_commit_in(WA30_L0, budget=0.8)
+    assert p.should_commit_in(SCENARIO_L0, budget=0.8)
 
 
 def test_backward_compat_no_store():

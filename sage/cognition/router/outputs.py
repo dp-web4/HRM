@@ -8,7 +8,7 @@ The decision space is closed and finite (PRD §1.2): ``invoke`` / ``habit``
 / ``noop``. Validation rules from PRD §3.3 are enforced by
 ``RouterOutput.validate()``.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md §3.2, §3.3
+Spec: phase2/brain-arch/thalamic-router-prd.md §3.2, §3.3
 """
 
 from dataclasses import dataclass, asdict

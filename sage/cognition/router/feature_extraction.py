@@ -35,8 +35,8 @@ Design rules (binding, from sprint doc + PRD):
      components they read.  Safe to call repeatedly.
 
 Spec:
-  shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md §2, §3.1
-  shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md (Track 2)
+  phase2/brain-arch/thalamic-router-prd.md §2, §3.1
+  phase2/brain-arch/router-sprint-1-phase-0.md (Track 2)
 """
 
 from __future__ import annotations

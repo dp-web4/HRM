@@ -12,9 +12,9 @@ Schema versioning: every record carries ``schema_version``. The reader
 (Track 4) is schema-version-aware; additions to ``RouterInput`` /
 ``RouterOutput`` require a bump and a migration strategy.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
+Spec: phase2/brain-arch/router-sprint-1-phase-0.md
       (Track 1 deliverables)
-      shared-context/arc-agi-3/phase2/brain-arch/router-sprint-2-rollout-federation.md
+      phase2/brain-arch/router-sprint-2-rollout-federation.md
       (Sprint 2 R1: source-stamping via metadata)
 """
 

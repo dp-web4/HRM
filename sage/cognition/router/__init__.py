@@ -6,8 +6,8 @@ baseline (3), data pipeline writer/reader (4), consciousness-loop shadow
 integration (5), outcome tracking (6), per-machine deployment (7),
 observability dashboard (8), SNARC-driven pruning (9).
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
-Sprint: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
+Spec: phase2/brain-arch/thalamic-router-prd.md
+Sprint: phase2/brain-arch/router-sprint-1-phase-0.md
 """
 
 from sage.cognition.router.events import (

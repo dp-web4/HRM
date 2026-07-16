@@ -25,7 +25,7 @@ from sage.cognition.thalamic_router.delta_labels import (
 # ───────────────────────────────────────────────────────────────────
 
 def _rec(**meta):
-    return {"metadata": {"game": "ft09", "game_id": "ft09-test", "step_index": 1, **meta}}
+    return {"metadata": {"game": "toy_b", "game_id": "toy_b-test", "step_index": 1, **meta}}
 
 
 def test_sage_plays_self_stuck_triggered_is_invoke_positive():
@@ -150,11 +150,11 @@ def test_load_delta_labels_aggregates_multiple_sources(tmp_path):
     # Same step-key appears in two records — one solver-known-good (action),
     # one sage_plays_self (stuck). Aggregation should merge both.
     records_a = [
-        {"metadata": {"game": "ft09", "game_id": "ft09-a", "step_index": 5,
+        {"metadata": {"game": "toy_b", "game_id": "toy_b-a", "step_index": 5,
                       "known_good_action": 6}},
     ]
     records_b = [
-        {"metadata": {"game": "ft09", "game_id": "ft09-a", "step_index": 5,
+        {"metadata": {"game": "toy_b", "game_id": "toy_b-a", "step_index": 5,
                       "sage_plays_self": {"stuck_triggered": True,
                                            "llm_invoked": False,
                                            "levels_before": 0, "levels_after": 0}}},
@@ -162,7 +162,7 @@ def test_load_delta_labels_aggregates_multiple_sources(tmp_path):
     pa = _write_stream(tmp_path, "a.jsonl.gz", records_a)
     pb = _write_stream(tmp_path, "b.jsonl.gz", records_b)
     labels = load_delta_labels([pa, pb])
-    key = ("ft09", "ft09-a", 5)
+    key = ("toy_b", "toy_b-a", 5)
     assert key in labels
     merged = labels[key]
     # Invoke signal from the stuck record
@@ -175,9 +175,9 @@ def test_load_delta_labels_aggregates_multiple_sources(tmp_path):
 
 def test_summarize_labels_counts_correctly():
     labels = {
-        ("ft09", "ft09-a", 1): DeltaLabel(invoke_target=1.0, reason="stuck_triggered"),
-        ("ft09", "ft09-a", 2): DeltaLabel(invoke_target=0.0, reason="nn_correct_advance"),
-        ("ft09", "ft09-a", 3): DeltaLabel(invoke_target=None, action_target=4,
+        ("toy_b", "toy_b-a", 1): DeltaLabel(invoke_target=1.0, reason="stuck_triggered"),
+        ("toy_b", "toy_b-a", 2): DeltaLabel(invoke_target=0.0, reason="nn_correct_advance"),
+        ("toy_b", "toy_b-a", 3): DeltaLabel(invoke_target=None, action_target=4,
                                            reason="solver_known_good"),
     }
     s = summarize_labels(labels)
@@ -186,7 +186,7 @@ def test_summarize_labels_counts_correctly():
     assert s["invoke_negative"] == 1
     assert s["invoke_unset"] == 1
     assert s["action_overrides"] == 1
-    assert s["by_game"] == {"ft09": 3}
+    assert s["by_game"] == {"toy_b": 3}
 
 
 if __name__ == "__main__":

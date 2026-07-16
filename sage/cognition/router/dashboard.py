@@ -23,8 +23,8 @@ Reads (Track 4):
 No torch dependency. No network. Pure-stdlib markdown + JSON output.
 Target performance: <5s on 100k records, <30s on 1M records.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
-      shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
+Spec: phase2/brain-arch/router-sprint-1-phase-0.md
+      phase2/brain-arch/thalamic-router-prd.md
 """
 
 from __future__ import annotations
@@ -1137,7 +1137,7 @@ def _references_section() -> List[str]:
         "## References",
         "",
         "- **PRD §8** (evaluation metrics, dashboard contract): "
-        "`shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md`",
+        "`phase2/brain-arch/thalamic-router-prd.md`",
         "- **PRD §0.2, §7.10** (agent-zero discipline — "
         "modal-class dummy comparison)",
         "- **PRD §4.7.D, §4.7.F, §4.7.G** (SNARC sampling, SNARC "
@@ -1149,7 +1149,7 @@ def _references_section() -> List[str]:
         "- **Track 9** (SNARC-driven storage pruning): "
         "`sage/cognition/router/data/pruner.py`",
         "- **Sprint doc**: "
-        "`shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md`",
+        "`phase2/brain-arch/router-sprint-1-phase-0.md`",
         "",
         "_SNARC-utility delta (PRD §8) is intentionally NOT surfaced "
         "yet — it requires training signal from Phase 1 and isn't "

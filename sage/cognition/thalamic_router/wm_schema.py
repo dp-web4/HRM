@@ -22,7 +22,7 @@ Usage:
 
     # Populate from scratch or from consolidation
     wm = GameWorldModel(
-        game="cd82",
+        game="toy_a",
         level=0,
         objects=["basket (movable, 8 positions)", "canvas (10x10 grid)", "target pattern"],
         actions={

@@ -7,7 +7,7 @@ Per PRD §1.2, every plugin invocation is classified by an ATP cost tier.
 The router emits the tier alongside the plugin name so downstream gating
 (e.g. step 6 Budget) can refuse high-tier invocations when ATP is low.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md §1.2
+Spec: phase2/brain-arch/thalamic-router-prd.md §1.2
 """
 
 from enum import Enum

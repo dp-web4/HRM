@@ -90,9 +90,9 @@ across ticks::
 
 
 Spec:
-  - shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md
+  - phase2/brain-arch/thalamic-router-prd.md
     §2.10 (consciousness-loop integration), §3 (schema), §4.7.D (sampling)
-  - shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md
+  - phase2/brain-arch/router-sprint-1-phase-0.md
     (Track 5)
 """
 

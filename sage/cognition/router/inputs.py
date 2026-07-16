@@ -12,7 +12,7 @@ Feature extraction (turning live kernel state into a ``RouterInput``)
 lives in ``feature_extraction.py`` and is Track 2. This module only
 defines the shape + validation + serialization.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md §3.1
+Spec: phase2/brain-arch/thalamic-router-prd.md §3.1
 """
 
 from dataclasses import dataclass, field, asdict

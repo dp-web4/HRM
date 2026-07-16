@@ -6,7 +6,7 @@ Working Memory for SAGE — dlPFC-analog scratchpad
 Typed, capacity-limited (Miller 4±3), ttl-decaying slot buffer.
 The interface every brain-arch component reads/writes through.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/working-memory.md
+Spec: phase2/brain-arch/working-memory.md
 """
 
 import json
@@ -532,9 +532,9 @@ class WorkingMemory:
 
 def _test_basic_add_and_read():
     wm = WorkingMemory(capacity=5)
-    sid = wm.add_item("goal", {"game": "cd82"}, priority=1.0, goal_id="g1")
+    sid = wm.add_item("goal", {"game": "toy_a"}, priority=1.0, goal_id="g1")
     s = wm.get_item(sid)
-    assert s is not None and s.content == {"game": "cd82"}
+    assert s is not None and s.content == {"game": "toy_a"}
     assert wm.get_stats()["current_size"] == 1
 
 
@@ -582,7 +582,7 @@ def _test_unknown_type_coerced():
 
 def _test_dump_roundtrip():
     wm = WorkingMemory(capacity=5)
-    wm.add_item("goal", {"game": "sc25", "level": 1}, priority=0.9, goal_id="g1")
+    wm.add_item("goal", {"game": "toy_c", "level": 1}, priority=0.9, goal_id="g1")
     wm.add_item("hypothesis", {"claim": "button A moves left"}, priority=0.6)
     snap = wm.dump()
     # Roundtrip

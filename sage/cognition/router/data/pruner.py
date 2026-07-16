@@ -70,8 +70,8 @@ Design choices (documented here because PRD §5.6 is somewhat silent):
 
 * **No torch** — pure stdlib.
 
-Spec: shared-context/arc-agi-3/phase2/brain-arch/router-sprint-1-phase-0.md Track 9
-      shared-context/arc-agi-3/phase2/brain-arch/thalamic-router-prd.md §5.6, §7.10
+Spec: phase2/brain-arch/router-sprint-1-phase-0.md Track 9
+      phase2/brain-arch/thalamic-router-prd.md §5.6, §7.10
 """
 
 from __future__ import annotations

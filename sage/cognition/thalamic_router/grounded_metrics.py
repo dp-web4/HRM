@@ -14,7 +14,7 @@ not articulately hallucinating:
 Heuristic first pass — no NLP libraries required. Regex + token-set
 operations. Honest signal at minimal compute cost (<5ms per invoke).
 
-Spec: shared-context/arc-agi-3/grounded_reasoning_metrics.md
+Spec: grounded_reasoning_metrics.md
 """
 from __future__ import annotations
 

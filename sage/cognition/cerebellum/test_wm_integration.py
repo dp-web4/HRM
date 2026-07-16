@@ -8,11 +8,11 @@ from sage.cognition.working_memory import WorkingMemory
 def test_state_signature_from_wm():
     """StateSignature.from_wm() extracts stable features from WM."""
     wm = WorkingMemory(capacity=7)
-    wm.add_item("goal", {"game": "cd82", "level": 1}, priority=0.9)
+    wm.add_item("goal", {"game": "toy_a", "level": 1}, priority=0.9)
     wm.add_item("binding", {"sprite": "cursor", "pos": (10, 20)}, priority=0.5)
 
-    sig = StateSignature.from_wm(wm, domain="arc-game:cd82")
-    assert sig.domain == "arc-game:cd82"
+    sig = StateSignature.from_wm(wm, domain="toy-game:toy_a")
+    assert sig.domain == "toy-game:toy_a"
     assert sig.hash  # non-empty
     assert "wm_goal_count" in sig.features
     assert sig.features["wm_goal_count"] == 1
@@ -22,10 +22,10 @@ def test_state_signature_from_wm():
 def test_stable_key_determinism():
     """Same WM contents → same state signature hash."""
     wm1 = WorkingMemory(capacity=7)
-    wm1.add_item("goal", {"game": "cd82"}, priority=0.9)
+    wm1.add_item("goal", {"game": "toy_a"}, priority=0.9)
 
     wm2 = WorkingMemory(capacity=7)
-    wm2.add_item("goal", {"game": "cd82"}, priority=0.9)
+    wm2.add_item("goal", {"game": "toy_a"}, priority=0.9)
 
     sig1 = StateSignature.from_wm(wm1, "test")
     sig2 = StateSignature.from_wm(wm2, "test")
@@ -35,8 +35,8 @@ def test_stable_key_determinism():
 def test_goal_scoping():
     """from_wm with goal_id only considers slots for that goal."""
     wm = WorkingMemory(capacity=7)
-    wm.add_item("goal", {"game": "cd82"}, priority=0.9, goal_id="g1")
-    wm.add_item("goal", {"game": "ft09"}, priority=0.8, goal_id="g2")
+    wm.add_item("goal", {"game": "toy_a"}, priority=0.9, goal_id="g1")
+    wm.add_item("goal", {"game": "toy_b"}, priority=0.8, goal_id="g2")
 
     sig_g1 = StateSignature.from_wm(wm, "test", goal_id="g1")
     sig_g2 = StateSignature.from_wm(wm, "test", goal_id="g2")

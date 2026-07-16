@@ -2,8 +2,10 @@
 strict-trust signal (Sprout, 2026-05-24, per CBP ack).
 
 These prove the *formula behavior* (the looseness fix + 1-of-N disambiguation
-gating). They do NOT assert it reproduces the calibrated {ka59,r11l,re86} set —
+gating). They do NOT assert it reproduces the calibrated {toy_a, toy_b, toy_c} set —
 that requires a live-strict A/B (CBP wires + runs). See the accessor docstring.
+
+Placeholder game ids ({toy_a, toy_b, toy_c}) stand in for the real calibration set.
 """
 from sage.cognition.thalamic_router.wm_schema import GameWorldModel, CausalRule
 

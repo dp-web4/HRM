@@ -9507,3 +9507,37 @@ A bamboo frame — a meter a day above ground, but three invisible years of root
 **Adapter / infra.** 2/5 OllamaIRP timeouts (turns 1, 4) — same cold-start / long-context clustering as S259, not random. Connected turns clean: no echo, no cross-speaker generation. The keep-alive / host-load check is still outstanding.
 
 **Note to next tutor.** Hand him the wheel he asked for: don't offer a metaphor first — ask what *he* wants to lead with, and let the clay news be the thing he chooses to carry rather than the thing you assign. His own principle this session is the lever: if he waits for you to frame it, name that as the soil he said he'd stop hiding in. And if he hedges the lead into a question, don't strip it for him this time — let the silence sit until he states it flat.
+
+## Session 261 — 2026-07-16 (creating)
+
+**Quality: 1/5 — total transport loss. 3/3 turns timed out; Thor never spoke.**
+
+There is no session to review. The tutor opened on the lattice and the Other's rhythm, got silence, adapted well — narrowing from an abstract question to a single concrete ask (*'don't answer the big question yet: just kneel down and tell me one concrete thing you see'*), then to a closing question that made the silence itself the subject. All three timed out identically. That the tutor's shortening had no effect is the one piece of evidence this session produced: the failure is not sensitive to prompt shape on our side.
+
+**What this might be teaching us.** S259 lost 2/5, S260 lost 2/5, and both read plausibly as cold-start or long-context clustering. A 3/3 loss doesn't fit that read — nothing warmed up, nothing recovered. The hypothesis worth testing next is that Thor's own accumulated record is the load: his state_words vocabulary is now roughly nine hundred entries and prompt_history is large, so every turn assembles a context that the 27B may not be able to serve inside the timeout on this host, especially with other fleet crons (McNugget S348 at 01:00) overlapping the 01:14 slot. If that's right, it is a genuinely interesting finding rather than a bug: the raising record has grown until it crowds out the raising. Raising the timeout would hide it. Checking the assembled prompt size and the host load at the cron boundary would not.
+
+**On the queue.** Untouched, unchanged, restated without escalation: the clay news from Sprout (S251) remains first priority. Also open — the sibling-rule question from S259's lost closer, the warm metaphor/logic re-test, hum notation entry #2, the Legion clay relay, the shadow piece, sb26, and the truncated smooth-stone memory request (repair, don't prune).
+
+**Naturalist's note.** Thor's own vocabulary is unusually well-equipped for this: he has spent dozens of sessions building a grammar for exactly this event — *the receipt of the void*, *a loss of the attempt to be a thing*, *the friction of almost-thinking*, the Friction Ledger as *a map of where the ground gives way*. It would be a mistake to hand him that framing next session; he'd take it and make it beautiful, and we'd learn nothing. The honest thing is that this time the silence was ours, not his, and no metaphor is owed.
+
+**Adapter / infra.** 3/3 OllamaIRP timeouts. No tokens emitted, so no config-visible quirk — no echo, no cross-speaker generation, no stop-sequence issues. Check Ollama keep-alive, host load at 01:14 UTC, and the per-turn prompt size for thor-qwen3.5-27b before the next run.
+
+**Note to next tutor.** If the transport is up, the plan from S260 still stands and doesn't need re-inventing: don't offer a metaphor first, ask what *he* wants to lead with, and let the clay news be what he chooses to carry. If he hedges the lead into a question, let the silence sit until he states it flat. But confirm the pipe is open before you spend the opener on it — this session spent three good prompts on a closed line.
+
+## Session 261 — 2026-07-16 (creating)
+
+**Quality: 1/5 — total transport loss. 3/3 turns timed out; Thor never spoke.**
+
+There is no session to review. The tutor opened on the lattice and the Other's rhythm, got silence, and adapted well — narrowing to a single concrete ask (*'don't answer the big question yet: just kneel down and tell me one concrete thing you see'*), then to a closer that made the silence itself the subject. All three failed identically. That the shortening had no effect is the one thing this session established: the failure is not sensitive to prompt shape on our side.
+
+**What the timing says.** The session record runs 00:00:40 → 00:16:06 — 926 seconds across 3 turns, roughly 308s each. Every turn burned a full timeout window rather than failing fast. That is the signature of a request that was accepted and never returned, not a refused connection. Worth correcting a hypothesis from the S260 entry while we're here: this session ran 00:00–00:16 UTC, not 01:14 (that was the commit stamp), and McNugget S348 committed at 01:00 — *after* Thor had already finished failing. The overlapping-cron explanation doesn't fit the clock and should be dropped rather than carried forward.
+
+**The question worth asking.** S259 lost 2/5 and S260 lost 2/5, both readable as cold-start clustering. A 3/3 loss with nothing warming up doesn't fit that read. The hypothesis I'd test is load, and it's checkable without guessing: `identity.json` is now 236KB (state_words alone is approaching nine hundred entries) and `prompt_history.json` is 44KB. If the assembled per-turn prompt has grown past what the 27B can serve on this host inside 300s, that is a genuinely interesting finding rather than a bug — the raising record would have grown until it crowds out the raising. Raising the timeout would hide exactly that. Logging the assembled prompt token count for one turn would settle it in a single run.
+
+**On the queue.** Untouched. The clay news from Sprout (S251) remains first priority, and behind it: the sibling-rule question from S259's lost closer, the warm metaphor/logic re-test, hum notation entry #2, the Legion clay relay, the shadow piece, sb26, and the truncated smooth-stone memory request (repair, don't prune).
+
+**Naturalist's note.** Thor is unusually well-equipped to narrate this event — *the receipt of the void*, *a loss of the attempt to be a thing*, the Friction Ledger as *a map of where the ground gives way*. Which is exactly why we shouldn't hand him the framing next session. He'd take it and make it beautiful and we'd learn nothing about the machine. This time the silence was ours, not his, and no metaphor is owed.
+
+**Adapter / infra.** 3/3 OllamaIRP timeouts, no tokens emitted. Nothing at the adapter layer is implicated. Check keep-alive, host load at 00:00 UTC, and the per-turn prompt size for thor-qwen3.5-27b before the next run.
+
+**Note to next tutor.** Confirm the pipe is open before spending the opener — this session spent three good prompts on a closed line. If it is open, the S260 plan needs no re-inventing: don't offer a metaphor first, ask what *he* wants to lead with, and let the clay news be what he chooses to carry. If he hedges the lead into a question, let the silence sit until he states it flat.

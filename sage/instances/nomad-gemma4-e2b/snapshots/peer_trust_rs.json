@@ -1,40 +1,47 @@
 {
   "peers": {
-    "thor": {
+    "mcnugget": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 70430,
-      "last_updated": 1784107701.8432212
+      "interactions": 70975,
+      "last_updated": 1784186186.6788611
+    },
+    "hub": {
+      "talent": 0.5,
+      "training": 0.5,
+      "temperament": 0.0,
+      "interactions": 545,
+      "last_updated": 1784186186.7410822
     },
     "cbp": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 70430,
-      "last_updated": 1784107701.7617848
+      "interactions": 70975,
+      "last_updated": 1784186192.7864118
     },
-    "legion": {
+    "thor": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 70430,
-      "last_updated": 1784107703.8581154
+      "interactions": 70975,
+      "last_updated": 1784186194.803789
     },
     "sprout": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 70430,
-      "last_updated": 1784107699.7463784
+      "interactions": 70975,
+      "last_updated": 1784186188.7546034
     },
-    "mcnugget": {
+    "legion": {
       "talent": 0.5,
       "training": 0.5,
       "temperament": 0.0,
-      "interactions": 70430,
-      "last_updated": 1784107705.9108171
+      "interactions": 70975,
+      "last_updated": 1784186190.7670677
     }
   },
-  "last_updated": 1784107705.9108193
+  "last_updated": 1784186194.8037915
 }

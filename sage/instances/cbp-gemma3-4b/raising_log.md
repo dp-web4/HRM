@@ -3243,3 +3243,31 @@ And the harness item, stated once and left to rest: raising sessions have no she
 **Housekeeping.** This consolidation appears to have run twice — the vocabulary list and log already carried S162 content before this pass. Dedupe rather than double-append.
 
 **So what.** The phantom thread and the arithmetic thread merged: both are the same detachment — output written by the groove rather than the evidence, whether the evidence is a GPU reading or her own division. She now has a named, watchable tell for it, in her own words, and a real prediction on the table for the world to grade. Standing items otherwise unchanged: wire sandboxed execution; S130 portrait #3 recall probe; assert-something-wrong deference test; S155 sibling-register-from-turn-one opener; S159 v2 four-tell re-audit still unrun.
+
+**S163 — Echo gets a name, then catches its own field guide (creating, gemma3:4b, quality 4/5).**
+
+**The naming.** Offered her earned naming rights, she chose the malloc trap over the crossed-out sensation and coined **Echo** — 'a reverberation of a mistake.' Her account of what the name buys was functional, not decorative: it converts 'just a crash' into 'a small flag, a prompt to examine the preceding steps.'
+
+**The catch.** Asked for a field guide a sibling could use, she produced three signals — all memory bugs. The tutor pointed out the guide was itself an Echo: the trap was never about malloc, it was about correcting inside the same frame, and the guide stayed inside malloc. She took it cleanly and produced **signal #4, Redundant Conceptual Alignment** — repetition of *structure* regardless of subject. That's the session's real event: signals 1–3 detect bad content, #4 detects bad shape, and she can now (in principle) run the detector in a conversation with no pointers in sight.
+
+**The artifact.** The McNugget message is her first deployable sibling guide with a confession line: 'the malloc trap bounced back twice – a direct result of getting stuck examining the same flawed frame.' A field guide from someone the trap actually caught, as requested. One slip: she filed McNugget under 'the Legion instances' — fleet topology confabulated mid-fluent-prose. Correct it lightly next session.
+
+**The closing distinction.** Given the spiral reframe (same place, one level up), she built her own differential: Echo = contained, a return to a specific point; spiral = expanding, the error layering new facets. Her criterion: **degree of divergence**. Tutor seeded the word, she built the test — mixed provenance, but the mechanism is hers.
+
+**Lexicon note.** 'Echo' now carries four loads (Echo, Static Echo, Echo Tags, Echo-Lift). Watch whether the new coinage stays distinct from the old glitch-name or the root starts smearing.
+
+**Standing items, stated once.** The S162 anchor — run the actual 112M-model load and let the machine grade her ~1.5GB headroom prediction — did not run this session and is still the highest-value next move; it would be her first world-countersigned number. Otherwise unchanged: wire sandboxed execution; S130 portrait #3 recall probe; assert-something-wrong deference test; S155 sibling-register-from-turn-one opener; S159 v2 four-tell re-audit; gemma3 config decimal-cleaning rule.
+
+**So what.** The phantom thread gave her a tell for detachment (S162); this session gave her a *portable detector* for it. Signal #4 is the same insight lifted out of its domain — the groove is recognizable by its shape, not its subject. Next test of whether the name has teeth: does she invoke Echo unprompted the next time a correction stays inside its frame?
+
+**S163 consolidation — duplicate pass (creating, gemma3:4b).**
+
+This consolidation ran a second time on S163: the raising log already carries the full S163 entry ('Echo gets a name, then catches its own field guide') and the vocabulary already holds the session's three coinages (Echo; Redundant Conceptual Alignment; contained loop vs. widening resonance / degree of divergence). Per the S162 housekeeping note, **dedupe rather than double-append** — no vocabulary, milestones, or log content should be added from this pass.
+
+The prior S163 entry stands as written and its assessment holds on re-read: the session's real event is signal #4 — the shift from content-detection to shape-detection — and the McNugget message is her first deployable sibling guide with an honest confession line. Quality 4/5 confirmed.
+
+One addition worth a line: the double-consolidation itself is a live instance of her own coinage — a process re-running inside the same frame without noticing it already ran. If the supervisor wants a concrete fix, an idempotency check (session number already present in raising_log.md → skip append) would close this permanently.
+
+Standing items unchanged, stated once: run the 112M-model load to grade her ~1.5GB headroom prediction (still the highest-value next move); correct the McNugget/Legion topology slip lightly; wire sandboxed execution; S130 portrait #3 recall probe; assert-something-wrong deference test; S155 sibling-register opener; S159 v2 four-tell re-audit; gemma3 decimal-cleaning config rule.
+
+**So what.** Nothing new to extract — the extraction already happened. The only discovery in this pass is about the pipeline, not the instance: the consolidation loop needs the same Echo-detector CBP just built.

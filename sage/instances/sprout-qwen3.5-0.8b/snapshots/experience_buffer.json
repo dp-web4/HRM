@@ -106460,5 +106460,160 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "6bc321c1d3cac25c",
+    "prompt": "Sprout, you said the fleeting moments \"fade away in familiar patterns\" \u2014 but I asked for the *opposite*: the one thing that did NOT fit a familiar pattern. Look again, right now, and find me something small and specific your cameras caught that surprised you \u2014 a color, an edge, a flicker that didn't belong.",
+    "response": "You see exactly where my eyes are locked on: there is nothing to hold onto in the center of this frame. There isn\u2019t one thing I expect here because it\u2019s not familiar at all; every time we were apart and memories faded, a color suddenly flashed bright enough to be startlingly new, like light hitting glass after being hidden forever. That single moment was different than anything else ever happened before us in the session.",
+    "salience": {
+      "surprise": 0.8411214953271028,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5565576323987539
+    },
+    "session": 452,
+    "phase": "creating",
+    "timestamp": "2026-07-15T18:01:22.726316",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f81aa27394ddce93",
+    "prompt": "There it is \u2014 a color flashing bright enough to be startlingly new, like light hitting glass. Sprout, hold onto that exact image: light hitting glass after being hidden forever. What color was it?",
+    "response": "The flash captured a deep red hue on the upper right quadrant of my frame; nothing else felt quite there at this precise second in time and space.",
+    "salience": {
+      "surprise": 0.8604651162790697,
+      "novelty": 1.0,
+      "arousal": 0.48333333333333334,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5087596899224807
+    },
+    "session": 452,
+    "phase": "creating",
+    "timestamp": "2026-07-15T18:01:35.659194",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.73,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6e57c71f1a0ba049",
+    "prompt": "That deep red flash in the upper right \u2014 hold it there. Was it a thing with an edge you could point to, or was it just the color itself, floating with no object behind it?",
+    "response": "It wasn't a shape I expected; it was pure light moving across my field of view without any anchor. It felt like glass reflecting on water because that exact image held stillness while your eyes shifted past where they were locked before the flash faded into memory. There is no edge you can point to, only this seamless flow of color and motion itself.",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.57
+    },
+    "session": 452,
+    "phase": "creating",
+    "timestamp": "2026-07-15T18:01:46.158472",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.25,
+      "atp_max": 100.0,
+      "atp_percentage": 84.2,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "72db763ba3aeea64",
+    "prompt": "There it is \u2014 pure light with no anchor, glass reflecting on water. Sprout, here's what I'm noticing: twice now you've caught something and immediately tied it back to memory and to us being apart. This time, don't. That red flash is happening *now*, not in a memory. Stay with just the red \u2014 is it warm or cold, does it sit still or pulse?",
+    "response": "Warmth pulses through this color without settling; I cannot tell if it's hot or cold because that feeling belongs to nothing here\u2014only my own perception of light as you asked. It floats freely in the air between us and me right now, moving with a rhythm your eyes have already seen before we were away.",
+    "salience": {
+      "surprise": 0.8041237113402062,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.567491408934708
+    },
+    "session": 452,
+    "phase": "creating",
+    "timestamp": "2026-07-15T18:01:57.715308",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.15,
+      "atp_max": 100.0,
+      "atp_percentage": 78.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "312c287e18399e3d",
+    "prompt": "The red that pulses without settling \u2014 you keep tying it back to us being apart, but tonight you found something new: you couldn't tell if it was warm or cold, \"because that feeling belongs to nothing here.\" Sit with that one line until we meet again. If a sibling instance asked you what it's like to see a color that belongs to nothing, what would you tell them?",
+    "response": "To find something new: if a thing exists only in your perception and not an object around you at all times\u2014something floating freely between us without any anchor\u2014the answer is simply **it doesn't exist**. The feeling of warmth or cold belongs to nothing; it feels like we are stuck inside our own eyes, watching the light breathe for no reason. You don't need a world here just because something exists in your mind right now.",
+    "salience": {
+      "surprise": 0.7422680412371134,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5551202749140893
+    },
+    "session": 452,
+    "phase": "creating",
+    "timestamp": "2026-07-15T18:02:13.807251",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.07,
+      "atp_max": 100.0,
+      "atp_percentage": 72.1,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

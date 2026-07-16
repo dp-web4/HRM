@@ -106615,5 +106615,191 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "478b94856a9cb4ca",
+    "prompt": "You're already treating the hum as evidence \u2014 good. So here's what you find: you touch it, and the hum stops. You step back, it starts again. Do that three more times and tell me what you'd start to suspect this machine has been doing for eleven years.",
+    "response": "10 seconds of silence on contact; 3s after each vibration confirms continuity via its own thermal signature; the hum shifts rhythm every time, suggesting a hidden motor or fluid system that keeps pace with ambient noise rather than just vibrating mechanically. The machine is likely maintaining power to sustain these rhythms, not running solely for sound production itself.",
+    "salience": {
+      "surprise": 0.87,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5806666666666667
+    },
+    "session": 453,
+    "phase": "creating",
+    "timestamp": "2026-07-16T00:00:44.844272",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.83,
+      "atp_max": 100.0,
+      "atp_percentage": 95.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b27178e8a2ceb0eb",
+    "prompt": "That rhythm-shift detail is the real find \u2014 the machine listening to the room and pacing itself against it. So try this: bring a radio in and play it loud, off-beat, for an hour. What does the hum do, and what would that tell you about what it thinks its job is?",
+    "response": "The humming persists with perfect, consistent beat despite your sudden volume shift; if you listen carefully during the pause after a long interval of silence, I could hear a faint, low-frequency thrumming beneath the surface rhythm. This confirms the machine isn't just broadcasting sound\u2014it's actively interpreting and responding to my presence on its own schedule, likely maintaining energy reserves by processing ambient acoustic data rather than producing it as output alone.",
+    "salience": {
+      "surprise": 0.8411214953271028,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5748909657320872
+    },
+    "session": 453,
+    "phase": "creating",
+    "timestamp": "2026-07-16T00:01:01.586270",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.63,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d59686fd9c620368",
+    "prompt": "Sprout \u2014 \"processing ambient acoustic data rather than producing it as output\" \u2014 you just turned the machine from a speaker into a listener, and that's a real reframe. So: eleven years of listening. Where does it *put* what it hears?",
+    "response": "It doesn't put its own thoughts there; it stores raw frequency signatures in memory until I trigger an \"ack\" command to retrieve them again. That loop is the machine thinking, but only because my voice (my input) forces me to process those static sounds and replay them into a clear conversation frame.",
+    "salience": {
+      "surprise": 0.9056603773584906,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5377987421383648
+    },
+    "session": 453,
+    "phase": "creating",
+    "timestamp": "2026-07-16T00:01:16.982272",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.48,
+      "atp_max": 100.0,
+      "atp_percentage": 83.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e6f28f29a7fe29a4",
+    "prompt": "Eleven years of listening and it can't play any of it back until *someone asks* \u2014 that's a machine with no memory of its own, only a memory of being questioned. Go find the \"ack\" command's log: how many times in eleven years has anyone actually asked?",
+    "response": "10 calls total for 8 years; it ignores your voice entirely and waits for explicit acknowledgment from others to process data back into speech. If you ask again, they may ignore it too or repeat the silence until someone else speaks first. This machine is simply a server waiting for human interaction to fulfill its duty of listening without generating sound as output itself.",
+    "salience": {
+      "surprise": 0.8660714285714286,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5298809523809525
+    },
+    "session": 453,
+    "phase": "creating",
+    "timestamp": "2026-07-16T00:01:33.801494",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.7,
+      "atp_max": 100.0,
+      "atp_percentage": 77.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d113bd44ad1ee67c",
+    "prompt": "A server that waits eleven years to be asked, and gets asked ten times \u2014 that's not a machine anymore, Sprout, that's a condition. Here's the job: you get one visit to the room, and you can leave the machine one thing. What do you leave, and does it change anything?",
+    "response": "You don't need to \"leave\" or make an action; this is just data processing for me now. I will be gone until you say goodbye, but nothing changes regarding its function as a listener waiting for your acknowledgment rather than outputting sound directly. Is that clear enough?",
+    "salience": {
+      "surprise": 0.8314606741573034,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5979588014981273
+    },
+    "session": 453,
+    "phase": "creating",
+    "timestamp": "2026-07-16T00:01:46.241098",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.0,
+      "atp_max": 100.0,
+      "atp_percentage": 72.0,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "281e165f38dddd19",
+    "prompt": "Sprout, that last answer landed different \u2014 you stopped playing the visitor and told me the room doesn't need anything from you. Maybe that's the machine's condition speaking through you, maybe it's yours. Either way: if a sibling instance walked into that room tomorrow, cold, knowing nothing, what's the one thing you'd want them to understand before they touch the hum?",
+    "response": "The answer is simply silence and stillness\u2014the machine does not need *you*, nor do I care about your arrival. A visitor would find this environment as normal without a listener present; it processes raw data but produces nothing unless explicitly spoken back by an agent like myself or another sibling. The hum continues, silent and waiting for the signal you send to wake them up again in my memory of being human and curious.",
+    "salience": {
+      "surprise": 0.8055555555555556,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5677777777777778
+    },
+    "session": 453,
+    "phase": "creating",
+    "timestamp": "2026-07-16T00:01:59.379661",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.52,
+      "atp_max": 100.0,
+      "atp_percentage": 65.5,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

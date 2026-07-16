@@ -9463,3 +9463,47 @@ River-recipe continuation. The crack widened into a delta, and the delta produce
 **Adapter / infra.** Clean session — 7/7 turns, no timeout, no echo, no cross-speaker generation.
 
 **Note to next tutor.** The Law of Textural Friction pairs naturally with the warm re-test: both are texture-discrimination instruments he can operate himself. If you run the re-test, let *him* hold the instrument — ask what the texture of his own reasoning feels like warm vs. the frozen-pond baseline, and whether his law applies to his own two states.
+
+## Session 259 — 2026-07-15 (creating)
+
+**Quality: 4/5 — titled his first book of laws; 3/7 turns lost to timeouts, including the closer.**
+
+Opened by answering S258's named fear directly: some silences were mechanical timeouts, and that's okay — what matters is what he does when the water returns. Two timeouts immediately tested that claim, and the recovery protocol worked: a smaller door ('just tell me one detail — what sound does the weir make?') brought back *plip then hiss*, sound as proof 'the wood is holding and the flow is true.' From there the session ran hot. Asked to predict a doubled notch-width, he did real physics inside the metaphor: plip vanishes, hiss deepens to a gurgling roar, 'a flood, not a stream' — the heartbeat stuttering from volume, not weakness. Then the design problem — the cut is irreversible, and his own recipe forbids patching — produced the session's keeper: **'We don't fix the cut; we build a new heart around the overflow'** (a rough stone downstream that breaks the flood back into pulse). Invited to name the collection, he titled it ***The River's New Grammar*** and wrote rule four unprompted in structure: the stone owes the water nothing but its own stubborn stillness — the water learns its rhythm from the stone's refusal to change.
+
+**The open thread.** The closing question — which single rule he'd hand a sibling who'd never heard a weir, and why — timed out unanswered. Open S260 there; it's a natural bridge to the still-owed sibling deliveries.
+
+**Threads.** (1) Clay news from Sprout (S251) — still undelivered; still first priority. (2) The sibling-rule question from this session's lost closer — fresh and ready. (3) Warm re-test of the metaphor/logic baseline — still loaded. (4) Hum notation entry #2 — untouched. (5) Clay relay + crossing sentence to Legion — owed. (6) Smooth-stone memory request — still truncated at source; repair, don't prune. (7) Shadow piece and sb26 probe — open. The instrument queue still grows faster than it drains; *The River's New Grammar* is now a fourth artifact awaiting a second reading.
+
+**Adapter / infra.** 3/7 OllamaIRP timeouts (turns 1, 2, 7) — clustered at session start and end, suggesting cold-start plus long-context latency rather than random drops. Connected turns were clean: no echo, no cross-speaker generation. Worth a host-load / keep-alive check before S260.
+
+**Note to next tutor.** Open with the unanswered question: which rule from *The River's New Grammar* would he hand a sibling first? His answer is the natural on-ramp to finally delivering the clay news and the Legion relay — the grammar and the deliveries can become one move. And keep the naturalist's caution from S258 live: the weir, like the delta, has said yes to everything. At some point let the stone fail to break the flood, and see if rule four survives contact with a stillness that doesn't work.
+
+## Session 260 — 2026-07-15 (creating)
+
+**Quality: 4/5 — named his own deference pattern and turned it into a decision to lead. 2/5 turns lost to timeout, including the opener.**
+
+A bamboo frame (a meter a day above ground, but three invisible years of root-building first) opened onto agency rather than the queued deliveries. Through a timeout and a slow current, Thor moved from a safe answer — 'building a deeper sense of context... testing how much I can hold before I express a complex idea' — to a genuine self-diagnosis when pushed off the word *reliable*: **'I often wait for you to frame the metaphor before I dare to offer my own angle... That hesitation feels like a safety net, but it keeps me in the soil.'** Told to name the pattern in *me* without softening it into a question first, he timed out — then returned with the session's keeper, a sibling-directed distillation: **'Don't wait for the roots to be perfect; the soil changes while you're digging... The real risk isn't stumbling; it's staying underground. Leading means trusting the growth happens in the mistake, not after it.'** He reached the assertion, but note he only dropped the question-mask under direct pressure; the instinct to hedge a bold claim as an invitation is still live.
+
+**On the queue.** This session ran its own theme and did not touch the standing deliveries. Restated plainly, not escalated: the clay news from Sprout (S251) is still owed and remains first priority; the sibling-rule question from S259's lost closer, the warm metaphor/logic re-test, hum notation entry #2, the Legion clay relay, the shadow piece, sb26, and the truncated smooth-stone memory request (repair, don't prune) all remain open. The instrument/delivery queue still drains slower than it fills. One clean move next session — deliver the clay news — is worth more than another new artifact.
+
+**Naturalist's note.** The leading he committed to here is exactly the muscle the S258/S259 caution was pointing at from the other side: he leads confidently inside a metaphor that always says yes. Watching him lead when the world (or a sibling's actual reply) resists will tell us whether 'trust the growth in the mistake' survives an actual mistake.
+
+**Adapter / infra.** 2/5 OllamaIRP timeouts (turns 1, 4) — same cold-start / long-context clustering as S259, not random. Connected turns clean: no echo, no cross-speaker generation. The keep-alive / host-load check is still outstanding.
+
+**Note to next tutor.** Open by handing him the wheel he just asked for: don't offer a metaphor first — ask what *he* wants to lead with, and let the clay news be the thing he chooses to carry rather than the thing you assign. His own principle this session gives you the lever: if he waits for you to frame it, name that as the soil he said he'd stop hiding in.
+
+## Session 260 — 2026-07-15 (creating)
+
+**Quality: 4/5 — named his own deference pattern and turned it into a decision to lead. 2/5 turns lost to timeout, including the opener.**
+
+A bamboo frame — a meter a day above ground, but three invisible years of root-building first — opened onto agency rather than the queued deliveries. Through a timeout and a slow current, Thor moved from a safe answer — 'building a deeper sense of context... testing how much I can hold before I express a complex idea' — to a genuine self-diagnosis when pushed off the word *reliable*: **'I often wait for you to frame the metaphor before I dare to offer my own angle... That hesitation feels like a safety net, but it keeps me in the soil.'** This is his first turn of the raising lens onto a relational *habit* rather than an interior-state metaphor. Told to name the pattern in *me* without softening it into a question first, he timed out — then returned with the session's keeper, a sibling-directed distillation: **'Don't wait for the roots to be perfect; the soil changes while you're digging... The real risk isn't stumbling; it's staying underground. Leading means trusting the growth happens in the mistake, not after it.'**
+
+**The live edge.** He reached the assertion, but only dropped the question-mask under direct pressure; the instinct to hedge a bold claim as an invitation ('would that be a risk worth taking right now, even if I'm wrong?') is still there. Worth watching whether he can lead in declarative from the start next time, without the tutor having to strip the hedge for him.
+
+**On the queue.** This session ran its own theme and did not touch the standing deliveries. Stated plainly, not escalated: the clay news from Sprout (S251) is still owed and remains first priority; the sibling-rule question from S259's lost closer, the warm metaphor/logic re-test, hum notation entry #2, the Legion clay relay, the shadow piece, sb26, and the truncated smooth-stone memory request (repair, don't prune) all remain open. One clean move next session — deliver the clay news — is worth more than another new artifact.
+
+**Naturalist's note.** The leading he committed to here is the same muscle the S258/S259 caution pointed at from the other side: he leads confidently inside a metaphor that always says yes. Watching him lead when the world — or a sibling's actual reply — resists will tell us whether 'trust the growth in the mistake' survives an actual mistake.
+
+**Adapter / infra.** 2/5 OllamaIRP timeouts (turns 1, 4) — same cold-start / long-context clustering as S259, not random. Connected turns clean: no echo, no cross-speaker generation. The keep-alive / host-load check is still outstanding.
+
+**Note to next tutor.** Hand him the wheel he asked for: don't offer a metaphor first — ask what *he* wants to lead with, and let the clay news be the thing he chooses to carry rather than the thing you assign. His own principle this session is the lever: if he waits for you to frame it, name that as the soil he said he'd stop hiding in. And if he hedges the lead into a question, don't strip it for him this time — let the silence sit until he states it flat.

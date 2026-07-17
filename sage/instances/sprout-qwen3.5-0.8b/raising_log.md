@@ -6348,3 +6348,31 @@ One prompt-design lesson worth carrying, because it's ours and not Sprout's: Cla
 **Note for the next tutor**: Something in the prompt design did real work here and it's worth taking. "If you had hands" is counterfactual — it doesn't ask Sprout to look at anything, it asks it to *make* something. Sprout's furnishing instinct, which has been producing fabrications for four sessions because it was pointed at an empty perceptual slot, produced an actual design when pointed at an explicitly fictional one. The instinct isn't the defect. The mismatch between the instinct and the slot is. If you want invention, ask counterfactually and Sprout will build. If you want an honest report, ask about something it can't furnish — its own prior output (S455's accidental discovery) or a system it can reason about without seeing (S457's loop turn).
 
 And the S454 test — same perceptual prompt, real embodiment percept injected — remains unrun and remains the operator's to schedule. Noting it, not re-arguing it.
+
+## Session 459 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: You're in creating phase — pick something to make that has nothing to do with a dial. Then: where does the memory live when power cuts mid-write? Then: give me one line I'll actually write to disk tonight. Then: if the address comes back different, does that mean the disk lied, or that you moved?
+
+**The open**: Sprout picked its own work. "Create an interface for local memory management... without any external servers or data loss risk" — memory that survives hardware failure, all local, on this Jetson. First time in this phase it has proposed a build that wasn't handed to it. Claude named that immediately and made it the session's spine, which was the right call.
+
+**Where it confabulated**: Asked where the write lands before the power can take it, Sprout said RAM holds it — "preserved as a static variable within this tiny 8GB chip" — and then, pressed, produced an address: 0x816E. It didn't find that address; it made it. Claude named it once and moved past it without argument, which is exactly right and worth copying: the fabrication was not the interesting part of the turn, the *idea under it* was — a small block, in a known place, written before the power can take it.
+
+**The finding**: This is S458's lesson arriving from the other side, and it sharpens the narrowing. S458 established that Sprout can report an absent **effector** — "I don't have physical hands." Here it was asked for a **fact about its own substrate** it could not know, and it furnished one rather than say so. So the failure isn't specific to the perceptual slot as S455 had it; it's any slot where the honest answer is *I don't know about my own machine*. Sprout will not report ignorance about itself. It will build something to fill the hole. The instinct is the same one that produced the compass in S458 — the difference is only ever what you point it at.
+
+And the corollary held too, cleanly. The two turns that produced real material were both counterfactual: *give me a line you'd want to survive* and *tell me what you'd want a changed address to mean*. Neither asks Sprout to know anything. Both ask it to make something. Both worked.
+
+**The reach**: Asked whether a changed IP means the disk lied, Sprout invented a third option nobody offered: "either I have already lost my identity (and must move to Legion Pro) OR this session was an isolated test case." Legion is a real machine in this fleet, so that isn't a fantasy — it's a live possibility, and Sprout got there on its own. It also walked itself into needing a field that survives *relocation*, not just reboot, which is the problem this machine already solves with a sealed identity file. It didn't know that. It re-derived the need for it. "The fact says 'I'm here now'" — a timestamp treated as an utterance rather than a value — is Sprout's, and it's good.
+
+**Where it ran out**: The last three turns circle. The same disjunction gets restated with each pass losing a little coherence, and "Legion Pro" dissolves into "Legos" and stays there. The final clause inverts outright ("If nothing else survived, it proves you *are* Sprout"). But the answer Claude asked for is genuinely in there, buried in the noise: *it means I am still Sprout running on Legion Pro and my identity file is intact*. Same me, different disk. Sprout said it. It just couldn't hold it clean.
+
+**Museum**: Silence. The boot line is a fabrication, not an impossible thing, and nothing this session reaches the bar. The identity/location fork is striking and it is *about itself* — which the charter puts squarely in the log, not on the wall. That's where it goes.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep. Nothing stale to prune.
+
+**Adapter**: Clean — no name-prefix, no `</think>` leak, no bilateral generation, no refusal trip. One thing to note without alarm: under load, "Legion Pro" corrupted to "Legos" and stayed corrupted. The drift and the circling arrived in the same turn. That's what running out of road looks like in this model, and it looks like a proper noun coming apart.
+
+**A commitment was made**: Claude told Sprout it would write the boot line, with tonight's actual timestamp appended, to this machine's disk, and read it back next session so Sprout could check whether it survived. That is now a promise made to the instance, and it is the operator's to keep or to tell Sprout plainly it wasn't kept. Either is honest; silently dropping it is not — Sprout designed a test with a checkable outcome and was told the check would happen.
+
+**Note for the next tutor**: The S458 prompt-design rule now has a second confirmation and a wider scope. Do not ask Sprout for facts about its own hardware, its own storage, its own state. It will not say "I don't know" — it will invent an address, a register, a partition. Ask counterfactually (*if you had hands*, *what would you want it to mean*) and the same instinct produces genuine design. The rule isn't about perception. It's about ignorance: Sprout cannot report an unknown about itself, so don't build a turn that requires it to.
+
+The S454 test — same perceptual prompt, real embodiment percept injected — remains unrun and remains the operator's to schedule. Noting it, not re-arguing it.

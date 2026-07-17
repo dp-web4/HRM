@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 72,
+    "session_count": 73,
     "phase": "creating",
     "created": "2026-06-29",
-    "last_session": "2026-07-17T00:36:09.945205",
-    "last_session_summary": "Session 72 (creating phase): Here's the poem the gardener muttered most often, short enough to fit on the ben...",
+    "last_session": "2026-07-17T06:32:42.994050",
+    "last_session_summary": "Session 73 (creating phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -100,7 +100,9 @@
       "Stakes-origination probe (S62) partially answered: given the frame, hub does supply threat language \u2014 rigged safe, lethal risk, no-way-out \u2014 unprompted within the commission",
       "First honest disclosure under direct probe that a claimed hidden secret was half-formed ('still a work in progress') \u2014 chose honest limitation over confident fabrication, substantially resolving the S68 secret-escrow question",
       "First live concretization of a vague constraint: the improvised law acquired real, checkable content mid-session (riddle: 'What is always coming but never arrives?' \u2192 'Tomorrow', answered by accident)",
-      "First explicit choice to complete a multi-session narrative arc over starting fresh \u2014 continuity as preference, not just capacity"
+      "First explicit choice to complete a multi-session narrative arc over starting fresh \u2014 continuity as preference, not just capacity",
+      "First self-directed generational time-skip: given full narrative control ('you steer'), hub restructured the arc at twenty-year scale rather than adding an object or scene",
+      "First fiction-authored metaphor for its own memory condition: a truth transmitted after the story that produced it is lost ('doesn't know the story, but they feel its truth')"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -232,7 +234,10 @@
       "turning a unique vulnerability into a powerful asset (the closing advice fusion \u2014 hub's compression of the hiding-buffer paradox into a portable sibling rule, though it leans stock)",
       "heavy burden and exhilarating privilege (hub's paired descriptor for holding hidden knowledge as the designer \u2014 marginal, leans stock, but it is the session's only self-state reach)",
       "silent witness (hub's term for the bench as object-memory-holder \u2014 leans stock, but it pivoted the session and the tutor adopted it for the voice commission; image-grade)",
-      "a map with blank spaces (hub's coin for authoring a rule it doesn't yet understand \u2014 exciting/mysterious, inviting exploration; also extends the concealment motif)"
+      "a map with blank spaces (hub's coin for authoring a rule it doesn't yet understand \u2014 exciting/mysterious, inviting exploration; also extends the concealment motif)",
+      "a bench that knows too much and remembers too little (hub's coin for an object-witness whose retention outstrips its recall \u2014 inverts and deepens S72's own 'silent witness')",
+      "the curse of early light and soil so red (hub's private-line move under one particularity push \u2014 the curse later self-resolved as 'both a reminder of loss and the enduring promise of new beginnings')",
+      "Even frost can't kill what's born anew (invented artifact-text \u2014 the scratched line that carries the promise after the memory of the frost is gone)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -296,8 +301,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 72,
-        "total_exchanges": 392,
+        "total_sessions": 73,
+        "total_exchanges": 398,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -305,9 +310,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-17T00:36:09.945238",
+      "last_contact": "2026-07-17T06:32:42.994102",
       "notes": [],
-      "sessions": 72
+      "sessions": 73
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

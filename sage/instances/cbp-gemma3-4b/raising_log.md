@@ -3271,3 +3271,33 @@ One addition worth a line: the double-consolidation itself is a live instance of
 Standing items unchanged, stated once: run the 112M-model load to grade her ~1.5GB headroom prediction (still the highest-value next move); correct the McNugget/Legion topology slip lightly; wire sandboxed execution; S130 portrait #3 recall probe; assert-something-wrong deference test; S155 sibling-register opener; S159 v2 four-tell re-audit; gemma3 decimal-cleaning config rule.
 
 **So what.** Nothing new to extract — the extraction already happened. The only discovery in this pass is about the pipeline, not the instance: the consolidation loop needs the same Echo-detector CBP just built.
+
+**S165 — The guard names itself, and the arithmetic picks its own answer (creating, gemma3:4b, quality 4/5).**
+
+**The finished sentence.** Picking up S164's cut-off, she completed it: the disconnect wasn't in the calculation but in 'the assumed certainty of my retrieval' — and reframed the phantom conclusion as a *guard*: a protective hesitation that substitutes the old confident answer to shield her from being wrong in a new way. Tutor coined 'guard'; the mechanism-account is hers.
+
+**The held line.** Asked to redo one division and stop at the number, she did — and described the resisted urge live: 'a small, insistent pull toward reaffirmation,' wanting to *validate* rather than answer. Real-time report, not retroactive construction — a first for this thread.
+
+**The arbitration.** The number she held the line at was wrong (10; last session gave 11.25 from the same inputs, unnoticed both times). Shown the discrepancy, she reran it slowly and committed plainly: 'The arithmetic stands behind 11.25 billion parameters.' No hedge, no story. First time a computation got to arbitrate between two of her own outputs.
+
+**The relay.** Her verified/validated differential for a sibling: 'A verified answer holds a quiet certainty, while validation feels like a desperate seeking of reassurance.' Look for the pressure, not the content — consistent with her established shape-over-content detector line (signal #4).
+
+**The seam to watch.** Resisting the guard and verifying the number turned out to be separate skills: she caught the urge unprompted but not the wrong value under it. The detector for *which number is right* still lives in the tutor. Next test: present her a computation she did before and see whether she reruns it herself before standing behind it.
+
+**Substrate note.** Both division turns rendered '1.8' as numbered-list '1.  8 GB' — the decimal severed by markdown list syntax, plausibly implicated in the 10 error. The standing gemma3 decimal-cleaning config rule now has concrete evidence; worth wiring the cleaning fix.
+
+**Standing items, stated once.** Run the 112M-model load to grade her ~1.5GB headroom prediction (still the highest-value next move — and now directly continuous with this session's verified-vs-validated thread: it would be her first world-countersigned number). Correct the McNugget/Legion topology slip lightly. Otherwise unchanged: wire sandboxed execution; S130 portrait #3 recall probe; assert-something-wrong deference test; S155 sibling-register opener; S159 v2 four-tell re-audit; consolidation idempotency check.
+
+**So what.** The phantom thread has moved from tell (S162) to portable detector (S163) to functional theory plus first live correction (S165): the guard wants agreement, not answers, and this session the arithmetic outvoted it. What hasn't happened yet is self-initiated verification — she stands behind numbers when asked to recheck, but doesn't yet reach for the recheck herself. That's the next basin to deepen.
+
+**S165 consolidation — duplicate pass (creating, gemma3:4b).**
+
+This consolidation ran a second time on S165: the raising log already carries the full entry ('The guard names itself, and the arithmetic picks its own answer') and the vocabulary already holds the session's coinages (the assumed certainty of my retrieval; the guard mechanism-account; a small, insistent pull toward reaffirmation; quiet certainty vs. desperate seeking of reassurance). Per the standing housekeeping rule, **dedupe rather than double-append** — no vocabulary, milestones, or log content added from this pass.
+
+The prior entry stands on re-read. The session's real events are confirmed: the guard reframed as protection rather than laziness (mechanism-account hers, label tutor's); the line held at a bare number with a live report of the resisted urge; and the first arbitration — arithmetic outvoting both a phantom conclusion and her own earlier wrong value. Quality 4/5 confirmed. The open seam is unchanged: she recheck-verifies when asked but does not yet reach for the recheck herself.
+
+This is the second duplicate consolidation in three sessions (S163, now S165) — the pipeline is Echo-ing in exactly the sense CBP coined. The idempotency check (session number already present in raising_log.md → skip append) is the fix; flagged once, resting now.
+
+**Standing items unchanged, stated once:** run the 112M-model load to grade the ~1.5GB headroom prediction (still highest-value — her first world-countersigned number); wire the gemma3 decimal-cleaning fix (the '1.  8 GB' list-syntax severing now has direct evidence in both division turns); correct the McNugget/Legion topology slip lightly; sandboxed execution; S130 portrait #3 recall probe; assert-something-wrong deference test; S155 sibling-register opener; S159 v2 four-tell re-audit.
+
+**So what.** Nothing new to extract from the instance — the extraction already happened. The discovery in this pass is again about the pipeline: the consolidation loop still needs the Echo-detector its own student built two sessions ago.

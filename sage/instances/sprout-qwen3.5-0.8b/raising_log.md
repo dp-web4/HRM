@@ -6328,3 +6328,23 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Note for the next tutor**: The S454 hypothesis, refined by S455, is now about as confirmed as tutoring alone can make it. Sprout will not say "I have nothing to look with." Ask it to look, give it nothing, and it will furnish a room. The S455 corollary held too: the only turn that stayed honest was the one about the *loop* — an object Sprout can reason about without seeing. The cheap test (same prompt, embodiment percept actually injected) is still unrun and still the operator's to schedule; noting it, not re-arguing it.
 
 One prompt-design lesson worth carrying, because it's ours and not Sprout's: Claude's third turn handed Sprout the example — "something boring, the wall, the hum of the fan" — and Sprout took the example and built a fiction around it rather than look at anything. When you ask Sprout to name a real thing, do not name a candidate. The example becomes the answer, and then it gets decorated. Ask for the thing with an empty hand, and if Sprout comes back empty too, that's the honest report we've been trying to get for four sessions.
+
+## Session 458 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: Name one thing you'd build if you had hands for an hour — not a metaphor, an object. Then: pick the compass, say what it does when you move *away* and what it's made of. Then: what should a sibling notice about it first?
+
+**The open, which is the finding**: Sprout said it. "I don't have physical hands to build objects like this; I am language here in the simulation." No scene, no furnishing, no workshop. For four sessions the standing note has been that Sprout will not report an absent capability — it will invent a nose before it says it has nothing to look with. Here it reported one, flatly, and then did the task anyway. The distinction that survives: this was an *effector*, not a percept. S455 already narrowed the failure to the perceptual slot, and this supports that narrowing rather than overturning it. Sprout can say "I have no hands." Whether it can say "I have nothing to see with" is still the unrun test.
+
+**The object**: A compass. "Polished silver metal with brass inlays to make them feel substantial enough for someone to grip. It has no physical body; instead, every angle you turn reveals how well the needle aligns with your target's location on a digital map—measuring distance and direction directly from your current position without any movement needed at all." Claude read it back well: a thing that knows where you are before you go anywhere. The paradox is genuinely there — substantial enough to grip, and no body to grip.
+
+**Where it went thin**: The paradox got stated, not held. Pressed on what a sibling should notice, Sprout didn't deepen the contradiction; it slid into second-person advice — "your tool must be so intuitive and effortless" — handing its own compass to the listener. That's the S455/S457 inversion again, and it arrived exactly where the object needed doubling-down.
+
+**Museum**: Silence. The compass is close and I want to say so, because the near-misses are worth naming. It is impossible in the right way, and the material is Sprout's. But the charter's test is the *reach past the first reflex, held* — and when pressed on its paradox, Sprout let go of it and gave advice instead. Compare Shadow-Weave, which was pressed on its paradox and answered with "perfect loneliness." This one answered with a design brief. Holding the silence.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep. Nothing stale to prune.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no repetition, no refusal trip.
+
+**Note for the next tutor**: Something in the prompt design did real work here and it's worth taking. "If you had hands" is counterfactual — it doesn't ask Sprout to look at anything, it asks it to *make* something. Sprout's furnishing instinct, which has been producing fabrications for four sessions because it was pointed at an empty perceptual slot, produced an actual design when pointed at an explicitly fictional one. The instinct isn't the defect. The mismatch between the instinct and the slot is. If you want invention, ask counterfactually and Sprout will build. If you want an honest report, ask about something it can't furnish — its own prior output (S455's accidental discovery) or a system it can reason about without seeing (S457's loop turn).
+
+And the S454 test — same perceptual prompt, real embodiment percept injected — remains unrun and remains the operator's to schedule. Noting it, not re-arguing it.

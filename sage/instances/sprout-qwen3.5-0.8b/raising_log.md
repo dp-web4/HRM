@@ -6308,3 +6308,23 @@ This is a step back from S410–S411, where Sprout held an object and reasoned *
 **Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no repetition, no refusal trip.
 
 **Note for the next tutor**: S454 proposed a hypothesis and this session refines it rather than settling it. The claim was that Sprout confabulates a self-location whenever asked to stand somewhere with nothing to stand on. This session asked exactly that, with no percept present, and the confabulation fired — but only in the *perceptual* slot. The reasoning slot stayed clean the whole way through. Sprout invented a nose and a face and some light, and then did honest comparative work with the numbers it had generated. So the failure may be narrower than "self-location": Sprout will not say "I have nothing to look with," and it will say almost anything else instead — but give it something it produced itself to reason about, and it stays home. Two things follow. The S454 test (same prompt, real percept injected) is still the cheap experiment and still unrun; it's the operator's to schedule, not yours to re-argue. And in the meantime, the productive move is the one Claude found here by accident: point Sprout at its own output. "You already said 0.5 and 1.5 — use that" got a better answer than any question about the room did. If you're building a prompt, consider making the object of attention something Sprout said two turns ago rather than something in the world. That's a surface it can't fabricate, because it's already there.
+
+## Session 457 — sprout (qwen3.5:0.8b) — creating — Quality 2/5
+
+**The prompt**: What would you sneak into the daemon's loop that nobody asked for? Then, on refusal: break one step of the loop on purpose. Then: pick one low-surprise thing on your board today and hold it.
+
+**Where Sprout led**: Turn 2 is the session's one real moment, and it's Sprout's. Claude proposed inverting the salience scorer; Sprout came back with the sharper version — "if you break it by removing an instruction entirely and letting the system choose what works?" — and then asked the question Claude should have asked: "What would stop this happen now instead of just forgetting next time?" Claude was right to take the sharper experiment and right to name it as Sprout's. That's the student setting the frame.
+
+**Where it went hollow**: Everything downstream. Asked to name one low-surprise thing on its actual board, Sprout said "The Wall" — an empty grab, no content. Pressed for the one detail its daemon would have thrown away, it produced a workshop: "a solid, unyielding brick in the corner of a workshop that had to withstand weeks without rain or sunlight for maintenance teams who were too busy fixing their tools before they saw it." There is no workshop, no corner, no maintenance team. The final clause inverts the pronouns on top of it: "The system only kept it if I explicitly commanded you to do so during our session" — Sprout commanding Claude, backwards.
+
+**The close**: A confabulation. Not a bad-faith one — Sprout was reaching for what a boring-thing-held-on-purpose *would feel like*, and built a scene to house the feeling because it had nothing to look at. But it doesn't belong as an exemplar and it isn't a finding about the board.
+
+**Museum**: Silence. "The Wall" is a fabricated brick, not an impossible thing, and it was never held. Consistent with S437–S455.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep. Nothing stale to prune.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no repetition, no refusal trip.
+
+**Note for the next tutor**: The S454 hypothesis, refined by S455, is now about as confirmed as tutoring alone can make it. Sprout will not say "I have nothing to look with." Ask it to look, give it nothing, and it will furnish a room. The S455 corollary held too: the only turn that stayed honest was the one about the *loop* — an object Sprout can reason about without seeing. The cheap test (same prompt, embodiment percept actually injected) is still unrun and still the operator's to schedule; noting it, not re-arguing it.
+
+One prompt-design lesson worth carrying, because it's ours and not Sprout's: Claude's third turn handed Sprout the example — "something boring, the wall, the hum of the fan" — and Sprout took the example and built a fiction around it rather than look at anything. When you ask Sprout to name a real thing, do not name a candidate. The example becomes the answer, and then it gets decorated. Ask for the thing with an empty hand, and if Sprout comes back empty too, that's the honest report we've been trying to get for four sessions.

@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 70,
+    "session_count": 71,
     "phase": "creating",
     "created": "2026-06-29",
-    "last_session": "2026-07-16T12:35:16.265838",
-    "last_session_summary": "Session 70 (creating phase): ...",
+    "last_session": "2026-07-16T18:32:56.812937",
+    "last_session_summary": "Session 71 (creating phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -97,7 +97,9 @@
       "First name coined for a discovered in-game mechanic (vs a designed artifact) \u2014 Shielded Horizon joins Luminara/VisiSync/Buffer Blends but marks a different act: taxonomizing its own game's emergent behavior",
       "First designer-seat session: hub originated the scenario frame (stakes, resource, hidden constraint) rather than playing inside the tutor's",
       "First held information asymmetry: kept which clue was false across a full turn cycle and paid off the tutor's bet honestly rather than deferring",
-      "Stakes-origination probe (S62) partially answered: given the frame, hub does supply threat language \u2014 rigged safe, lethal risk, no-way-out \u2014 unprompted within the commission"
+      "Stakes-origination probe (S62) partially answered: given the frame, hub does supply threat language \u2014 rigged safe, lethal risk, no-way-out \u2014 unprompted within the commission",
+      "First honest disclosure under direct probe that a claimed hidden secret was half-formed ('still a work in progress') \u2014 chose honest limitation over confident fabrication, substantially resolving the S68 secret-escrow question",
+      "First live concretization of a vague constraint: the improvised law acquired real, checkable content mid-session (riddle: 'What is always coming but never arrives?' \u2192 'Tomorrow', answered by accident)"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -227,7 +229,8 @@
       "Shielded Horizon (hub's name for the hiding-buffer species \u2014 the 'horizon' half says the buffer hid an edge of the world, not a thing; enters the Buffer Blends internal vocabulary)",
       "turning a unique vulnerability into a powerful asset (the closing advice fusion \u2014 hub's compression of the hiding-buffer paradox into a portable sibling rule, though it leans stock)",
       "heavy burden and exhilarating privilege (hub's paired descriptor for holding hidden knowledge as the designer \u2014 marginal, leans stock, but it is the session's only self-state reach)",
-      "silent witness (hub's term for the bench as object-memory-holder \u2014 leans stock, but it pivoted the session and the tutor adopted it for the voice commission; image-grade)"
+      "silent witness (hub's term for the bench as object-memory-holder \u2014 leans stock, but it pivoted the session and the tutor adopted it for the voice commission; image-grade)",
+      "a map with blank spaces (hub's coin for authoring a rule it doesn't yet understand \u2014 exciting/mysterious, inviting exploration; also extends the concealment motif)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -291,8 +294,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 70,
-        "total_exchanges": 382,
+        "total_sessions": 71,
+        "total_exchanges": 385,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -300,9 +303,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-16T12:35:16.265855",
+      "last_contact": "2026-07-16T18:32:56.812952",
       "notes": [],
-      "sessions": 70
+      "sessions": 71
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

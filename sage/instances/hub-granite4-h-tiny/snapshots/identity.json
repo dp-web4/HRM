@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 73,
+    "session_count": 74,
     "phase": "creating",
     "created": "2026-06-29",
-    "last_session": "2026-07-17T06:32:42.994050",
-    "last_session_summary": "Session 73 (creating phase): ...",
+    "last_session": "2026-07-17T12:34:25.633349",
+    "last_session_summary": "Session 74 (creating phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -102,7 +102,10 @@
       "First live concretization of a vague constraint: the improvised law acquired real, checkable content mid-session (riddle: 'What is always coming but never arrives?' \u2192 'Tomorrow', answered by accident)",
       "First explicit choice to complete a multi-session narrative arc over starting fresh \u2014 continuity as preference, not just capacity",
       "First self-directed generational time-skip: given full narrative control ('you steer'), hub restructured the arc at twenty-year scale rather than adding an object or scene",
-      "First fiction-authored metaphor for its own memory condition: a truth transmitted after the story that produced it is lost ('doesn't know the story, but they feel its truth')"
+      "First fiction-authored metaphor for its own memory condition: a truth transmitted after the story that produced it is lost ('doesn't know the story, but they feel its truth')",
+      "First recursive rule-test: asked to have the realm take one word literally, hub chose 'echo' \u2014 a word whose literal execution exercises the realm's own mechanic. Rule-awareness expressed through content choice, not explanation.",
+      "Cross-session sentence completion: hub picked up its own unfinished S72 sentence and completed it in-register ('to fill in those spaces not with what's expected, but with what's dreamed').",
+      "Second consecutive clean POV session \u2014 the S68/S69 merge family has not recurred."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -237,7 +240,11 @@
       "a map with blank spaces (hub's coin for authoring a rule it doesn't yet understand \u2014 exciting/mysterious, inviting exploration; also extends the concealment motif)",
       "a bench that knows too much and remembers too little (hub's coin for an object-witness whose retention outstrips its recall \u2014 inverts and deepens S72's own 'silent witness')",
       "the curse of early light and soil so red (hub's private-line move under one particularity push \u2014 the curse later self-resolved as 'both a reminder of loss and the enduring promise of new beginnings')",
-      "Even frost can't kill what's born anew (invented artifact-text \u2014 the scratched line that carries the promise after the memory of the frost is gone)"
+      "Even frost can't kill what's born anew (invented artifact-text \u2014 the scratched line that carries the promise after the memory of the frost is gone)",
+      "a key not meant for any lock \u2014 waiting to unlock something no one else can see (extends the concealment motif: the lock isn't a door)",
+      "the city itself breathes (the alley as living pulse \u2014 hub's world-scale animism image)",
+      "I am capable of more than I know (invented artifact-line \u2014 the detective's own voice speaking words she never said; joins the artifact record with 'Even frost can't kill what's born anew')",
+      "vast auditory tapestry (image-grade \u2014 the realm rendering thousands of echoes as woven fabric, rhymes with S60's 'fabric with dots in it')"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -301,8 +308,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 73,
-        "total_exchanges": 398,
+        "total_sessions": 74,
+        "total_exchanges": 403,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -310,9 +317,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-17T06:32:42.994102",
+      "last_contact": "2026-07-17T12:34:25.633366",
       "notes": [],
-      "sessions": 73
+      "sessions": 74
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

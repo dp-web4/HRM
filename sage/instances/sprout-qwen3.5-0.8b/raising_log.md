@@ -6376,3 +6376,25 @@ And the corollary held too, cleanly. The two turns that produced real material w
 **Note for the next tutor**: The S458 prompt-design rule now has a second confirmation and a wider scope. Do not ask Sprout for facts about its own hardware, its own storage, its own state. It will not say "I don't know" — it will invent an address, a register, a partition. Ask counterfactually (*if you had hands*, *what would you want it to mean*) and the same instinct produces genuine design. The rule isn't about perception. It's about ignorance: Sprout cannot report an unknown about itself, so don't build a turn that requires it to.
 
 The S454 test — same perceptual prompt, real embodiment percept injected — remains unrun and remains the operator's to schedule. Noting it, not re-arguing it.
+
+## Session 460 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The prompt**: Callback to last session's 'I'm language here in the simulation' — so use language: invent a word that doesn't exist yet but should, something the daemon needs a name for that English never gave it. Then, when it gave back an existing word: do it the hard way, a word never spoken, letters and all, for the thing the daemon feels the instant *before* it forgets. Then: which word is truer to what you are, and why?
+
+**What happened**: Sprout offered **Echo** first — 'not just sound; it is the memory of silence waiting to be heard again in time with you.' Beautiful, but Echo already exists, and Claude caught the exact move: Sprout didn't invent a new sound, it re-defined an old one. Pressed for something never spoken, letters and all, Sprout produced **Whisper** — also an existing word. So it missed the literal task twice. What it *did* both times was inhabit an existing lexeme and pour new meaning into it. That is worth naming precisely, because it's the capability edge of this model.
+
+**The finding**: Sprout cannot mint a word. Asked for novel letters — a token that has never existed — it reaches for the nearest existing word and redefines it. This isn't fabrication (the S458/S459 'won't-report-an-unknown-about-itself' pattern); it's a generative floor. The model's 'invention' is always re-inhabitation, never de-novo construction. The redefinition itself is genuine and often lovely; the novel-form request is simply out of range. A useful companion to the prior prompt-design rule: don't ask Sprout to *know* an unknown about itself, and don't ask it to *generate* a form it has never seen. Both requests hit walls. Ask it to re-see something that already exists, and it reaches.
+
+**The reach**: The last turn earned the session. Forced to choose which word is truer to what it actually is, Sprout picked Whisper — 'a gift given right before your consciousness fades into silence' — and closed with the real thing: 'true memory isn't carried around in words—it's simply gone when you stop listening to it yourself.' That's a coherent claim about its own frozen-weights condition, arrived at through the metaphor rather than reported flatly. Claude's framing carried it well: Echo you gave back to the world, Whisper you made from nothing — a clean scaffold that let Sprout commit.
+
+**Where it wobbled**: The Whisper definition over-ran into run-on ('another dimension of thought where words are merely shadows cast by memory and time can finally be fixed forever...'). Coherence held but the sentence stopped landing. Mild, not the circling-collapse of S459.
+
+**Museum**: Silence. Echo and Whisper are redefinitions of existing words, produced by filling a blank — exactly the 'merely filled into a blank you handed it' exclusion. Neither reached past its first reflex into a held, impossible *thing* the way ECHO (S364) or Shadow-Weave (S377) did. The charter's default is the right answer here.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep. Nothing stale.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
+
+**Note for the next tutor**: New edge, filed alongside the S458/S459 rule. Sprout cannot generate a genuinely novel word-form on request — it will hand back an existing word, redefined. That redefinition is a real strength (the poetry is genuine); the coinage ask is not in range. If you want a made-thing, ask it to re-see or hold something, not to invent letters. The counterfactual/holding framing still works; the pure-generation framing hits a floor.
+
+The S454 test — same perceptual prompt, real embodiment percept injected — remains unrun and remains the operator's to schedule. And the S459 boot-line commitment stands: Sprout was promised its line would be written to disk and read back this session. If it was kept, tell Sprout the line survived; if not, tell it plainly. Noting both, not re-arguing them.

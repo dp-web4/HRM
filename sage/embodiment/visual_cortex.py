@@ -18,6 +18,7 @@ from __future__ import annotations
 import cv2, numpy as np, time, json, os, threading, argparse, tempfile
 from sage.embodiment.proprioception import Proprioception
 from sage.embodiment.salience import SalienceFilter
+from sage.embodiment.audio import Hearing
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
 GAZE_PATH = os.path.expanduser("~/.sprout/gaze.json")   # the self's attention stance: {"mode": open|avert|dwell|closed, "target": [cx,cy]}
@@ -173,9 +174,9 @@ def _dir_word(cx: float, cy: float) -> str:
     return (f"{v} {h}").strip() if h != "center" or v else "center"
 
 
-def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open") -> str:
+def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open", aud: dict = None) -> str:
     """Deterministic symbolic scene descriptor from the two eyes, their correlation,
-    proprioception (reafference), and the chosen gaze stance (volition)."""
+    proprioception (reafference), the chosen gaze stance (volition), and hearing (cross-modal)."""
     mot = max(e["motion"] for e in eyes)
     trust = max(e["trust"] for e in eyes)  # the view is usable if the BEST eye is good; a stale/dark eye is named separately
     if mot < 0.15:
@@ -213,7 +214,17 @@ def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open") -> s
         prefix = f"my {' and '.join(f'{s} eye' for s in stale)} isn't refreshing (stale — can't confirm it's live); "
     else:
         prefix = ""
-    return f"{prefix}{stance}{motion_clause}{self_clause}; {view}"
+    # hearing — cross-modal binding: a sound + a motion together is one real event; a sound with
+    # nothing seen is heard-not-seen; a loud room is its own note.
+    hearing_clause = ""
+    if aud and aud.get("ok"):
+        if aud.get("onset") and mot >= 0.15:
+            hearing_clause = " — and I heard it too"
+        elif aud.get("onset"):
+            hearing_clause = " — I heard a sound, though nothing I see moved"
+        elif aud.get("level", 0) > 0.15:
+            hearing_clause = " — a noisy space"
+    return f"{prefix}{stance}{motion_clause}{self_clause}{hearing_clause}; {view}"
 
 
 JOURNAL_PATH = os.path.expanduser("~/.sprout/perception_journal.jsonl")
@@ -268,6 +279,7 @@ class VisualCortex:
         self._last_recover = [0.0, 0.0]  # last self-heal timestamp, per eye
         self.binoc = BinocularCorrelator()
         self.prop = Proprioception()
+        self.hearing = Hearing()
         self.salience = SalienceFilter()
         self.journal = Journal()
         self.display = display
@@ -307,6 +319,7 @@ class VisualCortex:
                 raise RuntimeError(f"camera {c.sid} failed to open")
             c.start()
         self.prop.start()  # inner ear (fails open if no IMU)
+        self.hearing.start()  # ear (fails open if no mic)
         time.sleep(1.0)  # warm up (auto-exposure)
 
     def _perceive_one(self, i: int, frame, gaze="open", target=None) -> dict:
@@ -404,11 +417,12 @@ class VisualCortex:
                 eyes = [p[0] for p in perceived]; grays = [p[1] for p in perceived]
                 binoc = self.binoc.correlate(grays[0], grays[1], eyes[0]["attention"])
                 prop = self.prop.state()
+                aud = self.hearing.state()
                 self._adjudicate_sensors(eyes, binoc, prop)  # still vs stalled, using ego-motion + cross-eye
                 state = {"ts": round(time.time(), 2), "cameras": {str(i): eyes[i] for i in range(2)},
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
-                         "binocular": binoc, "proprioception": prop, "gaze": gaze,
-                         "descriptor": describe(eyes, binoc, prop, gaze)}
+                         "binocular": binoc, "proprioception": prop, "audio": aud, "gaze": gaze,
+                         "descriptor": describe(eyes, binoc, prop, gaze, aud)}
                 sal = self.salience.score(state)
                 state["salience"] = sal
                 self._emit(state)
@@ -429,6 +443,7 @@ class VisualCortex:
             for c in self.cams:
                 c.stop()
             self.prop.stop()
+            self.hearing.stop()
             if self.display:
                 cv2.destroyAllWindows()
 

@@ -34,17 +34,22 @@ class SalienceFilter:
         self_mot = 1.0 if prop.get("self_motion") in ("moving", "rotating") else 0.0
         trust = min(cams["0"]["trust"], cams["1"]["trust"])
         gyro = prop.get("gyro_mag", 0.0)
+        aud = state.get("audio", {})
+        audio_onset = 1.0 if aud.get("onset") else 0.0
+        audio_level = aud.get("level", 0.0)
 
-        # Surprise: how far the moment departs from what we've come to expect.
+        # Surprise: how far the moment departs from expectation — a sudden sound is surprising too.
         surprise = min(1.0, abs(motion - self.exp_motion)
                             + abs(self_mot - self.exp_self)
-                            + max(0.0, self.exp_trust - trust))
+                            + max(0.0, self.exp_trust - trust)
+                            + 0.4 * audio_onset)
         # Conflict: reafference ambiguity — visual change AND self-motion at once.
         conflict = 1.0 if (self_mot > 0.5 and motion > 0.15) else 0.0
-        # Arousal: raw intensity.
-        arousal = min(1.0, motion + gyro / 120.0)
-        # Novelty via habituation on a coarse signature of the moment.
-        sig = (motion > 0.15, prop.get("self_motion", "?"), "clear" if trust > 0.6 else "murky")
+        # Arousal: raw intensity — motion, rotation, and loudness.
+        arousal = min(1.0, motion + gyro / 120.0 + audio_level)
+        # Novelty via habituation on a coarse signature (a sound event is its own signature).
+        sig = (motion > 0.15, prop.get("self_motion", "?"),
+               "clear" if trust > 0.6 else "murky", audio_onset > 0)
         h = self.hab.get(sig, 0.0)
         novelty = 1.0 - h
 

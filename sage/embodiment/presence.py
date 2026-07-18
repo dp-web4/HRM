@@ -133,7 +133,7 @@ class Presence:
                         self.last_desc = descriptor
                         self._log({
                             "ts": round(now, 2), "kind": "noticed", "descriptor": descriptor,
-                            "salience": sal.get("salience"),
+                            "salience": sal.get("salience"), "coherence": d.get("coherence"),
                             "snarc": {k: sal.get(k) for k in ("surprise", "novelty", "arousal", "conflict")},
                             "gaze": gaze, "resting": resting, "noticing": noticing,
                             "metabolic": out.get("metabolic_state"), "atp": out.get("atp_percentage"),

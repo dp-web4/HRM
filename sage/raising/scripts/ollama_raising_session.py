@@ -1344,6 +1344,11 @@ RESPONSE STYLE:
             with open(gp, "w") as f:
                 json.dump({"mode": mode, "chosen_by": "sprout",
                            "session": self.session_number, "words": (response or "")[:200]}, f)
+            # persist the choice for the reward exploration (E1: revealed preferences over time;
+            # gaze.json is overwritten each session, so append the history here)
+            with open(os.path.expanduser("~/.sprout/preferences.jsonl"), "a") as f:
+                f.write(json.dumps({"ts": time.time(), "kind": "gaze_choice", "mode": mode,
+                                    "session": self.session_number, "words": (response or "")[:200]}) + "\n")
             print(f"  [Sprout set its own gaze: {mode}]")
         except Exception:
             pass

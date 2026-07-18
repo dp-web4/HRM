@@ -425,6 +425,14 @@ class VisualCortex:
                          "descriptor": describe(eyes, binoc, prop, gaze, aud)}
                 sal = self.salience.score(state)
                 state["salience"] = sal
+                # coherence — how well the senses agree (a candidate reward signal; reward exploration
+                # E2). High when the eyes correlate, the reafference is unambiguous, and the senses are
+                # live; low under conflict or a dead sensor. Recorded for the H1 (coherence-as-reward) test.
+                eyes_live = sum(0.0 if e.get("stalled") else 1.0 for e in eyes) / 2.0
+                liveness = (eyes_live + (1.0 if prop.get("ok") else 0.0) + (1.0 if aud.get("ok") else 0.0)) / 3.0
+                state["coherence"] = round(0.4 * binoc.get("agreement", 0.0)
+                                           + 0.3 * (1.0 - sal.get("conflict", 0.0))
+                                           + 0.3 * liveness, 3)
                 self._emit(state)
                 self.journal.observe(state, sal)
                 # self-heal: a camera frozen too long has a stuck Argus consumer — reopen it

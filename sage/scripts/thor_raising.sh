@@ -89,12 +89,21 @@ Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"
 
-# Push — retry once after rebase. Concurrent fleet pushes race this slot:
-# the 2026-06-11 12:00 run failed here on a non-fast-forward rejection,
-# which (with set -e) marked the service failed and preceded a 24h outage.
-git push origin main || {
-    echo "[Thor-Raising] Push rejected, rebasing and retrying..."
-    git pull --rebase origin main
-    git push origin main
-}
-echo "[Thor-Raising] Session $SESSION_NUM committed and pushed."
+# Push — retry once after rebase, but NEVER fail the service on a push/rebase
+# problem. The session is already committed locally (continuity preserved); an
+# unpushed commit is recovered on the next cycle. History of set -e deaths here:
+# 2026-06-11 non-fast-forward rejection (24h outage); 2026-07-18 the retry's
+# `git pull --rebase` aborted on an unstaged working tree (exit 128). Both are
+# now non-fatal: the fallback runs in condition context (set -e exempt) and any
+# half-finished rebase is aborted so the tree is never left mid-rebase.
+if ! git push origin main; then
+    echo "[Thor-Raising] Push rejected — rebasing and retrying (non-fatal)..."
+    if git pull --rebase origin main && git push origin main; then
+        echo "[Thor-Raising] Session $SESSION_NUM pushed after rebase."
+    else
+        echo "[Thor-Raising] WARNING: push still failing; session committed locally, will retry next cycle."
+        git rebase --abort 2>/dev/null || true
+    fi
+else
+    echo "[Thor-Raising] Session $SESSION_NUM committed and pushed."
+fi

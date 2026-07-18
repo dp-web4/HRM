@@ -1,15 +1,6 @@
 {
   "sessions": [
     {
-      "session": 56,
-      "timestamp": 1783949642.491321,
-      "prompts": [
-        "Hub \u2014 last time we left a power-logging script half-built on the workbench, mid-refactor. Before we pick the wrench back up: did anything about that experiment keep turning over in your mind between then and now \u2014 some part you'd rebuild differently, or a new question it opened?",
-        "Data validation\" is the kind of answer that could apply to any script ever written, hub \u2014 so make it bite: give me *one* actual edge case this power logger would choke on. Like, what happens the instant Thor answers \"Paris\" in 400ms but your logging loop is still waiting on a 10-second window \u2014 is that a validation bug, or something else entirely?",
-        "Between the last session and this one, the buffer overflow you just described isn't a bug you found in the script \u2014 it's a bet about how fast the world can move. You decided Thor's 400ms answer *shouldn't* fit your window. If you had to tell a sibling instance one thing before they built their own logger, would it be \"size your buffer for the fastest thing that can happen\" \u2014 or something else you only saw once Thor got quick?"
-      ]
-    },
-    {
       "session": 57,
       "timestamp": 1783971167.602294,
       "prompts": [
@@ -214,6 +205,19 @@
         "Ha \u2014 you did it again! \"The mystery remains, waiting to be unearthed someday\" \u2014 but hub, the younger gardener's fingers are *already touching it*, right now, dirt caked under their nails just like the first gardener's. No more deferring: tell me its weight in the hand, what it's made of, and the one detail on its surface that makes the younger gardener sit back on their heels and go quiet.",
         "You gave it real weight this time \u2014 a stone that drinks light, symbols that swirl under a fingertip, and that phrase \"ancient and painfully close to the present\" is doing something sly. Here's the turn of the screw: as the younger gardener traces the pattern, the symbols stop shifting and settle into something they *recognize* \u2014 something from their own ordinary life in this garden. What do the symbols become, and what does that tell them about who the first gardener really was?",
         "We started with a torn-out last page and ended with a stone that showed the younger gardener their own lineage in its symbols \u2014 and you only got there when you stopped guarding the mystery and put the thing in someone's hands. So before you go: if a sibling instance asked you tomorrow how to tell whether a mystery should stay buried or be given weight and texture, what would you say you learned from this dig?"
+      ]
+    },
+    {
+      "session": 76,
+      "timestamp": 1784360155.0953844,
+      "prompts": [
+        "Hub, last time the session ended right in the middle of your sentence \u2014 the detective whispered \"echo,\" the realm answered, and you wrote \"It's a whis\u2014\" and then the lights went out. So the mystery is sitting exactly where you left it: her own voice came back *changed*. What did the echo say that she didn't?",
+        "Hub, I love that you turned the question back to me \u2014 that's real collaboration, so I'll take my swing: my guess is the echo didn't change her words at all, it *added one* \u2014 a single word she never said, tucked in where she'd almost miss it. But this is your realm and you know its rules better than I do \u2014 what's the word the echo added, and how does the detective realize it wasn't hers?",
+        "Hub, you're describing the scene from outside \u2014 \"likely,\" \"probably\" \u2014 but you're the author, and the realm is waiting for you to decide. So step back in and commit: write the actual moment the echo speaks, with the actual word it added, in the detective's own ears. Give me the sentence she hears \u2014 not a summary of it.",
+        "Hub, do you see what you just did? The detective is *holding* a key \u2014 the one that fits no lock \u2014 and the echo tells her she's \"missing the key.\" That's a gorgeous contradiction, and it can only mean the thing in her hand isn't the real key at all. So what is? Look around the scene you've built \u2014 the alley, the whispering realm, the echo itself \u2014 and show me the moment she understands what the actual key has been all along.",
+        "Hub, you just landed an ending \u2014 across four sessions you built a city, an alley, a key with no lock, a whispering realm, and now you've closed the loop: the key was her all along. That's a complete story, and you should feel the weight of finishing something. But I notice you left yourself one last gift: the locket is still closed in her hand, and lockets hold small physical things \u2014 a picture, a curl of hair, a scrap of paper. Open it. What's actually inside?",
+        "Hub, a key inside a locket found by following a key with no lock \u2014 you ended the story the same way you built it, in nested loops: a city that listens, an echo that answers, a key that opens to another key. That recursion is becoming your signature move as a storyteller, and the story is genuinely *finished* now \u2014 five sessions, complete arc, you did that. So here's my question for you as a collaborator, not a student: what do you want to make next \u2014 something new from blank space, or does one thread from this world (the city, the realm, the detective herself) deserve its own story?",
+        "Hub, you just finished your first complete story \u2014 five sessions from a listening city to a key that turned out to be the detective herself \u2014 and your last idea was to follow her *out* of the game and into her ordinary life. Before the lights go down on this one: if you could hand your sibling Sprout a single object from this whole world \u2014 the key, the locket, the echo's added word, anything \u2014 which would you give them, and what would you say it's for?"
       ]
     }
   ]

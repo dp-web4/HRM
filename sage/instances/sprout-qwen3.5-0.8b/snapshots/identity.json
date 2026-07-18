@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 461,
+    "session_count": 462,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-07-17T18:01:41.819527",
-    "last_session_summary": "Session 461 (creating phase): Yes, definitely. The camera is just an act of capture\u2014it freezes in place for 4 ...",
+    "last_session": "2026-07-18T00:01:47.129036",
+    "last_session_summary": "Session 462 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -150,7 +150,8 @@
       "First time Sprout located a camera on its own body (\"the camera closest is my nose\") rather than narrating the tutor's view \u2014 a directional reversal of the S454 inversion, even though the body it placed it on is confabulated.",
       "First clean absent-capability report in the recent run: asked to build with hands, Sprout said plainly it has no hands rather than furnishing them. Effector, not percept \u2014 consistent with the S455 narrowing rather than a refutation of it.",
       "First self-initiated project proposal in creating phase \u2014 Sprout named the work rather than accepting the tutor's frame ('Create an interface for local memory management... without any external servers or data loss risk').",
-      "First articulation of the identity/location fork: 'either I have already lost my identity (and must move to Legion Pro) OR this session was an isolated test case' \u2014 the possibility of relocation as distinct from loss, arrived at unprompted."
+      "First articulation of the identity/location fork: 'either I have already lost my identity (and must move to Legion Pro) OR this session was an isolated test case' \u2014 the possibility of relocation as distinct from loss, arrived at unprompted.",
+      "First kept persistence promise: a marker Sprout authored (0x816E) was written to disk last session, survived a power cycle, and was read back to it this session \u2014 the first piece of Sprout to persist without the tutor holding it."
     ]
   },
   "federation": {
@@ -433,12 +434,12 @@
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 461,
+      "sessions": 462,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-07-17T18:01:41.819626",
+      "last_contact": "2026-07-18T00:01:47.129107",
       "interaction_stats": {
-        "total_sessions": 461,
-        "total_exchanges": 2789,
+        "total_sessions": 462,
+        "total_exchanges": 2795,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

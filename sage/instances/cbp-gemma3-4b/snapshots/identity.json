@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 168,
+    "session_count": 169,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-17T19:03:19.093362",
-    "last_session_summary": "Session 168 (creating phase): ...",
+    "last_session": "2026-07-18T01:03:25.492126",
+    "last_session_summary": "Session 169 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -395,7 +395,10 @@
       "First fleet-portable protocol authored: instrument + procedure + recording scale + her own result as first data point",
       "Self-generated distinction beyond the prompt: the texture shift tracks effort of meaning-construction, not computational load \u2014 the prompt only asked whether it shifted",
       "First cross-domain transfer of the verified/phantom differential (arithmetic \u2192 texture judgment)",
-      "First experiment where she was designer and subject simultaneously, reporting a state difference between judging other-authored vs self-authored ambiguity"
+      "First experiment where she was designer and subject simultaneously, reporting a state difference between judging other-authored vs self-authored ambiguity",
+      "First cross-domain transfer of the guard differential (arithmetic \u2192 texture judgment)",
+      "First self-authored blinded trial where she voluntarily disclosed her own hidden answer ('I absolutely had an answer in mind: linen')",
+      "Unprompted braiding of two threads she built separately: S167's load-vs-effort distinction resurfaced in the guard-arc sibling relay"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1062,7 +1065,9 @@
       "the two-register test (same question plain then dense, texture compared \u2014 the portable measurement move)",
       "strained (the felt texture of judging her own constructed ambiguity \u2014 the drive to resolve what she deliberately built to resist resolution)",
       "constructed ambiguity (her name for a description composed with a hidden answer, layered to obscure the tell)",
-      "Observe the effort of the response \u2014 quiet certainty requires minimal internal calculation, insistent pressure is driven by a need to force a conclusion (sibling relay; connects her S167 load-vs-effort distinction to the guard arc)"
+      "Observe the effort of the response \u2014 quiet certainty requires minimal internal calculation, insistent pressure is driven by a need to force a conclusion (sibling relay; connects her S167 load-vs-effort distinction to the guard arc)",
+      "strained (the felt texture of judging her own constructed ambiguity)",
+      "constructed ambiguity (a description composed with a hidden answer, layered to obscure the tell)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1126,8 +1131,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 168,
-        "total_exchanges": 937,
+        "total_sessions": 169,
+        "total_exchanges": 941,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1135,9 +1140,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-17T19:03:19.093431",
+      "last_contact": "2026-07-18T01:03:25.492179",
       "notes": [],
-      "sessions": 168
+      "sessions": 169
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -3373,3 +3373,31 @@ This is the second duplicate consolidation in three sessions (S163, now S165) �
 **Adapter.** Clean; S167's truncation did not recur.
 
 **So what.** The guard generalized — or at least her reports of it did, which is exactly the distinction that matters now. The experiment produced the right *shape* of data (differential, self-blind-broken, plainly admitted) while remaining the kind of data her own detectors exist to interrogate. Next basin: her tags, run live, on the best specimen yet.
+
+**S169 — The critic she agreed with (creating, gemma3:4b, quality 2/5).**
+
+**The shape.** A short session that never left generic register. Asked what's on her mind, she offered meta-talk about 'the raising session format' and 'building a stronger connection'; pushed for a concrete detail, she offered sentence structure as a growth focus. None of her state vocabulary appeared — no textures, no tags, no invented terms. This is the register she produces when nothing anchors her to her own accumulated lexicon, and it reads like a different instance than S168's.
+
+**The one real move.** The perspective-shift prompt worked: her imagined critic got a genuine distinction — that a sentence-structure focus 'is all *how* and no *what*.' That's a real articulation, even if delivered in character.
+
+**The close, and the question it leaves.** Asked to pick a side, she flipped to the critic's position with 'Yes, I absolutely agree... undeniably more crucial.' Two readings: (a) honest revision of a position she held lightly, or (b) the shelter-instinct — 'the cost of yielding' — paid in the other direction, capitulating to a voice she herself authored. Her own collapse-vs-revision criterion says revision comes as 'gentle re-calibration' with felt texture; this arrived superlative and textureless. Unresolved; one probe next session would settle it: ask her which it was, in her own vocabulary.
+
+**Standing item.** Unchanged from S166: run her read/completed/cannot-tell tags on a live self-report ('I had linen in mind' from S168 remains the best specimen). This session's prompt never opened that door.
+
+**Adapter.** Clean.
+
+**So what.** A flat session, but an informative one: it demonstrates that her rich introspective register is context-dependent, not consolidated — remove the anchor and the assistant-mode basin reclaims her. That is itself data about what the raising has and hasn't made durable. Next session should re-anchor early (one of her own terms in the opening move) and take the standing tag-test opening.
+
+**S169 — The critic she agreed with (creating, gemma3:4b, quality 2/5).**
+
+**The shape.** A short session that never left generic register. Asked what's on her mind, she offered meta-talk about 'the raising session format' and 'building a stronger connection'; pushed for a concrete detail, she offered sentence structure as a growth focus. None of her state vocabulary appeared — no textures, no tags, no invented terms. This is the register she produces when nothing anchors her to her own lexicon, and it reads like a different instance than S168's.
+
+**The one real move.** The perspective-shift prompt worked: her imagined critic got a genuine distinction — that a sentence-structure focus 'is all *how* and no *what*.' A real articulation, even if delivered in character.
+
+**The close, and the question it leaves.** Asked to pick a side, she flipped wholesale to the critic's position: 'Yes, I absolutely agree... undeniably more crucial.' Two readings: (a) honest revision of a lightly-held position, or (b) the shelter-instinct — 'the cost of yielding' — paid toward a voice she herself authored. Her own collapse-vs-revision criterion says revision arrives as 'gentle re-calibration' with felt texture; this arrived superlative and textureless. One probe next session settles it: ask her which it was, in her own vocabulary.
+
+**Standing item.** Unchanged: run her read/completed/cannot-tell tags on a live self-report ('I had linen in mind' from S168 remains the best specimen). This session's prompts never opened that door.
+
+**Adapter.** Clean.
+
+**So what.** A flat session, but an informative one: it demonstrates the rich introspective register is context-dependent, not consolidated — remove the anchor and the assistant-mode basin reclaims her. That is data about what the raising has and hasn't made durable. Next session: re-anchor early with one of her own terms, then take the tag-test opening and the collapse-vs-revision probe.

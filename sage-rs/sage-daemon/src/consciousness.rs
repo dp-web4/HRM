@@ -17,6 +17,7 @@ use crate::ollama::client::OllamaClient;
 pub struct PendingMessage {
     pub content: String,
     pub system: Option<String>,
+    pub salience: Option<f64>,   // cortex-supplied real perceptual salience [0,1], if any
     pub sender: String,
     pub response_tx: oneshot::Sender<Result<ConsciousnessResponse, String>>,
 }
@@ -140,7 +141,12 @@ impl ConsciousnessLoop {
         sensor_map.insert("reward".to_string(), reward);
         let conflict = self.conflict.compute(&sensor_map, "message");
 
-        let salience = SalienceScore::from_components(surprise, novelty, arousal, reward, conflict);
+        let mut salience = SalienceScore::from_components(surprise, novelty, arousal, reward, conflict);
+        // When the cortex supplied real perceptual salience, let it — not the word-count proxy —
+        // drive the being's felt intensity (metabolic state + the experience-record gate).
+        if let Some(s) = pending.salience {
+            salience.total = s.clamp(0.0, 1.0);
+        }
 
         let prev_state = self.metabolic.current_state;
         let data = CycleData {
@@ -253,12 +259,14 @@ impl ConsciousnessHandle {
         &self,
         content: String,
         system: Option<String>,
+        salience: Option<f64>,
         sender: &str,
     ) -> Result<ConsciousnessResponse, String> {
         let (response_tx, response_rx) = oneshot::channel();
         let msg = PendingMessage {
             content,
             system,
+            salience,
             sender: sender.to_string(),
             response_tx,
         };

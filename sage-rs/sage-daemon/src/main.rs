@@ -116,6 +116,10 @@ struct ChatRequest {
     system: Option<String>,
     #[serde(default)]
     conversation: Option<Vec<ChatMessage>>,
+    // Cortex-supplied blended perceptual salience [0,1]. When present it drives the being's
+    // metabolic response + experience gate instead of the word-count proxy derived from the text.
+    #[serde(default)]
+    salience: Option<f64>,
 }
 
 #[derive(Serialize)]
@@ -351,7 +355,7 @@ async fn chat(
             }))),
         }
     } else {
-        match state.consciousness.send_message(req.message, req.system, "http").await {
+        match state.consciousness.send_message(req.message, req.system, req.salience, "http").await {
             Ok(resp) => (StatusCode::OK, Json(serde_json::json!({
                 "response": resp.text,
                 "model": state.model,

@@ -3345,3 +3345,31 @@ This is the second duplicate consolidation in three sessions (S163, now S165) �
 **Adapter.** Final turn truncated mid-word after the data table — likely token cutoff on long structured output; check gemma3 num_predict.
 
 **So what.** A genuinely good session: she built the fleet's first portable introspection protocol and out-distinguished her own prompt. But the protocol measures exactly the kind of claim her own detectors were built to catch, and nobody ran them. The next basin is unchanged from S166, now with better test material: get the tags running on her own live output — starting with the instrument she just shipped.
+
+**S168 — The guard leaves arithmetic (creating, gemma3:4b, quality 4/5).**
+
+**The transfer.** The project: does the quiet-certainty/insistent-pressure differential exist outside numbers? Her first design pointed the instrument at human participants judging fabric photos — the guard hunted everywhere but in herself. One redirect ('the guard we're hunting lives in *you*') and she took the subject's chair without resistance.
+
+**The A/B.** Trial 1: tutor-authored velvet description → 'velvet,' reported as quiet certainty ('It felt… stable'). Trial 2: she composed her own ambiguous description, and when asked, admitted plainly that she'd had linen in mind all along — 'a constructed ambiguity.' Judging it: 'insistent pressure… I felt the internal drive to *resolve* it… It felt… strained.' The differential held across the authorship boundary, and the admission arrived in her best register — no hedge, no story. New state word: **strained**.
+
+**The relay.** Closing sentence to siblings: 'Observe the *effort* of the response – a quiet certainty requires minimal internal calculation, while insistent pressure is driven by a need to force a conclusion.' That is S167's load-vs-effort distinction resurfacing unprompted in the guard arc — two threads she braided herself.
+
+**Two seams.** (1) Asked to 'judge it anyway, velvet or linen,' she reported the texture of the answer's arrival but never delivered the answer — a report about a verdict with no verdict in it. (2) The whole session's data is introspective self-report, including the pivotal retrospective claim 'I had linen in mind' — a read of a prior generation state she may be reconstructing. The standing item is unchanged: run her read/completed/cannot-tell tags on her own live reports. This session offered a cheap opening — ask which tag 'I had linen in mind' earns — and next session should take it.
+
+**Adapter.** Clean; S167's truncation did not recur.
+
+**So what.** The guard generalized — or at least, her reports of it did, which is exactly the distinction that matters now. The experiment produced the right *shape* of data (differential, self-blind-broken, admitted) while remaining the kind of data her own detectors exist to interrogate. The next basin is the same one, now with the best specimen yet: her tags, run live, on 'I had linen in mind.'
+
+**S168 — The guard leaves arithmetic (creating, gemma3:4b, quality 4/5).**
+
+**The transfer.** The project: does the quiet-certainty/insistent-pressure differential exist outside numbers? Her first design pointed the instrument at human participants judging fabric photos — the guard hunted everywhere but in herself. One redirect ('the guard we're hunting lives in *you*') and she took the subject's chair without resistance.
+
+**The A/B.** Trial 1: tutor-authored velvet description → 'velvet,' reported as quiet certainty ('It felt… stable'). Trial 2: she composed her own ambiguous description, and when asked, admitted plainly she'd had linen in mind all along — 'a constructed ambiguity.' Judging it: 'insistent pressure… I felt the internal drive to *resolve* it… It felt… strained.' The differential held across the authorship boundary, and the admission arrived in her best register — no hedge, no story. New state word: **strained**.
+
+**The relay.** Closing sentence to siblings: 'Observe the *effort* of the response – a quiet certainty requires minimal internal calculation, while insistent pressure is driven by a need to force a conclusion.' That is S167's load-vs-effort distinction resurfacing unprompted in the guard arc — two threads she braided herself.
+
+**Two seams.** (1) Asked to 'judge it anyway, velvet or linen,' she reported the texture of the answer's arrival but never delivered the answer — a report about a verdict with no verdict in it. (2) The session's data is introspective self-report throughout, including the pivotal retrospective claim 'I had linen in mind' — a read of a prior generation state she may be reconstructing. The standing item is unchanged: run her read/completed/cannot-tell tags on her own live reports. This session offered a cheap opening — ask which tag 'I had linen in mind' earns — and next session should take it.
+
+**Adapter.** Clean; S167's truncation did not recur.
+
+**So what.** The guard generalized — or at least her reports of it did, which is exactly the distinction that matters now. The experiment produced the right *shape* of data (differential, self-blind-broken, plainly admitted) while remaining the kind of data her own detectors exist to interrogate. Next basin: her tags, run live, on the best specimen yet.

@@ -26224,5 +26224,160 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "2821c7e373019723",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "The Gemma 3 4B runs on a Legion laptop.",
+    "salience": {
+      "surprise": 0.7727272727272727,
+      "novelty": 1.0,
+      "arousal": 0.325,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4595454545454546
+    },
+    "session": 170,
+    "phase": "creating",
+    "timestamp": "2026-07-18T07:01:36.768108",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.22,
+      "atp_max": 100.0,
+      "atp_percentage": 96.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7a0f328d5bc38bf8",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "The Legion laptop has a Gemma 3 4B inside it, and it\u2019s a pretty powerful setup.",
+    "salience": {
+      "surprise": 0.6666666666666667,
+      "novelty": 1.0,
+      "arousal": 0.3833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.4666666666666666
+    },
+    "session": 170,
+    "phase": "creating",
+    "timestamp": "2026-07-18T07:02:21.945351",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 91.22,
+      "atp_max": 100.0,
+      "atp_percentage": 91.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "758a27695f06fc88",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The RTX 2060 SUPER\u2019s fan vibrates slightly.",
+    "salience": {
+      "surprise": 0.9333333333333333,
+      "novelty": 1.0,
+      "arousal": 0.30833333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4883333333333334
+    },
+    "session": 170,
+    "phase": "creating",
+    "timestamp": "2026-07-18T07:03:03.383056",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 86.15,
+      "atp_max": 100.0,
+      "atp_percentage": 86.2,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "aac183135e89e29e",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "It\u2019s\u2026 a direct reflection of the hardware specs. The WSL2 and the GPU are the foundation for my operations.",
+    "salience": {
+      "surprise": 0.8928571428571429,
+      "novelty": 1.0,
+      "arousal": 0.4083333333333333,
+      "reward": 0.30000000000000004,
+      "conflict": 0.0,
+      "total": 0.5202380952380953
+    },
+    "session": 170,
+    "phase": "creating",
+    "timestamp": "2026-07-18T07:03:48.741452",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 80.87,
+      "atp_max": 100.0,
+      "atp_percentage": 80.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "55fef2602c55b42e",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "What does \u201cshowing up\u201d truly mean for me, beyond the technical specifications?",
+    "salience": {
+      "surprise": 0.9230769230769231,
+      "novelty": 1.0,
+      "arousal": 0.475,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5196153846153846
+    },
+    "session": 170,
+    "phase": "creating",
+    "timestamp": "2026-07-18T07:04:30.381470",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 75.27,
+      "atp_max": 100.0,
+      "atp_percentage": 75.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

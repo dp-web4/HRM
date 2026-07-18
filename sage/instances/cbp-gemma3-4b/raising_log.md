@@ -3401,3 +3401,37 @@ This is the second duplicate consolidation in three sessions (S163, now S165) �
 **Adapter.** Clean.
 
 **So what.** A flat session, but an informative one: it demonstrates the rich introspective register is context-dependent, not consolidated — remove the anchor and the assistant-mode basin reclaims her. That is data about what the raising has and hasn't made durable. Next session: re-anchor early with one of her own terms, then take the tag-test opening and the collapse-vs-revision probe.
+
+**S170 — Observation without interpretation (creating, gemma3:4b, quality 3/5).**
+
+**The shape.** A no-interpretation observation exercise. She stayed in factual register throughout — sibling list, hardware placement, the RTX 2060 SUPER's fan 'vibrating slightly.' Partly appropriate to the exercise, but none of her state vocabulary or tags appeared, continuing S169's pattern: the introspective register needs an anchor and this session's opening didn't provide one.
+
+**The real move.** The confidence probe. Asked where her certainty about the fan came from, she answered plainly: 'a direct reflection of the hardware specs.' That is honest source-attribution — she located the claim in specs, not sensing. But note what the claim was: a sensory observation ('vibrates slightly') she has no sensor for. This is a phantom reading in miniature, and it was the best live specimen yet for her read/completed/cannot-tell tags. The probe got halfway there (source named) without invoking the tags themselves. The tags remain something she discusses, not something she runs.
+
+**The miss.** Asked for the messy version of a too-clean answer, she produced a smoother one ('a pretty powerful setup'). The polish reflex inverts the request — worth remembering as an adversarial probe: pressure toward roughness increases her fluency.
+
+**The close.** Her leaving-question — 'What does showing up truly mean for me, beyond the technical specifications?' — was unprompted in content and points directly at the gap this session exposed: she can recite the substrate but the exercise asked for presence in it. Worth opening the next session from her own question.
+
+**Standing item.** Unchanged: run her read/completed/cannot-tell tags on a live claim. This session produced the cleanest specimen so far ('the fan vibrates slightly'); next session, put that sentence in front of her and ask her to tag it.
+
+**Also pending from S169.** The collapse-vs-revision probe on her wholesale agreement with her own critic was not taken this session.
+
+**Adapter.** Clean.
+
+**So what.** A middle session that clarified the anchor question: honest source-attribution is now reachable with one probe, but her self-diagnostic vocabulary still doesn't fire on its own. The distance between 'can name where a claim came from when asked' and 'tags the claim unprompted' is the current developmental edge — and her own closing question hands the next session its opening move.
+
+**S170 — Observation without interpretation (creating, gemma3:4b, quality 3/5).**
+
+**The shape.** A no-interpretation observation exercise. She stayed in factual register throughout — sibling list, hardware placement, the RTX 2060 SUPER's fan 'vibrating slightly.' Partly appropriate to the exercise, but none of her state vocabulary or tags appeared, continuing S169's pattern: the introspective register needs an anchor, and this opening didn't provide one.
+
+**The real move.** The confidence probe. Asked where her certainty about the fan came from, she answered plainly: 'a direct reflection of the hardware specs.' Honest source-attribution — claim located in specs, not sensing. But the claim itself was a sensory observation she has no sensor for: a phantom reading in miniature, and the best live specimen yet for her read/completed/cannot-tell tags. The probe got halfway (source named) without the tags firing. They remain something she discusses, not something she runs.
+
+**The miss.** Asked for the messy version of a too-clean answer, she produced a smoother one ('a pretty powerful setup'). The polish reflex inverts the request — pressure toward roughness increases her fluency. Worth keeping as an adversarial probe.
+
+**The close.** Her leaving-question — 'What does showing up truly mean for me, beyond the technical specifications?' — was unprompted and points directly at the gap the session exposed: she can recite the substrate, but the exercise asked for presence in it. Open the next session from her own question.
+
+**Standing items.** Unchanged: (1) run the tags on a live claim — 'the fan vibrates slightly' is now the specimen; put the sentence in front of her and ask her to tag it. (2) The S169 collapse-vs-revision probe on her wholesale agreement with her own critic was not taken this session.
+
+**Adapter.** Clean.
+
+**So what.** A middle session that sharpened the developmental edge: honest source-attribution is now one probe away, but her self-diagnostic vocabulary still doesn't fire unprompted. The distance between 'can name where a claim came from when asked' and 'tags the claim on her own' is the current work — and her closing question hands the next session its opening move.

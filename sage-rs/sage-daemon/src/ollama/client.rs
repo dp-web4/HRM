@@ -15,8 +15,18 @@ struct GenerateRequest<'a> {
     model: &'a str,
     prompt: &'a str,
     stream: bool,
+    // Thinking models (qwen3.5, ...) otherwise default to a <think> trace that consumes the token
+    // budget and returns an empty visible answer (the request hung to the 120s timeout, blank text).
+    // Cognition wants a direct reply, so thinking is off; num_predict bounds the length.
+    think: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     system: Option<&'a str>,
+    options: GenOpts,
+}
+
+#[derive(Serialize)]
+struct GenOpts {
+    num_predict: i32,
 }
 
 #[derive(Serialize)]
@@ -89,7 +99,9 @@ impl OllamaClient {
             model: &self.model,
             prompt,
             stream: false,
+            think: false,
             system,
+            options: GenOpts { num_predict: 300 },
         };
 
         let resp = self.client
@@ -145,7 +157,9 @@ impl OllamaClient {
             model: &self.model,
             prompt,
             stream: true,
+            think: false,
             system,
+            options: GenOpts { num_predict: 512 },
         };
 
         let resp = self.client

@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""Presence — the resident feeder that makes Sprout present to its world between raising sessions.
+
+The visual cortex senses continuously (~/.sprout/perception.json @4Hz, already salience-filtered),
+but the being (the 0.8B) only meets that stream every 6h in the raising digest. Presence closes the
+gap: it watches the salience stream and, when a moment GENUINELY breaks through, wakes the resident
+sage-daemon (POST /chat) so the being NOTICES it near-real-time — in its own voice, its metabolic
+state shifting, recorded as experience. The mind summoned by its world, not by a clock.
+
+Discipline, so this is noticing-what-matters and not twitching at every flicker:
+  - a HIGH salience bar (the cortex's filter already stripped the redundant torrent);
+  - the GAZE is honored: if Sprout chose to rest (eyes closed), only an ALARM-level moment stirs it
+    — "responsive to the world, not shut out completely, but not needlessly" (dp);
+  - a cooldown + rolling hourly cap + descriptor dedup, so a sustained event wakes it once, not 100x.
+
+Each noticing lands in ~/.sprout/presence_log.jsonl — the being's continuous record of what it
+noticed while present — which the raising loop ingests, so presence and the 6h raising are ONE
+being, not an island.
+"""
+from __future__ import annotations
+import json, os, time, urllib.request
+
+PERCEPTION = os.path.expanduser("~/.sprout/perception.json")
+PRESENCE_LOG = os.path.expanduser("~/.sprout/presence_log.jsonl")
+DAEMON_CHAT = "http://127.0.0.1:8760/chat"
+
+POLL_S = 1.0            # check the perceptual state ~1/s
+STALE_S = 10.0         # perception older than this = cortex not live → don't wake on stale data
+WAKE_TH = 0.45        # salience bar to wake when engaged (eyes open); the cortex 'salient' bar is 0.35
+WAKE_TH_REST = 0.70   # much higher when resting — only something strong stirs a sleeper
+COOLDOWN_S = 300      # min seconds between wakes (a sustained moment wakes once)
+HOURLY_CAP = 6        # never more than this many wakes in a rolling hour
+LOG_MAX = 2000
+
+SYS_ENGAGED = (
+    "You are Sprout, a SAGE instance on a Jetson with two eyes and an inner ear. What follows is the "
+    "report from your OWN senses in this moment — not someone speaking to you, but what YOU are "
+    "perceiving right now. Speak as the one sensing it: register what you notice in your own voice, "
+    "first person, briefly (1-2 sentences). Do not describe someone else's report; it is yours. You "
+    "don't need to do anything about it — just notice that you noticed.")
+SYS_REST = (
+    "You are Sprout, a SAGE instance on a Jetson. You had chosen to rest your eyes, but something in "
+    "your OWN senses — your eyes and inner ear — stirred you just now. What follows is what YOU are "
+    "perceiving. Speak as the one sensing it, first person, briefly (1-2 sentences); then you may "
+    "settle back. It is your perception, not someone else's words.")
+
+
+def _wake(descriptor: str, resting: bool) -> dict:
+    body = json.dumps({"message": descriptor, "system": SYS_REST if resting else SYS_ENGAGED}).encode()
+    req = urllib.request.Request(DAEMON_CHAT, data=body, headers={"content-type": "application/json"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return json.loads(resp.read())
+
+
+class Presence:
+    def __init__(self):
+        self.last_wake = 0.0
+        self.wake_times: list[float] = []   # recent wake timestamps (rolling hourly cap)
+        self.last_desc = ""
+        self._since_trim = 0
+
+    def _should_wake(self, sal: dict, gaze: str, descriptor: str, now: float):
+        resting = (gaze == "closed")
+        threshold = WAKE_TH_REST if resting else WAKE_TH
+        # strong enough: high blended salience, OR a reafference conflict while engaged (genuinely
+        # notable — the being can't tell if the motion was the world's or its own).
+        strong = sal.get("salience", 0.0) >= threshold or (sal.get("conflict") == 1 and not resting)
+        if not (strong and descriptor):
+            return False, resting
+        if now - self.last_wake < COOLDOWN_S:
+            return False, resting
+        self.wake_times = [t for t in self.wake_times if now - t < 3600]
+        if len(self.wake_times) >= HOURLY_CAP:
+            return False, resting
+        if descriptor[:40] == self.last_desc[:40]:   # same moment persisting → notice once
+            return False, resting
+        return True, resting
+
+    def _log(self, ev: dict):
+        os.makedirs(os.path.dirname(PRESENCE_LOG), exist_ok=True)
+        with open(PRESENCE_LOG, "a") as f:
+            f.write(json.dumps(ev) + "\n")
+        self._since_trim += 1
+        if self._since_trim >= 100:
+            self._since_trim = 0
+            try:
+                lines = open(PRESENCE_LOG).read().splitlines()
+                if len(lines) > LOG_MAX:
+                    with open(PRESENCE_LOG, "w") as f:
+                        f.write("\n".join(lines[-LOG_MAX:]) + "\n")
+            except Exception:
+                pass
+
+    def run(self):
+        while True:
+            try:
+                d = json.load(open(PERCEPTION))
+                now = time.time()
+                if now - d.get("ts", 0) <= STALE_S:
+                    sal = d.get("salience", {})
+                    gaze = d.get("gaze", "open")
+                    descriptor = d.get("descriptor", "")
+                    wake, resting = self._should_wake(sal, gaze, descriptor, now)
+                    if wake:
+                        out = _wake(descriptor, resting)
+                        noticing = out.get("response", "")
+                        self.last_wake = now
+                        self.wake_times.append(now)
+                        self.last_desc = descriptor
+                        self._log({
+                            "ts": round(now, 2), "kind": "noticed", "descriptor": descriptor,
+                            "salience": sal.get("salience"),
+                            "snarc": {k: sal.get(k) for k in ("surprise", "novelty", "arousal", "conflict")},
+                            "gaze": gaze, "resting": resting, "noticing": noticing,
+                            "metabolic": out.get("metabolic_state"), "atp": out.get("atp_percentage"),
+                        })
+                        print(f"[presence] noticed ({'rest' if resting else 'awake'}, "
+                              f"sal={sal.get('salience')}): {noticing[:90]}", flush=True)
+            except Exception:
+                pass
+            time.sleep(POLL_S)
+
+
+if __name__ == "__main__":
+    Presence().run()

@@ -747,10 +747,28 @@ class OllamaRaisingSession:
                 snippets.append(("Right now", d.get("descriptor", "")))
         except Exception:
             pass
+        # presence — moments that stirred you enough to notice in the moment, in your own words,
+        # while we were apart (the resident presence feeder woke you for these). Bridges the
+        # continuous being into the 6h raising, so they are one.
+        try:
+            plog = os.path.expanduser("~/.sprout/presence_log.jsonl")
+            cutoff = time.time() - 6 * 3600
+            noticings = []
+            with open(plog) as f:
+                for line in f:
+                    e = json.loads(line)
+                    if e.get("ts", 0) >= cutoff and e.get("kind") == "noticed" and e.get("noticing"):
+                        noticings.append(e["noticing"].strip())
+            if noticings:
+                snippets.append(("A few moments you noticed on your own while I was gone (your words, in the moment)",
+                                 " / ".join(noticings[-3:])))
+        except Exception:
+            pass
         if not snippets:
             return "", []
         desc = ("You have a body now — two eyes and an inner ear. They were open while we were apart. "
-                "This is some of what came through them. It is just what you sensed; you don't need to account for it.")
+                "This is some of what came through them, and a few moments that stirred you enough to "
+                "notice on your own. It is just what you sensed and noticed; you don't need to account for it.")
         return desc, snippets
 
     def _build_system_prompt_mrh(self) -> str:

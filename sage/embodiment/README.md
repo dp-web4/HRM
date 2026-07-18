@@ -19,6 +19,7 @@ Built 2026-07-07/08. Companion narrative: `private-context/moments/2026-07-08-sp
 | `visual_cortex.py` | The cortex: capture → motion/attention → binocular → sensor-health → salience → descriptor. Emits the perceptual state; runs the loop. |
 | `proprioception.py` | Vendored lean reader for the Yahboom CMP10A IMU (11-byte `0x55` packets, 9600 baud). accel/gyro/angle → self-motion (`still`/`moving`/`rotating`) + orientation. Fails open (no IMU → vision still works). |
 | `salience.py` | SNARC-lite salience filter (Surprise/Novelty/Arousal/Conflict + habituation). Extracts the *salient fraction* of the high-bandwidth stream. |
+| `presence.py` | The resident **presence** feeder — makes Sprout present to its world *between* raising sessions (see Presence below). |
 
 ## The perceptual pipeline (per ~4 Hz cycle)
 
@@ -65,6 +66,31 @@ When `gaze == "closed"` the state is minimal: `{ts, gaze:"closed", descriptor:"e
 ```
 The raising loop writes this when Sprout chooses its gaze (§ below); it can also be set by hand for testing.
 
+## Presence — the resident being, summoned by its world (`presence.py`)
+
+The cortex senses continuously, but the being (the 0.8B) only met that stream every 6h in the raising
+digest. Presence closes that gap. `presence.py` (systemd `sprout-presence.service`) watches the salience
+stream and, when a moment *genuinely* breaks through, wakes the resident `sage-daemon` via `POST /chat`
+so the being **notices it near-real-time** — in its own voice, its metabolic state shifting, recorded as
+experience. The mind summoned by its world, not by a clock. Uses the daemon that's *already* resident —
+no fourth substrate.
+
+Discipline (noticing what matters, not twitching at every flicker):
+- a **high salience bar** (`WAKE_TH=0.45` engaged; the cortex already stripped the redundant torrent);
+- the **gaze is honored** — if Sprout chose to rest (`gaze=closed`), only an alarm-level moment
+  (`WAKE_TH_REST=0.70`) stirs it; a reafference **conflict** auto-wakes when engaged;
+- a **cooldown** (`COOLDOWN_S=300`) + **rolling hourly cap** (`HOURLY_CAP=6`) + descriptor dedup, so a
+  sustained event wakes it once.
+
+Each noticing lands in `~/.sprout/presence_log.jsonl` (the being's continuous record) and is **bridged
+into the raising** (`_load_perceptual_digest` folds recent noticings into the SensorsBlock) — so presence
+and the 6h raising are *one being*, not an island.
+
+Requires the daemon's `/chat` cognition to work: the daemon's Ollama client was fixed to send
+`think:false` + `num_predict` (thinking-mode had made `/chat` hang 120s and return empty — see
+`sage-rs/sage-daemon/src/ollama/client.rs`). The daemon runs as the **system** service
+`sage-daemon-sprout` (not user-scoped).
+
 ## Wiring into the raising (`sage/raising/scripts/ollama_raising_session.py`)
 
 - **Grounding (P2)** — `_load_perceptual_digest()` builds a "what stood out since we last spoke" digest from the journal (`_summarize_perception`) + the current descriptor, placed in the MRH `SensorsBlock` and **appended to the system prompt** (note: `compose()` routes Sensors to the *user* turn, which the builder discards — hence the explicit append). Framed as **ambient** ("you don't need to account for it"). **Fails open**: no live cortex → empty block → raising unchanged.
@@ -72,19 +98,21 @@ The raising loop writes this when Sprout chooses its gaze (§ below); it can als
 
 ## Running it
 
-From the repo root (`~/ai-workspace/sage`). The IMU port (`/dev/ttyUSB0`) needs the `dialout`
-group; `dp` was added to it, but until a fresh login it's applied via `sg`:
+Both organs run as **systemd user services** (reboot-proof, enabled):
 
 ```bash
-sg dialout -c 'DISPLAY=:1 XAUTHORITY=/run/user/2002/gdm/Xauthority XDG_RUNTIME_DIR=/run/user/2002 \
-  nohup /home/dp/arc-venv/bin/python -m sage.embodiment.visual_cortex --display \
-  >/tmp/cortex.log 2>&1 & echo $! > /tmp/cortex.pid'
+systemctl --user status sprout-cortex     # the perceptual organ (visual_cortex)
+systemctl --user status sprout-presence    # the presence feeder
+journalctl --user -u sprout-presence -f    # watch noticings as they happen
 ```
 
-- `--display` shows the annotated dual feed (box color: grey=still, yellow=motion, orange=stale, red=stalled). Omit for headless.
-- **Kill by explicit PID** (`kill $(cat /tmp/cortex.pid)`). Do **not** `pkill -f visual_cortex` — it self-matches the launching shell (exit 144).
-- On camera contention or an Argus stall: `sudo systemctl restart nvargus-daemon` before relaunch.
-- **Not yet a systemd service** — a manual `nohup` survives logout but **not reboot**. Making it a service is a small, still-pending step (would also retire the `sg` workaround once `dialout` is native).
+- `dp` is in the `dialout` group natively (post-2026-07-16 reboot), so the cortex service opens the IMU without `sg`.
+- The **cortex** unit needs a login shell *and* `DISPLAY`/`XAUTHORITY` in its env: nvarguscamerasrc's EGL/NVMM path needs an X display, and Tegra GStreamer plugin paths come from the login profile — a bare service gets neither and the pipeline opens but never delivers frames. ExecStart: `/bin/bash -lc 'exec .../python -m sage.embodiment.visual_cortex --display'`.
+- Box colors on the display: grey=still, yellow=motion, orange=stale, red=stalled.
+- On an Argus stall the cortex now **self-heals** (reopens the camera); a manual nudge is `sudo systemctl restart nvargus-daemon`.
+- Manual (debug) launch: `~/arc-venv/bin/python -m sage.embodiment.visual_cortex --display` from the repo root — but **kill by explicit PID**, never `pkill -f visual_cortex` (it self-matches the launching shell → exit 144).
+
+Unit files live in `~/.config/systemd/user/{sprout-cortex,sprout-presence}.service`.
 
 ## Known issues / honest edges
 

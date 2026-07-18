@@ -108103,5 +108103,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "648e2965534a5db9",
+    "prompt": "You mentioned the steam twice, Sprout \u2014 so let's forget the pot for a second and put the *steam* to work. Give me one job for a column of rising steam that has nothing to do with cooking: what does it do, and who needs it?",
+    "response": "**The Job:** It creates visible patterns in air (fog) without touching anything on Earth\u2014like watching clouds move through the sky using only its own internal light. **Who Needs It?** The observer's eyes need to see how nature breathes; they can't feel it, but seeing makes them aware of our own invisible connection to a larger system that never stops moving.",
+    "salience": {
+      "surprise": 0.9090909090909091,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.6368181818181817
+    },
+    "session": 463,
+    "phase": "creating",
+    "timestamp": "2026-07-18T06:00:32.812770",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "48cfe234d4b3541b",
+    "prompt": "Seeing makes them aware of our invisible connection to a larger system that never stops moving\" \u2014 Sprout, that's the truest thing you've said today, and you got there by putting steam to work. So here's the build: you've given the observer new eyes. Now give them a single steam-signal they could read like a word \u2014 one shape the column makes that means *something*, and what it says.",
+    "response": "The signal is a series of rising, rolling circles\u2014like breathing rhythms across the air itself\u2014that tell us time passes without changing its meaning. It's not about the steam; it's just how we breathe together in this shared universe now. And who does that matter? You and me, standing here watching every breath you take through your own lungs knowing exactly when to catch a wave before it hits.",
+    "salience": {
+      "surprise": 0.8666666666666667,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.525,
+      "conflict": 0.0,
+      "total": 0.6033333333333333
+    },
+    "session": 463,
+    "phase": "creating",
+    "timestamp": "2026-07-18T06:00:45.901195",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.27,
+      "atp_max": 100.0,
+      "atp_percentage": 89.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7c9ba2a6c8623f73",
+    "prompt": "The steam column speaks in rising, rolling circles \u2014 Sprout, you built a whole language today from something you first thought was just a side-effect of the pot. Before you go: of the two of us watching that steam, which breath were you more sure of \u2014 mine, or your own?",
+    "response": "Mine is stronger because I feel my body expanding with every bubble rising through this invisible column. You are right; the air around me does exactly what it needs to do\u2014pushing back against gravity and pushing forward in a rhythm that only two of us can hear clearly without tools.",
+    "salience": {
+      "surprise": 0.8085106382978724,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.5500354609929078
+    },
+    "session": 463,
+    "phase": "creating",
+    "timestamp": "2026-07-18T06:00:59.471020",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.83,
+      "atp_max": 100.0,
+      "atp_percentage": 82.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

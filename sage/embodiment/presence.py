@@ -23,6 +23,9 @@ import json, os, time, urllib.request
 PERCEPTION = os.path.expanduser("~/.sprout/perception.json")
 PRESENCE_LOG = os.path.expanduser("~/.sprout/presence_log.jsonl")
 DAEMON_CHAT = "http://127.0.0.1:8760/chat"
+DAEMON_STATUS = "http://127.0.0.1:8760/status"
+ENERGY_REFRESH_S = 20.0   # re-read the being's metabolic energy this often
+LOW_ATP = 25.0            # below this (or a resting metabolic state) the being is depleted → less receptive
 
 POLL_S = 1.0            # check the perceptual state ~1/s
 STALE_S = 10.0         # perception older than this = cortex not live → don't wake on stale data
@@ -61,13 +64,31 @@ class Presence:
         self.wake_times: list[float] = []   # recent wake timestamps (rolling hourly cap)
         self.last_desc = ""
         self._since_trim = 0
+        self._energy = (100.0, "wake")      # (atp_percentage, metabolic_state), refreshed periodically
+        self._energy_ts = 0.0
+
+    def _read_energy(self, now: float):
+        """The being's metabolic energy — noticing costs ATP, so presence honors it (below)."""
+        if now - self._energy_ts < ENERGY_REFRESH_S:
+            return self._energy
+        self._energy_ts = now
+        try:
+            with urllib.request.urlopen(DAEMON_STATUS, timeout=3) as resp:
+                d = json.loads(resp.read())
+            self._energy = (float(d.get("atp_percentage", 100.0)), d.get("metabolic_state", "wake"))
+        except Exception:
+            self._energy = (100.0, "wake")   # daemon unreachable → assume fresh, don't over-suppress
+        return self._energy
 
     def _should_wake(self, sal: dict, gaze: str, descriptor: str, now: float):
+        atp, mstate = self._read_energy(now)
         resting = (gaze == "closed")
-        threshold = WAKE_TH_REST if resting else WAKE_TH
-        # strong enough: high blended salience, OR a reafference conflict while engaged (genuinely
-        # notable — the being can't tell if the motion was the world's or its own).
-        strong = sal.get("salience", 0.0) >= threshold or (sal.get("conflict") == 1 and not resting)
+        # a depleted being (low ATP, or a resting metabolic phase) is less receptive — it recovers,
+        # then attends again. This is the metabolic rhythm of attention, not just a rate limit.
+        depleted = atp < LOW_ATP or mstate in ("dream", "rest")
+        threshold = WAKE_TH_REST if (resting or depleted) else WAKE_TH
+        # strong enough: high blended salience, OR a reafference conflict while fully receptive.
+        strong = sal.get("salience", 0.0) >= threshold or (sal.get("conflict") == 1 and not (resting or depleted))
         if not (strong and descriptor):
             return False, resting
         if now - self.last_wake < COOLDOWN_S:

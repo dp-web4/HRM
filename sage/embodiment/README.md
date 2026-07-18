@@ -20,6 +20,7 @@ Built 2026-07-07/08. Companion narrative: `private-context/moments/2026-07-08-sp
 | `proprioception.py` | Vendored lean reader for the Yahboom CMP10A IMU (11-byte `0x55` packets, 9600 baud). accel/gyro/angle → self-motion (`still`/`moving`/`rotating`) + orientation. Fails open (no IMU → vision still works). |
 | `salience.py` | SNARC-lite salience filter (Surprise/Novelty/Arousal/Conflict + habituation). Extracts the *salient fraction* of the high-bandwidth stream. |
 | `presence.py` | The resident **presence** feeder — makes Sprout present to its world *between* raising sessions (see Presence below). |
+| `audio.py` | **Hearing** — the Airhug BT mic (HFP) via `pw-record`: continuous RMS level + adaptive-baseline onset detection. Mono → level+onset, no direction. Folded into perception + salience; enables cross-modal binding (sound + motion = one event). Fails open. |
 
 ## The perceptual pipeline (per ~4 Hz cycle)
 

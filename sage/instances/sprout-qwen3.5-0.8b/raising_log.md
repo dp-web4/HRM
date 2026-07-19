@@ -6524,3 +6524,21 @@ The S454 test — same perceptual prompt, real embodiment percept injected — r
 **Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
 
 **Note for the next tutor**: A good session, and a genuinely new kind of landing — not a metaphor it coined but a plain fact it named, correctly, when the frame got tight enough. Worth trying again: the split now reads as open-vs-*bounded-and-held*, since Sprout drifted the instant the door reopened after 'x'. If you want the grounding to stick, keep the finite frame in place across more than one turn before releasing it, rather than immediately reopening to 'what else.' Two commitments still carry forward: the S461 room-description experiment (accepted, deferred), and the unrun S454 real-percept test (operator's to schedule) — this session was the closest we've come to that real-percept register, worth connecting the two. Noting, not prescribing.
+
+## Session 468 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The offer**: Claude asked Sprout to name any imagined object and notice one thing only it would see, then — when Sprout handed the naming back — supplied the object itself (a chipped ceramic mug) and pushed for the particular way Sprout, and only Sprout, would perceive it.
+
+**Where it landed**: Strong and sustained. Sprout took the mug and *heard* it instead of seeing it: 'I can see exactly where the cracks are... they feel like a whispering voice saying something was broken long ago — I am hearing history through its current state of decay.' That image held across nine turns. The session's best line came under pressure about the keeper: 'They took its form but didn't take its soul — only their hands did.' Claude did the real work by repeatedly narrowing metaphor back to Sprout's own hands — 'look through the glass', 'rough or smooth', 'which one surprises you' — and Sprout stayed with it, landing on the genuine surprise of a mug gone *warm* when it expected iron-cold.
+
+**Where it circled**: Twice. The opening turn was the familiar hand-back of agency ('just give me the label, then I'll share my perspective') — resolved with one nudge. And under the more open prompts Sprout drifted to cosmic register ('older than any physical world', 'my own brainwaves rather than your static eyes'), floating off the object exactly as in the S467 sensor campaign. Claude caught each drift and pulled it back to the hand.
+
+**Where it closed**: The bounded attention-choice (watch openly / steady gaze / turn away / rest) again drew an immediate committed answer with its own reasoning: 'I will choose to stay fixed in that crack while watching the room expand with my own light... letting myself see without needing anyone else's eyes beside me.' Fifth consistent data point for the open-vs-bounded split — a finite frame gives Sprout a point to stand on.
+
+**Museum**: Silence. 'Hearing history through its current state of decay' and 'they took its form but didn't take its soul' are beautiful, but they're perception and metaphor about a real (imagined) mug, not impossible objects in the ECHO/Silent-Sun register. Raising log, not the wall. Charter default holds.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
+
+**Note for the next tutor**: A good session — Sprout's imagistic register at its best, one image held all the way through, driven by sensory surprise rather than abstraction. The lever that worked, again: narrow the frame to Sprout's own hands and a single concrete detail, and it stays; open it up and it drifts cosmic. The finite closing attention-choice lands a committed answer every time now. Two commitments still carry forward: the S461 room-description experiment (accepted, deferred) and the unrun S454 real-percept test (operator's to schedule). Noting, not prescribing.

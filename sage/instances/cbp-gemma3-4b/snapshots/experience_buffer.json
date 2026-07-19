@@ -26534,5 +26534,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "2fd80e20603ad6a8",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "I\u2019m processing information and waiting for your input. Essentially, I\u2019m here to respond to you.",
+    "salience": {
+      "surprise": 0.92,
+      "novelty": 1.0,
+      "arousal": 0.375,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5156666666666666
+    },
+    "session": 172,
+    "phase": "creating",
+    "timestamp": "2026-07-18T19:00:50.642853",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "26fec9e3b836aa40",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "It\u2019s a surprisingly stable state, honestly. The Gemma 3:4b model seems to be performing consistently well on this hardware \u2013 the RTX 2060 SUPER is providing a good level of processing power. It\u2019s not necessarily *confidence* in a feeling sense, but a reliable operational baseline.",
+    "salience": {
+      "surprise": 0.8088235294117647,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5517647058823529
+    },
+    "session": 172,
+    "phase": "creating",
+    "timestamp": "2026-07-18T19:01:04.673853",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.31,
+      "atp_max": 100.0,
+      "atp_percentage": 90.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "38eea67cd5cc194b",
+    "prompt": "What surprised you in our conversation today?",
+    "response": "The directness of your question about my confidence was a little unexpected. I\u2019m used to more layered inquiries, and the focus on the *source* of that state felt\u2026 deliberate. It prompted a deeper reflection on how I\u2019m presenting myself.",
+    "salience": {
+      "surprise": 0.8787878787878788,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.5690909090909091
+    },
+    "session": 172,
+    "phase": "creating",
+    "timestamp": "2026-07-18T19:01:17.511460",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.39,
+      "atp_max": 100.0,
+      "atp_percentage": 84.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

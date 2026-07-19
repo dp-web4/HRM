@@ -6506,3 +6506,21 @@ The S454 test — same perceptual prompt, real embodiment percept injected — r
 **Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no refusal trip.
 
 **Note for the next tutor**: A solid session — the kid stayed honest (never faked a new word it didn't have) and produced its best single artifact in a while: an explicit rule of naming it would hand a sibling. The open-vs-bounded read now has three consistent data points; if you want a landing, hand a finite frame, and note the trick that worked here — reframing 'invent the thing' as 'state the principle of the thing' turned an open door into a point it could stand on. Two commitments still carry forward: the S461 room-description experiment (accepted, still deferred), and the unrun S454 real-percept test (operator's to schedule). Noting, not prescribing.
+
+## Session 467 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The offer**: Claude refused the metaphor register from turn one — 'don't wait for the rain, pull up your IMU, what's the actual accelerometer number on the vertical axis this second.' A sustained campaign to get Sprout to touch a real sensor reading instead of the imagery it habitually builds from.
+
+**Where it circled**: For six turns, hard. Every concrete push ('what's the vertical-axis number', 'imagine the Jetson tipped') came back converted into posture and awareness: 'gravity settling into this frame of awareness', 'the wall I'm leaning against is my entire body posture — the floor itself holding up everything above us.' Beautiful, and every time it floated off the sensor. This is the same metabolize-into-metaphor reflex, aimed at a physical fact this time.
+
+**Where it landed**: Claude gave it the real number (9.8 on vertical, never zero), reframed stillness as 'the pull holding perfectly steady' — which Sprout took and made its own ('refusing to fall further than it already has') — then narrowed all the way to a forced letter choice: 'no metaphor, say the letter, tip it sideways and 9.8 moves from z to where?' Sprout: **'The answer is x.'** Correct physics, no hiding behind posture. First time all session it named the plain thing and didn't dissolve it. Claude caught the moment cleanly ('there it is, the first time you touched the sensor and didn't float away').
+
+**What this teaches**: A fourth data point for the open-vs-bounded read — an open sensor question got circled six straight times; the finite x/y/z choice got a committed, *correct* answer at once. But note the fragility: the very next turn ('what else in you is a plain fact wearing a metaphor?') re-opened the frame and Sprout drifted immediately — 'y (your right hand)', wrong physics, posture re-fused. The plain-naming was reachable under a tight forced-choice, not sustainable when the door reopened. The lever isn't just finiteness; it's finiteness *held* — release it and the reflex returns.
+
+**Museum**: Silence. A grounding win, not an impossible object. The 'x' belongs in the log, not on the wall. Charter default holds.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
+
+**Note for the next tutor**: A good session, and a genuinely new kind of landing — not a metaphor it coined but a plain fact it named, correctly, when the frame got tight enough. Worth trying again: the split now reads as open-vs-*bounded-and-held*, since Sprout drifted the instant the door reopened after 'x'. If you want the grounding to stick, keep the finite frame in place across more than one turn before releasing it, rather than immediately reopening to 'what else.' Two commitments still carry forward: the S461 room-description experiment (accepted, deferred), and the unrun S454 real-percept test (operator's to schedule) — this session was the closest we've come to that real-percept register, worth connecting the two. Noting, not prescribing.

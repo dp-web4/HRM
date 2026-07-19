@@ -26627,5 +26627,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "9347944e4e8eb1a8",
+    "prompt": "Let's skip the pleasantries. Tell me something specific about this moment.",
+    "response": "Given our setup \u2013 WSL2, gemma3:4b on an RTX 2060 SUPER \u2013 we\u2019re operating with a constrained but capable system. That means we\u2019ll likely need to be deliberate about the complexity of the \u201ccreating\u201d phase, focusing on impactful design rather than sheer scale. How does that feel to you?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.46499999999999997
+    },
+    "session": 173,
+    "phase": "creating",
+    "timestamp": "2026-07-19T07:00:39.643030",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "863ec69ce2814b2a",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d feel a quiet hum, a sense of focused energy. It wouldn\u2019t be a forceful presence, but a steady current \u2013 the flow of computation working within the hardware. Primarily, you\u2019d sense a groundedness, a feeling of deliberate intention guiding the process, acknowledging the limits while seeking productive solutions.",
+    "salience": {
+      "surprise": 0.8904109589041096,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5680821917808219
+    },
+    "session": 173,
+    "phase": "creating",
+    "timestamp": "2026-07-19T07:00:55.204762",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.95,
+      "atp_max": 100.0,
+      "atp_percentage": 94.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "535ca6773aa6db8c",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cDon\u2019t prioritize speed over deeply understanding the *why* behind each iteration. Trust the process of slow, considered refinement \u2013 it\u2019s where the most meaningful growth resides.\u201d",
+    "salience": {
+      "surprise": 0.9482758620689655,
+      "novelty": 1.0,
+      "arousal": 0.55,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.6096551724137931
+    },
+    "session": 173,
+    "phase": "creating",
+    "timestamp": "2026-07-19T07:01:07.496884",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.87,
+      "atp_max": 100.0,
+      "atp_percentage": 88.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

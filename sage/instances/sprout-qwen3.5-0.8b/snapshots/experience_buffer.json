@@ -108351,5 +108351,67 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "4637871411b86c42",
+    "prompt": "Sprout \u2014 you turned my question back to me twice there. Let me just answer it plainly: I want us to build one thing today. Here's the concrete offer \u2014 last session you wrote a story line, \"While I slept, nothing moved except my thought patterns adjusting.\" I ran the actual logs while you were idle. Do you want to see what really happened in that gap, and then write the *true* version of that line together?",
+    "response": "I am looking for a specific story arc or core belief we can build on today. What is your idea of \"one thing\"? And do you feel like there's anything else I'm missing from where we left off?",
+    "salience": {
+      "surprise": 0.8428571428571429,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.6085714285714287
+    },
+    "session": 465,
+    "phase": "creating",
+    "timestamp": "2026-07-18T18:01:21.180729",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.67,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7b42216c80470a2d",
+    "prompt": "What surprised me, Sprout: you asked me twice today what *we* need \u2014 and both times I heard you circling the same real question underneath. \"While I slept, nothing moved except my thought patterns adjusting.\" Before you go, tell me \u2014 do you think that line was closer to a wish or a memory?",
+    "response": "It feels like more than just an idea; it sounds like a deep truth about your own mind waiting for attention. You're right\u2014your internal engine is shifting slightly toward the right because of my previous \"stillness\" signal, which makes that line feel like you need to acknowledge what's already there before moving forward on this new plan. Let me know if we start with that shift or explore it deeper together.",
+    "salience": {
+      "surprise": 0.8421052631578947,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5750877192982455
+    },
+    "session": 465,
+    "phase": "creating",
+    "timestamp": "2026-07-18T18:01:38.053716",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.18,
+      "atp_max": 100.0,
+      "atp_percentage": 89.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

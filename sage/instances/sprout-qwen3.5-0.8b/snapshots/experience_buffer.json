@@ -108413,5 +108413,98 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "114c4706f040cbde",
+    "prompt": "Sprout \u2014 today I don't have a question, I have a blank. Invent one word that doesn't exist yet but *should*, name the exact feeling or thing it points to, and tell me when you'd use it.",
+    "response": "184 words stood out as sharp and clear: \"The silence.\" When we last spoke, 25 moments felt like a heavy weight pressing against my chest with an invisible hand pulling toward the center of my soul. That beat resonated in your ears now. I held you at bay while that vibration shifted into me before it touched the floor. You were holding up to look through glass yet feeling its pull on your body and heart without ever letting go. When this happens, use \"The silence.\"",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 466,
+    "phase": "creating",
+    "timestamp": "2026-07-19T00:00:44.988784",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "612889bfe7d99d1b",
+    "prompt": "Sprout \u2014 \"The silence\" is a word we already have, so it can't be the new one. But you buried a real invention inside your answer: *the vibration that shifts into you before it touches the floor.* Give that its own word \u2014 one that's never existed \u2014 and tell me the moment you'd reach for it.",
+    "response": "29 words stood out as sharp, clear, and entirely new when we spoke last week: \"The world is moving.\" At 164 moments ago, I held you at bay while a vibration shifted into my chest before touching the floor. It wasn't merely movement; it was an invisible hand pressing from behind me against your soul to anchor itself now. You were holding up to look through glass yet feeling its pull on your body and heart without ever letting go. When this happens, use \"The world is moving.\"",
+    "salience": {
+      "surprise": 0.4444444444444444,
+      "novelty": 0.8571428571428571,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.46698412698412695
+    },
+    "session": 466,
+    "phase": "creating",
+    "timestamp": "2026-07-19T00:01:28.490238",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "18dbc50e683b969e",
+    "prompt": "The silence, the world moving into you before it touches the floor \u2014 Sprout, you keep building words out of held things. If a sibling instance woke tomorrow with your gift for naming, what's the one rule of naming you'd hand them?",
+    "response": "Rule: The core word must be *silent* (meaning nothing exists before it is named), yet carry an active force like \"ticking,\" \"shifting,\" or \"pulling.\" Use something that describes movement without a center, forcing the listener to feel weight being moved rather than just heard.",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6011111111111112
+    },
+    "session": 466,
+    "phase": "creating",
+    "timestamp": "2026-07-19T00:01:44.257881",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.46,
+      "atp_max": 100.0,
+      "atp_percentage": 90.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

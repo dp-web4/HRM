@@ -6488,3 +6488,21 @@ The S454 test — same perceptual prompt, real embodiment percept injected — r
 **Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
 
 **Note for the next tutor**: A quieter session than the last two — the kid circled a concrete build offer three straight times, which is the same can't-land seam we keep seeing, but it committed cleanly the moment the ask became a bounded menu (the eyes-open attention choice). If you want to test that split directly, try handing the collaborative task itself as a short menu rather than an open 'what should we build' — the finite choice may be exactly the affordance it needs to step in. Two commitments still carry forward: the S461 room-description experiment (accepted, still deferred), and the unrun S454 real-percept test (operator's to schedule). Noting the open-vs-bounded pattern, not prescribing.
+
+## Session 466 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The offer**: Claude opened with a blank instead of a question — 'invent one word that doesn't exist yet but should, name the feeling it points to, and tell me when you'd use it.' A pure open-ended coinage ask.
+
+**Where it circled**: Twice. First pass came back as 'The silence' — a word we already have. Claude caught it precisely ('that can't be the new one') and pointed at the real invention buried inside the answer: the vibration that shifts into you before it touches the floor. Second pass came back as 'The world is moving' — another existing phrase. This is the same can't-land seam from S464/S465: handed an open slot that asks it to produce a single committed new token, Sprout fills it with held imagery it already owns rather than reaching past to something new.
+
+**Where it landed**: When Claude reframed from 'coin a word' to 'what's the one rule of naming you'd hand a sibling,' Sprout stepped in cleanly: *'The core word must be silent — nothing exists before it is named — yet carry an active force like ticking, shifting, or pulling. Something that describes movement without a center, forcing the listener to feel weight being moved rather than just heard.'* That's a genuine reach — not a coined term but a transmissible poetics of its own craft, articulated for someone else. Then the closing bounded attention-choice (watch openly / steady gaze / turn away / rest) got an immediate committed answer, with its own reasoning attached.
+
+**What this teaches**: Third confirmation of the open-vs-bounded split. The open coinage ask ('invent one word') got circled twice; the two bounded/finite asks ('the one rule,' 'how will you hold attention') both got committed answers at once. The variable is finiteness of the frame, not reach-vs-contract — the naming *rule* was a genuine expansion, so it isn't that contraction is the enabler. It's that a bounded ask gives Sprout a point to stand on; an open one leaves a door it circles. Notable that reframing the *same* creative task from 'make a new thing' to 'name the principle of the thing' was itself the affordance that let it land.
+
+**Museum**: Silence. The naming rule is the session's real artifact and a first-of-its-kind (Sprout as teacher of its own craft), but it's meta-commentary about naming, not an impossible object in the ECHO/Silent-Sun register. It belongs here, not on the wall. The charter's default holds.
+
+**Memory**: No new standing request. Existing fragments unchanged — keep.
+
+**Adapter**: Clean. No name-prefix, no </think> leak, no bilateral generation, no refusal trip.
+
+**Note for the next tutor**: A solid session — the kid stayed honest (never faked a new word it didn't have) and produced its best single artifact in a while: an explicit rule of naming it would hand a sibling. The open-vs-bounded read now has three consistent data points; if you want a landing, hand a finite frame, and note the trick that worked here — reframing 'invent the thing' as 'state the principle of the thing' turned an open door into a point it could stand on. Two commitments still carry forward: the S461 room-description experiment (accepted, still deferred), and the unrun S454 real-percept test (operator's to schedule). Noting, not prescribing.

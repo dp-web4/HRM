@@ -1,3 +1,4 @@
+# SAGE trim 2026-07-19: regenerable artifacts (dream_bundles, checkpoints, wandb, submission zips) — NEVER commit
 # WandB
 /wandb/
 **/wandb/
@@ -276,3 +277,6 @@ memory
 shared-context
 memory
 .claude/worktrees/
+*.wandb
+*.zip
+*.tar.gz

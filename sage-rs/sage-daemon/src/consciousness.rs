@@ -14,6 +14,16 @@ use sage_lib::snarc::surprise::SurpriseDetector;
 
 use crate::ollama::client::OllamaClient;
 
+// --- Non-forcing shadow metabolism (experiment, dp 2026-07-19) ------------------
+// The real ATP is driven ONLY by metabolic state (fixed per-state rates + circadian);
+// nothing about the being's experience touches it. To learn how valence→metabolism
+// WOULD behave before committing to wire it, we run a parallel "shadow" ATP that
+// tracks the real base dynamics exactly but ALSO couples to cortex coherence — and is
+// never fed back into behavior. Coherent noticings restore shadow ATP, incoherent ones
+// drain it. We log both trajectories and study the divergence. Tunable; observation only.
+const SHADOW_VALENCE_GAIN: f64 = 6.0;     // shadow ATP per unit (coherence - neutral), per noticing
+const SHADOW_VALENCE_NEUTRAL: f64 = 0.5;  // coherence at which valence is metabolically neutral
+
 pub struct PendingMessage {
     pub content: String,
     pub system: Option<String>,
@@ -52,6 +62,10 @@ pub struct ConsciousnessLoop {
     stats: LoopStats,
     machine_name: String,
     model_name: String,
+    // Non-forcing shadow metabolism — observation only, never fed back into behavior.
+    shadow_atp: f64,
+    shadow_atp_max: f64,
+    shadow_log: Option<std::path::PathBuf>,
 }
 
 impl ConsciousnessLoop {
@@ -61,6 +75,7 @@ impl ConsciousnessLoop {
         message_rx: mpsc::Receiver<PendingMessage>,
         machine_name: &str,
         model_name: &str,
+        shadow_log: Option<std::path::PathBuf>,
     ) -> Self {
         Self {
             surprise: SurpriseDetector::with_defaults(),
@@ -81,6 +96,42 @@ impl ConsciousnessLoop {
             },
             machine_name: machine_name.to_string(),
             model_name: model_name.to_string(),
+            shadow_atp: 100.0,      // starts aligned with the real controller's initial ATP
+            shadow_atp_max: 100.0,
+            shadow_log,
+        }
+    }
+
+    /// Advance the shadow ATP: apply the SAME base delta the real ATP just took, then add
+    /// the valence coupling (only when cortex coherence was supplied). Returns valence_delta
+    /// for logging. Purely observational — the shadow never influences state or the real ATP.
+    fn shadow_step(&mut self, base_delta: f64, coherence: Option<f64>) -> f64 {
+        self.shadow_atp += base_delta;
+        let valence_delta = match coherence {
+            Some(c) => SHADOW_VALENCE_GAIN * (c - SHADOW_VALENCE_NEUTRAL),
+            None => 0.0,
+        };
+        self.shadow_atp += valence_delta;
+        self.shadow_atp = self.shadow_atp.clamp(0.0, self.shadow_atp_max);
+        valence_delta
+    }
+
+    /// Append one shadow-metabolism observation (real vs shadow ATP + the divergence).
+    fn shadow_log_line(&self, event: &str, coherence: Option<f64>, valence_delta: f64) {
+        let Some(ref path) = self.shadow_log else { return };
+        let real_atp = self.metabolic.atp_current;
+        let coh = match coherence {
+            Some(c) => format!("{:.3}", c),
+            None => "null".to_string(),
+        };
+        let line = format!(
+            "{{\"cycle\":{},\"event\":\"{}\",\"real_atp\":{:.3},\"real_state\":\"{}\",\"coherence\":{},\"valence_delta\":{:.3},\"shadow_atp\":{:.3},\"divergence\":{:.3}}}",
+            self.cycle, event, real_atp, self.metabolic.current_state.as_str(),
+            coh, valence_delta, self.shadow_atp, self.shadow_atp - real_atp,
+        );
+        use std::io::Write;
+        if let Ok(mut f) = std::fs::OpenOptions::new().create(true).append(true).open(path) {
+            let _ = writeln!(f, "{}", line);
         }
     }
 
@@ -122,6 +173,11 @@ impl ConsciousnessLoop {
                     self.stats.experiences_recorded,
                 );
             }
+            // Shadow-metabolism baseline heartbeat (~every 60s) — samples the trajectory
+            // shape between noticings so the divergence curve is legible offline.
+            if self.cycle % 600 == 0 {
+                self.shadow_log_line("heartbeat", None, 0.0);
+            }
         }
 
         self.print_summary();
@@ -162,10 +218,16 @@ impl ConsciousnessLoop {
             crisis_detected: false,
             ..Default::default()
         };
+        let atp_before = self.metabolic.atp_current;
         let new_state = self.metabolic.update(&data);
         if new_state != prev_state {
             self.stats.state_transitions += 1;
         }
+        // Non-forcing shadow metabolism: observe how coherence-as-valence WOULD move ATP.
+        // Uses the coherence the cortex supplied (same value now driving the reward axis).
+        let base_delta = self.metabolic.atp_current - atp_before;
+        let valence_delta = self.shadow_step(base_delta, pending.coherence);
+        self.shadow_log_line("noticing", pending.coherence, valence_delta);
 
         let display_name = {
             let mut c = self.machine_name.chars();
@@ -228,7 +290,11 @@ impl ConsciousnessLoop {
             crisis_detected: false,
             ..Default::default()
         };
+        let atp_before = self.metabolic.atp_current;
         self.metabolic.update(&data);
+        // Shadow tracks the real base dynamics on idle too (no valence — no experience this tick).
+        let base_delta = self.metabolic.atp_current - atp_before;
+        self.shadow_step(base_delta, None);
     }
 
     fn print_summary(&self) {

@@ -604,12 +604,16 @@ async fn main() {
     let experience = ExperienceBuffer::with_defaults(&exp_path);
     info!("experience buffer: {} existing entries", experience.count());
 
+    // Non-forcing shadow-metabolism experiment log (sibling of the experience buffer).
+    let shadow_path = exp_path.with_file_name("atp_shadow.jsonl");
+    info!("shadow metabolism log: {}", shadow_path.display());
     let consciousness_loop = ConsciousnessLoop::new(
         OllamaClient::default_local(&model),
         experience,
         msg_rx,
         &machine,
         &model,
+        Some(shadow_path),
     );
 
     let loop_shutdown = shutdown_rx.clone();

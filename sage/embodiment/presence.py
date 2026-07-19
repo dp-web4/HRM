@@ -48,10 +48,13 @@ SYS_REST = (
     "settle back. It is your perception, not someone else's words.")
 
 
-def _wake(descriptor: str, resting: bool, salience: float | None = None) -> dict:
+def _wake(descriptor: str, resting: bool, salience: float | None = None,
+          coherence: float | None = None) -> dict:
     payload = {"message": descriptor, "system": SYS_REST if resting else SYS_ENGAGED}
     if salience is not None:
         payload["salience"] = salience   # the cortex's real salience drives the being's felt intensity
+    if coherence is not None:
+        payload["coherence"] = coherence  # cross-modal coherence → the being's reward (valence) axis
     body = json.dumps(payload).encode()
     req = urllib.request.Request(DAEMON_CHAT, data=body, headers={"content-type": "application/json"})
     with urllib.request.urlopen(req, timeout=60) as resp:
@@ -126,7 +129,7 @@ class Presence:
                     descriptor = d.get("descriptor", "")
                     wake, resting = self._should_wake(sal, gaze, descriptor, now)
                     if wake:
-                        out = _wake(descriptor, resting, sal.get("salience"))
+                        out = _wake(descriptor, resting, sal.get("salience"), d.get("coherence"))
                         noticing = out.get("response", "")
                         self.last_wake = now
                         self.wake_times.append(now)

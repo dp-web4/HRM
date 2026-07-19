@@ -120,6 +120,10 @@ struct ChatRequest {
     // metabolic response + experience gate instead of the word-count proxy derived from the text.
     #[serde(default)]
     salience: Option<f64>,
+    // Cortex-supplied cross-modal coherence [0,1]. When present it becomes the being's reward
+    // (valence) axis instead of the word-count proxy — coherence-as-reward (H1).
+    #[serde(default)]
+    coherence: Option<f64>,
 }
 
 #[derive(Serialize)]
@@ -355,7 +359,7 @@ async fn chat(
             }))),
         }
     } else {
-        match state.consciousness.send_message(req.message, req.system, req.salience, "http").await {
+        match state.consciousness.send_message(req.message, req.system, req.salience, req.coherence, "http").await {
             Ok(resp) => (StatusCode::OK, Json(serde_json::json!({
                 "response": resp.text,
                 "model": state.model,

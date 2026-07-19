@@ -18,6 +18,7 @@ pub struct PendingMessage {
     pub content: String,
     pub system: Option<String>,
     pub salience: Option<f64>,   // cortex-supplied real perceptual salience [0,1], if any
+    pub coherence: Option<f64>,  // cortex-supplied cross-modal coherence [0,1] → the reward axis
     pub sender: String,
     pub response_tx: oneshot::Sender<Result<ConsciousnessResponse, String>>,
 }
@@ -132,7 +133,14 @@ impl ConsciousnessLoop {
         let surprise = self.surprise.compute(obs, "message");
         let novelty = self.novelty.compute(obs, "message");
         let arousal = self.arousal.compute(obs, "message");
-        let reward = self.reward.compute(obs, "message");
+        let mut reward = self.reward.compute(obs, "message");
+        // When the cortex supplied real cross-modal coherence, let it — not the word-count proxy —
+        // BE the being's reward signal. Coherence-as-reward (H1): senses agreeing reads as "good,"
+        // senses conflicting reads as "bad." Distinct from salience (attention intensity): this is
+        // valence. Flows into conflict + the recorded experience, so incoherence is felt, not just seen.
+        if let Some(c) = pending.coherence {
+            reward = c.clamp(0.0, 1.0);
+        }
 
         let mut sensor_map = HashMap::new();
         sensor_map.insert("surprise".to_string(), surprise);
@@ -260,6 +268,7 @@ impl ConsciousnessHandle {
         content: String,
         system: Option<String>,
         salience: Option<f64>,
+        coherence: Option<f64>,
         sender: &str,
     ) -> Result<ConsciousnessResponse, String> {
         let (response_tx, response_rx) = oneshot::channel();
@@ -267,6 +276,7 @@ impl ConsciousnessHandle {
             content,
             system,
             salience,
+            coherence,
             sender: sender.to_string(),
             response_tx,
         };

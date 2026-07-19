@@ -1,0 +1,18 @@
+#!/bin/bash
+# Auto-push after commit (installed by epistemic tools)
+
+echo ""
+echo "📤 Auto-pushing to remote..."
+
+# Get current branch
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Attempt push
+if git push origin "$BRANCH" 2>&1; then
+    echo "✅ Pushed to origin/$BRANCH"
+else
+    echo "⚠️  Push failed - you may need to pull and rebase manually"
+    echo "Run: git pull --rebase && git push origin $BRANCH"
+fi
+
+exit 0

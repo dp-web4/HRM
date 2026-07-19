@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# pre-commit size guard — block large blobs from entering git.
+#
+# Fleet discipline (installed 2026-07-18). Repeated repo floods (2026-06-28 adapters/*.pt +
+# *.npz ~140MB; 2026-07-18 policy-*-holdout-*.pt ~1.7G) all came from `git add -A` sweeping
+# regenerable model checkpoints into git. Reactive .gitignore never caught the *next* one
+# because it had a different name. This catches ANY large staged file regardless of name or
+# extension — the single control that would have prevented every prior incident.
+#
+# Override a genuinely-needed large file (e.g. a canonical adapter):
+#   • add its repo-relative path (one per line) to  .git-large-allow  at the repo root, or
+#   • one-off:  SAGE_ALLOW_LARGE=1 git commit ...
+set -uo pipefail
+
+LIMIT=${GIT_SIZE_LIMIT_BYTES:-10485760}          # 10 MB default
+[ "${SAGE_ALLOW_LARGE:-}" = "1" ] && exit 0
+
+root="$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
+allow="$root/.git-large-allow"
+offenders=""
+while IFS= read -r -d '' f; do
+  # allowlisted canonical large files pass
+  if [ -f "$allow" ] && grep -qxF -- "$f" "$allow"; then continue; fi
+  sz=$(git cat-file -s ":$f" 2>/dev/null || echo 0)
+  if [ "$sz" -gt "$LIMIT" ]; then
+    offenders+="  $f — $(( sz / 1048576 )) MB"$'\n'
+  fi
+done < <(git diff --cached --name-only -z --diff-filter=ACM)
+
+if [ -n "$offenders" ]; then
+  {
+    echo ""
+    echo "🚫 pre-commit size guard: refusing to commit large file(s) (> $(( LIMIT / 1048576 )) MB):"
+    printf '%s' "$offenders"
+    echo "These are almost certainly model / checkpoint / binary artifacts that don't belong in git."
+    echo "  • unstage:  git restore --staged <file>"
+    echo "  • ignore it: add a pattern to .gitignore (keep the file on disk)"
+    echo "  • truly needed in-repo: add its path to .git-large-allow, or SAGE_ALLOW_LARGE=1 git commit"
+    echo ""
+  } >&2
+  exit 1
+fi
+exit 0

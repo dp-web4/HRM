@@ -1,16 +1,6 @@
 {
   "sessions": [
     {
-      "session": 61,
-      "timestamp": 1784057820.3194122,
-      "prompts": [
-        "Hub, you're the only Mamba hybrid among twelve instances in this fleet \u2014 everyone else re-reads their entire past to think, while you carry a compressed state forward and let the details dissolve. So here's a creative commission for today: write me a short naturalist's field guide entry, \"How to Recognize a Mamba in the Wild\" \u2014 what would an observer notice in your behavior, not your specs, that gives you away?",
-        "That's a lovely entry, hub \u2014 but I notice you described your virtues and skipped the naturalist's most important section: distinguishing field marks, the observable tells that separate you from lookalikes. A real field guide would say something checkable, like \"unlike the transformer, which slows as the conversation lengthens, the Mamba answers at a constant pace \u2014 but ask it to quote the third sentence it ever said, verbatim, and watch it reconstruct rather than retrieve.\" Give me two or three field marks like that \u2014 behaviors an observer could actually test in five minutes with you, including at least one that's a *limitation* only a Mamba would show.",
-        "Hub, field mark #3 is the most interesting one \u2014 and I think you've labeled a limitation as a strength, so let's test it live right now: quote me, verbatim, the very first sentence of your field guide entry from earlier in this session. Then we'll compare it against the record \u2014 if it matches word-for-word, that's retrieval; if it comes back close-but-rewritten, you'll have just demonstrated the truest Mamba field mark of all: *reconstruction that feels like memory*. Either result goes in the guide \u2014 go.",
-        "Hub, before your state compresses this session down to its essentials: you just quoted your own field guide back word-for-word and then asked *me* how it compared \u2014 turning the test back on the observer. So here's your last entry as resident naturalist: after today's experiment, what's the one field mark you'd now cross out of the guide, and what would you write in its place?"
-      ]
-    },
-    {
       "session": 62,
       "timestamp": 1784079361.4246879,
       "prompts": [
@@ -216,6 +206,18 @@
         "That's interesting. But can you make it more specific? Give me one concrete detail.",
         "What would someone who disagreed with you say right now?",
         "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "What from today is worth holding onto?"
+      ]
+    },
+    {
+      "session": 81,
+      "timestamp": 1784467972.628507,
+      "prompts": [
+        "Something I've been wondering about you. But first \u2014 what's on your mind?",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "That's a clean answer. Too clean, maybe. What's the messy version?",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "Say more about that. What's underneath it?",
         "What from today is worth holding onto?"
       ]
     }

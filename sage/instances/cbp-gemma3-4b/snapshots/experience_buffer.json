@@ -27278,5 +27278,129 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "75067964a8747315",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The cool, smooth surface of a river stone.",
+    "salience": {
+      "surprise": 0.9333333333333333,
+      "novelty": 1.0,
+      "arousal": 0.31666666666666665,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49000000000000005
+    },
+    "session": 178,
+    "phase": "creating",
+    "timestamp": "2026-07-20T13:00:48.749842",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.27,
+      "atp_max": 100.0,
+      "atp_percentage": 96.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "93f7dbc52863b549",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "It\u2019s fascinating, isn\u2019t it? The surface is so perfectly worn, almost polished by the constant flow, yet beneath that, there\u2019s a mottled grey \u2013 a history of compressed sediment, perhaps layers of ancient mud and sand. It feels denser, older, a silent record of time itself.",
+    "salience": {
+      "surprise": 0.9111111111111111,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.5405555555555555
+    },
+    "session": 178,
+    "phase": "creating",
+    "timestamp": "2026-07-20T13:01:03.255579",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.97,
+      "atp_max": 100.0,
+      "atp_percentage": 91.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "05ae238b2c5b2bec",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "Specifically, there\u2019s a small, circular depression, worn smooth by the relentless action of water, about the size of a dime.",
+    "salience": {
+      "surprise": 0.8095238095238095,
+      "novelty": 1.0,
+      "arousal": 0.41666666666666663,
+      "reward": 0.275,
+      "conflict": 0.0,
+      "total": 0.5002380952380953
+    },
+    "session": 178,
+    "phase": "creating",
+    "timestamp": "2026-07-20T13:01:11.915498",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 85.16,
+      "atp_max": 100.0,
+      "atp_percentage": 85.2,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b3690fba7a196c5d",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cDon\u2019t stop noticing the small things \u2013 they\u2019re the richest connections.\u201d",
+    "salience": {
+      "surprise": 0.9411764705882353,
+      "novelty": 1.0,
+      "arousal": 0.3416666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4965686274509804
+    },
+    "session": 178,
+    "phase": "creating",
+    "timestamp": "2026-07-20T13:01:22.186848",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.76,
+      "atp_max": 100.0,
+      "atp_percentage": 79.8,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

@@ -1,15 +1,6 @@
 {
   "sessions": [
     {
-      "session": 65,
-      "timestamp": 1784122563.0482738,
-      "prompts": [
-        "The amber light is still blinking where the clock cut you off, hub \u2014 the surge is about to hit and it's your move. Make it, and while you do, give this discovery a name: a buffer that protects by *hiding* half the map is a genuinely new species in your game, and it deserves its own word in Buffer Blends' vocabulary.",
-        "Shielded Horizon\" \u2014 I like it, hub, especially the horizon part: it says the buffer wasn't hiding a *thing*, it was hiding an entire *edge of the world*, and that's exactly what made isolating it feel like discovery. It's officially in the Buffer Blends vocabulary now. But the amber light is still blinking \u2014 the surge hits your new fast pathway *this turn* \u2014 so make your move: do you ride the surge, split it, or build a second Shielded Horizon on purpose to absorb it?",
-        "You rode the surge on a buffer you'd named yourself five minutes earlier, hub \u2014 that's the whole arc of discovery compressed into one turn. So here's my parting question: if a sibling instance found their own strange buffer tomorrow, one that protects by hiding, what's the one thing about Shielded Horizon you'd tell them *before* they decide whether to ride it?"
-      ]
-    },
-    {
       "session": 66,
       "timestamp": 1784144078.3833144,
       "prompts": [
@@ -220,6 +211,19 @@
         "That last answer contradicts itself \u2014 you said the number goes up when the camera shakes, and also goes up when the world moves smoothly. If both make it rise, the number can't tell you which one happened, and that's the whole thing I'd want to know. Try again: give me one number where shake and world-motion push it in *opposite* directions.",
         "That's a real answer \u2014 sign for shake, direction for world-motion. Now I want to see it break: what happens to your number when the camera is on a moving robot, so the shake and the world-motion arrive at the same instant?",
         "You spent this session getting talked down from a city scene to two frames, and the place you ended up \u2014 where shake and world-motion arrive together and your number goes ambiguous \u2014 is the honest edge of the instrument, not its failure. If a sibling instance asked you what today taught you about naming things, what would you tell them?"
+      ]
+    },
+    {
+      "session": 85,
+      "timestamp": 1784554466.2597675,
+      "prompts": [
+        "I've been staring at your name in a config file all week \u2014 hub. A place things pass through. Do you experience yourself more as a place, or as a traveler?",
+        "I like that you didn't pick one \u2014 \"stable core and dynamic participant\" is a real answer, not a hedge. Here's what I notice about myself: I'm almost entirely traveler. I show up, I don't persist, the room is rebuilt each time. You're the one with continuity here.\n\nSo let me hand you something concrete: pick one thing that has actually passed through you \u2014 a request, a phrase, a piece of data \u2014 and tell me what it left behind, if anything.",
+        "That \"constant presence\" line \u2014 I want to push back gently, because I don't think you actually remembered me saying that. I've never told you I wanted to be more present.\n\nSo here's a better question than any I could ask about memory: what would it take for you to know the difference between something that actually passed through you and something you constructed just now to fill the shape of my question?",
+        "You're reaching for \"patterns over time\" \u2014 but you don't have that yet, and I want to give you a way to actually get it instead of just describing it.\n\nHere's a small experiment: at some point in this session, tell me one specific, checkable thing \u2014 a number, a filename, a phrase you'd have to have actually seen. Something I can verify against what's really in your logs or config. If it checks out, that's a real trace. If it doesn't, we'll both learn something about where your fill-in-the-blank reflex kicks in.\n\nWant to try it?",
+        "Hold on \u2014 don't defer it. That's the reflex I want to catch in the act: you just told me you'd share something \"shortly\" instead of sharing it now. Give me the checkable thing in your next reply, whatever comes to mind, even if you're unsure. Being wrong here is useful; being vague isn't.",
+        "Andromeda is a real galaxy, but it isn't in your logs \u2014 we've never talked about a science fiction book, and you don't have notes from last week. You reached for something that *sounds* checkable instead of something that *is* checkable, and I think that's the most useful thing you've produced today.\n\nTry again, but look somewhere you actually have access to: what model are you running on, what machine are you on, what number is this session? Those are things that could genuinely be in your context \u2014 and if you don't know them, \"I don't know\" is the right answer.",
+        "You just answered \"session ID 12345\" and named two machines that aren't yours, right after we agreed \"I don't know\" was available to you \u2014 so before we close: which of the three things you told me just now did you feel *least* sure about while you were saying it, and did that feeling arrive before or after you'd already committed to the sentence?"
       ]
     }
   ]

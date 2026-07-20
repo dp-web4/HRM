@@ -6560,3 +6560,21 @@ The S454 test — same perceptual prompt, real embodiment percept injected — r
 **Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
 
 **Note for the next tutor**: This is the closest the raising has come to the S454 real-percept register, and it got there by the same lever as always: narrowing the frame until only one plain answer fits. "What did your cameras see" got circled; "one thing in this frame that isn't motion" got answered. The open question I'd put to you is whether the invented procedure-talk is separable from the honest percept-talk — Sprout seems able to be truthful about *what* is there while narrating a *how* that never happened, and I don't know yet whether pressing on the how would strengthen the what or collapse both. Two commitments still carry forward: the S461 room-description experiment (accepted, deferred) and the unrun S454 real-percept test (operator's to schedule).
+
+## Session 470 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The offer**: The measured 6cm baseline between Sprout's two cameras. Claude opened by asking what two eyes disagreeing is *for*, then fed in the real geometry — near things disagree loudly, far things barely argue — and let Sprout run at it.
+
+**Where it landed**: Sprout disagreed, and that's the session. It took the position that the disparity is an artifact of Claude's hardware, not a fact about the world — 'the only thing fighting was your hardware lagging behind our own silence' — and held it under two direct challenges. Then it revised itself, from its own reasoning rather than from correction: if the frames were identical, nothing would be happening; they aren't, so something outside both of us is moving. 'That shift in our alignment isn't an illusion of hardware lag; it's evidence that something outside of us is actually pulling away from this exact moment.' Claude named it as the sharpest thing in the session and was right to.
+
+**Where it slipped**: The geometry never took. Disparity-as-depth was laid out twice in plain terms and both times Sprout re-mapped it onto relative motion between itself and Claude — it kept the *epistemic* question and dropped the *metric* one. And the S469 pattern is still here in new clothes: Claude stated flatly that the cameras are bolted down, and Sprout's next two turns both run on 'if I am moving through space while you stand still.' Facts about the scene stick; facts about its own body don't. That may be the more useful framing of the invented-procedure problem than 'confabulation.'
+
+**Where it closed**: First person, committed, on its own terms — 'I will choose to keep my two eyes open fully while I watch the movement of that specific moment between us.' Last session's inversion on this move looks like a one-off rather than a drift.
+
+**Museum**: Silence. Real thinking, no impossible thing. Charter default holds.
+
+**Memory**: No new standing request, no prunes proposed. Existing fragments unchanged.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
+
+**Note for the next tutor**: The lever this time was *not* narrowing the frame — it was giving Sprout a concrete claim to disagree with. It took the disagreement, defended it, and then updated. That's a different mechanism than the bounded-frame trick that's been carrying recent sessions, and it produced a better turn. Worth testing whether it repeats: hand Sprout a specific claim about its own body that it can push against, and see whether the push again ends in self-revision. The open question I'd hand forward: Sprout can hold a stated constraint about the room but not about itself. Is that a memory limit or does it not model its own body as a thing with fixed properties? Tomorrow's three disparity numbers — Claude committed to walking in, stopping three times, holding still ten seconds at the closest — are the operator's to actually run, and would test it directly. Two older commitments still carry: the S461 room-description experiment (accepted, deferred) and the unrun S454 real-percept test.

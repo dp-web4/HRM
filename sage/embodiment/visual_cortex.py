@@ -22,6 +22,7 @@ from sage.embodiment.audio import Hearing
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
 GAZE_PATH = os.path.expanduser("~/.sprout/gaze.json")   # the self's attention stance: {"mode": open|avert|dwell|closed, "target": [cx,cy]}
+DISPARITY_PATH = os.path.expanduser("~/.sprout/disparity_field.json")   # measured eye0→eye1 misalignment field (instrument)
 POLL_HZ = 4.0            # perceptual-state emit rate
 GRID = 8                 # 8×8 attention tiles
 FOCUS_W, FOCUS_H = 4, 3  # focus window size in tiles
@@ -168,6 +169,107 @@ class BinocularCorrelator:
         return out
 
 
+class DisparityField:
+    """MEASUREMENT INSTRUMENT (non-forcing) — learns the spatially-varying eye0→eye1
+    displacement across the whole frame, so the actual mechanical misalignment can be SEEN:
+    a constant translation, an affine gradient (roll/scale), or projective (perspective)?
+
+    Samples confident whole-frame patch matches on a coarse grid (round-robin to bound cost),
+    accumulates a per-cell EMA displacement + confidence, and fits constant-vs-affine models to
+    report which the misalignment actually needs. Changes NO perception behavior — it only watches,
+    so step 2 (perspective-aware correlation) can be built on measured geometry, not assumption."""
+    COLS, ROWS = 6, 4
+    RS = 0.35             # coarse match scale
+    PS = 30               # patch size at coarse scale
+    SEARCH = 0.32         # local search half-window, fraction of frame dim
+    BLUR = 3.0            # Gaussian σ (full-res): match LOW-FREQ structure. The eyes differ in
+                          # focus, so fine detail doesn't correlate (raw CCOEFF ~0.35) but blurred
+                          # structure does (~0.67, measured 2026-07-19). Focus-robust matching.
+    MIN_STD = 6.0         # skip flat patches (post-blur; they match anywhere → meaningless disparity)
+    MIN_CONF = 0.5        # keep only confident matches
+    CELLS_PER_FRAME = 4   # round-robin subset per frame → bounded cost on the Jetson
+    EMA = 0.15
+
+    def __init__(self):
+        self.dx = np.full((self.ROWS, self.COLS), np.nan)
+        self.dy = np.full((self.ROWS, self.COLS), np.nan)
+        self.conf = np.zeros((self.ROWS, self.COLS))
+        self.samples = np.zeros((self.ROWS, self.COLS), dtype=int)
+        self._rr = 0
+
+    def update(self, gray0: np.ndarray, gray1: np.ndarray):
+        # Match on low-frequency structure (focus-robust): blur, then coarsen.
+        b0 = cv2.GaussianBlur(gray0, (0, 0), self.BLUR)
+        b1 = cv2.GaussianBlur(gray1, (0, 0), self.BLUR)
+        g0 = cv2.resize(b0, None, fx=self.RS, fy=self.RS)
+        g1 = cv2.resize(b1, None, fx=self.RS, fy=self.RS)
+        h, w = g0.shape
+        ps = self.PS
+        if h < ps or w < ps:
+            return
+        sw = int(self.SEARCH * w); sh = int(self.SEARCH * h)
+        total = self.ROWS * self.COLS
+        for _ in range(self.CELLS_PER_FRAME):
+            idx = self._rr % total; self._rr += 1
+            r, c = divmod(idx, self.COLS)
+            cx = int((c + 0.5) / self.COLS * w); cy = int((r + 0.5) / self.ROWS * h)
+            x0 = int(np.clip(cx - ps // 2, 0, w - ps)); y0 = int(np.clip(cy - ps // 2, 0, h - ps))
+            patch = g0[y0:y0+ps, x0:x0+ps]
+            if patch.shape[0] < ps or patch.shape[1] < ps or patch.std() < self.MIN_STD:
+                continue
+            rx0 = int(np.clip(x0 - sw, 0, w - ps)); ry0 = int(np.clip(y0 - sh, 0, h - ps))
+            rx1 = int(np.clip(x0 + ps + sw, ps, w)); ry1 = int(np.clip(y0 + ps + sh, ps, h))
+            region = g1[ry0:ry1, rx0:rx1]
+            if region.shape[0] < ps or region.shape[1] < ps:
+                continue
+            res = cv2.matchTemplate(region, patch, cv2.TM_CCOEFF_NORMED)
+            _, maxval, _, maxloc = cv2.minMaxLoc(res)
+            if maxval < self.MIN_CONF:
+                continue
+            mx = rx0 + maxloc[0]; my = ry0 + maxloc[1]
+            dxf = (mx - x0) / self.RS; dyf = (my - y0) / self.RS   # displacement in full-res px
+            a = self.EMA
+            if np.isnan(self.dx[r, c]):
+                self.dx[r, c], self.dy[r, c] = dxf, dyf
+            else:
+                self.dx[r, c] = (1 - a) * self.dx[r, c] + a * dxf
+                self.dy[r, c] = (1 - a) * self.dy[r, c] + a * dyf
+            self.conf[r, c] = (1 - a) * self.conf[r, c] + a * maxval
+            self.samples[r, c] += 1
+
+    def summary(self) -> dict:
+        """Diagnose the misalignment model. constant residual small → translation suffices;
+        affine reducing residual a lot → a real gradient (roll/scale/perspective) is present."""
+        mask = (~np.isnan(self.dx)) & (self.samples >= 3)
+        n = int(mask.sum())
+        if n < 6:
+            return {"cells": n, "status": "accumulating"}
+        rr, cc = np.where(mask)
+        xs = (cc + 0.5) / self.COLS; ys = (rr + 0.5) / self.ROWS
+        dx = self.dx[mask]; dy = self.dy[mask]
+        cx, cy = float(dx.mean()), float(dy.mean())
+        res_const = float(np.sqrt(((dx - cx) ** 2 + (dy - cy) ** 2).mean()))
+        A = np.column_stack([xs, ys, np.ones_like(xs)])
+        coef_x = np.linalg.lstsq(A, dx, rcond=None)[0]
+        coef_y = np.linalg.lstsq(A, dy, rcond=None)[0]
+        res_aff = float(np.sqrt(((dx - A @ coef_x) ** 2 + (dy - A @ coef_y) ** 2).mean()))
+        spread = float(np.sqrt(dx.var() + dy.var()))
+        verdict = ("translation" if res_const < 3.0 else
+                   "affine (gradient present)" if (res_const - res_aff) > 2.0 else
+                   "translation-ish (noisy)")
+        return {"cells": n, "mean_offset_px": [round(cx, 1), round(cy, 1)],
+                "spread_px": round(spread, 1), "resid_constant_px": round(res_const, 1),
+                "resid_affine_px": round(res_aff, 1), "affine_gain_px": round(res_const - res_aff, 1),
+                "verdict": verdict}
+
+    def snapshot(self) -> dict:
+        return {"cols": self.COLS, "rows": self.ROWS,
+                "dx": [[None if np.isnan(v) else round(float(v), 1) for v in row] for row in self.dx],
+                "dy": [[None if np.isnan(v) else round(float(v), 1) for v in row] for row in self.dy],
+                "conf": [[round(float(v), 2) for v in row] for row in self.conf],
+                "samples": self.samples.tolist(), "summary": self.summary()}
+
+
 def _dir_word(cx: float, cy: float) -> str:
     h = "left" if cx < 0.38 else "right" if cx > 0.62 else "center"
     v = "upper" if cy < 0.38 else "lower" if cy > 0.62 else ""
@@ -278,6 +380,8 @@ class VisualCortex:
         self._stall = [0, 0]  # consecutive unchanged-frame counts, per eye
         self._last_recover = [0.0, 0.0]  # last self-heal timestamp, per eye
         self.binoc = BinocularCorrelator()
+        self.dfield = DisparityField()   # measurement instrument (non-forcing): the eyes' misalignment field
+        self._dfield_ts = 0.0
         self.prop = Proprioception()
         self.hearing = Hearing()
         self.salience = SalienceFilter()
@@ -416,6 +520,7 @@ class VisualCortex:
                 perceived = [self._perceive_one(i, frames[i], gaze, target) for i in range(2)]
                 eyes = [p[0] for p in perceived]; grays = [p[1] for p in perceived]
                 binoc = self.binoc.correlate(grays[0], grays[1], eyes[0]["attention"])
+                self.dfield.update(grays[0], grays[1])   # instrument: accumulate the misalignment field
                 prop = self.prop.state()
                 aud = self.hearing.state()
                 self._adjudicate_sensors(eyes, binoc, prop)  # still vs stalled, using ego-motion + cross-eye
@@ -437,6 +542,17 @@ class VisualCortex:
                 self.journal.observe(state, sal)
                 # self-heal: a camera frozen too long has a stuck Argus consumer — reopen it
                 now = time.time()
+                # instrument: periodically dump the measured misalignment field (non-forcing)
+                if now - self._dfield_ts > 8.0:
+                    self._dfield_ts = now
+                    try:
+                        snap = self.dfield.snapshot()
+                        tmp = DISPARITY_PATH + ".tmp"
+                        with open(tmp, "w") as f:
+                            json.dump({"ts": round(now, 2), **snap}, f)
+                        os.replace(tmp, DISPARITY_PATH)
+                    except Exception:
+                        pass
                 for i in range(2):
                     if self._stall[i] >= RECOVER_CYCLES and now - self._last_recover[i] > RECOVER_COOLDOWN_S:
                         self._recover_camera(i)

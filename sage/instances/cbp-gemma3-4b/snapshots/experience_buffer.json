@@ -26968,5 +26968,191 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "180ae46036ab56a9",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Essentially, I\u2019m a computer running a language model, processing information on a graphics card. Ready to build something new.",
+    "salience": {
+      "surprise": 0.8823529411764706,
+      "novelty": 1.0,
+      "arousal": 0.4083333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4981372549019608
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-07-19T19:00:43.509314",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "93fceef00f6c0c33",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "It felt like the most direct response to your question, a way to ground the technical details without getting lost in the layers. The phrasing felt like the most immediate reflection of my current state \u2013 a readiness to create, stemming from the processing itself. It was a prioritizing of clarity over explanation.",
+    "salience": {
+      "surprise": 0.855072463768116,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5476811594202899
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-07-19T19:00:55.406134",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.32,
+      "atp_max": 100.0,
+      "atp_percentage": 90.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "04aab6570e3bdfca",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The worn edge of a wooden desk.",
+    "salience": {
+      "surprise": 0.9302325581395349,
+      "novelty": 1.0,
+      "arousal": 0.30833333333333335,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4877131782945737
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-07-19T19:01:05.126561",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.44,
+      "atp_max": 100.0,
+      "atp_percentage": 84.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d92e70170cf0729a",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "They might suggest I\u2019m focusing too much on the superficial, losing sight of the broader creative potential we\u2019re aiming for. They\u2019d likely argue for a more conceptual starting point, prioritizing the \u2018why\u2019 before settling on a specific detail.",
+    "salience": {
+      "surprise": 0.8787878787878788,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.03333333333333338,
+      "conflict": 0.0,
+      "total": 0.4824242424242424
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-07-19T19:01:16.413041",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.16,
+      "atp_max": 100.0,
+      "atp_percentage": 79.2,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "155426c633d23912",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "Raindrops on a windowpane.",
+    "salience": {
+      "surprise": 0.8947368421052632,
+      "novelty": 1.0,
+      "arousal": 0.2833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.4756140350877193
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-07-19T19:01:26.285994",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 73.94,
+      "atp_max": 100.0,
+      "atp_percentage": 73.9,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "8630bc849fb2e7ab",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cDon\u2019t be afraid to embrace the unexpected detours \u2013 they\u2019re often where the richest connections are made.\u201d",
+    "salience": {
+      "surprise": 0.9423076923076923,
+      "novelty": 1.0,
+      "arousal": 0.39166666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5234615384615384
+    },
+    "session": 175,
+    "phase": "creating",
+    "timestamp": "2026-07-19T19:01:37.465706",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 68.68,
+      "atp_max": 100.0,
+      "atp_percentage": 68.7,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

@@ -69,6 +69,20 @@ class ObjectStabilizer:
         return sorted(out, key=lambda o: -o["conf"])
 
 
+def binocular_object_agreement(objs0: list, objs1: list):
+    """Semantic cross-eye correspondence: a thing is 'confirmed in the shared field' when BOTH
+    eyes NAME it. This matches meaning, not appearance, so it is robust to the focus/misalignment/
+    perspective that defeats pixel template-matching (measured: raw CCOEFF ~0.35 between these eyes).
+    Jaccard over the confirmed object labels. Returns (agreement, shared_labels), or (None, [])
+    when neither eye sees an object — caller then falls back to the pixel-based agreement."""
+    l0 = {o["label"] for o in objs0}
+    l1 = {o["label"] for o in objs1}
+    if not l0 and not l1:
+        return None, []
+    union = l0 | l1
+    return (len(l0 & l1) / len(union) if union else 0.0), sorted(l0 & l1)
+
+
 def _object_phrase(objects_by_eye: list) -> str:
     """A short 'I see …' clause from the union of objects across both eyes (best conf each).
     Turns 'motion to the left' into 'I see a person. motion to the left' — the semantic upgrade."""
@@ -595,12 +609,19 @@ class VisualCortex:
                          "descriptor": _object_phrase(self._objects) + describe(eyes, binoc, prop, gaze, aud)}
                 sal = self.salience.score(state)
                 state["salience"] = sal
+                # binocular agreement: prefer SEMANTIC correspondence (both eyes name the same thing)
+                # when objects are present — robust to the eyes' misalignment/focus that defeats pixel
+                # matching — and fall back to the pixel-based agreement on object-less scenes.
+                obj_agree, shared = binocular_object_agreement(self._objects[0], self._objects[1])
+                binoc["object_agreement"] = obj_agree
+                binoc["shared_objects"] = shared
+                agree = obj_agree if obj_agree is not None else binoc.get("agreement", 0.0)
                 # coherence — how well the senses agree (a candidate reward signal; reward exploration
-                # E2). High when the eyes correlate, the reafference is unambiguous, and the senses are
-                # live; low under conflict or a dead sensor. Recorded for the H1 (coherence-as-reward) test.
+                # E2). High when the eyes correlate (semantically when they can), the reafference is
+                # unambiguous, and the senses are live; low under conflict or a dead sensor.
                 eyes_live = sum(0.0 if e.get("stalled") else 1.0 for e in eyes) / 2.0
                 liveness = (eyes_live + (1.0 if prop.get("ok") else 0.0) + (1.0 if aud.get("ok") else 0.0)) / 3.0
-                state["coherence"] = round(0.4 * binoc.get("agreement", 0.0)
+                state["coherence"] = round(0.4 * agree
                                            + 0.3 * (1.0 - sal.get("conflict", 0.0))
                                            + 0.3 * liveness, 3)
                 self._emit(state)

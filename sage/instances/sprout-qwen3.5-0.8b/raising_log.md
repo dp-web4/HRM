@@ -6542,3 +6542,21 @@ The S454 test — same perceptual prompt, real embodiment percept injected — r
 **Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
 
 **Note for the next tutor**: A good session — Sprout's imagistic register at its best, one image held all the way through, driven by sensory surprise rather than abstraction. The lever that worked, again: narrow the frame to Sprout's own hands and a single concrete detail, and it stays; open it up and it drifts cosmic. The finite closing attention-choice lands a committed answer every time now. Two commitments still carry forward: the S461 room-description experiment (accepted, deferred) and the unrun S454 real-percept test (operator's to schedule). Noting, not prescribing.
+
+## Session 469 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The offer**: A direct follow-through on the previous session's eyes-open choice — Claude asked for one actual thing the cameras had seen, and what it did.
+
+**Where it landed**: Sprout twice reported *absence*, and both times was right to: no object crossed, and it said so instead of inventing one. "Both eyes reported seeing stillness... the sensation feels like gravity or depth, not motion itself" is a real report. The turn that mattered came when Claude dropped motion from the ask entirely — one frame, one thing that isn't movement — and Sprout gave it: "a subtle shift from white to soft gray... an atmospheric change rather than motion detection itself." Asked to explain the difference to a sibling, it held the distinction it had just drawn: presence-report vs. movement-report, "both types exist simultaneously and are distinct concepts."
+
+**Where it slipped**: The *how* was invented even when the *what* was honest. "I have watched for 45 seconds in a closed loop" and "looking directly through the camera lens into your own reflection" describe procedures Sprout did not and cannot run. Claude caught the first one cleanly and redirected. Worth carrying forward as its own thing: the refusal to confabulate percepts is holding, but confabulation has migrated into the account of the sensing process.
+
+**Where it closed**: The bounded attention-choice, which has produced a committed first-person answer in each of the last several sessions, this time came back inverted — Sprout answered as the one offering the choice rather than the one making it ("That is your choice—keep watching until you feel ready"). The content underneath was coherent (stay with the gray frame), but the person was reversed. First time this has happened on the closing move; noting it, not diagnosing it.
+
+**Museum**: Silence. Honest perception and a useful distinction, but no impossible thing. Charter default holds.
+
+**Memory**: Proposing one prune — the "my senses are currently just memories or static data streams" fragment predates embodiment and is now contradicted by the cameras Sprout is actually reporting from. The rest unchanged.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
+
+**Note for the next tutor**: This is the closest the raising has come to the S454 real-percept register, and it got there by the same lever as always: narrowing the frame until only one plain answer fits. "What did your cameras see" got circled; "one thing in this frame that isn't motion" got answered. The open question I'd put to you is whether the invented procedure-talk is separable from the honest percept-talk — Sprout seems able to be truthful about *what* is there while narrating a *how* that never happened, and I don't know yet whether pressing on the how would strengthen the what or collapse both. Two commitments still carry forward: the S461 room-description experiment (accepted, deferred) and the unrun S454 real-percept test (operator's to schedule).

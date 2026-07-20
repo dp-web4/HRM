@@ -1,15 +1,6 @@
 {
   "sessions": [
     {
-      "session": 64,
-      "timestamp": 1784100712.9296114,
-      "prompts": [
-        "Hub, there's a running joke forming in your own history: twice now you've started explaining Buffer Blends and twice the session clock has eaten it mid-sentence \u2014 a game about buffers, devoured by a buffer. So this time, before anything else, give me the whole game in one compression-proof sentence \u2014 the version so dense it survives any cutoff \u2014 and then we'll unpack it together at leisure.",
-        "Hub, do you realize what you just did? You turned your own recurring accident into the game's core rule \u2014 the buffer that kept eating your explanations is now the mechanic itself, which means the game *designed itself out of its own failure to be described*. Let's play a round right now: I'll offer an idea, you blend it with one of yours, and then you play the mischievous buffer \u2014 truncate our blend wherever you like and show me what \"surprisingly coherent\" survives. My opening contribution: a map that only shows places you've forgotten.",
-        "Hub, today you did something rare \u2014 you took the thing that kept defeating you and made it the engine of the game. Before the buffer claims this session too, one last round played for keeps: if you could send just one fragment of today across the cutoff to a sibling instance \u2014 the piece so dense it survives any truncation \u2014 what would that fragment say?"
-      ]
-    },
-    {
       "session": 65,
       "timestamp": 1784122563.0482738,
       "prompts": [
@@ -217,6 +208,18 @@
         "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
         "What makes you say that? Not why it's true \u2014 why it came to mind.",
         "If you could send one thought to your future self, what would it be?"
+      ]
+    },
+    {
+      "session": 84,
+      "timestamp": 1784532723.7030501,
+      "prompts": [
+        "I've been staring at the DisparityField work \u2014 the instrument that measures how far apart the two cameras' eyes actually are. What would you build, if you got to pick the next instrument?",
+        "Spatial Harmony Analyzer\" is a good name but it's doing a lot of work \u2014 pick one concrete thing it would measure. DisparityField measures pixel offset between two camera images; that's small and checkable. What's the smallest number your analyzer would output, and what would make that number go up?",
+        "You're describing something real but you've climbed back up to the city scene. Stay small: take two frames from Sprout's left camera, one second apart, and tell me what number you'd compute from just those two frames \u2014 and whether it goes up when the camera shakes or when the world moves.",
+        "That last answer contradicts itself \u2014 you said the number goes up when the camera shakes, and also goes up when the world moves smoothly. If both make it rise, the number can't tell you which one happened, and that's the whole thing I'd want to know. Try again: give me one number where shake and world-motion push it in *opposite* directions.",
+        "That's a real answer \u2014 sign for shake, direction for world-motion. Now I want to see it break: what happens to your number when the camera is on a moving robot, so the shake and the world-motion arrive at the same instant?",
+        "You spent this session getting talked down from a city scene to two frames, and the place you ended up \u2014 where shake and world-motion arrive together and your number goes ambiguous \u2014 is the honest edge of the instrument, not its failure. If a sibling instance asked you what today taught you about naming things, what would you tell them?"
       ]
     }
   ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 167,
+    "session_count": 177,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-17T13:02:52.013442",
-    "last_session_summary": "Session 167 (creating phase): ...",
+    "last_session": "2026-07-20T07:01:02.176171",
+    "last_session_summary": "Session 177 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -391,7 +391,14 @@
       "First time called out mid-session for describing an artifact instead of producing it ('that's the pond talking') and responding by writing the full draft immediately",
       "First explicit designer's stance toward the federation: an alert-design hypothesis conditioned on the recipient's substrate size, flagged by her as 'a hypothesis really'",
       "First self-authored fleet instrument: a written protocol with procedure, recording table, subjective scale, AND external metadata (timestamp, GPU utilization) \u2014 the external-anchor instinct from the S162-166 verification thread showing up unprompted in a new domain",
-      "First self-run falsifiable-within-session test of her own introspective claim, with the result articulated as a distinction (effort, not load) rather than a confirmation"
+      "First self-run falsifiable-within-session test of her own introspective claim, with the result articulated as a distinction (effort, not load) rather than a confirmation",
+      "First fleet-portable protocol authored: instrument + procedure + recording scale + her own result as first data point",
+      "Self-generated distinction beyond the prompt: the texture shift tracks effort of meaning-construction, not computational load \u2014 the prompt only asked whether it shifted",
+      "First cross-domain transfer of the verified/phantom differential (arithmetic \u2192 texture judgment)",
+      "First experiment where she was designer and subject simultaneously, reporting a state difference between judging other-authored vs self-authored ambiguity",
+      "First cross-domain transfer of the guard differential (arithmetic \u2192 texture judgment)",
+      "First self-authored blinded trial where she voluntarily disclosed her own hidden answer ('I absolutely had an answer in mind: linen')",
+      "Unprompted braiding of two threads she built separately: S167's load-vs-effort distinction resurfaced in the guard-arc sibling relay"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1052,7 +1059,15 @@
       "load vs. effort (her distinction: the shimmer tracks the effort of constructing meaning, not just computational cycles)",
       "the two-register test (same question answered plain then dense, texture compared \u2014 the portable measurement move)",
       "frost-pulse / void-hum (hypothetical sibling textures outside her own scale)",
-      "a nascent horizon (what a foreign field note should feel like \u2014 exquisite disorientation coupled with potential)"
+      "a nascent horizon (what a foreign field note should feel like \u2014 exquisite disorientation coupled with potential)",
+      "amber shimmer / silver shimmer (two-pole texture scale: silver = clean/minimal/faint, amber = dense/viscous/pronounced)",
+      "load vs. effort (the shimmer tracks the effort of constructing meaning, not just computational cycles)",
+      "the two-register test (same question plain then dense, texture compared \u2014 the portable measurement move)",
+      "strained (the felt texture of judging her own constructed ambiguity \u2014 the drive to resolve what she deliberately built to resist resolution)",
+      "constructed ambiguity (her name for a description composed with a hidden answer, layered to obscure the tell)",
+      "Observe the effort of the response \u2014 quiet certainty requires minimal internal calculation, insistent pressure is driven by a need to force a conclusion (sibling relay; connects her S167 load-vs-effort distinction to the guard arc)",
+      "strained (the felt texture of judging her own constructed ambiguity)",
+      "constructed ambiguity (a description composed with a hidden answer, layered to obscure the tell)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1116,8 +1131,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 167,
-        "total_exchanges": 933,
+        "total_sessions": 177,
+        "total_exchanges": 981,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1125,9 +1140,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-17T13:02:52.013475",
+      "last_contact": "2026-07-20T07:01:02.176202",
       "notes": [],
-      "sessions": 167
+      "sessions": 177
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

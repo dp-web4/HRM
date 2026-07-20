@@ -36,6 +36,39 @@ RECOVER_COOLDOWN_S = 30  # min seconds between reopen attempts per eye (covers w
 DET_PERIOD = 0.4         # object detection cadence (~2.5Hz; ~10ms/frame on the Orin GPU, negligible load)
 
 
+class ObjectStabilizer:
+    """Perceptual hysteresis for objects — don't blurt every fleeting phantom. A COCO model
+    on an atypical/close scene flickers false positives (a waving hand → a momentary
+    'elephant'); a single noisy frame shouldn't reach perception. A label must appear in
+    >=CONFIRM of the last WINDOW detections before it's believed, and it lingers a beat after
+    it's gone (so a briefly-occluded object doesn't blink out). Same ethos as salience: filter
+    the stream, report what's persistently there."""
+    WINDOW = 6      # detections remembered (~2.4s at the 2.5Hz detection cadence)
+    CONFIRM = 3     # must be seen in this many of them to be believed
+
+    def __init__(self):
+        from collections import deque
+        self.hist = deque(maxlen=self.WINDOW)
+
+    def update(self, dets: list) -> list:
+        cur: dict = {}
+        for d in dets:                       # best instance per label this detection
+            if d["label"] not in cur or d["conf"] > cur[d["label"]]["conf"]:
+                cur[d["label"]] = d
+        self.hist.append(cur)
+        counts: dict = {}
+        for frame in self.hist:
+            for lab in frame:
+                counts[lab] = counts.get(lab, 0) + 1
+        out = []
+        for lab, n in counts.items():
+            if n >= self.CONFIRM:
+                for frame in reversed(self.hist):   # most recent box/conf for a confirmed label
+                    if lab in frame:
+                        out.append(frame[lab]); break
+        return sorted(out, key=lambda o: -o["conf"])
+
+
 def _object_phrase(objects_by_eye: list) -> str:
     """A short 'I see …' clause from the union of objects across both eyes (best conf each).
     Turns 'motion to the left' into 'I see a person. motion to the left' — the semantic upgrade."""
@@ -406,7 +439,8 @@ class VisualCortex:
         self._dfield_ts = 0.0
         self.detector = ObjectDetector()   # semantic vision: WHAT it sees (YOLO11n/COCO via TensorRT)
         self._det_ts = 0.0
-        self._objects: list = [[], []]     # last-detected objects, per eye
+        self._objects: list = [[], []]     # last-detected objects, per eye (stabilized)
+        self._stab = [ObjectStabilizer(), ObjectStabilizer()]  # temporal hysteresis, per eye
         self.prop = Proprioception()
         self.hearing = Hearing()
         self.salience = SalienceFilter()
@@ -548,7 +582,8 @@ class VisualCortex:
                 self.dfield.update(grays[0], grays[1])   # instrument: accumulate the misalignment field
                 if t0 - self._det_ts > DET_PERIOD:       # semantic vision: WHAT it sees (throttled ~2.5Hz)
                     self._det_ts = t0
-                    self._objects = [self.detector.detect(frames[i]) for i in range(2)]
+                    raw = [self.detector.detect(frames[i]) for i in range(2)]
+                    self._objects = [self._stab[i].update(raw[i]) for i in range(2)]  # temporal hysteresis
                 for i in range(2):
                     eyes[i]["objects"] = self._objects[i]
                 prop = self.prop.state()

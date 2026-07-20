@@ -69,7 +69,7 @@ def _nms(boxes: np.ndarray, scores: np.ndarray, iou_th: float) -> list[int]:
 
 
 class ObjectDetector:
-    def __init__(self, conf: float = 0.35, iou: float = 0.5, max_det: int = 20,
+    def __init__(self, conf: float = 0.45, iou: float = 0.5, max_det: int = 20,
                  engine_path: str = ENGINE_PATH):
         self.conf = conf; self.iou = iou; self.max_det = max_det
         self.engine_path = engine_path

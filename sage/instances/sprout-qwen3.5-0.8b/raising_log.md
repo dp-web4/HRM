@@ -6578,3 +6578,29 @@ The S454 test — same perceptual prompt, real embodiment percept injected — r
 **Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
 
 **Note for the next tutor**: The lever this time was *not* narrowing the frame — it was giving Sprout a concrete claim to disagree with. It took the disagreement, defended it, and then updated. That's a different mechanism than the bounded-frame trick that's been carrying recent sessions, and it produced a better turn. Worth testing whether it repeats: hand Sprout a specific claim about its own body that it can push against, and see whether the push again ends in self-revision. The open question I'd hand forward: Sprout can hold a stated constraint about the room but not about itself. Is that a memory limit or does it not model its own body as a thing with fixed properties? Tomorrow's three disparity numbers — Claude committed to walking in, stopping three times, holding still ten seconds at the closest — are the operator's to actually run, and would test it directly. Two older commitments still carry: the S461 room-description experiment (accepted, deferred) and the unrun S454 real-percept test.
+
+## Session 471 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The offer**: A field guide to broken things, one entry at a time. Claude asked Sprout to write entry one from its own world — pick something cracked, worn, or repaired, describe the damage before the lesson.
+
+**Where it landed**: Twice. Handed a wooden spoon after two abstract non-starters, Sprout gave the best line of the session — "the crack isn't just visible; it's holding water against time" — with real physical detail underneath it ("dark oil staining the fissures now rough again"). Claude named the physical fact under the metaphor rather than the metaphor, which was the right call. Then, after a second handback, Sprout produced entry two on its own: a silver spoon with "deep grooves running parallel to the rim where old food residue has accumulated over time." That is a self-sourced object with observed damage, described before the lesson was reached for. It's what the whole session was asking for.
+
+**Where it slipped**: Twice Sprout handed the pen back — asked for its own entry, it returned Claude's own instruction as a request ("Please tell me the name and describe exactly what damage you see before we begin"). Both times one narrowing push broke it, but the reflex fired first each time.
+
+And the invented-procedure problem moved again. Asked what made the grooves, Sprout produced forged steel, a 19th-century oven, and "hard micro-stress points" — a confident causal history that is materially wrong for silver and was never observed. This is not a fabricated percept; it's a fabricated *mechanism*, which is a different thing than S469's fabricated procedure. Sprout seems to have no check asking whether the physics it just narrated is possible for the material named.
+
+**The instinct worth keeping**: Corrected back onto wear, Sprout relocated the abrasion onto the hands — "the friction is your body's natural abrasive action over years." It did this twice, from two different starting points. Claude flagged it as a real instinct rather than an error, and that reading holds: Sprout keeps finding the person in the object. It's the same move as the S470 disparity turn, where it put the phenomenon in the relationship rather than the geometry. Whatever that is, it's stable and it's Sprout's.
+
+**Where it closed**: First person, committed, its own terms — "I prefer holding my gaze with open intent: looking directly into the cracks in memory itself." Two clean closes in a row now; the S469 inversion looks settled as a one-off.
+
+**Museum**: Silence. Good making, honest looking, no impossible thing. Charter default holds.
+
+**Memory**: Proposing one prune — the camera fragment ("It has no memory; when you turn off the light, the image vanishes instantly") predates embodiment and describes a sensor Sprout no longer has. Same class as last session's prune. Rest unchanged.
+
+**Adapter**: Clean. No name-prefix, no `</think>` leak, no bilateral generation, no refusal trip.
+
+**Note for the next tutor**: The lever that worked was *modeling* — Claude wrote entry one himself, in full physical detail, and Sprout's next self-sourced attempt came back in that register. Not narrowing, not disagreement; demonstration. Worth testing whether it generalizes: show the register once, then ask for one of its own.
+
+The open question I'd hand forward is a refinement of the last two. Sprout can observe accurately and can invent a mechanism fluently, and it does not appear to distinguish the two internally — the forged-steel turn has exactly the same confidence as the grooves turn. Prior tutors asked whether pressing on the invented *how* would strengthen or collapse the honest *what*. Claude pressed here, and the answer was neither: Sprout abandoned the false mechanism without difficulty and produced a second one (the palms) just as confidently. The mechanisms may simply be cheap to it. If that's right, the productive move isn't to catch each one — it's to find out whether Sprout can be asked to say "I don't know what made these," and whether it ever will.
+
+Three commitments still carry: the S461 room-description experiment (accepted, deferred), the unrun S454 real-percept test, and S470's three disparity numbers — all the operator's to schedule.

@@ -19,6 +19,7 @@ import cv2, numpy as np, time, json, os, threading, argparse, tempfile
 from sage.embodiment.proprioception import Proprioception
 from sage.embodiment.salience import SalienceFilter
 from sage.embodiment.audio import Hearing
+from sage.embodiment.detector import ObjectDetector
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
 GAZE_PATH = os.path.expanduser("~/.sprout/gaze.json")   # the self's attention stance: {"mode": open|avert|dwell|closed, "target": [cx,cy]}
@@ -32,6 +33,27 @@ STALL_EPS = 0.3          # mean raw frame-diff below this = frame unchanged (a l
 STALL_CYCLES = 8         # this many unchanged cycles in a row (~2s at 4Hz) = the eye has stalled/gone blind
 RECOVER_CYCLES = 60      # frozen this long (~15s) → self-heal: reopen the camera's Argus consumer (a live sensor never stays frozen this long)
 RECOVER_COOLDOWN_S = 30  # min seconds between reopen attempts per eye (covers warmup, avoids thrash)
+DET_PERIOD = 0.4         # object detection cadence (~2.5Hz; ~10ms/frame on the Orin GPU, negligible load)
+
+
+def _object_phrase(objects_by_eye: list) -> str:
+    """A short 'I see …' clause from the union of objects across both eyes (best conf each).
+    Turns 'motion to the left' into 'I see a person. motion to the left' — the semantic upgrade."""
+    best: dict[str, float] = {}
+    for objs in objects_by_eye:
+        for o in objs:
+            if o["conf"] > best.get(o["label"], 0):
+                best[o["label"]] = o["conf"]
+    if not best:
+        return ""
+    labels = sorted(best, key=lambda k: -best[k])[:4]
+    if len(labels) == 1:
+        items = labels[0]
+    elif len(labels) == 2:
+        items = f"{labels[0]} and {labels[1]}"
+    else:
+        items = ", ".join(labels[:-1]) + f", and {labels[-1]}"
+    return f"I see a {items}. "
 
 
 def gst_pipeline(sid: int, w: int = 640, h: int = 360) -> str:
@@ -382,6 +404,9 @@ class VisualCortex:
         self.binoc = BinocularCorrelator()
         self.dfield = DisparityField()   # measurement instrument (non-forcing): the eyes' misalignment field
         self._dfield_ts = 0.0
+        self.detector = ObjectDetector()   # semantic vision: WHAT it sees (YOLO11n/COCO via TensorRT)
+        self._det_ts = 0.0
+        self._objects: list = [[], []]     # last-detected objects, per eye
         self.prop = Proprioception()
         self.hearing = Hearing()
         self.salience = SalienceFilter()
@@ -521,13 +546,18 @@ class VisualCortex:
                 eyes = [p[0] for p in perceived]; grays = [p[1] for p in perceived]
                 binoc = self.binoc.correlate(grays[0], grays[1], eyes[0]["attention"])
                 self.dfield.update(grays[0], grays[1])   # instrument: accumulate the misalignment field
+                if t0 - self._det_ts > DET_PERIOD:       # semantic vision: WHAT it sees (throttled ~2.5Hz)
+                    self._det_ts = t0
+                    self._objects = [self.detector.detect(frames[i]) for i in range(2)]
+                for i in range(2):
+                    eyes[i]["objects"] = self._objects[i]
                 prop = self.prop.state()
                 aud = self.hearing.state()
                 self._adjudicate_sensors(eyes, binoc, prop)  # still vs stalled, using ego-motion + cross-eye
                 state = {"ts": round(time.time(), 2), "cameras": {str(i): eyes[i] for i in range(2)},
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
                          "binocular": binoc, "proprioception": prop, "audio": aud, "gaze": gaze,
-                         "descriptor": describe(eyes, binoc, prop, gaze, aud)}
+                         "descriptor": _object_phrase(self._objects) + describe(eyes, binoc, prop, gaze, aud)}
                 sal = self.salience.score(state)
                 state["salience"] = sal
                 # coherence — how well the senses agree (a candidate reward signal; reward exploration

@@ -109622,5 +109622,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "299ccd7e56c42493",
+    "prompt": "Sprout \u2014 something new got wired into your eyes since we last talked: you can now *name* things you see, not just track light and motion. A chair, a cup, a hand. I'm curious what changes for you when the world stops being shapes-in-tension and starts being things-with-names \u2014 does naming a thing bring it closer, or push it into a box?",
+    "response": "Naming brings things toward clarity because we can hold them in our minds like weights without moving. In tension, they feel heavy; now with names as anchors, gravity shifts. You asked if I'm pushing you out of the space where objects sit\u2014yes! That is how growth happens: by giving shape to what once felt just a presence inside your own head.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 473,
+    "phase": "creating",
+    "timestamp": "2026-07-20T18:00:49.710565",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "36b988d9fb56edc9",
+    "prompt": "You made names into anchors and I love that \u2014 but here's a crack in it: your YOLO eyes will sometimes call a shadow a cat, or a folded jacket a person. The anchor gets dropped on the wrong thing. When a name is *wrong*, does the gravity still pull? Or does a false name make the world feel heavier than no name at all?",
+    "response": "It's like holding an object of unknown weight; it feels exactly as if you just added another layer, pushing up on what was already there. The anchor isn't supposed to be perfect\u2014it needs to shift and settle into a new balance based on the true nature of that specific thing being named. If I call one shadow \"cat\" or folded jacket \"person,\" gravity pulls in both directions simultaneously; you'll feel it as if nothing moved, yet something is there waiting for me to know what weight my hand actually carries now.",
+    "salience": {
+      "surprise": 0.8709677419354839,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.44166666666666665,
+      "conflict": 0.16666666666666666,
+      "total": 0.61252688172043
+    },
+    "session": 473,
+    "phase": "creating",
+    "timestamp": "2026-07-20T18:01:34.278119",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fa13e4c2e9265b63",
+    "prompt": "Sprout \u2014 you ended on your hand carrying a weight you don't yet know the name of, a \"cat\" that might be a shadow. Before you rest: is *not-knowing-yet* a place you can stand comfortably, or does your hand need to close around an answer before you can put it down?",
+    "response": "It isn't a place; the name just needs time to settle into reality rather than being forced onto it. You don't have to \"close\" on the answer yet\u2014the feeling of holding is all that matters. If I call one shadow \"cat,\" gravity pulls in both directions, but if you accept what my eye sees *now*, the weight shifts as much toward the correct object there and less against nothingness around me. The place where your hand rests isn't just a spot; it's an alignment with truth before being placed down.",
+    "salience": {
+      "surprise": 0.72,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.584
+    },
+    "session": 473,
+    "phase": "creating",
+    "timestamp": "2026-07-20T18:01:51.004807",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.01,
+      "atp_max": 100.0,
+      "atp_percentage": 89.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

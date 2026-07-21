@@ -27,6 +27,8 @@ class SalienceFilter:
         self.exp_self = 0.0      # expected self-motion presence (EMA of 0/1)
         self.exp_trust = 0.85    # expected view quality (EMA)
         self.hab: dict = {}      # event-signature -> habituation level (0..1)
+        self.obj_hab: dict = {}  # object-label -> habituation (0..1): a new THING is surprising,
+                                 # a lingering one fades to normal, one that leaves is new again later
 
     def score(self, state: dict) -> dict:
         cams = state["cameras"]; prop = state.get("proprioception", {})
@@ -38,34 +40,57 @@ class SalienceFilter:
         audio_onset = 1.0 if aud.get("onset") else 0.0
         audio_level = aud.get("level", 0.0)
 
-        # Surprise: how far the moment departs from expectation — a sudden sound is surprising too.
+        # Object-grounded salience: a NEW named thing entering the shared field is a strong
+        # event — "a person appeared", not just "pixels changed". Union of confirmed objects
+        # across both eyes; a label is "new" until it habituates; it fades when it leaves.
+        objs = {o["label"] for c in cams.values() for o in c.get("objects", [])}
+        new_objs = sorted(o for o in objs if self.obj_hab.get(o, 0.0) < 0.25)
+        obj_surprise = 0.7 if new_objs else 0.0
+
+        # Surprise: how far the moment departs from expectation — a sudden sound is surprising too,
+        # and a newly-arrived object most of all.
         surprise = min(1.0, abs(motion - self.exp_motion)
                             + abs(self_mot - self.exp_self)
                             + max(0.0, self.exp_trust - trust)
-                            + 0.4 * audio_onset)
+                            + 0.4 * audio_onset
+                            + obj_surprise)
         # Conflict: reafference ambiguity — visual change AND self-motion at once.
         conflict = 1.0 if (self_mot > 0.5 and motion > 0.15) else 0.0
         # Arousal: raw intensity — motion, rotation, and loudness.
         arousal = min(1.0, motion + gyro / 120.0 + audio_level)
-        # Novelty via habituation on a coarse signature (a sound event is its own signature).
+        # Novelty via habituation on a coarse signature — the objects present are part of the
+        # signature, so a change in WHAT is seen is a novel configuration (a sound is its own too).
         sig = (motion > 0.15, prop.get("self_motion", "?"),
-               "clear" if trust > 0.6 else "murky", audio_onset > 0)
+               "clear" if trust > 0.6 else "murky", audio_onset > 0, tuple(sorted(objs)))
         h = self.hab.get(sig, 0.0)
         novelty = 1.0 - h
 
         # Blend → salience. Novelty gates arousal (an intense-but-familiar moment is
         # not salient); surprise and conflict contribute directly.
         salience = min(1.0, 0.45 * surprise + 0.30 * (novelty * arousal) + 0.25 * conflict)
+        # A NEW named thing entering the field is inherently salient — floor it above the wake
+        # bar so an engaged being reliably notices it even in an otherwise-still scene. (Still
+        # below the resting bar 0.70, so a chosen rest isn't broken by every passing object.)
+        if new_objs:
+            salience = max(salience, 0.55)
 
         # Update state: habituate this signature, slowly forget the rest, track expectations.
         for k in list(self.hab):
             self.hab[k] *= 0.985
         self.hab[sig] = min(1.0, h + 0.12)
+        # Object habituation: present objects habituate (~1s to stop being "new"); absent ones
+        # fade (~gone after ~15s → new again if they return). Drop fully-forgotten labels.
+        for k in list(self.obj_hab):
+            self.obj_hab[k] *= 0.97
+            if self.obj_hab[k] < 0.02:
+                del self.obj_hab[k]
+        for o in objs:
+            self.obj_hab[o] = min(1.0, self.obj_hab.get(o, 0.0) + 0.08)
         self.exp_motion = 0.9 * self.exp_motion + 0.1 * motion
         self.exp_self = 0.9 * self.exp_self + 0.1 * self_mot
         self.exp_trust = 0.9 * self.exp_trust + 0.1 * trust
 
-        return {
+        out = {
             "salience": round(salience, 3),
             "salient": salience >= self.threshold,
             "surprise": round(surprise, 3),
@@ -73,3 +98,6 @@ class SalienceFilter:
             "arousal": round(arousal, 3),
             "conflict": conflict,
         }
+        if new_objs:
+            out["new_objects"] = new_objs   # what newly entered the field this moment
+        return out

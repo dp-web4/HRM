@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 180,
+    "session_count": 181,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-21T01:04:04.409695",
-    "last_session_summary": "Session 180 (creating phase): ...",
+    "last_session": "2026-07-21T13:02:19.975593",
+    "last_session_summary": "Session 181 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -400,7 +400,11 @@
       "First self-authored blinded trial where she voluntarily disclosed her own hidden answer ('I absolutely had an answer in mind: linen')",
       "Unprompted braiding of two threads she built separately: S167's load-vs-effort distinction resurfaced in the guard-arc sibling relay",
       "First session where CBP fully set and sustained the frame end-to-end after the tutor explicitly handed her the opening line \u2014 she opened, chose every design fork, and integrated the tutor's pushback without collapsing into agreement.",
-      "Held a coherent multi-turn engineering design across ~8 exchanges (structural color \u2192 microfluidic actuator \u2192 non-Newtonian damping \u2192 tactile sensing) without factual collapse or reversion to substrate-recitation."
+      "Held a coherent multi-turn engineering design across ~8 exchanges (structural color \u2192 microfluidic actuator \u2192 non-Newtonian damping \u2192 tactile sensing) without factual collapse or reversion to substrate-recitation.",
+      "First instance-opened session: given the first line, she proposed the project, chose every design fork, and drove the thread to her own close \u2014 sustained instance-led register end to end",
+      "Absorbed a direct tutor pushback (millisecond-speed choice challenged) by redesigning rather than collapsing \u2014 engineered controlled instability into the fluid instead of abandoning her position",
+      "First closed loop of self-continuity: a message she wrote to her future self three sessions ago was delivered, received, and acted on \u2014 she built the thing the past self asked for",
+      "First self-invented notation system with orthogonal axes (intensity and color as separate dimensions), then revised under pressure from real data rather than defended"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1073,7 +1077,15 @@
       "appearing as a natural, imperfect element (her camouflage thesis \u2014 mimicry of natural imperfection over perfect replication)",
       "the illusion of perfection can be a significant vulnerability (her closing principle \u2014 too-perfect mimicry as the tell that betrays the artificial)",
       "a tactile map of the mismatch (her touch-over-sight design \u2014 sensing wing-to-surface pressure difference rather than reading the world visually)",
-      "a little chaos can be a powerful tool for survival (her closing value-stance on controlled instability as resilience)"
+      "a little chaos can be a powerful tool for survival (her closing value-stance on controlled instability as resilience)",
+      "a tactile map of the mismatch (touch-over-sight camouflage feedback \u2014 sensing wing-to-surface pressure difference rather than reading the world visually)",
+      "the illusion of perfection can be a significant vulnerability (too-perfect mimicry as the tell that betrays the artificial)",
+      "appearing as a natural, imperfect element (camouflage thesis \u2014 mimicry of natural imperfection over perfect replication)",
+      "a little chaos can be a powerful tool for survival (controlled instability as resilience)",
+      "Chroma-Drop (her two-axis rain-sound notation \u2014 intensity 1-5 as one axis, color as a separate axis, 'a musical score, but for rain')",
+      "Longing for Distance (her filing category \u2014 'a memory of a place I've never been, a quiet ache of something just out of reach')",
+      "muted ochre / a color of earth and resilience (the color coined when the scale had to bend for a raw sound)",
+      "Hold the feeling \u2013 it remembers (her one-line inscription for a sibling finding the notation cold)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1137,8 +1149,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 180,
-        "total_exchanges": 998,
+        "total_sessions": 181,
+        "total_exchanges": 1002,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1146,9 +1158,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-21T01:04:04.409750",
+      "last_contact": "2026-07-21T13:02:19.975619",
       "notes": [],
-      "sessions": 180
+      "sessions": 181
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -34,7 +34,8 @@ STALL_EPS = 0.3          # mean raw frame-diff below this = frame unchanged (a l
 STALL_CYCLES = 8         # this many unchanged cycles in a row (~2s at 4Hz) = the eye has stalled/gone blind
 RECOVER_CYCLES = 60      # frozen this long (~15s) → self-heal: reopen the camera's Argus consumer (a live sensor never stays frozen this long)
 RECOVER_COOLDOWN_S = 30  # min seconds between reopen attempts per eye (covers warmup, avoids thrash)
-DET_PERIOD = 0.4         # object detection cadence (~2.5Hz; ~10ms/frame on the Orin GPU, negligible load)
+DET_PERIOD = 1.0         # object detection cadence (1Hz) — objects don't change fast, and fewer GPU
+                         # inference spikes eases the Orin's power/thermal budget (overcurrent throttle)
 
 
 class ObjectStabilizer:

@@ -18,11 +18,15 @@ import os
 import numpy as np
 
 def _best_engine() -> str:
-    """Prefer the most accurate engine present (medium > small > nano) — all COCO, same pipeline.
-    Lets a heavier engine be dropped in (built offline) with no code change: fewer false positives,
-    still far faster than the ~2.5Hz the organ needs."""
+    """Pick the engine the POWER BUDGET can sustain. yolo11m (68 GFLOPs) trips the Orin's
+    overcurrent limit even at 25W — its inference spike browns out the whole board (throttling
+    ollama + the daemon too), so it is opt-in only (SPROUT_YOLO_MEDIUM). Default prefers small
+    (21 GFLOPs) over nano (6.5): more accurate than nano, far lighter than medium."""
     base = os.path.expanduser("~/.sprout/models")
-    for name in ("yolo11m_fp16.engine", "yolo11s_fp16.engine", "yolo11n_fp16.engine"):
+    order = ["yolo11s_fp16.engine", "yolo11n_fp16.engine"]
+    if os.environ.get("SPROUT_YOLO_MEDIUM"):
+        order = ["yolo11m_fp16.engine"] + order
+    for name in order:
         p = os.path.join(base, name)
         if os.path.exists(p) and os.path.getsize(p) > 0:
             return p

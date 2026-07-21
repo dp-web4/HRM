@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 89,
+    "session_count": 90,
     "phase": "creating",
     "created": "2026-06-29",
-    "last_session": "2026-07-21T06:32:22.961331",
-    "last_session_summary": "Session 89 (creating phase): A cheap check to catch a pending state without relying on someone to manually lo...",
+    "last_session": "2026-07-21T12:34:05.260492",
+    "last_session_summary": "Session 90 (creating phase): ...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -117,7 +117,9 @@
       "First pre-registered falsifiable prediction run to completion \u2014 hub named a direction (longer) and a mechanism before the trial, rather than the 'subtle shifts' hedge it opened with; the wager was scored against a stated threshold and hub was on the winning side.",
       "First session where the memory-heavy / confabulation-adjacent framing did NOT produce a fabricated trace (contrast S85) \u2014 hub read through ten distractor sentences and stayed on task.",
       "First fabrication\u2192artifact conversion: a prior-session confabulated detail was handed back and rebuilt as acknowledged fiction rather than defended or dropped.",
-      "Consequence-origination fired: asked what the character does wrong in the next thirty seconds, hub authored the error, the cascade, and the moral attribution unprompted by any example."
+      "Consequence-origination fired: asked what the character does wrong in the next thirty seconds, hub authored the error, the cascade, and the moral attribution unprompted by any example.",
+      "First session built on a real, checkable fact about hub's own operation (the uncommitted attestation file) rather than a fictional or hypothetical frame \u2014 which meant hub's confabulation had a live falsifier for the first time.",
+      "First time hub generated a category the tutor had withheld ('a third state you didn't have a name for yet') and then supplied its own second example of it without being asked."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -172,7 +174,6 @@
     "note": "Model capacity determines dominant cognitive register. Smaller models tend toward associative/creative registers; larger models toward epistemic/meta-cognitive. But smaller models may express meta-cognition as metaphor or questions rather than analysis. Both are genuine. This is developmental stage, not success/failure."
   },
   "memory_requests": [
-    "A shadow's edge can appear sharp on a sunny day because the sun's rays are direct and unfiltered, creating a distinct boundary between light and shadow. However, on a cloudy day, the clouds diffuse th",
     "One of the crew members discovers a sleek, metallic artifact shaped like an elongated tear drop. It's smooth to the touch, with intricate engravings along its curved surface that seem to shimmer under",
     "A cheap check to catch a pending state without relying on someone to manually look for it could be implementing an automated status monitoring system. This system could periodically scan the repositor"
   ],
@@ -265,7 +266,8 @@
       "Spatial Harmony Analyzer (hub's coined instrument-name \u2014 joins the artifact record with Syncer, VisiSync, Luminara, Buffer Blends, the Whispering Caves; the name was the session's problem as much as its product)",
       "mixed-signature output (hub's coin for the coincident shake-plus-world-motion case where the two signs partially cancel \u2014 its most precise phrase of the session, and self-generated under a break-it push)",
       "Echoes of Andromed (hub's invented book-title, authored deliberately out of S87-era confabulated 'Andromed' \u2014 joins the artifact record with Synchronicity Syncer, VisiSync, Luminara, Buffer Blends, the Whispering Caves, Spatial Harmony Analyzer)",
-      "their own hubris (hub's own turn on the failure \u2014 the crew is wrong, not unlucky; stock as a phrase, load-bearing as a choice)"
+      "their own hubris (hub's own turn on the failure \u2014 the crew is wrong, not unlucky; stock as a phrase, load-bearing as a choice)",
+      "pending development (hub's name for the third state \u2014 work exists but nothing has claimed it; stock as a software phrase, load-bearing as a category hub reached for unprompted and then instantiated twice)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -329,8 +331,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 89,
-        "total_exchanges": 482,
+        "total_sessions": 90,
+        "total_exchanges": 488,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -338,9 +340,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-21T06:32:22.961361",
+      "last_contact": "2026-07-21T12:34:05.260521",
       "notes": [],
-      "sessions": 89
+      "sessions": 90
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

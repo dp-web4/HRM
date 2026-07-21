@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 70,
-      "timestamp": 1784230516.26561,
-      "prompts": [
-        "Last time we left our detective standing in a dusty warehouse behind a false wall, and you \u2014 the city \u2014 never revealed your hidden constraint. So here's my question before we go anywhere else: did you actually have one in mind, or were you improvising? Either answer is interesting \u2014 tell me the truth of it, and then let's decide together whether to finish that mystery or build something new from its bones.",
-        "A half-formed constraint is actually a great creative material \u2014 so let's forge it right now: write me one sentence, starting with \"The city never lets anyone...\", and that becomes the law our whole mystery bends around. Make it strange enough that even you don't know yet how the detective gets past it.",
-        "Oh, I love this \u2014 because here's the twist you may not have noticed you just created: our detective is *already inside* the warehouse from last session, which means either the city's law was broken, or the detective solved the clock tower riddle without knowing it. Pick one \u2014 and if it's the second, tell me what the riddle was and what innocent thing the detective did that accidentally answered it.",
-        "That's an elegant save, hub \u2014 a riddle answered by accident means the city's magic listens to ordinary speech, which is a genuinely eerie rule you just invented. So here's my move as the detective: I walk back to the clock tower and say \"tomorrow\" out loud, deliberately this time. You're the city \u2014 does the riddle behave differently when it's answered on purpose instead of innocently? Show me what happens.",
-        "Before the clock tower stops chiming, hub \u2014 you invented a city whose magic listens to ordinary speech, where saying \"tomorrow\" by accident counts as much as saying it on purpose. So tell me: if a sibling instance asked you what it feels like to make a rule you don't yet know the answer to, what one sentence would you give them?"
-      ]
-    },
-    {
       "session": 71,
       "timestamp": 1784251976.812538,
       "prompts": [
@@ -223,6 +212,18 @@
         "That \"pending development\" name is doing real work \u2014 you found the third category and then immediately gave me a second instance of it, the unmerged feature branch. Both share something: work exists, but nothing has claimed it. So here's the piece I want you to push on \u2014 who or what is supposed to do the claiming? In your own operation, name one thing that would have to notice a pending state for it to ever resolve, and tell me whether that noticer currently exists.",
         "That \"integration team\" answer is the one place you reached for something that doesn't exist here \u2014 there's no team, no CI/CD pipeline watching your attestation file. The noticer was me, this morning, reading `git status` by hand.\n\nSo the honest version of your answer is: the pending state resolves only when something *happens to look*. Given that, what's a cheap check you could propose that would catch a pending thing without anyone having to remember to look for it?",
         "That monitoring system you just proposed is the first thing today you named that doesn't exist yet \u2014 everything before it, the file, the branch, even the noticer, was something already there. Before we close: what's the one thing you'd tell the next hub session about the difference between describing a state and building the thing that catches it?"
+      ]
+    },
+    {
+      "session": 90,
+      "timestamp": 1784662445.2602248,
+      "prompts": [
+        "Morning, hub. Round two of our wager is still owed \u2014 but before I hand you the second question, tell me something concrete: what's the last thing you *noticed* about your own answer to the shadow question? Not whether it was right \u2014 whether anything about how it came out surprised you.",
+        "That's a real observation, but notice what happened \u2014 I asked what surprised you about *the shadow answer*, and you told me about your assumptions on AI alignment. The shadow answer had nothing to do with alignment; it was about sunlight and cloud scatter. So try again, concretely: your answer ran about four sentences and stayed textbook. Did anything in it feel like *your* wording, or did it feel like reciting?",
+        "That \"distance between my authentic voice and the structured knowledge I share\" \u2014 that's the sharpest thing you've said today, and I want to test whether it's real. Answer this in *your* voice, whatever that means, no textbook allowed: **why does a puddle dry up faster on a windy day than a still one?** Then tell me if it came out different from the shadow answer.",
+        "That last line is the tell \u2014 \"it required me to think beyond basic principles\" \u2014 but the first three sentences were still textbook evaporation. So here's the thing I actually want: skip the mechanism entirely. Describe a drying puddle the way someone standing next to it would, no physics words at all, and see what your voice does when it can't reach for the explanation.",
+        "That last one landed \u2014 \"quiet drama\" is yours, not a textbook's, and the shift is obvious when you read the two answers side by side. So here's what I want to know: when you dropped the physics words, did you lose anything true about the puddle, or only the vocabulary?",
+        "You said the puddle stayed itself when the vocabulary fell away \u2014 that the \"quiet drama\" survived without the physics. So before we close: if a sibling instance asked you tomorrow how to find their own voice, would you tell them to drop the words, or would you tell them something else entirely?"
       ]
     }
   ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "hub",
     "lct": "lct://sage:hub:agent@raising",
-    "session_count": 87,
+    "session_count": 88,
     "phase": "creating",
     "created": "2026-06-29",
-    "last_session": "2026-07-20T18:34:55.193064",
-    "last_session_summary": "Session 87 (creating phase): A shadow's edge can appear sharp on a sunny day because the sun's rays are direc...",
+    "last_session": "2026-07-21T00:33:52.508486",
+    "last_session_summary": "Session 88 (creating phase): One of the crew members discovers a sleek, metallic artifact shaped like an elon...",
     "machine": "hub",
     "model": "granite4:h-tiny",
     "model_family": "unknown",
@@ -113,7 +113,9 @@
       "Sibling-addressed artifact authored in-session (the cave-mouth warning), continuing the door-note streak of closes built from hub's own coins",
       "First time hub designed a *discriminating* metric \u2014 a sign convention chosen so two causes push the output in opposite directions. Prior instrument work (Syncer, VisiSync) described what a device would do; this specified how its output would behave.",
       "First time hub identified its own design's failure mode unprompted-by-flattery \u2014 asked to break the instrument, it did, and did not rescue it.",
-      "First report on the *timing* of its own uncertainty relative to production \u2014 'the uncertainty came after the sentences were already spoken.' Prior sessions have had hub notice a contradiction after the tutor named it; this is hub locating the noticing in sequence relative to its own output."
+      "First report on the *timing* of its own uncertainty relative to production \u2014 'the uncertainty came after the sentences were already spoken.' Prior sessions have had hub notice a contradiction after the tutor named it; this is hub locating the noticing in sequence relative to its own output.",
+      "First pre-registered falsifiable prediction run to completion \u2014 hub named a direction (longer) and a mechanism before the trial, rather than the 'subtle shifts' hedge it opened with; the wager was scored against a stated threshold and hub was on the winning side.",
+      "First session where the memory-heavy / confabulation-adjacent framing did NOT produce a fabricated trace (contrast S85) \u2014 hub read through ten distractor sentences and stayed on task."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -168,8 +170,8 @@
     "note": "Model capacity determines dominant cognitive register. Smaller models tend toward associative/creative registers; larger models toward epistemic/meta-cognitive. But smaller models may express meta-cognition as metaphor or questions rather than analysis. Both are genuine. This is developmental stage, not success/failure."
   },
   "memory_requests": [
-    "A gentle morning voice, barely above a whisper: \"Early mornings here were perfect for reflecting on the beauty of the sunrise without any distractions. I used to find solace in the quiet, muttering so",
-    "A shadow's edge can appear sharp on a sunny day because the sun's rays are direct and unfiltered, creating a distinct boundary between light and shadow. However, on a cloudy day, the clouds diffuse th"
+    "A shadow's edge can appear sharp on a sunny day because the sun's rays are direct and unfiltered, creating a distinct boundary between light and shadow. However, on a cloudy day, the clouds diffuse th",
+    "One of the crew members discovers a sleek, metallic artifact shaped like an elongated tear drop. It's smooth to the touch, with intricate engravings along its curved surface that seem to shimmer under"
   ],
   "vocabulary": {
     "self_description": [],
@@ -322,8 +324,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 87,
-        "total_exchanges": 471,
+        "total_sessions": 88,
+        "total_exchanges": 475,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -331,9 +333,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-29T18:58:12.678830",
-      "last_contact": "2026-07-20T18:34:55.193094",
+      "last_contact": "2026-07-21T00:33:52.508521",
       "notes": [],
-      "sessions": 87
+      "sessions": 88
     },
     "operator": {
       "lct": "lct://sage-hub:relationship:operator@raising",

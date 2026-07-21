@@ -73,12 +73,17 @@ def binocular_object_agreement(objs0: list, objs1: list):
     """Semantic cross-eye correspondence: a thing is 'confirmed in the shared field' when BOTH
     eyes NAME it. This matches meaning, not appearance, so it is robust to the focus/misalignment/
     perspective that defeats pixel template-matching (measured: raw CCOEFF ~0.35 between these eyes).
-    Jaccard over the confirmed object labels. Returns (agreement, shared_labels), or (None, [])
-    when neither eye sees an object — caller then falls back to the pixel-based agreement."""
+    Jaccard over the confirmed object labels. Returns (agreement, shared_labels), or (None, …)
+    when a semantic comparison isn't possible — caller then falls back to the pixel-based agreement.
+
+    Crucially, this requires BOTH eyes to see objects. If only one eye does (these cameras are
+    divergent — an object often lands in one FOV, not the shared overlap), that's monocular/FOV-
+    limited sight, NOT disagreement; returning None (→ pixel fallback) avoids wrongly tanking
+    coherence. Genuine disagreement (both eyes see objects, none shared) still reads as 0.0."""
     l0 = {o["label"] for o in objs0}
     l1 = {o["label"] for o in objs1}
-    if not l0 and not l1:
-        return None, []
+    if not l0 or not l1:                      # need BOTH eyes to compare; else fall back to pixels
+        return None, sorted(l0 & l1)
     union = l0 | l1
     return (len(l0 & l1) / len(union) if union else 0.0), sorted(l0 & l1)
 

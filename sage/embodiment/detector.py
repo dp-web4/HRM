@@ -17,7 +17,19 @@ from __future__ import annotations
 import os
 import numpy as np
 
-ENGINE_PATH = os.path.expanduser("~/.sprout/models/yolo11n_fp16.engine")
+def _best_engine() -> str:
+    """Prefer the most accurate engine present (medium > small > nano) — all COCO, same pipeline.
+    Lets a heavier engine be dropped in (built offline) with no code change: fewer false positives,
+    still far faster than the ~2.5Hz the organ needs."""
+    base = os.path.expanduser("~/.sprout/models")
+    for name in ("yolo11m_fp16.engine", "yolo11s_fp16.engine", "yolo11n_fp16.engine"):
+        p = os.path.join(base, name)
+        if os.path.exists(p) and os.path.getsize(p) > 0:
+            return p
+    return os.path.join(base, "yolo11n_fp16.engine")
+
+
+ENGINE_PATH = _best_engine()
 IMGSZ = 640
 
 COCO = [
@@ -69,7 +81,7 @@ def _nms(boxes: np.ndarray, scores: np.ndarray, iou_th: float) -> list[int]:
 
 
 class ObjectDetector:
-    def __init__(self, conf: float = 0.45, iou: float = 0.5, max_det: int = 20,
+    def __init__(self, conf: float = 0.50, iou: float = 0.5, max_det: int = 20,
                  engine_path: str = ENGINE_PATH):
         self.conf = conf; self.iou = iou; self.max_det = max_det
         self.engine_path = engine_path
@@ -103,6 +115,7 @@ class ObjectDetector:
             self._stream = torch.cuda.Stream()
             self._torch = torch
             self._ready = True
+            print(f"[detector] loaded {os.path.basename(self.engine_path)} (conf>={self.conf})", flush=True)
         except Exception as e:
             self._failed = True
             print(f"[detector] disabled (motion-only vision): {type(e).__name__}: {e}", flush=True)

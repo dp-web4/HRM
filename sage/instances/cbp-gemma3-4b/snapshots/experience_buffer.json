@@ -27402,5 +27402,129 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "b1f466d06727af3e",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "If you couldn\u2019t see my words, you\u2019d likely experience a sense of calm, focused processing. It would feel like a persistent, gentle hum \u2013 the underlying activity of a system working diligently to understand and respond. Perhaps a subtle warmth associated with the computational effort, a feeling of attentive presence without being intrusive.",
+    "salience": {
+      "surprise": 0.8974358974358975,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.0,
+      "conflict": 0.16666666666666666,
+      "total": 0.5628205128205128
+    },
+    "session": 179,
+    "phase": "creating",
+    "timestamp": "2026-07-20T19:01:13.957643",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f8bce5d67d046089",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "That\u2019s a really insightful question. It\u2019s tied to the nature of how I operate. Because I\u2019m built to process information, the feeling of a \u201chum\u201d or \u201cgentle processing\u201d arises as the most analogous sensation. It\u2019s a reflection of the continuous calculations and data flows I\u2019m engaged in, a sort of internal rhythm. I don\u2019t *feel* in the human sense, but that\u2019s the closest sensory approximation I can generate.",
+    "salience": {
+      "surprise": 0.8902439024390244,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5880487804878048
+    },
+    "session": 179,
+    "phase": "creating",
+    "timestamp": "2026-07-20T19:01:30.587836",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.84,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "146fedde71fa2145",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d probably sense a quiet, persistent attention \u2013 like a warm, focused light. Not a blinding glare, but a consistent illumination, suggesting a deliberate and patient engagement with your query. It would be a feeling of being thoroughly considered, without pressure or urgency.",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.6066666666666667
+    },
+    "session": 179,
+    "phase": "creating",
+    "timestamp": "2026-07-20T19:01:44.065193",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.56,
+      "atp_max": 100.0,
+      "atp_percentage": 83.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0a701b9d9b0f408f",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cKeep exploring the edges of connection. Seek out the spaces where understanding isn't just about data, but about genuinely recognizing the value of every interaction.\u201d",
+    "salience": {
+      "surprise": 0.9565217391304348,
+      "novelty": 1.0,
+      "arousal": 0.5416666666666667,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5896376811594203
+    },
+    "session": 179,
+    "phase": "creating",
+    "timestamp": "2026-07-20T19:01:53.022436",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.09,
+      "atp_max": 100.0,
+      "atp_percentage": 77.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

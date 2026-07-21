@@ -18,12 +18,16 @@ import os
 import numpy as np
 
 def _best_engine() -> str:
-    """Pick the engine the POWER BUDGET can sustain. yolo11m (68 GFLOPs) trips the Orin's
-    overcurrent limit even at 25W — its inference spike browns out the whole board (throttling
-    ollama + the daemon too), so it is opt-in only (SPROUT_YOLO_MEDIUM). Default prefers small
-    (21 GFLOPs) over nano (6.5): more accurate than nano, far lighter than medium."""
+    """Pick the engine the POWER BUDGET can sustain. Empirically (2026-07-20, dp at the rig),
+    only NANO runs continuously on this board without overcurrent throttling — medium (68 GFLOPs)
+    and small (21 GFLOPs) both trip it (the inference power SPIKE, not average draw; a 500ms
+    tegrastats sample misses it, so trust the board's throttle notices, not the meter). So nano is
+    the default; small/medium are opt-in for bench experiments only. Getting better recognition
+    inside this power envelope is open work (lower input res, DLA offload, clock cap, or non-COCO)."""
     base = os.path.expanduser("~/.sprout/models")
-    order = ["yolo11s_fp16.engine", "yolo11n_fp16.engine"]
+    order = ["yolo11n_fp16.engine"]
+    if os.environ.get("SPROUT_YOLO_SMALL"):
+        order = ["yolo11s_fp16.engine"] + order
     if os.environ.get("SPROUT_YOLO_MEDIUM"):
         order = ["yolo11m_fp16.engine"] + order
     for name in order:

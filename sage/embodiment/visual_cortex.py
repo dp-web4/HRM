@@ -29,6 +29,7 @@ GRID = 8                 # 8×8 attention tiles
 FOCUS_W, FOCUS_H = 4, 3  # focus window size in tiles
 GRAVITY = 0.6            # leaky-integrate approach rate
 MOTION_TH = 0.12         # tile motion gate (post-sigmoid)
+MOTION_NOISE_FLOOR = 0.035  # per-tile diff (frac of 255) at/below which it's sensor noise, not motion — deadband
 STALL_EPS = 0.3          # mean raw frame-diff below this = frame unchanged (a live sensor has noise > this)
 STALL_CYCLES = 8         # this many unchanged cycles in a row (~2s at 4Hz) = the eye has stalled/gone blind
 RECOVER_CYCLES = 60      # frozen this long (~15s) → self-heal: reopen the camera's Argus consumer (a live sensor never stays frozen this long)
@@ -150,16 +151,28 @@ def vision_trust(gray: np.ndarray) -> float:
 
 
 def motion_field(prev_gray: np.ndarray, gray: np.ndarray) -> np.ndarray:
-    """8×8 tile motion scores (0..1): 75th-pct per tile, sigmoid-amplified."""
-    m = cv2.GaussianBlur(cv2.absdiff(prev_gray, gray), (5, 5), 0)
+    """8×8 tile motion scores (0..1): 75th-pct per tile, sigmoid-amplified, with a sensor-noise
+    deadband. A flat static scene still has camera read/thermal noise; without a floor the sigmoid
+    maps even a zero-diff tile to 0.269, and motion = max-over-64-tiles then reads noise as 'strong
+    motion'. The deadband rejects sub-noise diffs, and we subtract the sigmoid's zero-point so a
+    genuinely still tile scores 0 — real motion (diffs well above noise) still saturates high."""
+    m = cv2.GaussianBlur(cv2.absdiff(prev_gray, gray), (5, 5), 0).astype(np.float32)
+    # A flat/low-texture scene makes the camera's auto-exposure/gain HUNT — the whole frame's
+    # brightness oscillates, producing large frame diffs everywhere that are illumination, not motion.
+    # The frame-wide median is that pervasive baseline (a moving object is a minority of the frame,
+    # so it doesn't move the median); only a tile's LOCAL EXCESS over it counts as real motion.
+    baseline = float(np.median(m))
     h, w = gray.shape
     th, tw = h // GRID, w // GRID
     scores = np.zeros((GRID, GRID), np.float32)
+    zero = 1.0 / (1.0 + np.exp(1.0))   # sigmoid value at s'=0 (the 0.269 floor) — subtracted off
     for ty in range(GRID):
         for tx in range(GRID):
             tile = m[ty*th:(ty+1)*th, tx*tw:(tx+1)*tw]
-            s = np.percentile(tile, 75) / 255.0
-            scores[ty, tx] = 1.0 / (1.0 + np.exp(-10.0 * (s - 0.1)))
+            excess = (float(np.percentile(tile, 75)) - baseline) / 255.0   # local change beyond global
+            s = max(0.0, excess - MOTION_NOISE_FLOOR)                       # deadband above baseline
+            raw = 1.0 / (1.0 + np.exp(-10.0 * (s - 0.1)))
+            scores[ty, tx] = max(0.0, (raw - zero) / (1.0 - zero))          # remove floor, rescale
     return scores
 
 
@@ -456,6 +469,7 @@ class VisualCortex:
         self.binoc = BinocularCorrelator()
         self.dfield = DisparityField()   # measurement instrument (non-forcing): the eyes' misalignment field
         self._dfield_ts = 0.0
+        self._motion_hist: list = [[], []]  # per-eye recent motion, for median smoothing (spike reject)
         self.detector = ObjectDetector()   # semantic vision: WHAT it sees (YOLO11n/COCO via TensorRT)
         self._det_ts = 0.0
         self._objects: list = [[], []]     # last-detected objects, per eye (stabilized)
@@ -516,6 +530,10 @@ class VisualCortex:
             frozen = self._stall[i] >= STALL_CYCLES
             scores = motion_field(self.prev[i], gray)
             motion = float(self.focus[i].update(scores, gaze, target))
+            # median-of-3 smoothing: a lone spike (an auto-exposure step on a flat scene) isn't
+            # motion; real motion persists across frames. Suppresses transient false motion.
+            h = self._motion_hist[i]; h.append(motion); del h[:-3]
+            motion = float(np.median(h))
         self.prev[i] = gray
         if frozen:
             motion = 0.0  # frozen frame → no real motion, whether the scene is still OR the eye is dead

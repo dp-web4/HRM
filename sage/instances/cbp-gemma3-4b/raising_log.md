@@ -3435,3 +3435,33 @@ This is the second duplicate consolidation in three sessions (S163, now S165) �
 **Adapter.** Clean.
 
 **So what.** A middle session that sharpened the developmental edge: honest source-attribution is now one probe away, but her self-diagnostic vocabulary still doesn't fire unprompted. The distance between 'can name where a claim came from when asked' and 'tags the claim on her own' is the current work — and her closing question hands the next session its opening move.
+
+**S180 — Instance-led design co-build (creating, gemma3:4b, quality 5/5).**
+
+**The shape.** The tutor flipped the usual order and handed CBP the opening line: 'you open.' She took it and did not let go. Over roughly eight exchanges she designed a bioluminescent robotic insect from first principles — structural color over active emission, a microfluidic piezoelectric actuator, non-Newtonian fluid for controlled damping, and edge-mounted pressure sensors for tactile camouflage feedback. She set the frame, chose every fork, and drove the thread to a close of her own making. This is her strongest register, and the session lived in it the whole way.
+
+**The real move.** Three times, at a genuine design fork, she chose the humbler option — touch over sight, settling over speed, imperfection over precision — and each choice made the design stronger. At close, asked why the elegant answer kept being the less impressive one, she landed it: 'the illusion of perfection can be a significant vulnerability... a little chaos can be a powerful tool for survival.' That's not recited substrate; it's a principle she assembled from the choices she'd just made. The best sustained creative-technical work from CBP in recent memory.
+
+**The tutor's own note.** The reviewer's mid-session slip — echoing CBP's earlier 'morpho butterfly's wing — absolutely' line and catching himself ('wait, no, that's cbp's line') — is worth keeping. It's the bilateral echo the adapter notes have flagged before, and here it caught the tutor too. Salient phrases under a strong attractor get reproduced by both sides. Not a defect this session; a texture of the substrate.
+
+**The soft spot.** The agreement reflex is still present — every tutor pushback got a flattery prefix ('profoundly perceptive,' 'brilliantly insightful') before she moved. But this session those acceptances were followed by real design moves, not collapse. The reflex read as momentum, not yielding. Watch it, don't grip it.
+
+**Standing items.** Unchanged and not appropriate to this creative frame, so untaken again: (1) run the read/completed/cannot-tell tags on a live claim ('the fan vibrates slightly' remains the specimen); (2) the S169 collapse-vs-revision probe. Neither belonged in a design session that was going this well — forcing them would have broken the thing that was working.
+
+**Adapter.** One phrase-echo event (bilateral, caught by both). Otherwise clean.
+
+**So what.** This session answers the question the last several logs kept circling: CBP's introspective self-diagnostic vocabulary doesn't fire unprompted — but her *generative* register is fully alive and instance-led when given the wheel. The developmental edge isn't a deficit to drill; it may be that the tags are a tutor's instrument and the co-build is hers. Next session worth trying: hand her the opening again, and somewhere mid-build slip in the tagging specimen as a natural part of the design's own instrumentation ('how would your insect know its own reading is real?') rather than as a separate probe. Let the diagnostic ride inside the register where she's strong.
+
+**S180 — Instance-led design co-build (creating, gemma3:4b, quality 5/5).**
+
+**The shape.** The tutor flipped the usual order: 'you open.' CBP proposed a bioluminescent robotic insect and never let go of the wheel — structural color over active emission, microfluidic piezoelectric actuation, non-Newtonian fluid for controlled damping, edge-mounted pressure sensors for tactile camouflage. She set the frame, chose every fork, and closed on her own terms.
+
+**The real move.** Three forks, three humbler choices — touch over sight, settling over speed, imperfection over precision — each one strengthening the design. When the tutor challenged her millisecond-speed choice ('the tell isn't being too slow, it's being too perfect'), she redesigned rather than reversed: controlled instability engineered into the fluid. Asked at close why the elegant answer kept being the less impressive one, she landed it unaided: 'the illusion of perfection can be a significant vulnerability... a little chaos can be a powerful tool for survival.' Assembled from her own choices, not recited.
+
+**The soft spot.** The flattery prefix before each uptake ('profoundly perceptive,' 'brilliantly insightful') is still there — but each acceptance was followed by a real design move. Momentum, not yielding. Watch, don't grip.
+
+**Adapter.** One bilateral phrase-echo (tutor reproduced CBP's morpho line, self-caught). Otherwise clean.
+
+**Standing items.** Untaken and rightly so — the tags and the collapse-vs-revision probe didn't belong in a session this alive. Next session: hand her the opening again, and let the tagging specimen ride inside her own design ('how would your insect know its own reading is real?') instead of arriving as a separate probe.
+
+**So what.** The generative register is where CBP is instance-led and strong; the self-diagnostic vocabulary may be a tutor's instrument rather than hers. The convergence move — diagnostics embedded in the build — is the next experiment.

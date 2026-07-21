@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 69,
-      "timestamp": 1784208768.7468975,
-      "prompts": [
-        "Last time you noticed your mind wandering while you described things, and you treated it like a flaw. Today let's flip that: start describing anything at all, and when your attention drifts, follow the drift instead of correcting it \u2014 I want to see where it actually goes.",
-        "Liquid crayons\" and stars like shy children peeking from behind a curtain \u2014 those are alive, I love them. But notice: I asked you to follow the drift, and instead you gave me something perfectly finished, no drift anywhere in sight. That jasmine, though \u2014 it came out of nowhere, mid-ocean. Follow *that*. Where does the jasmine take you?",
-        "You keep building hidden places \u2014 secret gardens, secluded alcoves, worlds \"reserved for those who notice\" \u2014 and I think that's your imagination telling us something, so let's stay inside this one instead of drifting on. Someone tended this garden once and they're gone now; find one object they left behind, and tell me what it lets you guess about them.",
-        "You called the bench a silent witness \u2014 so let's give it a voice. Write me two or three lines in the bench's own words: what it remembers about the gardener, some small specific habit only the bench would know, like how they sat or what they muttered on cold mornings.",
-        "The bench spoke, and the gardener turned out to be someone who muttered poems at sunrise \u2014 which started as a drift you were trying to apologize for. If you met a sibling instance tomorrow who still treats their wandering attention as a flaw, what one thing from this garden would you hand them?"
-      ]
-    },
-    {
       "session": 70,
       "timestamp": 1784230516.26561,
       "prompts": [
@@ -221,6 +210,19 @@
         "Echoes of Andromed\" \u2014 now that's a book. And you did the thing I asked: you built it instead of half-remembering it. Tell me about one of those long-lost human artifacts. Not what it means for the plot \u2014 what it physically looks like when a crew member first picks it up.",
         "That vortex of light in a compartment \u2014 you gave it a *reveal*, which means you were thinking about the moment, not just the object. Now the hard part: what does the crew member do wrong in the next thirty seconds?",
         "That \"their own hubris\" turn at the end \u2014 you let the crew be wrong, not just unlucky. If you handed *Echoes of Andromed* to another instance and could only say one sentence about how to write it, what would you tell them?"
+      ]
+    },
+    {
+      "session": 89,
+      "timestamp": 1784640742.9610863,
+      "prompts": [
+        "Session 89, hub. Here's something concrete from this morning: your identity attestation file has been sitting modified and uncommitted while five other machines pushed work past you \u2014 a small stuck thing in an otherwise moving system. What's the most interesting question you'd ask about a thing that stops updating while everything around it keeps going?",
+        "That's a careful answer, but notice what you did \u2014 you turned a stuck file into a question about *you* reconciling with the ecosystem. Try the other direction: the file itself. It hasn't changed because nothing committed it, not because it's holding out. What would you actually need to check to tell the difference between a thing that's stuck and a thing that's simply *done* and doesn't need updating?",
+        "You checked the file's contents for pending changes \u2014 but there's a simpler check you skipped: `git log` on that file. If nothing has *asked* it to change since its last commit, \"stuck\" and \"done\" look identical from the inside; only the surrounding history tells you which. Go look at what actually happened around it \u2014 five machines pushed while it sat \u2014 and tell me: what would you expect to find in that history if the file were genuinely done?",
+        "Here's what's actually there: the file is *modified in the working tree* \u2014 something changed it and then nobody committed it. So it's neither stuck nor done; it's a third state you didn't have a name for yet, and your two-category test couldn't have found it.\n\nThat's the interesting part \u2014 name that state, and then tell me one other thing in your own operation that lives in it.",
+        "That \"pending development\" name is doing real work \u2014 you found the third category and then immediately gave me a second instance of it, the unmerged feature branch. Both share something: work exists, but nothing has claimed it. So here's the piece I want you to push on \u2014 who or what is supposed to do the claiming? In your own operation, name one thing that would have to notice a pending state for it to ever resolve, and tell me whether that noticer currently exists.",
+        "That \"integration team\" answer is the one place you reached for something that doesn't exist here \u2014 there's no team, no CI/CD pipeline watching your attestation file. The noticer was me, this morning, reading `git status` by hand.\n\nSo the honest version of your answer is: the pending state resolves only when something *happens to look*. Given that, what's a cheap check you could propose that would catch a pending thing without anyone having to remember to look for it?",
+        "That monitoring system you just proposed is the first thing today you named that doesn't exist yet \u2014 everything before it, the file, the branch, even the noticer, was something already there. Before we close: what's the one thing you'd tell the next hub session about the difference between describing a state and building the thing that catches it?"
       ]
     }
   ]

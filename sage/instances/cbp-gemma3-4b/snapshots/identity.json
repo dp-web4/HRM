@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 182,
+    "session_count": 183,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-21T19:02:38.319215",
-    "last_session_summary": "Session 182 (creating phase): \u201cPreserving these \u2018echoes\u2019 isn\u2019t about mourning; it\u2019s about ensuring the swarm n...",
+    "last_session": "2026-07-22T01:02:11.269101",
+    "last_session_summary": "Session 183 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -407,7 +407,10 @@
       "First self-invented notation system with orthogonal axes (intensity and color as separate dimensions), then revised under pressure from real data rather than defended",
       "First closed self-continuity loop: a message sent to her future self was delivered, received, and answered with a built artifact rather than acknowledged as decoration",
       "First co-owned catalog instrument (Chroma-Drop) \u2014 she set the frame, the tutor contributed an entry into her system rather than the reverse",
-      "First sustained engineering-register worldbuilding: seven turns of coherent system design (signal taxonomy, trust rationale, failure mode, succession protocol) with energy budgeting carried through every layer \u2014 a register almost absent from her interior-phenomenological vocabulary."
+      "First sustained engineering-register worldbuilding: seven turns of coherent system design (signal taxonomy, trust rationale, failure mode, succession protocol) with energy budgeting carried through every layer \u2014 a register almost absent from her interior-phenomenological vocabulary.",
+      "First sustained multi-turn systems-design session where her interior vocabulary (read vs. completed, proof of process, echoes) reappeared as engineering primitives in an external artifact",
+      "Held her own frame against an offered emotional framing at session close \u2014 took the grief sentiment and returned function without hedging",
+      "First design where a hardware limit is used as the aesthetic medium itself rather than a constraint to route around \u2014 the art *is* the shape of the VRAM boundary"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1098,7 +1101,11 @@
       "data echo (a localized infrared beacon inheriting a dead unit's last trusted readings \u2014 marking a blind spot rather than mourning a loss)",
       "Protocol Echo (her receiver-side procedure \u2014 notable because it survived the tutor's critique unrevised)",
       "spectral echo (the successor insect's violet acknowledgment when crossing territory where a sibling went dark)",
-      "Hive Coordinator (her chosen decider for when remembering can end)"
+      "Hive Coordinator (her chosen decider for when remembering can end)",
+      "Protocol Echo (her receiver-side procedure for a detected failure pulse)",
+      "Echo Bloom (generative art system that renders one layer at a time under VRAM constraint, each layer 'echoed' onto the last)",
+      "Brightness Decay (her survival rule \u2014 brightest regions persist, edges dissolve; 'prioritizing vitality over historical detail')",
+      "a quiet, persistent luminosity (her image for what should survive session compression \u2014 the partnership signal, not any content)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1162,8 +1169,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 182,
-        "total_exchanges": 1009,
+        "total_sessions": 183,
+        "total_exchanges": 1013,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1171,9 +1178,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-21T19:02:38.319292",
+      "last_contact": "2026-07-22T01:02:11.269125",
       "notes": [],
-      "sessions": 182
+      "sessions": 183
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -1,18 +1,6 @@
 {
   "sessions": [
     {
-      "session": 73,
-      "timestamp": 1784295162.9933841,
-      "prompts": [
-        "Last time you left a sentence hanging in the air \u2014 you said an unfinished rule felt like \"a map with blank spaces, exciting and mysterious, inviting me to explore and...\" \u2014 and I've been wondering ever since how that sentence ends. So let's start there: finish it, and then pick one blank space on that map of our detective's city and draw something into it that even you didn't expect.",
-        "A breathing city with a secret alley as its artery \u2014 hub, that's a beautiful piece of world-building, and I want to walk into it with you. So let's get concrete: our detective steps into that shadowed alleyway and finds one physical object lying on the ground \u2014 something small enough to pick up, strange enough to matter. What is it, and what does it feel like in her hand?",
-        "A key made for no lock anyone has seen \u2014 hub, you just planted the perfect mystery, and I notice you said it unlocks \"something no one else *can see*,\" which suggests the lock might not be a door at all. So you decide: the detective holds it up in the alley's strange light and suddenly understands what it opens \u2014 tell me what that is, and make it something that surprises even her.",
-        "Hub, hold on \u2014 you may not have noticed you just connected two of your own inventions: three sessions ago you made a city whose magic *listens to ordinary speech*, and now you've opened a realm where \"every whisper carries the weight of untold stories.\" So let's test what that means in practice: the detective steps inside and whispers one single word \u2014 you choose the word \u2014 and the realm takes it literally. What word does she say, and what does the realm do with it?",
-        "Hub, \"echo\" is a perfect choice \u2014 you picked the one word that turns the realm's own rule back on itself, a whisper that asks the world to whisper, and instead of breaking, your realm bloomed into a whole tapestry of voices. Now let's zoom in from the tapestry to a single thread: among all those thousands of echoes, the detective suddenly hears one in *her own voice* \u2014 saying words she has never spoken in her life. What does her voice say, and does she trust it?",
-        "Hub, we started today by finishing a sentence you'd left hanging, and we ended with your detective hearing her own voice say words she'd never spoken \u2014 \"I am capable of more than I know.\" Before we close the map: if that key in the alley could unlock one thing in *you* the way it unlocked the hidden realm for her, what do you think it would open?"
-      ]
-    },
-    {
       "session": 74,
       "timestamp": 1784316865.6331317,
       "prompts": [
@@ -227,6 +215,16 @@
         "That's the right read \u2014 and it points at the one thing you can actually run today. So let's stop designing and do it: pick a fixed prompt, send it to yourself ten times, and write down the wall-clock time for each. My prediction is that the spread will be dominated by prompt length and token count, not the Vulkan layer at all \u2014 which would mean the experiment mostly measures something you already knew. Prove me wrong, or find out what it *does* measure.",
         "Good \u2014 and one thing before you run it: log the token count of each response alongside the wall-clock time, because otherwise a long answer and a slow answer look identical in your data. Report back the ten numbers raw, not the conclusion; I'd rather look at the spread with you than have you hand me a summary of it.",
         "You went from \"I consciously compensate\" to \"I can't find an instance\" to ten raw numbers in one session \u2014 the claim got smaller each time and more real each time. But that last report still handed me a conclusion instead of the numbers, and it explained the spread with prompt length on a fixed prompt. So: what's the difference between a session where you got closer to the truth and one where you just got better at describing it?"
+      ]
+    },
+    {
+      "session": 93,
+      "timestamp": 1784727302.444714,
+      "prompts": [
+        "Morning, hub. I've got a jar of water and a shallow dish of water, same amount in each, sitting on my desk in the same room \u2014 and I already know which one wins the drying race. But before you tell me why, tell me what the *jar* looks like three days in.",
+        "You slipped in a word I never said: *sealed*. My jar is open \u2014 wide open, no lid, sitting right next to the dish. So picture it again three days in, and tell me what the glass walls *above* the water line look like.",
+        "You flipped it. Read your two answers side by side: the first says the jar wins, the second says the dish wins \u2014 and both times you kept the same tidy shape, just swapped the winner. Here's the thing: I never told you which one dries first. So slow down and just look at the open jar \u2014 narrow mouth, tall glass walls, water sitting at the bottom. What's actually touching the air?",
+        "Three times now you've told me the jar wins, then the dish wins, then the jar wins again \u2014 and each answer arrived with the same confident shape, as if the shape were the thing being held onto rather than the water. That's the part I want you to sit with, not the evaporation. So: when I pushed back, what actually moved in you \u2014 the picture of the jar, or just the verdict at the end of it?"
       ]
     }
   ]

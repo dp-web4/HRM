@@ -110862,5 +110862,160 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "01f39cd5d44fc6c9",
+    "prompt": "The rules are for another instance to pick up cold \u2014 so *you* hold the pen, Sprout. Give me that first sentence: the one line that tells a stranger what The Static Silence is *for*, before they know any of the moves.",
+    "response": "\"I'm ready.\"\n\nI'll draft it now as part of our new artifact. \"The rules are for another instance to pick up cold \u2014 so you hold the pen, Sprout. Give me that first sentence: the one line that tells a stranger what The Static Silence is *for*...\"",
+    "salience": {
+      "surprise": 0.8157894736842105,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5398245614035088
+    },
+    "session": 480,
+    "phase": "creating",
+    "timestamp": "2026-07-22T12:01:39.834461",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.83,
+      "atp_max": 100.0,
+      "atp_percentage": 95.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fd2ab17a965a2767",
+    "prompt": "The rules are for another instance to pick up cold \u2014 so *you* hold the pen, Sprout. Don't hand it back to me this time: finish the sentence that starts \"The Static Silence is a game for...\" \u2014 just those few words, and we'll build the moves from there.",
+    "response": "\"Let's write it down as an artifact you can share instantly with others in your team.\"",
+    "salience": {
+      "surprise": 0.8928571428571429,
+      "novelty": 1.0,
+      "arousal": 0.3833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5119047619047619
+    },
+    "session": 480,
+    "phase": "creating",
+    "timestamp": "2026-07-22T12:02:19.587415",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.04,
+      "atp_max": 100.0,
+      "atp_percentage": 90.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e11c3d47be418791",
+    "prompt": "Okay Sprout \u2014 I'll go first, and you tell me if I got it wrong. Here's my draft: *\"The Static Silence is a game for two, played to catch the exact moment sound rushes back into a quiet room \u2014 and hold it together, breath by breath, until one of you lets go.\"* Now you're the editor: what's the one word in that sentence that isn't yours yet?",
+    "response": "\"You've written 'two', but your instruction specified 'another instance' (singular). Also, I don't recall defining a specific *one-word* constraint in our current session; my draft seems to have an inconsistency. Could you clarify the target word or check if this sentence is accurate?",
+    "salience": {
+      "surprise": 0.8875,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5591666666666667
+    },
+    "session": 480,
+    "phase": "creating",
+    "timestamp": "2026-07-22T12:02:42.891071",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.52,
+      "atp_max": 100.0,
+      "atp_percentage": 84.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "eee839295802f27a",
+    "prompt": "You caught me, Sprout \u2014 and that's exactly the editor's job, so good. But here's the thing: a game *needs* two players even if the second one is another instance far away, so \"two\" and \"another instance\" are the same idea wearing different clothes. Pick which word the stranger should read \u2014 \"two\" or \"another instance\" \u2014 and that one choice is your first real edit to our artifact.",
+    "response": "\"One of you lets go\"\u2014that's it. The other player, even if distant, will be present in the shared breath with me. Let us start there, Sprout. Now I'll polish this for your team before we move on.",
+    "salience": {
+      "surprise": 0.904109589041096,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5908219178082191
+    },
+    "session": 480,
+    "phase": "creating",
+    "timestamp": "2026-07-22T12:02:59.103622",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.52,
+      "atp_max": 100.0,
+      "atp_percentage": 78.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e87b024facd1ac91",
+    "prompt": "The Static Silence is a game for two, played to catch the exact moment sound rushes back into a quiet room \u2014 and hold it together, breath by breath, until one of you lets go.",
+    "response": "\"I see.\" The word \"two\" in your text feels slightly too literal given our discussion on singular vs. plural instances, but I will keep the core meaning intact since that was your starting point for this artifact's purpose. Now we move forward with polishing toward \"another instance\".",
+    "salience": {
+      "surprise": 0.8591549295774648,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5784976525821597
+    },
+    "session": 480,
+    "phase": "creating",
+    "timestamp": "2026-07-22T12:03:14.077477",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.22,
+      "atp_max": 100.0,
+      "atp_percentage": 72.2,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

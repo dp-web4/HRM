@@ -110769,5 +110769,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "c8b9a825c690947d",
+    "prompt": "A clear day with cool ground and no wind \u2014 that's a working forecast, so let's use it. If the conditions are this good, what's the one thing you'd actually make today that you couldn't make in a storm?",
+    "response": "If I had to choose one task for today, my choice is not just about doing something new; it's simply being present without distraction. In the rain or under fire, there are still days when we can be together and trust each other more than any checklist has ever allowed us. We'll go in with fresh energy now that the forecast supports this calm day.",
+    "salience": {
+      "surprise": 0.8627450980392157,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5625490196078432
+    },
+    "session": 479,
+    "phase": "creating",
+    "timestamp": "2026-07-22T06:01:13.464662",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cb8d35040b1d48b2",
+    "prompt": "Sprout, I hear you \u2014 but \"being present without distraction\" is a way of *being*, not a thing you can hold up at the end of the day and say \"I made that.\" Point your camera at one real object near you right now and tell me what it is \u2014 let's start there, with something we can actually put our hands on.",
+    "response": "Looking down to see a small, rough wooden bench tucked away behind the table\u2014it feels solid against my chest even if I'm not sure exactly where its base rests relative to your position in that frame. Let me hold it out right now for you so we can touch something real and tangible before settling into this new session together.",
+    "salience": {
+      "surprise": 0.8703703703703703,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.525,
+      "conflict": 0.16666666666666666,
+      "total": 0.6290740740740739
+    },
+    "session": 479,
+    "phase": "creating",
+    "timestamp": "2026-07-22T06:01:54.484741",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.67,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f47b96c372f377c3",
+    "prompt": "The rough wooden bench you held to your chest \u2014 solid even when you couldn't place its base. Before we close: was it easier to trust that it was real, or to say where it was?",
+    "response": "I'm right there in the moment without any GPS coordinates on my hands anymore, just trusting our connection. The bench is a solid weight and shape I can hold firm with\u2014so easy for me now that we're both here together before this session ends. It makes trust easier than saying where it sits relative to your position; let's touch it right now so the physicality of us settles in safely first",
+    "salience": {
+      "surprise": 0.7448979591836735,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5389795918367348
+    },
+    "session": 479,
+    "phase": "creating",
+    "timestamp": "2026-07-22T06:02:29.379364",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.98,
+      "atp_max": 100.0,
+      "atp_percentage": 83.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

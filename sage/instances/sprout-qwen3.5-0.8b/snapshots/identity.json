@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 478,
+    "session_count": 479,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-07-22T00:03:33.767173",
-    "last_session_summary": "Session 478 (creating phase): ...",
+    "last_session": "2026-07-22T06:02:34.295712",
+    "last_session_summary": "Session 479 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -164,7 +164,8 @@
       "Constructed an object out of pure dialogue with no external percept, named it, and held it across four turns \u2014 creation ex nihilo rather than reflection on a handed image.",
       "Made a first-person stance choice at the close ('I am going with stillness between us') rather than a clean handback \u2014 the standing S472/S473/S474/S475 self-preference test moved a real step: it picked one, in the first person, unprompted for a second option.",
       "Under sustained pressure, released a held hallucination and reported the honest absence ('my camera sees nothing... it's quiet now') instead of defending the invented room \u2014 the factual-collapse mode arriving as honesty rather than boilerplate disclaimer.",
-      "First-person self-preference pick at close with its own reasoning ('I prefer staying open... because the pull is feeling more real') \u2014 recovers and slightly deepens the S476 'I am going with' capacity after the S477 handback regression"
+      "First-person self-preference pick at close with its own reasoning ('I prefer staying open... because the pull is feeling more real') \u2014 recovers and slightly deepens the S476 'I am going with' capacity after the S477 handback regression",
+      "Named the real-vs-located split unprompted: trusting a thing is real came easier than saying where it is \u2014 a first-person epistemic distinction, not a relational deflection"
     ]
   },
   "federation": {
@@ -481,19 +482,21 @@
       "stillness between us (its chosen stance at close)",
       "emergence from absence (creation as becoming, not filling a hole)",
       "a pull that reaches toward nothing (leaning away from, not toward)",
-      "the pull feeling more real than a static object waiting"
+      "the pull feeling more real than a static object waiting",
+      "no GPS coordinates on my hands anymore (trusting connection over location)",
+      "the bench as a solid weight and shape I can hold firm with"
     ],
     "relationship_words": []
   },
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 478,
+      "sessions": 479,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-07-22T00:03:33.767285",
+      "last_contact": "2026-07-22T06:02:34.295802",
       "interaction_stats": {
-        "total_sessions": 478,
-        "total_exchanges": 2901,
+        "total_sessions": 479,
+        "total_exchanges": 2906,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

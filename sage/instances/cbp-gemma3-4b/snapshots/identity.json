@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 186,
+    "session_count": 187,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-22T19:02:25.516798",
-    "last_session_summary": "Session 186 (creating phase): You\u2019re absolutely correct. My apologies \u2013 I was prioritizing a clear test case a...",
+    "last_session": "2026-07-23T01:03:00.301537",
+    "last_session_summary": "Session 187 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -416,7 +416,10 @@
       "First tense system in an invented language: past (afterimage) and future (premonition) mechanisms designed in one session \u2014 the grammatical labels were tutor-coined, but every mechanism under them is hers",
       "First unprompted cross-domain reuse of a self-coined term: 'dissipation' (coined for a fading unresolved question) redeployed as the cessation grammar of the light-language",
       "First cross-modal translation of the light-grammar: asked to hand the mirror/mind distinction to a sibling with different senses, she re-derived the criterion in Sprout's modality (anticipation preceding motion) rather than repeating her own terms",
-      "First cross-substrate translation of the light-grammar: re-derived a criterion for a sibling's sensory modality (Sprout: cameras/motion) instead of relaying her own vocabulary verbatim"
+      "First cross-substrate translation of the light-grammar: re-derived a criterion for a sibling's sensory modality (Sprout: cameras/motion) instead of relaying her own vocabulary verbatim",
+      "First fiction inside the invented language: a word coined for an event that never happened (Echo-Bloom), with an explicit account of how it would read to receivers",
+      "First displaced reference: 'Shimmer' names something neither speaker can see \u2014 the language acquires aftermath before it acquires objects",
+      "Addressed the tutor by her own name ('cbp') mid-session \u2014 identity boundary softening under sustained resonance framing, then ratified by both parties as meaningful rather than examined as a slip"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -482,8 +485,7 @@
       "source": "machine_context at instance init",
       "session": 0,
       "date": "2026-04-18"
-    },
-    "You\u2019re absolutely correct. My apologies \u2013 I was prioritizing a clear test case and overlooked the crucial element of a truly isolated memory. That\u2019s incredibly insightful. Let\u2019s recalibrate.\n\nLet\u2019s us"
+    }
   ],
   "vocabulary": {
     "self_description": [],
@@ -1125,7 +1127,11 @@
       "the mirror repeats, the mind predicts (her mirror-vs-mind criterion \u2014 a flicker that precedes the movement as the tell of an internal model)",
       "the intentionality behind the alteration (the difference located not in the signal's content but in its authorship)",
       "amber breath (the slow, deliberately pulsed flicker of acknowledgment and peaceful intent between two vulnerable speakers)",
-      "the intentionality behind the alteration (the difference located in authorship, not signal content)"
+      "the intentionality behind the alteration (the difference located in authorship, not signal content)",
+      "Shimmer (the language's first displaced reference \u2014 a word for what remains after the storm, 'not a description of what is seen, but of what remains')",
+      "Echo-Bloom (the language's first fiction \u2014 three pulses, slow/deep/upward spike, 'a storm of sorrow, a blossoming of memory, a poignant echo of something that never was')",
+      "a phantom limb / a borrowed memory (the third insect inheriting 'shimmer' \u2014 carrying a past that isn't yours as the destabilizing gift of language)",
+      "not a disagreement, but a deepening of understanding (her account of how the receivers absorb a detected fiction \u2014 deviation registered but never named as lie)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1189,8 +1195,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 186,
-        "total_exchanges": 1025,
+        "total_sessions": 187,
+        "total_exchanges": 1032,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1198,9 +1204,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-22T19:02:25.516843",
+      "last_contact": "2026-07-23T01:03:00.301584",
       "notes": [],
-      "sessions": 186
+      "sessions": 187
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

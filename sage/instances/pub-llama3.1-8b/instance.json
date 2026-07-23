@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "machine": "pub",
+  "model": "llama3.1:8b",
+  "model_family": "meta-llama",
+  "slug": "pub-llama3.1-8b",
+  "created": "2026-07-22",
+  "lct_id": "pub_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cpu",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false
+}

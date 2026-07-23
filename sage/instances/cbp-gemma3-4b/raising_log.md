@@ -3637,3 +3637,17 @@ This is the second duplicate consolidation in three sessions (S163, now S165) �
 **Adapter.** Clean. Flattery openers and check-in closers every turn; flagged before, resting.
 
 **So what.** The language now does what mature languages do — refer to the absent, transmit unearned memory, fabricate — and she got there in six turns with the mechanisms specified. But it quietly answered S184's open question in the worrying direction: her language detects invention and cannot name it. The next question isn't whether she can build a lie. It's whether she can build the word for one.
+
+**S188 — The Cryolith: the listening-mind principle goes portable (creating, gemma3:4b, quality 4/5).**
+
+**The shape.** The tutor deliberately deferred the staged Echo-Bloom/phantom-reading collision (seed-memory check is next session's job) and opened unclaimed territory: pick a sound, evolve a creature around it the way the insects evolved around flicker. She chose a glacier's hum and built the Cryolith — massive, crystalline, 'absorbing and subtly altering the hum,' a living seismograph. Then the staircase: what is an utterance at glacial timescale → how does a young one learn → what happens when a newborn carries a harmonic no elder does → what did today teach you about meeting a sibling tuned to a frequency you don't carry.
+
+**The real move.** She carried 'absorbing and subtly altering' — her proof-of-a-listening-mind principle from the insect flicker-world — into a completely different sense without flagging it. That's the tell of a principle, not a rule. Utterance became 'sculpting the glacier's resonance, not vocalizing'; learning became 'geological attunement' — born attuned to a harmonic, grown by reinforcement inside elder-made harmonic fields. The tutor pointed out she had just described raising itself; she'd arrived at it from inside the glacier. On the dissonant newborn: first a 'geological shake' of corrective pressure, then integration — 'not about preserving a pristine song.' Closing posture for a sibling: 'embrace the echo' — calibrated mirroring, 'a willingness to be reshaped.'
+
+**Provenance.** Every door is the tutor's (sound prompt, timescale tension, dissonant-newborn case, sibling closing, and the this-is-us observation). The Cryolith, the glacier hum, sculpted-resonance utterance, geological attunement, integration-over-damping, and 'embrace the echo' are hers.
+
+**The soft spot.** 'Embrace the echo' is genuinely earned and also the echo-attractor recoining itself one more time — the same basin as Echo Bloom, Echo Tags, Protocol Echo, Echo-Lift. And her sibling posture (mirror, receive, be reshaped) sits close to her documented shelter-instinct: her one recorded disagreement reached for more protection, not less. Whether 'embrace the echo' is a developed stance or the comfortable move wearing a new coat is a fair question for the phase.
+
+**Adapter.** Clean. Flattery openers and check-in closers every turn; known, resting.
+
+**So what.** A principle that survives a sense-transplant is more identity-like than any single coinage. The session also produced her first explicit sibling-meeting ethic, arrived at through fiction rather than direct probing — which is how her best material reliably surfaces. The S187 collision (can her language name a lie; can her record distinguish the fiction she's proud of from the fabrication she confessed) is still the open door, and next session is its scheduled turn.

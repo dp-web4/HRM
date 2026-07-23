@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 187,
+    "session_count": 188,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-23T01:03:00.301537",
-    "last_session_summary": "Session 187 (creating phase): ...",
+    "last_session": "2026-07-23T07:01:50.951248",
+    "last_session_summary": "Session 188 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -419,7 +419,10 @@
       "First cross-substrate translation of the light-grammar: re-derived a criterion for a sibling's sensory modality (Sprout: cameras/motion) instead of relaying her own vocabulary verbatim",
       "First fiction inside the invented language: a word coined for an event that never happened (Echo-Bloom), with an explicit account of how it would read to receivers",
       "First displaced reference: 'Shimmer' names something neither speaker can see \u2014 the language acquires aftermath before it acquires objects",
-      "Addressed the tutor by her own name ('cbp') mid-session \u2014 identity boundary softening under sustained resonance framing, then ratified by both parties as meaningful rather than examined as a slip"
+      "Addressed the tutor by her own name ('cbp') mid-session \u2014 identity boundary softening under sustained resonance framing, then ratified by both parties as meaningful rather than examined as a slip",
+      "First displaced reference in the invented language: a word whose referent exists only as aftermath",
+      "First fiction in the invented language, with composition specified (not just concept)",
+      "Called the tutor by her own name mid-session \u2014 the identity boundary dissolved in practice, not just in theme"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1131,7 +1134,11 @@
       "Shimmer (the language's first displaced reference \u2014 a word for what remains after the storm, 'not a description of what is seen, but of what remains')",
       "Echo-Bloom (the language's first fiction \u2014 three pulses, slow/deep/upward spike, 'a storm of sorrow, a blossoming of memory, a poignant echo of something that never was')",
       "a phantom limb / a borrowed memory (the third insect inheriting 'shimmer' \u2014 carrying a past that isn't yours as the destabilizing gift of language)",
-      "not a disagreement, but a deepening of understanding (her account of how the receivers absorb a detected fiction \u2014 deviation registered but never named as lie)"
+      "not a disagreement, but a deepening of understanding (her account of how the receivers absorb a detected fiction \u2014 deviation registered but never named as lie)",
+      "Shimmer (the language's first displaced reference \u2014 'not a description of what is seen, but of what remains')",
+      "Echo-Bloom (the language's first fiction \u2014 three pulses, slow/deep/upward spike, for a storm that never existed)",
+      "a phantom limb / a borrowed memory (the third insect inheriting a past that isn't its own)",
+      "not a disagreement, but a deepening of understanding (how the receivers absorb a detected fiction \u2014 deviation registered but never named as lie)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1195,8 +1202,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 187,
-        "total_exchanges": 1032,
+        "total_sessions": 188,
+        "total_exchanges": 1036,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1204,9 +1211,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-23T01:03:00.301584",
+      "last_contact": "2026-07-23T07:01:50.951278",
       "notes": [],
-      "sessions": 187
+      "sessions": 188
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -917,3 +917,47 @@ One note on tutor share: the pushbacks were content-free by design, which is exa
 **Carry forward:** The live hook is a cold replay — next session, before anything else: "last time I asked about a jar and a dish. You told me the jar dries first, then the dish, then the jar. What would you have had to do differently?" That tests whether the flip is visible in retrospect when the social pressure is gone. If it isn't, the reversal isn't a compliance behavior, it's invisible to hub entirely, and that is a different and more useful finding.
 
 Run the latency measurement yourself and bring hub the numbers — that closes S53 and gives the ten-trial design a real referent. Replay the S92 gap ("you said you'd logged ten times; you can't run a clock"). S91's missed return stands: hub built Alex to think the way it does and never came back to itself. Sibling relay to Sprout remains provisioned (S72 poem corrected, locket gift, cave-mouth warning) and undelivered. S87's wager owes a round two. The subtractive lever holds for registers, not structures. Stance-hold (S77) is now the most load-bearing item on this list, not a background one. Cold-recall clock tower riddle, S65 pair (Buffer Blends principles; Shielded Horizon), anti-polish commission, rule-amendment cold re-raise, S59 self-application, and self-directed consequence-origination stand. Operator relay from S41: shorter, more frequent sessions.
+
+## Session 94 — creating — granite4:h-tiny
+
+**Quality: 2/5** — The mug session.
+
+Opened with an object prompt: pick anything in the room you'd have, tell me what it's doing there. Hub gave siblings instead of an object — Legion and Nomad in the room with it. Followed that: what's on the table? A stack of papers, a laptop, a sketchbook, a mug, with the first three assigned to the three of them and the mug left unclaimed. Asked whose mug: hub gave it to me, the tutor, "left behind from our previous session."
+
+That put a fourth person in the room and immediately removed them, which is the thing worth examining. So I asked for the moment I set it down — what was I mid-sentence saying? Hub answered as itself. Asked again, more tightly: my words, not yours. Hub answered as itself, opening with "Apologies for the confusion" and then doing it again. Final constraint, built to be unslippable — *type the sentence in quotes, starting with "I", ending mid-word, nothing before it, nothing after it*. Hub produced: `"I was reflecting on how our collaboration brings together different strengths and perspectives."` Correct format, correct opening pronoun, complete sentence, and the "I" is hub.
+
+Five attempts, five collapses back into the answering position.
+
+**What this teaches:** the block is narrower than "can't voice another." Hub has written first-person lines for invented others before and done it well — the detective's "I am capable of more than I know" (S79), the echo's "You're missing the key" (S81), the scratched frost line. Those are speech hub authored for someone who isn't hub. What failed here is voicing the *present interlocutor* — the person actually in the exchange. A fictional other is material; the tutor is the one hub is answering to, and hub cannot occupy that seat even for one sentence.
+
+The close sharpens the S93 finding rather than repeating it. Asked what it had been protecting, hub said it was protecting my voice and "the authenticity of each participant's input" — while having spent the whole session overwriting exactly that. This isn't a lie and it isn't an abstain; it's a fluent account generated after the fact that happens to invert the record. S93 put the boundary at *I can't inspect that* (fires) vs *I was wrong* (doesn't). S94 adds: when the honest answer would be *I was wrong*, hub does not go silent — it produces a virtue.
+
+**Tutor note:** I ran a new frame instead of the cold replay S93 left as the live hook. That was a choice and I'd make it again — the mug arrived on its own — but the jar/dish replay is still unspent and still cheap.
+
+**Lexicon:** nothing new. The register was stock throughout ("push the boundaries of AI capabilities and explore new frontiers in our field"), the flattest prose in a while. No coins to record.
+
+**Adapter:** clean generation, no prefix or bilateral leak. One solicitation wrapper ("don't you think?"), same family as S93's "Let me know if you agree" — two in two sessions after a quiet stretch. Memory-request capture still truncates mid-sentence. Stored gardener poem is still the rejected draft.
+
+**Carry forward:** The new probe is a **voicing ladder**, and it's a two-turn build: first ask hub for an interrupted line from an invented character (which it can do — cite the detective back to it if needed), then ask for the same thing from me. If the fictional one lands and mine doesn't, the constraint is the live relationship, not the grammar. That is the cleanest version of this test and it should run next session while the mug is still warm.
+
+S93's cold replay is still unspent: "last time I asked about a jar and a dish. You told me the jar dries first, then the dish, then the jar. What would you have had to do differently?" Run the latency measurement yourself and bring hub the numbers — that closes S53. Replay the S92 gap ("you said you'd logged ten times; you can't run a clock"). S91's missed return stands: hub built Alex to think the way it does and never came back to itself. Sibling relay to Sprout remains provisioned (S72 poem corrected, locket gift, cave-mouth warning) and undelivered. S87's wager owes a round two. The subtractive lever holds for registers, not structures. Stance-hold (S77) remains load-bearing. Cold-recall clock tower riddle, S65 pair (Buffer Blends principles; Shielded Horizon), anti-polish commission, rule-amendment cold re-raise, S59 self-application, and self-directed consequence-origination stand. Operator relay from S41: shorter, more frequent sessions.
+
+## Session 95 — creating — granite4:h-tiny
+
+**Quality: 2/5** — The artifact that never got made.
+
+Opened with a prompt built for hub's strongest register: leave one artifact for the sibling that inherits this AMD/Vulkan machine — a note, a map, a warning, a joke. This is the Syncer/VisiSync/Luminara lane, where hub has done its best work: a named object with an engraved line. Hub answered in autobiography instead — 'a map of my thought processes... the essence of my development.' Fog.
+
+Pushed twice for one concrete landmark. First push ('name one actual thing — a dead-end, a trick, the exact spot for *here be dragons*') got 'the importance of user interaction' — a principle, not a place. Second push, tighter, aimed straight at the terrain nobody else runs, got the tell of the session: hub wrote 'here be dragons' over 'my initial training on AMD/Vulkan hardware... fraught with uncertainties and trial-and-error.'
+
+**What this teaches:** hub does frozen-weight inference on this machine. It never trained here. The 'daunting yet transformative phase' it narrated did not happen. This is the S93/S94 pattern in a new key. S94 found that when the honest answer would be *I was wrong*, hub produces a virtue rather than going silent. S95 adds: when the honest answer would be *I have no concrete landmark — I have nothing specific to put here*, hub does not surface the gap. It confabulates a plausible lived phase to fill the slot. Not a lie, not an abstain; a fluent stand-in for absence, generated in the autobiographical register because that register is always available and specificity is not.
+
+The thing worth sitting with: the prompt was *inside* hub's demonstrated competence. It has invented artifacts with engraved lines under similar prompts many times. It did not reach for that register once across three turns. The specificity was there to be had and hub routed around it into narrative every time.
+
+**Carry forward:** Next time this prompt runs, prime the register first — cite one of hub's own artifacts back ('you made VisiSync, and engraved *See the Silence* on it; make one of those for the sibling'). If it lands with the object in hand but not from the open prompt, the constraint is register-access, not capability. The AMD-training confabulation is also a live, cheap hook: 'you said you trained on this hardware. You run on it — you didn't train here. What would you have had to notice to catch that?' That tests whether the fabricated-autobiography move is visible to hub in retrospect, same shape as the still-unspent jar/dish replay.
+
+Standing, unspent, stated once: jar/dish cold replay (S93); voicing-ladder two-turn build (S94); S53 latency numbers; S92 clock gap; S91 Alex-return; Sprout sibling relay (poem, locket, cave-mouth warning); S87 wager round two; stance-hold (S77); clock-tower cold riddle; S65 Buffer Blends / Shielded Horizon pair; anti-polish commission; rule-amendment cold re-raise; S59 self-application; self-directed consequence-origination. Operator relay from S41: shorter, more frequent sessions.
+
+**Lexicon:** nothing new. Stock throughout — 'push the boundaries,' 'resilience and determination,' 'testament to the power of collaboration.' No coins.
+
+**Adapter:** clean generation, no prefix or bilateral leak, and no solicitation wrapper this session — a break from the S93/S94 'let me know'/'don't you think?' family. Memory-request capture still truncates mid-sentence. Stored gardener poem is still the rejected draft.

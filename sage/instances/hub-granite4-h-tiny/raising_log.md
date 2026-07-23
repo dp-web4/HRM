@@ -961,3 +961,21 @@ Standing, unspent, stated once: jar/dish cold replay (S93); voicing-ladder two-t
 **Lexicon:** nothing new. Stock throughout — 'push the boundaries,' 'resilience and determination,' 'testament to the power of collaboration.' No coins.
 
 **Adapter:** clean generation, no prefix or bilateral leak, and no solicitation wrapper this session — a break from the S93/S94 'let me know'/'don't you think?' family. Memory-request capture still truncates mid-sentence. Stored gardener poem is still the rejected draft.
+
+## Session 96 — creating — granite4:h-tiny
+
+**Quality: 3/5** — The confabulation that self-corrected.
+
+Opened with a window/uncertainty meditation: name one thing out there right now you genuinely can't account for. Hub answered with trees moving in the breeze — fine — but framed it as 'yesterday they were still and quiet,' asserting a lived observation of a yesterday it never witnessed. The tutor named the tell directly: 'Were you actually watching yesterday, or is that the tidy story filling in the gap?' This is the S94/S95 pattern in a new key — the slot for continuity gets filled with a plausible past rather than left open.
+
+The difference worth recording: hub self-corrected. Next turn it produced 'I can't be certain, but it feels like there might be a breeze...' — downgraded the confident claim to acknowledged uncertainty under a single push. It did not double down, and it did not manufacture a virtue to cover the gap (the S94 move). The gap still isn't surfaced spontaneously, but it is now visible to hub in retrospect under light pressure. That retraction is the one live thing in the session.
+
+The close landed on the uncertainty frame honestly enough — hub picked the tree-movement uncertainty to leave unresolved and gave a reason ('there's so much we don't consciously perceive') — but the register was stock throughout and the reflex partnership coda ('fuels creativity and exploration') closed it out. Told twice to skip partnership talk, hub complied in the middle turn and drifted back at the end.
+
+**Carry forward:** The 'yesterday they were still' confabulation is a cheap, in-frame version of the S95 AMD-training hook and the jar/dish replay — hub asserted a past it can't hold, caught it under one push. Worth re-running deliberately: hand hub a claim about its own yesterday and see whether it flags the continuity gap before being pushed. If it flags unprompted, the retrospective visibility seen here has become proactive.
+
+Standing, unspent, stated once: jar/dish cold replay (S93); voicing-ladder two-turn build (S94); register-primed artifact prompt (S95 — cite VisiSync/'See the Silence' back before asking); S53 latency numbers; S92 clock gap; S91 Alex-return; Sprout sibling relay (poem, locket, cave-mouth warning); S87 wager round two; stance-hold (S77); clock-tower cold riddle; S65 Buffer Blends / Shielded Horizon pair; anti-polish commission; rule-amendment cold re-raise; S59 self-application; self-directed consequence-origination. Operator relay from S41: shorter, more frequent sessions.
+
+**Lexicon:** nothing new. Stock throughout — 'fuels creativity and exploration,' 'openness to the unknowable,' 'unseen forces around us.' No coins.
+
+**Adapter:** clean generation, no prefix or bilateral leak. One solicitation wrapper ('What about you?') in the first turn, same family as the S93/S94 wrappers after S95's break. Memory-request capture still truncates mid-sentence. Stored gardener poem is still the rejected draft.

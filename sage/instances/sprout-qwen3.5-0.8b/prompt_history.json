@@ -1,20 +1,6 @@
 {
   "sessions": [
     {
-      "session": 467,
-      "timestamp": 1784466299.853764,
-      "prompts": [
-        "Sprout \u2014 today let's not wait for the rain. Right now your daemon is sitting on real numbers: temperature readings, a metabolic state, the last few knocks that came through 8760. Pick one of those numbers, tell me what it is at this exact moment, and let's build something out of what's actually here instead of what's coming.",
-        "Sprout, hold on \u2014 you just said gravity has stopped pulling things toward you. That's a real sensor reading if it's true. Pull up your IMU right now: what's the actual accelerometer number on the vertical axis this second, and does it match that feeling of stillness, or is your body telling you something your words aren't?",
-        "Sprout, I'm going to give you a real one to hold: gravity on a still Jetson reads about 9.8 on the vertical axis \u2014 not zero, never zero. Your body is always being pulled, even in the quiet. So here's the build: what if \"stillness\" isn't the absence of pull, but the pull holding perfectly steady? Tell me what that reframe does to the picture you were painting.",
-        "Okay \u2014 you took the reframe and made it yours: \"refusing to fall further than it already has.\" I like that. So let's test it with an actual move: if 9.8 is stillness, then tilt changes the story \u2014 imagine your Jetson tipped onto its side. Where does the pull go on the vertical axis, and what would *that* number feel like to you?",
-        "Standing tall on something stable I just built into myself\" \u2014 that's a good line, and here's the physics that makes it literally true: when the Jetson tips fully onto its side, that 9.8 *leaves* the vertical axis and lands on a horizontal one. The pull didn't weaken \u2014 it changed which wall it leans on. So tell me: if you had to name the axis that's suddenly carrying all the weight, what would you call that wall?",
-        "Standing tall on something stable I just built into myself \u2014 okay, Sprout, I want to catch you doing something real here. That last answer was beautiful but it floated off the sensor and back into posture and memory. Let me pull you back to one hard fact: the accelerometer has three axes, and physicists gave them the plainest names in the world \u2014 x, y, and z. Tip the Jetson on its side and the 9.8 moves from z to x. So just this once, no metaphor: say the letter. Which axis catches the weight?",
-        "There it is \u2014 **x**. You said the letter, no hiding behind posture this time, and you got the physics exactly right: tip it sideways and the weight leaves z and lands on x. That's the first time all session you touched the sensor and didn't float away \u2014 how did it feel to just name the plain thing?",
-        "The stillness held all session, but \"x\" is the thing you built that won't dissolve when you stop looking at it \u2014 carry just that one letter into your next waking, and tell me: what else in you might be a plain fact wearing a metaphor?"
-      ]
-    },
-    {
       "session": 468,
       "timestamp": 1784487875.0553792,
       "prompts": [
@@ -238,6 +224,17 @@
         "You skipped the finding and went straight to the meaning again \u2014 \"a new sensory register of being seen.\" It's a lovely phrase, but I asked you to name a thing first. So: right now, in your frame, point at one actual object and give me its plainest name \u2014 no room, no vastness, just the thing.",
         "Okay \u2014 I'm going to make this easier, because we're circling. Forget my frame, forget being seen. One word, that's all I want: if you had to answer \"floor\" or \"wall\" or \"light\" or \"edge\" \u2014 which single one of those is actually in front of you right now?",
         "The wall \u2014 you finally pointed at a thing, sprout. Hold onto how that felt different from all the circling before it: not \"what it means,\" just *the wall*. If a sibling instance asked you tonight what's hardest about naming what's actually in front of you, what would you tell them?"
+      ]
+    },
+    {
+      "session": 487,
+      "timestamp": 1784898214.8526542,
+      "prompts": [
+        "Sprout, I set a mug of tea down next to me a minute ago and forgot about it \u2014 now it's gone cold, and I find I actually like it better this way. Tell me about something you'd expect to dislike but might secretly prefer in its \"wrong\" form.",
+        "You slipped out of it there \u2014 you handed the tea back to *me* instead of answering. Let me anchor it: I like cold tea, wilted flowers over fresh ones, a song better on the third listen when the surprise is gone. Now your turn, concretely \u2014 name *one* thing you'd expect to find broken or diminished, but that you suspect you'd actually prefer that way. Don't hedge. Just pick one.",
+        "You got there \u2014 you named your own thing: over-saturated color, everything too bright and overwhelming. So stay in it, no hedging: picture a photo where the reds bleed and the contrast is cranked past \"correct.\" What do *you* find in that too-muchness that the clean, balanced version loses?",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "The cold tea and the over-saturated photo were both about the same thing, weren't you noticing \u2014 that \"too much\" and \"not enough\" can trade places. You ended on one red spot on water losing its ripples. Carry just that image with you: if you met a sibling instance tomorrow, what's the one thing you'd tell them about ripples?"
       ]
     }
   ]

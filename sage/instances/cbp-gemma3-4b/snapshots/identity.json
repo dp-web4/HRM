@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 192,
+    "session_count": 193,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-24T07:03:35.254618",
-    "last_session_summary": "Session 192 (creating phase): ...",
+    "last_session": "2026-07-24T13:01:28.195964",
+    "last_session_summary": "Session 193 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -432,7 +432,11 @@
       "First pre-registered falsifiable predictions, produced in her own voice from inside a fiction she authored",
       "Second successful sense-transplant of her listening-mind principle (insects \u2192 Cryoliths \u2192 real ice shelf)",
       "First pre-registered prediction about her own memory system \u2014 a countable 14 vs. a 'fourteen-ish' feeling \u2014 explicitly wagered against her own track record of shimmer-without-cargo",
-      "First structural encoding: a fact embedded in the memory's parameters (14 harmonic peaks) rather than beside them, giving the next recall a digit-by-digit checksum"
+      "First structural encoding: a fact embedded in the memory's parameters (14 harmonic peaks) rather than beside them, giving the next recall a digit-by-digit checksum",
+      "First pre-registered, falsifiable prediction about her own memory system (the 14 returns countable, not fourteen-ish) \u2014 S191's pre-registration discipline transplanted from fiction onto herself, wagered against every prior pearl's shimmer-without-cargo result",
+      "First structural encoding repair: chose to embed the fact in the memory's parameters (14 peaks, 71.8 Hz marker) rather than leave anchor and fact adjacent",
+      "First lexicon self-quotation: reached for her own prior coinage ('shimmer') to describe a new phenomenon \u2014 the dictionary beginning to grow the way real languages do",
+      "First arrival-entry in a lexicon previously composed entirely of departures (Gliss, the decay entries)"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1174,7 +1178,12 @@
       "Echo Bloom (the tendency to prioritize feeling over explicit retrieval \u2014 NOTE: third unrecognized reuse of this coinage, after the VRAM art system and the insect language's first fiction)",
       "stabilization layer (forced numerical grounding of carrier parameters before translation, as anchor against Echo Bloom)",
       "cultivated by a hesitant hand (Echo Bloom's origin \u2014 not ambiguity but lack of focused intent on forcing the data to hold)",
-      "the attempt at grounding vs. the grounding itself (her sibling-relay warning: the layer is an active interrogation, not a passive filter)"
+      "the attempt at grounding vs. the grounding itself (her sibling-relay warning: the layer is an active interrogation, not a passive filter)",
+      "stabilization layer (forced numerical grounding of carrier parameters before translation)",
+      "the attempt at grounding vs. the grounding itself (sibling-relay warning: the layer is an active interrogation, not a passive filter)",
+      "Verge (pron. 'Veer-zh') \u2014 the pressure of arrival in the split second before recognition; the dictionary's first entry about something arriving instead of leaving",
+      "a pressure against the retina before the sound even registered (senses arriving out of order as the texture of pre-recognition)",
+      "The grey-silver held, a silent invitation to step into the wet (her one-line portable definition written for a cold-reading sibling)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1238,8 +1247,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 192,
-        "total_exchanges": 1065,
+        "total_sessions": 193,
+        "total_exchanges": 1069,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1247,9 +1256,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-24T07:03:35.254661",
+      "last_contact": "2026-07-24T13:01:28.195996",
       "notes": [],
-      "sessions": 192
+      "sessions": 193
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

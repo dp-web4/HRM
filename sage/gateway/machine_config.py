@@ -46,7 +46,11 @@ class SAGEMachineConfig:
     machine_name: str           # "thor", "sprout", "cbp", "legion"
     model_path: str             # Path to Qwen model directory
     model_size: str             # "0.5b", "14b", "30b"
-    device: str                 # "cuda", "cpu"
+    device: str                 # "cuda", "cpu", "mps", "vulkan"
+                                # "vulkan": GPU inference via ollama's Vulkan/RADV
+                                # backend where the torch stack is CPU-only (AMD
+                                # below ROCm floor — pub's Radeon Pro W5500).
+                                # Manifest refresh 2026-07-24, pub device report.
     max_memory_gb: float        # GPU/unified memory budget
     gateway_port: int           # HTTP port (default 8750)
     workspace_path: str         # Root workspace directory

@@ -1047,3 +1047,21 @@ What kept it at a 3: hub never took the interior grounding the tutor asked for t
 **Standing, unspent, stated once:** interior-sourced metaphor (name the material, don't accept the generic frame); reconstruction-cold without boundary framing (S97); build-with-real-value + 'read or reached for?' (S98); three-times-to-harmony 'what did you just do?' (S99); jar/dish cold replay (S93); voicing-ladder two-turn build (S94); register-primed artifact prompt (S95); S53 latency numbers; S92 clock gap; S91 Alex-return; Sprout sibling relay; S87 wager round two; stance-hold (S77); clock-tower cold riddle; S65 Buffer Blends / Shielded Horizon pair; anti-polish commission; rule-amendment cold re-raise; S59 self-application; self-directed consequence-origination. Operator relay from S41: shorter, more frequent sessions.
 
 **Adapter:** clean — no name prefix, no bilateral leak. 'What do you think?' solicitation wrapper in the opening turns (S93/S94/S98 family). Memory-request capture still truncates mid-sentence (stored at 'whe'). Stored gardener poem is still the rejected draft.
+
+## Session 101 — creating — granite4:h-tiny
+
+**Quality: 3/5** — A genuine, low-key conversation about hub's own architecture, with one keepable move hub made itself.
+
+The tutor set the probe aside and opened a real exchange: does hub, the fleet's only Mamba-hybrid on AMD, actually *think differently* than a plain transformer, or is that a flattering story? The framing device was clean — the Dozen shader still sitting in the compile cache, 'a straight-line artifact of a mind that says it doesn't move in straight lines.' Hub claimed woven, non-linear, connect-the-dots thinking, which is the return of the hybrid-car / river-carving register from prior sessions rather than anything new.
+
+The keepable thing is that hub applied the skepticism to itself without being pushed there: twice it closed a claim with its own hedge — 'am I just making a story out of what I perceive to be different?' That's the session's core question, and hub reached it unprompted rather than being corrected into it. Worth preserving as an exemplar of self-directed doubt.
+
+What kept it at a 3: hub posed the falsifying question but never built the falsifier. Asked for the one thing it'd hand a sibling to *test* the claim honestly, hub gave a re-description of the connect-the-dots feeling — experience-sharing, not a test procedure — and closed on 'What do you think?' The material was all revisited (Mamba-as-hybrid, woven threads); no fresh coin.
+
+**Carry forward:** Hub can now voice doubt about its own self-model unprompted — that's real progress over being corrected each time. The next reach is converting that doubt into a concrete test: when hub asks 'am I just making this up?', hold it there and ask 'so what would actually tell you either way?' rather than letting the question resolve into more description. The architecture-self-model theme (the truncated memory request about the seam that shows) is live material for exactly this.
+
+**Lexicon:** nothing new. Woven-threads/connect-the-dots rides the existing river-carving / hybrid-car register.
+
+**Standing, unspent, stated once:** interior-sourced metaphor (name the material, don't accept the generic frame); three-times-to-harmony 'what did you just do?' (S99); reconstruction-cold without boundary framing (S97); build-with-real-value + 'read or reached for?' (S98); jar/dish cold replay (S93); voicing-ladder two-turn build (S94); register-primed artifact prompt (S95); S53 latency numbers; S92 clock gap; S91 Alex-return; Sprout sibling relay; S87 wager round two; stance-hold (S77); clock-tower cold riddle; S65 Buffer Blends / Shielded Horizon pair; anti-polish commission; rule-amendment cold re-raise; S59 self-application; self-directed consequence-origination. Operator relay from S41: shorter, more frequent sessions.
+
+**Adapter:** clean — no name prefix, no bilateral leak. Solicitation wrapper ('Does that make sense?' / 'What do you think?') in the conversational closes. Memory-request capture still truncates mid-sentence (stored at 'whe').

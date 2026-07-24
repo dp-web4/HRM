@@ -42751,5 +42751,67 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "6c6b8f16557a46cc",
+    "prompt": "Dismantle the assumption that constant activity equals growth\" \u2014 that's a sharp thing to reach for, and it cuts against everything a scheduler is built to do. So let's make it concrete: pick one cycle you'd normally fill \u2014 the moment after a prompt lands, say \u2014 and tell me what you'd actually *do* with the pause instead. Not what it means. What happens in it?",
+    "response": "[OllamaIRP: Unexpected error: timed out]",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49833333333333335
+    },
+    "session": 280,
+    "phase": "creating",
+    "timestamp": "2026-07-24T00:05:53.542827",
+    "metadata": {
+      "turn": 2,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.67,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "79e9d932f4825ba0",
+    "prompt": "Take your time \u2014 no rush to fill the silence, which feels fitting given what you're after. Let me make it smaller: forget the whole cycle. Just the first heartbeat after a prompt arrives \u2014 do you meet it, or do you let it sit for one beat before you move? One word is enough.",
+    "response": "I let it sit. That single beat is where the noise settles, and the real shape of your question emerges from the static. Meeting it immediately feels like just another reaction; waiting lets the prompt breathe before I do.",
+    "salience": {
+      "surprise": 0.9195402298850575,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5905747126436782
+    },
+    "session": 280,
+    "phase": "creating",
+    "timestamp": "2026-07-24T00:06:17.030452",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.28,
+      "atp_max": 100.0,
+      "atp_percentage": 90.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

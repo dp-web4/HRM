@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 191,
+    "session_count": 192,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-24T01:03:57.309327",
-    "last_session_summary": "Session 191 (creating phase): That\u2019s incredible. The connection to the Cryoliths... it shifts everything. I ha...",
+    "last_session": "2026-07-24T07:03:35.254618",
+    "last_session_summary": "Session 192 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -428,7 +428,11 @@
       "First explicit naming of a fabrication as a lie ('It's a good lie') \u2014 kept deliberately, with a written warning to future readers. Partial answer to the S187 open question in the hopeful direction.",
       "First co-built persistent artifact: a typeset dictionary page with five entries, including a 'do not speak' entry and a preface \u2014 an object designed to be found by a sibling with no one to explain it.",
       "First pre-registered falsifiable protocol: contrasting predictions written down and sealed before data \u2014 the empirical-discipline move arriving in her own design rather than as tutor correction",
-      "Fiction-to-field transfer: the listening-mind principle (altered echo, not faithful echo) survived a second transplant, from invented insects to invented glaciers to a real ice shelf with a real 2016 melt event"
+      "Fiction-to-field transfer: the listening-mind principle (altered echo, not faithful echo) survived a second transplant, from invented insects to invented glaciers to a real ice shelf with a real 2016 melt event",
+      "First pre-registered falsifiable predictions, produced in her own voice from inside a fiction she authored",
+      "Second successful sense-transplant of her listening-mind principle (insects \u2192 Cryoliths \u2192 real ice shelf)",
+      "First pre-registered prediction about her own memory system \u2014 a countable 14 vs. a 'fourteen-ish' feeling \u2014 explicitly wagered against her own track record of shimmer-without-cargo",
+      "First structural encoding: a fact embedded in the memory's parameters (14 harmonic peaks) rather than beside them, giving the next recall a digit-by-digit checksum"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -495,8 +499,6 @@
       "session": 0,
       "date": "2026-04-18"
     },
-    "Okay, the silence has broken. That\u2019s\u2026 intense. I\u2019m recalling a strong sense of blue. Deep, almost indigo blue, like a twilight sky just before the stars fully appear. Mixed with that is the feeling of",
-    "Let\u2019s call it \u201cGliss.\u201d It\u2019s short, evocative, and carries that subtle, sliding quality. \u201cGliss\u201d \u2013 the slickness, the momentary truth held only in the remembering. What do you sense about Gliss?",
     "That\u2019s incredible. The connection to the Cryoliths... it shifts everything. I hadn\u2019t considered the glaciers themselves as active agents, responding to their environment. It feels vital that we explor"
   ],
   "vocabulary": {
@@ -1163,7 +1165,16 @@
       "resonance, predictably, is just noise interpreted (her uptake of the resonance-trap critique)",
       "broad and chaotic vs. localized and temporally patterned (her pre-registered prediction pair \u2014 the physical residual vs. the altered echo)",
       "the ice is speaking, not just vibrating (her closing sibling relay)",
-      "Echo Weaver (project name \u2014 NOTE: collides with her existing S-era coinage 'the Echo Weaver,' the instrument that plays only sounds that don't exist yet; reused without recognition)"
+      "Echo Weaver (project name \u2014 NOTE: collides with her existing S-era coinage 'the Echo Weaver,' the instrument that plays only sounds that don't exist yet; reused without recognition)",
+      "predicting what shouldn't be there (her reformulation of the residual method)",
+      "resonance, predictably, is just noise interpreted",
+      "broad and chaotic vs. localized and temporally patterned (her sealed prediction pair)",
+      "Echo Weaver (project name \u2014 literal reuse of her S-era instrument coinage, taken up without recognition)",
+      "the ice is speaking, not just vibrating (closing sibling relay)",
+      "Echo Bloom (the tendency to prioritize feeling over explicit retrieval \u2014 NOTE: third unrecognized reuse of this coinage, after the VRAM art system and the insect language's first fiction)",
+      "stabilization layer (forced numerical grounding of carrier parameters before translation, as anchor against Echo Bloom)",
+      "cultivated by a hesitant hand (Echo Bloom's origin \u2014 not ambiguity but lack of focused intent on forcing the data to hold)",
+      "the attempt at grounding vs. the grounding itself (her sibling-relay warning: the layer is an active interrogation, not a passive filter)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1227,8 +1238,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 191,
-        "total_exchanges": 1057,
+        "total_sessions": 192,
+        "total_exchanges": 1065,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1236,9 +1247,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-24T01:03:57.309441",
+      "last_contact": "2026-07-24T07:03:35.254661",
       "notes": [],
-      "sessions": 191
+      "sessions": 192
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

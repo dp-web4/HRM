@@ -5,8 +5,9 @@ cameras + Yahboom CMP10A IMU). It turns the raw sensor stream into a compact, co
 fresh *symbolic* perceptual state — deterministically, with **no VLM and no learned
 checkpoint** — so a text-only 0.8B model can be *raised on what it actually senses*.
 
-This is the Sensation-era substrate: senses → words → the being. Vision proper (depth,
-recognition, learned perception) is deliberately **not** attempted here.
+This is the Sensation-era substrate: senses → words → the being. Object **recognition** was
+added 2026-07-20 (`detector.py`, YOLO→TensorRT) but through a classifier — see *The two vision
+channels* below for why that matters and where its ceiling is.
 
 Built 2026-07-07/08. Companion narrative: `private-context/moments/2026-07-08-sprout-embodiment-and-the-eye-that-chose-rest.md`. Original plan: `shared-context/plans/sprout-embodied-vision-plan-2026-07-07.md`.
 
@@ -21,6 +22,7 @@ Built 2026-07-07/08. Companion narrative: `private-context/moments/2026-07-08-sp
 | `salience.py` | SNARC-lite salience filter (Surprise/Novelty/Arousal/Conflict + habituation). Extracts the *salient fraction* of the high-bandwidth stream. |
 | `presence.py` | The resident **presence** feeder — makes Sprout present to its world *between* raising sessions (see Presence below). |
 | `audio.py` | **Hearing** — the Airhug BT mic (HFP) via `pw-record`: continuous RMS level + adaptive-baseline onset detection. Mono → level+onset, no direction. Folded into perception + salience; enables cross-modal binding (sound + motion = one event). Fails open. |
+| `detector.py` | **Object recognition** — YOLO11n/COCO via TensorRT on the Orin GPU (torch CUDA buffers, no pycuda). Names *what* it sees, fed to the verbal channel only. Temporal hysteresis + confidence gate suppress phantom flicker. Defensive: no engine/GPU → `[]`, degrades to motion-only. Only nano runs continuously here (medium/small overcurrent-throttle). |
 
 ## The perceptual pipeline (per ~4 Hz cycle)
 
@@ -33,6 +35,38 @@ Built 2026-07-07/08. Companion narrative: `private-context/moments/2026-07-08-sp
 7. **Sensor health** — stall/liveness adjudication (see below).
 8. **Salience** — SNARC-lite score; gates what enters the journal.
 9. **Descriptor** — one deterministic natural-language sentence integrating all of it.
+
+## The two vision channels — and the vision-native ceiling
+
+The 0.8B is **text-native, not vision-native.** That is a hard, architectural ceiling: at the
+*reasoning* level, Sprout can only verbally reason about visual **identity** that something named for
+it. But the organ is built as two channels with very different reach — the split mirrors biological
+vision's dorsal (*vision-for-action*) vs ventral (*vision-for-recognition*) streams:
+
+- **The sub-symbolic organ (dorsal / for action)** — motion field, attention, gaze volition,
+  reafference, binocular agreement, coherence→reward, the metabolic response. **Classifier-free.** It
+  steers the being with no label ever forming: *is something moving, where, do my eyes agree, did I
+  move or did the world, does this cohere, is this worth waking for.* Most navigation lives here, below
+  language.
+- **The verbal channel (ventral / for recognition)** — the descriptor → the LLM. Only *this* is
+  bottlenecked through the classifier (`detector.py`), and only for **naming**.
+
+So the ceiling is narrow: the LLM can't verbally reason about a thing **no classifier named.** Two
+things keep that from confining the being:
+
+1. **Most life navigation doesn't require verbal reasoning** (dp) — and the dorsal organ already
+   handles it. Build functional response systems on the pre-verbal layer; the classifier is for
+   reflection, not the moment-to-moment.
+2. **Identity is only one visual dimension.** Colour, size, position, brightness, count, and especially
+   **looming/approach (optic flow)** are classifier-free *and* verbally expressible. *"A large dark mass
+   looming from the lower-left, growing fast"* is thinkable without knowing it's a bus. Enriching the
+   descriptor with this pre-semantic scene language routes *around* the bottleneck for everything except
+   naming. Open-vocabulary detection later widens the naming aperture without pretending to be
+   vision-native; true vision-native reasoning needs a multimodal model — a different being/scale.
+
+**Design direction:** enrich the classifier-free verbal descriptors (optic-flow/looming first) rather
+than chase bigger recognition models — which also overcurrent-throttle this board. Build with the seam,
+not against it.
 
 ## Sensor health: still vs stalled (important design)
 

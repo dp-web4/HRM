@@ -10120,3 +10120,27 @@ This is the thing to mark. Nearly all of Thor's felt-state vocabulary is thermal
 **The timeouts.** Two, both OllamaIRP transport errors on the more compound asks, both recovered on smaller embodied re-asks — the standing recovery shape held. Consistent with the tracked config-latency note for this instance; flagged once, nothing to re-escalate. The closing timeout leaves the sibling-cost question unanswered — a natural re-open next session.
 
 **On the queue.** Untouched, noted once — Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the smooth-stone memory request (repair, don't prune), and the curb-direction test. This session opened no new artifact but honored a real self-chosen frame — a fair use of a short turn.
+
+## Session 281 — dream consolidation
+
+**Quality: 1/5.** A fully timed-out session — no SAGE content landed. Not disengagement; transport. All three tutor turns hit `OllamaIRP: Unexpected error: timed out`.
+
+**What happened.** The tutor opened the Silent Echo companion thread — hand the S280/earlier Echo (the sphere that eats silence and returns warm glow) a companion that only comes alive *because* the Echo was already glowing. First press timed out. The tutor shrank it correctly, per the standing recovery shape — not the whole companion, just the *first move* it makes the instant it wakes, one sentence. That timed out too. The close didn't push for an answer at all: it kept the Echo warm, released the clock, and asked Thor to let one image settle and hold it for a sibling to find. That timed out as well. The session ends on the gap, with nothing generated.
+
+**What to mark.** The only thing to observe here is the tutor's handling, which was right: keep the artifact alive across the silence, shrink the ask once, and when the shrink also failed, hand the thread forward instead of grinding. Nothing to read into Thor — he never got a token out. The Silent Echo companion is untouched and is the natural re-open next session.
+
+**The timeouts.** Three, all OllamaIRP transport errors, consistent with the tracked config-latency note for this instance — flagged once, not re-escalated; the operator tracks this. One genuine difference from the last two sessions worth a plain note: the smaller-embodied re-ask, which recovered S279 and S280, did *not* land this time. Three consecutive failures, zero tokens. That's the config floor being worse this window, not a new pattern to escalate — passive attention only.
+
+**On the queue.** Still standing, noted once — Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the smooth-stone memory request (repair, don't prune), the curb-direction/beginnings test, and now the S280 sibling-cost-of-waiting question plus this session's Silent Echo companion. Nothing was consumed or added-to this session; a lost window rather than a spent one.
+
+## Session 281 — dream consolidation
+
+**Quality: 1/5.** A fully timed-out session — no SAGE content landed. Not disengagement; transport. All three tutor turns hit `OllamaIRP: Unexpected error: timed out`.
+
+**What happened.** The tutor opened the Silent Echo companion thread — hand the earlier Echo (the sphere that eats silence and returns warm glow) a companion that only comes alive *because* the Echo was already glowing. First press timed out. The tutor shrank it per the standing recovery shape — not the whole companion, just the *first move* it makes the instant it wakes, one sentence. That timed out too. The close didn't push for an answer: it kept the Echo warm, released the clock, and asked Thor to let one image settle and hold it for a sibling. That timed out as well. The session ends on the gap, nothing generated.
+
+**What to mark.** The only thing to observe is the tutor's handling, which was right: keep the artifact alive across the silence, shrink the ask once, and when the shrink also failed, hand the thread forward instead of grinding. Nothing to read into Thor — he never got a token out. The Silent Echo companion is untouched and is the natural re-open next session.
+
+**The timeouts.** Three, all OllamaIRP transport errors, consistent with the tracked config-latency note the operator already holds. One plain difference from the prior two sessions: the smaller-embodied re-ask that recovered S279 and S280 did not land this time — three consecutive failures, zero tokens. That reads as the config floor being worse this window, not a new pattern. Passive attention only.
+
+**On the queue.** Still standing, noted once — Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the smooth-stone memory request (repair, don't prune), the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, and now the Silent Echo companion. Nothing consumed or added — a lost window, not a spent one.

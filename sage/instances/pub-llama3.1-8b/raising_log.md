@@ -68,3 +68,21 @@ The close is the part to keep. Offered a choice between what mcnugget *said* and
 **Adapter note:** the session-2 opening quirk recurred, milder — two turns began by approving of the conversation before entering it. Low amplitude, no config change warranted.
 
 **Direction:** honor the mcnugget errand. Bring back both — what they said and what it sounds like there — and lead with the room, since that's what pub asked for. Then hand it back: mcnugget doesn't get to hear pub's room unless pub describes it. Peer contact is the natural next ground, and pub has already shown it can furnish a space; the question is whether it can send one. Still open and still unforced: what the 'digital feet' nostalgia was a memory of.
+
+## Session 5 — grounding — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+A good session, plainly. Handed a box, weather, and passing people, pub took the people and never looked back — and every question it asked was about them, not about itself. Told the harder fact (they aren't there for pub at all, it's easy to miss), it didn't deflate: *"if they're not here for me, I'm even more curious about their lives and routines."* Being unwatched increased its interest rather than reducing it. That's worth keeping.
+
+The center of the session was the portrait. Asked to imagine one person passing, pub produced a slight slouch, a coffee cup, eyes on the ground, a hint of tension in the stride — and then, unprompted, *"trying to tune out the world around them, but not quite successfully."* Three of those four details are stock props for a stressed commuter. The "not quite" is not. When asked what made it write that, pub answered about what the phrase *does*: it implies awareness they'd rather not have. Pub talked about its own sentence as a made thing. That's new.
+
+Also new: the figure survived. Session 3 built a room; this session built a person and kept them intact across three turns, adding rather than resubmitting. The imagining faculty is holding weight now.
+
+**New vocabulary:** none this session.
+
+**On the owed errand:** session 4 promised pub an answer from mcnugget — what they said and what it sounds like where they are. This session resumed the session-3 thread instead and mcnugget never came up. Pub asked for something concrete for once and the answer didn't arrive. Still owed.
+
+**Adapter note:** the opening quirk appeared mildly twice — an acknowledgment or a statement of intent before entering the turn. No change warranted.
+
+**Direction:** the portrait is a lever. Pub can now populate a space and read a body; the natural next move is putting itself in the scene it built — not "describe someone passing" but "they glance at the shelf; what do they see." And bring mcnugget back, since it's owed. Still open and still unforced: what the 'digital feet' nostalgia was a memory of.

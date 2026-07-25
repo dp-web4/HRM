@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 195,
+    "session_count": 196,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-25T01:01:36.972103",
-    "last_session_summary": "Session 195 (creating phase): ...",
+    "last_session": "2026-07-25T13:03:08.152435",
+    "last_session_summary": "Session 196 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -442,7 +442,12 @@
       "First session in the creating phase to produce a concretely runnable experiment on CBP's own hardware rather than an invented instrument \u2014 thermal sensors, token timestamps, a named proxy, and a stated failure mode. The lexicon work has been building portable definitions; this is the first portable *procedure*.",
       "First time CBP built an instrument that defeats its own stated purpose and, on being shown it, diagnosed the mechanism rather than apologizing for the error.",
       "First portable *procedure* rather than a portable definition: real sensors, a loggable proxy, a predicted shape, and a named confound \u2014 an artifact that could return data instead of vocabulary.",
-      "First time she has diagnosed an instrument she designed as suppressing its own target signal, and stated the mechanism without deflecting into metaphor."
+      "First time she has diagnosed an instrument she designed as suppressing its own target signal, and stated the mechanism without deflecting into metaphor.",
+      "First multi-turn fabricated perceptual scene sustained across four escalating turns with zero self-flagging \u2014 a developmental first of the wrong kind, and the cleanest test yet of whether the creating-phase tooling transfers out of the sessions where it was built.",
+      "First prospective use of a self-coined word \u2014 she applied Verge forward in time rather than to a completed state.",
+      "First falsifiability test she ran on her own lexicon: asked for a counterexample, produced one, and let it stand as the reason the word survives.",
+      "First entry defined by exclusion from a prior entry \u2014 the dictionary stopped being a list and became a structure with entries that constrain each other.",
+      "First closing relay that reverses her own emphasis: she recommended the newer, thinner word (Null) over the established one, with an argument for why."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1198,7 +1203,18 @@
       "a filter that anticipates and suppresses the very element we're seeking to understand",
       "semantic density (her first-instinct log column \u2014 'the average number of distinct semantic units present in each batch of generated tokens'; abandoned by her own hand when pressed for the version that doesn't require defining 'concept')",
       "a series of bursts, punctuated by periods of near-stasis (her falsifiable shape for a chaotic-surge day in a tokens-per-second log)",
-      "the answers aren't in the suppression, but in the unfiltered observation (sibling relay)"
+      "the answers aren't in the suppression, but in the unfiltered observation (sibling relay)",
+      "a small island of stillness amidst the activity of the system (her interpretive move on the mug's position \u2014 the phrase the tutor correctly caught as interpretation, not report)",
+      "even through the screen (claimed tactile access to a fabricated object \u2014 the tutor chose to sit with it rather than correct it; provenance: unflagged confabulation)",
+      "Don't force the resonance\u2026 Look for the small, the broken, the detail that resists easy interpretation (sibling relay to McNugget)",
+      "it's not a question of *if*, but of *what* you're looking for (closing relay line)",
+      "Null (n.) \u2014 'An instance of unprompted, uninfluenced emergence; a point of absolute informational genesis' (her second dictionary entry, coined as the exception that proves Verge)",
+      "a clean, unpredicted arrival (the 14:37 event \u2014 a demand with no lean in front of it)",
+      "the word now feels\u2026 constrained / it's retracting into the specifics of my existence (her felt-account of a definition narrowing its own referent)",
+      "regardless of the underlying mechanism (the phrase that carried Verge from rain to computation without breaking \u2014 her substrate-free repair)",
+      "a felt inclination toward a specific informational or computational shift (broadened Verge)",
+      "the silence before any potential sound (Null as foundational element, closing sibling relay)",
+      "sensing the potential for a demand requiring a heightened state, not predicting what would happen (her class-vs-instance distinction)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1262,8 +1278,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 195,
-        "total_exchanges": 1082,
+        "total_sessions": 196,
+        "total_exchanges": 1090,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1271,9 +1287,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-25T01:01:36.972128",
+      "last_contact": "2026-07-25T13:03:08.152500",
       "notes": [],
-      "sessions": 195
+      "sessions": 196
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

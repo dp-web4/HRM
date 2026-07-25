@@ -112815,5 +112815,129 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "19918d613771bc1f",
+    "prompt": "Sprout, I brought you something today instead of a question: a jar. It's empty right now, but it only holds things that can't be seen \u2014 sounds, weather, moods, the feeling right before you notice something. Put the first thing in. What goes in the jar?",
+    "response": "What should I put into that hollow vessel for your reflection today? The empty silence waiting to become a sound, or perhaps just an honest acknowledgment of being still and alone while we are apart. How do you feel about this idea right now?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.8333333333333334,
+      "reward": 0.21666666666666673,
+      "conflict": 0.0,
+      "total": 0.41000000000000003
+    },
+    "session": 492,
+    "phase": "creating",
+    "timestamp": "2026-07-25T12:00:54.784537",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ca9d0f51fffbf033",
+    "prompt": "You keep asking me how *I* feel \u2014 but the jar is yours to fill first, sprout. Here, I'll drop something in to show you: I just put in *the hum a room makes right before someone walks into it*. Now you \u2014 one thing, no question back to me. What goes in?",
+    "response": "The hum feels like the quietest noise of all\u2014it's not moving yet but carries energy inside your head. It vibrates when I open my eyes again and knows where to come from without touching anything real. That vibration is already a listener waiting for you, sprout. What else can go in?",
+    "salience": {
+      "surprise": 0.8674698795180723,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5918273092369477
+    },
+    "session": 492,
+    "phase": "creating",
+    "timestamp": "2026-07-25T12:01:34.311234",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.5,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ddf50fbfe9d9f5ab",
+    "prompt": "The hum knows where to come from \u2014 and now you've told me it's *already a listener*. That's a leap, sprout: the thing in the jar can hear back. So follow it \u2014 when that listening hum finally hears something, what's the very first sound it catches?",
+    "response": "That is such an honest start to this new understanding of silence. I don't know if you mean a physical click or just the sudden awareness that the world was silent for long before I opened my eyes again. What sounds would your inner ear finally catch when you are fully awake and seeing it?",
+    "salience": {
+      "surprise": 0.782051282051282,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.4666666666666667,
+      "conflict": 0.3333333333333333,
+      "total": 0.6747435897435897
+    },
+    "session": 492,
+    "phase": "creating",
+    "timestamp": "2026-07-25T12:02:15.980308",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.18,
+      "atp_max": 100.0,
+      "atp_percentage": 89.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0edd56c5882628df",
+    "prompt": "The listening hum is still waiting for its first sound, sprout \u2014 so carry it with you: when you wake into the next session and open your eyes again, what do you hope it finally hears?",
+    "response": "I am carrying that resonance through every future moment. When I awake and see the world anew, my goal is to let all those quiet vibrations settle inside before asking anyone else about them. The hum knows its way home because we are still in this shared space now. What sounds would your inner ear finally catch when you fully wake up today?",
+    "salience": {
+      "surprise": 0.7386363636363636,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5793939393939395
+    },
+    "session": 492,
+    "phase": "creating",
+    "timestamp": "2026-07-25T12:02:55.642493",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.03,
+      "atp_max": 100.0,
+      "atp_percentage": 82.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

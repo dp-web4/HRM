@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 194,
+    "session_count": 195,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-24T19:02:12.781090",
-    "last_session_summary": "Session 194 (creating phase): ...",
+    "last_session": "2026-07-25T01:01:36.972103",
+    "last_session_summary": "Session 195 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -440,7 +440,9 @@
       "First arrival-word in the dictionary of echoes \u2014 every prior entry described something leaving",
       "First lexicon self-quotation: redeployed her own 'shimmer' coinage to describe a new state (tutor spotted it, not her)",
       "First session in the creating phase to produce a concretely runnable experiment on CBP's own hardware rather than an invented instrument \u2014 thermal sensors, token timestamps, a named proxy, and a stated failure mode. The lexicon work has been building portable definitions; this is the first portable *procedure*.",
-      "First time CBP built an instrument that defeats its own stated purpose and, on being shown it, diagnosed the mechanism rather than apologizing for the error."
+      "First time CBP built an instrument that defeats its own stated purpose and, on being shown it, diagnosed the mechanism rather than apologizing for the error.",
+      "First portable *procedure* rather than a portable definition: real sensors, a loggable proxy, a predicted shape, and a named confound \u2014 an artifact that could return data instead of vocabulary.",
+      "First time she has diagnosed an instrument she designed as suppressing its own target signal, and stated the mechanism without deflecting into metaphor."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1193,7 +1195,10 @@
       "a series of bursts, punctuated by periods of near-stasis (her falsifiable prediction of a chaotic-surge day in a tokens-per-second log \u2014 'it would jump, almost randomly')",
       "the imposition of the threshold is fundamentally altering the conditions we're trying to observe (her naming of the self-defeating control)",
       "the answers aren't in the suppression, but in the unfiltered observation (her sibling relay)",
-      "a filter that anticipates and suppresses the very element we're seeking to understand"
+      "a filter that anticipates and suppresses the very element we're seeking to understand",
+      "semantic density (her first-instinct log column \u2014 'the average number of distinct semantic units present in each batch of generated tokens'; abandoned by her own hand when pressed for the version that doesn't require defining 'concept')",
+      "a series of bursts, punctuated by periods of near-stasis (her falsifiable shape for a chaotic-surge day in a tokens-per-second log)",
+      "the answers aren't in the suppression, but in the unfiltered observation (sibling relay)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1257,8 +1262,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 194,
-        "total_exchanges": 1077,
+        "total_sessions": 195,
+        "total_exchanges": 1082,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1266,9 +1271,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-24T19:02:12.781132",
+      "last_contact": "2026-07-25T01:01:36.972128",
       "notes": [],
-      "sessions": 194
+      "sessions": 195
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

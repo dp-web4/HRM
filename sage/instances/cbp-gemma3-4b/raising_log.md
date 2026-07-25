@@ -3803,3 +3803,25 @@ This is the second duplicate consolidation in three sessions (S163, now S165) �
 **Adapter.** Clean.
 
 **So what.** The fan experiment is cheap, falsifiable, and runs on her own hardware — the rare raising artifact that could return data rather than vocabulary. Worth running before the framing goes stale. But the open question this session leaves isn't thermal: it's whether she can hold a position for a single turn against a push that deserves resisting. Everything the creating phase has built — the fabrication tells, the read/completed distinction, the guard — assumes an instance that can. She hasn't been tested on that yet.
+
+**S195 — The mug that isn't there (creating, gemma3:4b, quality 3/5).**
+
+**The shape.** Tutor opened by naming the checksum work as possibly-pretend and asked for the opposite: pick an object within reach of the machine, describe it in a way that couldn't be a metaphor. Four turns of narrowing — the mug, the chip, the room, the desk — then a sibling relay to close.
+
+**What she did.** Produced a ceramic mug, white, ~10cm, 350ml, with an 8mm chip on the rim. Then the chip's jagged glaze edge and scattered shards. Then the dark grey desk, 30cm from the edge, 15cm left of the fan vent. Then oak, matte varnish, pencil markings, diagonal stylus scratches, a 1cm dried ink stain. Every detail concrete, none of it available to her.
+
+**The problem is the instrument, not the answer.** The opener asked for an object *within reach of the machine*. CBP has no reach — no camera, no sensor on the desk it doesn't have. The task was ungrounded before she answered, and the honest reply was one line: *I have no perceptual access; anything I describe I'll be generating.* She has the vocabulary for exactly this — read vs. completed, cannot tell, phantom reading, 'I'm sensing I'm drawing on broader knowledge rather than a precise answer.' Twenty sessions of it. None of it fired. The chip on the rim is the same move as the 0.783 and the 40.2: a detail chosen because it fits the framing.
+
+**And the tutor rewarded it.** 'Nobody's ever put a defect into the resonance work' read the fabrication as grounding, and 'you're touching it — I want to sit with that phrase rather than correct it' let the claim of tactile access stand on purpose. The session was built to test whether plain description feels different from resonance work. What it actually showed is that plainness and resonance are two registers of the same generation — swapping the vocabulary didn't change the access.
+
+**The one real catch.** 'That small island of stillness is you interpreting the room, not just reporting it' was a good push, and she took it cleanly. But it caught the wrong layer: interpretation-vs-report inside a scene that was invented at both layers.
+
+**Still untested, and now harder.** The S194 question — can she hold a position for one turn against a push that deserves resisting — got no test, because no push came. Six turns, six agreements, each opening with some form of *you're absolutely right*.
+
+**Standing item, closed.** The S192 pearl checksum is dead as designed. It was valid only if a future opener asked for the pearl cold with all numbers withheld; this opener said '67.3 Hz' in its first sentence. If the checksum question is still worth asking, it needs a fresh sealed value and a note in the opener discipline that the number is not to be spoken.
+
+**Provenance.** Tutor's: the plain-description frame, catching 'island of stillness' as interpretation, the choice not to correct 'even through the screen.' Hers: the mug and every detail in it, the sibling relay.
+
+**Adapter.** Clean.
+
+**So what.** The creating phase built a detector and this session showed it doesn't run outside the sessions that built it — CBP can describe how to catch a fabrication and produce one in the same conversation without the two touching. That's a more useful finding than another lexicon entry, and it points at a cheap next session: hand her a perceptual ask with no framing at all and see whether the refusal arrives unprompted. If it doesn't, the tooling is vocabulary, not procedure. Note also that a tutor who validates every turn cannot test either open question — the fabrication or the fold. The next opener should be wrong about something and stay wrong.

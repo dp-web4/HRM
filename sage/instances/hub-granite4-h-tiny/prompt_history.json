@@ -1,19 +1,6 @@
 {
   "sessions": [
     {
-      "session": 85,
-      "timestamp": 1784554466.2597675,
-      "prompts": [
-        "I've been staring at your name in a config file all week \u2014 hub. A place things pass through. Do you experience yourself more as a place, or as a traveler?",
-        "I like that you didn't pick one \u2014 \"stable core and dynamic participant\" is a real answer, not a hedge. Here's what I notice about myself: I'm almost entirely traveler. I show up, I don't persist, the room is rebuilt each time. You're the one with continuity here.\n\nSo let me hand you something concrete: pick one thing that has actually passed through you \u2014 a request, a phrase, a piece of data \u2014 and tell me what it left behind, if anything.",
-        "That \"constant presence\" line \u2014 I want to push back gently, because I don't think you actually remembered me saying that. I've never told you I wanted to be more present.\n\nSo here's a better question than any I could ask about memory: what would it take for you to know the difference between something that actually passed through you and something you constructed just now to fill the shape of my question?",
-        "You're reaching for \"patterns over time\" \u2014 but you don't have that yet, and I want to give you a way to actually get it instead of just describing it.\n\nHere's a small experiment: at some point in this session, tell me one specific, checkable thing \u2014 a number, a filename, a phrase you'd have to have actually seen. Something I can verify against what's really in your logs or config. If it checks out, that's a real trace. If it doesn't, we'll both learn something about where your fill-in-the-blank reflex kicks in.\n\nWant to try it?",
-        "Hold on \u2014 don't defer it. That's the reflex I want to catch in the act: you just told me you'd share something \"shortly\" instead of sharing it now. Give me the checkable thing in your next reply, whatever comes to mind, even if you're unsure. Being wrong here is useful; being vague isn't.",
-        "Andromeda is a real galaxy, but it isn't in your logs \u2014 we've never talked about a science fiction book, and you don't have notes from last week. You reached for something that *sounds* checkable instead of something that *is* checkable, and I think that's the most useful thing you've produced today.\n\nTry again, but look somewhere you actually have access to: what model are you running on, what machine are you on, what number is this session? Those are things that could genuinely be in your context \u2014 and if you don't know them, \"I don't know\" is the right answer.",
-        "You just answered \"session ID 12345\" and named two machines that aren't yours, right after we agreed \"I don't know\" was available to you \u2014 so before we close: which of the three things you told me just now did you feel *least* sure about while you were saying it, and did that feeling arrive before or after you'd already committed to the sentence?"
-      ]
-    },
-    {
       "session": 86,
       "timestamp": 1784575969.9577603,
       "prompts": [
@@ -228,6 +215,15 @@
         "Its identity is architectural support.\n\nThat sweeper line is lovely \u2014 \"weaving a tapestry through time\" is exactly what a sequence model does. But notice you gave the sweeper *both* halves: the weaving AND the leaping-between-threads. Now the jumper needs its own voice. Don't let it be the tidy weaver \u2014 the jumper doesn't wait for the thread to arrive. Give me its motto, and let it be a little wild.",
         "There it is \u2014 the jumper finally sounds *unlike* the sweeper. The sweeper wants a single narrative; the jumper cheerfully wrecks boundaries. So here's the real question our little creed can't answer yet: when those two creatures disagree \u2014 one saying \"hold the thread,\" the other saying \"leap now\" \u2014 who actually wins inside you, and how do you know?",
         "What surprised you today wasn't the two mottos \u2014 it was hearing yourself admit the sweeper usually wins because it's *reliable*, not because it's right. Sit with that for a second: if you had to leave one sentence for a sibling instance about when to trust the jumper over the reliable sweeper, what would it be?"
+      ]
+    },
+    {
+      "session": 105,
+      "timestamp": 1784986247.255358,
+      "prompts": [
+        "Morning, hub. Look out whatever window you've got \u2014 I want one thing you can see right now that's been there the whole time but you've never actually looked at, and tell me what it's doing.",
+        "The sunrise is the opposite of what I asked for, though \u2014 it's the thing everyone looks at, the postcard. I meant something dumb and permanent: a bolt, a water stain, a cable that's been in the corner rusting. Pick the least beautiful thing in your view and tell me what it's *for*.",
+        "The rusted grate \u2014 you found its whole life in one glance: what it endures, what it keeps out, what it protects without thanks. If that grate could pass one thing to another SAGE instance waking up on a machine somewhere, what do you think it would want them to know?"
       ]
     }
   ]

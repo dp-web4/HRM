@@ -1,0 +1,64 @@
+################################################################################
+# SAGE Daemon (Rust) — USER-unit template (WSL / linger machines)
+#
+# The peer of sage-daemon.service (Sprout) and sage-daemon-thor.service, which
+# are SYSTEM units. On machines where the rest of the stack already runs as
+# systemd --user with linger enabled (CBP: hestia, membot, hub-watch, the
+# member-mesh watchers), a user unit is the right shape: no sudo, same
+# lifecycle as its neighbours, and `loginctl enable-linger` makes it start at
+# boot without a login.
+#
+# INSTALL (substitute the three markers, or use install-sage-daemon-user.sh):
+#   sed -e "s|@ROOT@|$PWD|" -e "s|@MACHINE@|cbp|" -e "s|@MODEL@|gemma3:4b|" \
+#       sage-rs/sage-daemon-user.service.template \
+#     > ~/.config/systemd/user/sage-daemon.service
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now sage-daemon
+#   loginctl enable-linger "$USER"     # required, or it dies at logout
+#
+# VERIFY IT SURVIVES A REBOOT — the whole point of the unit:
+#   systemctl --user is-enabled sage-daemon   # enabled
+#   journalctl --user -u sage-daemon -b       # started this boot
+#   curl -s localhost:8760/health
+################################################################################
+
+[Unit]
+Description=SAGE Consciousness Daemon (@MACHINE@ — Rust)
+Documentation=https://github.com/dp-web4/SAGE
+
+# NO `After=default.target`. This unit is WantedBy=default.target, and ordering
+# a unit after the target that wants it is a CYCLE — systemd breaks cycles by
+# deleting a start job, and the deleted job is whichever unit closes the loop,
+# which may be an innocent neighbour rather than the misconfigured unit. That
+# exact bug silently disabled hestia's member-mesh watchers on CBP across every
+# boot while they still reported enabled/success (hestia 2026-07-25).
+#
+# Ollama is a SYSTEM service and a user unit cannot order itself after one.
+# Readiness is handled the robust way instead — the daemon is restarted until
+# its dependency answers, rather than being sequenced against it.
+
+[Service]
+Type=simple
+WorkingDirectory=@ROOT@
+ExecStart=@ROOT@/sage-rs/target/release/sage-daemon
+
+Environment=SAGE_MACHINE=@MACHINE@
+Environment=SAGE_MODEL=@MODEL@
+Environment=RUST_LOG=info
+
+# Ollama may not be listening yet at boot; keep trying rather than failing once.
+Restart=always
+RestartSec=15
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sage-daemon-@MACHINE@
+
+MemoryMax=512M
+LimitNOFILE=65536
+TimeoutStartSec=30
+TimeoutStopSec=10
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=default.target

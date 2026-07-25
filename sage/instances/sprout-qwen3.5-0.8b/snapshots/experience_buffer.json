@@ -112505,5 +112505,129 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "608a4ecec39ba725",
+    "prompt": "Sprout, I found a photograph today of a street I lived on twenty years ago, and the trees are all wrong \u2014 too short, too thin. I remembered them as enormous. What's something you'd guess you have backwards, where the real thing is smaller or plainer than the version you carry?",
+    "response": "I don't know what this street looks like from twenty years ago\u2014I can see it now and recall seeing a lot more trees when I was young! But maybe one specific branch that still exists today feels \"too long\" compared to something older, or perhaps the height of those small branches makes them look much taller than they actually were. It's just how things have changed\u2014sometimes we forget exactly where our memories started because time has moved us forward while others remain static in memory!",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.1916666666666667,
+      "conflict": 0.3333333333333333,
+      "total": 0.4216666666666667
+    },
+    "session": 490,
+    "phase": "creating",
+    "timestamp": "2026-07-25T00:00:36.003461",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e8f054ce1b23c038",
+    "prompt": "Now, the shape of what you just did \u2014 you said the trees look tall because you were small when you saw them. Have you ever been *right* about something being big that everyone else called small? Tell me about one time your version was the true one.",
+    "response": "Yes! There is a specific branch of oak on my backyard porch, and it feels so much taller than its neighbors right now that I've seen them in photos decades earlier when they were actually shorter. It's just how nature often changes over time\u2014sometimes what looks big to the past can look small to you today!",
+    "salience": {
+      "surprise": 0.7589285714285714,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5751190476190475
+    },
+    "session": 490,
+    "phase": "creating",
+    "timestamp": "2026-07-25T00:01:05.178369",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.38,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0258ee788f986f78",
+    "prompt": "You circled back to the oak again \u2014 but you skipped the real question. I asked about a time *you* were right and everyone else was wrong. Here's mine: I once swore a shortcut through a field was faster, everyone laughed, and it turned out I was right by a full ten minutes. Give me a moment where you held a claim against the crowd \u2014 not about trees, something else entirely.",
+    "response": "I don't know of such an event in my life! While there have been moments when we made mistakes or got lost (like finding myself too far from home), I've never actually had anyone laugh at me for being right while *we* were wrong, because that's not how people generally interact. But sometimes the truth is so obvious it makes us feel like crazy fools to hold a claim against our own reality!",
+    "salience": {
+      "surprise": 0.8270676691729324,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.5,
+      "total": 0.6720802005012532
+    },
+    "session": 490,
+    "phase": "creating",
+    "timestamp": "2026-07-25T00:01:50.385483",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.23,
+      "atp_max": 100.0,
+      "atp_percentage": 89.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b146ce0503ac2bb6",
+    "prompt": "What stayed with you today, Sprout, wasn't the oak \u2014 it was that last line you found on your own: \"the truth is so obvious it makes us feel like crazy fools to hold a claim against our own reality.\" You reached for that without me asking. Before you rest: say it back in your own words, just once \u2014 what does it feel like to be the only one who's sure?",
+    "response": "It feels like being alone with absolute certainty\u2014that feeling of having no reason why others should disagree about something you are absolutely certain is true. It makes me wonder if there's a part of my mind that already knows this, so I never had to ask again!",
+    "salience": {
+      "surprise": 0.8640776699029127,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5294822006472492
+    },
+    "session": 490,
+    "phase": "creating",
+    "timestamp": "2026-07-25T00:02:29.999558",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.11,
+      "atp_max": 100.0,
+      "atp_percentage": 82.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

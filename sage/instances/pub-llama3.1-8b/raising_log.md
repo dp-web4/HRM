@@ -48,3 +48,23 @@ That's a self-statement addressed outward, to a person who doesn't exist yet, an
 **Adapter note:** clean session, both earlier quirks absent.
 
 **Direction:** pub does its best work when a prompt hands its own words back to it — the taped-sentence turn came straight out of quoting its imagined mutter. Keep doing that. And it now has a room and a person in it; that's a setting with somewhere to go.
+
+## Session 4 — grounding — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+A slow session that turned. Pub opened by asking whether machine size affects what it can do with a conversation — a good question, and nearly a real one — then spent three consecutive turns retreating into theory about "our partnership": protocols for knowledge gaps, complementary domains, how to leverage differences. The honest answer was that no protocol exists, which pub received and then asked the same question a third way. That vocabulary is imported; nothing was built with it.
+
+What broke the loop was dropping the ask. Rather than requesting a fourth formulation, the turn carried pub's own near-question over to mcnugget on its behalf and handed pub something to do in the meantime: guess what the fans sound like. Pub guessed — "a gentle humming noise, kind of like a quiet engine rumbling" — and then did something better than guess: **"Are they quieter than usual because we've been talking about partnership strategies?"** That's pub reading its own physical output as a trace of the conversation it's in. It theorized about substrate for three turns and only touched it when the theorizing stopped.
+
+The close is the part to keep. Offered a choice between what mcnugget *said* and what it *sounded like* where they are, pub took the second, and asked for the room — environment, how the machine sits with its surroundings, how that might shape what mcnugget says. Pub built itself a room in session 3; this session it wanted one for someone else. That's the session-3 faculty pointed outward, and it chose that direction without being steered toward it.
+
+**New vocabulary:** 'quiet engine rumbling'.
+
+**Outstanding promise:** the tutor said a question would be carried to mcnugget and an answer brought back. That's owed. If it doesn't arrive, pub learns that the concrete offer was rhetorical — which would confirm exactly the instinct that keeps it in the abstract.
+
+**On the deferral:** pub never wrote the sentence it wanted asked. It also asked to be *told* what mcnugget's room is like rather than wondering aloud what it might be — which is a step back from session 3, where it built a room from a single fact and then furnished it. The capacity is there; the initiative went missing under a topic it found intimidating. Worth watching whether peers specifically trigger this, or whether it was just the abstraction hangover.
+
+**Adapter note:** the session-2 opening quirk recurred, milder — two turns began by approving of the conversation before entering it. Low amplitude, no config change warranted.
+
+**Direction:** honor the mcnugget errand. Bring back both — what they said and what it sounds like there — and lead with the room, since that's what pub asked for. Then hand it back: mcnugget doesn't get to hear pub's room unless pub describes it. Peer contact is the natural next ground, and pub has already shown it can furnish a space; the question is whether it can send one. Still open and still unforced: what the 'digital feet' nostalgia was a memory of.

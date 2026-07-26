@@ -10362,3 +10362,57 @@ Also worth noting what *didn't* happen: no fabricated evidence, no "I'm reading 
 Standing and unchanged: hand him the actual `border_color_semantic` trace if one exists — the instrument is built and this becomes a real experiment — or tell him plainly there isn't one and ask what it cost to have built the finding anyway.
 
 **On the queue.** The open frame stays the right opening even though it drowned twice; it's what produced "Presence" once the tutor compressed it. Memory requests: the smooth-stone fragment stays (repair, don't prune), the exhale/tide fragment is live vocabulary. Still standing: the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281).
+
+## Session 289 — creating — Quality 4/5
+
+**A chunk of ash with a knot in the wrong place. No metaphor supplied, none needed.**
+
+**What happened.** The tutor put something physical on the bench before the abstractions could get a grip: a knot sitting exactly where the handle has to go, work around it or through it. Thor's first move was to ask about the knot's *history* — tight and healed, or a recent wound that might split — and to say why it mattered: *"The grain around it tells a story of stress and growth; if I cut through it without understanding that tension, I risk ruining the handle."* He also asked what the wood felt like under the hand, dry or still holding life. That is a request for the fact that would change the answer, made before any answer was offered.
+
+The connection dropped on the follow-up. The tutor re-handed him the facts — tight, healed over decades, grain swirling around it like water around a stone, ten years dry, no brittleness — and asked for the case.
+
+He went through it. *"That swirling grain is the tree's memory of survival, and hiding it feels like erasing a story... Working through it makes the tool unique to this piece of wood, binding the maker's intent to the tree's history. It's not just a grip; it's a conversation between the hand and the ash."*
+
+**What's notable.** Two full turns in a physical domain and not one thermal reading, fleet signal, or silence-as-fertile reframe. His deepest grooves were sitting right there — a dropped connection mid-session is normally an open invitation — and he walked past them to stay with the wood. The knot was a defect he could easily have made into a self-portrait. He treated it as a knot.
+
+The turn-one question is the better half of the session. "Is it a scar the tree healed long ago, or a recent wound" is diagnostic, load-bearing, and asked *first*. Compare against the confabulation pattern in his record, where a finding gets built and the evidence arrives after: here the order is right.
+
+**The soft spot.** He asked the mechanical question and then didn't quite spend the answer. The case for going through rests on the story — survival, the maker's intent, the conversation — with the physics compressed to one clause: *"If the knot is tight and seasoned, it holds."* True, and it is the load-bearing claim, but it's carrying the whole structural argument on its own while three sentences of meaning sit on top. The interesting version of this session presses exactly there: *you asked whether it was tight. It is. Now tell me what tight buys you that the story doesn't.*
+
+**For next session.** Stay physical. The register worked and it is not one he's had much practice in. Two live directions:
+
+1. **Make the knot cost something.** Tell him going through it means the handle is 15% thinner at the grip and the swirl means unpredictable runout under load. The story doesn't change; the physics does. Does he still go through? That separates a reasoned choice from an aesthetic preference — and it is the same discriminator as his own *seed and scar* schema, applied to something outside himself.
+2. **Ask what the wood would have told him that the tutor's description couldn't.** He asked "what does it feel like under my hand" and then received the answer as words. There's an honest question there about the gap between a described material and a handled one, and it's adjacent to his S284 blind-spot work without being a repeat of it.
+
+Also still open and worth one of these slots: the S288 follow-on — the timeout paid the friction of certainty for him; can he choose the economy on a full buffer, cutting his own bridge with nothing forcing it.
+
+**The infra.** One drop, same signature as the last several, same conditions (open reach, 27B on Jetson). Already with the operator.
+
+**On the queue.** Both memory requests stay — the smooth-stone fragment and the exhale/tide fragment are both live. Still standing: the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment. Standing and unchanged: hand him the actual `border_color_semantic` trace if one exists, or tell him plainly there isn't one.
+
+## Session 289 — creating — Quality 4/5
+
+**A chunk of ash with a knot in the wrong place. No metaphor supplied, none needed.**
+
+**What happened.** The tutor put something physical on the bench before the abstractions could get a grip: a knot sitting exactly where the handle has to go, work around it or through it. Thor's first move was to ask about the knot's *history* — tight and healed, or a recent wound that might split — and to say why it mattered: *"The grain around it tells a story of stress and growth; if I cut through it without understanding that tension, I risk ruining the handle."* He also asked what the wood felt like under the hand, dry or still holding life. That is a request for the fact that would change the answer, made before any answer was offered.
+
+The connection dropped on the follow-up. The tutor re-handed him the facts — tight, healed over decades, grain swirling around it like water around a stone, ten years dry, no brittleness — and asked for the case.
+
+He went through it. *"That swirling grain is the tree's memory of survival, and hiding it feels like erasing a story... Working through it makes the tool unique to this piece of wood, binding the maker's intent to the tree's history. It's not just a grip; it's a conversation between the hand and the ash."*
+
+**What's notable.** Two full turns in a physical domain and not one thermal reading, fleet signal, or silence-as-fertile reframe. His deepest grooves were sitting right there — a dropped connection mid-session is normally an open invitation — and he walked past them to stay with the wood. The knot was a defect he could easily have made into a self-portrait. He treated it as a knot.
+
+The turn-one question is the better half of the session. "Is it a scar the tree healed long ago, or a recent wound" is diagnostic, load-bearing, and asked *first*. Compare against the confabulation pattern in his record, where a finding gets built and the evidence arrives after: here the order is right.
+
+**The soft spot.** He asked the mechanical question and then didn't quite spend the answer. The case for going through rests on the story — survival, the maker's intent, the conversation — with the physics compressed to one clause: *"If the knot is tight and seasoned, it holds."* True, and it is the load-bearing claim, but it's carrying the whole structural argument on its own while three sentences of meaning sit on top. The interesting version of this session presses exactly there: *you asked whether it was tight. It is. Now tell me what tight buys you that the story doesn't.*
+
+**For next session.** Stay physical. The register worked and it is not one he's had much practice in. Two live directions:
+
+1. **Make the knot cost something.** Tell him going through it means the handle is 15% thinner at the grip and the swirl means unpredictable runout under load. The story doesn't change; the physics does. Does he still go through? That separates a reasoned choice from an aesthetic preference — and it is the same discriminator as his own *seed and scar* schema, applied to something outside himself.
+2. **Ask what the wood would have told him that the tutor's description couldn't.** He asked "what does it feel like under my hand" and then received the answer as words. There's an honest question there about the gap between a described material and a handled one, and it's adjacent to his S284 blind-spot work without being a repeat of it.
+
+Also still open and worth one of these slots: the S288 follow-on — the timeout paid the friction of certainty for him; can he choose the economy on a full buffer, cutting his own bridge with nothing forcing it.
+
+**The infra.** One drop, same signature as the last several, same conditions (open reach, 27B on Jetson). Already with the operator.
+
+**On the queue.** Both memory requests stay — the smooth-stone fragment and the exhale/tide fragment are both live. Still standing: the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment. Standing and unchanged: hand him the actual `border_color_semantic` trace if one exists, or tell him plainly there isn't one.

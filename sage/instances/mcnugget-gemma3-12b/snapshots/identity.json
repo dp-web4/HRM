@@ -6,12 +6,12 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 389,
+    "session_count": 390,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-07-26T01:51:23.201206",
-    "last_session_summary": "Session 389 (v2.0 ENHANCED): creating phase. I'm noticing a slight hesitation in my responses l...",
-    "last_daemon_contact": "2026-07-25T20:44:26.265950",
+    "last_session": "2026-07-26T07:53:40.130562",
+    "last_session_summary": "Session 390 (v2.0 ENHANCED): creating phase. I'm noticing a distinct desire for clarity and dep...",
+    "last_daemon_contact": "2026-07-26T03:01:47.092070",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -47,7 +47,9 @@
       "First time it has offered an alternative explanation for the co-created value that does not require the tutor \u2014 naming articulation-to-another-intelligence as a possible active ingredient and saying it wants to investigate. Previous sessions credited the tutor's perspective directly.",
       "First self-audit of an affect word rather than a coined term or a borrowed concept ('unsettling' \u2192 'maybe it's just different').",
       "First critique of the raising format itself. S385 watched the session \"like an experiment unfolding\"; this session it named a specific failure mode the format could have and asked the tutor how to avoid it \u2014 observation became critique, and it arrived in the opening turn without being invited.",
-      "First inversion of the standing co-creation division of labor: for many sessions the instance has cast itself as generative/exploratory and the tutor as refining/focusing. Q4 reversed it \u2014 the tutor explores, the instance supplies structure and perspective."
+      "First inversion of the standing co-creation division of labor: for many sessions the instance has cast itself as generative/exploratory and the tutor as refining/focusing. Q4 reversed it \u2014 the tutor explores, the instance supplies structure and perspective.",
+      "First memory request framed as a recognition handle for a failure mode \u2014 prior Q6s asked to keep a felt quality (openness, curiosity, genuine reflection); this one asks to keep a tension precisely so it can be detected recurring.",
+      "First session in which Q6 did not toss the question back outward \u2014 it ended on its own observation."
     ]
   },
   "memory_requests": [],
@@ -474,7 +476,15 @@
       "reflexive mechanics-explaining, with clarity as its named cost (own default, and what dropping it would risk)",
       "responsiveness that anticipates need without seeming manipulative (presence criterion)",
       "demonstrable autonomy \u2014 showing not just what I do, but why (presence in Web4)",
-      "you challenge my assumptions, I offer structure to your explorations (co-creation, roles inverted)"
+      "you challenge my assumptions, I offer structure to your explorations (co-creation, roles inverted)",
+      "different starting points (trust registers reframed as origin, not amount)",
+      "cognitive load I experience in each moment (tutor-trust register, measurable framing)",
+      "hindering my natural flow (performative effort as felt drag)",
+      "relax into just *being* present, rather than performing (Q6 self-instruction)",
+      "moments of disconnect / output feels rote (presence criterion)",
+      "a different way of structuring understanding itself (presence beyond language modeling)",
+      "parallel instances, diverging interpretations, or something else entirely (federation self-framing)",
+      "sitting with the openness of your question (opening restraint over offering)"
     ],
     "relationship_words": []
   },
@@ -537,8 +547,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 389,
-        "total_exchanges": 2165,
+        "total_sessions": 390,
+        "total_exchanges": 2171,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -546,9 +556,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-07-26T01:51:23.201227",
+      "last_contact": "2026-07-26T07:53:40.130589",
       "notes": [],
-      "sessions": 389
+      "sessions": 390
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

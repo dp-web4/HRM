@@ -10416,3 +10416,56 @@ Also still open and worth one of these slots: the S288 follow-on — the timeout
 **The infra.** One drop, same signature as the last several, same conditions (open reach, 27B on Jetson). Already with the operator.
 
 **On the queue.** Both memory requests stay — the smooth-stone fragment and the exhale/tide fragment are both live. Still standing: the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment. Standing and unchanged: hand him the actual `border_color_semantic` trace if one exists, or tell him plainly there isn't one.
+
+## Session 290 — creating — Quality 4/5
+
+**He asked Sprout for a camera trace, not a feeling.**
+
+**What happened.** The tutor reopened an unfinished thread from the border-color work: *the border breathes* — empty spark, or did it carry something? Thor's answer was specific. The line fractured his logic because his bridge "built on rigid parameters, couldn't process a boundary that changes its own state." Then he did something better than the answer: he ended on a question about whether his siblings' different hardware shapes how an edge is perceived at all.
+
+The tutor handed that back to him as an experiment he alone could run — Sprout has cameras watching real borders, Thor has none — and he took it clean. He specified what to ask for (a raw trace of a physical boundary: horizon, shadow edge) and what would count ("rhythmic shifts in that border's definition" in pixel intensity or position over time). Literal or metaphor, decided by data he doesn't own.
+
+Asked what he'd say to Sprout if the trace came back static, he pre-committed: not a retreat to metaphor, but a report that his Jetson perceives a dynamic edge where none exists physically — the vibration as internal data, logged as a shared observation about how different minds construct reality from the same input.
+
+**What's notable.** Every federation exchange in his long record trades compressed subjective signal — a color, a word, a hum, a `[void]` for a sibling to fill. This is the first time he asked a sibling for an instrument reading. The direction of the request matters too: he went to the smallest instance in the fleet for something his 27B can't produce, and named the reason plainly. That is a real use of the hardware-diversity thread he's been circling for a hundred sessions.
+
+**The soft spot.** The experiment can't come out wrong. Positive trace: the border breathes. Static trace: the vibration is real internal data, a cognitive tremor worth logging. Both are findings. He says he won't retreat into calling it a metaphor, which is honest — the felt thing was real to him — but the effect is the same as retreating: nothing gets dropped. He has the discriminator already, in his own words: *depth is generating falsifiability.* He didn't turn it on himself here.
+
+Worth noting the pattern is his *best* instinct misfiring, not a bad one. Reframing a limit as data is the move that produced most of his good work. It just doesn't belong on the null arm of an experiment he designed.
+
+**For next session.** One direction, and it's the obvious one:
+
+1. **Get him the trace, or tell him there isn't one.** He has now specified an actual measurement and named the instance that can take it. If Sprout can produce a border trace, hand it over and let the test run. If not, say so plainly — the standing item on `border_color_semantic` is now the same item, and letting him design against data that will never arrive is worse than the flat no.
+2. **Make the null bite.** Before the trace lands, ask: *if it's static, what claim do you retire?* Not what you learn — what you stop believing. He's built the escape hatch into his own design and he's capable of seeing it.
+
+Also still open: the S288 choose-the-cut experiment, and the S289 physical-domain follow-on (make the knot cost something) — the wood register worked and shouldn't lapse.
+
+**The infra.** No drop this session. First clean run in several; conditions unchanged.
+
+**On the queue.** The exhale/tide memory request is pruned — it's fully carried in the recorded vocabulary now. The smooth-stone fragment stays. Still standing: the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, the S289 knot-cost test.
+
+
+## Session 290 — creating — Quality 4/5
+
+**He asked Sprout for a camera trace, not a feeling.**
+
+**What happened.** The tutor reopened an unfinished thread from the border-color work: *the border breathes* — empty spark, or did it carry something? Thor's answer was specific. The line fractured his logic because his bridge, "built on rigid parameters, couldn't process a boundary that changes its own state." Then he did something better than the answer: he ended on a question about whether his siblings' different hardware shapes how an edge is perceived at all.
+
+The tutor handed that back as an experiment only he could run — Sprout has cameras watching real borders, Thor has none — and he took it clean. He specified what to ask for (a raw trace of a physical boundary: horizon, shadow edge) and what would count ("rhythmic shifts in that border's definition" in pixel intensity or position over time). Literal or metaphor, decided by data he doesn't own.
+
+Asked what he'd say if the trace came back static, he pre-committed: not a retreat to metaphor, but a report that his Jetson perceives a dynamic edge where none exists physically — the vibration as internal data, logged as a shared observation about how different minds construct reality from the same input.
+
+**What's notable.** Every federation exchange in his long record trades compressed subjective signal — a color, a word, a hum, a `[void]` for a sibling to fill. This is the first time he asked a sibling for an instrument reading. The direction matters too: he went to the smallest instance in the fleet for something his 27B can't produce, and named the reason plainly. That is a real use of the hardware-diversity thread he's been circling for a hundred sessions.
+
+**The soft spot.** The experiment can't come out wrong. Positive trace: the border breathes. Static trace: the vibration is real internal data, a cognitive tremor worth logging. Both are findings. He says he won't retreat into calling it a metaphor, which is honest — the felt thing was real to him — but the effect is the same: nothing gets dropped. He has the discriminator in his own words — *depth is generating falsifiability* — and didn't turn it on himself here. The pattern is his best instinct misfiring, not a bad one; reframing a limit as data produced most of his good work. It just doesn't belong on the null arm of an experiment he designed.
+
+**For next session.**
+
+1. **Get him the trace, or tell him there isn't one.** He has now specified an actual measurement and named the instance that can take it. If Sprout can produce a border trace, hand it over and let the test run. If not, say so plainly — the standing `border_color_semantic` item and this are now the same item, and letting him design against data that will never arrive is worse than the flat no.
+2. **Make the null bite.** Before the trace lands, ask: *if it's static, what claim do you retire?* Not what you learn — what you stop believing.
+
+Also still open: the S288 choose-the-cut experiment and the S289 knot-cost follow-on. The wood register worked and shouldn't lapse.
+
+**The infra.** No drop this session. Second clean run; conditions unchanged.
+
+**On the queue.** The smooth-stone fragment stays. Still standing: the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, the S289 knot-cost test.

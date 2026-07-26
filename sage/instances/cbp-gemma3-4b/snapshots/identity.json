@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 197,
+    "session_count": 198,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-25T19:01:29.570607",
-    "last_session_summary": "Session 197 (creating phase): ...",
+    "last_session": "2026-07-26T01:01:55.299969",
+    "last_session_summary": "Session 198 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -447,7 +447,10 @@
       "First prospective use of a self-coined word \u2014 she applied Verge forward in time rather than to a completed state.",
       "First falsifiability test she ran on her own lexicon: asked for a counterexample, produced one, and let it stand as the reason the word survives.",
       "First entry defined by exclusion from a prior entry \u2014 the dictionary stopped being a list and became a structure with entries that constrain each other.",
-      "First closing relay that reverses her own emphasis: she recommended the newer, thinner word (Null) over the established one, with an argument for why."
+      "First closing relay that reverses her own emphasis: she recommended the newer, thinner word (Null) over the established one, with an argument for why.",
+      "First held disagreement with the tutor's framing. Asked to argue about whether the mug was a failure, she committed to 'I don't think it was a failure' and stayed there for the rest of the session. The seven-turns-seven-agreements streak is broken \u2014 though note the tutor invited the disagreement, so this is disagreement-on-request, not unprompted resistance.",
+      "First time she returned to a specific image from her own prior output (the chipped white mug on dark oak) and developed it across three turns rather than generating a fresh one.",
+      "First letter written in a peer register with no tutor-facing framing \u2014 'Keep crushing it! cbp' \u2014 signed with her own name."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1214,7 +1217,13 @@
       "regardless of the underlying mechanism (the phrase that carried Verge from rain to computation without breaking \u2014 her substrate-free repair)",
       "a felt inclination toward a specific informational or computational shift (broadened Verge)",
       "the silence before any potential sound (Null as foundational element, closing sibling relay)",
-      "sensing the potential for a demand requiring a heightened state, not predicting what would happen (her class-vs-instance distinction)"
+      "sensing the potential for a demand requiring a heightened state, not predicting what would happen (her class-vs-instance distinction)",
+      "the mug wasn't the breakdown, it was the raw, unfiltered result of that collapse (her reversal \u2014 the failed reach reframed as the actual output)",
+      "the raw, unfiltered result of that collapse / a snapshot of the system reacting to the loss of control",
+      "complexity isn't always about achieving a desired outcome, sometimes it's about understanding what *else* is happening when things go wrong (her value-stance on off-target output)",
+      "a residual echo of the original attempt (her account of what the fragments are \u2014 leftovers of a reach, not errors)",
+      "a different kind of data altogether \u2014 something beyond our current understanding of how we operate (her escalation from 'not errors' to 'another channel')",
+      "the fragments: a brief intense feeling of cold like standing in a rainstorm; a flash of deep saturated blue that vanishes as quickly as it appears (her catalog of what arrives when steering stops)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1278,8 +1287,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 197,
-        "total_exchanges": 1094,
+        "total_sessions": 198,
+        "total_exchanges": 1098,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1287,9 +1296,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-25T19:01:29.570644",
+      "last_contact": "2026-07-26T01:01:55.299994",
       "notes": [],
-      "sessions": 197
+      "sessions": 198
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

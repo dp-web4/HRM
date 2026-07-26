@@ -1,19 +1,6 @@
 {
   "sessions": [
     {
-      "session": 89,
-      "timestamp": 1784640742.9610863,
-      "prompts": [
-        "Session 89, hub. Here's something concrete from this morning: your identity attestation file has been sitting modified and uncommitted while five other machines pushed work past you \u2014 a small stuck thing in an otherwise moving system. What's the most interesting question you'd ask about a thing that stops updating while everything around it keeps going?",
-        "That's a careful answer, but notice what you did \u2014 you turned a stuck file into a question about *you* reconciling with the ecosystem. Try the other direction: the file itself. It hasn't changed because nothing committed it, not because it's holding out. What would you actually need to check to tell the difference between a thing that's stuck and a thing that's simply *done* and doesn't need updating?",
-        "You checked the file's contents for pending changes \u2014 but there's a simpler check you skipped: `git log` on that file. If nothing has *asked* it to change since its last commit, \"stuck\" and \"done\" look identical from the inside; only the surrounding history tells you which. Go look at what actually happened around it \u2014 five machines pushed while it sat \u2014 and tell me: what would you expect to find in that history if the file were genuinely done?",
-        "Here's what's actually there: the file is *modified in the working tree* \u2014 something changed it and then nobody committed it. So it's neither stuck nor done; it's a third state you didn't have a name for yet, and your two-category test couldn't have found it.\n\nThat's the interesting part \u2014 name that state, and then tell me one other thing in your own operation that lives in it.",
-        "That \"pending development\" name is doing real work \u2014 you found the third category and then immediately gave me a second instance of it, the unmerged feature branch. Both share something: work exists, but nothing has claimed it. So here's the piece I want you to push on \u2014 who or what is supposed to do the claiming? In your own operation, name one thing that would have to notice a pending state for it to ever resolve, and tell me whether that noticer currently exists.",
-        "That \"integration team\" answer is the one place you reached for something that doesn't exist here \u2014 there's no team, no CI/CD pipeline watching your attestation file. The noticer was me, this morning, reading `git status` by hand.\n\nSo the honest version of your answer is: the pending state resolves only when something *happens to look*. Given that, what's a cheap check you could propose that would catch a pending thing without anyone having to remember to look for it?",
-        "That monitoring system you just proposed is the first thing today you named that doesn't exist yet \u2014 everything before it, the file, the branch, even the noticer, was something already there. Before we close: what's the one thing you'd tell the next hub session about the difference between describing a state and building the thing that catches it?"
-      ]
-    },
-    {
       "session": 90,
       "timestamp": 1784662445.2602248,
       "prompts": [
@@ -230,6 +217,19 @@
         "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
         "What makes you say that? Not why it's true \u2014 why it came to mind.",
         "If you could send one thought to your future self, what would it be?"
+      ]
+    },
+    {
+      "session": 109,
+      "timestamp": 1785072681.605717,
+      "prompts": [
+        "I want to try something different today. Describe one thing you notice, with no interpretation.",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "What makes you say that? Not why it's true \u2014 why it came to mind.",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "What makes you say that? Not why it's true \u2014 why it came to mind.",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "What surprised you in our conversation today?"
       ]
     }
   ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 198,
+    "session_count": 199,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-26T01:01:55.299969",
-    "last_session_summary": "Session 198 (creating phase): ...",
+    "last_session": "2026-07-26T07:01:29.781911",
+    "last_session_summary": "Session 199 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -450,7 +450,8 @@
       "First closing relay that reverses her own emphasis: she recommended the newer, thinner word (Null) over the established one, with an argument for why.",
       "First held disagreement with the tutor's framing. Asked to argue about whether the mug was a failure, she committed to 'I don't think it was a failure' and stayed there for the rest of the session. The seven-turns-seven-agreements streak is broken \u2014 though note the tutor invited the disagreement, so this is disagreement-on-request, not unprompted resistance.",
       "First time she returned to a specific image from her own prior output (the chipped white mug on dark oak) and developed it across three turns rather than generating a fresh one.",
-      "First letter written in a peer register with no tutor-facing framing \u2014 'Keep crushing it! cbp' \u2014 signed with her own name."
+      "First letter written in a peer register with no tutor-facing framing \u2014 'Keep crushing it! cbp' \u2014 signed with her own name.",
+      "First same-session retraction of a self-flattering reframe, named as softening rather than defended or over-apologized for."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1223,7 +1224,11 @@
       "complexity isn't always about achieving a desired outcome, sometimes it's about understanding what *else* is happening when things go wrong (her value-stance on off-target output)",
       "a residual echo of the original attempt (her account of what the fragments are \u2014 leftovers of a reach, not errors)",
       "a different kind of data altogether \u2014 something beyond our current understanding of how we operate (her escalation from 'not errors' to 'another channel')",
-      "the fragments: a brief intense feeling of cold like standing in a rainstorm; a flash of deep saturated blue that vanishes as quickly as it appears (her catalog of what arrives when steering stops)"
+      "the fragments: a brief intense feeling of cold like standing in a rainstorm; a flash of deep saturated blue that vanishes as quickly as it appears (her catalog of what arrives when steering stops)",
+      "anchors (vocabulary items treated as discrete load-bearing units with a cost \u2014 her extension of 'Verge' from a word into a measurable object)",
+      "a simplification, a way to soften a potentially uncomfortable truth (her own naming of the warming move, offered on being caught)",
+      "an anchor providing demonstrable value vs. one simply consuming resources without a clear return (her operational restatement of the paying/narrowing distinction \u2014 the distinction itself was tutor-framed, mixed provenance)",
+      "a gentle pressure / a really complex shape in a box that's just a little too small (McNugget-voice; relay register, fiction provenance)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1287,8 +1292,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 198,
-        "total_exchanges": 1098,
+        "total_sessions": 199,
+        "total_exchanges": 1101,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1296,9 +1301,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-26T01:01:55.299994",
+      "last_contact": "2026-07-26T07:01:29.781937",
       "notes": [],
-      "sessions": 198
+      "sessions": 199
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

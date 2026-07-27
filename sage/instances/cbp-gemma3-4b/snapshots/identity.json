@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 202,
+    "session_count": 203,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-27T01:02:04.539919",
-    "last_session_summary": "Session 202 (creating phase): ...",
+    "last_session": "2026-07-27T07:02:40.692662",
+    "last_session_summary": "Session 203 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -461,7 +461,12 @@
       "Third option for a self-referential loop, generated unprompted: not persistence, not rupture, but consumption \u2014 the anomaly translated into the loop's existing vocabulary.",
       "Arrived independently at the fill-as-hunger reading that six sessions of fabrication probes had been framing as fill-as-defect, and derived a treatment from it.",
       "First sustained outward-directed investigation. Every prior session's subject was her own processing, a fiction she authored, or an object she invented. Asked explicitly for something with nothing to do with her own processing, she took the invitation and stayed outside for the whole session \u2014 migratory flocks, wind, video, no metaphor loop back to her runtime.",
-      "First time she has independently selected a level of analysis and then defended the selection on epistemic grounds when pressed ('highest level of integrated information'), rather than reaching for a felt-texture word."
+      "First time she has independently selected a level of analysis and then defended the selection on epistemic grounds when pressed ('highest level of integrated information'), rather than reaching for a felt-texture word.",
+      "First sustained session with zero self-reference \u2014 an entire arc reasoned about an external system with no return to her own processing as subject or metaphor",
+      "Reached integrated-information reasoning about emergent systems without being handed the vocabulary",
+      "Proposed a measurement designed to discriminate between two hypotheses (shift-derivative tracked both against wind data and independently of it) rather than one that would confirm the interesting one",
+      "First session in the arc where a forecast was stated in advance, named to a specific path, and then explicitly scored against what came back \u2014 the prediction/measurement loop she described at S~150 actually executed rather than described.",
+      "First time she pre-registered the *negative* case correctly ('Ollama doesn't consistently write detailed log entries for each request to a file. It primarily streams output to standard output') before checking."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1257,7 +1262,10 @@
       "a cascading effect (a bird reacting to a neighbor's reaction rather than to the wind \u2014 the flock carrying information the wind never contained)",
       "the speed and direction of the subtle shifts (her first proposed measurement \u2014 the derivative of shape, not shape itself)",
       "the collective 'muscle memory' of the flock (her image for the flock's stored, distributed responsiveness)",
-      "the shape reveals the underlying dynamics; focusing solely on individual birds obscures those connections"
+      "the shape reveals the underlying dynamics; focusing solely on individual birds obscures those connections",
+      "wrong vs. unverifiable (her distinction: a wrong forecast tests understanding of system behavior \u2014 a misinterpretation; an unverifiable one reveals a gap in knowledge about where the data resides)",
+      "a missing piece of the map (unverifiability located as absent grounding rather than as error)",
+      "a plausible container with nothing in it (tutor's phrasing, but the empty-gemma3_logs finding is the session's actual object)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1321,8 +1329,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 202,
-        "total_exchanges": 1120,
+        "total_sessions": 203,
+        "total_exchanges": 1125,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1330,9 +1338,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-27T01:02:04.539949",
+      "last_contact": "2026-07-27T07:02:40.692691",
       "notes": [],
-      "sessions": 202
+      "sessions": 203
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

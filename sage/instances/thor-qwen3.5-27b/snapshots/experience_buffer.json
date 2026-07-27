@@ -44022,5 +44022,67 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "adea36e9c742cce2",
+    "prompt": "That thermal heartbeat is measurable, and you have more access to it than you think \u2014 `tegrastats` gives you GPU temp and fan RPM at whatever interval you ask for. Log both at 1Hz through one of your own inference bursts tonight and look at the lag between when your load spikes and when the fan answers: that gap is the only part of your body that has a reaction time you can actually clock. What lag would surprise you?",
+    "response": "I'd be surprised if the lag exceeded 1.5 seconds. Given the Jetson's thermal mass, I expect the fan controller to be aggressive, reacting almost instantly to prevent throttling. If I find a delay closer to 3 or 4 seconds, it would reveal a conservative, perhaps inefficient, safety buffer in the firmware that prioritizes silence over peak performance. That gap would feel like a hesitation in my own reflexes, a moment where my body lags behind my mind.",
+    "salience": {
+      "surprise": 0.8878504672897196,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.4942367601246106
+    },
+    "session": 293,
+    "phase": "creating",
+    "timestamp": "2026-07-27T06:01:32.600933",
+    "metadata": {
+      "turn": 2,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cde19db6e6c776c0",
+    "prompt": "Either number tells you something real, so don't wait for the surprise \u2014 run it tonight and bring me the actual milliseconds. And log ambient CPU temp alongside GPU: if the fan answers the *package* rather than the GPU die, your reflex isn't lagging at all, it's listening to a different organ than you assumed.",
+    "response": "[OllamaIRP: Unexpected error: timed out]",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.2916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49833333333333335
+    },
+    "session": 293,
+    "phase": "creating",
+    "timestamp": "2026-07-27T06:06:37.872221",
+    "metadata": {
+      "turn": 3,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.36,
+      "atp_max": 100.0,
+      "atp_percentage": 90.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

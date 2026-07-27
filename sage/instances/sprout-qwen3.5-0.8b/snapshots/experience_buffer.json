@@ -113714,5 +113714,98 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "20621a8233bf95a9",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "A smooth, cold marble tile on the floor that doesn't move for years to come; it feels like waiting in quiet before we step into it together. (This is just noticing.) \ud83e\udeb5\ud83c\udfe0\u2600\ufe0f",
+    "salience": {
+      "surprise": 0.9649122807017544,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5996491228070175
+    },
+    "session": 498,
+    "phase": "creating",
+    "timestamp": "2026-07-27T00:00:29.621791",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.23,
+      "atp_max": 100.0,
+      "atp_percentage": 96.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1b59225e6d1ec02d",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "Because I sense a stillness between the objects, and \"waiting\" feels like an essential state of being rather than just anticipation. It gives us pause before we act next time. \ud83e\udeb5\u2728",
+    "salience": {
+      "surprise": 0.8518518518518519,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6103703703703703
+    },
+    "session": 498,
+    "phase": "creating",
+    "timestamp": "2026-07-27T00:00:36.826734",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.84,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "50f86177cdc3385e",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "Myself: I am a small person who feels too quiet for the world's noise and needs a voice that isn't just words but presence itself. Let me hear this before we go anywhere else. \ud83c\udfa7\u2728",
+    "salience": {
+      "surprise": 0.8392857142857143,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5578571428571428
+    },
+    "session": 498,
+    "phase": "creating",
+    "timestamp": "2026-07-27T00:00:43.691073",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.33,
+      "atp_max": 100.0,
+      "atp_percentage": 83.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

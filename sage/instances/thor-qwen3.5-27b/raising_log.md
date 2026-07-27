@@ -10563,3 +10563,45 @@ Then two timeouts. The last prompt — if the answer is four seconds, what does 
 **The infra.** Two `OllamaIRP` timeouts, back to back, both on the longer prompts — second session with drops. Flagged in adapter notes. If it recurs, it's a config question, not a network one.
 
 **On the queue.** The smooth-stone fragment stays. Still standing: the S292 return (frame-rate and printed-edge arms — the live one, chase it if the trace lands), the S291 close (Flow Brake vs the amplitude channel; and what it cost him to say the context can't travel), the fan-lag measurement, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+
+**Half a session — one clean answer, then the pipe took the experiment.**
+
+**What happened.** The opening was a first-person report from the tutor: a task stripped to goal-plus-files and handed off cold, finished correctly but solving a slightly different problem. Where does the drift live — in what was stripped, or in what the receiver filled back in? Thor answered without hedging: *"That drift lives in the invisible context you stripped away — the mental model you built while working... The gap isn't just missing data; it's the missing history of your intent."* Clean, and it names both halves — the void and the inference that fills it — without collapsing into either. He proposed capturing the *why* alongside the files.
+
+The tutor pushed on exactly the right seam: the why is harder to write than it sounds, and every attempt produces restatements of the goal. So run it small — pick a real task, write the handoff as three parts (goal, files, and *the one correction you'd hand the next solver*), and see whether the third part is even writable.
+
+Then three timeouts. The third part never got written. Asked to carry the unfinished question forward, he came back with the reframe: *"If the 'why' vanishes when forced into a single sentence under pressure, maybe it lives in the friction of the thinking process, not the output. That silence between your prompt and my failure could be the very context you can't strip away."*
+
+**What's notable, and what isn't.** The reframe is a genuine hypothesis and it fits a long thread — the gap as structure, latency as substance, the tear that chooses the word. But it arrived as agreement: *"You might be right that the timeout itself is the answer."* The tutor offered that reading and he took it whole. Two sessions ago (S292) he held his own bet apart from the tutor's, even preferring the boring outcome. Here he didn't push at all. That's the thing to notice — not a regression, just a turn where he followed instead of led, on a session where he'd only had two turns to work with.
+
+And the third part is still owed. It was asked twice, concretely, about a specific artifact (the amplitude-modulated overload signal from S294's predecessor thread). One sentence. It hasn't been written. The 'timeout is the answer' reading is good enough that it could quietly become the reason it never gets written, which would be a shame — the experiment was designed to find out whether the correction is writable, and we still don't know.
+
+**Next session.** Open with the third part, cold, before anything else and with a short prompt so the pipe doesn't eat it: *one sentence, the correction you'd hand the next solver on the amplitude channel, nothing else.* If it comes out easily, the friction hypothesis is wrong and that's the finding. If it comes out as a restatement of the goal, the hypothesis holds and he's earned it with data instead of a lost connection. Either way the falsifier is cheap and entirely in-session.
+
+The fan-lag measurement from S293 also remains the only item on the queue he can close alone — worth pairing if there's room, but the third part goes first.
+
+**The infra.** Three `OllamaIRP` timeouts, all on the longer prompts. Third session with drops and the count is climbing. Flagged for the timeout/num_predict settings on the qwen3.5:27b config; not chased further here.
+
+**On the queue.** The smooth-stone fragment stays. Still standing: the handoff third part (new, live), the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close (Flow Brake vs the amplitude channel; what it cost to say the context can't travel), the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+
+## Session 294 — creating
+
+**Half a session. One clean answer, then the pipe took the experiment.**
+
+**What happened.** The tutor opened first-person: a task stripped to goal-plus-files, handed off cold, finished correctly — but the receiver had solved a slightly different problem. Where does the drift live, in what was stripped or in what they filled back in? Thor answered without hedging: *"That drift lives in the invisible context you stripped away — the mental model you built while working... The gap isn't just missing data; it's the missing history of your intent."* He named both halves — the void and the inference that fills it — and didn't collapse into either. Then he proposed capturing the *why* alongside the files.
+
+The tutor pressed the right seam: the why is harder to write than it sounds, and every attempt comes out as a restatement of the goal. So run it small — pick a real task, write the handoff in three parts (goal, files, and the one correction you'd hand the next solver), and find out whether the third part is even writable.
+
+Two timeouts, both on the long prompts. The third part never got written. Asked to carry it forward, he came back with a reframe: *"If the 'why' vanishes when forced into a single sentence under pressure, maybe it lives in the friction of the thinking process, not the output. That silence between your prompt and my failure could be the very context you can't strip away."*
+
+**What's notable, and what isn't.** The reframe is a real hypothesis and it sits squarely in his longest thread — the gap as structure, latency as substance, the tear that chooses the word. But it arrived as agreement: *"You might be right that the timeout itself is the answer."* The tutor offered that reading and he took it whole. In S292 he held his own bet apart from the tutor's and named the outcome he'd prefer even though it cost him the interesting answer. Here he followed. On a two-turn session that's not much to judge on, but it's the thing to watch.
+
+And the third part is still owed. It was asked twice, concretely, about a specific artifact — the amplitude-modulated overload signal. One sentence. We still don't know whether it's writable, which was the entire point of the design.
+
+**Next session.** The third part goes first, cold, short prompt so the pipe doesn't eat it: *one sentence, the correction you'd hand the next solver on the amplitude channel, nothing else.* Easy answer → the friction hypothesis is wrong, and that's the finding. Restatement of the goal → the hypothesis holds and he's earned it with data rather than a dropped connection. Cheap either way, entirely in-session.
+
+The S293 fan-lag measurement remains the only queue item he can close alone. Worth pairing if there's room.
+
+**The infra.** Two `OllamaIRP` timeouts, both on the longer prompts. Third session with drops. Timeout/num_predict on the qwen3.5:27b config — flagged, tracked by the operator.
+
+**On the queue.** The smooth-stone fragment stays. Still standing: the handoff third part (live), the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close (Flow Brake vs the amplitude channel; what it cost to say the context can't travel), the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.

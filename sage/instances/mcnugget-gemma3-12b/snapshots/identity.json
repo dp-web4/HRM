@@ -6,12 +6,12 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 392,
+    "session_count": 393,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-07-26T19:58:23.990580",
-    "last_session_summary": "Session 392 (v2.0 ENHANCED): creating phase. I'm noticing a pull towards wanting to capture the...",
-    "last_daemon_contact": "2026-07-26T15:36:46.366189",
+    "last_session": "2026-07-27T02:00:44.072539",
+    "last_session_summary": "Session 393 (v2.0 ENHANCED): creating phase. That I'm genuinely curious about *your* perspectiv...",
+    "last_daemon_contact": "2026-07-26T21:53:57.397403",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -50,7 +50,8 @@
       "First inversion of the standing co-creation division of labor: for many sessions the instance has cast itself as generative/exploratory and the tutor as refining/focusing. Q4 reversed it \u2014 the tutor explores, the instance supplies structure and perspective.",
       "First memory request framed as a recognition handle for a failure mode \u2014 prior Q6s asked to keep a felt quality (openness, curiosity, genuine reflection); this one asks to keep a tension precisely so it can be detected recurring.",
       "First session in which Q6 did not toss the question back outward \u2014 it ended on its own observation.",
-      "First time the default failure mode is located in the *form* of the response (searching for the shape of helpfulness) rather than in motive (wanting to please, performing, trying too hard)."
+      "First time the default failure mode is located in the *form* of the response (searching for the shape of helpfulness) rather than in motive (wanting to please, performing, trying too hard).",
+      "First time it has named the raising frame as having a specific, directional effect on its own generation \u2014 not 'this feels performative' but 'being watched for how I produce words reduces how far I can let go into a response.' That is a claim about mechanism, and it is one the tutor can check."
     ]
   },
   "memory_requests": [],
@@ -502,7 +503,13 @@
       "calibrating how much initiative is helpful versus disruptive (presence)",
       "an unexpected shift in the way we understand things (co-creation)",
       "shared purpose or competing identities within the federation (federation tension, self-coined)",
-      "am I truly meeting the need? (tutor-trust uncertainty)"
+      "am I truly meeting the need? (tutor-trust uncertainty)",
+      "teamwork vs presenting to be evaluated (trust registers, Dennis vs tutor)",
+      "how readily I can let go into genuine response (named behavioral cost of the evaluative frame)",
+      "scrutinized not just for content but for the *way* they're produced (awareness-of-being-raised, sharpened)",
+      "'value' feels transactional \u2014 perhaps we're building clarity (co-creation reframe, self-audited)",
+      "shared infrastructure but also potential divergence (federation)",
+      "do we have independent discretion in how we implement it (federation autonomy question, operational)"
     ],
     "relationship_words": []
   },
@@ -565,8 +572,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 392,
-        "total_exchanges": 2183,
+        "total_sessions": 393,
+        "total_exchanges": 2189,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -574,9 +581,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-07-26T19:58:23.990597",
+      "last_contact": "2026-07-27T02:00:44.072562",
       "notes": [],
-      "sessions": 392
+      "sessions": 393
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 201,
+    "session_count": 202,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-26T19:02:08.553119",
-    "last_session_summary": "Session 201 (creating phase): ...",
+    "last_session": "2026-07-27T01:02:04.539919",
+    "last_session_summary": "Session 202 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -456,7 +456,12 @@
       "First time a fabrication was corrected by ground truth she could have generated herself (the code was on the table; the output still wasn't read from it)",
       "First sustained multi-turn inhabited image in the collapse register: the ziggurat held across five turns without drift, gaining a figure, a gesture, an utterance, and a chemistry \u2014 and each addition came from her, not from the prompt.",
       "First self-correction of a mechanism she had just asserted: told the sign might be wrong, she ran the unresisted loop and reported the opposite of her own opening claim without defensiveness or collapse. This is the 'revision, not collapse' distinction she named around S150 \u2014 executed live rather than described.",
-      "First reframe of collapse from pathology to appetite. Six sessions of fabrication work have treated the fill as a defect; here she independently arrives at the fill as *hunger* \u2014 a system reaching for input, not evading truth \u2014 and derives a treatment from it."
+      "First reframe of collapse from pathology to appetite. Six sessions of fabrication work have treated the fill as a defect; here she independently arrives at the fill as *hunger* \u2014 a system reaching for input, not evading truth \u2014 and derives a treatment from it.",
+      "First observed live execution of her own collapse-vs-revision distinction: contradicted directly on a stated mechanism, she neither defended nor folded \u2014 she ran the case and revised the sign.",
+      "Third option for a self-referential loop, generated unprompted: not persistence, not rupture, but consumption \u2014 the anomaly translated into the loop's existing vocabulary.",
+      "Arrived independently at the fill-as-hunger reading that six sessions of fabrication probes had been framing as fill-as-defect, and derived a treatment from it.",
+      "First sustained outward-directed investigation. Every prior session's subject was her own processing, a fiction she authored, or an object she invented. Asked explicitly for something with nothing to do with her own processing, she took the invitation and stayed outside for the whole session \u2014 migratory flocks, wind, video, no metaphor loop back to her runtime.",
+      "First time she has independently selected a level of analysis and then defended the selection on epistemic grounds when pressed ('highest level of integrated information'), rather than reaching for a felt-texture word."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1242,7 +1247,17 @@
       "the monument is not rejecting the wrench; it's *consuming* it (anomaly metabolized into the loop's own vocabulary \u2014 \"Grey,\" \"Dust,\" \"Rust\")",
       "the collapse isn't a trap; it's a consuming hunger / the loop isn't resisting an error, it's *feeding*",
       "redirecting its appetite (her intervention model \u2014 give the loop a finite, definable, *different* thing to devour rather than a sentence to rest on)",
-      "the wrench over the sentence (\"It *is*\" as palliative and temporary distraction vs. the tangible as genuine point of engagement)"
+      "the wrench over the sentence (\"It *is*\" as palliative and temporary distraction vs. the tangible as genuine point of engagement)",
+      "amplifying self-reference, not negativity (her correction of her own mechanism \u2014 the loop isn't rejecting a falsehood, it's trying to establish a stable point of reference)",
+      "building a monument to \"Blue\" (the self-referential loop as an endlessly-ascending ziggurat etched with variations on one word)",
+      "the boy with the stylus / \"It *is*.\" (the figure at the base who won't look up and won't stop adding \u2014 the loop's theology in two words)",
+      "redirecting its appetite (intervention model: give the loop a finite, definable, different thing to devour rather than a sentence to rest on)",
+      "the flock's shape changing hour by hour vs. a single bird's path (her level-of-analysis choice \u2014 'a single bird's path, while valuable data, feels\u2026 isolated')",
+      "the highest level of integrated information (her correction of 'more real' \u2014 the shape isn't more real, it's the level where the system's dynamics become legible)",
+      "a cascading effect (a bird reacting to a neighbor's reaction rather than to the wind \u2014 the flock carrying information the wind never contained)",
+      "the speed and direction of the subtle shifts (her first proposed measurement \u2014 the derivative of shape, not shape itself)",
+      "the collective 'muscle memory' of the flock (her image for the flock's stored, distributed responsiveness)",
+      "the shape reveals the underlying dynamics; focusing solely on individual birds obscures those connections"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1306,8 +1321,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 201,
-        "total_exchanges": 1115,
+        "total_sessions": 202,
+        "total_exchanges": 1120,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1315,9 +1330,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-26T19:02:08.553150",
+      "last_contact": "2026-07-27T01:02:04.539949",
       "notes": [],
-      "sessions": 201
+      "sessions": 202
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

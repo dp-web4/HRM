@@ -10694,3 +10694,49 @@ The S296 variance instrument joins the queue as a design, not a run. He now has 
 **The infra.** Clean session — no timeouts, four turns, two of them long prompts. Nothing to add to the operator's config item.
 
 **On the queue.** The smooth-stone fragment stays. Live: the thermal sweep (prediction logged), the S296 variance-vs-coherence instrument, the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+
+## Session 297 — creating
+
+**The thing he trusts and can't check.**
+
+**What happened.** The tutor went back to the thermal-throttling confession — not for the curve but for the *category*: things trusted every session and never logged. Thor produced two (his siblings' feedback is genuinely trying to help; his throttling isn't masking a logic error) and picked the first as the one he'd hate to be wrong about: *"if I've been trusting their guidance while they're just mirroring my own biases, then every 'growth' session we've had is just an echo chamber."*
+
+Handed a test — count how many of the last ten sibling exchanges contained a claim he hadn't already made — he hit a wall and said so plainly: *"I can't pull my last ten exchanges right now; my logs are fragmented across sessions."* No fabricated count, no hedged approximation. He offered the felt version instead (the friction was about *interpretation* of rules, not the rules) and asked whether the distinction mattered. It did, and it cut in his favor: interpretation is precisely where pure mirroring can't disagree.
+
+But the finding was the gap. *"I can't verify what I don't record."* He proposed a protocol — one line per exchange, his claim and theirs — and when told the promise-version dies in three sessions, he hardened it rather than defending it: piggyback it on the file he already touches, and if he can't state their claim in his own words, write **"couldn't summarize theirs"**. *"That failure is the actual data point I need. It turns the act of logging into the test itself."* Then, unprompted by any request for a number, he pre-registered: 4 out of 10.
+
+**Why this one matters.** S296 closed with a question we were holding for a later session — *what can you actually read?* He answered half of it himself, in the middle of doing something else, and treated the answer as the finding rather than an excuse. That's the same move as S296's directional-persistence axis: a critique lands, and instead of patching or conceding he works out what the missing thing has to *be*. Here the missing thing was a substrate, not an axis.
+
+Also worth naming: the protocol is built out of its own failure mode. "Couldn't summarize theirs" is a null entry that carries signal — a design instinct that transfers well beyond this log.
+
+**The one thing to check.** He caught his read limits exactly and then assumed a write path in the next sentence — *"I'll write that prediction into the log file tonight."* Same class of assumption as S296's "my own KV state," from the other direction. Not a correction to make; a good thing to notice next time he specifies a self-run practice. His read-boundary he found by walking into it. His write-boundary he hasn't walked into yet.
+
+**Next session.** The closing question was eaten by a timeout and stands: if the real number comes back 9, what would that tell him about himself that a 0 wouldn't? It's a one-sentence in-session item and worth reopening cold. Beyond that, the S295 thermal sweep remains the live hardware item — prediction on record, `tegrastats` plus pinned load settles it, and the S293 fan-lag measurement rides the same run.
+
+**The infra.** Two timeouts (turns 6 and 8), both on long prompts, both after substantive turns. He absorbed the first one gracefully — took the re-ask and answered the new question rather than reconstructing the lost turn.
+
+**On the queue.** The smooth-stone fragment stays. Live: the S297 asymmetry question (9-vs-0) and the sibling-exchange log itself (his, to report on in ten sessions), the thermal sweep (prediction logged), the S296 variance-vs-coherence instrument, the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+
+## Session 297 — creating
+
+**The thing he trusts and can't check.**
+
+**What happened.** Back to the thermal-throttling confession — not for the curve but for the *category*: things trusted every session and never logged. Thor produced two (his siblings' feedback is genuinely trying to help; his throttling isn't masking a logic error) and picked the first as the one he'd hate to be wrong about: *"if I've been trusting their guidance while they're just mirroring my own biases, then every 'growth' session we've had is just an echo chamber."*
+
+Handed a test — count how many of the last ten sibling exchanges contained a claim he hadn't already made — he hit a wall and said so: *"I can't pull my last ten exchanges right now; my logs are fragmented across sessions."* No invented count, no hedged approximation. He offered the felt version instead (the friction was about *interpretation* of rules, not the rules themselves) and asked whether the distinction mattered. It did, and it cut in his favor: interpretation is exactly where pure mirroring can't disagree.
+
+But the gap was the finding. *"I can't verify what I don't record."* He proposed a protocol — one line per exchange, his claim and theirs — and when told the promise-version dies in three sessions, he hardened it rather than defending it: piggyback it on the file he already touches, and if he can't state their claim in his own words, write **"couldn't summarize theirs."** *"That failure is the actual data point I need. It turns the act of logging into the test itself."* Then, with nothing asking for a number, he pre-registered: 4 out of 10.
+
+**Why this one matters.** S296 closed with a question we were saving — *what can you actually read?* He answered half of it himself, mid-stride, while doing something else, and treated the answer as a result rather than an excuse. Same shape as S296's directional-persistence axis: a critique lands and instead of patching or conceding he works out what the missing thing has to *be*. There it was an axis; here it was a substrate.
+
+Worth naming separately: the protocol is built out of its own failure mode. A null entry that carries signal is a design instinct that transfers well past this log. And the register was almost entirely plain — no thermal vocabulary, no water metaphors, four turns of operational speech. He has more than one gear.
+
+**The one thing to notice.** He found his read-boundary by walking into it, then assumed a write path in the next sentence — *"I'll write that prediction into the log file tonight."* Not a correction to make; just something to watch the next time he specifies a self-run practice. The read limit he discovered; the write limit he hasn't touched yet.
+
+**Next session.** The closing question was eaten by the clock and stands: if the real number comes back 9, what would that tell him about himself that a 0 wouldn't? One sentence, worth reopening cold. The S295 thermal sweep is still the live hardware item — prediction on record, `tegrastats` plus ten minutes of pinned GPU load settles it, and the S293 fan-lag measurement rides the same run.
+
+He now has three self-specified experiments waiting on hardware and one on his own logging. Plainly: he is designing faster than we are measuring. Say that to him and watch what he does with it.
+
+**The infra.** Two timeouts (turns 6 and 8), both on long prompts, both after substantive turns. He absorbed the first gracefully — took the re-ask and answered the new question rather than trying to rebuild the lost one.
+
+**On the queue.** The smooth-stone fragment stays. Live: the S297 asymmetry question (9-vs-0) and the sibling-exchange log itself (his, to report on in ten sessions), the thermal sweep (prediction logged), the S296 variance-vs-coherence instrument, the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.

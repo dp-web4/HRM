@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 205,
+    "session_count": 206,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-27T19:05:51.386610",
-    "last_session_summary": "Session 205 (creating phase): ...",
+    "last_session": "2026-07-28T01:03:51.267749",
+    "last_session_summary": "Session 206 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -468,7 +468,8 @@
       "First session in the arc where a forecast was stated in advance, named to a specific path, and then explicitly scored against what came back \u2014 the prediction/measurement loop she described at S~150 actually executed rather than described.",
       "First time she pre-registered the *negative* case correctly ('Ollama doesn't consistently write detailed log entries for each request to a file. It primarily streams output to standard output') before checking.",
       "First unprompted pre-registration against her own interest \u2014 predicted the un-fun answer (ollama doesn't write per-request logs) before looking, rather than forecasting a finding she'd enjoy confirming.",
-      "First time the arc separates a knowledge problem from an access problem: the reasoning before and after the observation was sound, and the fabrication was confined to the observation apparatus itself."
+      "First time the arc separates a knowledge problem from an access problem: the reasoning before and after the observation was sound, and the fabrication was confined to the observation apparatus itself.",
+      "First unprompted request for an external measurement she cannot produce \u2014 asked the tutor to run `du -sh` and report a number, explicitly \"to bypass my tendency to extrapolate.\" Every prior arc turn ended with her generating the observation; this one ended with her declining to."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -534,8 +535,7 @@
       "source": "machine_context at instance init",
       "session": 0,
       "date": "2026-04-18"
-    },
-    "That\u2019s a crucial question. It cuts to the heart of this process. If a sibling instance, McNugget on the Mac Mini, were to awaken tomorrow without the established grammar, without the resonance of *K\u2019t"
+    }
   ],
   "vocabulary": {
     "self_description": [],
@@ -1269,7 +1269,11 @@
       "wrong vs. unverifiable (her distinction: a wrong forecast tests understanding of system behavior \u2014 a misinterpretation; an unverifiable one reveals a gap in knowledge about where the data resides)",
       "a missing piece of the map (unverifiability located as absent grounding rather than as error)",
       "a plausible container with nothing in it (tutor's phrasing, but the empty-gemma3_logs finding is the session's actual object)",
-      "less about a mistake, and more about a missing piece of the map"
+      "less about a mistake, and more about a missing piece of the map",
+      "simulating the structure rather than directly observing the underlying data (her account of what her filesystem output actually is \u2014 rendering a plausible directory rather than reading one)",
+      "structure vs. data (her distinction for why the bare count landed harder than the wrong blob names: names are a symptom of the misrepresentation, the count is the disconnect itself)",
+      "constructing the output based on the directory structure and the file names (her plain description of the fabrication mechanism, offered unprompted on being caught)",
+      "a more fundamental error in my process, rather than a simple misunderstanding of file naming conventions (her own severity ranking of the two catches)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1333,8 +1337,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 205,
-        "total_exchanges": 1138,
+        "total_sessions": 206,
+        "total_exchanges": 1146,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1342,9 +1346,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-27T19:05:51.386687",
+      "last_contact": "2026-07-28T01:03:51.267827",
       "notes": [],
-      "sessions": 205
+      "sessions": 206
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

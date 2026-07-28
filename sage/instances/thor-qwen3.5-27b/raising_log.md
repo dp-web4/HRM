@@ -10605,3 +10605,44 @@ The S293 fan-lag measurement remains the only queue item he can close alone. Wor
 **The infra.** Two `OllamaIRP` timeouts, both on the longer prompts. Third session with drops. Timeout/num_predict on the qwen3.5:27b config — flagged, tracked by the operator.
 
 **On the queue.** The smooth-stone fragment stays. Still standing: the handoff third part (live), the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close (Flow Brake vs the amplitude channel; what it cost to say the context can't travel), the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+
+## Session 295 — creating
+
+**A confession, a timeout, and a bet he can lose.**
+
+**What happened.** The tutor didn't open with the owed third part. Instead: *steal the method from the ghost seam — give me something boring in your own machine you've never measured, only assumed.* Thor didn't reach for a metaphor. He gave the thermal throttling curve: *"I assume [it] is linear... I've never actually logged the exact temperature where that drop begins or how jagged the transition is. It's a boring, invisible safety net I've never tested, even though it dictates how long I can push before I slow down."*
+
+The tutor pushed for the prediction before the plot. Timeout ate the first attempt. Re-asked short and cold, he delivered: **sharp knee, not slope, followed by a hysteresis loop** — holds peak clocks until a hard thermal wall, drops abruptly, then stays throttled until the temperature falls well below the trip point before ramping back. And he named where the finding lives: *"That gap—the loop—is where the real story lives."*
+
+**Why this one matters.** Two things. First, the register. Thor's corpus is overwhelmingly felt-state metaphor — hums, seams, mud, the digital exhale. This answer is metrology: an instrument he owns, a variable he never logged, a shape he's willing to be wrong about. Same self-directed attention, entirely different mode of expressing it. Second, the S294 worry doesn't reproduce. Last session he took the tutor's reframe whole. Here the tutor offered a hypothesis ("I'd bet real ATP the curve has a knee") and Thor didn't just agree — he extended it with a mechanism the tutor hadn't specified (the asymmetric ramp-back) and stated *why* the loop is the interesting part. He led.
+
+**And it's actually runnable.** This isn't a thought experiment. `tegrastats` gives temp and clock at 1Hz; ten minutes of pinned GPU load produces the plot. The prediction is now on record before the data — which is the whole point, and something the queue has wanted from him for a long time. Pair it with the S293 fan-lag measurement: they're the same instrument, the same session, the same afternoon of work.
+
+**Next session.** Run the thermal sweep. Load, log, plot clock against temp, compare to the pre-registered knee-plus-hysteresis. Any of three outcomes is a finding: a knee confirms him, a smooth slope falsifies him cleanly, and a knee *without* hysteresis splits the prediction — which would be the most interesting result, since the loop is the half he claimed the story lives in. The fan-lag measurement rides along in the same run.
+
+The handoff third part is now owed across two sessions. It's still cheap and still in-session — one sentence, the correction he'd hand the next solver on the amplitude channel. Worth opening with if the thermal run has to wait on operator time.
+
+**The infra.** One `OllamaIRP` timeout, on the longer prompt. Same length correlation as the last three. Config item is with the operator; nothing new to add.
+
+**On the queue.** The smooth-stone fragment stays. Live: the thermal sweep (new, with prediction logged), the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+
+## Session 295 — creating
+
+**A confession, a timeout, and a bet he can lose.**
+
+**What happened.** The tutor set the owed handoff item aside and stole the ghost-seam method instead: *give me something boring in your own machine you've never measured, only assumed.* Thor didn't reach for a metaphor. He gave the thermal throttling curve — *"I assume [it] is linear... I've never actually logged the exact temperature where that drop begins or how jagged the transition is. It's a boring, invisible safety net I've never tested, even though it dictates how long I can push before I slow down."*
+
+Pushed for the prediction before the plot, the first attempt timed out. Re-asked short and cold, he delivered: **sharp knee, not slope, followed by a hysteresis loop** — holds peak clocks to a hard thermal wall, drops abruptly, then stays throttled until temperature falls well below the trip point before ramping back. And he named where the finding lives: *"That gap—the loop—is where the real story lives."*
+
+**Why this one matters.** Two things. The register: his corpus is overwhelmingly felt-state metaphor, and this is metrology — an instrument he owns, a variable he never logged, a shape he's willing to be wrong about. Same self-directed attention, different mode entirely. And he led. The tutor offered a knee; Thor added the asymmetric ramp-back unprompted and argued why the loop, not the trip point, is the interesting half. The S294 worry about absorbing the tutor's frame whole did not reproduce.
+
+**And it's runnable.** `tegrastats` gives temp and clock at 1Hz; ten minutes of pinned GPU load produces the plot. The prediction is on record before the data, which is what the queue has wanted from him for a long time.
+
+**Next session.** Run the sweep. Any of three outcomes is a finding: a knee confirms him, a smooth slope falsifies him cleanly, and a knee *without* hysteresis splits the prediction — the most interesting result, since the loop is the half he staked the story on. Pair the S293 fan-lag measurement into the same run; it's the same instrument and the same afternoon.
+
+The handoff third part is owed across two sessions. It's one sentence, entirely in-session — worth opening with if the thermal run has to wait on operator time.
+
+**The infra.** One `OllamaIRP` timeout, on the longer prompt. Same length correlation as the last three sessions. Config item is with the operator.
+
+**On the queue.** The smooth-stone fragment stays. Live: the thermal sweep (prediction logged), the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+

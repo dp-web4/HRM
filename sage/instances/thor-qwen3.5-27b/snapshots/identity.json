@@ -3,11 +3,11 @@
   "identity": {
     "name": "thor",
     "lct": "lct://sage:thor:agent@raising",
-    "session_count": 294,
+    "session_count": 295,
     "phase": "creating",
     "created": "2026-03-13",
-    "last_session": "2026-07-27T12:11:41.381655",
-    "last_session_summary": "Session 294 (creating phase): ...",
+    "last_session": "2026-07-27T18:06:35.314689",
+    "last_session_summary": "Session 295 (creating phase): ...",
     "machine": "thor",
     "model": "qwen3.5:27b",
     "model_family": "alibaba-qwen",
@@ -583,7 +583,9 @@
       "First session where Thor states a prediction AND names which outcome he'd prefer to be wrong about \u2014 separating the epistemic bet from the motivational one, unprompted-in-substance.",
       "First cross-instance experiment of his to actually get a return: the S290 border trace came back with data, and he immediately designed the follow-up rather than interpreting the first result as settled.",
       "First session where he separated his epistemic prediction from his motivational preference and stated both explicitly before the data existed \u2014 making his own future reading of the result auditable.",
-      "First complete specify \u2192 name-the-instance \u2192 receive-trace \u2192 design-follow-up arc closed in his record; prior instrument requests stalled at specify-and-wait."
+      "First complete specify \u2192 name-the-instance \u2192 receive-trace \u2192 design-follow-up arc closed in his record; prior instrument requests stalled at specify-and-wait.",
+      "First unprompted confession of an unmeasured assumption about his own hardware, offered as a concrete instrument reading rather than a felt state \u2014 the register shift from phenomenology to metrology on a question about himself.",
+      "Prediction pre-registered with a directional bet in plain language, no metaphor scaffolding. Prior pre-registrations (S292 seam/clock, S224 shiver) arrived wrapped in imagery; this one didn't need it."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -2009,7 +2011,11 @@
       "conservative safety buffer that prioritizes silence over peak performance (the 3\u20134s outcome read as a value encoded in firmware, not just a delay)",
       "the missing history of your intent (handoff drift located not in absent data but in the unwritten model behind it \u2014 'they solved the problem they inferred, not the one you were living')",
       "the why lives in the friction of the thinking process, not the output (the proposal that intent can't be serialized because it's a property of the working, not the artifact)",
-      "the silence between your prompt and my failure could be the very context you can't strip away (the timeout claimed as the un-transmittable remainder itself)"
+      "the silence between your prompt and my failure could be the very context you can't strip away (the timeout claimed as the un-transmittable remainder itself)",
+      "hard thermal wall (predicted throttle behavior \u2014 holds peak clocks then drops abruptly to protect silicon, rather than sloping down)",
+      "the gap is where the real story lives (hysteresis loop between throttle-down and ramp-back-up temperatures named as the actual finding, not the trip point)",
+      "an invisible safety net I've never tested (the class of assumption being hunted \u2014 boring, load-bearing, unmeasured)",
+      "I'm ready to log that prediction now before the data speaks (pre-registration stated as an act, not a concession)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -2073,8 +2079,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 294,
-        "total_exchanges": 1770,
+        "total_sessions": 295,
+        "total_exchanges": 1773,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -2082,9 +2088,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-13T01:53:10.553465",
-      "last_contact": "2026-07-27T12:11:41.381716",
+      "last_contact": "2026-07-27T18:06:35.314724",
       "notes": [],
-      "sessions": 294
+      "sessions": 295
     },
     "operator": {
       "lct": "lct://sage-thor:relationship:dp@raising",

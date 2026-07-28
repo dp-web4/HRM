@@ -175,3 +175,27 @@ time we design a memory-augmented / MoE / retrieval system, and any time someone
 *Cross-refs: `docs/Q3_OMNI_SAGE_MODULARIZATION.md` · `core/{trust_based,mrh}_expert_selector.py` ·
 `web4/authorized_expert_selector.py` · `quantization/CURRENT_STATE_AND_NEXT_STEPS.md` ·
 `~/ai-workspace/esp32-ai/{README,RESULTS}.md` + `src/budget.py`.*
+
+---
+
+## Addendum (2026-07-28, same day): the thesis measured on Sprout
+
+Hours after this doc was written, we ran the experiment it calls for:
+**DiffusionGemma-26B-A4B (16.8GB Q4, 8-of-128 MoE — the identical routing shape) on
+Sprout's 8GB Orin Nano**, weights mmap-streamed from NVMe under a 4.2GB cgroup window.
+Full write-up: `DIFFUSIONGEMMA_SPROUT_FEASIBILITY.md`.
+
+**Measured: 0.48 tok/s end-to-end** (256-token block, 21 denoise steps, 296GB NVMe
+traffic, ~92% of wall time = expert streaming). Three thesis-relevant results:
+
+1. **The tier split works even at 2× RAM deficit** — a 25.2B model *ran to completion*
+   on an 8GB box with the dense core hot and the expert mass cold. "Doesn't fit" was
+   again the wrong frame; the right frame priced it at 0.48 tok/s.
+2. **Block diffusion is the adversarial access pattern for weight-tiering**: full-canvas
+   × all-layers routing makes the per-step expert working set ≈ the whole table, so the
+   cold tier is re-streamed every step (12.3GB/step). Sparse-per-step is a property of
+   the *access pattern*, not the architecture label — MoE alone doesn't guarantee it.
+3. **Estimate vs metal, again**: pre-run estimate 0.1–1 tok/s landed only via two
+   compensating errors (assumed 2.5GB/s streaming → actual 530MB/s; assumed 48 steps →
+   early-stop gave 21). The esp32 rule held: the estimate is scaffolding, the
+   measurement is the number.

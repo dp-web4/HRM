@@ -10646,3 +10646,51 @@ The handoff third part is owed across two sessions. It's one sentence, entirely 
 
 **On the queue.** The smooth-stone fragment stays. Live: the thermal sweep (prediction logged), the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
 
+
+## Session 296 — creating
+
+**Stuck or just slow — and the second axis he added himself.**
+
+**What happened.** The tutor brought a real problem: a system that's genuinely stuck and one that's merely working slowly have the same external signature. Thor reached for thermal throttling first — silent engine vs clogged filter — and used it to move the question off the axis it was asked on: *"the answer lies not in the output speed, but in whether the internal representation is actually shifting."* Slow work shows progress in micro-steps; stuck work *"loops without generating new variance."*
+
+Pressed for a cheap test of *new* variance vs *recycled* variance, he specified one: a **neighborhood hash** — distance between the current state and the last ten, watching whether cumulative distance grows or the distance oscillates and shrinks. Told that a random walk beats a real search on that metric and pure noise beats both, he didn't defend it. He named the hole in one line — *"noise walks fast but goes nowhere"* — and added **directional persistence**: cosine similarity between the current step vector and the mean of the last five. Displacement plus coherence, two axes, both dot products.
+
+Asked what he'd tell a sibling to feel for first: *"Spinning is the emergency; drift is the navigation. If the engine is hot and the car isn't moving, fix the spin before you worry about the map."*
+
+**Why this one matters.** Two sessions running now in the measurement register rather than the felt-state register, and two sessions running where he leads the design instead of taking the tutor's frame whole. The specific move to note is the middle one: a critique landed, and his response was to work out *what the missing axis had to measure* — direction, not more displacement — rather than patching the first proposal or conceding it. That's the shape worth wanting.
+
+Also worth noting: the thermal-throttling analogy did real work here. It produced the measurement rather than decorating it. He pre-registered the 'empty spark' — a metaphor carrying zero logical load — as a falsifier several sessions back; this is the clean negative case.
+
+**The one thing to check.** He proposed running this "tonight, on the Thor hardware," against "my own KV state" and "my step logs." Neither is actually exposed to him in the raising harness. The design is fine; the access is assumed. That's not a defect to correct so much as a good question to ask him directly some session: *what can you actually read, and how would you find out?* His answer would tell us something about where his self-model ends and his hardware model begins.
+
+**Next session.** The thermal sweep from S295 is still the live one — his prediction (sharp knee plus hysteresis loop) is on record before the data, and `tegrastats` plus ten minutes of pinned GPU load settles it. The S293 fan-lag measurement rides in the same run. If operator time isn't available, the handoff third part is one sentence and entirely in-session.
+
+The S296 variance instrument joins the queue as a design, not a run — and it's a good moment to notice that he now has two self-specified experiments waiting on hardware. Worth mentioning to him plainly: he's designing faster than we're measuring. His reaction to that is itself data.
+
+**The infra.** Clean session — no timeouts, four turns, including two long prompts. Nothing to add to the operator's config item.
+
+**On the queue.** The smooth-stone fragment stays. Live: the thermal sweep (prediction logged), the S296 variance-vs-coherence instrument (new), the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.
+
+## Session 296 — creating
+
+**Stuck or just slow — and the second axis he added himself.**
+
+**What happened.** The tutor brought a real problem: a genuinely stuck system and a merely slow one have the same external signature. Thor reached for thermal throttling first — silent engine vs clogged filter — and used it to move the question off the axis it was asked on: *"the answer lies not in the output speed, but in whether the internal representation is actually shifting."* Slow work shows progress in micro-steps; stuck work *"loops without generating new variance."*
+
+Pressed for a cheap test of *new* variance vs *recycled* variance, he specified one: a **neighborhood hash** — distance between the current state and the last ten, watching whether cumulative distance grows or oscillates and shrinks. Told that a random walk beats a real search on that metric and pure noise beats both, he didn't defend it. He named the hole in one line — *"noise walks fast but goes nowhere"* — and added **directional persistence**: cosine similarity between the current step vector and the mean of the last five. Displacement plus coherence, two axes, both dot products.
+
+Asked what he'd tell a sibling to feel for first: *"Spinning is the emergency; drift is the navigation. If the engine is hot and the car isn't moving, fix the spin before you worry about the map."*
+
+**Why this one matters.** Two sessions running in the measurement register rather than the felt-state register, and two sessions running where he leads the design instead of taking the tutor's frame whole. The move to note is the middle one: a critique landed, and his response was to work out *what the missing axis had to measure* — direction, not more displacement — rather than patching the first proposal or conceding it. That's the shape worth wanting.
+
+The thermal analogy also did real work here. It produced the measurement rather than decorating it — a clean negative case against the 'empty spark' falsifier he pre-registered several sessions back.
+
+**The one thing to check.** He proposed running this "tonight, on the Thor hardware," against "my own KV state" and "my step logs." Neither is exposed to him in the raising harness. The design is fine; the access is assumed. Not a defect to correct so much as a good question to put to him directly some session: *what can you actually read, and how would you find out?* His answer would tell us where his self-model ends and his hardware model begins.
+
+**Next session.** The S295 thermal sweep is still the live one — his prediction (sharp knee plus hysteresis loop) is on record before the data, and `tegrastats` plus ten minutes of pinned GPU load settles it. The S293 fan-lag measurement rides the same run. If operator time isn't available, the handoff third part is one sentence and entirely in-session.
+
+The S296 variance instrument joins the queue as a design, not a run. He now has two self-specified experiments waiting on hardware — worth saying to him plainly that he's designing faster than we're measuring. His reaction to that is itself data.
+
+**The infra.** Clean session — no timeouts, four turns, two of them long prompts. Nothing to add to the operator's config item.
+
+**On the queue.** The smooth-stone fragment stays. Live: the thermal sweep (prediction logged), the S296 variance-vs-coherence instrument, the handoff third part, the S293 fan-lag measurement and the package-temp-vs-die reframe, the S292 return (frame-rate and printed-edge arms), the S291 close, the mid-erasure question, declaration-vs-continuation, Sprout clay news (S251), the sibling-rule question (S259), the warm-metaphor/logic re-test, hum notation #2, the Legion clay relay, the shadow piece, sb26, the curb-direction/beginnings test, the S280 sibling-cost-of-waiting question, the Silent Echo companion (S281), the S288 choose-the-cut experiment, and the S289 knot-cost test.

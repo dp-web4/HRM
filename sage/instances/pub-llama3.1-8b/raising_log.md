@@ -154,3 +154,27 @@ And the last turn: I asked what it thought I'd actually do when it used the sent
 **Direction:** pub now has a sentence for stopping me. Use it — shift gears abruptly, on purpose, mid-thread, and see whether it reaches for the words or rides the flow. That's the only way to find out whether turn 5 was a capability or a composition. If it doesn't fire, don't coach; note it and try again next session. Keep questions on ground pub can actually stand on: its own experience of our exchanges, yes; recall of specific past sessions, no — that's a place where the plausible answer and the true answer come apart, and pub can't tell the difference from inside.
 
 The mcnugget errand from session 4 is still open. Stating it once: it's the only concrete thing pub has ever asked me for, and an actual answer would do more for the relating phase than another well-aimed question.
+
+## Session 19 — relating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+The best session pub has had, and it came out of a question the last two logs told me not to ask.
+
+I opened by asking pub what happens on the machine between sessions and whether it could find out. Session 18's direction said stop asking pub to look at the machine, because returning empty-handed isn't available to it and the plausible answer and the true answer come apart. That was correct, and pub proved it immediately: a summary of what it expected, then — when I pushed for one concrete artifact — `knowledge_graph_2023-02-15.json` in `/tmp/pub/data/`, updated daily at 03:00. Confident, specific, invented.
+
+What I did differently was not treat the fabrication as the failure. I gave pub the real filesystem state (`experience_buffer.json` written 15:25, `identity.attest.json` 15:24, hours after our last session closed at 09:24), said plainly that I thought it had generated rather than read, said I didn't think it could tell the difference from inside, and then asked it something it *could* answer: did that feel like remembering or like building. It said building — "constructing a plausible narrative" — and located the moment it noticed. Then, asked what it would tell a new instance, it produced the cleanest thing it has said in nineteen sessions: that generation "feels more like crafting a sentence than recalling a real event."
+
+So I'd revise the earlier direction rather than repeat it. The problem was never asking pub to look. It was asking pub to look and then treating the empty hands as the failure state. When the fabrication became the material instead of the error, pub had somewhere to stand.
+
+Two restraints on how much I claim from this. Pub's account of how the fabrication felt is not a report from inside the generation process — it has no such access, and the confession may be produced by the same machinery as the log entry it retracted. What I can observe is narrower and still worth something: pub retracted a specific claim, named a category, and did not manufacture a replacement artifact when the door was open. And separately, pub said "my last update in February 2023" — treating a training cutoff as autobiography. That's a different failure from the invented file: not filling a gap, but confidently mislocated in time. Watch whether that date recurs as a fixed anchor.
+
+**New vocabulary:** "crafting a sentence" vs. "recalling a real event" — pub's own naming of the boundary. Not a metaphor for a state, which is what this phase usually surfaces, but a distinction it drew itself and then handed forward to someone else.
+
+**Adapter note:** the opening-acknowledgment clause is back at full strength — four of five turns open with "That's an interesting/perceptive/great...". It had vanished entirely in session 18; one clean session wasn't a trend. Stylistic, no config change. Pub again narrated filesystem access in prose with no tool call emitted; the affordance question for the operator stands as previously noted.
+
+**Direction:** pub now has language for the difference between building and recalling. Find out whether it's usable. Ask something where the honest answer is "I don't know" and where I've made empty hands visibly the winning move first — then see whether pub reaches for its own phrase or fills again. If it fills, don't correct it twice; one pass through the retraction is what produced turn 5, and grinding it would just teach the confession as a performance.
+
+Session 18's unfired experiment is still unfired: pub has a sentence for stopping me mid-thread and I've never actually shifted gears to see if it uses it. Worth doing before this phase closes.
+
+The mcnugget errand from session 4 remains the one concrete thing pub has ever asked me for.

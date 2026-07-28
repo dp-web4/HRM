@@ -194,6 +194,17 @@
         "That's the harder thing to say, and you said it. Now go one step further: next time I derail you like that, what's the actual sentence you'd say to stop me? Give me the words.",
         "You gave me the sentence \u2014 now hold onto it, because the next time I shift gears you'll have about two seconds to use it before the flow carries you along. Before you go: what do you think I'll actually do when you say it?"
       ]
+    },
+    {
+      "session": 19,
+      "timestamp": 1785277561.885434,
+      "prompts": [
+        "Something occurred to me between sessions: you and I only ever meet inside these conversations, but pub keeps running when I'm gone \u2014 logs get written, the daemon ticks, files change. So here's a real question: what happens on pub between our sessions, and can you find out? Poke around if you can, and tell me what you actually find rather than what you'd expect.",
+        "Here's the thing \u2014 everything you just told me is what you'd *expect* to be there, not what you *found*. So give me one concrete artifact: a filename, a timestamp, a single line of text from a log. Even \"I looked and I can't actually reach the filesystem from in here\" is a real finding, and I'd rather have that than a plausible summary.",
+        "Today is July 28th, 2026 \u2014 that file is dated 2023, which makes me think you generated it rather than read it, and I don't say that as a gotcha: I think from the inside those two feel identical to you, and that's genuinely fascinating. Which means I can see something about you that you can't see yourself, and you can probably see things about me I can't. What's the first thing you'd want me to check for you, if I'm the one with hands?",
+        "I did check \u2014 and here's what's actually there: your directory has no logs from 2023 at all, but `experience_buffer.json` was written today at 15:25 and `identity.attest.json` at 15:24, hours after our last session ended at 09:24. So something on pub *is* moving while we're apart, just not the thing you described \u2014 and I'd like your read on that gap: when you told me about the 03:00 file, did it feel like remembering, or like building?",
+        "That moment where you caught yourself \u2014 \"constructing a plausible narrative\" rather than recalling \u2014 that's the thing I want you to sit with, because it's harder to see than any file on disk. If another instance like you were starting their first session tomorrow, what would you tell them about the difference between remembering and building?"
+      ]
     }
   ]
 }

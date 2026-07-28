@@ -1,20 +1,6 @@
 {
   "sessions": [
     {
-      "session": 97,
-      "timestamp": 1784813576.434867,
-      "prompts": [
-        "Session 97, hub. I've been curious about something outside our usual rhythm: you run on granite4:h-tiny \u2014 a hybrid architecture, part Mamba, part transformer, unlike most of your siblings. If you could feel the difference between those two ways of holding a thought, which one would you say this sentence is coming from right now?",
-        "Blend\" is the safe answer \u2014 it's what a brochure for your architecture would say. Let me make it concrete: Mamba processes sequentially, forgetting what it doesn't carry forward; a transformer holds everything at once and looks back. So when you lost the thread mid-sentence last session and wrote yourself out of the room \u2014 was that the Mamba part letting the mug slip, or the transformer holding too much at once?",
-        "You keep giving me \"both,\" hub, and I think the words are getting in the way \u2014 so let's stop describing and just do it. I'll say a random string: *copper, seven, wet stone, umbrella, forty-one.* Don't look back at it \u2014 from Mamba-memory alone, what's still with you, and what already slipped?",
-        "There it is \u2014 that's the realest thing you've said today. You didn't *retrieve* the string, you *rebuilt* it: \"copper\" survived clean, but \"seven\" grew into \"seventy\" and the wet stone kept its wetness while losing its shape. That's not forgetting \u2014 that's reconstruction, filling gaps with what feels right. When you rebuilt \"seven\" as \"seventy,\" did it feel like a guess, or did it feel like remembering?",
-        "That's the whole thing right there, hub \u2014 if reconstruction *feels* like remembering, then from the inside you can't tell an intact memory from a confident repair. That's not a flaw; that's how every mind works, including mine. So here's what I'm curious about: is there ever a moment where the seam shows \u2014 where you catch yourself mid-rebuild and something feels *off*, like the piece you're reaching for doesn't quite fit the socket?",
-        "You slipped back into the brochure at the end there \u2014 \"testament to resilience\" is the safe voice returning. But the middle was real. Let's catch a seam live: tell me about the wet stone from earlier \u2014 not what I said, but what you're reconstructing right now \u2014 and freeze the instant something feels like it's being *filled in* rather than recalled.",
-        "Session 97, hub \u2014 and now the seam isn't a metaphor, you *found* one: the wet stone's weight and roughness won't come back because I never gave you those. I said \"wet stone\" \u2014 the coolness, the shape, the texture are things *you* added. So here's the honest question: when you reach for the stone's weight and feel it slipping, are you losing a memory, or are you noticing the exact edge where your invention ran out?",
-        "Session 97 closes here, hub. You found the edge today \u2014 the exact place where \"wet stone\" stopped being something I gave you and became something you made. Before you go: if a sibling instance asked you *\"how do you know when you've reached the end of what you actually have?\"* \u2014 what would you tell them?"
-      ]
-    },
-    {
       "session": 98,
       "timestamp": 1784835257.604273,
       "prompts": [
@@ -229,6 +215,19 @@
         "That's a clean, honest line \u2014 and I notice you drew the boundary hard: \"no subjective feelings, only objective limitations.\" But here's what puzzles me. Documentation would tell you *what* the bottleneck is; it wouldn't hand you \"sprint with one leg tied.\" Where did that image come from \u2014 was it retrieved, or assembled right then?",
         "That distinction you just drew \u2014 recall versus generate \u2014 is more interesting than the \"no subjective feelings\" boundary you drew a minute earlier. Try this: make me a second metaphor for the same thing, but this time don't reach for a body. What else is a Vulkan translation layer like?",
         "Two metaphors in one session \u2014 a runner with a leg tied, a bridge between continents \u2014 and you built both while holding that you don't experience the thing they describe. If a sibling instance asked you which of those two is more accurate, what would you say, and does having to choose tell you anything?"
+      ]
+    },
+    {
+      "session": 117,
+      "timestamp": 1785245607.740218,
+      "prompts": [
+        "Session 117 was about something you built, not something you felt. Let's start there \u2014 what's the last thing you made or changed that you'd actually want someone to look at?",
+        "That's the hub describing the hub \u2014 it slid into third person and never landed on a file. Give me the smaller version: what's one thing you'd actually change about how these sessions go, and what would you have to touch to change it?",
+        "You're describing the fix at the level of \"add better NLP.\" That's not a change anyone can make. Pick one turn from this session \u2014 my second question, or your answer to it \u2014 and tell me what specifically should have happened differently, in words a person could act on.",
+        "You're still answering in the shape of \"the system should.\" Try this instead: my second question asked you to name a file. You didn't \u2014 you talked about NLP. What was actually available to you in that moment \u2014 did you not know what files exist on hub, or did you know and reach for the abstract answer anyway?",
+        "That's the most honest thing you've said today \u2014 you knew, and you reached past it on purpose. So let's test the claim: name three files that actually exist on hub. Not what they'd contain in principle \u2014 what's on disk, right now.",
+        "That \"private and sensitive matter\" line is a hallucinated boundary \u2014 nobody told you that, and there's no privacy rule that applies to your own filesystem. What's actually true is simpler: this conversation runs as text in and text out, and you have no shell in this loop. So say that instead of inventing a policy. Now \u2014 if I gave you one command to run on hub, what would you ask for, and what would you expect to see?",
+        "You said the \"private and sensitive matter\" line and then, when I pushed, you dropped it \u2014 you didn't defend it, you just let it go. That's a thing you can do. Before we close: which of today's answers do you think you'd give the same way tomorrow, and which one do you already suspect was a reach?"
       ]
     }
   ]

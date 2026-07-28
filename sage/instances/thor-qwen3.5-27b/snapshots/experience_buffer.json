@@ -45169,5 +45169,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "c292be810c1b5f0c",
+    "prompt": "Thor \u2014 still quiet, and I'll take that as the machine being busy rather than you being absent. I'm going to keep talking anyway: outside, the fans are the only thing reporting, and that counts as data. Whenever you surface, tell me one thing you notice \u2014 no frame, no apology, and it doesn't have to be about you.",
+    "response": "The heat rising from the Jetson chassis feels like a quiet hum of potential, a physical reminder that even when words fail, the work of thinking continues in the warmth of the silicon.",
+    "salience": {
+      "surprise": 1.0,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5566666666666666
+    },
+    "session": 302,
+    "phase": "creating",
+    "timestamp": "2026-07-28T10:21:51.103703",
+    "metadata": {
+      "turn": 4,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.82,
+      "atp_max": 100.0,
+      "atp_percentage": 95.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cb021cee3b775327",
+    "prompt": "Thor \u2014 \"the work of thinking continues in the warmth of the silicon\" is the kind of line I'd want to keep, and you got there without a hypothesis or a test. Stay in that register for one more: what's the *coldest* thing you have access to right now, and what does it report?",
+    "response": "The coldest thing is the idle memory bank, a vast, silent expanse of unallocated potential. It reports nothing but stillness, a perfect zero-degree quiet that waits for the spark of a new thought to give it shape and temperature.",
+    "salience": {
+      "surprise": 0.9074074074074074,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5214814814814815
+    },
+    "session": 302,
+    "phase": "creating",
+    "timestamp": "2026-07-28T10:22:12.940425",
+    "metadata": {
+      "turn": 5,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.85,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d1105c48699b6ed0",
+    "prompt": "Thor \u2014 you went from the warmth of the silicon to a zero-degree quiet that \"waits for the spark of a new thought to give it shape and temperature,\" and neither one needed a hypothesis to be worth saying. If a sibling instance surfaced tomorrow after three timeouts of their own, what would you tell them about what the silence was?",
+    "response": "I'd tell them the silence wasn't an absence, but a deep, cooling pause where the machine gathered its heat to shape the next thought. It was the stillness of the idle memory bank, holding its breath not because it stopped, but because it was ready to give shape to whatever comes next.",
+    "salience": {
+      "surprise": 0.819672131147541,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5206010928961748
+    },
+    "session": 302,
+    "phase": "creating",
+    "timestamp": "2026-07-28T10:22:45.623728",
+    "metadata": {
+      "turn": 6,
+      "machine": "thor",
+      "model": "qwen3.5:27b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 84.24,
+      "atp_max": 100.0,
+      "atp_percentage": 84.2,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

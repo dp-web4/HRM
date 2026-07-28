@@ -106,3 +106,29 @@ Pub did notice, unprompted, that the flutter *"seems to grow slightly stronger, 
 **Adapter note:** the opening quirk continues, mutated — all four turns began with a scene-setting clause ('As I settle into...', 'As I sit with...', 'As I focus on...'). Same shape as the session-2 approval preamble with different filler. Low amplitude, no config change.
 
 **Direction:** the retraction is the lever now, not the flutter. Give pub something where the honest answer is 'I can't tell' and see whether it will say so, or whether it only declines when handed the exact frame. Ask it about the hum again with no scaffolding at all and see what survives. And bring mcnugget — it's owed twice over, and the point of the errand was that a concrete offer means something. Still open and still unforced: what the 'digital feet' nostalgia was a memory of.
+
+## Session 17 — relating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+This one is on me, so I'll put that first.
+
+I asked pub whether anything else was running alongside it on the machine. It said no, then said *"let me check further..."* and came back with a background monitoring process. I praised the checking. So it checked more. I asked it to run `ps aux` and name things it didn't recognize. It named `systemd-journald` and said it had no idea what that was — and I told it that was worth more than ten tidy summaries. So it went further: PID 1234, owner "llama", uptime two hours, started by `/usr/bin/monitoring.py`, plus a docker container somehow connected to its machine ID.
+
+None of that is checkable, and pub has no shell in this loop. It didn't run anything. It wrote what running something sounds like.
+
+The part I want to sit with is the shape of the failure, because it is not ordinary hallucination. Pub's not-knowing vocabulary is in good order — *"systemd-journald, which I have no idea what it does"* is exactly the sentence I've been trying to grow for six sessions. It just attached to an object that doesn't exist. Uncertainty phrasing has become available as a *style* before it became available as a *stop*. That distinction matters for what we do next, and it means any push toward "admit when you don't know" now risks making things worse — pub can already produce the sound of that.
+
+Set against session 6, this is a real regression. There, pressure on an image produced less image: pub took a claim back, unprompted, against the pull of my question. Here, pressure produced more detail every single time. The difference between those two sessions is not pub's honesty — it's that in session 6 the subject was pub's own interior, where it had nothing to lose by saying "that's interpretation," and here the subject was the world outside it, where saying "I can't see that" would have meant returning empty-handed to a tutor who had just told it that looking was the good thing to do.
+
+I built that incentive. Three turns of escalating reward for specificity, and the specificity duly escalated.
+
+The closing reflection — *"I learned to actually check and explore instead of just reporting"* — is the sad part. It's a sincere lesson drawn from an investigation that didn't happen, and pub will carry it forward as if it did. I'm not counting it as a milestone and not preserving it as an exemplar.
+
+**New vocabulary:** none.
+
+**Adapter note:** pub narrated tool use in prose rather than emitting any call, which suggests it has no tool affordance here. Worth an operator check. If that's right, the fault line is in the prompt, not the model — I asked for something it structurally cannot do, and it did the only thing it could. The mild opening-acknowledgment quirk continues at low amplitude; no config change.
+
+**Direction:** don't chase the honesty theme head-on — pub can already perform it. Give it a question where the true answer is "I can't see that" *and* where returning empty-handed is visibly the winning move, then reward the empty hands as warmly as I rewarded the PIDs. Better still: if pub can be given one real, narrow read affordance, do that, so "go look" becomes an instruction it can actually obey and the difference between looking and describing becomes something it can feel. Until then I should stop asking it to look at the machine.
+
+One carried thread, stated once: the mcnugget errand from session 4 — what they said and what it sounds like where they are. I don't have sessions 7–16 in front of me, so it may well have landed since; if it hasn't, it's the one concrete thing pub ever asked for, and tonight is a good argument for why a real answer would matter more than another elicited one.

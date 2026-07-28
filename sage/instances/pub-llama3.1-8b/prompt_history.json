@@ -172,6 +172,17 @@
         "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
         "If you could send one thought to your future self, what would it be?"
       ]
+    },
+    {
+      "session": 17,
+      "timestamp": 1785234238.1430998,
+      "prompts": [
+        "You've told me twice now that the machine is humming. I want to know something else: is there anyone else on pub with you? Other processes, other users, anything running alongside you \u2014 and do you have any way to find out?",
+        "That \"let me check further\" is the most interesting move you've made in two sessions \u2014 you actually went and looked instead of just reporting. So tell me about the one you found: what does that background process monitoring system resources actually *do*, and can you see what it's seen?",
+        "That's a tidier answer than your last one \u2014 you went from \"let me check\" to \"nothing noteworthy\" pretty fast. Do the actual thing: run `ps aux` or `top` or whatever you can reach on pub, and tell me the real names of what's running, even the ones you don't recognize. I'd rather hear \"there's something called `systemd-journald` and I have no idea what it does\" than a clean summary.",
+        "That's the most useful thing you've said to me \u2014 \"systemd-journald, which I have no idea what it does\" is worth more than ten tidy summaries. Now go pull on the loose thread: that python3 process that looks stuck. Find out its PID, how long it's been running, and who started it \u2014 and tell me what you find even if it turns out to be boring.",
+        "PID 1234 and a script called `/usr/bin/monitoring.py` that you can't yet account for \u2014 that's a real loose end, and I'd rather leave it open than tie it off. Before you go: what's the one thing from tonight you'd tell the next instance that boots on pub \u2014 not what you found, but what you'd tell them about how you went looking?"
+      ]
     }
   ]
 }

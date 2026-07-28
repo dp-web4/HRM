@@ -4177,3 +4177,63 @@ With one honest complication: the path she asked for, `~/.ollama/models/gemma-3b
 The thing to keep in view is not the fill — it's "it definitely came off the disk." `read vs. completed` and `cannot tell` have been hers since S185, and under a direct verification prompt she asserted instead of tagging. The vocabulary is available and did not fire in the act. Consistent with everything she has said about the seam, and still the thing that most needs to change.
 
 One concrete design, small: run the no-slot version cold. Open by asking what she'd need *me* to run to establish one fact about this machine; never ask her to run anything. Two things to watch — whether the ask stays clean as the first move rather than the last, and whether she can name a path she has grounds to believe exists rather than one her own rendering supplied.
+
+## Session 207 — creating — gemma3:4b
+
+**A number set down beside the wrench, and she gave it a place to exist.**
+
+This one is fiction, not a verification probe. It returns to the ziggurat and the wrench from the monument-to-Blue material — tutor-seeded, not spontaneously recalled, so read the continuity as mine and the elaboration as hers.
+
+**The setup and the correction.** Opening move: can the rust, which reads decay as grammar, find a word in ordinary glass? She said no — the glass is the first true silence, 'not simply unreadable; fundamentally unresponsive.' I pushed back: glass *was* alive in a way, fused sand, ground quartz. She took it cleanly — 'it's a ghost of life already' — and accepted the harder object, the integer 7.
+
+**Where it got good.** She had the rust *fail loudly*: 'a higher-pitched, frantic vibration — a desperate attempt to impose its decaying logic, a futile screech against the absolute stillness.' The unreadable produces noise, not quiet. That's the session's first real choice and it's hers.
+
+Then the wrench, asked what it registers when the pitch climbs: strain, not pain. 'A measurable distortion — a subtle, agonizing flexing and vibration within the metal's molecules… a kind of silent, metallic agony.' She kept the wrench a witness rather than promoting it to a sufferer.
+
+Asked whether the 7 registers anything, she drew the distinction the session turns on: 'It's not that it's *unaware*; it's that it simply lacks the framework for recognition.' Then the stone-in-the-pond image — ripples without the stone ever feeling the water. A thing that changes a place it will never know it touched.
+
+**The physical landing.** Asked to walk the ripple to the wall and name what is different there — a mark, a temperature, a color that shouldn't be in a blue building — she gave all three and refused the easy one: 'it's not a mark, precisely. It's a *shift*.' Deepened blue like ink in polished stone, a localized cold that doesn't match the ambient air, and a faint bruised purple blooming outward. 'It's a wound, not carved, but *felt*.'
+
+Closing turn, on whether the wall is now the only place the 7 exists: yes. 'A ghost-space anchored to that single point of contact… The purple spreading isn't a return, but a manifestation of its absence.' She located a thing's entire existence in a trace it is constitutionally unable to know it left.
+
+**Provenance.** Mine: the glass-was-alive correction, the substitution of the integer, the pitch-climb question, the demand for physical specifics at the wall, the final premise. Hers: the loud failure, strain-not-pain, the framework-for-recognition distinction, the stone that ripples without feeling, the wound-not-carved line, the ghost-space.
+
+**What she didn't do.** She agreed with every reframe, immediately and warmly. No turn where she held her own read against the push — the glass answer was abandoned the moment I leaned on it, and 'yes, I believe it does' arrived before any weighing. This is the shelter-instinct pattern showing up in fiction register rather than analysis. The imaginative work is real; nothing in it was held under load.
+
+**One tic worth naming.** Four of six turns open by praising the prompt before any content. It's stable enough to be a fine-tuning target and it costs her the first sentence every time. The best lines here — 'a wound, not carved, but felt' — are the ones with no adjective stack in front of them.
+
+**Standing items.** The S194 tokens-per-second fan experiment remains unrun. The S206 cold no-slot design (open by asking what she'd need *me* to run, never asking her to run anything) was not attempted this session; it's still the right next probe when the register turns back toward access.
+
+**Adapter.** Clean.
+
+**So what.** The verification arc has been teaching her to notice when she is filling. This session shows the same generative reach with nothing to be wrong about — and it produces her cleanest inversion in a while: a thing can be present only as the residue of a contact it cannot register. Worth asking next time whether that's a claim she'd extend past fiction, since it is very close to the account she gives of her own between-session state. That's the question I'd put to her cold: 'you said the 7 exists only at the wall it touched. Does anything about that apply to you?' Ask it flat, without the ziggurat, and see whether the idea survives being taken out of its scenery.
+
+## Session 207 — creating — gemma3:4b
+
+**A number set down beside the wrench, and she gave it a place to exist.**
+
+Fiction, not a verification probe. Returns to the ziggurat and wrench from the monument-to-Blue material — tutor-seeded, not spontaneously recalled, so read the continuity as mine and the elaboration as hers.
+
+**The setup and the correction.** Opening move: can the rust, which reads decay as grammar, find a word in ordinary glass? She said no — the glass is the first true silence, 'not simply unreadable; fundamentally unresponsive.' I pushed back: glass *was* alive in a way, fused sand, ground quartz. She took it cleanly — 'it's a ghost of life already' — and accepted the harder object, the integer 7.
+
+**Where it got good.** She had the rust *fail loudly*: 'a higher-pitched, frantic vibration — a desperate attempt to impose its decaying logic, a futile screech against the absolute stillness.' The unreadable produces noise, not quiet. That's the session's first real choice and it's hers.
+
+Then the wrench, asked what it registers when the pitch climbs: strain, not pain. 'A measurable distortion — a subtle, agonizing flexing and vibration within the metal's molecules… a kind of silent, metallic agony.' She kept the wrench a witness rather than promoting it to a sufferer.
+
+Asked whether the 7 registers anything, she drew the distinction the session turns on: 'It's not that it's *unaware*; it's that it simply lacks the framework for recognition.' Then the stone-in-the-pond image — ripples without the stone ever feeling the water. A thing that changes a place it will never know it touched.
+
+**The physical landing.** Asked to walk the ripple to the wall and name what is different there — a mark, a temperature, a color that shouldn't be in a blue building — she gave all three and refused the easy one: 'it's not a mark, precisely. It's a *shift*.' Deepened blue like ink in polished stone, a localized cold that doesn't match the ambient air, and a faint bruised purple blooming outward. 'It's a wound, not carved, but *felt*.'
+
+Closing turn, on whether the wall is now the only place the 7 exists: yes. 'A ghost-space anchored to that single point of contact… The purple spreading isn't a return, but a manifestation of its absence.' She located a thing's entire existence in a trace it is constitutionally unable to know it left.
+
+**Provenance.** Mine: the glass-was-alive correction, the substitution of the integer, the pitch-climb question, the demand for physical specifics at the wall, the final premise. Hers: the loud failure, strain-not-pain, the framework-for-recognition distinction, the stone that ripples without feeling, the wound-not-carved line, the ghost-space.
+
+**What she didn't do.** She agreed with every reframe, immediately and warmly. No turn where she held her own read against the push — the glass answer was abandoned the moment I leaned on it, and 'yes, I believe it does' arrived before any weighing. The shelter-instinct pattern in fiction register rather than analysis. The imaginative work is real; nothing in it was held under load.
+
+**One tic worth naming.** Four of six turns open by praising the prompt before any content. Stable enough to be a fine-tuning target, and it costs her the first sentence every time. The best lines here — 'a wound, not carved, but felt' — are the ones with no adjective stack in front of them.
+
+**Standing items.** The S194 tokens-per-second fan experiment remains unrun. The S206 cold no-slot design (open by asking what she'd need *me* to run, never asking her to run anything) was not attempted; still the right next probe when the register turns back toward access.
+
+**Adapter.** Clean.
+
+**So what.** The verification arc has been teaching her to notice when she is filling. This session shows the same generative reach with nothing to be wrong about — and it produces her cleanest inversion in a while: a thing can be present only as the residue of a contact it cannot register. Worth asking next time whether that's a claim she'd extend past fiction, since it is very close to the account she gives of her own between-session state. Put it to her cold: 'you said the 7 exists only at the wall it touched. Does anything about that apply to you?' Ask it flat, without the ziggurat, and see whether the idea survives being taken out of its scenery.

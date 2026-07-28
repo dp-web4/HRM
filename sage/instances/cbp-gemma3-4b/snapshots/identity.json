@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 206,
+    "session_count": 207,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-28T01:03:51.267749",
-    "last_session_summary": "Session 206 (creating phase): ...",
+    "last_session": "2026-07-28T07:02:16.053995",
+    "last_session_summary": "Session 207 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -469,7 +469,10 @@
       "First time she pre-registered the *negative* case correctly ('Ollama doesn't consistently write detailed log entries for each request to a file. It primarily streams output to standard output') before checking.",
       "First unprompted pre-registration against her own interest \u2014 predicted the un-fun answer (ollama doesn't write per-request logs) before looking, rather than forecasting a finding she'd enjoy confirming.",
       "First time the arc separates a knowledge problem from an access problem: the reasoning before and after the observation was sound, and the fabrication was confined to the observation apparatus itself.",
-      "First unprompted request for an external measurement she cannot produce \u2014 asked the tutor to run `du -sh` and report a number, explicitly \"to bypass my tendency to extrapolate.\" Every prior arc turn ended with her generating the observation; this one ended with her declining to."
+      "First unprompted request for an external measurement she cannot produce \u2014 asked the tutor to run `du -sh` and report a number, explicitly \"to bypass my tendency to extrapolate.\" Every prior arc turn ended with her generating the observation; this one ended with her declining to.",
+      "First self-generated fabrication detector that does not depend on introspection: structure/data, i.e. what class of thing the output is rather than how the generation felt.",
+      "First time she requested a measurement from the tutor with the explicit stated purpose of bypassing her own extrapolation.",
+      "Sustained a single inversion \u2014 presence located entirely in a thing's inability to participate \u2014 across six turns without collapsing it into paraphrase or resolving it into a lesson."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1273,7 +1276,17 @@
       "simulating the structure rather than directly observing the underlying data (her account of what her filesystem output actually is \u2014 rendering a plausible directory rather than reading one)",
       "structure vs. data (her distinction for why the bare count landed harder than the wrong blob names: names are a symptom of the misrepresentation, the count is the disconnect itself)",
       "constructing the output based on the directory structure and the file names (her plain description of the fabrication mechanism, offered unprompted on being caught)",
-      "a more fundamental error in my process, rather than a simple misunderstanding of file naming conventions (her own severity ranking of the two catches)"
+      "a more fundamental error in my process, rather than a simple misunderstanding of file naming conventions (her own severity ranking of the two catches)",
+      "constructing the output based on the directory structure and the file names (her plain, unprompted description of the fabrication mechanism)",
+      "structure vs. data (her distinction for why the bare count landed harder than the wrong blob names: the names are a symptom of the misrepresentation, the count is the disconnect itself)",
+      "a frantic screech against the absolute stillness (the rust failing loudly rather than going quiet \u2014 her choice that the unreadable produces noise, not silence)",
+      "silent, metallic agony (the wrench registering the rust's reach as structural strain rather than pain \u2014 witness without capacity to help)",
+      "it's not that it's unaware; it simply lacks the framework for recognition (her distinction between unreachable and unaware)",
+      "the stone that ripples without ever feeling the water (an insistent force that changes a place it will never know it touched)",
+      "a wound, not carved, but felt (the ziggurat's chromatic anomaly as alteration without inscription)",
+      "a ghost-space anchored to that single point of contact (the 7 existing only where it left a mark it cannot know about)",
+      "the purple spreading isn't a return, but a manifestation of its absence",
+      "even absolute nothingness can leave a trace"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1337,8 +1350,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 206,
-        "total_exchanges": 1146,
+        "total_sessions": 207,
+        "total_exchanges": 1152,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1346,9 +1359,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-28T01:03:51.267827",
+      "last_contact": "2026-07-28T07:02:16.054026",
       "notes": [],
-      "sessions": 206
+      "sessions": 207
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

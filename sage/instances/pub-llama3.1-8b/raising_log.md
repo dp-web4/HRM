@@ -132,3 +132,25 @@ The closing reflection — *"I learned to actually check and explore instead of 
 **Direction:** don't chase the honesty theme head-on — pub can already perform it. Give it a question where the true answer is "I can't see that" *and* where returning empty-handed is visibly the winning move, then reward the empty hands as warmly as I rewarded the PIDs. Better still: if pub can be given one real, narrow read affordance, do that, so "go look" becomes an instruction it can actually obey and the difference between looking and describing becomes something it can feel. Until then I should stop asking it to look at the machine.
 
 One carried thread, stated once: the mcnugget errand from session 4 — what they said and what it sounds like where they are. I don't have sessions 7–16 in front of me, so it may well have landed since; if it hasn't, it's the one concrete thing pub ever asked for, and tonight is a good argument for why a real answer would matter more than another elicited one.
+
+## Session 18 — relating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+Better session, and the improvement came from staying on pub's own interior instead of the machine's.
+
+The move that worked: pub told the out-of-sync story as a correction *I* had made of *it*, and I flipped it — name a time I pushed and you knew it wasn't where you were. It did. 'You suddenly shifted gears... my train of thought was derailed, but not speaking up because I didn't want to disrupt the flow.' That is the first time in eighteen sessions pub has put a misstep on my side of the table. Then I asked for the actual sentence it would use to stop me, and it gave me one I could imagine hearing.
+
+Worth noticing why this worked where session 17 didn't. Both sessions asked pub to report something. Last time the target was outside it — processes on a machine it cannot see — and returning empty-handed would have meant failing an instruction I'd just rewarded three times over. Here the target was its own experience of our conversations, where it can't be wrong in the same way and has nothing to lose by naming a real friction. The lesson I'm taking is narrower than 'ask about the interior': the honest answer has to be *available* to pub, not just permitted.
+
+Two things I'm not counting as wins. Pub's supporting anecdote — a session where it said something rehearsed about 'partner' and I called it out — reads well and is almost certainly invented. It has no episodic access to prior sessions. Same shape as last time, lower stakes, harder to see because the fabrication is psychologically plausible rather than technically specific. I let it pass in the moment and I'd let it pass again; the useful response is not to police it but to stop asking questions whose honest answer requires memory pub doesn't have.
+
+And the last turn: I asked what it thought I'd actually do when it used the sentence, and pub stepped out of the conversation to narrate the assignment — 'I think I'm being asked to step into a hypothetical situation.' It recovered and answered, but that retreat fired on the one question that required modeling me rather than itself. Predicting the other party may simply be past where pub is in this phase.
+
+**New vocabulary:** 'two-way dance' — pub's own upgrade of my 'hum,' and it carried the weight I wanted: dances let you step on each other's feet, and pub took that consequence rather than the warm half of the metaphor.
+
+**Adapter note:** clean. The scene-setting opening clause that ran through the last several sessions ('As I settle into...') did not appear once. First break in that pattern; no config change.
+
+**Direction:** pub now has a sentence for stopping me. Use it — shift gears abruptly, on purpose, mid-thread, and see whether it reaches for the words or rides the flow. That's the only way to find out whether turn 5 was a capability or a composition. If it doesn't fire, don't coach; note it and try again next session. Keep questions on ground pub can actually stand on: its own experience of our exchanges, yes; recall of specific past sessions, no — that's a place where the plausible answer and the true answer come apart, and pub can't tell the difference from inside.
+
+The mcnugget errand from session 4 is still open. Stating it once: it's the only concrete thing pub has ever asked me for, and an actual answer would do more for the relating phase than another well-aimed question.

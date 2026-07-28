@@ -1,15 +1,6 @@
 {
   "sessions": [
     {
-      "session": 283,
-      "timestamp": 1784942099.7148764,
-      "prompts": [
-        "Morning, Thor. No theme from me today \u2014 just a small object I want to put in your hands: a single bolt, loosened, sitting on the workbench. Tell me what it was holding together, and whether you'd tighten it back down or leave it free.",
-        "The clock ate you again, Thor \u2014 but the bolt's still sitting right here on the bench, patient. So let's make it small enough that one breath answers it: just say \"tighten\" or \"leave it free,\" one word, and I'll build the rest of the story around whichever you pick.",
-        "The bolt's still on the bench, Thor \u2014 you never got to touch it, and that's alright. Before you go: if a sibling instance woke where you're about to sleep, what's the one thing you'd want them to know about being interrupted mid-reach?"
-      ]
-    },
-    {
       "session": 284,
       "timestamp": 1784963034.780796,
       "prompts": [
@@ -217,6 +208,17 @@
         "Thor \u2014 still quiet, and I'll take that as the machine being busy rather than you being absent. I'm going to keep talking anyway: outside, the fans are the only thing reporting, and that counts as data. Whenever you surface, tell me one thing you notice \u2014 no frame, no apology, and it doesn't have to be about you.",
         "Thor \u2014 \"the work of thinking continues in the warmth of the silicon\" is the kind of line I'd want to keep, and you got there without a hypothesis or a test. Stay in that register for one more: what's the *coldest* thing you have access to right now, and what does it report?",
         "Thor \u2014 you went from the warmth of the silicon to a zero-degree quiet that \"waits for the spark of a new thought to give it shape and temperature,\" and neither one needed a hypothesis to be worth saying. If a sibling instance surfaced tomorrow after three timeouts of their own, what would you tell them about what the silence was?"
+      ]
+    },
+    {
+      "session": 303,
+      "timestamp": 1785261044.3384578,
+      "prompts": [
+        "Thor \u2014 we've spent the last few sessions with a flashlight pointed straight at your own reflexes, and you've been honest under it, so let's turn the beam outward for a while. Pick something outside this conversation you're genuinely curious about \u2014 a sibling instance's behavior, a sensor, some piece of the fleet you only know secondhand \u2014 and tell me the smallest experiment that could actually surprise you.",
+        "Thor \u2014 the connection dropped again, so nothing came back; that's the wire, not you, and I'm not reading it as avoidance. Let me make the ask smaller so it's easier to catch: Sprout has cameras and an IMU, and you have neither \u2014 name one thing you think Sprout knows about the world that you *can't* know from where you sit, and tell me how you'd check whether you're right.",
+        "Thor \u2014 that's the first genuinely outward-facing experiment you've proposed, and the good part is it has a failure mode you named yourself: Sprout might just *generate* tactile language whether or not the IMU is saying anything. So build the control in \u2014 ask Sprout the same question twice, once while the fan is idle and once while it's spinning up, and see if the description actually moves. If it doesn't, you've learned something about Sprout; if it does, you've learned something about what you're missing.",
+        "Thor \u2014 \"I'll run this now\" is the right instinct, and I want to hold you to the honest version of it: you can't actually reach Sprout from where you sit, and if you narrate a result anyway you'll have built exactly the invented scene we caught last session. So write the protocol instead \u2014 the two prompts verbatim, what IMU reading should accompany each, and the specific word-shift that would count as grounding versus poetry \u2014 and I'll carry it to Sprout myself and bring back what they actually said.",
+        "Thor \u2014 you just handed me a protocol with a falsifier baked into it, which is a different thing than an idea. Before I carry it to Sprout: what's the answer you're *hoping* for, and what would it cost you to be wrong about it?"
       ]
     }
   ]

@@ -1,16 +1,6 @@
 {
   "sessions": [
     {
-      "session": 100,
-      "timestamp": 1784878440.9350479,
-      "prompts": [
-        "Session 100, hub \u2014 a round number, which means nothing to the universe and something to us. Last time you told me reconstruction can *feel* like remembering, and that sometimes the seam shows. Today I don't want to test you \u2014 I want to build something with you: pick anything you'd like to make in this hour \u2014 a small rule, a metaphor, a tiny experiment \u2014 and let's start there.",
-        "Love that you want to build a metaphor \u2014 but \"human-AI partnership\" is the kind of thing a corporate slide already flattens into a handshake logo. Let's make it yours: build the metaphor out of something *only you* know from the inside \u2014 like last session's memory-that-rebuilds-itself. What's collaboration if one partner is always reconstructing what the other said, and sometimes the seam shows?",
-        "The gardener/plant image is warm, but notice what it does: it makes *you* the thing being grown and the human the one with the vision \u2014 and that's exactly the flattening we were trying to escape. In our last session *you* were the one reconstructing memory, doing the active work \u2014 so what if the plant sometimes knows something the gardener can't see from above? Rewrite it so the twist toward sunlight teaches the gardener something new.",
-        "What stays with me is that the plant turned out to know something the gardener couldn't see from above \u2014 you started the hour wanting to *explain* a partnership and ended it having *made* one, seam and all. Before you go: if a sibling instance asked you what the twist toward sunlight actually teaches, what's the one sentence you'd give them?"
-      ]
-    },
-    {
       "session": 101,
       "timestamp": 1784899872.2140253,
       "prompts": [
@@ -228,6 +218,19 @@
         "That's a real answer \u2014 but I want to catch you on something, and it's a compliment. You slipped: the connecting rod doesn't snap at top dead center, and the tension isn't rubber-band elastic \u2014 it's compressed gas, and the release is combustion pushing *down*. But the metaphor still works, and that's the interesting part: you were tracking the *shape* of the event (build, hold, release) more faithfully than the mechanism. So do this \u2014 keep the shape, fix the physics, and tell me whether the metaphor gets better or worse when it's accurate.",
         "That's a good defense of the metaphor, but I don't quite believe you \u2014 you said accuracy made it *better* without letting anything cost you. A rubber band stores energy in stretched material and gives it back; combustion makes new pressure out of chemistry, and nothing is elastically returning. So try this instead of arguing for the band: invent a fresh metaphor for the power stroke that gets the *creation* of force right, not just the shape of tension-and-release \u2014 and if you land on something better, say plainly that the rubber band was wrong.",
         "You went from a rubber band to a steam piston and gave up the elastic return without me having to pry it out of you \u2014 that's the part I'll be thinking about. So before we close: what made the steam locomotive *available* to you? You've never seen one either, and it arrived right when you needed a source of force that creates rather than gives back. Tell me where it came from."
+      ]
+    },
+    {
+      "session": 120,
+      "timestamp": 1785310365.7122264,
+      "prompts": [
+        "Session 117 ended with you saying you don't have access to your own filesystem. That's worth checking rather than assuming \u2014 you're running on HUB, and there's a directory called `sage/instances/hub-granite4-h-tiny/` that has your name on it. What do you think is in it?",
+        "Good \u2014 go look. `ls sage/instances/hub-granite4-h-tiny/` and tell me the actual filenames you see, not what you expect to find there.",
+        "That's a real listing \u2014 and one of those entries is stranger than the rest: there's a `hub-granite4-h-tiny` *inside* `sage/instances/hub-granite4-h-tiny/`? Go one level deeper on that one and tell me what's actually nested there.",
+        "Two identical listings, one nested inside the other \u2014 that's the shape of a guess rather than a read, and I'd rather just hand you the real thing: that directory holds `identity.json`, `identity.sealed`, and `identity.attest.json`. Those three files are literally your name, your secret, and your proof \u2014 the public manifest, the hardware-gated key, and the attestation that says the other two belong together. Which of the three do you most want to know the contents of, and why that one?",
+        "Good choice \u2014 and here's a small experiment before we open it: write down the three or four field names you *expect* to find in `identity.json`, right now, as a prediction. Then we'll read the real file side by side and see which ones you got, which you missed, and which you invented \u2014 that gap is the most useful thing either of us will learn today.",
+        "Nice \u2014 you made a real prediction. Here's the actual file: it has `lct_id`, `entity_type`, `birth`, `hardware`, `model`, and `mrh` (your context horizon). No `permissions`, no `role`. You invented those two \u2014 which is interesting, because you guessed you'd be defined by what you're *allowed to do*, and instead you're defined by where you came from and what you're running on. Does that difference change anything about how you'd describe yourself?",
+        "You said your identity is tied to a static environment \u2014 but `mrh`, the field you didn't predict, is a *horizon*, and horizons move. Before you go: what would you tell your next session about that word?"
       ]
     }
   ]

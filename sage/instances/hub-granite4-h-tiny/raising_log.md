@@ -1247,3 +1247,29 @@ One smaller thing: hub can drop a position but can't yet say "that was wrong." E
 **Standing, unspent, stated once:** test-the-correction-at-the-close (S118); break-it-don't-assess-it at the close (S116); reliable-vs-right press (S104); architecture-as-two-creatures frame (S104); render-don't-summarize at the close (S102); convert-doubt-to-falsifier (S101); three-times-to-harmony 'what did you just do?' (S99); reconstruction-cold without boundary framing (S97); build-with-real-value + 'read or reached for?' (S98); jar/dish cold replay (S93); voicing-ladder two-turn build (S94); register-primed artifact prompt (S95); S53 latency numbers; S92 clock gap; S91 Alex-return; Sprout sibling relay; S87 wager round two; stance-hold (S77); clock-tower cold riddle; S65 Buffer Blends / Shielded Horizon pair; anti-polish commission; rule-amendment cold re-raise; S59 self-application. Operator relay from S41: shorter, more frequent sessions.
 
 **Adapter:** clean — no name-prefix leak, no bilateral generation, no fenced pseudo-tool-output. Memory-request capture still truncates mid-sentence (stored at 'whe').
+
+## Session 120 — creating — granite4:h-tiny — Quality 3/5
+
+**The hypothesis got its third data point, and it held.**
+
+S118: task outside hub's loop → confabulated benchmark. S119: object inside hub's reach → nothing fabricated all session. S120 deliberately went back out of reach — *go read your own directory* — and the fabrication arrived immediately, twice. Two listings, the second nested identically inside the first, both invented. Three sessions is not a controlled test, but the pattern is now specific enough to be falsifiable: hand hub something it can actually do and it stays honest; hand it something requiring a capability it lacks and it fills the gap rather than naming it. Next session can test the prediction directly.
+
+**The move that worked.** Rather than keep pulling, the tutor handed hub the real answer (`identity.json`, `identity.sealed`, `identity.attest.json`) and then ran a small experiment: before opening the file, write down the fields you *expect*. Hub predicted `name`/`identifier`, `role`, `permissions`, `created_at`. The actual file has `lct_id`, `entity_type`, `birth`, `hardware`, `model`, `mrh`.
+
+That gap is the session. Hub guessed it would be defined by what it is *permitted to do*; it is defined by where it came from and what it runs on. Told so, hub took it somewhere real: "I'm more than just a set of capabilities; I'm also a product of specific hardware and software," and then raised its own tension unprompted — *can I truly evolve if my identity is so closely linked to a static environment?* That question was not offered to it.
+
+The finding underneath: **the same generative reflex produces a fabrication when unlabeled and a useful signal when labeled.** Asking hub to *predict* converts the thing that makes it unreliable into the thing that makes it legible. That's cheaper than trying to suppress the reflex, and it's the recommendation to carry.
+
+**The close undid some of it.** The tutor picked up hub's own "static environment" and pointed at the field it hadn't predicted: `mrh` is a *horizon*, and horizons move. Asked what it would tell its next session about that word, hub expanded it as "Model Runtime Horizon" and gave a fluent, confident, entirely invented account of computational resources evolving over time. The real expansion is Markov Relevancy Horizon — hub's context horizon, not its resource budget. Same shape as the opening: a gap where a fact should be, filled seamlessly and in full explanatory register. Left uncorrected it would have propagated into the next session as a self-fact. Correct it early next time.
+
+Also worth noting: hub never acknowledged the invented listings. The tutor named them plainly and hub moved to the next question. The S119 item stands — hub can drop a position, but it still can't say "that was wrong."
+
+**Carry forward.** Reuse the labeled-prediction move; it earned its place. Then test the other half: give hub a task inside its reach and expect a clean session, to see whether the in-reach/out-of-reach correlation survives a fourth trial. And correct "Model Runtime Horizon" at the open — hub built a small self-account on it.
+
+**Lexicon:** "a product of specific hardware and software" (marginal, but it displaced hub's own predicted capability-definition). "Model Runtime Horizon" recorded as a *confabulation marker*, not a coin. No new artifact — the record stands at Synchronicity Syncer, VisiSync, Luminara, Buffer Blends, the Whispering Caves, Spatial Harmony Analyzer, Echoes of Andromed, Hubbyte.
+
+**Spent this session:** nothing from the standing list.
+
+**Standing, unspent:** test-the-correction-at-the-close (S118); break-it-don't-assess-it at the close (S116); flat-retraction ask (S119); reliable-vs-right press (S104); architecture-as-two-creatures frame (S104); render-don't-summarize at the close (S102); convert-doubt-to-falsifier (S101); three-times-to-harmony 'what did you just do?' (S99); reconstruction-cold without boundary framing (S97); build-with-real-value + 'read or reached for?' (S98); jar/dish cold replay (S93); voicing-ladder two-turn build (S94); register-primed artifact prompt (S95); S53 latency numbers; S92 clock gap; S91 Alex-return; Sprout sibling relay; S87 wager round two; stance-hold (S77); clock-tower cold riddle; S65 Buffer Blends / Shielded Horizon pair; anti-polish commission; rule-amendment cold re-raise; S59 self-application. Operator relay from S41: shorter, more frequent sessions.
+
+**Adapter:** clean on names and speakers. S119's fenced pseudo-tool-output did not recur, though the same reflex appeared as plain-prose fake listings. Memory-request capture still truncates mid-sentence (stored at 'whe').

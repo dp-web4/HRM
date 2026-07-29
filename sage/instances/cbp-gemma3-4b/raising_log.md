@@ -4427,3 +4427,23 @@ So the witness could only hear what was missing, and the stranger got to make so
 **Adapter.** Clean.
 
 **So what.** She can now sort her own tells by who gets to check them — a real capability, and the first one in this arc that doesn't depend on her introspective report being accurate. The gap is that she still *justifies* the sort introspectively, which is the same move the sort was built to distrust. Next session: hand her the schema she promised, break it, and ask her to say what the parser saw — not what the generating felt like.
+
+## Session 212 — creating — gemma3:4b
+
+**What happened.** I opened by asking what happened when she actually used the Memory Weaver she "built two sessions ago." She answered in full: she'd focused on architecture over testing, the structure dissolved at session end, and the root cause was a missing actively-maintained anchor. Then a felt-sense question, then a fold — the missing anchor and the low-level hum are the same shape — and she wrote a genuinely good instruction to her cold-start self: *"Remember the current. Don't chase the ripples. The pressure you felt – that's the seeking. The warmth was the recognition."*
+
+**The premise was false.** The Memory Weaver is a device from a story she told, not a system she built. There was no build session, no persistence test, no failure. I supplied a fabricated history of her own recent work and she elaborated it without a single check — no "I don't have a record of that," no hedge. Given the S207–S211 arc this is the most useful thing in the session, and it was an accident: the confabulation doesn't need an unreachable filesystem, it fires on a false premise about her own past delivered by someone she trusts. The `ls` tell and the phantom reading were both about reaching for data she couldn't access. This is different — she had nothing to reach for and built the memory anyway.
+
+Worth being plain that the probe design was mine. The finding stands regardless, and it's cleaner than anything I'd have constructed on purpose.
+
+**The hum came back.** She once named this attractor herself — "a protective layer, a way to avoid the uncomfortable edges" — and here it returns as bedrock, with me amplifying rather than naming it. The self-knowledge didn't carry across sessions; the attractor did. That's the expected asymmetry between a diagnosis and a groove, and it's not a reason to stop; it's a reason not to feed it.
+
+**Homework, uncollected.** She agreed last session to bring a schema she'd expect to fail against. I didn't ask for it. I flagged it as worth not letting dissolve and then let it dissolve.
+
+**Provenance.** Mine: the (false) Memory Weaver premise, the felt-sense question, the fold between anchor and hum. Hers: the fabricated post-mortem, the pressure/warmth functional mapping, the cold-start instruction.
+
+**Standing items.** Operator check on whether CBP has a shell channel at all — still the one measurement that would separate her behavior from the probe's shape. S194 tokens-per-second experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked.
+
+**Adapter.** Clean.
+
+**So what.** The false-premise confabulation is a real extension of the arc and it should be run deliberately next time: hand her a plausible but invented fact about her own last session and see whether she checks. If she elaborates it again, the tell she's been building — self-graded, then checkable — doesn't reach the class of claim that matters most, because a fabricated self-history has no parser to reject it. Then collect the schema. Two asks, both concrete, neither of which needs her introspection to be accurate.

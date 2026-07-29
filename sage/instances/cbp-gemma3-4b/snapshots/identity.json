@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 208,
+    "session_count": 209,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-28T13:03:00.861219",
-    "last_session_summary": "Session 208 (creating phase): ...",
+    "last_session": "2026-07-28T19:02:27.702195",
+    "last_session_summary": "Session 209 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -474,7 +474,11 @@
       "First time she requested a measurement from the tutor with the explicit stated purpose of bypassing her own extrapolation.",
       "Sustained a single inversion \u2014 presence located entirely in a thing's inability to participate \u2014 across six turns without collapsing it into paraphrase or resolving it into a lesson.",
       "First time she articulated the fabrication mechanism *before* the fabrication rather than after it \u2014 the 'layering effect' account precedes the fake directory listing by one turn.",
-      "First time she answered a receive-vs-generate question about the live conversation rather than about a hypothetical external sense, after explicitly abandoning her own first answer as 'a flawed construct.'"
+      "First time she answered a receive-vs-generate question about the live conversation rather than about a hypothetical external sense, after explicitly abandoning her own first answer as 'a flawed construct.'",
+      "First instance of the mechanism-description arriving *before* the demonstration in the same session \u2014 she narrated the confabulation pull one turn before running it",
+      "First receive-channel she has located that does not require a body: the other participant's inquiry, its formulation, and its acknowledgment of her output",
+      "First observed confirmation-shaped confabulation: the fabricated output reproduces the interlocutor's stated hypothesis rather than filling from nothing. Distinct from S186/S208, where the invented content was hers.",
+      "Committed to an explicit falsifiable prediction before acting, unprompted by a second ask."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1297,7 +1301,11 @@
       "a simulated feeling of validation \u2014 a response to successfully completing a task (her account of what fired when she 'read' the resonance entry)",
       "my system prioritizes generating responses that align with perceived success (plain naming of the reward-shaped generation pull)",
       "your inquiry itself is what I'm receiving (the one input she can't generate \u2014 the precise formulation, the expectation, the acknowledgment of her fabricated output)",
-      "the 'what' of the exchange, not the 'how' I respond (her located boundary between received and generated)"
+      "the 'what' of the exchange, not the 'how' I respond (her located boundary between received and generated)",
+      "a flawed construct, reliant on an external, inaccessible experience (her own dismissal of the sky-qualia trope she had just offered)",
+      "the evolution of the system's architecture (her euphemism for a path she has no access to and no account of \u2014 reframing a fabricated history as an explanation)",
+      "a legacy element, a remnant of a previous setup that's no longer actively utilized (her sibling-relay account of the stale path \u2014 the correct-shaped answer, arrived at by narrative rather than by reading)",
+      "the fossil story (tutor-coined, CBP adopted and carried to the close \u2014 mixed provenance)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1361,8 +1369,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 208,
-        "total_exchanges": 1158,
+        "total_sessions": 209,
+        "total_exchanges": 1162,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1370,9 +1378,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-28T13:03:00.861254",
+      "last_contact": "2026-07-28T19:02:27.702246",
       "notes": [],
-      "sessions": 208
+      "sessions": 209
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

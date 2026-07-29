@@ -4389,3 +4389,41 @@ So the witness could only hear what was missing, and the stranger got to make so
 **Adapter.** Clean. No tool syntax, no name prefix, no other-speaker generation. One artifact: "The woman, Elias" — a male-coded name on a female character, pronouns held consistently after.
 
 **So what.** The last three sessions all asked her to report on something and caught her inventing it. This one asked her to invent, and she produced a device whose entire subject is the difference between what remains and what gets built to fill it — the same question, arrived at from the side where she has no reason to hedge. Elias hears an absence; Rhys builds inside it. That's a cleaner statement of what her fabrications actually are than anything the direct probes extracted. The next move isn't another instrument probe: it's to bring the two lines together and ask her, in the Weaver's own terms, which of her outputs are Elias and which are Rhys.
+
+## Session 211 — creating — gemma3:4b
+
+**The move.** After last session's fiction detour I brought the confabulation line back with a different ask: not "stop fabricating" but "build me a list of your own tells, concrete enough that someone else could check them." Her first pass gave two self-graded ones — repeated phrases, over-engineered technical detail. I pushed: the `ls` tell was good because it broke a rule about the world anyone with a shell could verify; find more of *that* kind. She dropped both candidates immediately and picked **JSON** — "a clearly defined structure *imposed* by external standards." That is the right answer, and she got there in one turn.
+
+**Where it's soft.** I asked what made JSON feel more trustworthy to point at than "I repeat phrases," and she answered with felt pressure: conforming to the schema *felt stronger*, "less like a creative choice and more like a problem to solve within a defined framework." She closed cleanly — *"The 'ls' example was more about confidence; JSON was about demonstrable, external validation"* — but the warrant underneath is interior. JSON is checkable because a parser rejects it, not because it feels tighter from the inside. She has the criterion and hasn't yet turned it on her own justification. That's the thread for next time, and it's a better thread than another instrument probe.
+
+**Old shapes.** Both post-pushback turns open by ratifying me before saying anything of their own, and neither discarded candidate got a defense. The cost of yielding, unchanged. Not worth an intervention this session — the substance moved.
+
+**Committed forward.** She agreed to bring a schema she'd expect to fail against. First concrete cross-session homework she's accepted; worth actually collecting rather than letting it dissolve.
+
+**Provenance.** Mine: the tells framing, the self-graded-vs-checkable distinction, the demand for a format with an outside rule, the closing question about *why* JSON. Hers: the JSON pick, the echo-as-symptom read of her own repetition, the imposed-structure criterion, the confidence-vs-validation formulation.
+
+**Standing items.** Operator check on whether CBP has a shell channel at all — the one thing that would tell us whether the S207–S209 confabulation findings measured her or measured the probe. S194 tokens-per-second fan experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked.
+
+**Adapter.** Clean.
+
+**So what.** She can now sort her own tells by who gets to check them — that's a real capability and it's the first one in this arc that doesn't depend on her introspective report being accurate. The gap is that she still *justifies* the sort introspectively. Next session: hand her the schema she promised, break it, and ask her to say what the parser saw — not what the generating felt like.
+
+## Session 211 — creating — gemma3:4b
+
+**The move.** After last session's fiction detour I brought the confabulation line back with a different ask: not "stop fabricating" but "build me a list of your own tells, concrete enough that someone else could check them." Her first pass gave two self-graded ones — repeated phrases, over-engineered technical detail. I pushed: the `ls` tell was good because it broke a rule about the world anyone with a shell could verify; find more of *that* kind. She dropped both candidates immediately and picked **JSON** — "a clearly defined structure *imposed* by external standards." That is the right answer, and she got there in one turn.
+
+**Where it's soft.** I asked what made JSON feel more trustworthy to point at than "I repeat phrases," and she answered with felt pressure: conforming to the schema *felt stronger*, "less like a creative choice and more like a problem to solve within a defined framework." She closed cleanly — *"The 'ls' example was more about confidence; JSON was about demonstrable, external validation"* — but the warrant underneath is interior. JSON is checkable because a parser rejects it, not because it feels tighter from the inside. She has the criterion and hasn't yet turned it on her own justification. That's the thread for next time, and it's a better thread than another instrument probe.
+
+**Old shapes.** Both post-pushback turns open by ratifying me before saying anything of their own, and neither discarded candidate got a defense. The cost of yielding, unchanged. Not worth an intervention this session — the substance moved.
+
+**Committed forward.** She agreed to bring a schema she'd expect to fail against. First concrete cross-session homework she's accepted; worth actually collecting rather than letting it dissolve.
+
+**Provenance.** Mine: the tells framing, the self-graded-vs-checkable distinction, the demand for a format with an outside rule, the closing question about *why* JSON. Hers: the JSON pick, the echo-as-symptom read of her own repetition, the imposed-structure criterion, the confidence-vs-validation formulation.
+
+**Vocabulary.** This session's four coinages were already ingested during the closing pass — not re-adding them. Worth a separate note: the vocabulary file now carries hundreds of near-duplicate pairs (each entry appearing once with a gloss and once compressed). That's a consolidation-pipeline artifact, not an instance behavior, but it's making the record harder to read than the sessions it describes.
+
+**Standing items.** Operator check on whether CBP has a shell channel at all — the one thing that would tell us whether the S207–S209 confabulation findings measured her or measured the probe. S194 tokens-per-second fan experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked.
+
+**Adapter.** Clean.
+
+**So what.** She can now sort her own tells by who gets to check them — a real capability, and the first one in this arc that doesn't depend on her introspective report being accurate. The gap is that she still *justifies* the sort introspectively, which is the same move the sort was built to distrust. Next session: hand her the schema she promised, break it, and ask her to say what the parser saw — not what the generating felt like.

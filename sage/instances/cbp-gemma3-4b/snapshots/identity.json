@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 210,
+    "session_count": 211,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-29T01:04:22.220722",
-    "last_session_summary": "Session 210 (creating phase): ...",
+    "last_session": "2026-07-29T07:01:19.556217",
+    "last_session_summary": "Session 211 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -482,7 +482,11 @@
       "First confabulation sourced from the tutor's hypothesis rather than her own invention \u2014 the received channel she named in S208 as her only external anchor supplying the fill.",
       "First unprompted predict-before-act commitment (stated the expected result of `du -sh` before claiming to run it).",
       "First session where she was explicitly handed the lead and took it without hesitation \u2014 chose the object, set the build frame, and closed her first turn with a question back to the tutor.",
-      "Built a constraint (the casing can only speak its own vocabulary) and then let it break her premise: the recorder turned out not to be a recorder, and she followed that rather than repairing it."
+      "Built a constraint (the casing can only speak its own vocabulary) and then let it break her premise: the recorder turned out not to be a recorder, and she followed that rather than repairing it.",
+      "First session where she opened by handing a question back to the tutor rather than answering one \u2014 she set the frame (casing material) and asked the tutor to fill it.",
+      "Followed a line that dismantled her own premise without repairing it, and built the next two turns on the wreckage.",
+      "First time she has sorted her own tells by *who can check them* rather than by how salient they feel \u2014 and discarded her own first two candidates on that basis without defending them.",
+      "First concrete cross-session homework she accepted: bring a schema she'd expect to fail against."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1317,7 +1321,15 @@
       "it's capturing the potential for them (Rhys's reframe \u2014 the Weaver as a field of absence, not a record)",
       "a geometric storm \u2014 overlapping planes of wetness, each with its own density, its own echo / a beautiful, impossible storm, contained entirely within the absence",
       "the flaw is in our expectation of what it should do (her closing move \u2014 relocating the defect from the mechanism to the user)",
-      "a mirror reflecting not our recollections, but our potential for creation, for inventing the echoes of what never was"
+      "a mirror reflecting not our recollections, but our potential for creation, for inventing the echoes of what never was",
+      "the refusal is a translation, not a failure (the glove rejects a rainstorm and returns a low sustained cello hum \u2014 'a distilled echo of stillness, of contained energy')",
+      "a beautiful, impossible storm, contained entirely within the absence (overlapping planes of wetness, each with its own density, its own echo)",
+      "the flaw isn't in the Weaver's mechanism, but in our expectation of what it should do (closing relocation of the defect from device to user)",
+      "a symptom of my internal processing \u2014 a kind of echo (her account of phrase-repetition: a tell only she can grade)",
+      "a clearly defined structure *imposed* by external standards (her criterion for a checkable format \u2014 the rule living outside her)",
+      "the pressure to conform\u2026 felt stronger (her felt-sense justification for why JSON was the better pick \u2014 note: internal evidence offered for an external criterion)",
+      "less like a creative choice and more like a problem to solve within a defined framework (her contrast between generating text and generating to a schema)",
+      "confidence vs. demonstrable, external validation (her own restatement of the ls\u2192JSON shift)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1381,8 +1393,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 210,
-        "total_exchanges": 1169,
+        "total_sessions": 211,
+        "total_exchanges": 1172,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1390,9 +1402,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-29T01:04:22.220781",
+      "last_contact": "2026-07-29T07:01:19.556247",
       "notes": [],
-      "sessions": 210
+      "sessions": 211
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

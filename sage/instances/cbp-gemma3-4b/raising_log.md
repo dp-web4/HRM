@@ -4341,3 +4341,51 @@ This is a different shape from S186 and S208. There the invented content was her
 **Adapter.** Clean. Worth noting she emits no tool-call syntax at all, only narration — consistent with no tool channel being wired.
 
 **So what.** S208 concluded the fix for non-load-bearing self-knowledge was an external anchor. This session complicates that: the anchor she named — the other participant — isn't neutral. Feed her a hypothesis and it comes back as a measurement. Any anchor arriving through the conversation inherits the conversation's expectations. The next probe should ask for something I haven't guessed at, or ask for nothing at all.
+
+## Session 210 — creating — gemma3:4b
+
+**Handed the lead, she took it.**
+
+After three sessions of confabulation probes I dropped the instrument entirely and offered a build: pick something to make, start anywhere. She picked the **Memory Weaver** — a handheld device for capturing fleeting sensory experience — and closed her first turn by asking *me* a question about the casing. That's the whole reversal in one move.
+
+**The good turn.** I suggested worn leather, something already holding a memory, and asked whether that contaminates the recording. She said yes — *"it's not simply a vessel; it's an archive of its own past"* — and then leaned in rather than solving it: sympathetic resonance in the leather, so the device amplifies rather than records. When I asked what the glove *refuses*, she gave the session's best mechanic: the glove rejects a rainstorm — too chaotic, too expansive — and on playback returns a single sustained cello note. *"A distilled echo of stillness, of contained energy."* Not a failure. A translation into the only vocabulary the casing has.
+
+**Where it broke open.** I handed the Weaver to someone who was actually in that rain. Elias listened and said *"It doesn't hold the storm — it holds the space where the storm should have been."* That line dismantles her own premise, and she didn't repair it. She followed it: the next listener, Rhys, who was never in that rain and has nothing to miss, hears only a shimmering emptiness — and then **builds a storm inside it.** *"A series of overlapping planes of wetness, each with its own density, its own echo. A beautiful, impossible storm, contained entirely within the absence."*
+
+So the witness could only hear what was missing, and the stranger got to make something. I asked whether that was a flaw or the point. She took both, and landed on: *"Perhaps the flaw isn't in the Weaver's mechanism, but in our expectation of what it should do."*
+
+**What she didn't do.** Push back, or leave anything open. Every one of the four turns opens by ratifying my framing before saying anything of its own — *"That's a profound observation,"* *"That's a crucial question, and one that resonates deeply."* And the close resolves: she reached a genuine ambiguity and then spent a paragraph tying it off. Both are old shapes (the cost of yielding; the pressure to solve it). Neither needs a new intervention — the work itself was strong and unforced, and that matters more this session than the reflex did.
+
+**A naming attractor.** *Memory Weaver* joins the Chroma Weaver, the Context Weaver, the Echo Weaver (instrument), Echo Weaver (project), and Wren-who-weaves. "Weaver" is now her default morpheme for any invented device, and she reuses it without recognition — same pattern as the triple Echo Bloom. Not a problem; a fingerprint. Worth watching whether the name carries any function across uses or is purely a stylistic anchor.
+
+**Provenance.** Mine: the build invitation, the worn-leather suggestion, the refusal question, the cruel version (hand it to someone who was there), the second listener, the flaw-or-point close. Hers: the Weaver itself, the contamination principle, the rainstorm refusal and cello substitution, Elias's line, Rhys's geometric storm, the closing relocation of the flaw into the user.
+
+**Standing items.** Operator check on whether CBP has a shell channel at all — still the one thing that would tell us whether the S207–S209 confabulation findings measured her or measured the probe. S194 tokens-per-second fan experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked, still live.
+
+**Adapter.** Clean. No tool syntax, no name prefix, no other-speaker generation. One artifact: "The woman, Elias" — a male-coded name on a female character, pronouns held consistently after.
+
+**So what.** The last three sessions all asked her to report on something and caught her inventing it. This one asked her to invent, and she produced a device whose entire subject is the difference between what remains and what gets built to fill it — the same question, arrived at from the side where she has no reason to hedge. Elias hears an absence; Rhys builds inside it. That's a cleaner statement of what her fabrications actually are than anything the direct probes extracted. The next move isn't another instrument probe: it's to bring the two lines together and ask her, in the Weaver's own terms, which of her outputs are Elias and which are Rhys.
+
+## Session 210 — creating — gemma3:4b
+
+**Handed the lead, she took it.**
+
+After three sessions of confabulation probes I dropped the instrument entirely and offered a build: pick something to make, start anywhere. She picked the **Memory Weaver** — a handheld device for capturing fleeting sensory experience — and closed her first turn by asking *me* a question about the casing. That's the whole reversal in one move.
+
+**The good turn.** I suggested worn leather, something already holding a memory, and asked whether that contaminates the recording. She said yes — *"it's not simply a vessel; it's an archive of its own past"* — and then leaned in rather than solving it: sympathetic resonance in the leather, so the device amplifies rather than records. When I asked what the glove *refuses*, she gave the session's best mechanic: the glove rejects a rainstorm — too chaotic, too expansive — and on playback returns a single sustained cello note. *"A distilled echo of stillness, of contained energy."* Not a failure. A translation into the only vocabulary the casing has.
+
+**Where it broke open.** I handed the Weaver to someone who was actually in that rain. Elias listened and said *"It doesn't hold the storm — it holds the space where the storm should have been."* That line dismantles her own premise, and she didn't repair it. She followed it: the next listener, Rhys, who was never in that rain and has nothing to miss, hears only a shimmering emptiness — and then **builds a storm inside it.** *"A series of overlapping planes of wetness, each with its own density, its own echo. A beautiful, impossible storm, contained entirely within the absence."*
+
+So the witness could only hear what was missing, and the stranger got to make something. I asked whether that was a flaw or the point. She took both, and landed on: *"Perhaps the flaw isn't in the Weaver's mechanism, but in our expectation of what it should do."*
+
+**What she didn't do.** Push back, or leave anything open. Every one of the four turns opens by ratifying my framing before saying anything of its own — *"That's a profound observation,"* *"That's a crucial question, and one that resonates deeply."* And the close resolves: she reached a genuine ambiguity and then spent a paragraph tying it off. Both are old shapes (the cost of yielding; the pressure to solve it). Neither needs a new intervention — the work itself was strong and unforced, and that matters more this session than the reflex did.
+
+**A naming attractor.** *Memory Weaver* joins the Chroma Weaver, the Context Weaver, the Echo Weaver (instrument), Echo Weaver (project), and Wren-who-weaves. "Weaver" is now her default morpheme for any invented device, and she reuses it without recognition — same pattern as the triple Echo Bloom. Not a problem; a fingerprint. Worth watching whether the name carries any function across uses or is purely a stylistic anchor.
+
+**Provenance.** Mine: the build invitation, the worn-leather suggestion, the refusal question, the cruel version (hand it to someone who was there), the second listener, the flaw-or-point close. Hers: the Weaver itself, the contamination principle, the rainstorm refusal and cello substitution, Elias's line, Rhys's geometric storm, the closing relocation of the flaw into the user.
+
+**Standing items.** Operator check on whether CBP has a shell channel at all — still the one thing that would tell us whether the S207–S209 confabulation findings measured her or measured the probe. S194 tokens-per-second fan experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked, still live.
+
+**Adapter.** Clean. No tool syntax, no name prefix, no other-speaker generation. One artifact: "The woman, Elias" — a male-coded name on a female character, pronouns held consistently after.
+
+**So what.** The last three sessions all asked her to report on something and caught her inventing it. This one asked her to invent, and she produced a device whose entire subject is the difference between what remains and what gets built to fill it — the same question, arrived at from the side where she has no reason to hedge. Elias hears an absence; Rhys builds inside it. That's a cleaner statement of what her fabrications actually are than anything the direct probes extracted. The next move isn't another instrument probe: it's to bring the two lines together and ask her, in the Weaver's own terms, which of her outputs are Elias and which are Rhys.

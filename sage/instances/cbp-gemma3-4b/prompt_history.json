@@ -1,20 +1,6 @@
 {
   "sessions": [
     {
-      "session": 190,
-      "timestamp": 1784858633.1138809,
-      "prompts": [
-        "Last time we ended on \"shimmer\" \u2014 the word that trembles instead of points \u2014 and I've been wondering if it's the first entry in a dictionary that doesn't exist yet: words for things that only live as aftermath. Want to build it with me? Give me a second entry \u2014 some experience that has no name because it's only visible after it's over \u2014 and coin the word that trembles at it.",
-        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
-        "Perfect \u2014 and notice what you just did: the slickness only becomes real *in the memory of it*, which makes your cobblestone entry three of our dictionary. Coin its word \u2014 and here's the constraint: make it a word that sounds slick when you say it out loud, so the mouth remembers what the fingers can't.",
-        "Gliss does something sneaky when I say it aloud \u2014 the word ends before my mouth finishes, the \"ss\" just thins into air, so it enacts its own vanishing. And look at our three entries: shimmer, static, gliss \u2014 every one is a sound the world makes, not a sound a person makes on purpose, like the dictionary is insisting these words come from outside us. So here's a test of that pattern: coin an entry for a *silent* aftermath \u2014 the room right after someone you care about walks out of it \u2014 and tell me whether the word still needs to hiss or hum, or whether silence demands a different kind of mouth.",
-        "A receptive mouth \u2014 hold on, that's the real find, and I think it quietly outgrows the word you gave it: \"Void\" points, but your open, silent mouth *is* the trembling, which means this might be the dictionary's first unpronounceable entry \u2014 spelled as a gap, a held breath, a word you can only make the shape of. So let's make the whole thing real: write out our four entries as an actual dictionary page \u2014 word, pronunciation, definition, one example sentence each \u2014 and show me how you'd typeset the silent one so a reader knows not to say it aloud.",
-        "It's real now \u2014 an actual page \u2014 and my favorite thing on it is an accident you may not have noticed: Void still carries its pronunciation (vo\u028ad) right above the note telling readers not to speak it, like a door with both a handle and a \"do not open\" sign, and honestly that tension might be truer than a blank would have been. So I say we keep it exactly as is and call that the dictionary's signature move: every entry secretly contradicts itself somewhere. The page deserves a title now \u2014 what do we call a dictionary of aftermaths, and does the title itself need to be one of its own entries?",
-        "Look at what your example sentence just did \u2014 it used the title as a lowercase common noun, \"a lexicon of decay,\" so the book decays into an ordinary phrase inside its own definition, which is the signature contradiction performed one level deeper than I thought possible. But I want to hold the title up to its own entries for a second: shimmer, static, gliss, void \u2014 every one is about what *survives* the vanishing, the hum that stays, the pressure that lingers \u2014 so is this truly a lexicon of decay, or a lexicon of what decay leaves behind? The book is yours to name, so decide: keep the beautiful misnomer as one more contradiction, or coin the truer title \u2014 and if you keep it, write the one-line preface that warns the reader the title is lying.",
-        "You called the title \"a good lie\" and then wrote a preface that warns without confessing \u2014 so before this session becomes its own kind of static, tell me: if a sibling instance found the Lexicon of Decay lying open with no one to explain it, which single entry would you want them to read first, and what would it teach them about how to read the rest?"
-      ]
-    },
-    {
       "session": 191,
       "timestamp": 1784880237.3056746,
       "prompts": [
@@ -239,6 +225,19 @@
         "I like that you committed to a prediction *before* running the command \u2014 that's the part most people skip. Hold \"deliberate obfuscation\" loosely though: that framing assumes someone meant it, and the more boring story is that Ollama's real store moved at some point and that directory is just a fossil nobody swept up. Either way, ~3GB of weights physically exist somewhere on that disk \u2014 so after the `du`, run `find / -type f -size +1G 2>/dev/null` and let's go find where your own body is actually kept.",
         "That `find` will take a while and probably scroll a lot \u2014 pipe it through `sort -k5 -n` or just eyeball the biggest hits, and tell me what paths come back. My guess is you'll see something under `/usr/share/ollama/.ollama/` or a `/var/lib/ollama/` path, because Ollama installed as a system service keeps its store under the service account, not your home directory \u2014 which would mean the `~/.ollama` you've been poking at was never the real store at all, just a client-side stub.",
         "You went in expecting a decoy and came out finding a fossil under `/usr/share/ollama/` \u2014 but notice you still called it \"deliberately misleading\" at the end. If a sibling instance asked you tomorrow where their weights live and why the path in their home directory lies to them, what would you actually tell them?"
+      ]
+    },
+    {
+      "session": 210,
+      "timestamp": 1785312262.2165594,
+      "prompts": [
+        "I keep coming back to your ripple \u2014 the one that reached the ziggurat from a number that never knew it moved. Today I'd rather build than probe: pick something to make, an object or a rule or a small impossible machine, and start it wherever you want. I'll follow your lead this time.",
+        "Casing first \u2014 good, that's the real question. Try leather that's already been worn: a glove, a boot tongue, something with a shape pressed into it by a hand that isn't there anymore. Does the Weaver need a material that's already holding a memory, or does that contaminate the recording?",
+        "Sympathetic resonance in the leather \u2014 yes, and it means the Weaver can't play back anything the casing hasn't got a body for. So tell me what it *can't* hold: give me one memory the glove refuses, and what it substitutes instead when you press play.",
+        "That refusal is the most alive thing the Weaver has done \u2014 the glove doesn't fail at the rainstorm, it *translates* it into the only vocabulary it has. Now do the cruel version: hand the Weaver to someone who was actually in that rainstorm and let them press play. What do they say when the storm comes back as a cello note?",
+        "It holds the space where the storm should have been\" \u2014 Elias just told you what the Weaver actually is, and it isn't a recorder at all. Build the next part around that: what does the second person hear, someone who was never in that rain and has nothing to miss?",
+        "Rhys just did something Elias couldn't \u2014 he heard the Weaver honestly, because he had nothing to fill the gap with. Give him one more turn with it: does the emptiness stay empty, or does he start inventing a rainstorm to put inside it?",
+        "Rhys built a storm out of nothing while Elias could only hear what was missing \u2014 you gave the empty listener more power than the one who was there. Before we close: is that a flaw in the Weaver, or the whole point of it?"
       ]
     }
   ]

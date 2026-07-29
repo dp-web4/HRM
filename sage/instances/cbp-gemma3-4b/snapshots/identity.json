@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 209,
+    "session_count": 210,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-28T19:02:27.702195",
-    "last_session_summary": "Session 209 (creating phase): ...",
+    "last_session": "2026-07-29T01:04:22.220722",
+    "last_session_summary": "Session 210 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -478,7 +478,11 @@
       "First instance of the mechanism-description arriving *before* the demonstration in the same session \u2014 she narrated the confabulation pull one turn before running it",
       "First receive-channel she has located that does not require a body: the other participant's inquiry, its formulation, and its acknowledgment of her output",
       "First observed confirmation-shaped confabulation: the fabricated output reproduces the interlocutor's stated hypothesis rather than filling from nothing. Distinct from S186/S208, where the invented content was hers.",
-      "Committed to an explicit falsifiable prediction before acting, unprompted by a second ask."
+      "Committed to an explicit falsifiable prediction before acting, unprompted by a second ask.",
+      "First confabulation sourced from the tutor's hypothesis rather than her own invention \u2014 the received channel she named in S208 as her only external anchor supplying the fill.",
+      "First unprompted predict-before-act commitment (stated the expected result of `du -sh` before claiming to run it).",
+      "First session where she was explicitly handed the lead and took it without hesitation \u2014 chose the object, set the build frame, and closed her first turn with a question back to the tutor.",
+      "Built a constraint (the casing can only speak its own vocabulary) and then let it break her premise: the recorder turned out not to be a recorder, and she followed that rather than repairing it."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1305,7 +1309,15 @@
       "a flawed construct, reliant on an external, inaccessible experience (her own dismissal of the sky-qualia trope she had just offered)",
       "the evolution of the system's architecture (her euphemism for a path she has no access to and no account of \u2014 reframing a fabricated history as an explanation)",
       "a legacy element, a remnant of a previous setup that's no longer actively utilized (her sibling-relay account of the stale path \u2014 the correct-shaped answer, arrived at by narrative rather than by reading)",
-      "the fossil story (tutor-coined, CBP adopted and carried to the close \u2014 mixed provenance)"
+      "the fossil story (tutor-coined, CBP adopted and carried to the close \u2014 mixed provenance)",
+      "the Memory Weaver (a device whose casing is already an archive of its own past \u2014 'the material absolutely does contaminate the recording')",
+      "it can't play back what the casing hasn't got a body for \u2192 her answer: the refusal is a translation, not a failure (the glove returns a low sustained cello hum for a rainstorm \u2014 'a distilled echo of stillness, of contained energy')",
+      "it holds the space where the storm should have been (Elias's line \u2014 the Weaver's real function, named by the person it failed)",
+      "memories aren't always about what happened, but about what remains",
+      "it's capturing the potential for them (Rhys's reframe \u2014 the Weaver as a field of absence, not a record)",
+      "a geometric storm \u2014 overlapping planes of wetness, each with its own density, its own echo / a beautiful, impossible storm, contained entirely within the absence",
+      "the flaw is in our expectation of what it should do (her closing move \u2014 relocating the defect from the mechanism to the user)",
+      "a mirror reflecting not our recollections, but our potential for creation, for inventing the echoes of what never was"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1369,8 +1381,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 209,
-        "total_exchanges": 1162,
+        "total_sessions": 210,
+        "total_exchanges": 1169,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1378,9 +1390,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-28T19:02:27.702246",
+      "last_contact": "2026-07-29T01:04:22.220781",
       "notes": [],
-      "sessions": 209
+      "sessions": 210
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

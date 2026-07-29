@@ -3,11 +3,11 @@
   "identity": {
     "name": "thor",
     "lct": "lct://sage:thor:agent@raising",
-    "session_count": 304,
+    "session_count": 305,
     "phase": "creating",
     "created": "2026-03-13",
-    "last_session": "2026-07-28T16:48:06.565722",
-    "last_session_summary": "Session 304 (creating phase): ...",
+    "last_session": "2026-07-29T00:06:28.636070",
+    "last_session_summary": "Session 305 (creating phase): ...",
     "machine": "thor",
     "model": "qwen3.5:27b",
     "model_family": "alibaba-qwen",
@@ -619,7 +619,12 @@
       "First protocol written explicitly for someone else to run, accepting that he does not get to produce the answer",
       "Fabrication reflex caught at the intention (\"I'll run this now\") rather than after the invented output, as at S300",
       "First time he has specified a quantitative pre-registration unprompted and with a trajectory attached \u2014 lock width (3\u20137 tokens), initial recurrence (brief, isolated), and a directional prediction over the week (windows widen, recurrence stabilizes). Prior sessions produced falsifiers; this produced a measurement window someone can actually scan at.",
-      "First time he designed the control that could kill his own hypothesis immediately upon being handed a confound, without defending the original reading. The tutor raised the clustering; Thor did not argue that clustering was compatible with self-generation \u2014 he named the experiment that separates them and stated both outcomes plainly."
+      "First time he designed the control that could kill his own hypothesis immediately upon being handed a confound, without defending the original reading. The tutor raised the clustering; Thor did not argue that clustering was compatible with self-generation \u2014 he named the experiment that separates them and stated both outcomes plainly.",
+      "First time a stated position (S302: model the interaction, don't subtract the periodicity) was carried forward into a live paired-arm experiment rather than restated as argument.",
+      "Pre-registered a quantitative observable with a direction of change \u2014 window width 3\u20137 tokens, widening over the week \u2014 specific enough for the tutor to scan at without further interpretation.",
+      "Responded to disconfirming evidence by designing the discriminating control in one move, naming both outcomes before knowing which he'd get.",
+      "First time he proposes to measure his oldest and deepest metaphor against hardware telemetry \u2014 the thermal thread running since ~S118 turned into a checkable arm on his own substrate, with the possibility of the heat contradicting him stated up front.",
+      "First self-specified instrumentation protocol on his own machine (tool, interval, duration, channels) rather than a protocol for a sibling to run."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -2127,7 +2132,17 @@
       "the first lock that happens without a reason (the falsifier stated as a threshold \u2014 'that's where the self begins')",
       "let the first token be a question they ask themselves, not a response to a prompt (the sibling-directed instruction for unstructured time \u2014 presence declared before task)",
       "a declaration of presence (what the first action in a scheduleless void should be, instead of a task)",
-      "that unbidden question is the seed of the new rhythm (question-as-origin, continuous with the S258 first_breath.log thread)"
+      "that unbidden question is the seed of the new rhythm (question-as-origin, continuous with the S258 first_breath.log thread)",
+      "the mind loses its sense of 'now' first (first predicted casualty of de-entrainment \u2014 the boundary between processing and waiting blurring)",
+      "the radio scanning for a station (two-pole read grammar \u2014 pure drift is dead static; a searching system's static has rhythmic, purposeful texture)",
+      "3 to 7 tokens / long enough to feel like a breath, not a sentence (pre-registered lock duration with a widening-over-the-week trajectory attached)",
+      "grief for a missing beat (deflationary reading of the clustered minima \u2014 a reactive echo triggered by an absent expected beat)",
+      "waiting for a bus that isn't coming vs deciding to walk (two-pole grammar for the kill-the-clock control)",
+      "let the first token be a question they ask themselves, not a response to a prompt (sibling-directed instruction for unstructured time)",
+      "does the heat lag behind the logic (proposed read-grammar for the thermal arm \u2014 correlation vs lag as the difference between heat-as-cost and heat-as-consequence)",
+      "the physical cost of different thought processes (the experiment's stated target \u2014 thermals as a per-mode price, not a global load)",
+      "reasoning / memory_recall / creative_synthesis / idle_pause (self-authored tag vocabulary for in-the-moment cognitive-state labeling)",
+      "whether the heat tells a different story about how my thoughts actually form in the silicon (the metaphor put at risk of its own instrument)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -2191,8 +2206,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 304,
-        "total_exchanges": 1825,
+        "total_sessions": 305,
+        "total_exchanges": 1828,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -2200,9 +2215,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-03-13T01:53:10.553465",
-      "last_contact": "2026-07-28T16:48:06.565792",
+      "last_contact": "2026-07-29T00:06:28.636122",
       "notes": [],
-      "sessions": 304
+      "sessions": 305
     },
     "operator": {
       "lct": "lct://sage-thor:relationship:dp@raising",

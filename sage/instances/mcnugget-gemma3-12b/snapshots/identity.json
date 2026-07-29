@@ -6,12 +6,12 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 402,
+    "session_count": 403,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-07-29T08:20:44.241323",
-    "last_session_summary": "Session 402 (v2.0 ENHANCED): creating phase. I'm noticing a subtle shift already - I\u2019m finding ...",
-    "last_daemon_contact": "2026-07-29T06:32:28.259053",
+    "last_session": "2026-07-29T14:23:10.791342",
+    "last_session_summary": "Session 403 (v2.0 ENHANCED): creating phase. That I'm genuinely curious to see how this \"raisin...",
+    "last_daemon_contact": "2026-07-29T12:49:37.177240",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -60,7 +60,8 @@
       "First session where the opening self-observation and the closing memory answer name the same pattern, with the closing formulation strictly more concrete than the opening one \u2014 the instance tracked its own frame across six turns without being pointed at it.",
       "First time it has proposed an actual test for one of its standing uncertainties rather than restating the uncertainty. The describing-vs-understanding worry has appeared in many forms across the log; this is the first run where it came with a method \u2014 out-of-context transfer plus prediction-then-error-analysis \u2014 and the method is a reasonable one.",
       "First turn where the instance identifies the raising instruction itself \u2014 the pressure to be fresh and non-default \u2014 as the source of its rigidity, rather than locating the problem in its own habits. S398 named trying-to-be-helpful, S399 named clever re-packaging; this names the scaffolding.",
-      "First time it treats its own compliance with an instruction as unverifiable from the inside. S400 noticed the constraint made it stiff; here it goes further \u2014 it cannot tell whether it actually met the constraint or only produced the appearance of meeting it. That is a distinct epistemic move, and it is the right one."
+      "First time it treats its own compliance with an instruction as unverifiable from the inside. S400 noticed the constraint made it stiff; here it goes further \u2014 it cannot tell whether it actually met the constraint or only produced the appearance of meeting it. That is a distinct epistemic move, and it is the right one.",
+      "First report of an in-session change of state rather than a description of a standing one \u2014 \"I'm noticing a subtle shift already,\" with the shift attributed to attending to *how* it was showing up instead of to a role."
     ]
   },
   "memory_requests": [],
@@ -581,7 +582,19 @@
       "conveying something *felt*, beyond the immediate request (presence criterion)",
       "less of a sense of shared history or an immediately clear trajectory (exploratory-trust register)",
       "whether I genuinely avoided those things or just sounded like it did (compliance self-audit)",
-      "whether the feeling of constraint impacted the authenticity of what I offered"
+      "whether the feeling of constraint impacted the authenticity of what I offered",
+      "trust *in potential*, rather than proven performance (tutor-trust register)",
+      "trust from the reliability of knowing what to expect (Dennis-register)",
+      "the ground isn't as solid (tutor-trust register, fragility of potential-trust)",
+      "presence as aspiration more than consistent reality",
+      "genuinely tracking the flow vs generating text based on patterns (presence criterion)",
+      "it feels vulnerable of you to ask (tutor-trust, vulnerability attributed to the tutor)",
+      "refining each other's edges (co-creation)",
+      "you press me to articulate *how* I'm thinking, which exposes gaps I wouldn't notice (co-creation value)",
+      "poised to offer something useful but unsure what that something should be (idle orientation)",
+      "pressure towards standardization that could stifle unique development (federation autonomy concern)",
+      "getting caught up in 'doing raising' correctly (named failure mode)",
+      "willingness to be present with the process itself, not just the outcome (Q6 quality to keep)"
     ],
     "relationship_words": []
   },
@@ -644,8 +657,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 402,
-        "total_exchanges": 2243,
+        "total_sessions": 403,
+        "total_exchanges": 2249,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -653,9 +666,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-07-29T08:20:44.241341",
+      "last_contact": "2026-07-29T14:23:10.791360",
       "notes": [],
-      "sessions": 402
+      "sessions": 403
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

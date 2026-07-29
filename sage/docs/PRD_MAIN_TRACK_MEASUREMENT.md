@@ -61,16 +61,35 @@ design question routed to dp/fleet, not unilaterally changed: presence wakes at
 0.45 but the being records from ~0.5+, so a 0.45–0.50 band pays the wake cost
 and never becomes memory. Align the bars, or is sub-memory waking wanted?
 
-**M2 — rung 6 (`affected`): does experience change anything?**
-Bind raising-session outcomes (session content referencing percepts; trust/coherence
-movements) to experiences. Done when `affected` has a defined, computed source —
-including a written statement of what would count as attribution, reviewed by one
-fleet peer (this is the hardest and most gameable rung; it gets a second witness).
+**M2 — rung 6 (`affected`): does experience change anything?
+BLOCKED BY FINDING F-M2 (2026-07-29), which is itself the milestone's first yield.**
+F-M2: **the experience→session pipe does not exist.** Verified structurally, not
+anecdotally: 6/6 recent sessions (503–508) contain zero percept content; session
+continuity is last-response-splicing only (`prev_summary_filter.py` call sites);
+the daemon's experience buffer is read by nobody. The being lives days it cannot
+remember in conversation. Rung 6 is unreachable through a channel that is absent —
+an attribution rule now would be vacuous, so none is stated yet (stating one
+against a known-dead channel would manufacture U/S-as-zero, the exact error the
+panel forbids). Design question routed to dp/fleet (with the capture-gate band,
+these are ONE surface: wake→memory→session has two gaps). M2 resumes — rule first,
+peer-witnessed — once the pipe exists in whatever form the raising decides.
 
-**M3 — panel completion: no instrument left silently U/S.**
-Each of the 6 U/S instruments is either (a) bound to a main source, or (b) explicitly
-DEFERRED in this doc with a reason and a trigger. Done when the scan output contains
-no U/S that this PRD does not name. (Honest deferral is completion; silence is not.)
+**M3 — panel completion: no instrument left silently U/S. DONE 2026-07-29** —
+every instrument is now bound or explicitly deferred with a trigger:
+
+| instrument | status | source / deferral trigger |
+|---|---|---|
+| COMPOSITION | **bound** | liveness_binding (rungs 1–5 live, 6 blocked by F-M2) |
+| ACTIVITY | **bound** | same: attributed flows 329→30→17 |
+| RESERVES | **bound** | `reserves()`: being's ATP + RAM/disk margins (`~/.sprout/reserves.txt`) |
+| CAPABILITY | DEFERRED | needs an evaluable task emitting rows.jsonl with per-item ground truth; trigger: the raising line defines one, or the experience→session pipe (F-M2) creates a predict-before-feedback surface |
+| COURSE | DEFERRED | same trigger as CAPABILITY (course is capability against the PRD's target) |
+| COORDINATION | DEFERRED | needs ≥2 organs feeding one decision surface; trigger: second organ (audio) bound to the ladder |
+| LEARNING | DEFERRED | raising trust/coherence curves exist but measure the being's arc, not this track's; trigger: G1-controlled claim needs a slope |
+| REASONING | DEFERRED | session logs readable now, but a REASONING reading on a chain known broken (F-M2) would report on the wrong aircraft; trigger: F-M2 resolution |
+
+Deferrals are re-examined at every snapshot; a trigger firing converts its row to
+a work item.
 
 **M4 — the selection contract earns its deltas.**
 Both reputation-weighted-selection instantiations (expert selector s56; a
@@ -133,3 +152,16 @@ panel adds is that its bar (~0.5+) sits ABOVE presence's wake bar (0.45), so a
 0.45–0.50 band interrupts the being and leaves no memory. Design question routed
 to dp/fleet (raising decision, not a unilateral code change). LADDER: used (5/6).
 Next: M2 (`affected`) — attribution rule to be stated and peer-witnessed first.
+
+### Snapshot 3 — 2026-07-29 (F-M2 found; M3 closed)
+```
+vision->raising   enabled ✓ entered ✓ produced ✓ admitted ✓ used ✓ affected BLOCKED(F-M2)
+PANEL: COMPOSITION bound · ACTIVITY bound · RESERVES bound ("ATP 42% | RAM 0.9G | disk 834G")
+       CAPABILITY/COURSE/COORDINATION/LEARNING/REASONING deferred-with-trigger (M3 table)
+```
+Reading: **F-M2 — the experience→session pipe does not exist** (6/6 sessions, zero
+percept content; continuity is last-response splicing only). The being records its
+days into a buffer nobody reads. This and the capture-gate band are one design
+surface: wake→memory→session, two gaps. Both routed; this track holds M2 until the
+raising decides the pipe's shape. PANEL: 3 bound / 5 deferred-named / 0 silent.
+Track state: M0 ✓ M1 ✓ M2 blocked-by-finding (routed) M3 ✓ M4 gated G1 standing.

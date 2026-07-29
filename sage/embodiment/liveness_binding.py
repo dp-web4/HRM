@@ -166,6 +166,43 @@ def bind(window_h: float = 24.0, now: float | None = None) -> Ladder:
     return lad
 
 
+def reserves() -> str:
+    """RESERVES (FUEL) source binding: the being's ATP + the machine's margins."""
+    import glob as _glob
+    parts = []
+    # ATP from the most recent experience record (the being's own metabolic read)
+    try:
+        latest, latest_ts = None, 0
+        for path in _glob.glob(EXPERIENCE_GLOB):
+            for d in _jsonl_ts(path, 0, ts_key="timestamp"):
+                if d.get("timestamp", 0) > latest_ts:
+                    latest, latest_ts = d, d["timestamp"]
+        if latest and "atp_percentage" in latest:
+            age_h = (time.time() - latest_ts) / 3600
+            parts.append(f"ATP {latest['atp_percentage']:.0f}% ({age_h:.1f}h ago)")
+    except OSError:
+        pass
+    # machine margins
+    try:
+        mem = {l.split(":")[0]: int(l.split()[1]) for l in open("/proc/meminfo") if ":" in l}
+        parts.append(f"RAM {mem.get('MemAvailable', 0) / 1048576:.1f}G avail")
+    except (OSError, ValueError):
+        pass
+    try:
+        st = os.statvfs(os.path.expanduser("~"))
+        parts.append(f"disk {st.f_bavail * st.f_frsize / 1e9:.0f}G free")
+    except OSError:
+        pass
+    try:
+        temps = [int(open(z).read()) / 1000 for z in
+                 _glob.glob("/sys/devices/virtual/thermal/thermal_zone*/temp")]
+        if temps:
+            parts.append(f"tj {max(temps):.0f}C")
+    except (OSError, ValueError):
+        pass
+    return " | ".join(parts) if parts else ""
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--window-h", type=float, default=24.0)
@@ -174,9 +211,13 @@ def main():
 
     lad = bind(window_h=args.window_h)
     lad.save(args.out)
+    res = reserves()
+    with open(os.path.expanduser("~/.sprout/reserves.txt"), "w") as f:
+        f.write(res + "\n")
     print(lad.report())
-    print(f"\nliveness -> {args.out}")
-    print("panel:      python -m sage.organism.scan --liveness " + args.out)
+    print(f"\nliveness -> {args.out}   reserves: {res}")
+    print(f'panel:      python -m sage.organism.scan --liveness {args.out} '
+          f'--reserves "{res}"')
 
 
 if __name__ == "__main__":

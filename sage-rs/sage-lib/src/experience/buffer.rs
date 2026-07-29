@@ -15,6 +15,11 @@ pub struct ExperienceEntry {
     pub atp_percentage: f64,
     pub cycle: u64,
     pub timestamp: f64,
+    /// When the daemon began deciding on this percept — set before LLM
+    /// generation. `timestamp` is completion time and trails this by the full
+    /// generation latency, so decision-side joins must not use it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub received_ts: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub machine: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -49,11 +54,27 @@ impl ExperienceEntry {
             atp_percentage,
             cycle,
             timestamp,
+            received_ts: None,
             machine: None,
             model: None,
         }
     }
+
+    /// Decision-time ts, falling back to completion time for entries that
+    /// never set `received_ts`.
+    pub fn decided_ts(&self) -> f64 {
+        self.received_ts.unwrap_or(self.timestamp)
+    }
 }
+
+/// Default capture gate — the salience bar an admitted percept must clear to
+/// become memory. It sits ABOVE presence's wake bar (WAKE_TH = 0.45,
+/// sage/embodiment/presence.py), so a 0.45..0.50 band wakes the being without
+/// leaving an experience; align-or-keep is a raising decision, not a code
+/// default. One definition, referenced by both the daemon's env fallback
+/// (main.rs) and `with_defaults`, so the tests' gate and the daemon's cannot
+/// drift apart silently.
+pub const DEFAULT_CAPTURE_THRESHOLD: f64 = 0.5;
 
 /// Why `record()` accepted or refused an entry. A refusal is stamped to a
 /// sibling drops file so the panel can attribute drops to the capture gate,
@@ -101,14 +122,11 @@ impl ExperienceBuffer {
         }
     }
 
-    /// Default capture gate 0.5 — the salience bar an admitted percept must
-    /// clear to become memory. Note it sits ABOVE presence's wake bar
-    /// (WAKE_TH = 0.45, sage/embodiment/presence.py), so a 0.45..0.50 band
-    /// wakes the being without leaving an experience. The daemon can override
-    /// it via SAGE_CAPTURE_THRESHOLD (main.rs); align-or-keep is a raising
-    /// decision, not a code default.
+    /// Constructor at DEFAULT_CAPTURE_THRESHOLD, for tests and tooling. The
+    /// daemon does not call this — it resolves SAGE_CAPTURE_THRESHOLD in
+    /// main.rs and calls `new` directly; both paths share the const above.
     pub fn with_defaults(path: &Path) -> Self {
-        Self::new(path, 0.5)
+        Self::new(path, DEFAULT_CAPTURE_THRESHOLD)
     }
 
     fn count_lines(path: &Path) -> u64 {
@@ -117,11 +135,15 @@ impl ExperienceBuffer {
             .unwrap_or(0)
     }
 
-    fn is_repetitive(&self, response: &str) -> bool {
+    /// Highest Jaccard overlap (at or above the 0.85 bar) between `response`
+    /// and the recent-response window, or None if nothing collides. An empty
+    /// response counts as a full collision.
+    fn repetition_match(&self, response: &str) -> Option<f64> {
         let response_words: std::collections::HashSet<&str> = response.split_whitespace().collect();
         if response_words.is_empty() {
-            return true;
+            return Some(1.0);
         }
+        let mut best: Option<f64> = None;
         for recent in &self.recent_responses {
             let recent_words: std::collections::HashSet<&str> = recent.split_whitespace().collect();
             if recent_words.is_empty() {
@@ -130,11 +152,11 @@ impl ExperienceBuffer {
             let intersection = response_words.intersection(&recent_words).count();
             let union = response_words.union(&recent_words).count();
             let jaccard = intersection as f64 / union as f64;
-            if jaccard >= 0.85 {
-                return true;
+            if jaccard >= 0.85 && best.map_or(true, |b| jaccard > b) {
+                best = Some(jaccard);
             }
         }
-        false
+        best
     }
 
     /// Sibling of the buffer file: `<stem>_drops.jsonl` next to it.
@@ -149,16 +171,22 @@ impl ExperienceBuffer {
 
     /// Best-effort: an io-reason stamp can fail for the same cause as the drop
     /// it describes; a missing stamp then reads as unattributed, never as recorded.
-    fn stamp_drop(&self, entry: &ExperienceEntry, reason: &str) {
+    /// `ts` is decision-time (see `decided_ts`), but joins against the presence
+    /// log should key on `prompt` — the wake descriptor passes through unchanged,
+    /// so it is exact — not on ts proximity.
+    fn stamp_drop(&self, entry: &ExperienceEntry, reason: &str, detail: serde_json::Value) {
         if let Some(parent) = self.path.parent() {
             let _ = fs::create_dir_all(parent);
         }
-        let stamp = serde_json::json!({
-            "ts": entry.timestamp,
+        let mut stamp = serde_json::json!({
+            "ts": entry.decided_ts(),
             "reason": reason,
             "salience": entry.salience.total,
             "prompt": entry.prompt,
         });
+        if let (Some(obj), serde_json::Value::Object(extra)) = (stamp.as_object_mut(), detail) {
+            obj.extend(extra);
+        }
         let _ = OpenOptions::new()
             .create(true)
             .append(true)
@@ -168,11 +196,18 @@ impl ExperienceBuffer {
 
     pub fn record(&mut self, entry: ExperienceEntry) -> RecordOutcome {
         if entry.salience.total < self.salience_threshold {
-            self.stamp_drop(&entry, "salience");
+            self.stamp_drop(&entry, "salience", serde_json::json!({}));
             return RecordOutcome::DroppedSalience;
         }
-        if self.is_repetitive(&entry.response) {
-            self.stamp_drop(&entry, "repetition");
+        if let Some(score) = self.repetition_match(&entry.response) {
+            // The deciding input for this reason is the response (vs the recent
+            // window), so stamp it — the same standard the salience reason meets
+            // by stamping `salience`.
+            self.stamp_drop(
+                &entry,
+                "repetition",
+                serde_json::json!({ "response": entry.response, "match": score }),
+            );
             return RecordOutcome::DroppedRepetition;
         }
 
@@ -183,7 +218,7 @@ impl ExperienceBuffer {
         let line = match serde_json::to_string(&entry) {
             Ok(s) => s,
             Err(_) => {
-                self.stamp_drop(&entry, "io");
+                self.stamp_drop(&entry, "io", serde_json::json!({}));
                 return RecordOutcome::DroppedIo;
             }
         };
@@ -203,7 +238,7 @@ impl ExperienceBuffer {
             }
             RecordOutcome::Recorded
         } else {
-            self.stamp_drop(&entry, "io");
+            self.stamp_drop(&entry, "io", serde_json::json!({}));
             RecordOutcome::DroppedIo
         }
     }
@@ -287,7 +322,25 @@ mod tests {
         assert_eq!(buf.record(e2), RecordOutcome::DroppedRepetition);
         assert_eq!(buf.count(), 1);
         let drops = fs::read_to_string(drops_path_for(&path)).unwrap();
-        assert!(drops.contains("\"reason\":\"repetition\""));
+        let stamp: serde_json::Value = serde_json::from_str(drops.lines().next().unwrap()).unwrap();
+        assert_eq!(stamp["reason"], "repetition");
+        assert_eq!(stamp["response"], "the quick brown fox jumps over the lazy dog");
+        assert_eq!(stamp["match"].as_f64().unwrap(), 1.0);
+        let _ = fs::remove_file(&path);
+        let _ = fs::remove_file(drops_path_for(&path));
+    }
+
+    #[test]
+    fn drop_stamp_uses_decision_time_ts() {
+        let path = temp_path();
+        let mut buf = ExperienceBuffer::with_defaults(&path);
+        let mut entry = make_entry("hello", "world", 0.2);
+        entry.received_ts = Some(entry.timestamp - 42.0);
+        let expected = entry.decided_ts();
+        assert_eq!(buf.record(entry), RecordOutcome::DroppedSalience);
+        let drops = fs::read_to_string(drops_path_for(&path)).unwrap();
+        let stamp: serde_json::Value = serde_json::from_str(drops.lines().next().unwrap()).unwrap();
+        assert_eq!(stamp["ts"].as_f64().unwrap(), expected);
         let _ = fs::remove_file(&path);
         let _ = fs::remove_file(drops_path_for(&path));
     }

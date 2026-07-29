@@ -741,7 +741,7 @@ class OllamaRaisingSession:
         journal = os.path.expanduser("~/.sprout/perception_journal.jsonl")
         state = os.path.expanduser("~/.sprout/perception.json")
         snippets = []
-        self._digest_counts = {"journal_events": 0, "live": 0, "presence_noticings": 0}
+        self._digest_counts = {"journal_events": 0, "live": 0, "presence_noticings": 0, "experiences": 0}
         try:
             now = time.time()
             evs = []
@@ -806,6 +806,7 @@ class OllamaRaisingSession:
                 snippets.append((
                     "What stayed with you since last session (your own records, "
                     "chosen by what moved you most — your words at the time)", mem))
+                self._digest_counts["experiences"] = len(exps[:2])
         except FileNotFoundError:
             pass  # no daemon on this machine/instance — genuinely nothing to read
         except Exception as ex:

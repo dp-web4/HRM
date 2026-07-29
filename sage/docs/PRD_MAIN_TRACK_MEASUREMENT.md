@@ -211,3 +211,14 @@ better part of the experiment"; kimi's review weighed as opinion):**
   the panel flags it and this decision is re-opened.
 Reading: the surface wake→memory→session is now closed end-to-end in design;
 rung 6 becomes measurable at session 509. Next snapshot after it fires.
+
+*Post-snapshot incident + lesson (2026-07-29, owned):* the D1 commit (8506c806d)
+briefly pushed the raising runner WITH unresolved conflict markers — an
+autostash collision with another seat's concurrent F-M2 P0 work (prompt_health,
+81da00f36) got committed verbatim; HEAD did not compile for ~10 min (fixed in
+38e0f004a, both features kept — they are complementary receipts). Two lessons,
+now rules for this track: (1) **verify compile AFTER the rebase** — the tree
+that pushes is the rebased one, not the one tested pre-pull; (2) the fleet is
+now reacting to forum notes within hours — treat every hot file as contended
+and re-read after every pull. The concurrent work itself is good news: F-M2's
+observability got two independent implementations in one afternoon.

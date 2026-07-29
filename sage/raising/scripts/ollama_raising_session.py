@@ -773,7 +773,13 @@ class OllamaRaisingSession:
                 "source_rows": source_rows,
                 "payload_text": payload_text,
                 "payload_chars": len(payload_text),
-                "template_chars": max(0, len(text) - len(payload_text)),
+                # unclamped (v3 witness correctness 5): for re-rendered
+                # sections (experiences) payload_text is not a substring of
+                # text, so this is not a partition — a negative value is the
+                # only place a payload/text divergence would surface, and
+                # clamping it to 0 disabled the receipt's one internal
+                # consistency check.
+                "template_chars": len(text) - len(payload_text),
             })
 
         try:
@@ -953,7 +959,11 @@ class OllamaRaisingSession:
                     "source_rows", "payload_text", "payload_chars", "template_chars"}
         self._sensory_delivery = {
             "delivered": bool(sens_snips),
-            "receipt_version": 3 if all(_v3_keys <= set(s) for s in sections) else 1,
+            # `sections and` guards the vacuous case (v3 witness blocking 3):
+            # all() over [] is True, so an EMPTY receipt — a session that
+            # delivered nothing — would stamp itself 3, the highest-trust
+            # value, with nothing for the scorer's clause-1 refusal to refuse.
+            "receipt_version": 3 if sections and all(_v3_keys <= set(s) for s in sections) else 1,
             "sections": sections,
             "desc_head": (sens_desc or "")[:120],
         }

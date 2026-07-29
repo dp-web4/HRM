@@ -699,8 +699,20 @@ class OllamaRaisingSession:
         exemplar injection. Falls back to legacy if MRH import fails.
         """
         try:
-            return self._build_system_prompt_mrh()
-        except Exception:
+            prompt = self._build_system_prompt_mrh()
+            self._prompt_health = {
+                "builder": "mrh",
+                "digest_sources": getattr(self, "_digest_counts", None),
+            }
+            print(f"  [prompt] builder=mrh digest_sources={self._prompt_health['digest_sources']}", flush=True)
+            return prompt
+        except Exception as e:
+            self._prompt_health = {
+                "builder": "legacy",
+                "mrh_error": f"{type(e).__name__}: {e}",
+            }
+            print(f"  [prompt] builder=legacy (no sensors surface) — MRH failed: "
+                  f"{type(e).__name__}: {e}", flush=True)
             return self._build_system_prompt_legacy()
 
     def _summarize_perception(self, evs: list) -> str:
@@ -729,6 +741,7 @@ class OllamaRaisingSession:
         journal = os.path.expanduser("~/.sprout/perception_journal.jsonl")
         state = os.path.expanduser("~/.sprout/perception.json")
         snippets = []
+        self._digest_counts = {"journal_events": 0, "live": 0, "presence_noticings": 0}
         try:
             now = time.time()
             evs = []
@@ -738,12 +751,14 @@ class OllamaRaisingSession:
                     if now - e.get("ts", 0) <= 6 * 3600:  # ~since last session
                         evs.append(e)
             if evs:
+                self._digest_counts["journal_events"] = len(evs)
                 snippets.append(("Since we last spoke", self._summarize_perception(evs)))
         except Exception:
             pass
         try:
             d = json.load(open(state))
             if time.time() - d.get("ts", 0) < 30:  # only if the cortex is live now
+                self._digest_counts["live"] = 1
                 snippets.append(("Right now", d.get("descriptor", "")))
         except Exception:
             pass
@@ -760,6 +775,7 @@ class OllamaRaisingSession:
                     if e.get("ts", 0) >= cutoff and e.get("kind") == "noticed" and e.get("noticing"):
                         noticings.append(e["noticing"].strip())
             if noticings:
+                self._digest_counts["presence_noticings"] = len(noticings)
                 snippets.append(("A few moments you noticed on your own while I was gone (your words, in the moment)",
                                  " / ".join(noticings[-3:])))
         except Exception:
@@ -1497,6 +1513,10 @@ RESPONSE STYLE:
             "start": self.session_start.isoformat(),
             "end": datetime.now().isoformat(),
             "turns": len(self.conversation_history),
+            # F-M2 P0: which prompt builder actually ran, and which digest sources
+            # yielded content — without this the record cannot distinguish a
+            # percept-free session from a working pipe (system prompt is not saved).
+            "prompt_health": getattr(self, "_prompt_health", None),
             "conversation": conversation
         }
 

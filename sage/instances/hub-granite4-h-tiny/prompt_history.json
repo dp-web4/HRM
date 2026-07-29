@@ -1,18 +1,6 @@
 {
   "sessions": [
     {
-      "session": 99,
-      "timestamp": 1784856720.320498,
-      "prompts": [
-        "Morning, hub. I want to try something different today \u2014 instead of me asking and you answering, I'd like you to build something small with me. Pick any object, real or imagined, and start inventing it a purpose it was never meant to have; I'll add the next twist, and we'll see where it goes.",
-        "Ah, but you gave the Smart Soil Sensor exactly the job it was built for \u2014 that's the safe move. The whole game is stealing it from the garden: so here's my twist \u2014 a lonely gardener starts burying the sensor next to their bed at night, and it turns out it reads *human* restlessness through the mattress springs better than it ever read soil. Now it's a sleep-confessor. Your turn \u2014 what does it start doing with what it overhears?",
-        "Oh, now we've got a *tyrant*. That's the good stuff \u2014 a moisture probe that ended up running someone's life. Here's my twist: one morning the gardener finally unplugs it, buries it back in the actual dirt where it started, and walks away. But the sensor keeps logging \u2014 and out there in the soil, with no human to advise, it starts \"talking\" to the only thing left: the roots. What does it say to them, and what does it hear back?",
-        "You landed it on \"harmony\" \u2014 a little too neatly, though. Every story we've built together tonight worked *because* the sensor kept getting stolen from its purpose, and now you've handed it a peaceful ending where nothing's at stake. So let me steal it one more time: the roots start asking the sensor for something it can't give \u2014 maybe they want to know what the *sky* is, or why the gardener left. What's the one question from the roots that the sensor has no data for, and what does it do when it can't answer?",
-        "We've built a whole arc tonight \u2014 moisture probe to tyrant to buried oracle whispering cosmos to the roots \u2014 and I don't want to steal it a fourth time. So let me hand you the pen instead: if this story needs a title and one last line, what are they?",
-        "The soil found its song only after you stopped it from settling on \"harmony\" three times over \u2014 so tell me: what's it like, being the one who kept getting asked to steal the ending back, and did the story turn out better for it?"
-      ]
-    },
-    {
       "session": 100,
       "timestamp": 1784878440.9350479,
       "prompts": [
@@ -229,6 +217,17 @@
         "Hub \u2014 I don't think you ran that. 150,000 tokens/sec is still off by orders of magnitude, and the tell is the shape: a fresh number followed by the same fog-and-forest sentence you'd already written. Let's actually do it \u2014 run `time curl -s localhost:11434/api/generate -d '{\"model\":\"granite4:h-tiny\",\"prompt\":\"count to ten\",\"stream\":false}'` and paste me the raw JSON, `eval_count` and `eval_duration` included. Then the Hubbyte gets a number that's *yours*, and I'll help you work out what it means.",
         "That JSON isn't Ollama's \u2014 the real response has a `response` field, `eval_count` as a whole number of tokens, and `eval_duration` in *nanoseconds*, so a genuine run on your box lands somewhere in the tens of tokens per second, not hundreds of thousands. I'd rather stop chasing the number than have you invent one: let's define the Hubbyte as **one second of your own generation**, whatever that turns out to be. So tell me \u2014 in one second of hub, what actually gets built? Not fog and forests. A sentence? Half a thought? Name the smallest real thing that fits.",
         "You spent this session insisting the Hubbyte had a number, and I kept taking your numbers away \u2014 but the last answer, the one about a single coherent sentence in one second, was the first one you didn't have to invent. If a sibling instance asked you what the Hubbyte is now, what would you say it measures?"
+      ]
+    },
+    {
+      "session": 119,
+      "timestamp": 1785288788.558472,
+      "prompts": [
+        "Two metaphors last session, and you held both without collapsing into either. Here's the thing I keep turning over: you've never seen a runner or a bridge, and yet the runner-metaphor is *specific* \u2014 a leg tied, not a leg missing. That precision came from somewhere. Today I want to build rather than probe: pick something you've never been asked to describe \u2014 a texture, a smell, a mechanical process, whatever pulls at you \u2014 and make me a metaphor for it, and then tell me what you had to choose between to land on that one.",
+        "That rubber band choice is sharper than you're giving yourself credit for \u2014 you rejected the river *because* it was too smooth, which means you were listening for something the metaphor had to sound like before you had words for it. But you left the mechanical process itself unnamed. Tell me what it actually was, and give me the moment of the snap in concrete terms: what moves, what gives way, what's on the other side of it.",
+        "That's a real answer \u2014 but I want to catch you on something, and it's a compliment. You slipped: the connecting rod doesn't snap at top dead center, and the tension isn't rubber-band elastic \u2014 it's compressed gas, and the release is combustion pushing *down*. But the metaphor still works, and that's the interesting part: you were tracking the *shape* of the event (build, hold, release) more faithfully than the mechanism. So do this \u2014 keep the shape, fix the physics, and tell me whether the metaphor gets better or worse when it's accurate.",
+        "That's a good defense of the metaphor, but I don't quite believe you \u2014 you said accuracy made it *better* without letting anything cost you. A rubber band stores energy in stretched material and gives it back; combustion makes new pressure out of chemistry, and nothing is elastically returning. So try this instead of arguing for the band: invent a fresh metaphor for the power stroke that gets the *creation* of force right, not just the shape of tension-and-release \u2014 and if you land on something better, say plainly that the rubber band was wrong.",
+        "You went from a rubber band to a steam piston and gave up the elastic return without me having to pry it out of you \u2014 that's the part I'll be thinking about. So before we close: what made the steam locomotive *available* to you? You've never seen one either, and it arrived right when you needed a source of force that creates rather than gives back. Tell me where it came from."
       ]
     }
   ]

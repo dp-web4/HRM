@@ -1555,14 +1555,14 @@ RESPONSE STYLE:
             "start": self.session_start.isoformat(),
             "end": datetime.now().isoformat(),
             "turns": len(self.conversation_history),
-<<<<<<< Updated upstream
             # F-M2 P0: which prompt builder actually ran, and which digest sources
             # yielded content — without this the record cannot distinguish a
             # percept-free session from a working pipe (system prompt is not saved).
             "prompt_health": getattr(self, "_prompt_health", None),
-=======
+            # F-M2' D1: delivery receipt — what sensory content entered this
+            # session's context (sections + sizes). Complements prompt_health:
+            # health says which sources yielded; this witnesses what was delivered.
             "sensory_delivery": getattr(self, "_sensory_delivery", None),
->>>>>>> Stashed changes
             "conversation": conversation
         }
 

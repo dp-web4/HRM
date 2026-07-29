@@ -601,8 +601,21 @@ async fn main() {
     let (msg_tx, msg_rx) = tokio::sync::mpsc::channel(64);
     let consciousness_handle = ConsciousnessHandle::new(msg_tx);
 
-    let experience = ExperienceBuffer::with_defaults(&exp_path);
-    info!("experience buffer: {} existing entries", experience.count());
+    // Capture gate: the salience bar an admitted percept must clear to become
+    // memory. Default 0.5 sits ABOVE presence's wake bar (WAKE_TH = 0.45,
+    // sage/embodiment/presence.py), so a 0.45..0.50 band wakes the being and
+    // leaves no experience. Whether to align the bars or keep the band is a
+    // raising decision (dp) — env-tunable so choosing doesn't need a rebuild.
+    let capture_gate = std::env::var("SAGE_CAPTURE_THRESHOLD")
+        .ok()
+        .and_then(|v| v.parse::<f64>().ok())
+        .unwrap_or(0.5);
+    let experience = ExperienceBuffer::new(&exp_path, capture_gate);
+    info!(
+        "experience buffer: {} existing entries (capture gate {})",
+        experience.count(),
+        capture_gate
+    );
 
     // Non-forcing shadow-metabolism experiment log (sibling of the experience buffer).
     let shadow_path = exp_path.with_file_name("atp_shadow.jsonl");

@@ -55,6 +55,32 @@ impl ExperienceEntry {
     }
 }
 
+/// Why `record()` accepted or refused an entry. A refusal is stamped to a
+/// sibling drops file so the panel can attribute drops to the capture gate,
+/// the repetition filter, or an io failure instead of conflating the three.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RecordOutcome {
+    Recorded,
+    DroppedSalience,
+    DroppedRepetition,
+    DroppedIo,
+}
+
+impl RecordOutcome {
+    pub fn recorded(self) -> bool {
+        matches!(self, RecordOutcome::Recorded)
+    }
+
+    pub fn reason(self) -> Option<&'static str> {
+        match self {
+            RecordOutcome::Recorded => None,
+            RecordOutcome::DroppedSalience => Some("salience"),
+            RecordOutcome::DroppedRepetition => Some("repetition"),
+            RecordOutcome::DroppedIo => Some("io"),
+        }
+    }
+}
+
 pub struct ExperienceBuffer {
     path: PathBuf,
     salience_threshold: f64,
@@ -75,6 +101,12 @@ impl ExperienceBuffer {
         }
     }
 
+    /// Default capture gate 0.5 — the salience bar an admitted percept must
+    /// clear to become memory. Note it sits ABOVE presence's wake bar
+    /// (WAKE_TH = 0.45, sage/embodiment/presence.py), so a 0.45..0.50 band
+    /// wakes the being without leaving an experience. The daemon can override
+    /// it via SAGE_CAPTURE_THRESHOLD (main.rs); align-or-keep is a raising
+    /// decision, not a code default.
     pub fn with_defaults(path: &Path) -> Self {
         Self::new(path, 0.5)
     }
@@ -105,12 +137,43 @@ impl ExperienceBuffer {
         false
     }
 
-    pub fn record(&mut self, entry: ExperienceEntry) -> bool {
+    /// Sibling of the buffer file: `<stem>_drops.jsonl` next to it.
+    fn drops_path(&self) -> PathBuf {
+        let stem = self
+            .path
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or("experience");
+        self.path.with_file_name(format!("{stem}_drops.jsonl"))
+    }
+
+    /// Best-effort: an io-reason stamp can fail for the same cause as the drop
+    /// it describes; a missing stamp then reads as unattributed, never as recorded.
+    fn stamp_drop(&self, entry: &ExperienceEntry, reason: &str) {
+        if let Some(parent) = self.path.parent() {
+            let _ = fs::create_dir_all(parent);
+        }
+        let stamp = serde_json::json!({
+            "ts": entry.timestamp,
+            "reason": reason,
+            "salience": entry.salience.total,
+            "prompt": entry.prompt,
+        });
+        let _ = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(self.drops_path())
+            .and_then(|mut f| writeln!(f, "{}", stamp));
+    }
+
+    pub fn record(&mut self, entry: ExperienceEntry) -> RecordOutcome {
         if entry.salience.total < self.salience_threshold {
-            return false;
+            self.stamp_drop(&entry, "salience");
+            return RecordOutcome::DroppedSalience;
         }
         if self.is_repetitive(&entry.response) {
-            return false;
+            self.stamp_drop(&entry, "repetition");
+            return RecordOutcome::DroppedRepetition;
         }
 
         if let Some(parent) = self.path.parent() {
@@ -119,7 +182,10 @@ impl ExperienceBuffer {
 
         let line = match serde_json::to_string(&entry) {
             Ok(s) => s,
-            Err(_) => return false,
+            Err(_) => {
+                self.stamp_drop(&entry, "io");
+                return RecordOutcome::DroppedIo;
+            }
         };
 
         let ok = OpenOptions::new()
@@ -135,9 +201,11 @@ impl ExperienceBuffer {
             if self.recent_responses.len() > self.repetition_window {
                 self.recent_responses.remove(0);
             }
+            RecordOutcome::Recorded
+        } else {
+            self.stamp_drop(&entry, "io");
+            RecordOutcome::DroppedIo
         }
-
-        ok
     }
 
     pub fn count(&self) -> u64 {
@@ -181,36 +249,47 @@ mod tests {
         )
     }
 
+    fn drops_path_for(path: &PathBuf) -> PathBuf {
+        let stem = path.file_stem().unwrap().to_str().unwrap();
+        path.with_file_name(format!("{stem}_drops.jsonl"))
+    }
+
     #[test]
     fn records_salient_experience() {
         let path = temp_path();
         let mut buf = ExperienceBuffer::with_defaults(&path);
         let entry = make_entry("hello", "world", 0.8);
-        assert!(buf.record(entry));
+        assert!(buf.record(entry).recorded());
         assert_eq!(buf.count(), 1);
         let _ = fs::remove_file(&path);
     }
 
     #[test]
-    fn rejects_low_salience() {
+    fn rejects_low_salience_with_stamped_reason() {
         let path = temp_path();
         let mut buf = ExperienceBuffer::with_defaults(&path);
         let entry = make_entry("hello", "world", 0.2);
-        assert!(!buf.record(entry));
+        assert_eq!(buf.record(entry), RecordOutcome::DroppedSalience);
         assert_eq!(buf.count(), 0);
+        let drops = fs::read_to_string(drops_path_for(&path)).unwrap();
+        assert!(drops.contains("\"reason\":\"salience\""));
         let _ = fs::remove_file(&path);
+        let _ = fs::remove_file(drops_path_for(&path));
     }
 
     #[test]
-    fn rejects_repetitive() {
+    fn rejects_repetitive_with_stamped_reason() {
         let path = temp_path();
         let mut buf = ExperienceBuffer::with_defaults(&path);
         let e1 = make_entry("q1", "the quick brown fox jumps over the lazy dog", 0.8);
         let e2 = make_entry("q2", "the quick brown fox jumps over the lazy dog", 0.8);
-        assert!(buf.record(e1));
-        assert!(!buf.record(e2));
+        assert!(buf.record(e1).recorded());
+        assert_eq!(buf.record(e2), RecordOutcome::DroppedRepetition);
         assert_eq!(buf.count(), 1);
+        let drops = fs::read_to_string(drops_path_for(&path)).unwrap();
+        assert!(drops.contains("\"reason\":\"repetition\""));
         let _ = fs::remove_file(&path);
+        let _ = fs::remove_file(drops_path_for(&path));
     }
 
     #[test]

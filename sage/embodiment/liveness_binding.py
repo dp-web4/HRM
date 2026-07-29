@@ -14,10 +14,22 @@ Binding (organ: vision → raising, on Sprout):
   produced    perception_journal.jsonl 'salient' rows  it produced salient percepts
   admitted    presence_log.jsonl 'noticed' rows        presence delivered a wake to
                                                        the being (past bar+cooldown)
-  used        U/S — needs the daemon-side binding      (did sage-daemon record it
-                                                       as experience? next wiring)
+  used        instances/sprout-*/experience_buffer_    the being recorded the wake
+              rs.jsonl joined to wakes                 as experience (M1 binding)
   affected    U/S — needs raising-outcome binding      (did a session's behavior
                                                        change because of it?)
+
+M1 attribution rule (STATED BEFORE FIRST COMPUTATION, 2026-07-29, per PRD M2
+discipline applied early): a wake is `used` iff an experience record exists with
+  timestamp in [wake.ts, wake.ts + 90s]     (daemon /chat responds inside
+                                             presence's 60s timeout + margin)
+  AND word_overlap(descriptor, prompt) >= 0.5  (Jaccard on lowercased word sets;
+                                             the daemon stores the wake message
+                                             as `prompt`, possibly re-prefixed)
+Each experience matches at most one wake (nearest earlier). Unmatched wakes are
+dropped-with-reason; experiences with no wake in range are the daemon's own
+cycles, not evidence about this channel. The rule is versioned here; changing it
+requires changing this text, not just the code.
 
 U/S is per INSTRUMENT_SCAN's closing rule: an instrument with no source reads
 UNSERVICEABLE, not zero. Rungs 5-6 unbound is the honest current state — the
@@ -46,11 +58,44 @@ PERCEPTION = os.path.expanduser("~/.sprout/perception.json")
 JOURNAL = os.path.expanduser("~/.sprout/perception_journal.jsonl")
 PRESENCE_LOG = os.path.expanduser("~/.sprout/presence_log.jsonl")
 OUT_DEFAULT = os.path.expanduser("~/.sprout/liveness.json")
+# the being's experience buffer (sage-daemon, sage-rs main.rs::experience_path)
+EXPERIENCE_GLOB = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "instances", "sprout-*", "experience_buffer_rs.jsonl")
 
 FRESH_S = 30.0  # 'entered' bar: cortex writes at ~4Hz; presence treats >10s as stale
+USED_WINDOW_S = 90.0   # M1 rule: experience must land within this of its wake
+USED_OVERLAP = 0.5     # M1 rule: word-Jaccard(descriptor, prompt) floor
 
 
-def _jsonl(path: str, since: float):
+def _word_jaccard(a: str, b: str) -> float:
+    wa, wb = set(a.lower().split()), set(b.lower().split())
+    if not wa or not wb:
+        return 0.0
+    return len(wa & wb) / len(wa | wb)
+
+
+def _match_wakes_to_experiences(wakes: list[dict], experiences: list[dict]):
+    """Apply the M1 attribution rule. Returns (matched_pairs, unmatched_wakes)."""
+    unclaimed = sorted(experiences, key=lambda e: e.get("timestamp", 0))
+    matched, unmatched = [], []
+    for w in sorted(wakes, key=lambda d: d.get("ts", 0)):
+        hit = None
+        for e in unclaimed:
+            dt = e.get("timestamp", 0) - w.get("ts", 0)
+            if 0 <= dt <= USED_WINDOW_S and \
+               _word_jaccard(w.get("descriptor", ""), e.get("prompt", "")) >= USED_OVERLAP:
+                hit = e
+                break
+        if hit is not None:
+            unclaimed.remove(hit)  # each experience claims at most one wake
+            matched.append((w, hit))
+        else:
+            unmatched.append(w)
+    return matched, unmatched
+
+
+def _jsonl_ts(path: str, since: float, ts_key: str = "ts"):
     if not os.path.exists(path):
         return
     with open(path) as f:
@@ -59,8 +104,12 @@ def _jsonl(path: str, since: float):
                 d = json.loads(line)
             except (json.JSONDecodeError, ValueError):
                 continue
-            if d.get("ts", 0) >= since:
+            if d.get(ts_key, 0) >= since:
                 yield d
+
+
+def _jsonl(path: str, since: float):
+    yield from _jsonl_ts(path, since, ts_key="ts")
 
 
 def bind(window_h: float = 24.0, now: float | None = None) -> Ladder:
@@ -93,14 +142,27 @@ def bind(window_h: float = 24.0, now: float | None = None) -> Ladder:
         lad.mark(organ, "admitted", n=len(noticed),
                  detail=f"{len(noticed)} wakes delivered in {window_h:.0f}h")
 
-    # rungs 5-6: U/S — no source bound yet. Deliberately NOT marked; the scan
-    # renders the ladder stopping at 'admitted', which is the honest reading.
-    # Next bindings: 'used' <- sage-daemon experience records referencing a wake;
-    # 'affected' <- raising-session outcome deltas attributable to a percept.
+    # rung 5: used — the being recorded the wake as experience (M1 rule above)
+    import glob as _glob
+    experiences = []
+    for path in _glob.glob(EXPERIENCE_GLOB):
+        experiences.extend(d for d in _jsonl_ts(path, since, ts_key="timestamp"))
+    matched, unmatched = _match_wakes_to_experiences(noticed, experiences)
+    if matched:
+        lad.mark(organ, "used", n=len(matched),
+                 detail=f"{len(matched)}/{len(noticed)} wakes became experience "
+                        f"(rule: <={USED_WINDOW_S:.0f}s + overlap>={USED_OVERLAP})")
 
-    # flow (in -> out -> dropped), with the drop attributed, not silently resolved
+    # rung 6: U/S — no source bound yet ('affected' <- raising-session outcome
+    # deltas attributable to a percept; PRD M2, needs a second witness).
+
+    # flow (in -> out -> dropped), with each drop attributed, not silently resolved
     lad.flow(organ, n_in=len(salient), n_out=len(noticed),
              reason="presence filter: salience bar + 300s cooldown + 6/h cap")
+    lad.flow(organ, n_in=len(noticed), n_out=len(matched),
+             reason="M1 join: no experience recorded (measured 2026-07-29: the "
+                    "being's capture gate — wakes sal>=0.53 all recorded, "
+                    "<=0.50 none; daemon downtime also lands here)")
     return lad
 
 

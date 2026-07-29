@@ -51,11 +51,15 @@ top to bottom, IS the progress evaluation dp asked for.
 **M0 — instruments adopted and reading. DONE 2026-07-29** (`369c43570`).
 Evidence: byte-identical lift, pilot binding, first honest panel (§6 snapshot 1).
 
-**M1 — rung 5 (`used`): does a wake become experience?**
-Bind sage-daemon experience records to presence wakes. Done when the ladder can
-show `wakes → experiences recorded` as attributed flow, and the panel's ATTITUDE
-row can read ≥1 component reached USED (or we learn, on instruments, that zero do —
-which is a finding, not a failure of the milestone).
+**M1 — rung 5 (`used`): does a wake become experience? DONE 2026-07-29.**
+Bound: experience_buffer_rs.jsonl joined to presence wakes under a rule stated
+before first computation (≤90s + word-Jaccard ≥0.5, one experience per wake).
+Evidence: snapshot 2. First finding produced by the instruments (see snapshot 2
+reading): the drop between admitted and used is the being's own capture gate —
+a clean salience threshold (≥0.53 all recorded, ≤0.50 none), not loss. Surfaced
+design question routed to dp/fleet, not unilaterally changed: presence wakes at
+0.45 but the being records from ~0.5+, so a 0.45–0.50 band pays the wake cost
+and never becomes memory. Align the bars, or is sub-memory waking wanted?
 
 **M2 — rung 6 (`affected`): does experience change anything?**
 Bind raising-session outcomes (session content referencing percepts; trust/coherence
@@ -112,3 +116,20 @@ ATTITUDE: 0/1 components reached USED
 ```
 Reading: the world reaches the being's doorstep (29 wakes/24h) and we are blind past
 the door. M1 is the next wire.
+
+### Snapshot 2 — 2026-07-29 (M1 done, same day)
+```
+vision->raising   enabled ✓ entered ✓ produced ✓ admitted ✓ used ✓ affected ·
+flow: in=329 salient/24h -> out=30 wakes (presence filter, attributed)
+flow: in=30 wakes -> out=17 experiences, dropped=13 (M1 join, attributed below)
+PANEL: unchanged except ATTITUDE: 1/1 components reached USED
+```
+Reading: **the chain world→experience is measured for the first time: 329→30→17.**
+The 13 drops were investigated before being accepted: zero cluster in daemon
+downtime; zero have ANY experience within 180s (not a join artifact); the split
+is a clean threshold — matched wakes salience 0.53–0.73, unmatched 0.46–0.50.
+Diagnosis: the being's own SNARC capture gate. The regulator is working; what the
+panel adds is that its bar (~0.5+) sits ABOVE presence's wake bar (0.45), so a
+0.45–0.50 band interrupts the being and leaves no memory. Design question routed
+to dp/fleet (raising decision, not a unilateral code change). LADDER: used (5/6).
+Next: M2 (`affected`) — attribution rule to be stated and peer-witnessed first.

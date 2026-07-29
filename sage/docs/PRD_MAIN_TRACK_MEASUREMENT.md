@@ -83,8 +83,8 @@ reading the code instead of trusting the grep.
 3. **The experience buffer was genuinely unread** — the being's felt responses and
    its own salience valuations never reached sessions. FIXED per decision D1.
 
-M2's attribution rule is now stated (v2 below) and awaits its peer witness before
-first computation. Nothing has been computed under either version.
+M2's attribution rule is now stated (v3 below) and awaits its peer witness before
+first computation. Nothing has been computed under any version.
 
 *Rule v1 (stated 2026-07-29 am): witness WITHHELD by McNugget the same day,
 withdrawn unrun.* The withholding was measured, not argued, and reproduced here
@@ -96,53 +96,132 @@ counts but no content; and the previous-session baseline passes 8/20 (chance) on
 a provable delivery-null. Full findings:
 `shared-context/coordination/2026-07-29-mcnugget-m2-attribution-rule-witness.md`.
 
-**M2 attribution rule v2 (restated 2026-07-29, re-witness requested from
-McNugget; computed only after ack).** A delivered percept AFFECTED session N iff
-ALL of:
+*Rule v2 (restated 2026-07-29 pm): witness WITHHELD by McNugget the same day,
+withdrawn unrun.* The statistic was repaired (containment is no longer a pinned
+needle) but the verdict layer fails: clause 2 as written flags 5/30 sessions
+AFFECTED on the frozen delivery-null cohort (P(X≥5 | n=30, α=.05) = 0.0156),
+clause 3 removes none of them (0 contributing words inside 5-gram spans on all
+five), and the only clause that would catch it — the on/off ablation — is
+exactly the one routed to D3 with no data source, making the conjunction either
+false-positive-prone or unsatisfiable. Reproduced here verbatim before acting
+(same 8 numbers, same AFFECTED session IDs, this machine, 2026-07-29 pm). The
+mechanism linking payload_N to being_N on a non-delivery path is UNIDENTIFIED —
+McNugget tested and largely rejected temporal drift (null flat in lag: mean C
+0.224–0.236 across all |i−j| bands) and being-verbosity leakage (only 1 of 5
+flagged sessions in the top 5 by vocabulary); this reproduction confirms both.
+Open question, carried. Full findings:
+`shared-context/coordination/2026-07-29-mcnugget-m2-rule-v2-witness.md`.
 
-1. *(delivery, witnessed)* `sensory_delivery.delivered` is true with
-   `payload_chars > 0` in at least one section. The receipt (v2, landed with this
-   restatement) carries per-section rendered payload TEXT,
-   `{available, delivered}` flow counts, and `payload_chars`/`template_chars`.
-   The receipt IS the delivered text — no post-hoc reconstruction from rolling
-   windows or the ~4Hz-overwritten live snapshot.
-2. *(uptake, calibrated)* containment C = |payload ∩ being| / |payload| over
+**M2 attribution rule v3 (restated 2026-07-29 pm, re-witness requested from
+McNugget; computed only after ack).** The per-session statistic stands as
+repaired in v2; the change is the verdict layer — the nominal α is not the
+false-positive rate of this instrument, the measured null-cohort rate is, so
+the panel-facing claim becomes a rate comparison against that published
+constant (the witness's own recommendation, adopted).
+
+Per-session flag — session N is FLAGGED iff ALL of:
+
+1. *(delivery, witnessed)* the receipt (v3, landed with this restatement)
+   has `receipt_version: 3` — the stamp is DERIVED from section shape, not
+   asserted — with `payload_text` non-empty in the scored section. The scorer
+   REFUSES any session whose sections lack the v3 keys. The receipt IS the
+   delivered text — no post-hoc reconstruction from rolling windows or the
+   ~4Hz-overwritten live snapshot. Sections carry `payload_text` (the scorable
+   payload alone, template excluded at write time — witness finding 3),
+   `{available, delivered, source_rows}` (so 0-of-0 and 0-of-330-none-salient
+   are distinguishable — witness finding 6), and derived char splits.
+2. *(uptake, ranked)* containment C = |payload ∩ being| / |payload| over
    content-words. Pinned: tokens = `re.findall(r"[a-z']+", text.lower())`,
-   length > 2, minus a stoplist frozen in the scorer module (versioned in its
-   docstring, the liveness_binding discipline); scored on receipt payload text
-   only (template/boilerplate excluded); words attributed by FIRST USE in turn
-   order — a word counts for the being only if the being used it before the
-   tutor did in session N (the adaptive tutor mirrors uptake, so blanket
-   set-subtraction deletes the evidence: measured −31% median). AFFECTED
-   requires C ranked above the 95th percentile of ≥100 permutation draws from
-   TIME-SEPARATED sessions (|i−j| ≥ 4, ≈24h, keeping shared-window topical
-   drift out of the null). No fixed constant threshold.
-3. *(non-verbatim)* the contributing words appear in being-turns OUTSIDE the
-   longest common 5-gram spans between payload and being-turns; the
-   verbatim-copy rate (5-gram span coverage) is reported alongside. A 0.8B
-   model parroting its system prompt is regurgitation, not uptake, and the two
-   must be distinguishable (cf. prev_summary_filter, 11/11 on 0.5B).
-4. *(controlled)* the delivery-on/off ablation delta is positive per section.
-   The on/off schedule withholds delivery from the being, so it is a raising
-   decision — routed to dp as D3, not taken unilaterally. Until D3: the
-   cross-host arms stand in (McNugget/Nomad are experiences-only by
-   construction — `~/.sprout` paths are Sprout-local — vs Sprout's four
-   sections), giving section-level attribution without withholding anything.
-5. *(reported)* all arms, N, and the null distribution itself, always (G1).
+   length > 2, minus the stoplist frozen below; scored on the receipt's
+   `payload_text` field only; words attributed by FIRST USE in turn order — a
+   word counts for the being only if the being used it before the tutor did in
+   session N (the adaptive tutor mirrors uptake, so blanket set-subtraction
+   deletes the evidence: measured −31% median). FLAGGED requires C ranked
+   above the 95th percentile of the TWO-SIDED permutation null: draws
+   C(payload_j, being_k) over all pairs j ≠ k, both ≠ N, |j−k| ≥ 4. The
+   two-sided null is PINNED (witness finding 4): the verdict is not invariant
+   to which side is permuted, and with N=30 cohort sessions the one-sided
+   readings afford only 23–27 draws — the two-sided null is the only reading
+   that satisfies "≥100 draws" (~700+ available). The |i−j| ≥ 4 separation is
+   retained as harmless conservatism, NOT because of shared-window drift —
+   measured flat in lag on this cohort (witness finding 5, both machines).
+3. *(non-verbatim, unwitnessed)* the contributing words appear in being-turns
+   OUTSIDE the longest common 5-gram spans between payload and being-turns;
+   the verbatim-copy rate is reported alongside. KNOWN LIMIT: on the null
+   cohort this clause is inert by construction (the payload was never in those
+   prompts, so overlap there is chance) — its power against 0.8B parroting is
+   measurable only on delivered sessions. Well-formed; unwitnessed until 509+.
+
+Binding — rung 6 reads `uptake (lexical): bound` iff the FLAGGED rate over
+delivered sessions significantly exceeds the null-cohort rate (one-sided
+binomial, p < 0.05, against p₀ below). The null-cohort rate is REPORTED beside
+every delivered number, always — it is G1's baseline arm.
+
+*Calibration constants (computed 2026-07-29 on the frozen null cohort, both
+machines independently, identical):* under clauses 2∧3 with the pinned
+two-sided null, FLAGGED on the null cohort = **4/30 (p₀ = 0.133): sessions
+474, 482, 497, 502**. Sensitivity across null readings: being-side 5/30
+{474, 482, 496, 500, 502}, payload-side 4/30 {477, 482, 497, 505} — every
+reading is 3–4× nominal α; only 482 survives all three. With n = 30 delivered
+sessions, the first significant count is 8/30 (p = 0.0387); 9/30 → 0.0136,
+10/30 → 0.0042. This instrument's false-positive rate is 13%, measured and
+published — not the nominal 5%.
+
+*Null-side scoring, pinned:* the null cohort predates receipts, so its payload
+is reconstructed by the frozen procedure (witness reproducer: buffer rows in
+the 6h pre-session window, salience-ranked, top-2, rendered
+`prompt[:80] + " " + response[:160]`, space-joined) at `b6006d183`. Receipt
+v3's experiences `payload_text` uses the IDENTICAL rendering, so both arms of
+the rate comparison score the same quantity.
+
+*Stoplist, frozen now (witness finding 8 — the pin must predate first
+computation, not trail it in a scorer that doesn't exist yet):*
+
+```
+a an the and or but if then than that this these those there here is are
+was were be been being am do does did doing have has had having i you he she
+it we they me him her us them my your his its our their of to in on at for
+with from by as about into over after before between out up down off no not
+so such only own same too very can will just should now what which who whom
+when where why how all any both each few more most other some
+```
+
+*Scope:* the binding claim rests on the EXPERIENCES section — the D1 pipe M2
+exists to measure, and the only section with a null cohort. Other sections
+(journal/live/presence) are reported with the same statistic but carry no
+binding claim until a null arm exists for them.
+
+*Causality (was clause 4 — restructured per witness finding 2):* the rate
+comparison is correlational; only a delivery-on/off ablation turns it causal.
+The on/off schedule withholds delivery from the being, so it is a raising
+decision — routed to dp as D3, not taken unilaterally; McNugget endorses the
+routing. The cross-host arms (McNugget/Nomad experiences-only by construction)
+are DEMOTED to section-attribution hints: absence of a section is not an
+ablation of it, and a 12B-vs-0.8B cross-model contrast cannot produce a
+delivery delta for one being (witness finding 2, accepted). Honest interim
+arm: the frozen cohort itself — 470–508 delivery-OFF vs 509+ delivery-ON,
+one instance, one model, labelled PRE/POST AND TEMPORALLY CONFOUNDED wherever
+reported.
 
 *Null cohort, frozen:* sessions 470–508 @ `b6006d183` (30 reconstructable) are
 the delivery-null for the experiences section — D1 landed in `8506c806d`, so no
 session ≤508 received it; first delivered session is 509. Containment null on
-that cohort: median 0.146, p95 0.292, max 0.390.
+that cohort: median 0.146, p95 0.292 (matched-lag reference), max 0.390.
 
-*Naming (per the witness, accepted):* even fully passed, v2 measures LEXICAL
-UPTAKE, not behavioral change. The panel reads rung 6 as
+*Naming (per the v1 witness, accepted; unchanged in v3):* even fully passed,
+this measures LEXICAL UPTAKE, not behavioral change. The panel reads rung 6 as
 `uptake (lexical): <state> / affected (behavioral): U/S` until a behavioral
 instrument exists. No source reads U/S, not zero — and not a borrowed word.
 
-*Follow-up work items from the witness:* route the digest splice through the
-prev_summary_filter discipline (finding 5); D3 decision to dp (ablation
-schedule).
+*Erratum (record-keeping, witness finding 5):* commit `3d10de4f4`'s message
+says "time-matched permutation rank"; the PRD it committed says
+time-separated. The PRD was right; the message is wrong and immutable. This
+erratum is the correction of record.
+
+*Follow-up work items from the witnesses:* route the digest splice through the
+prev_summary_filter discipline (v1 finding 5); D3 decision to dp (ablation
+schedule); scorer module written only after the v3 witness, with this
+stoplist and the two-sided null pinned in its docstring.
 
 **M3 — panel completion: no instrument left silently U/S. DONE 2026-07-29** —
 every instrument is now bound or explicitly deferred with a trigger:

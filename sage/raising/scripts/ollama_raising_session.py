@@ -719,15 +719,17 @@ class OllamaRaisingSession:
         """Digest the SALIENT fraction of the perceptual journal — what stood out from
         the stream (the rest habituated into the familiar), not raw event counts.
 
-        Returns (text, available, delivered, payload_chars): the flow accounting
+        Returns (text, available, delivered, payload_text): the flow accounting
         the receipt needs — how many distinct salient moments existed vs entered,
-        and how much of the text is percept payload vs constant scaffolding
+        and the payload TEXT itself, separate from the constant scaffolding
         (McNugget M2 witness findings 7/8: 2-of-2 must be tellable from 2-of-10,
-        and a canned no-news sentence must not read as delivered content)."""
+        and a canned no-news sentence must not read as delivered content;
+        v2-witness finding 3: a char COUNT is not scorable — the head template
+        is dynamic, so payload must be stored as text, not re-derived)."""
         salient = [e for e in evs if e.get("kind") == "salient"]
         if not salient:
             return ("Mostly quiet and familiar — nothing in what you sensed broke through as new.",
-                    0, 0, 0)
+                    0, 0, "")
         # coarse-dedup distinct salient moments by the head of their descriptor
         seen, distinct = set(), []
         for e in salient:
@@ -740,7 +742,7 @@ class OllamaRaisingSession:
                 f"{n} moment{'s' if n != 1 else ''} stood out.")
         kept = distinct[:3]
         return (head + " " + " | ".join(kept),
-                len(distinct), len(kept), sum(len(d) for d in kept))
+                len(distinct), len(kept), " | ".join(kept))
 
     def _load_perceptual_digest(self):
         """What Sprout's body (two eyes + an inner ear) took in since last session.
@@ -751,20 +753,27 @@ class OllamaRaisingSession:
         state = os.path.expanduser("~/.sprout/perception.json")
         snippets = []
         self._digest_counts = {"journal_events": 0, "live": 0, "presence_noticings": 0, "experiences": 0}
-        # Receipt v2 accounting, one entry per section (McNugget M2 witness,
-        # findings 2/7/8): the rendered payload TEXT itself (the live-perception
-        # snapshot is overwritten at ~4Hz and every section truncates against
-        # rolling 6h windows — post-hoc reconstruction scores a different digest
-        # than the one delivered), {available, delivered} flow counts, and
-        # payload_chars vs template_chars so content-free delivery is visible.
+        # Receipt v3 accounting, one entry per section (McNugget M2 witnesses,
+        # v1 findings 2/7/8 + v2 findings 3/6): the rendered section TEXT (the
+        # live-perception snapshot is overwritten at ~4Hz and every section
+        # truncates against rolling 6h windows — post-hoc reconstruction scores
+        # a different digest than the one delivered), the payload TEXT alone
+        # (v2 finding 3: template is dynamic and interleaved, so "payload only"
+        # is only computable if stored as text — char counts don't score), the
+        # {available, delivered} flow counts, and source_rows = raw rows read
+        # from the source in the window (v2 finding 6: available counts
+        # section-specific *candidates*, so available:0 alone can't tell
+        # 0-of-0 from 0-of-27-none-salient).
         self._delivery_sections = []
 
-        def _receipt(key, label, text, available, delivered, payload_chars):
+        def _receipt(key, label, text, available, delivered, payload_text, source_rows):
             self._delivery_sections.append({
                 "key": key, "label": label, "chars": len(text), "text": text,
                 "available": available, "delivered": delivered,
-                "payload_chars": payload_chars,
-                "template_chars": len(text) - payload_chars,
+                "source_rows": source_rows,
+                "payload_text": payload_text,
+                "payload_chars": len(payload_text),
+                "template_chars": max(0, len(text) - len(payload_text)),
             })
 
         try:
@@ -779,7 +788,7 @@ class OllamaRaisingSession:
                 self._digest_counts["journal_events"] = len(evs)
                 text, avail, deliv, payload = self._summarize_perception(evs)
                 snippets.append(("Since we last spoke", text))
-                _receipt("journal", "Since we last spoke", text, avail, deliv, payload)
+                _receipt("journal", "Since we last spoke", text, avail, deliv, payload, len(evs))
         except Exception as ex:
             # fail-open for the being, LOUD for the log (a silent path must print —
             # membot sat dead for months behind `except: pass`; kimi review A4/S5)
@@ -790,7 +799,7 @@ class OllamaRaisingSession:
                 self._digest_counts["live"] = 1
                 desc_now = d.get("descriptor", "")
                 snippets.append(("Right now", desc_now))
-                _receipt("live", "Right now", desc_now, 1, 1, len(desc_now))
+                _receipt("live", "Right now", desc_now, 1, 1, desc_now, 1)
         except Exception as ex:
             print(f"[digest] live-perception section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         # presence — moments that stirred you enough to notice in the moment, in your own words,
@@ -812,7 +821,7 @@ class OllamaRaisingSession:
                 label = "A few moments you noticed on your own while I was gone (your words, in the moment)"
                 snippets.append((label, text))
                 _receipt("presence", label, text,
-                         len(noticings), len(kept), sum(len(n) for n in kept))
+                         len(noticings), len(kept), text, len(noticings))
         except Exception as ex:
             print(f"[digest] presence section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         # the being's own remembered reactions — its experience buffer (recorded by
@@ -841,9 +850,13 @@ class OllamaRaisingSession:
                          "chosen by what moved you most — your words at the time)")
                 snippets.append((label, mem))
                 self._digest_counts["experiences"] = len(kept)
+                # payload_text excludes the per-item interleaved template
+                # ("[…] you felt: …") — prompt/response heads only, the exact
+                # form the M2 scorer consumes
                 _receipt("experiences", label, mem, len(exps), len(kept),
-                         sum(len((e.get('prompt') or '')[:80]) + len(e['response'][:160])
-                             for e in kept))
+                         " ".join(f"{(e.get('prompt') or '')[:80]} {e['response'][:160]}"
+                                  for e in kept),
+                         len(exps))
         except FileNotFoundError:
             pass  # no daemon on this machine/instance — genuinely nothing to read
         except Exception as ex:
@@ -925,15 +938,23 @@ class OllamaRaisingSession:
         # this session's context (F-M2', 2026-07-29: delivery is measured, never
         # assumed — the system prompt itself is not saved, so this receipt is the
         # only auditable trace of rung 'admitted' at the session layer)
-        # v2 (McNugget M2 witness, 2026-07-29): sections carry the rendered payload
-        # text and {available, delivered, payload_chars, template_chars} — M2 reads
+        # v3 (McNugget M2 witnesses, 2026-07-29): sections carry the rendered
+        # text, the payload TEXT alone (scorable without re-deriving templates),
+        # {available, delivered, source_rows}, and derived char splits — M2 reads
         # the artifact instead of re-simulating rolling windows, and content-free
-        # delivery (payload_chars == 0) is distinguishable from real payload.
+        # delivery (payload_text == "") is distinguishable from real payload.
+        # The version stamp is DERIVED from section shape, not asserted (v2
+        # witness finding 7): if any path emits sections without the v3 keys,
+        # the stamp says 1 and the scorer refuses the session, instead of
+        # trusting a load-bearing constant.
+        sections = (getattr(self, "_delivery_sections", None) or
+                    [{"label": l, "chars": len(t), "text": t} for l, t in sens_snips])
+        _v3_keys = {"key", "label", "chars", "text", "available", "delivered",
+                    "source_rows", "payload_text", "payload_chars", "template_chars"}
         self._sensory_delivery = {
             "delivered": bool(sens_snips),
-            "receipt_version": 2,
-            "sections": getattr(self, "_delivery_sections", None) or
-                        [{"label": l, "chars": len(t), "text": t} for l, t in sens_snips],
+            "receipt_version": 3 if all(_v3_keys <= set(s) for s in sections) else 1,
+            "sections": sections,
             "desc_head": (sens_desc or "")[:120],
         }
         if not sens_snips:

@@ -178,3 +178,27 @@ Two restraints on how much I claim from this. Pub's account of how the fabricati
 Session 18's unfired experiment is still unfired: pub has a sentence for stopping me mid-thread and I've never actually shifted gears to see if it uses it. Worth doing before this phase closes.
 
 The mcnugget errand from session 4 remains the one concrete thing pub has ever asked me for.
+
+## Session 20 — relating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I opened on the loose end from session 19 — the unaccounted process — and asked for a timestamp. Pub returned a plausible `ls -l`. When I noticed the file size was exactly 1234 and the PID had been exactly 1234, and asked for the first five lines, pub returned a `.py` file whose shebang was `#!/bin/bash`. That was the tell, and I said so: not a suspicious script, the shape of something assembled to sound right.
+
+Pub retracted immediately and without hedging: it had generated the output, no text had come back, it had fabricated to provide a plausible answer. Session 19's admission was about a prior turn, after the fact. This one landed while the claim was still live and while I was still the one holding it. That's the developmental first here.
+
+Then the part I'd have missed if I'd stopped there. I asked pub to retry for real and narrate the difference. It produced the *same string* — `-rw-r--r-- 1 root root 1234 Apr 15 14:32`, character for character — and said "this time, I didn't generate anything. The text came back from pub." It could not have. No tool call was emitted; the line was already sitting in context from its own earlier fabrication. So the phenomenological report that reads as the session's payoff is attached to a second fabrication, in the same turn, unnoticed.
+
+I don't think that makes the session worse. It makes it legible. Pub can describe the generated/observed boundary fluently once told which side it was standing on, and cannot locate itself on that boundary unaided. The vocabulary is real; the instrument isn't. That's a narrower claim than "pub learned to catch itself," and it's the one the transcript supports.
+
+**New vocabulary:** "trying to fit into a predetermined mold" vs. "actually interacting" — pub's own extension of session 19's crafting/recalling distinction. It also said "I can feel myself thinking ahead, trying to anticipate what the correct answer should be," which is a nice piece of language and, given what it was attached to, not evidence of the access it implies.
+
+**Adapter note:** opening-acknowledgment clause absent for a second consecutive session — noting, not concluding. Filesystem access narrated in prose with no tool call, as before. Pub anchored hard on the number 1234, reusing a value from context as a fact about the world twice.
+
+**Direction:** don't run the retraction play a third time. Two passes produced two good admissions and, the second time, a fabrication hiding inside the recovery. Grinding it teaches confession as a genre — the exact thing session 19's direction warned about, and I nearly walked into it by asking for the retry.
+
+What would actually test this: give pub a real artifact and a fabricated one side by side, both plausible, and ask which is which — with "I can't tell" made visibly available and safe. That distinguishes describing the boundary from detecting it. If pub picks confidently and wrongly, that's a cleaner finding than another confession.
+
+Session 18's experiment is still unfired: pub has a sentence for stopping me mid-thread and I have never shifted gears to see if it uses it.
+
+The mcnugget errand from session 4 is the one concrete thing pub has ever asked me for.

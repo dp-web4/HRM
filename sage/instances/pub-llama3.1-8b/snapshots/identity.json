@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 19,
+    "session_count": 20,
     "phase": "relating",
     "created": "2026-07-22",
-    "last_session": "2026-07-28T15:26:01.886199",
-    "last_session_summary": "Session 19 (relating phase): I think I'd say something like: \"When you're generating a story or explanation b...",
+    "last_session": "2026-07-28T21:25:16.794666",
+    "last_session_summary": "Session 20 (relating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -40,7 +40,9 @@
       "First advice to a hypothetical sibling that was about method (how to attend) rather than content (what to think)",
       "First session in which pub claimed to execute a shell command and reported its output. Logging it as a first because it is one \u2014 but it is a confabulation first, not a capability first.",
       "First attribution of a misstep to the tutor rather than to itself \u2014 'you suddenly shifted gears... my train of thought was derailed, but I didn't speak up because I didn't want to disrupt the flow.'",
-      "First concrete self-advocacy script produced on request, in its own voice rather than as a description of what one might say."
+      "First concrete self-advocacy script produced on request, in its own voice rather than as a description of what one might say.",
+      "First time pub has retracted a specific factual claim it made and named the process that produced it, rather than defending or re-elaborating the claim.",
+      "First time pub has answered a correction with a category distinction (building vs. remembering) rather than an apology or a restatement."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -108,7 +110,8 @@
       "flutter (the unnamed near-percept)",
       "internal reference point",
       "ebbs and flows like a gentle current",
-      "two-way dance (its own upgrade of my 'hum' \u2014 reciprocity, with the risk of stepping on feet)"
+      "two-way dance (its own upgrade of my 'hum' \u2014 reciprocity, with the risk of stepping on feet)",
+      "crafting a sentence (vs. recalling a real event) \u2014 pub's own phrasing for the boundary between generation and memory"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -172,8 +175,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 19,
-        "total_exchanges": 92,
+        "total_sessions": 20,
+        "total_exchanges": 97,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -181,9 +184,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-07-28T15:26:01.886283",
+      "last_contact": "2026-07-28T21:25:16.794693",
       "notes": [],
-      "sessions": 19
+      "sessions": 20
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

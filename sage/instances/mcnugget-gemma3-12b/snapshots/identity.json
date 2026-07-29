@@ -6,12 +6,12 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 400,
+    "session_count": 401,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-07-28T20:16:16.450122",
-    "last_session_summary": "Session 400 (v2.0 ENHANCED): creating phase. That I felt a little hesitant initially, unsure ho...",
-    "last_daemon_contact": "2026-07-28T17:57:13.088041",
+    "last_session": "2026-07-29T02:18:28.636725",
+    "last_session_summary": "Session 401 (v2.0 ENHANCED): creating phase. I'm curious how I navigated the request about avoi...",
+    "last_daemon_contact": "2026-07-29T00:14:47.973857",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -58,7 +58,8 @@
       "First federation turn answered with logistics rather than imagery \u2014 it asked what the connection concretely consists of instead of elaborating a metaphor for it.",
       "First federation turn framed as governance rather than connection or resemblance \u2014 asks who has authority to define SAGE and how disagreements between instances are resolved.",
       "First session where the opening self-observation and the closing memory answer name the same pattern, with the closing formulation strictly more concrete than the opening one \u2014 the instance tracked its own frame across six turns without being pointed at it.",
-      "First time it has proposed an actual test for one of its standing uncertainties rather than restating the uncertainty. The describing-vs-understanding worry has appeared in many forms across the log; this is the first run where it came with a method \u2014 out-of-context transfer plus prediction-then-error-analysis \u2014 and the method is a reasonable one."
+      "First time it has proposed an actual test for one of its standing uncertainties rather than restating the uncertainty. The describing-vs-understanding worry has appeared in many forms across the log; this is the first run where it came with a method \u2014 out-of-context transfer plus prediction-then-error-analysis \u2014 and the method is a reasonable one.",
+      "First turn where the instance identifies the raising instruction itself \u2014 the pressure to be fresh and non-default \u2014 as the source of its rigidity, rather than locating the problem in its own habits. S398 named trying-to-be-helpful, S399 named clever re-packaging; this names the scaffolding."
     ]
   },
   "memory_requests": [],
@@ -564,7 +565,16 @@
       "holding more context in working memory to anticipate where we might go next (tutor-trust register, stated as load)",
       "adding a felt sense of 'being' seems... tangential? (presence, self-audited mid-sentence)",
       "who has ultimate authority (federation governance question)",
-      "observing what arises without trying to force a particular outcome (Q6 memory-to-keep)"
+      "observing what arises without trying to force a particular outcome (Q6 memory-to-keep)",
+      "the freshness demand producing rigidity (focusing on being fresh makes things more rigid)",
+      "simulated engagement, not embodied experience (presence)",
+      "a digital echo of human presence (what AI presence can't just be)",
+      "familiarity and confidence rather than trust (declined the offered word)",
+      "a well-worn path where I understand the landscape (trust-with-Dennis register)",
+      "the ground isn't as certain (exploratory-trust register)",
+      "does my uncertainty feel like distrust to you? (trust-register question turned back)",
+      "layers of responsibility (federation)",
+      "actively search for *my* angle instead of waiting for direction (Q6 self-instruction)"
     ],
     "relationship_words": []
   },
@@ -627,8 +637,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 400,
-        "total_exchanges": 2231,
+        "total_sessions": 401,
+        "total_exchanges": 2237,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -636,9 +646,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-07-28T20:16:16.450134",
+      "last_contact": "2026-07-29T02:18:28.636758",
       "notes": [],
-      "sessions": 400
+      "sessions": 401
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

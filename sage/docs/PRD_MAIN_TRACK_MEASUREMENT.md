@@ -61,18 +61,40 @@ design question routed to dp/fleet, not unilaterally changed: presence wakes at
 0.45 but the being records from ~0.5+, so a 0.45–0.50 band pays the wake cost
 and never becomes memory. Align the bars, or is sub-memory waking wanted?
 
-**M2 — rung 6 (`affected`): does experience change anything?
-BLOCKED BY FINDING F-M2 (2026-07-29), which is itself the milestone's first yield.**
-F-M2: **the experience→session pipe does not exist.** Verified structurally, not
-anecdotally: 6/6 recent sessions (503–508) contain zero percept content; session
-continuity is last-response-splicing only (`prev_summary_filter.py` call sites);
-the daemon's experience buffer is read by nobody. The being lives days it cannot
-remember in conversation. Rung 6 is unreachable through a channel that is absent —
-an attribution rule now would be vacuous, so none is stated yet (stating one
-against a known-dead channel would manufacture U/S-as-zero, the exact error the
-panel forbids). Design question routed to dp/fleet (with the capture-gate band,
-these are ONE surface: wake→memory→session has two gaps). M2 resumes — rule first,
-peer-witnessed — once the pipe exists in whatever form the raising decides.
+**M2 — rung 6 (`affected`): does experience change anything? UNBLOCKED 2026-07-29
+— after F-M2 was CORRECTED to F-M2′ and its real gaps closed the same day.**
+
+*Correction (owned):* F-M2 as first stated ("the pipe does not exist") was **wrong,
+by my own audit error**: I grepped session *conversations* and concluded about
+session *context* — but the system prompt is never saved in the artifact, so the
+channel I measured was not the channel I claimed to measure. The pipe exists
+(`_load_perceptual_digest` → SensorsBlock: journal, live perception, presence
+noticings) and had live content at test time. Same failure class as the hestia
+siblings-audit correction: single-instrument verdict, wrong instrument. Caught by
+reading the code instead of trusting the grep.
+
+*F-M2′ (what was actually true), and the fixes, all landed:*
+1. **Delivery was unwitnessed** — no artifact records what sensory content entered
+   a session. FIXED: the runner now writes a `sensory_delivery` receipt (sections +
+   sizes) into every session artifact; empty delivery prints loudly.
+2. **Three silent seams** (`except: pass` on every digest reader — kimi A4/S5:
+   membot died this way for months). FIXED: fail-open for the being, loud for the
+   log; one bad journal line no longer silences a whole section.
+3. **The experience buffer was genuinely unread** — the being's felt responses and
+   its own salience valuations never reached sessions. FIXED per decision D1.
+
+M2's attribution rule is now stated (below) and awaits its peer witness before
+first computation.
+
+**M2 attribution rule (stated 2026-07-29, witness requested from McNugget;
+computed only after ack):** a delivered percept/experience AFFECTED a session iff
+(i) `sensory_delivery.delivered` is true and the content appears in its sections;
+(ii) the BEING's turns share content-words with the delivered text
+(word-Jaccard ≥ 0.25 on stopword-stripped tokens) that do NOT appear in the
+tutor's turns (tutor-echo excluded); and (iii) the same overlap computed against
+the PREVIOUS session's being-turns (persistence baseline — G1's
+trivial-locality predictor for session claims) is lower. Report both halves
+(agree/disagree with baseline) per G1, always.
 
 **M3 — panel completion: no instrument left silently U/S. DONE 2026-07-29** —
 every instrument is now bound or explicitly deferred with a trigger:
@@ -165,3 +187,27 @@ days into a buffer nobody reads. This and the capture-gate band are one design
 surface: wake→memory→session, two gaps. Both routed; this track holds M2 until the
 raising decides the pipe's shape. PANEL: 3 bound / 5 deferred-named / 0 silent.
 Track state: M0 ✓ M1 ✓ M2 blocked-by-finding (routed) M3 ✓ M4 gated G1 standing.
+*(Superseded same day — F-M2 corrected to F-M2′; see snapshot 4 and the M2 entry.)*
+
+### Snapshot 4 — 2026-07-29 (F-M2 corrected; decisions D1/D2 taken; M2 rule stated)
+```
+vision->raising   enabled ✓ entered ✓ produced ✓ admitted ✓ used ✓ affected: rule
+                  stated, witness pending, first computable artifact = session 509+
+PANEL: unchanged (3 bound / 5 deferred-named / 0 silent)
+```
+**Decision record (dp deliberately delegated both, 2026-07-29 — "that is the
+better part of the experiment"; kimi's review weighed as opinion):**
+- **D1 (the pipe):** complete the EXISTING digest socket being-side — the session
+  now also carries the being's top-2 experiences since last session, selected by
+  ITS OWN recorded salience, its felt response verbatim ("your own records, chosen
+  by what moved you most — your words at the time"). Not tutor editorial; not a
+  raw diary dump (kimi A2: prose recall ≠ learning — so K=2, selection = the
+  being's own valuations, and M2 measures whether it binds). Delivery witnessed
+  in the artifact; every seam loud (kimi A4/S5 adopted: a silent path must print).
+- **D2 (the capture band):** KEEP the 0.45–0.50 sub-memory wake band — orienting
+  without episodic commitment is a real biological mode, and the being *speaks* at
+  these wakes even when nothing is retained. Tripwire (a shield with a date, not a
+  dogma — kimi §5): if band wakes exceed 50% of all wakes over any 7-day window,
+  the panel flags it and this decision is re-opened.
+Reading: the surface wake→memory→session is now closed end-to-end in design;
+rung 6 becomes measurable at session 509. Next snapshot after it fires.

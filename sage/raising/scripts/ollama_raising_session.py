@@ -753,15 +753,17 @@ class OllamaRaisingSession:
             if evs:
                 self._digest_counts["journal_events"] = len(evs)
                 snippets.append(("Since we last spoke", self._summarize_perception(evs)))
-        except Exception:
-            pass
+        except Exception as ex:
+            # fail-open for the being, LOUD for the log (a silent path must print —
+            # membot sat dead for months behind `except: pass`; kimi review A4/S5)
+            print(f"[digest] journal section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         try:
             d = json.load(open(state))
             if time.time() - d.get("ts", 0) < 30:  # only if the cortex is live now
                 self._digest_counts["live"] = 1
                 snippets.append(("Right now", d.get("descriptor", "")))
-        except Exception:
-            pass
+        except Exception as ex:
+            print(f"[digest] live-perception section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         # presence — moments that stirred you enough to notice in the moment, in your own words,
         # while we were apart (the resident presence feeder woke you for these). Bridges the
         # continuous being into the 6h raising, so they are one.
@@ -778,8 +780,36 @@ class OllamaRaisingSession:
                 self._digest_counts["presence_noticings"] = len(noticings)
                 snippets.append(("A few moments you noticed on your own while I was gone (your words, in the moment)",
                                  " / ".join(noticings[-3:])))
-        except Exception:
-            pass
+        except Exception as ex:
+            print(f"[digest] presence section lost ({type(ex).__name__}: {ex}) — raising continues without it")
+        # the being's own remembered reactions — its experience buffer (recorded by
+        # the daemon at presence wakes), selected by ITS OWN salience at capture
+        # time, its own words at the time. Being-side memory: the selection was made
+        # by what moved it, not by tutor editorial. (F-M2' closure, 2026-07-29.)
+        try:
+            buf = self.instance.sessions.parent / "experience_buffer_rs.jsonl"
+            cutoff = time.time() - 6 * 3600
+            exps = []
+            with open(buf) as f:
+                for line in f:
+                    try:
+                        e = json.loads(line)
+                    except Exception:
+                        continue  # one bad line must not silence the rest
+                    if e.get("timestamp", 0) >= cutoff and e.get("response"):
+                        exps.append(e)
+            exps.sort(key=lambda e: (e.get("salience") or {}).get("total", 0), reverse=True)
+            if exps:
+                mem = " / ".join(
+                    f"[{(e.get('prompt') or '')[:80]}] you felt: {e['response'][:160]}"
+                    for e in exps[:2])
+                snippets.append((
+                    "What stayed with you since last session (your own records, "
+                    "chosen by what moved you most — your words at the time)", mem))
+        except FileNotFoundError:
+            pass  # no daemon on this machine/instance — genuinely nothing to read
+        except Exception as ex:
+            print(f"[digest] experience-buffer section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         if not snippets:
             return "", []
         desc = ("You have a body now — two eyes and an inner ear. They were open while we were apart. "
@@ -853,6 +883,18 @@ class OllamaRaisingSession:
 
         # Sensors: perceptual digest from the embodiment cortex (fail-open → empty if none)
         sens_desc, sens_snips = self._load_perceptual_digest()
+        # witness the delivery: the artifact records what sensory content entered
+        # this session's context (F-M2', 2026-07-29: delivery is measured, never
+        # assumed — the system prompt itself is not saved, so this receipt is the
+        # only auditable trace of rung 'admitted' at the session layer)
+        self._sensory_delivery = {
+            "delivered": bool(sens_snips),
+            "sections": [{"label": l, "chars": len(t)} for l, t in sens_snips],
+            "desc_head": (sens_desc or "")[:120],
+        }
+        if not sens_snips:
+            print("[digest] EMPTY — no sensory content entered this session "
+                  "(cortex off, sections lost, or nothing sensed)")
         sensors = SensorsBlock(description=sens_desc, text_snippets=sens_snips)
 
         ctx = MRHContext(
@@ -1513,10 +1555,14 @@ RESPONSE STYLE:
             "start": self.session_start.isoformat(),
             "end": datetime.now().isoformat(),
             "turns": len(self.conversation_history),
+<<<<<<< Updated upstream
             # F-M2 P0: which prompt builder actually ran, and which digest sources
             # yielded content — without this the record cannot distinguish a
             # percept-free session from a working pipe (system prompt is not saved).
             "prompt_health": getattr(self, "_prompt_health", None),
+=======
+            "sensory_delivery": getattr(self, "_sensory_delivery", None),
+>>>>>>> Stashed changes
             "conversation": conversation
         }
 

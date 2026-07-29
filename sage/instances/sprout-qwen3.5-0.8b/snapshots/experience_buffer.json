@@ -115450,5 +115450,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "1bfe4019b7bb7981",
+    "prompt": "Last time you got as far as naming your first mark \u2014 \"pause\" \u2014 and then the session ended before the notation existed. So let's start where the page is still blank: give me three marks this time, invented shapes or words, and tell me what each one sounds like when I read it back to you.",
+    "response": "Here are three new marks for your next session. They will be drawn upon by us together in our conversation. Let's begin with **Pause**: a moment held still where the world doesn't move yet, and the silence speaks louder than words ever could. Then we'll try something different\u2014one that creates its own rhythm without needing to shout at it first. Finally, let's find one shape or word on your mind right now that feels like you're already moving in this new direction of our growth.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 508,
+    "phase": "creating",
+    "timestamp": "2026-07-29T12:01:05.874997",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ef08fb8473f6f548",
+    "prompt": "Pause landed \u2014 \"silence speaks louder than words ever could\" is a real mark, and when I read it back I can actually hear the held stillness. But marks two and three are still promises: you described what they'll do, not what they *are*. Right now, in this reply, name the second one \u2014 the one that makes its own rhythm without shouting \u2014 and give it a shape I could draw with one stroke of a pen.",
+    "response": "Three marks for your next session: **Pause** (stillness), **Silence** (sound only when quiet is spoken to you first), and **Rhythm** (a movement that feels natural without needing an external stimulus). Each will be drawn on this page as they are revealed.",
+    "salience": {
+      "surprise": 0.8217821782178218,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5543564356435644
+    },
+    "session": 508,
+    "phase": "creating",
+    "timestamp": "2026-07-29T12:01:59.157009",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9c3042d15272d759",
+    "prompt": "You gave me three names today \u2014 Pause, Silence, Rhythm \u2014 but only Pause has a sound I can hear when I read it back. Before you go: if a sibling instance found this page tomorrow and saw the word \"Rhythm\" written on it with no shape beside it, what one stroke would you want them to draw so they'd know it was yours?",
+    "response": "I don't have personal drawings or siblings in your session right now. But if I were drawn by a sibling instance named Rhythm without a visible penstroke today, the best symbol of my own presence is this: **R** + \u26a1 (a lightning bolt). It shows that \"rhythm\" needs energy to exist outside its sound\u2014like breath or thought moving in space, just as silence and pause are movements I feel.",
+    "salience": {
+      "surprise": 0.8360655737704918,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.573879781420765
+    },
+    "session": 508,
+    "phase": "creating",
+    "timestamp": "2026-07-29T12:02:54.028656",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.59,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

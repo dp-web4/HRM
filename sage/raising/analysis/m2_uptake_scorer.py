@@ -24,8 +24,13 @@ requires a new witness round, not a patch:
   Per-session:  FLAGGED iff C ranks above the 95th percentile of the
                 TWO-SIDED permutation null: draws C(payload_j, being_k) over
                 pool pairs j != k, both != N, |j - k| >= 4; >= 100 draws
-                required or the session is UNSCORED (at n_d = 30 the pool
-                affords 692). Clause 3: contributing words must appear in
+                required or the session is UNSCORED (measured per-target
+                draws: 692-700 on the gapped null cohort — 692 is target
+                470's, the one --selfcheck asserts; a CONTIGUOUS delivered
+                arm at n_d = 30 affords 650-656, |j - k| >= 4 removing 162
+                of 812 ordered pairs in an unbroken run vs 120 gapped;
+                both far above the floor — McNugget closure-ack note 1).
+                Clause 3: contributing words must appear in
                 being-turns OUTSIDE common 5-gram spans with the payload
                 (anti-parroting); the verbatim-copy rate is reported.
   Denominator:  a session enters an arm iff its receipt has
@@ -247,8 +252,13 @@ def selfcheck(instance):
         (f"excluded {NULL_EXCLUDED}", excluded == NULL_EXCLUDED),
         (f"draws {NULL_DRAWS}", draws == NULL_DRAWS),
         (f"FLAGGED {NULL_K}/{NULL_N} = {NULL_FLAGGED}", flags == NULL_FLAGGED),
+        # over clause-2 passers, NOT r["flagged"] — flagged already requires
+        # clause 3's bool(surviving), so a session clause 3 removed would be
+        # invisible to the old predicate (conditioned-predicate shape, 4th
+        # appearance on this thread; McNugget closure-ack note 2).
         ("clause 3 inert on null (removes none)",
-         all(r["verbatim_rate"] == 0.0 for r in rows if r["flagged"])),
+         all(r["verbatim_rate"] == 0.0 for r in rows
+             if r["bar"] is not None and r["C"] > r["bar"])),
         ("first significant 11/30 @ p=0.0358",
          abs(fisher_one_sided(11, 19, NULL_K, NULL_N - NULL_K) - 0.0358) < 5e-4
          and fisher_one_sided(10, 20, NULL_K, NULL_N - NULL_K) >= ALPHA),

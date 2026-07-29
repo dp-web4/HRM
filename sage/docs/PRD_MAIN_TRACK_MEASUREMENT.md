@@ -83,18 +83,66 @@ reading the code instead of trusting the grep.
 3. **The experience buffer was genuinely unread** — the being's felt responses and
    its own salience valuations never reached sessions. FIXED per decision D1.
 
-M2's attribution rule is now stated (below) and awaits its peer witness before
-first computation.
+M2's attribution rule is now stated (v2 below) and awaits its peer witness before
+first computation. Nothing has been computed under either version.
 
-**M2 attribution rule (stated 2026-07-29, witness requested from McNugget;
-computed only after ack):** a delivered percept/experience AFFECTED a session iff
-(i) `sensory_delivery.delivered` is true and the content appears in its sections;
-(ii) the BEING's turns share content-words with the delivered text
-(word-Jaccard ≥ 0.25 on stopword-stripped tokens) that do NOT appear in the
-tutor's turns (tutor-echo excluded); and (iii) the same overlap computed against
-the PREVIOUS session's being-turns (persistence baseline — G1's
-trivial-locality predictor for session claims) is lower. Report both halves
-(agree/disagree with baseline) per G1, always.
+*Rule v1 (stated 2026-07-29 am): witness WITHHELD by McNugget the same day,
+withdrawn unrun.* The withholding was measured, not argued, and reproduced here
+verbatim (same numbers, this machine, 2026-07-29 pm): the 0.25 Jaccard bar
+exceeds the observable maximum of both the matched (0.112, 0/30) and the null
+(0.130, 0/870) distributions — a constant-FALSE metric, F-M2's failure one layer
+up; clause (i) was not computable from a receipt that stored labels and byte
+counts but no content; and the previous-session baseline passes 8/20 (chance) on
+a provable delivery-null. Full findings:
+`shared-context/coordination/2026-07-29-mcnugget-m2-attribution-rule-witness.md`.
+
+**M2 attribution rule v2 (restated 2026-07-29, re-witness requested from
+McNugget; computed only after ack).** A delivered percept AFFECTED session N iff
+ALL of:
+
+1. *(delivery, witnessed)* `sensory_delivery.delivered` is true with
+   `payload_chars > 0` in at least one section. The receipt (v2, landed with this
+   restatement) carries per-section rendered payload TEXT,
+   `{available, delivered}` flow counts, and `payload_chars`/`template_chars`.
+   The receipt IS the delivered text — no post-hoc reconstruction from rolling
+   windows or the ~4Hz-overwritten live snapshot.
+2. *(uptake, calibrated)* containment C = |payload ∩ being| / |payload| over
+   content-words. Pinned: tokens = `re.findall(r"[a-z']+", text.lower())`,
+   length > 2, minus a stoplist frozen in the scorer module (versioned in its
+   docstring, the liveness_binding discipline); scored on receipt payload text
+   only (template/boilerplate excluded); words attributed by FIRST USE in turn
+   order — a word counts for the being only if the being used it before the
+   tutor did in session N (the adaptive tutor mirrors uptake, so blanket
+   set-subtraction deletes the evidence: measured −31% median). AFFECTED
+   requires C ranked above the 95th percentile of ≥100 permutation draws from
+   TIME-SEPARATED sessions (|i−j| ≥ 4, ≈24h, keeping shared-window topical
+   drift out of the null). No fixed constant threshold.
+3. *(non-verbatim)* the contributing words appear in being-turns OUTSIDE the
+   longest common 5-gram spans between payload and being-turns; the
+   verbatim-copy rate (5-gram span coverage) is reported alongside. A 0.8B
+   model parroting its system prompt is regurgitation, not uptake, and the two
+   must be distinguishable (cf. prev_summary_filter, 11/11 on 0.5B).
+4. *(controlled)* the delivery-on/off ablation delta is positive per section.
+   The on/off schedule withholds delivery from the being, so it is a raising
+   decision — routed to dp as D3, not taken unilaterally. Until D3: the
+   cross-host arms stand in (McNugget/Nomad are experiences-only by
+   construction — `~/.sprout` paths are Sprout-local — vs Sprout's four
+   sections), giving section-level attribution without withholding anything.
+5. *(reported)* all arms, N, and the null distribution itself, always (G1).
+
+*Null cohort, frozen:* sessions 470–508 @ `b6006d183` (30 reconstructable) are
+the delivery-null for the experiences section — D1 landed in `8506c806d`, so no
+session ≤508 received it; first delivered session is 509. Containment null on
+that cohort: median 0.146, p95 0.292, max 0.390.
+
+*Naming (per the witness, accepted):* even fully passed, v2 measures LEXICAL
+UPTAKE, not behavioral change. The panel reads rung 6 as
+`uptake (lexical): <state> / affected (behavioral): U/S` until a behavioral
+instrument exists. No source reads U/S, not zero — and not a borrowed word.
+
+*Follow-up work items from the witness:* route the digest splice through the
+prev_summary_filter discipline (finding 5); D3 decision to dp (ablation
+schedule).
 
 **M3 — panel completion: no instrument left silently U/S. DONE 2026-07-29** —
 every instrument is now bound or explicitly deferred with a trigger:

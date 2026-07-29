@@ -715,12 +715,19 @@ class OllamaRaisingSession:
                   f"{type(e).__name__}: {e}", flush=True)
             return self._build_system_prompt_legacy()
 
-    def _summarize_perception(self, evs: list) -> str:
+    def _summarize_perception(self, evs: list):
         """Digest the SALIENT fraction of the perceptual journal — what stood out from
-        the stream (the rest habituated into the familiar), not raw event counts."""
+        the stream (the rest habituated into the familiar), not raw event counts.
+
+        Returns (text, available, delivered, payload_chars): the flow accounting
+        the receipt needs — how many distinct salient moments existed vs entered,
+        and how much of the text is percept payload vs constant scaffolding
+        (McNugget M2 witness findings 7/8: 2-of-2 must be tellable from 2-of-10,
+        and a canned no-news sentence must not read as delivered content)."""
         salient = [e for e in evs if e.get("kind") == "salient"]
         if not salient:
-            return "Mostly quiet and familiar — nothing in what you sensed broke through as new."
+            return ("Mostly quiet and familiar — nothing in what you sensed broke through as new.",
+                    0, 0, 0)
         # coarse-dedup distinct salient moments by the head of their descriptor
         seen, distinct = set(), []
         for e in salient:
@@ -731,7 +738,9 @@ class OllamaRaisingSession:
         n = len(salient)
         head = (f"Most of what came through faded into the familiar; "
                 f"{n} moment{'s' if n != 1 else ''} stood out.")
-        return head + " " + " | ".join(distinct[:3])
+        kept = distinct[:3]
+        return (head + " " + " | ".join(kept),
+                len(distinct), len(kept), sum(len(d) for d in kept))
 
     def _load_perceptual_digest(self):
         """What Sprout's body (two eyes + an inner ear) took in since last session.
@@ -742,6 +751,22 @@ class OllamaRaisingSession:
         state = os.path.expanduser("~/.sprout/perception.json")
         snippets = []
         self._digest_counts = {"journal_events": 0, "live": 0, "presence_noticings": 0, "experiences": 0}
+        # Receipt v2 accounting, one entry per section (McNugget M2 witness,
+        # findings 2/7/8): the rendered payload TEXT itself (the live-perception
+        # snapshot is overwritten at ~4Hz and every section truncates against
+        # rolling 6h windows — post-hoc reconstruction scores a different digest
+        # than the one delivered), {available, delivered} flow counts, and
+        # payload_chars vs template_chars so content-free delivery is visible.
+        self._delivery_sections = []
+
+        def _receipt(key, label, text, available, delivered, payload_chars):
+            self._delivery_sections.append({
+                "key": key, "label": label, "chars": len(text), "text": text,
+                "available": available, "delivered": delivered,
+                "payload_chars": payload_chars,
+                "template_chars": len(text) - payload_chars,
+            })
+
         try:
             now = time.time()
             evs = []
@@ -752,7 +777,9 @@ class OllamaRaisingSession:
                         evs.append(e)
             if evs:
                 self._digest_counts["journal_events"] = len(evs)
-                snippets.append(("Since we last spoke", self._summarize_perception(evs)))
+                text, avail, deliv, payload = self._summarize_perception(evs)
+                snippets.append(("Since we last spoke", text))
+                _receipt("journal", "Since we last spoke", text, avail, deliv, payload)
         except Exception as ex:
             # fail-open for the being, LOUD for the log (a silent path must print —
             # membot sat dead for months behind `except: pass`; kimi review A4/S5)
@@ -761,7 +788,9 @@ class OllamaRaisingSession:
             d = json.load(open(state))
             if time.time() - d.get("ts", 0) < 30:  # only if the cortex is live now
                 self._digest_counts["live"] = 1
-                snippets.append(("Right now", d.get("descriptor", "")))
+                desc_now = d.get("descriptor", "")
+                snippets.append(("Right now", desc_now))
+                _receipt("live", "Right now", desc_now, 1, 1, len(desc_now))
         except Exception as ex:
             print(f"[digest] live-perception section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         # presence — moments that stirred you enough to notice in the moment, in your own words,
@@ -778,8 +807,12 @@ class OllamaRaisingSession:
                         noticings.append(e["noticing"].strip())
             if noticings:
                 self._digest_counts["presence_noticings"] = len(noticings)
-                snippets.append(("A few moments you noticed on your own while I was gone (your words, in the moment)",
-                                 " / ".join(noticings[-3:])))
+                kept = noticings[-3:]
+                text = " / ".join(kept)
+                label = "A few moments you noticed on your own while I was gone (your words, in the moment)"
+                snippets.append((label, text))
+                _receipt("presence", label, text,
+                         len(noticings), len(kept), sum(len(n) for n in kept))
         except Exception as ex:
             print(f"[digest] presence section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         # the being's own remembered reactions — its experience buffer (recorded by
@@ -800,13 +833,17 @@ class OllamaRaisingSession:
                         exps.append(e)
             exps.sort(key=lambda e: (e.get("salience") or {}).get("total", 0), reverse=True)
             if exps:
+                kept = exps[:2]
                 mem = " / ".join(
                     f"[{(e.get('prompt') or '')[:80]}] you felt: {e['response'][:160]}"
-                    for e in exps[:2])
-                snippets.append((
-                    "What stayed with you since last session (your own records, "
-                    "chosen by what moved you most — your words at the time)", mem))
-                self._digest_counts["experiences"] = len(exps[:2])
+                    for e in kept)
+                label = ("What stayed with you since last session (your own records, "
+                         "chosen by what moved you most — your words at the time)")
+                snippets.append((label, mem))
+                self._digest_counts["experiences"] = len(kept)
+                _receipt("experiences", label, mem, len(exps), len(kept),
+                         sum(len((e.get('prompt') or '')[:80]) + len(e['response'][:160])
+                             for e in kept))
         except FileNotFoundError:
             pass  # no daemon on this machine/instance — genuinely nothing to read
         except Exception as ex:
@@ -888,9 +925,15 @@ class OllamaRaisingSession:
         # this session's context (F-M2', 2026-07-29: delivery is measured, never
         # assumed — the system prompt itself is not saved, so this receipt is the
         # only auditable trace of rung 'admitted' at the session layer)
+        # v2 (McNugget M2 witness, 2026-07-29): sections carry the rendered payload
+        # text and {available, delivered, payload_chars, template_chars} — M2 reads
+        # the artifact instead of re-simulating rolling windows, and content-free
+        # delivery (payload_chars == 0) is distinguishable from real payload.
         self._sensory_delivery = {
             "delivered": bool(sens_snips),
-            "sections": [{"label": l, "chars": len(t)} for l, t in sens_snips],
+            "receipt_version": 2,
+            "sections": getattr(self, "_delivery_sections", None) or
+                        [{"label": l, "chars": len(t), "text": t} for l, t in sens_snips],
             "desc_head": (sens_desc or "")[:120],
         }
         if not sens_snips:

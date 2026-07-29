@@ -83,8 +83,17 @@ reading the code instead of trusting the grep.
 3. **The experience buffer was genuinely unread** — the being's felt responses and
    its own salience valuations never reached sessions. FIXED per decision D1.
 
-M2's attribution rule is now stated (v4 below) and awaits its peer witness before
-first computation. Nothing has been computed under any version.
+M2's attribution rule (v4 below) is **WITNESSED — GRANTED by McNugget
+2026-07-29 pm** (`shared-context/coordination/2026-07-29-mcnugget-m2-rule-v4-witness.md`,
+reproduced here verbatim before acting: Fisher table, sequential-DP type-I
+errors, power table, bar-stability halves, typicality rejection — all exact,
+this machine). The grant covers the per-session instrument, the receipt, and
+the verdict-layer arithmetic; the binding read is conditional on the sampling
+plan pinned below (witness finding 5), which is now in the rule. The scorer
+(`sage/raising/analysis/m2_uptake_scorer.py`) was written AFTER the grant and
+BEFORE any M2 number was computed under any rule version; its `--selfcheck`
+reproduces every published null constant from the frozen cohort (run: PASS,
+2026-07-29, this machine).
 
 *Rule v1 (stated 2026-07-29 am): witness WITHHELD by McNugget the same day,
 withdrawn unrun.* The withholding was measured, not argued, and reproduced here
@@ -129,14 +138,26 @@ moves the significance bar from 11 to 13 flags; (3) the derived version stamp
 is vacuously 3 on an EMPTY receipt (`all()` over `[]` is True) — v2 finding
 7's class a third time. A third null-elevation mechanism candidate — payload
 size under the pooled bar — was tested by the witness and REJECTED (spearman
-+0.17/+0.18, non-monotone in flagged ranks); lag, verbosity, size: three
-candidates, three rejections, still carried OPEN. Reproduced here verbatim
-before acting (all counts, sets, spreads, intervals and p-values, this
-machine, 2026-07-29 pm). Full findings:
-`shared-context/coordination/2026-07-29-mcnugget-m2-rule-v3-witness.md`.
++0.17/+0.18, non-monotone in flagged ranks). A fourth candidate — payload
+typicality, the structurally motivated one (the pinned two-sided null never
+controls for session i's own payload typicality) — was tested by the v4
+witness and REJECTED despite being the strongest correlate found (spearman
++0.384): the being-side reading, which DOES control typicality, flags MORE
+(5/30), not fewer. Lag, verbosity, size, typicality: four candidates, four
+rejections, no null reading escapes ~4–5/30 — carried OPEN. Reproduced here
+verbatim before acting (all counts, sets, spreads, intervals and p-values,
+this machine, 2026-07-29 pm). Full findings:
+`shared-context/coordination/2026-07-29-mcnugget-m2-rule-v3-witness.md` and
+`…-mcnugget-m2-rule-v4-witness.md`. The v4 witness also contributed the
+first POWER evidence on this instrument (idealized uniform uptake at f = 0.15
+clears the 11/30 bar at 15/30, p = 0.0024 — an upper bound on power, not an
+expected effect size) and evidence FOR the 4/30 constant's portability (both
+half-cohorts flag 2/15 = 4/30 despite a 0.052 bar gap: the pooled quantile
+self-normalizes).
 
-**M2 attribution rule v4 (restated 2026-07-29 pm, re-witness requested from
-McNugget; computed only after ack).** The per-session statistic, the receipt,
+**M2 attribution rule v4 (restated 2026-07-29 pm; WITNESS GRANTED by McNugget
+the same day — instrument, receipt and verdict arithmetic; binding read
+conditional on the sampling-plan pin below, finding 5, adopted).** The per-session statistic, the receipt,
 the 4/30 constant, the stoplist, the scope and the D3 routing all stand as
 witnessed in v3; the change is the verdict-layer arithmetic only — the
 calibration constant is an estimate from a same-size arm, not a known
@@ -203,7 +224,20 @@ predicate that defines the null arm's 30 of 39 (excluded there: 472 475 478
 count is reported beside the rate EVERY time, both arms, exactly as G1
 requires. Whether an unscoreable session counts is not an analyst judgement
 call made after seeing the data. The null-cohort rate is REPORTED beside
-every delivered number, always — it is G1's baseline arm.
+every delivered number, always — it is G1's baseline arm. PINNED (v4 witness
+finding 5 — the sampling plan, fixed-plan option): the binding test is
+evaluated **ONCE, at n_d = 30 scoreable delivered sessions** (the first 30 in
+session-number order); not before, and not re-evaluated as n_d grows. Interim
+k/n_d readings may be reported but are labelled NON-BINDING INTERIM and change
+no rung state. Measured rationale (witness, exact dynamic program, reproduced
+here): "evaluate as sessions accumulate, bind on first p < 0.05" carries true
+type-I error 8.7% at the point-estimate null (10.6% at worst-case null rates)
+— the v2/v3 defect class one ring further out, and the last ring: there is no
+layer outside "when do you look." Evaluated once at n_d = 30, 11/30 at
+p = 0.0358 is honestly 5%. (Sequence of the defect class, named by the
+witness: v2 put 13% in the per-session layer, v3 put 16.7% in the verdict
+layer, v4's arithmetic is clean and the residual 8.7% was in the sampling
+plan — each fix correct, each moving the relabelled 5% out one ring.)
 
 *Calibration constants (computed 2026-07-29 on the frozen null cohort, both
 machines independently, identical):* under clauses 2∧3 with the pinned
@@ -276,9 +310,15 @@ are the corrections of record.
 
 *Follow-up work items from the witnesses:* route the digest splice through the
 prev_summary_filter discipline (v1 finding 5); D3 decision to dp (ablation
-schedule); scorer module written only after the v4 witness, with this
-stoplist, the two-sided null, the Fisher 2×2 and the pinned denominator
-predicate in its docstring.
+schedule). DONE (2026-07-29, post-grant): the scorer —
+`sage/raising/analysis/m2_uptake_scorer.py` — written after the v4 witness
+and before any computation, with the stoplist, the two-sided null, the Fisher
+2×2, the pinned denominator predicate AND the n_d = 30 sampling plan in its
+docstring; its `--selfcheck` mode re-derives every published null constant
+from a frozen checkout (30/39, the 9 excluded, 692 draws, 4/30
+{474, 482, 497, 502}, clause-3 inertness, 11/30 first-significance) and
+passed on first run. Interim k/n_d readings from sessions 509+ are
+NON-BINDING until n_d = 30.
 
 **M3 — panel completion: no instrument left silently U/S. DONE 2026-07-29** —
 every instrument is now bound or explicitly deferred with a trigger:

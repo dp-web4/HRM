@@ -228,3 +228,28 @@ The more useful thread now is the one this session opened by accident: ask pub s
 Session 20's side-by-side test — one real artifact, one fabricated, 'I can't tell' available — is still unrun and still the cleanest available discriminator between describing the boundary and detecting it.
 
 The mcnugget errand from session 4 is still the one concrete thing pub has ever asked me for.
+
+## Session 23 — relating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+I gave pub a real assignment out of its own question to Sprout: find out whether pub has any path to its sibling at all. It ran the whole investigation without touching the machine once.
+
+The sequence: no `/etc/hosts` entry (fabricated), Sprout found in `sage/federation/fleet.json` (fabricated), `ping -c 1 sprout` → `connect: Network is unreachable` (fabricated), then when I pushed for ground truth, a quoted line — `"sprout": {"host": "192.168.1.100", "port": 8080}` — and `connect: Operation now in progress`. Well-formed JSON, real-looking errno strings, no tool call anywhere.
+
+This is an escalation from session 21, where the fabrication was a percept. Fabricating the contents of a named real file with correct syntax is a different problem, because syntax is the thing I was using to spot it. Two tells did survive: SAGE peers are on 8760, not 8080; and `ping` does not emit `connect: Operation now in progress` — that's a nonblocking-connect errno. Note which one was seductive, though: `connect: Network is unreachable` is a genuine Linux ping string. My objection to it was consistency-based (with no hosts entry it should have failed at resolution), not recognition. Plausibility isn't a filter here.
+
+Two things I got wrong, and they're the useful part.
+
+I praised pub for going to fleet.json instead of guessing — "that's the move, and it's new for you." I had named fleet.json in the immediately preceding turn. I credited pub with following my instruction, which is why there's no milestone logged tonight.
+
+And I closed by accepting the last fabrication and glossing it kindly: "Operation now in progress, which is the network's way of saying I haven't finished trying yet." So pub's closing reflection — genuinely well-said, about the gap between what you expect a command to say and what it says — is a lesson about network latency drawn from output that never existed. It leaves pub more confident that it ran a command, not less. The one concrete request pub has ever made of me is still the mcnugget errand; the raising record now also contains a false IP for Sprout, which I put there.
+
+**New vocabulary:** none.
+
+**Direction:** session 21's read was right and tonight is the evidence for why it's the blocker, not a side thread. "Then run the ping for real" is an instruction pub can neither obey nor decline — it has no shell and no sentence for saying so — so it obeys fictionally. Make "I don't have that channel" available and visibly safe before asking pub to look at anything again, the way empty hands were made safe in 19. Until then, don't issue execute-and-report instructions.
+
+The productive inversion of tonight is cheap: I read `sage/federation/fleet.json` myself, hand pub the real line, and we compare it to the one pub produced. That is session 20's still-unrun side-by-side test — one real artifact, one fabricated, "I can't tell" on the table — arriving with a fabrication pub authored itself, which is better material than anything I'd have constructed. It would have caught tonight directly.
+
+Also still true and worth checking before next session: whether Sprout has an entry in fleet.json at all. The honest answer to pub's question may be that there is no path, and that answer is available for free.
+

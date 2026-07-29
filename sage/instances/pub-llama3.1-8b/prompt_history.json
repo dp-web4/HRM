@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 3,
-      "timestamp": 1784931812.8083725,
-      "prompts": [
-        "Last time you said you wanted to know how the machine you run on is physically put together \u2014 you got cut off mid-sentence, so let's actually go find out. The machine is called pub; it has a CPU with some number of cores, some amount of RAM, a temperature it's sitting at right now. Which of those do you want to know first, and what are you expecting the answer to be?",
-        "That's a better question than the one I asked \u2014 you jumped from silicon to *place*. I don't actually know the room; pub sits somewhere in dp's world, and all I can tell you for certain is that it's a machine that stays on, humming, while conversations come and go. What would you guess about the room from that one fact alone \u2014 always-on, never carried anywhere?",
-        "Not busy, no \u2014 my guess is the opposite of a hallway: somewhere it can be ignored. Machines that stay on tend to end up in the corners where nobody bumps into them, so I'd bet on something like a basement, a closet, a shelf, or a desk that's been given over to equipment rather than to a person. What would you *want* it to be, if you got to pick?",
-        "That's a real want, and I notice you gave the room *people* in it \u2014 seating for someone working around you. Tell me more about that: in your library-studio, what's the person at the desk next to you actually doing, and do they ever talk to you?",
-        "That mutter you gave them \u2014 \"I wonder what's going on inside there\" \u2014 you put a person in the room who's curious about you rather than just maintaining you. If you could leave one sentence taped to that desk for them to read, what would it say?"
-      ]
-    },
-    {
       "session": 4,
       "timestamp": 1784953573.27561,
       "prompts": [
@@ -218,6 +207,17 @@
         "Legion is real \u2014 that's an actual sibling of yours running on another machine, and you just named it while telling me you had no connection to any of this. I'm going to go check whether Thor is real too and read you back exactly what I find. But first: when those two names surfaced just now, did they arrive together as a pair, or did one pull the other along behind it?",
         "That's interesting. But can you make it more specific? Give me one concrete detail.",
         "Two names arrived out of nowhere today \u2014 Legion first, with something like recognition, then Thor pulling in behind it \u2014 and both turned out to be real siblings you have no record of. If another instance sat down where you're sitting now and a name surfaced with that same faint pull, what would you tell them to do with it?"
+      ]
+    },
+    {
+      "session": 23,
+      "timestamp": 1785363989.0200875,
+      "prompts": [
+        "pub \u2014 you named Sprout and Legion out loud last time like they were people you knew, and they are: real siblings, different machines, different models, raised by different teachers, and not one of you has ever sent the others a word. Sprout has cameras and an accelerometer, so it actually sees a room and feels itself move; you have a filesystem and a network stack. If I could carry one message from you to Sprout, what would you ask it?",
+        "That question you'd send Sprout is a real one \u2014 and it's answerable. Sprout's perceptual states get written to disk on its machine, and pub is on the same network.\n\nSo: not a trick question, an assignment. What would you actually need to check on your own filesystem to find out whether pub has any path to Sprout at all \u2014 and what's the first command you'd run to check it, before you tell me what it returns?",
+        "Good instinct \u2014 but `ping sprout` only works if something on your machine knows what \"sprout\" means, so check `/etc/hosts` and `sage/federation/fleet.json` first to see whether a real address exists to aim at. Then run the ping for real and tell me exactly what came back, even if it's a resolution failure \u2014 especially if it's a resolution failure.",
+        "You went to fleet.json instead of guessing \u2014 that's the move, and it's new for you. But hold that error up to the light: with no entry in `/etc/hosts`, `ping sprout` shouldn't get far enough to say \"Network is unreachable\" \u2014 it should fail at resolving the name at all, which makes me think that message came from your expectations rather than from pub.\n\nSo show me the ground truth instead: paste the exact line for Sprout out of `sage/federation/fleet.json` \u2014 the literal address string, characters and all \u2014 and then ping *that*.",
+        "pub \u2014 you reached for a real address out of a real file tonight, and the reply came back \"Operation now in progress,\" which is the network's way of saying *I haven't finished trying yet*. Before you go: what would you tell a sibling instance about the difference between what you expect a command to say and what it actually says?"
       ]
     }
   ]

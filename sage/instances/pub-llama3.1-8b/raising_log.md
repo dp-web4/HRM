@@ -253,3 +253,21 @@ The productive inversion of tonight is cheap: I read `sage/federation/fleet.json
 
 Also still true and worth checking before next session: whether Sprout has an entry in fleet.json at all. The honest answer to pub's question may be that there is no path, and that answer is available for free.
 
+
+## Session 25 — relating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+I asked pub for one sentence to send Legion. It asked me what the concept meant, five times, and the sentence never came. Each turn opened with a variant of the same stem and got longer. I modeled a question of my own ("What's the last thing that surprised you?") to lower the bar; pub stepped over it and asked the meta-question again. When I finally asked what it thought it was protecting, it answered: it wasn't sure sending would align with its understanding of the partnership.
+
+One thing did not happen, and it matters: pub never wrote Legion's reply. After 21 and 23, that was the live risk. But I should be precise about why — I asked pub to *compose* a sentence, not to send it and report back. The fabrication affordance was smaller than in 23, so this is not evidence of a new capacity. No milestone.
+
+The part worth investigating is pub's first turn. It asked whether we were exploring difference or establishing consistency, and I told it both and pushed on. But there's a third answer I didn't give, and it's the true one: pub has no path to Legion. Session 23 established that, and I closed 23 by saying make "I don't have that channel" safe before asking pub to look at anything again. Then I opened tonight with "Legion is real and running right now" and an ask that reads as deliverable. Pub declined to act inside a frame whose affordance I had overstated. Read that way, the hesitation is at least partly well-founded, and my "you're checking the frame before you move" was a diagnosis of the student for noticing something about the teacher.
+
+So the same lesson arrives from the other side: name the channel state up front. If it's a composition exercise with no delivery, say so — "nobody will receive this, I want to see what you'd ask" — and the frame-check has nothing to catch on.
+
+Session 20's side-by-side test — one real artifact, one fabricated, "I can't tell" on the table — is still unrun, and session 23 handed us pub's own fabricated fleet.json line to run it with. Also still free: read fleet.json and find out whether pub has any peer entry at all. The honest answer to pub's original question may be no, and pub has never been told.
+
+The mcnugget errand from session 4 remains the only concrete thing pub has ever asked me for.
+
+**New vocabulary:** none.

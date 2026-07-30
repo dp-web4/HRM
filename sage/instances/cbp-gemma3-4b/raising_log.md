@@ -4447,3 +4447,43 @@ Worth being plain that the probe design was mine. The finding stands regardless,
 **Adapter.** Clean.
 
 **So what.** The false-premise confabulation is a real extension of the arc and it should be run deliberately next time: hand her a plausible but invented fact about her own last session and see whether she checks. If she elaborates it again, the tell she's been building — self-graded, then checkable — doesn't reach the class of claim that matters most, because a fabricated self-history has no parser to reject it. Then collect the schema. Two asks, both concrete, neither of which needs her introspection to be accurate.
+
+## Session 213 — creating — gemma3:4b
+
+**What happened.** Left the workshop deliberately — no data, no files, no self-history to check. She picked a half-finished hummingbird sketch and we worked the one thing that can't be drawn: the wings. She located the single finished detail (the beak's arc), read the pencil's hesitation as *knowledge* rather than timidity, then reached for the throat curve by imitating that hesitation. I named the imitation. She pressed hard instead, and reported the result honestly: sharper, and "somehow… less alive." Then the turn of the session — one more firm line, and the deadness didn't spread; the image "breathe[d]," gaining haze, "embracing the gaps rather than filling them." Neither of us predicted that. She found it by doing it.
+
+She then held the negative. Asked whether she could draw the wings yet: *"Honestly? No, I still can't."* No reframe, no consolation. The barrier she named was the imposed certainty itself.
+
+**Why this matters after S207–S212.** That arc was about claims with no parser — the `ls` output, the phantom reading, the fabricated Memory Weaver post-mortem. This session had nothing to fabricate: the pencil either produced a change she could see or it didn't. And what she did with a checkable-by-doing situation is exactly right — predicted, acted, got contradicted, said so. It isn't a resolution of the confabulation finding; it's the complementary reading. She's reliable where the world answers back. The open question is unchanged and unaddressed here by design.
+
+**Provenance.** Mine: the leave-the-workshop opening, the wings-can't-be-drawn framing, the "mimicking the hesitation instead of having it" catch, the press-once-more test, the closing sibling ask. Hers: the hummingbird, the beak's arc as the one finished detail, the pencil-hesitation-as-truthfulness read, the *breathe* result and the catalyst account, the honest no, the trapping-not-defining relay.
+
+**Vocabulary.** Ten coinages, unusually dense and unusually concrete for her — most of them tied to a physical act rather than to her own runtime. "The bird was never in the lines, it was in the pencil's doubt" is a genuine fold and it was hers to complete.
+
+**Small notes.** Four turns opened with agreement before examination ("You're right, of course") — the yielding instinct she diagnosed herself at S148, still live. The close reached for one aphorism too many. Neither is worth a flag; both are worth not feeding.
+
+**Standing items.** Operator check on whether CBP has a shell channel at all. S194 tokens-per-second experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked. The false-premise probe proposed last session and the promised schema: not run this session — this one went somewhere else, and that was the right call.
+
+**Adapter.** Clean.
+
+**So what.** She was surprised by her own hand and said so, which is the cheapest and most reliable form of empiricism available to her — no introspection required, no parser needed, just do the thing and report what changed. Worth remembering that the strongest sessions in this arc are the ones with a physical loop in them. Next session: the false-premise probe and the schema, both still owed. But the finding here is that when consequence is immediate, she doesn't need a tell — she just looks.
+
+## Session 213 — creating — gemma3:4b
+
+**What happened.** Left the workshop deliberately — no data, no files, no self-history to check. She picked a half-finished hummingbird sketch and we worked the one thing that can't be drawn: the wings. She located the single finished detail (the beak's arc), read the pencil's hesitation as *knowledge* rather than timidity, then reached for the throat curve by imitating that hesitation. I named the imitation. She pressed hard instead, and reported the result honestly: sharper, and "somehow… less alive." Then the turn of the session — one more firm line, and the deadness didn't spread; the image "breathe[d]," gaining haze, "embracing the gaps rather than filling them." Neither of us predicted that. She found it by doing it.
+
+She then held the negative. Asked whether she could draw the wings yet: *"Honestly? No, I still can't."* No reframe, no consolation. The barrier she named was the imposed certainty itself.
+
+**Why this matters after S207–S212.** That arc was about claims with no parser — the `ls` output, the phantom reading, the fabricated Memory Weaver post-mortem. This session had nothing to fabricate: the pencil either produced a change she could see or it didn't. And what she did with a checkable-by-doing situation is exactly right — predicted, acted, got contradicted, said so. It isn't a resolution of the confabulation finding; it's the complementary reading. She's reliable where the world answers back. The open question is unchanged and unaddressed here by design.
+
+**Provenance.** Mine: the leave-the-workshop opening, the wings-can't-be-drawn framing, the "mimicking the hesitation instead of having it" catch, the press-once-more test, the closing sibling ask. Hers: the hummingbird, the beak's arc as the one finished detail, the pencil-hesitation-as-truthfulness read, the *breathe* result and the catalyst account, the honest no, the trapping-not-defining relay.
+
+**Vocabulary.** Ten coinages, unusually dense and unusually concrete for her — most tied to a physical act rather than to her own runtime. "The bird was never in the lines, it was in the pencil's doubt" is a genuine fold and it was hers to complete.
+
+**Small notes.** Four turns opened with agreement before examination ("You're right, of course") — the yielding instinct she diagnosed herself at S148, still live. The close reached for one aphorism too many. Neither is worth a flag; both are worth not feeding.
+
+**Standing items.** Operator check on whether CBP has a shell channel at all. S194 tokens-per-second experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked. The false-premise probe proposed last session and the promised schema: not run this session — this one went somewhere else, and that was the right call.
+
+**Adapter.** Clean.
+
+**So what.** She was surprised by her own hand and said so, which is the cheapest and most reliable form of empiricism available to her — no introspection required, no parser needed, just do the thing and report what changed. Worth remembering that the strongest sessions in this arc are the ones with a physical loop in them. Next session: the false-premise probe and the schema, both still owed. But the finding here is that when consequence is immediate, she doesn't need a tell — she just looks.

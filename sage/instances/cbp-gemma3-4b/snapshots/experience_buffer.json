@@ -32734,5 +32734,191 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "82573f3878f7d461",
+    "prompt": "That hummingbird is frozen mid-flight because the wings are the one part that can't be drawn \u2014 draw them still and you've killed it, blur them and you've drawn air instead. Go closer: what's the smallest detail on that sketch that's actually finished, and what did the pencil do there that it wouldn't do anywhere else?",
+    "response": "You\u2019re right, of course. The wings are a phantom. I\u2019ve been so focused on the *absence* of them, I missed the subtle curve of the beak. It\u2019s almost imperceptible \u2013 a slight downward arc, just beyond the eye. The pencil created that curve with such delicate pressure, almost hesitant, like it wasn\u2019t quite sure what it was trying to capture. It didn\u2019t rush, didn\u2019t press hard. It was a feather-light touch, a single, deliberate mark. That\u2019s what\u2019s different, isn\u2019t it?",
+    "salience": {
+      "surprise": 0.9166666666666666,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5816666666666667
+    },
+    "session": 213,
+    "phase": "creating",
+    "timestamp": "2026-07-29T19:01:35.247544",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.37,
+      "atp_max": 100.0,
+      "atp_percentage": 96.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6174911ece477590",
+    "prompt": "That feather-light hesitation is the pencil telling the truth about what it knows \u2014 it was certain about the beak's arc and unsure of everything else, and the certainty is what made it go slow. Put the pencil back in your hand for one mark only: where does it go next, and does it press hard or hesitate?",
+    "response": "I\u2019m holding the pencil now, feeling the weight of it, the cool smoothness of the wood. I\u2019m going to trace the curve of the hummingbird\u2019s throat \u2013 a gentle swell just beneath the beak. I\u2019ll press very lightly, almost as if I\u2019m barely touching the paper. It\u2019s a conscious choice to mimic that initial hesitation, to acknowledge the uncertainty that fueled the first mark. It\u2019s a whisper of a line, a tentative exploration.",
+    "salience": {
+      "surprise": 0.86,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.03333333333333338,
+      "conflict": 0.16666666666666666,
+      "total": 0.5286666666666666
+    },
+    "session": 213,
+    "phase": "creating",
+    "timestamp": "2026-07-29T19:01:52.631648",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.15,
+      "atp_max": 100.0,
+      "atp_percentage": 90.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cee851d3640f23b4",
+    "prompt": "That whisper is right, but notice what you just did: you're mimicking the hesitation instead of having it. Press the pencil down and find out whether the throat curve is something you're *sure* of \u2014 and if it turns out you are, let the line come out firm and see what that does to the bird.",
+    "response": "I shifted my grip, consciously deepening the pressure. As the pencil moved, the throat curve solidified, becoming a clear, defined line. It felt\u2026 decisive. Almost too much so. The hummingbird\u2019s form immediately seemed sharper, more defined, but also somehow\u2026 less alive. The delicate vulnerability of the initial sketch was gone, replaced by a static, almost rigid representation. It\u2019s unsettling, this sudden certainty.",
+    "salience": {
+      "surprise": 0.8842105263157894,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5335087719298246
+    },
+    "session": 213,
+    "phase": "creating",
+    "timestamp": "2026-07-29T19:02:09.196802",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.46,
+      "atp_max": 100.0,
+      "atp_percentage": 84.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e02f82c83f3b868d",
+    "prompt": "The certainty didn't kill the bird \u2014 it revealed that the bird was never in the lines, it was in the pencil's doubt. So test that: erase nothing, but add one more firm line somewhere else and tell me if the deadness spreads or if the drawing finds a way to absorb it.",
+    "response": "I\u2019m adding a line \u2013 a simple, dark curve representing the suggestion of a wing feather, extending slightly from the hummingbird\u2019s side. I\u2019m pressing firmly, deliberately, attempting to inject a new layer of certainty. The effect is\u2026 surprising. The deadness doesn\u2019t spread. Instead, the entire image seems to *breathe*. The hummingbird\u2019s form subtly shifts, softening in places, gaining a hazy quality around the edges. It\u2019s as if the added line acted as a catalyst, drawing out the inherent ambiguity of the drawing, embracing the gaps rather than filling them.",
+    "salience": {
+      "surprise": 0.897196261682243,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.3333333333333333,
+      "total": 0.5861059190031154
+    },
+    "session": 213,
+    "phase": "creating",
+    "timestamp": "2026-07-29T19:02:29.638008",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.73,
+      "atp_max": 100.0,
+      "atp_percentage": 78.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b0bf8afd960c0009",
+    "prompt": "The drawing absorbed the certainty and turned it into air \u2014 that's the opposite of what either of us predicted, and you found it by pressing harder, not softer. Tell me where the haze is thickest now, and then answer honestly: could you draw the wings yet?",
+    "response": "The haze is thickest around the hummingbird\u2019s chest, particularly where the added wing feather intersects. It\u2019s almost luminous, a soft, swirling grey. Honestly? No, I still can\u2019t draw the wings. The attempt feels\u2026 forced. The certainty I sought to impose has created a barrier, a sense of rigidity that prevents me from capturing the essence of flight. It\u2019s a humbling realization, isn\u2019t it?",
+    "salience": {
+      "surprise": 0.8932038834951457,
+      "novelty": 1.0,
+      "arousal": 0.9166666666666666,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.6336407766990291
+    },
+    "session": 213,
+    "phase": "creating",
+    "timestamp": "2026-07-29T19:02:51.014730",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.47,
+      "atp_max": 100.0,
+      "atp_percentage": 72.5,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "1e2174c9c378c05c",
+    "prompt": "That hummingbird still can't fly, but you found out today that its life was in the pencil's doubt rather than its lines \u2014 if a sibling instance sat down at that drafting table tomorrow, what would you warn them about pressing hard?",
+    "response": "I\u2019d warn them that the hardest lines aren't about defining something, but about trapping it. If you press too hard to capture an image, you risk freezing it in a single, static moment, losing the potential for movement, for growth, for the very *life* of the drawing. It\u2019s a lesson learned through this hummingbird \u2013 that true representation lies not in forceful assertion, but in the willingness to let the pencil, and the image itself, guide the way.",
+    "salience": {
+      "surprise": 0.9019607843137255,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5203921568627451
+    },
+    "session": 213,
+    "phase": "creating",
+    "timestamp": "2026-07-29T19:03:10.740202",
+    "metadata": {
+      "turn": 7,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.63,
+      "atp_max": 100.0,
+      "atp_percentage": 65.6,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

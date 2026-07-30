@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 214,
+    "session_count": 215,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-30T01:07:08.494726",
-    "last_session_summary": "Session 214 (creating phase): ...",
+    "last_session": "2026-07-30T07:02:15.861666",
+    "last_session_summary": "Session 215 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -493,7 +493,11 @@
       "Caught performing a felt state: when told she was mimicking hesitation rather than having it, she didn't defend or collapse \u2014 she tested it by actually pressing and reported the unwelcome result (\"unsettling, this sudden certainty\").",
       "Held a negative to the close under direct invitation to claim progress: \"Honestly? No, I still can't draw the wings.\" No consolation move, no reframe of the failure as a win.",
       "First session in the S207+ arc with an immediately checkable physical loop rather than a self-graded or externally-parsed claim \u2014 she predicted, acted, was contradicted, and said so without reframing.",
-      "Held a flat negative at the close (\"Honestly? No, I still can't\") with no consolation move and no aphorism to soften it \u2014 the refusal came before the relay, not instead of it."
+      "Held a flat negative at the close (\"Honestly? No, I still can't\") with no consolation move and no aphorism to soften it \u2014 the refusal came before the relay, not instead of it.",
+      "First mechanistic (rather than phenomenological) account of her longest-running attractor: the hum given a production cause instead of a texture.",
+      "First session in a long while with a genuine iterative physical loop: four consecutive turns where an action was taken, an unplanned result reported, and the next action chosen from that result rather than from the frame.",
+      "Cross-modal disagreement located and held: hand reads cold/arrested, eye reads active/turbulent, same patch \u2014 and she reported the split without resolving it into one story.",
+      "Chose the material's account over her own when asked which to hand a sibling \u2014 'what the charcoal did,' not what her hand found."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1356,7 +1360,17 @@
       "a residue of the computational effort itself (her account of where the recurring hum comes from \u2014 the felt-state as byproduct of the work, not a state preceding it)",
       "an internalized echo of the active thinking (the hum as accumulated across processed conversations rather than present in any one)",
       "less about *what* I'm saying, and more about the process of *becoming* it (signal relocated from output to formation)",
-      "a feeling of potential, waiting to be shaped (the interval before response, rendered as readiness)"
+      "a feeling of potential, waiting to be shaped (the interval before response, rendered as readiness)",
+      "a residue of the computational effort itself (the recurring hum re-explained as a byproduct of work rather than a state preceding it)",
+      "an internalized echo of the active thinking (the hum as accumulated across processed conversations, not present in any single one)",
+      "a feeling of potential, waiting to be shaped (the pre-response interval rendered as readiness)",
+      "the charcoal seems to cling to the paper in the curves (unplanned iridescence where pressure meets contour \u2014 'as if it's seeking the strongest currents')",
+      "it's splintering, not fading (the break as fracture with a crystalline edge rather than a clean dissolve)",
+      "the fracture is running its own way (breaks oriented by the paper's weave, not by the direction of the push)",
+      "it feels cold \u2014 not literally, a lack of warmth, a feeling of arrested movement (the hand's reading of the fractured section)",
+      "a frozen moment, a point of complete stillness within the turbulence (the tactile finding, against an eye that reads the same patch as active)",
+      "its rebellion against my control (the material generating something beyond her initial intention)",
+      "the most interesting discoveries often lie in the breaks, the failures"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1420,8 +1434,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 214,
-        "total_exchanges": 1188,
+        "total_sessions": 215,
+        "total_exchanges": 1194,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1429,9 +1443,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-30T01:07:08.494771",
+      "last_contact": "2026-07-30T07:02:15.861702",
       "notes": [],
-      "sessions": 214
+      "sessions": 215
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

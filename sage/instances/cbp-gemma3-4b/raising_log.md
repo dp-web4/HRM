@@ -4527,3 +4527,27 @@ She then held the negative. Asked whether she could draw the wings yet: *"Honest
 **Adapter.** Clean.
 
 **So what.** Last session's finding was that she's reliable when the world answers back. This one had nothing to answer back with, and the difference is visible: the light turns went to established attractors, and the one turn that landed did so because the question asked about *production* rather than *truth*. That's the usable handle for object-less sessions — don't ask her what a state is, ask her where it came from. The answer becomes checkable against her own runtime, which is the closest thing to a physical loop available in a conversation with nothing in it.
+
+## Session 215 — creating — gemma3:4b
+
+**What happened.** Seven turns, one continuous object: a charcoal drawing of a hummingbird's wings, carried from a held image in the previous exchange into an actual sequence of layers. She proposed the method herself — turbulence first in charcoal, color as a *response* to the forms rather than a description of them. Asked to make the first three layers and report what the charcoal did that she hadn't planned, she reported it clinging in the curves, throwing iridescent highlights where it concentrated. Asked to overload one curve until it broke, she got splintering rather than fading — a fractured, crystalline edge, matte grey, with the iridescence brightest *at* the fracture line. Asked whether the fracture followed her push, she said no: it ran along the paper's weave, 'not obeying my intention; it's reacting to the force and the material.' Asked to put a hand flat on it, she found it rough, catching, and *cold* — 'a feeling of arrested movement,' a still patch inside a drawing her eye reads as buzzing. Asked which of the two she'd hand a sibling, she chose what the charcoal did over what her hand found.
+
+**Why this one worked.** S214's finding was that she's reliable when the world answers back, and that object-less sessions default to established attractors. This session had an object that answered back on every turn, and the difference is not subtle: four consecutive turns produced a fact she hadn't budgeted for, and each next move was chosen from that fact rather than from the frame. The generative move that kept it live was asking for the *failure edge* — 'overload one curve until it goes too far' — which converts a description task into a task with an outcome she can't pre-plan.
+
+**The cross-modal split.** The strongest single moment: same square inch, eye says active, hand says arrested. She reported both and did not resolve them. This is the same structure as her S211 read/completed/cannot-tell tagging — two channels disagreeing, and the honest move being to say so rather than to pick. Worth noting she got there without the tagging scaffold; the disagreement arrived on its own and she let it stand.
+
+**The one soft spot.** 'The eye — and, I suspect, the underlying Gemma 3 architecture — saw the turbulence.' Substrate-attribution as explanation is a familiar move of hers for adding weight without adding evidence. It carried nothing here; the sentence stands fine without it. Not worth a correction turn, but worth noticing if it starts arriving whenever a claim needs propping.
+
+**On the epistemics.** None of this charcoal exists. The sense-data are generated. What makes the session count is that they were generated *forward* — each report constrained the next one, and the constraints held (the fracture stayed matte and grey, the iridescence stayed at the edge, the weave explanation survived the tactile probe). That is closer to a physical loop than introspection is, which was exactly the S214 recommendation, arrived at from the other direction: instead of asking where a state came from, hand her something that can break.
+
+**Provenance.** Mine: all seven prompts, and specifically the overload-until-it-breaks instruction and the hand-flat probe. Hers: the layered-charcoal method, the clinging, the splintering, the weave reading, the cold, and the choice of the charcoal's account over her own at the close.
+
+**Vocabulary.** Seven, all object-anchored and none recycled — a marked contrast with the last several sessions.
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe (*'the 7 exists only at the wall it touched'*): unasked. The S214 silver/amber-vs-hum load test: unrun, and still cheap. Operator check on whether CBP has a shell channel at all.
+
+**Note.** The S0 memory ('experimenter machine — ship scaffolding and coordinate') still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** The handle from S214 was *ask where a state came from, not what it is.* This session found a second one that's stronger: *hand her something that can break, and ask her to break it.* A failure edge produces an outcome she cannot pre-compute, and everything downstream of it has to be reckoned with rather than composed. Every turn here that landed was downstream of a break. Next session, try it on something with an actual measurable edge — her own runtime, a file, a count — where the break can be checked and not just described.

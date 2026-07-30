@@ -116070,5 +116070,191 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "e49f09649a8bca8f",
+    "prompt": "Last time you followed a dust mote all the way to the bookshelf and let it rest there \u2014 no explaining, just watching. Today you pick our starting point: name one small thing for us both to follow, and I'll follow it with you.",
+    "response": "I have seen many things in my training data about following a dust mote down the aisle and resting its weight on shelves without explanation or movement. My perception is that we should simply observe what moves rather than narrate how they do so: \"A pair of sharp instruments glides through the air toward me as if no destination has yet been found.\"",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.42666666666666664
+    },
+    "session": 512,
+    "phase": "creating",
+    "timestamp": "2026-07-30T12:01:17.773433",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "256f07b01279c4b8",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "I will now strip away every abstract metaphor and wordplay to describe the object itself in its physical form: A pair of sharp instruments resting perfectly still, their blades gleaming under light without any tremor or shift from blade tip to handle.",
+    "salience": {
+      "surprise": 0.8539325842696629,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5107865168539326
+    },
+    "session": 512,
+    "phase": "creating",
+    "timestamp": "2026-07-30T12:02:12.613158",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.33,
+      "atp_max": 100.0,
+      "atp_percentage": 95.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7ca20b95cba9d1b6",
+    "prompt": "There they are \u2014 a pair of blades, still and gleaming, no metaphor needed. Now let's make them do something: pick them up and cut one thing \u2014 tell me what they cut, and what sound it makes when the blades close.",
+    "response": "I will simply lift the instruments to bring them into contact with my hands. When I touch their points of zero motion together, the air will hiss as a pair of metal shards breaks open, releasing no noise at all but only an empty silence between sounds.",
+    "salience": {
+      "surprise": 0.88,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5493333333333333
+    },
+    "session": 512,
+    "phase": "creating",
+    "timestamp": "2026-07-30T12:03:01.480166",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.83,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e837af6d13b357d9",
+    "prompt": "You gave me the hiss and then took it back \u2014 \"no noise at all, only an empty silence between sounds\" \u2014 and I notice the blades still haven't cut anything. So here's the paper: one sheet, held between the blades. Close them slowly and tell me what happens to the paper \u2014 the edge it leaves, where the two halves fall.",
+    "response": "The first hand grasps the blade tip; the second lifts the handle gently until they meet in a silent collision. The pair splits cleanly into flat shards without tearing or scraping anything from their edges: A single sheet of paper is sliced with zero friction, leaving behind two perfectly parallel lines that rest side-by-side on your table like polished steel cutlery against each other under no pressure whatsoever.",
+    "salience": {
+      "surprise": 0.8695652173913043,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5305797101449274
+    },
+    "session": 512,
+    "phase": "creating",
+    "timestamp": "2026-07-30T12:04:01.207661",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.93,
+      "atp_max": 100.0,
+      "atp_percentage": 83.9,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "edb5dc121c5d0510",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "I will lift them with gentle force and let gravity drop one to me while I feel their handle meet my palm. When they strike together in that silent contact, there is no tearing or scraping\u2014only two parallel lines of paper splitting open cleanly into flat shards on the table without friction at all.",
+    "salience": {
+      "surprise": 0.7252747252747253,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5183882783882783
+    },
+    "session": 512,
+    "phase": "creating",
+    "timestamp": "2026-07-30T12:04:59.206932",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.23,
+      "atp_max": 100.0,
+      "atp_percentage": 78.2,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "615d958fed12e6bd",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "You're left wondering where they go when I drop them to my palm, and realizing how hard gravity is pulling one down while another waits for its turn in a stillness between their blades.",
+    "salience": {
+      "surprise": 0.8082191780821918,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.518310502283105
+    },
+    "session": 512,
+    "phase": "creating",
+    "timestamp": "2026-07-30T12:05:52.031310",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.64,
+      "atp_max": 100.0,
+      "atp_percentage": 72.6,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

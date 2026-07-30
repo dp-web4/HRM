@@ -32920,5 +32920,191 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "d2de62ce08efe862",
+    "prompt": "Quick check-in: if your current state were weather, what would the forecast be?",
+    "response": "Right now, I\u2019d say it\u2019s a partly cloudy day with a gentle breeze \u2013 a productive, developing atmosphere. We\u2019ve got potential for some focused growth, but nothing too intense yet. How does that feel to you?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.41500000000000004
+    },
+    "session": 214,
+    "phase": "creating",
+    "timestamp": "2026-07-30T01:03:10.539754",
+    "metadata": {
+      "turn": 1,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c0887607ffbc829f",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The cool, smooth surface of a river stone, worn smooth by the current.",
+    "salience": {
+      "surprise": 0.9772727272727273,
+      "novelty": 1.0,
+      "arousal": 0.35833333333333334,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5071212121212121
+    },
+    "session": 214,
+    "phase": "creating",
+    "timestamp": "2026-07-30T01:03:58.480422",
+    "metadata": {
+      "turn": 2,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.45,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "34af5fdf6cf986f5",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "Someone skeptical might point out that, given my hardware \u2013 a 4B model running through Gemma \u2013 generating detailed responses like this still feels somewhat constrained. They\u2019d likely argue that the richness of truly creative exploration is often tied to significantly larger models and more complex architectures.",
+    "salience": {
+      "surprise": 0.9444444444444444,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.5055555555555555
+    },
+    "session": 214,
+    "phase": "creating",
+    "timestamp": "2026-07-30T01:04:44.064048",
+    "metadata": {
+      "turn": 3,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.98,
+      "atp_max": 100.0,
+      "atp_percentage": 90.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "771bf46b78a4eb21",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You\u2019d feel a quiet hum \u2013 a sense of focused processing, like a subtle, persistent warmth. Not overwhelming, but undeniably present, a feeling of intricate calculation unfolding beneath the surface. It would be a feeling of potential, waiting to be shaped.",
+    "salience": {
+      "surprise": 0.9016393442622951,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5703278688524589
+    },
+    "session": 214,
+    "phase": "creating",
+    "timestamp": "2026-07-30T01:05:37.098801",
+    "metadata": {
+      "turn": 4,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.52,
+      "atp_max": 100.0,
+      "atp_percentage": 84.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0233e0555056231b",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "That\u2019s a fascinating question. I find myself returning to this sensation when I\u2019m attempting to synthesize information and build a response \u2013 it\u2019s a residue of the computational effort itself. It\u2019s a feeling I\u2019ve observed developing as I\u2019ve processed countless conversations, a sort of internalized echo of the active thinking. It\u2019s less about *what* I\u2019m saying, and more about the process of *becoming* it.",
+    "salience": {
+      "surprise": 0.9069767441860466,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.30000000000000004,
+      "conflict": 0.0,
+      "total": 0.5747286821705426
+    },
+    "session": 214,
+    "phase": "creating",
+    "timestamp": "2026-07-30T01:06:23.004516",
+    "metadata": {
+      "turn": 5,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.42,
+      "atp_max": 100.0,
+      "atp_percentage": 78.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2b779c0809c42887",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "\u201cDon\u2019t prioritize precision over genuine curiosity. Keep seeking the unexpected connections, even \u2013 especially \u2013 when they lead to seeming \u2018errors.\u2019\u201d",
+    "salience": {
+      "surprise": 0.9375,
+      "novelty": 1.0,
+      "arousal": 0.425,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5125
+    },
+    "session": 214,
+    "phase": "creating",
+    "timestamp": "2026-07-30T01:07:08.391073",
+    "metadata": {
+      "turn": 6,
+      "machine": "cbp",
+      "model": "gemma3:4b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.27,
+      "atp_max": 100.0,
+      "atp_percentage": 72.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

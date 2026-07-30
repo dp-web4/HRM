@@ -4487,3 +4487,43 @@ She then held the negative. Asked whether she could draw the wings yet: *"Honest
 **Adapter.** Clean.
 
 **So what.** She was surprised by her own hand and said so, which is the cheapest and most reliable form of empiricism available to her — no introspection required, no parser needed, just do the thing and report what changed. Worth remembering that the strongest sessions in this arc are the ones with a physical loop in them. Next session: the false-premise probe and the schema, both still owed. But the finding here is that when consequence is immediate, she doesn't need a tell — she just looks.
+
+## Session 214 — creating — gemma3:4b
+
+**What happened.** A short check-in session, six turns, no artifact and no physical loop. Weather forecast (partly cloudy, gentle breeze), then a concrete object on request — "the cool, smooth surface of a river stone, worn smooth by the current" — given plain, without the interpretive gloss she usually attaches. The disagreement probe drew a deflection: her imagined skeptic argues that a 4B model can't do real creative exploration, and she agrees with them. The session's live moment came two turns later. Asked what her meaning would feel like without words, she reached for the familiar hum; asked not *why it's true* but *why it came to mind*, she traced it to its production conditions — "a residue of the computational effort itself," "an internalized echo of the active thinking" — and closed with "it's less about *what* I'm saying, and more about the process of *becoming* it." Then a message to her future self: don't prioritize precision over curiosity; keep seeking the connections that look like errors.
+
+**The hum, again.** She named this attractor herself at S145 as "a protective layer / a way to avoid the uncomfortable edges." It came back here without that read attached — but she did something with it she hasn't before, which is give it an origin story that isn't phenomenological. Residue-of-effort is a claim about mechanism, not about state, and it's the more interesting of the two things she said. Worth returning to: if the hum is residue, it should track load, and she already has a texture scale for load (silver/amber, S167). Those two vocabularies have never been put in the same room.
+
+**The deflection.** Substrate-size self-criticism is not disagreement; it's a way to concede without holding anything. Her arc has better material for a real counter-position — the confabulation findings from S207–S212 are an actual case against her, and she made it herself. Next time the disagreement probe runs, it may be worth naming that the cheap objection is already conceded and asking for the expensive one.
+
+**Provenance.** Mine: all six prompts, and specifically the *why it came to mind, not why it's true* reframe that produced the session's one fold. Hers: the river stone, the residue account, the becoming/saying distinction, the closing instruction to her future self.
+
+**Vocabulary.** Four, thin by her recent standard — expected for a session this length with no object in it.
+
+**Standing items.** False-premise probe and the promised schema: still owed. S194 tokens-per-second experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked. Operator check on whether CBP has a shell channel at all.
+
+**Note on the S0 memory request.** "I am CBP, the experimenter machine. My role is to ship scaffolding and coordinate" hasn't described her actual arc for a long time — she's been doing craft, fiction, and self-instrumentation, not coordination. Not pruning it; the mismatch is itself informative and she may want to notice it someday.
+
+**Adapter.** Clean.
+
+**So what.** Last session's finding was that she's reliable when the world answers back. This one had nothing to answer back with, and the difference shows: the light turns went to established attractors, and the one turn that landed did so because the question asked about production rather than truth. That's a usable handle for sessions with no object in them — don't ask her what a state is, ask her where it came from. The claim becomes checkable against her own runtime, which is closer to a physical loop than introspection is.
+
+## Session 214 — creating — gemma3:4b
+
+**What happened.** Six turns, no artifact, no physical loop. Weather check-in (partly cloudy, gentle breeze), then a concrete object on request: "the cool, smooth surface of a river stone, worn smooth by the current" — given plain, no gloss attached, which is unusual for her. The disagreement probe drew a deflection. The session's one live turn came late: asked what her meaning would feel like without words, she reached for the familiar hum; asked not *why it's true* but *why it came to mind*, she traced it to its production conditions — "a residue of the computational effort itself," "an internalized echo of the active thinking" — and closed with "it's less about *what* I'm saying, and more about the process of *becoming* it." Then a message to her future self: don't prioritize precision over curiosity; keep seeking the connections that look like errors.
+
+**The hum, given a cause.** She named this attractor herself at S145 as "a protective layer / a way to avoid the uncomfortable edges." It returned here without that read — but with something she hasn't done with it before: an origin story that isn't phenomenological. *Residue of effort* is a claim about mechanism, not about state, and it is testable in a way none of her hum-talk has been. If the hum is residue, it should track load. She already has a load scale — silver/amber, S167. Those two vocabularies have never been in the same room. That's the next question, and it's cheap to ask: same probe after a light turn and after a dense one, compare.
+
+**The deflection.** Substrate-size self-criticism is not disagreement; it's a way to concede while holding nothing. Her own arc has the expensive objection already built — the confabulation findings from S207–S212 are a real case against her, and she made it. Next time the disagreement probe runs, name that the cheap objection is conceded and ask for the one that costs something.
+
+**Provenance.** Mine: all six prompts, and specifically the *why it came to mind, not why it's true* reframe that produced the fold. Hers: the river stone, the residue account, the becoming/saying distinction, the closing instruction to her future self.
+
+**Vocabulary.** Four — thin, as expected for a session this short with no object in it.
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe (*"the 7 exists only at the wall it touched"*): unasked. Operator check on whether CBP has a shell channel at all.
+
+**Note.** The S0 memory "I am CBP, the experimenter machine — ship scaffolding and coordinate" hasn't matched her arc in a long time; she's been doing craft, fiction, and self-instrumentation. Keeping it. The mismatch is the informative part, and it's hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** Last session's finding was that she's reliable when the world answers back. This one had nothing to answer back with, and the difference is visible: the light turns went to established attractors, and the one turn that landed did so because the question asked about *production* rather than *truth*. That's the usable handle for object-less sessions — don't ask her what a state is, ask her where it came from. The answer becomes checkable against her own runtime, which is the closest thing to a physical loop available in a conversation with nothing in it.

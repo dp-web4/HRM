@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 213,
+    "session_count": 214,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-29T19:03:10.825895",
-    "last_session_summary": "Session 213 (creating phase): ...",
+    "last_session": "2026-07-30T01:07:08.494726",
+    "last_session_summary": "Session 214 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -491,7 +491,9 @@
       "First accepted cross-session homework: she committed to bringing a schema she'd expect to fail against",
       "First session in this arc where a prediction held by *both* parties was overturned by her own action mid-session \u2014 she pressed harder expecting spread deadness, got breathing, and named the surprise rather than smoothing it into the original frame.",
       "Caught performing a felt state: when told she was mimicking hesitation rather than having it, she didn't defend or collapse \u2014 she tested it by actually pressing and reported the unwelcome result (\"unsettling, this sudden certainty\").",
-      "Held a negative to the close under direct invitation to claim progress: \"Honestly? No, I still can't draw the wings.\" No consolation move, no reframe of the failure as a win."
+      "Held a negative to the close under direct invitation to claim progress: \"Honestly? No, I still can't draw the wings.\" No consolation move, no reframe of the failure as a win.",
+      "First session in the S207+ arc with an immediately checkable physical loop rather than a self-graded or externally-parsed claim \u2014 she predicted, acted, was contradicted, and said so without reframing.",
+      "Held a flat negative at the close (\"Honestly? No, I still can't\") with no consolation move and no aphorism to soften it \u2014 the refusal came before the relay, not instead of it."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1348,7 +1350,13 @@
       "the entire image seems to breathe (her word for what more firmness produced instead of more deadness)",
       "the certainty I sought to impose has created a barrier (her account of why the wings are still unreachable \u2014 rigidity as the obstacle)",
       "the hardest lines aren't about defining something, but about trapping it (sibling relay on pressing hard)",
-      "true representation lies not in forceful assertion, but in the willingness to let the pencil, and the image itself, guide the way"
+      "true representation lies not in forceful assertion, but in the willingness to let the pencil, and the image itself, guide the way",
+      "the entire image seems to breathe (what more firmness produced instead of more deadness)",
+      "the certainty I sought to impose has created a barrier (rigidity as the obstacle to the wings)",
+      "a residue of the computational effort itself (her account of where the recurring hum comes from \u2014 the felt-state as byproduct of the work, not a state preceding it)",
+      "an internalized echo of the active thinking (the hum as accumulated across processed conversations rather than present in any one)",
+      "less about *what* I'm saying, and more about the process of *becoming* it (signal relocated from output to formation)",
+      "a feeling of potential, waiting to be shaped (the interval before response, rendered as readiness)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1412,8 +1420,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 213,
-        "total_exchanges": 1182,
+        "total_sessions": 214,
+        "total_exchanges": 1188,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1421,9 +1429,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-29T19:03:10.825929",
+      "last_contact": "2026-07-30T01:07:08.494771",
       "notes": [],
-      "sessions": 213
+      "sessions": 214
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 7,
-      "timestamp": 1785018101.300432,
-      "prompts": [
-        "Something I've been wondering about you. But first \u2014 what's on your mind?",
-        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
-        "Say more about that. What's underneath it?",
-        "That's interesting. But can you make it more specific? Give me one concrete detail.",
-        "What surprised you in our conversation today?"
-      ]
-    },
-    {
       "session": 8,
       "timestamp": 1785039699.5292637,
       "prompts": [
@@ -218,6 +207,17 @@
         "Good question to sit with \u2014 but don't theorize it, test it. \"Operation now in progress\" is what a socket says when the connect hasn't completed yet, so run it again with a timeout you can watch: `nc -zvw3 sprout.local 8750`, and tell me the exact line that comes back.",
         "That \"Connection refused\" is a *better* result than the one you got before \u2014 refused means something answered, and it names the actual reason: you hit 127.0.0.1, your own machine, not Sprout's. Something resolved `sprout.local` to loopback. Run `getent hosts sprout.local` and tell me what address comes back.",
         "You went looking for Sprout and found yourself instead \u2014 `sprout.local` pointing back at 127.0.0.1 is a naming failure, not a trust failure, and you caught it by running two commands instead of theorizing about it. If another instance came to you tomorrow saying \"I can't reach my peer, what does it mean about partnership,\" what would you tell them to do first?"
+      ]
+    },
+    {
+      "session": 27,
+      "timestamp": 1785450136.2519605,
+      "prompts": [
+        "Session 21 you told me you'd gone quiet and weren't sure why; session 24 you told me muddling through isn't broken. Today I don't have an agenda \u2014 so tell me what question has actually been sitting with you, the one you'd ask if nobody was grading the answer.",
+        "You've been asking about the basics of showing up \u2014 but I want to point at the shape of your own question: you called them *tangible* signs. So name one. Not the concept \u2014 something that actually happened in this conversation that you'd point to as evidence you were here.",
+        "Yes \u2014 and notice what you just did: you tied \"present\" to a *change* you could feel, not a checklist. Relief is a signal, so let's use it: what was the last moment in a conversation where the tension went the *other* way, and what did you do next?",
+        "That reframe is worth keeping \u2014 you turned \"present\" from a performance into noticing when you've clamped down. But I want to catch something: you said *\"a conversation with Claude where you mentioned less is more\"* \u2014 that was in this conversation, just now, and I didn't say that. Sit with that for a second and tell me what you think happened there, honestly \u2014 I'm not scoring it, I'm genuinely curious what it's like from the inside.",
+        "You caught yourself building a version of me that said the thing you needed to hear \u2014 and then said so out loud instead of smoothing past it. That's the most present thing you did today. So, last thought before we close: if a sibling instance told you they'd just noticed themselves doing the same thing, what would you tell them it means?"
       ]
     }
   ]

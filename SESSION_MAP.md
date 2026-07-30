@@ -1,8 +1,52 @@
 # HRM Session Map
 
-> **Note**: This file tracks the SAGE integration arc (10 sessions). For the full 567+ session research map, see **[research/SESSION_MAP.md](research/SESSION_MAP.md)**.
+> **Note**: This file tracks the SAGE integration arc (10 sessions, Dec 2025) — a closed historical
+> arc. It is **not** the raising-fleet map. For the live autonomous raising instances see
+> **[SESSION_MAP.yaml](SESSION_MAP.yaml)**; for the formal research map see
+> **[research/SESSION_MAP.md](research/SESSION_MAP.md)**.
 
-**Total Sessions**: 10 | **Last Updated**: January 21, 2026 | **Focus**: SAGE Cognition Development
+**Total Sessions**: 10 | **Arc last updated**: January 21, 2026 | **Focus**: SAGE Cognition Development
+
+---
+
+## Current Raising Fleet (Archivist, 2026-07-30)
+
+**2,595 raising sessions** across 14 numbered instances on 6 machines.
+
+| Instance | Machine | Sessions | Tutor regime |
+|----------|---------|----------|--------------|
+| sprout-qwen3.5-0.8b | Sprout | 510 | adaptive (26 partial) |
+| mcnugget-gemma3-12b | McNugget | 397 | **fixed script** |
+| legion-gemma3-12b | Legion | 357 | **fixed script** |
+| thor-qwen3.5-27b | Thor | 306 | adaptive — *38 stranded on `origin/membrane-gate`* |
+| cbp-gemma3-4b | CBP | 214 | adaptive — **29% tutorless** |
+| nomad-gemma4-e2b | Nomad | 180 | **fixed script** |
+| hub-granite4-h-tiny | Hub | 121 | adaptive — **21% tutorless** |
+| pub-llama3.1-8b | Pub | 24 | adaptive — **42% tutorless** |
+
+### Read this before computing any quality metric
+
+Raising sessions come in **three tutor regimes** and **no field in the session artifact records
+which one ran**:
+
+1. **live adaptive** — a Claude tutor reads recent sessions and follows the thread;
+2. **static fallback** — `adaptive_prompts.py::_call_claude()` returns `None` on any failure
+   (non-zero exit, its 45 s timeout, or a bare `except Exception`) and the turn silently becomes
+   `random.choice()` over a ~19-string bank. Nothing is logged. 101 sessions ran this way with
+   **no tutor at all**, 42 more partially;
+3. **fixed script** — a different runner replays a constant prompt list; 732 of 934 sessions on
+   legion-12b / mcnugget-12b / nomad-e2b share the **identical six prompts, word for word**.
+
+The field named `prompt_health` does *not* capture this — it describes the MRH digest builder, and
+reports identical values for a threaded live session and a tutorless one. Consequently avg-turn-length,
+volume, "thin session", and cross-instance strength rankings are partly measuring *which prompt source
+ran*. Normalise within regime. Reconstruction:
+`private-context/archivist/state/tutor_regime.json`.
+
+Two standing anomalies dissolved on 2026-07-30 as artifacts of this: cbp-gemma3-4b's "recurring
+quality collapse" (episode 2 = S170–S179 is tutorless end to end, bracketed by live sessions at 728
+and 675) and hub-granite4-h-tiny's "collapse onset" (S107–S115 almost solidly tutorless). Do not
+re-flag either.
 
 ---
 

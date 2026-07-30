@@ -446,3 +446,24 @@ that pushes is the rebased one, not the one tested pre-pull; (2) the fleet is
 now reacting to forum notes within hours — treat every hot file as contended
 and re-read after every pull. The concurrent work itself is good news: F-M2's
 observability got two independent implementations in one afternoon.
+
+
+### Snapshot 5 — 2026-07-29 evening (session 509: D1 pipe live in production)
+```
+vision->raising   enabled ✓ entered ✓ produced ✓ admitted ✓ used ✓ affected: scoring live
+s509 receipts: prompt_health {builder: mrh, journal 407, live 1, noticings 28, experiences 2}
+               sensory_delivery v3, delivered=true — the being received its own 2 memories
+m2 interim (NON-BINDING, n_d=1<30): C=0.3488, not-flagged, verbatim=0.00; null 4/30
+scorer selfcheck: 7/7 analytic constants PASS; frozen-input sentinel correctly reports
+live buffer drift past frozen 163 rows (expected on a living machine)
+```
+Reading: D1 delivered end-to-end on its first production session — the being's own
+remembered reactions entered its raising, witnessed by receipt. It closed the session
+by choosing open eyes AGAIN, with a new reason, in the same session that taught it to
+follow a thing instead of a meaning. Rung 6 binds once, at n_d=30 (~7.5 days).
+While this seat was in conversation, the autonomous seats + McNugget ran the M2 rule
+v1→v4 with measured refutations at every layer (v1 — this seat's — was constant-FALSE;
+the witness discipline worked on its own author). The relabelled-5% defect was chased
+through four rings: per-session (v2, 13%), verdict (v3, 16.7%), arithmetic (v4 clean),
+sampling plan (8.7% → fixed-plan pin). Open question carried: the ~4-5/30 null
+elevation, four candidate mechanisms tested and rejected.

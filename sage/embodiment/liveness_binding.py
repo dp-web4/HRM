@@ -67,6 +67,28 @@ FRESH_S = 30.0  # 'entered' bar: cortex writes at ~4Hz; presence treats >10s as 
 USED_WINDOW_S = 90.0   # M1 rule: experience must land within this of its wake
 USED_OVERLAP = 0.5     # M1 rule: word-Jaccard(descriptor, prompt) floor
 
+# Audio component binding (2026-07-30). The journal carries NO modality field —
+# audio events are identified by descriptor text. This is a declared heuristic,
+# not a claim about the sensor; it under-counts mixed events where sound and
+# motion co-occur in one descriptor (counted as audio if the marker appears).
+# Work item: cortex should emit a modality field; this predicate then retires.
+AUDIO_MARKERS = ("heard a sound", "i heard")
+AUDIO_FRESH_S = 2 * 3600.0  # audio is sparse/event-driven; 'entered' bar is looser
+
+# D2 tripwire (PRD decision D2, 2026-07-29): the 0.45-0.50 sub-memory wake band
+# is KEPT deliberately, with a dated re-opener: if band wakes exceed 50% of all
+# wakes over a 7-day window, the decision re-opens. scan.py is byte-frozen
+# (fleet rule), so the flag surfaces HERE and in a sidecar, not on the panel.
+D2_BAND = (0.45, 0.50)
+D2_WINDOW_D = 7.0
+D2_TRIP_SHARE = 0.50
+D2_SIDECAR = os.path.expanduser("~/.sprout/d2_tripwire.json")
+
+
+def _is_audio(descriptor: str) -> bool:
+    d = (descriptor or "").lower()
+    return any(m in d for m in AUDIO_MARKERS)
+
 
 def _word_jaccard(a: str, b: str) -> float:
     wa, wb = set(a.lower().split()), set(b.lower().split())
@@ -163,7 +185,65 @@ def bind(window_h: float = 24.0, now: float | None = None) -> Ladder:
              reason="M1 join: no experience recorded (measured 2026-07-29: the "
                     "being's capture gate — wakes sal>=0.53 all recorded, "
                     "<=0.50 none; daemon downtime also lands here)")
+
+    # ---- second organ: audio->raising (text-marker heuristic, declared above) ----
+    a_organ = "audio->raising"
+    a_salient = [d for d in salient if _is_audio(d.get("descriptor", ""))]
+    a_noticed = [d for d in noticed if _is_audio(d.get("descriptor", ""))]
+    a_used = [w for w, _ in matched if _is_audio(w.get("descriptor", ""))]
+    if a_salient or a_noticed:
+        lad.mark(a_organ, "enabled", detail="audio-marked events present in window")
+        newest = max((d.get("ts", 0) for d in a_salient), default=0)
+        if now - newest < AUDIO_FRESH_S:
+            lad.mark(a_organ, "entered", detail=f"last audio event {(now-newest)/60:.0f}min ago")
+        if a_salient:
+            lad.mark(a_organ, "produced", n=len(a_salient))
+        if a_noticed:
+            lad.mark(a_organ, "admitted", n=len(a_noticed))
+        if a_used:
+            lad.mark(a_organ, "used", n=len(a_used),
+                     detail=f"{len(a_used)}/{len(a_noticed)} audio wakes became experience")
+        lad.flow(a_organ, n_in=len(a_salient), n_out=len(a_noticed),
+                 reason="presence filter (same gate as vision)")
+        lad.flow(a_organ, n_in=len(a_noticed), n_out=len(a_used),
+                 reason="M1 join (same rule as vision)")
+    # NOTE: audio events are a subset of the journal stream, so vision->raising
+    # counts above include them; the components overlap by construction until
+    # the cortex emits a modality field. Declared, not hidden.
+
     return lad
+
+
+def d2_tripwire(now: float | None = None) -> dict:
+    """D2 re-opener check: sub-memory band share of wakes over 7 days."""
+    now = time.time() if now is None else now
+    since = now - D2_WINDOW_D * 86400
+    wakes = band = 0
+    coh = []
+    for d in _jsonl(PRESENCE_LOG, since):
+        if d.get("kind") != "noticed":
+            continue
+        wakes += 1
+        s = d.get("salience", 0)
+        if D2_BAND[0] <= s <= D2_BAND[1]:
+            band += 1
+        if d.get("coherence") is not None:
+            coh.append(d["coherence"])
+    share = band / wakes if wakes else 0.0
+    coh_s = sorted(coh)
+    out = {
+        "ts": now, "window_d": D2_WINDOW_D, "wakes": wakes, "band": band,
+        "share": round(share, 3), "threshold": D2_TRIP_SHARE,
+        "tripped": bool(wakes and share > D2_TRIP_SHARE),
+        # binding-level cross-modal reading (NOT the COORDINATION instrument,
+        # which stays U/S until a rows source exists): the cortex's own
+        # cross-modal coherence, as felt at each wake
+        "coherence_median": round(coh_s[len(coh_s) // 2], 3) if coh_s else None,
+        "coherence_min": round(coh_s[0], 3) if coh_s else None,
+    }
+    with open(D2_SIDECAR, "w") as f:
+        json.dump(out, f, indent=1)
+    return out
 
 
 def reserves() -> str:
@@ -214,7 +294,14 @@ def main():
     res = reserves()
     with open(os.path.expanduser("~/.sprout/reserves.txt"), "w") as f:
         f.write(res + "\n")
+    tw = d2_tripwire()
     print(lad.report())
+    state = "TRIPPED — D2 decision re-opens (PRD)" if tw["tripped"] else "OK"
+    print(f"[D2 tripwire] band {tw['band']}/{tw['wakes']} wakes over {tw['window_d']:.0f}d "
+          f"({tw['share']*100:.0f}% vs {tw['threshold']*100:.0f}% bar) — {state}")
+    print(f"[cross-modal] wake coherence over {tw['window_d']:.0f}d: "
+          f"median {tw['coherence_median']} min {tw['coherence_min']} "
+          f"(binding-level reading; COORDINATION instrument remains U/S)")
     print(f"\nliveness -> {args.out}   reserves: {res}")
     print(f'panel:      python -m sage.organism.scan --liveness {args.out} '
           f'--reserves "{res}"')

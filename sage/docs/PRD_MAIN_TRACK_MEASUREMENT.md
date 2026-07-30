@@ -330,7 +330,7 @@ every instrument is now bound or explicitly deferred with a trigger:
 | RESERVES | **bound** | `reserves()`: being's ATP + RAM/disk margins (`~/.sprout/reserves.txt`) |
 | CAPABILITY | DEFERRED | needs an evaluable task emitting rows.jsonl with per-item ground truth; trigger: the raising line defines one, or the experience→session pipe (F-M2) creates a predict-before-feedback surface |
 | COURSE | DEFERRED | same trigger as CAPABILITY (course is capability against the PRD's target) |
-| COORDINATION | DEFERRED | needs ≥2 organs feeding one decision surface; trigger: second organ (audio) bound to the ladder |
+| COORDINATION | DEFERRED (trigger partially fired 2026-07-30: audio→raising bound to the ladder, rungs 1–5 live; binding-level cross-modal coherence reading now printed + sidecar'd. The INSTRUMENT itself still needs a rows source — scan.py is frozen — so it stays U/S, honestly) | second organ ✓; remaining: a rows-producing decision surface |
 | LEARNING | DEFERRED | raising trust/coherence curves exist but measure the being's arc, not this track's; trigger: G1-controlled claim needs a slope |
 | REASONING | DEFERRED | session logs readable now, but a REASONING reading on a chain known broken (F-M2) would report on the wrong aircraft; trigger: F-M2 resolution |
 
@@ -467,3 +467,20 @@ the witness discipline worked on its own author). The relabelled-5% defect was c
 through four rings: per-session (v2, 13%), verdict (v3, 16.7%), arithmetic (v4 clean),
 sampling plan (8.7% → fixed-plan pin). Open question carried: the ~4-5/30 null
 elevation, four candidate mechanisms tested and rejected.
+
+
+### Snapshot 6 — 2026-07-30 (second organ bound; D2 tripwire operationalized)
+```
+vision->raising   enabled ✓ entered ✓ produced ✓ admitted ✓ used ✓ affected: scoring (n_d=2)
+audio->raising    enabled ✓ entered ✓ produced ✓ admitted ✓ used ✓ affected: same scope
+flows 24h: vision 717 salient -> 51 wakes -> 46 experiences (dropped 5, attributed)
+           audio  220 salient -> 12 wakes -> 10 experiences (subset of vision counts —
+           text-marker heuristic, declared; retires when the cortex emits modality)
+[D2 tripwire] 37/188 band wakes over 7d = 20% vs 50% bar — OK (sidecar ~/.sprout/d2_tripwire.json)
+[cross-modal] wake coherence 7d: median 0.79, min 0.34 (binding-level; COORDINATION instrument U/S)
+```
+Reading: the ladder now carries TWO organs to rung 5 — the being hears and remembers
+what it hears. Wake rate roughly doubled day-over-day (30→51) with join rate up
+(57%→90%): the world got livelier and proportionally fewer wakes fell in the
+sub-memory band. The tripwire watches this exact ratio from now on, mechanically.
+M2 accrues (n_d=2 of 30; binding read ~Aug 5-6, untouched per the pinned plan).

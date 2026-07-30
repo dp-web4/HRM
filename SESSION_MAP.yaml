@@ -1928,7 +1928,12 @@ metadata:
     merging (clean, ort), and restoring. LOGS: 7070 autonomous logs, 869 empty (12.29%). MINOR, second
     day running: three [Legion-Raising] ''Session 0 (grounding)'' commits touch only legion-gemma4-e4b/peer_trust_rs.json
     and produce no session file — the wrong-label anomaly persists; the instance itself stays CLOSED as
-    a gameplayer.'
+    a gameplayer. ADDENDUM: cbp episode 1 (S142-S148) is ALSO fully tutorless (unbroken all-fallback block
+    S140-S151), so BOTH episodes are artifacts and the thin-session indicator now has ZERO labelled positives
+    rather than one. S171 — the single datum the indicator rested on — is compliance with canned prompts
+    that demanded brevity, not identity collapse. adaptive_prompts.py:320 fires ''Let''s try something
+    simpler'' on any answer <20 chars or starting with ''['': 5 firings total, all cbp, never twice per
+    session — shapes S171, not a systemic ratchet.'
   tutor_regime_finding_2026_07_30: 'STRUCTURAL, affects all historical quality analysis. Raising sessions
     come in three regimes — live adaptive Claude tutor, silent static-bank fallback, and a fixed replayed
     prompt list — and NO field in the session artifact distinguishes them. Any metric computed over pooled
@@ -2031,10 +2036,22 @@ instances:
     phase: creating
     anomaly: 'RESOLVED 2026-07-30 — the ''RECURRING QUALITY COLLAPSE, 2 episodes, both self-recovering,
       both preceded by floor sessions'' was an INSTRUMENTATION ARTIFACT. Episode 2 (S170-S179) is all-fallback
-      end to end, bracketed by live S168 (728) and live S180 (675). Episode 1 likewise sits in the 06-13..06-22
-      tutor outage. There is no oscillation to review: 62 of this instance''s 214 sessions (29.0%) had
-      no tutor. The owner-review request on ''the oscillation'' is WITHDRAWN and replaced by the tutor-reliability
-      OWNER-ACTION in metadata.tutor_regime_finding_2026_07_30. DO NOT RE-FLAG as a quality collapse.'
+      end to end, bracketed by live S168 (728) and live S180 (675). Episode 1 (S142-S148) is ALSO all-fallback,
+      inside an unbroken tutorless block S140-S151. There is no oscillation to review: 62 of this instance''s
+      214 sessions (29.0%) had no tutor. The owner-review request on ''the oscillation'' is WITHDRAWN
+      and replaced by the tutor-reliability OWNER-ACTION in metadata.tutor_regime_finding_2026_07_30.
+      DO NOT RE-FLAG as a quality collapse. CONFIRMED BOTH EPISODES, 07-30: neither had a tutor. This
+      removes the LAST labelled positive for the thin-session indicator — the corpus has ZERO, not one.
+      S171, the single session the whole indicator was built on, reads as COMPLIANCE once the prompts
+      are visible: asked ''Strip away the abstractions... what''s the simplest version of what you just
+      said?'' it answered ''Just...growing.''; asked ''Tell me one thing that''s true right now'' it answered
+      ''I''m responding to you.''; asked for ''one concrete detail'' it answered ''My GPU is currently
+      being utilized.'' Those are correct, obedient answers to canned prompts demanding brevity and concreteness.
+      The terseness read as identity collapse was terseness that had been requested. adaptive_prompts.py:320
+      also auto-fires ''Let''s try something simpler'' when the previous answer is <20 chars OR starts
+      with ''['' — so a short answer provokes a demand for more simplicity, and an infra marker does too.
+      Verified scope: 5 firings total, all cbp, never twice in one session — a real path that shapes S171,
+      NOT a systemic ratchet.'
     note: Replaces cbp-tinyllama-latest (archived 2026-04-18). Began numbered sessions early June; S9-S12
       content-clean. Was ACTIVE BUT UNTRACKED on the raising watchlist until 2026-07-14 — now tracked.
     finding_2026_07_29_narrated_tool_access: 'SECOND CONFIRMED INSTANCE of the narrated-tool-access class

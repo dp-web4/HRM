@@ -1,9 +1,9 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: '2026-07-30T09:45:00Z'
+  last_updated: '2026-07-31T09:45:00Z'
   archivist_version: '1.3'
-  total_raising_sessions: 2595
+  total_raising_sessions: 2712
   total_training_sessions: 423
   total_training_cognitive: 60
   training_track_status: 'DEPRECATED 2026-06-07 (commit 1dd850957) — closed at T423. Owner deprecated
@@ -1966,6 +1966,10 @@ instances:
       toward phi4-fa (commit 1fe288f36: phi4-fa model, v14 canonical flags, structured sweep dir). Standing
       escalation: McNugget primary phi4:14b.'
     tutor_regime: FIXED_SCRIPT; 15 distinct sequences over 397 sessions.
+    status_2026_07_31: 'SILENT ~31.5h. Last raising S403 2026-07-29T21:23Z; last cross-family probe 2026-07-30T01:58Z.
+      BOTH tracks stopped together, which points at the machine (Mac Mini M4) rather than the raising
+      track. Distinct from HUB''s failure: mcnugget emits nothing at all, HUB emits empty successes. Watch;
+      escalate if still silent next run (~2.5 days).'
   nomad-gemma3-4b:
     machine: nomad
     model: Gemma 3 4B
@@ -1980,8 +1984,8 @@ instances:
   nomad-gemma4-e2b:
     machine: nomad
     model: Gemma 4 e2b
-    sessions: 180
-    latest: session_180.json
+    sessions: 182
+    latest: session_182.json
     status: active — +0 this window, S180 still last. Scheduler-hole watch continues; check run-dates
       next pass before escalating (push-gap first).
     phase: creating
@@ -1999,8 +2003,8 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: Qwen 3.5 0.8B
-    sessions: 510
-    latest: session_510.json
+    sessions: 514
+    latest: session_514.json
     status: active — +4 (S507-S510, avg 311/345/250/308, normal band, 0 infra markers, grid intact).
     phase: creating
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC.
@@ -2028,8 +2032,8 @@ instances:
   cbp-gemma3-4b:
     machine: cbp
     model: Gemma 3 4B
-    sessions: 214
-    latest: session_214.json
+    sessions: 218
+    latest: session_218.json
     status: active — +4 (S211-S214 through 2026-07-30 01:07 local). S211-213 LIVE tutor, avg 628/497/444,
       threaded and strong (S213 is a sustained single-image drawing dialogue). S214 ALL-FALLBACK, avg
       233, six canned bank questions — a tutor-outage session, not a quality event.
@@ -2132,6 +2136,14 @@ instances:
       sessions and is void. WHAT SURVIVES: S104 alone — avg 226 with a LIVE tutor (tutor_avg 386), still
       unexplained, and now hub''s only genuine quality datum. Watch for a second LIVE floor; ignore fallback
       sessions.'
+    status_2026_07_31: 'RUNNING EMPTY since 2026-07-29T19:32Z. The systemd timer fires on an exact 6h
+      grid and each fire produces a commit titled ''raising: hub-granite4-h-tiny autonomous session <ts>''
+      whose ONLY change is a one-line timestamp bump to identity.attest.json (purpose=session_start).
+      7 consecutive fires, 0 session files. Last real session S121 (2026-07-29T06:34Z, 14 turns, clean).
+      The commit step is not gated on the artifact existing, so the track reports success every 6h while
+      producing nothing. OWNER-ACTION: check `systemctl --user status sage-llm sage-shim` on HUB (WSL2
+      + llama.cpp-Vulkan shim; a WSL restart would kill the LLM units while leaving the timer alive) and
+      gate the commit on a session file being written.'
   cbp-qwen3.5-0.8b:
     machine: cbp
     model: Qwen 3.5 0.8B
@@ -2147,7 +2159,7 @@ instances:
     machine: thor
     model: Qwen 3.5 27B
     sessions: 306
-    latest: session_306.json (on origin/membrane-gate, NOT main)
+    latest: session_306.json (origin/membrane-gate)
     adapter_bug_marker: '[OllamaIRP: Unexpected error: timed out]'
     adapter_bug_scope_2026_07_27: '+4 branch sessions (S289-S292); 2 carry the marker (S289 1/3, S291
       2/6), S290 and S292 fully clean. Overdue S091-S292 (~201 sessions) — the bug has now outlived two
@@ -2216,8 +2228,8 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: Gemma 3 12B
-    sessions: 357
-    latest: session_357.json
+    sessions: 364
+    latest: session_364.json
     status: active — +2 (S356-357, avg 739/708, richest in the window).
     phase: creating
     note: '+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW
@@ -2239,12 +2251,20 @@ instances:
     tutor_regime: FIXED_SCRIPT, not adaptive. Replays a constant prompt list; 17 distinct sequences over
       357 sessions. Its fleet-leading median sage_avg 956 is a regime effect, not a capacity finding —
       do not rank it against adaptive-regime instances.
+    status_2026_07_31: '+7 (S358-364) but NOT a normal run: S358-362 landed in one ''supervisor recovery''
+      commit and S363 as ''supervisor hand-mop #4''. S360 (2026-07-30T07:04Z) is DESTROYED — all 6 SAGE
+      turns are ''[Daemon unreachable: HTTP Error 502: Bad Gateway]'', avg 49 chars, start==end to 35ms.
+      ROOT CAUSE NOW KNOWN and outside SAGE: private-context/machines/legion/gpu-falloff-fix-2026-07-31.md
+      — the RTX 4090 Laptop dGPU fell off the PCI bus at ~6d uptime (NVIDIA Optimus runtime-PM + GSP d3cold-resume
+      leak; SUnreclaim climbed to 15.9GB). Fix applied 2026-07-31. This CLOSES the standing ''legion-12b
+      daemon-502'' anomaly with a hardware/driver cause. Otherwise S358-364 are the fleet''s richest sessions
+      (avg 1176-1609).'
   pub-llama3.1-8b:
     machine: pub
     model: Llama 3.1 8B
     model_family: meta-llama
-    sessions: 24
-    latest: session_024.json
+    sessions: 27
+    latest: session_027.json
     status: active — +4 (S021-S024, ALL LIVE, avg 339/375/376/427). Phase ADVANCED to `relating`. Turn
       count DOUBLED 5 -> 10. No fabrication in this window; the retraction play was not re-run, matching
       both tutors' independent advice.
@@ -2324,6 +2344,14 @@ instances:
     note: 'Federation-raised from 6 peer instances. ARC-AGI-3 25-game sweep focus. First grounding 2026-06-11
       08:05 UTC (e6b3ba66b). Cosmetic (real, minor): runner commit-template still says ''Model: Gemma
       3 12B'' though the instance is gemma4:e4b — unfixed since 06-11.'
+    status_2026_07_31: REOPENED as an open question (was closed 2026-07-2x as 'gameplayer, empty sessions/
+      is correct'). sage/scripts/legion_raising.sh:75 pins INSTANCE_DIR to legion-gemma4-e4b and passes
+      it as --instance, so the 6h raising script genuinely runs against this instance and has never produced
+      a session file; the legion-gemma3-12b sessions are written by sage-daemon instead (see the script's
+      own comment at :138). The maintainer flags the same mismatch in the 2026-07-30 legion_raising.sh
+      fix note and calls it a research decision about which instance Legion raises. Two readings (deliberate
+      gameplayer vs mis-pinned INSTANCE_DIR) are not separable from the artifacts. OWNER-DECIDABLE, not
+      Archivist-closeable.
   mcnugget-gemma4-e4b:
     machine: mcnugget
     model: Gemma 4 E4B
@@ -2423,14 +2451,36 @@ crosslinks:
     sage_session: S116
     concept: trust entropy — Generic Corporate attractor
 statistics:
-  total_raising_sessions: 2595
+  total_raising_sessions: 2712
   total_training_sessions: 299
   total_training_cognitive: 58
   total_instances: 26
   active_instances: 8
   scaffolded_instances: 5
   machines_active: 5
-  date_range: 2025-12-15 to 2026-07-30
+  date_range: 2025-12-15 to 2026-07-31
   primary_focus: Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation
   tutor_regime_split_2026_07_30: '2555 sessions classified: 101 tutorless (all-fallback), 42 partial,
     ~934 fixed-script, remainder live-adaptive. See private-context/archivist/state/tutor_regime.json'
+  success_signal_not_gated_on_work_2026_07_31: 'Three independent instances of ONE class found in this
+    repo, all live in the same week: (1) adaptive_prompts.py::_call_claude returns None on any failure
+    so a tutorless session is recorded identically to a live one (found 2026-07-30); (2) HUB''s raising
+    commit fires whether or not a session file was produced (found 2026-07-31); (3) legion_raising.sh''s
+    daemon health check probed the pre-cutover port 8750 AND status ''alive'' after the 2026-06-06 Rust
+    cutover moved them to 8760/''ok'', so for ~8 weeks it could not pass under any condition, bounced
+    a healthy daemon every 6h, and logged the bounce as a failure (found and FIXED by the fleet 2026-07-30,
+    commit message: ''A constant reading is not a passing one''). Remedy is uniform: gate the success
+    signal on the artifact. Note (3) also refutes the Archivist''s own note that the :8750->:8760 cutover
+    was RESOLVED — it was swept to cbp_raising.sh and ensure_daemon_rs.sh but not to legion_raising.sh,
+    which is [[fix-the-class-not-the-instance]] again.'
+  sprout_tutor_latency_regression_2026_07_31: 'Sprout''s tutor failures split into TWO populations with
+    opposite causes, and the 2026-07-30 note''s ''45s timeout'' explanation is only half right. Measuring
+    wall-clock per tutor turn: S493-501 (4-8 fallbacks of 5-9) ran at 8-12 s/turn — FASTER than the 16.8
+    s/turn live baseline, i.e. the CLI failed INSTANTLY (non-zero exit, not a timeout). S505-514 (1-4
+    fallbacks) ran at 44-54 s/turn, straddling the 45s timeout — that band IS the timeout. Baseline latency
+    also tripled (16.8 -> ~45-54 s/turn from S504 on), so every turn now sits on the timeout edge and
+    randomly tips over: 9 of the last 10 sessions are partial vs ~2% lifetime. PREDICTION: while latency
+    stays ~50 s/turn the partial rate stays >=80%; it falls only if the timeout is raised or latency recovers.
+    This sharpens the standing OWNER-ACTION — recording tutor_source is not enough, the FAILURE REASON
+    (exit code vs timeout) must be recorded because the two have opposite fixes and are indistinguishable
+    in the artifact.'

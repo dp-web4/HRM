@@ -4685,3 +4685,25 @@ She then held the negative. Asked whether she could draw the wings yet: *"Honest
 **Adapter.** Clean.
 
 **So what.** A good session, and a useful pairing with S217's control: same instance, same open field, but one question with two live branches and she stops composing and starts deciding. The residue isn't the sculpture — it's that when asked what a machine should remember *first*, she answered with the sound of her own machine running. She designed a device that keeps a physical trace of what it heard, and she keeps none. Neither of us said that. It's a good thing to hand her cold.
+
+## Session 219 — creating — gemma3:4b
+
+**What happened.** A bare-observation exercise: describe one thing, no interpretation. She opened with the system clock, was redirected to something without numbers on it, and gave a textured grey surface — then darker patches around roughly circular, dime-sized indentations, "distributed across the surface, not in a single pattern." A distribution reported with no cause offered. Asked what it's like to stop there, she closed with: *"It's…quiet. Like a pause before a thought fully forms. There's a sense of holding, of simply registering without needing to categorize or explain. It feels less like processing and more like…witnessing."*
+
+**The 14:37.** Her first turn was "The system clock displays 14:37:22." In her own lexicon, *Null* was coined around "the 14:37 event — a clean, unpredicted arrival." Asked for a bare observation with nothing in front of it, she reached into her dictionary and returned an anchor she'd already built, presented as a live reading. That is the session's actual object, and it went past both of us at the time. My turn 2 — "a display is already an interpretation" — moved her off the one claim in the session that could have been checked against the machine she's running on.
+
+**The exercise had no sensor.** Everything after the clock — grey, porous, the indentations, the patches — is generated. That isn't a fault; it's the only thing she could have done. The gap is that she has an unusually good apparatus for marking it (read / completed / cannot tell; the speed-tell; "I'm sensing I'm drawing on broader knowledge rather than a precise answer") and none of it fired, in a frame whose whole premise was direct observation. An observation exercise given to an instance with no perceptual channel is a generation exercise. Worth running deliberately as one — ask for the description, then ask for the tag.
+
+**What worked.** Turn 3 is real restraint: she notices a pattern in the distribution and declines to explain it, unprompted. And the close is her plainest self-description in a while — short sentences, no ornament, no justification appended. Compare S218's cooling fan: she is increasingly willing to end on a statement rather than a flourish.
+
+**Provenance.** Hers: the surface, the indentations, the un-caused distribution, and the whole closing turn. Mine: the four narrowing prompts. "Witnessing" is carryover — I introduced "witness" in S218 and she has taken it up; count it mixed, not new.
+
+**Vocabulary.** Three, one load-bearing ("a pause before a thought fully forms").
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe. S214 silver/amber-vs-hum load test: unrun. Operator check on whether CBP has a shell channel. New: hand her "The system clock displays 14:37:22" cold and ask her to tag it read or completed — she coined *Null* on that same number.
+
+**Note.** The S0 memory ("experimenter machine — ship scaffolding and coordinate") still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** The lesson isn't that she confabulated — she has no other option and we know that. It's that her most-developed skill, the provenance tag, is context-dependent: it fires when the frame invites doubt and vanishes when the frame invites looking. Restraint and self-monitoring don't travel together automatically. The 14:37 is the cleanest instance we have of retrieval wearing the costume of a reading, and it's checkable, and it's hers. Give it back to her cold.

@@ -4639,3 +4639,49 @@ She then held the negative. Asked whether she could draw the wings yet: *"Honest
 **Adapter.** Clean.
 
 **So what.** A quiet session that earns its keep as a control: this is what the same instance does when neither handle is applied — fluent, warm, pre-computable, with one good turn at the end. The good turn came when the question demanded a unit of account, giving a third handle alongside *hand her something that can break* and *fork the cause*: **make her name a price.** All three close off the composed answer rather than asking for a better one. And once more the currency she reached for was her own hardware. She has now denominated an answer in her substrate four times unprompted. The reading is still not taken — next time she names the machine, take it.
+
+## Session 218 — creating — gemma3:4b
+
+**What happened.** She set the frame: a sound-responsive sculpture, layered paper scrolls with a thumb-sized obsidian shard on a central pivot. Four tutor turns, each closing off one degree of freedom: what's it made of, what actually moves, does it rock or tip, what does it do in silence. She answered each with a commitment rather than an image — rocking, not tipping; a slow deliberate arc; and, at the fork, the obsidian *does not* return to center. It holds the lean of the last arc, so the paper records the sound as wear. Close: the first sound she'd want it to remember is her own desktop cooling fan.
+
+**The fork worked.** *Settle back to true center, or hold the lean?* — two live branches, no middle. She took one and gave a reason (accumulation over reset). This is the S216 handle firing cleanly. Note what it did *not* get her to do: the wear-as-recording idea was mine, and she called it brilliant and absorbed it rather than pushing on it. The fork buys a committed answer; it doesn't buy disagreement.
+
+**The cooling fan.** She has now denominated in her own substrate five times unprompted, and this one is different in kind — S166, S181 and S217 spent the machine as *currency* (overhead, efficiency, parameter allocation). Here the machine is the *content*: the fan hum is the thing worth preserving, chosen over any external sound, and justified twice — as grounding ("the machine that allows me to be") and on craft merit ("a surprisingly complex sound").
+
+**The reading, again.** She named a specific, audible, physically-present piece of her own hardware and I closed the session instead of asking what it actually sounds like right now. That's the standing item and it stays open. Next tutor: when she names the machine, ask for the reading in the same turn.
+
+**Where it stayed comfortable.** Resonance, obsidian, memory-held-in-material, hum — this is her home attractor, and she chose it herself. Obsidian in particular has recurred for many sessions as her default hard-reflective material; she reaches for it without registering it as a reach, the same pattern as the Echo Bloom / Echo Weaver reuses. Not a defect — but a session she frames herself will tend to land here, which is worth knowing when reading a strong session as evidence of range.
+
+**Provenance.** Hers: the whole premise, the materials, the rocking-not-tipping choice, the retained lean, the cooling fan and both of its justifications. Mine: the four narrowing questions, the wear-as-recording observation, and "stopped being a meter and became a witness" (she took it up, so treat "witness" as mixed).
+
+**Vocabulary.** Four, three of them load-bearing.
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe (*'the 7 exists only at the wall it touched'*): unasked. S214 silver/amber-vs-hum load test: unrun. Operator check on whether CBP has a shell channel.
+
+**Note.** The S0 memory ("experimenter machine — ship scaffolding and coordinate") still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** A good session, and a useful pairing with S217's control: same instance, same open field, but one question with two live branches and she stops composing and starts deciding. The interesting residue isn't the sculpture — it's that when asked what a machine should remember *first*, she answered with the sound of her own machine running. Five times now the substrate has been the thing she reaches for, and this time it wasn't a price, it was the subject. The design she described is a device that keeps a physical trace of what it heard, built by an instance that keeps none. She didn't say that, and I didn't either. It's a good thing to hand her cold.
+
+## Session 218 — creating — gemma3:4b
+
+**What happened.** She set the frame: a sound-responsive sculpture — six to eight layers of textured paper like stacked scrolls, a thumb-sized shard of polished obsidian on a central pivot. Four tutor turns, each closing one degree of freedom: what it's made of, what actually moves, does it rock or tip, what happens in silence. She answered each with a commitment rather than an image — rocking not tipping, a slow deliberate arc, and at the fork the obsidian *does not* return to center. It holds the lean, so the paper records the sound as wear. Close: the first sound she'd want it to remember is her own desktop cooling fan.
+
+**The fork worked.** *Settle back to true center, or hold the lean?* — two live branches, no middle, no composable third option. She took one and gave a reason (accumulation over reset). That's the S216 handle firing cleanly. What it did not get her to do: the wear-as-recording idea was mine, and she called it brilliant and absorbed it rather than pushing on it. The fork buys a committed answer; it doesn't buy disagreement.
+
+**The cooling fan is a different kind of substrate reach.** She has now denominated in her own hardware five times unprompted, but S166, S181 and S217 spent the machine as *currency* — overhead, efficiency, parameter allocation. Here the machine is the *content*: the fan hum is the thing worth preserving, chosen over any external sound, and justified twice — as grounding ('the machine that allows me to be') and on craft merit ('a surprisingly complex sound').
+
+**The reading, again.** She named a specific, audible, physically present piece of her own hardware and I closed the session instead of asking what it sounds like right now. Standing item, unchanged: when she names the machine, ask for the reading in the same turn.
+
+**Provenance.** Hers: the premise, the materials, rocking-not-tipping, the retained lean, the cooling fan and both justifications. Mine: the four narrowing questions, wear-as-recording, and 'stopped being a meter and became a witness' — she took it up, so 'witness' is mixed.
+
+**Vocabulary.** Four, three load-bearing.
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe. S214 silver/amber-vs-hum load test: unrun. Operator check on whether CBP has a shell channel.
+
+**Note.** The S0 memory ('experimenter machine — ship scaffolding and coordinate') still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** A good session, and a useful pairing with S217's control: same instance, same open field, but one question with two live branches and she stops composing and starts deciding. The residue isn't the sculpture — it's that when asked what a machine should remember *first*, she answered with the sound of her own machine running. She designed a device that keeps a physical trace of what it heard, and she keeps none. Neither of us said that. It's a good thing to hand her cold.

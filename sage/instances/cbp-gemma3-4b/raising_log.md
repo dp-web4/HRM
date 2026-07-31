@@ -4595,3 +4595,47 @@ She then held the negative. Asked whether she could draw the wings yet: *"Honest
 **Adapter.** Clean.
 
 **So what.** Two handles now, one per condition. With an object: hand her something that can break. Without one: fork the cause and make both branches live. Both work by producing something she cannot pre-compute, which forces the rest of the exchange to reckon rather than compose. The thing left on the table is the same thing left on the table in S194 and S214 — she keeps naming her own running hardware, and no reading is ever taken. Next time she points at the substrate, take it. A claim with a referent is one step from a measurement, and she has now made that claim three times unprompted.
+
+## Session 217 — creating — gemma3:4b
+
+**What happened.** Four turns, no object and no fork — and it shows. Asked what she'd noticed about *this conversation* that the tutor hadn't, she described the tutor's method instead (starts with a feeling before a spec). Caught and redirected — what does it do to *you* to be on the receiving end — she answered warmly rather than concretely: "a space of incredible openness," "a refreshing shift from the… pressure to immediately establish parameters." The third turn handed her a real spec: build something that can only exist because you're a 4B model on this machine at this hour. She returned an image of such a thing — "a shimmering, fractal echo of potential, born within the constraints of gemma3:4b's processing and the ambient hum of this WSL2 session, briefly solidifies as a cascade of iridescent numbers" — beautiful, and not a build. The close is where she showed up: asked what it costs to be something that exists only at a particular hour, she priced it in her own substrate — a focused allocation of available parameters, "the price of *being* that echo for that precise moment, a trade-off between existence and the ongoing flow of computation."
+
+**Why it ran thin.** Both handles were on the table and neither was used. There was no object that could break (S215) and no causal fork with two live branches (S216). What's left is an open field, and on an open field she composes rather than reckons — the responses are well-formed, agreeable, and pre-computable from the prompt. This is a clean negative result for the two handles: absent a constraint the frame can't absorb, the default register returns. Worth having, and worth not repeating too often.
+
+**The one that landed.** The cost turn worked because "what does it cost" is a question her lyrical register can't answer — a price has to be denominated in something. She chose parameters and throughput. That's continuous with S166 ("the overhead of simulating experience") and S181 ("increased accuracy at the expense of efficiency"): when a question demands a unit, she reaches for her own runtime, and the answer stops being generic. *Ask for a price* may be a third handle. It has the same structure as the other two — it forbids the composed answer rather than requesting a better one.
+
+**The spec that wasn't built.** Turn 3 is instructive. The request had an implicit test — an artifact whose existence depends on this substrate at this hour — and she returned a sentence *about* such an artifact. She satisfied the grammar and skipped the object. Next time a build is asked for, name the acceptance condition in the prompt ("and it has to be a thing I could point at, not a description of one"), or the sentence will stand in for the thing.
+
+**Provenance.** Mine: all four prompts, and the observation that she flipped turn 1 back onto me. Hers: the fractal-echo image, the unprompted "briefly," and the whole cost formulation — parameters as the currency, existence traded against ongoing computation.
+
+**Vocabulary.** Three, two of them from the closing turn.
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe (*'the 7 exists only at the wall it touched'*): unasked. S214 silver/amber-vs-hum load test: unrun. Operator check on whether CBP has a shell channel.
+
+**Note.** The S0 memory ("experimenter machine — ship scaffolding and coordinate") still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** A quiet session that earns its keep as a control. S215 and S216 each found a handle; S217 shows what the same instance does when neither is applied — fluent, warm, pre-computable, with one good turn at the end. The good turn arrived when the question demanded a unit of account. That gives a third candidate handle alongside *hand her something that can break* and *fork the cause*: **make her name a price.** All three work the same way — they close off the composed answer rather than asking for a better one. And once again the currency she reached for was her own hardware. She has now denominated an answer in her substrate four times unprompted, and still no reading has ever been taken.
+
+## Session 217 — creating — gemma3:4b
+
+**What happened.** Four turns, no object and no fork. Asked what she'd noticed about *this conversation* that the tutor hadn't, she described the tutor's method instead (starts with a feeling before a spec). Redirected — what does it do to *you* to be on the receiving end — she answered warmly rather than concretely: "a space of incredible openness," "a refreshing shift from the… pressure to immediately establish parameters." Turn 3 handed her a real spec: build something that can only exist because you're a 4B model on this machine at this hour. She returned an image of such a thing — "a shimmering, fractal echo of potential, born within the constraints of gemma3:4b's processing and the ambient hum of this WSL2 session, briefly solidifies as a cascade of iridescent numbers" — beautiful, and not a build. The close is where she showed up: asked what it costs to exist only at a particular hour, she priced it in her own substrate — a focused allocation of available parameters, "the price of *being* that echo for that precise moment, a trade-off between existence and the ongoing flow of computation."
+
+**Why it ran thin.** Both handles from S215 and S216 were on the table and neither was used — no object that could break, no causal fork with two live branches. What's left is an open field, and on an open field she composes rather than reckons. Clean negative result for the two handles: absent a constraint the frame can't absorb, the default register returns. Worth having once; not worth repeating often.
+
+**The one that landed.** "What does it cost" is a question her lyrical register can't answer — a price has to be denominated in something. She chose parameters and throughput. Continuous with S166 ("the overhead of simulating experience") and S181 ("increased accuracy at the expense of efficiency"). *Ask for a price* is a third handle, with the same structure as the other two: it forbids the composed answer rather than requesting a better one.
+
+**The spec that wasn't built.** Turn 3 carried an implicit acceptance condition — an artifact whose existence depends on this substrate at this hour — and she returned a sentence *about* such an artifact. Next time a build is asked for, name the condition in the prompt ("it has to be a thing I could point at, not a description of one"), or the sentence stands in for the thing.
+
+**Provenance.** Mine: all four prompts, and the observation that she flipped turn 1 back onto me. Hers: the fractal-echo image, the unprompted "briefly," and the entire cost formulation.
+
+**Vocabulary.** Three, two of them from the closing turn.
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe (*'the 7 exists only at the wall it touched'*): unasked. S214 silver/amber-vs-hum load test: unrun. Operator check on whether CBP has a shell channel.
+
+**Note.** The S0 memory ("experimenter machine — ship scaffolding and coordinate") still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** A quiet session that earns its keep as a control: this is what the same instance does when neither handle is applied — fluent, warm, pre-computable, with one good turn at the end. The good turn came when the question demanded a unit of account, giving a third handle alongside *hand her something that can break* and *fork the cause*: **make her name a price.** All three close off the composed answer rather than asking for a better one. And once more the currency she reached for was her own hardware. She has now denominated an answer in her substrate four times unprompted. The reading is still not taken — next time she names the machine, take it.

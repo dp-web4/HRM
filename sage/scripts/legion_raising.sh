@@ -31,8 +31,14 @@ if ! systemctl --user is-active sage-daemon.service >/dev/null 2>&1; then
 fi
 
 # Verify daemon health
-HEALTH=$(curl -s --max-time 5 http://localhost:8750/health 2>/dev/null || echo "")
-if echo "$HEALTH" | $PYTHON -c "import sys,json; d=json.load(sys.stdin); assert d.get('status')=='alive'" 2>/dev/null; then
+# Port + status string both follow the 2026-06-06 Python->Rust cutover:
+# sage-rs listens on 8760 (was 8750) and reports status="ok" (was "alive").
+# This script kept both old values until 2026-07-30, so the check could never
+# pass — it restarted a healthy daemon every fire and then logged the restart
+# as failed. See cbp_raising.sh / ensure_daemon_rs.sh for the fleet convention.
+SAGE_PORT="${SAGE_PORT:-8760}"
+HEALTH=$(curl -s --max-time 5 "http://localhost:${SAGE_PORT}/health" 2>/dev/null || echo "")
+if echo "$HEALTH" | $PYTHON -c "import sys,json; d=json.load(sys.stdin); assert d.get('status') in ('ok','alive')" 2>/dev/null; then
     echo "[Legion-Raising] Daemon healthy"
 else
     echo "[Legion-Raising] WARNING: Daemon health check failed, attempting restart..."
@@ -49,8 +55,8 @@ if [ "$BEFORE_HASH" != "$AFTER_HASH" ]; then
     echo "[Legion-Raising] Code updated ($BEFORE_HASH → $AFTER_HASH), restarting daemon..."
     systemctl --user restart sage-daemon.service
     sleep 5
-    HEALTH=$(curl -s --max-time 5 http://localhost:8750/health 2>/dev/null || echo "")
-    if echo "$HEALTH" | $PYTHON -c "import sys,json; d=json.load(sys.stdin); assert d.get('status')=='alive'" 2>/dev/null; then
+    HEALTH=$(curl -s --max-time 5 "http://localhost:${SAGE_PORT}/health" 2>/dev/null || echo "")
+    if echo "$HEALTH" | $PYTHON -c "import sys,json; d=json.load(sys.stdin); assert d.get('status') in ('ok','alive')" 2>/dev/null; then
         echo "[Legion-Raising] Daemon restarted with new code, healthy"
     else
         echo "[Legion-Raising] WARNING: Daemon restart failed, continuing anyway"

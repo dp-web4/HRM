@@ -67,12 +67,12 @@ FRESH_S = 30.0  # 'entered' bar: cortex writes at ~4Hz; presence treats >10s as 
 USED_WINDOW_S = 90.0   # M1 rule: experience must land within this of its wake
 USED_OVERLAP = 0.5     # M1 rule: word-Jaccard(descriptor, prompt) floor
 
-# Audio component binding (2026-07-30). The journal carries NO modality field —
-# audio events are identified by descriptor text. This is a declared heuristic,
-# not a claim about the sensor; it under-counts mixed events where sound and
-# motion co-occur in one descriptor (counted as audio if the marker appears).
-# Work item: cortex should emit a modality field; this predicate then retires.
-AUDIO_MARKERS = ("heard a sound", "i heard")
+# Audio component binding (2026-07-30; upgraded 2026-07-31). The cortex now
+# emits ground-truth `modalities` tags computed at descriptor-composition time
+# (visual_cortex.describe meta out-param). Events carrying the field use it;
+# the text-marker heuristic remains ONLY as fallback for pre-field events still
+# in the journal window, and retires when they age out (~journal horizon).
+AUDIO_MARKERS = ("heard a sound", "i heard", "heard it too", "a noisy space")
 AUDIO_FRESH_S = 2 * 3600.0  # audio is sparse/event-driven; 'entered' bar is looser
 
 # D2 tripwire (PRD decision D2, 2026-07-29): the 0.45-0.50 sub-memory wake band
@@ -85,9 +85,12 @@ D2_TRIP_SHARE = 0.50
 D2_SIDECAR = os.path.expanduser("~/.sprout/d2_tripwire.json")
 
 
-def _is_audio(descriptor: str) -> bool:
-    d = (descriptor or "").lower()
-    return any(m in d for m in AUDIO_MARKERS)
+def _is_audio(ev: dict) -> bool:
+    m = ev.get("modalities")
+    if m is not None:
+        return "audio" in m          # ground truth from the cortex
+    d = (ev.get("descriptor") or "").lower()
+    return any(mk in d for mk in AUDIO_MARKERS)  # legacy-event fallback
 
 
 def _word_jaccard(a: str, b: str) -> float:
@@ -188,9 +191,9 @@ def bind(window_h: float = 24.0, now: float | None = None) -> Ladder:
 
     # ---- second organ: audio->raising (text-marker heuristic, declared above) ----
     a_organ = "audio->raising"
-    a_salient = [d for d in salient if _is_audio(d.get("descriptor", ""))]
-    a_noticed = [d for d in noticed if _is_audio(d.get("descriptor", ""))]
-    a_used = [w for w, _ in matched if _is_audio(w.get("descriptor", ""))]
+    a_salient = [d for d in salient if _is_audio(d)]
+    a_noticed = [d for d in noticed if _is_audio(d)]
+    a_used = [w for w, _ in matched if _is_audio(w)]
     if a_salient or a_noticed:
         lad.mark(a_organ, "enabled", detail="audio-marked events present in window")
         newest = max((d.get("ts", 0) for d in a_salient), default=0)

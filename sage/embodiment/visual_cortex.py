@@ -364,7 +364,8 @@ def _dir_word(cx: float, cy: float) -> str:
     return (f"{v} {h}").strip() if h != "center" or v else "center"
 
 
-def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open", aud: dict = None) -> str:
+def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open", aud: dict = None,
+             meta: dict = None) -> str:
     """Deterministic symbolic scene descriptor from the two eyes, their correlation,
     proprioception (reafference), the chosen gaze stance (volition), and hearing (cross-modal)."""
     mot = max(e["motion"] for e in eyes)
@@ -407,13 +408,26 @@ def describe(eyes: list[dict], binoc: dict, prop: dict, gaze: str = "open", aud:
     # hearing — cross-modal binding: a sound + a motion together is one real event; a sound with
     # nothing seen is heard-not-seen; a loud room is its own note.
     hearing_clause = ""
+    heard = ambient = False
     if aud and aud.get("ok"):
         if aud.get("onset") and mot >= 0.15:
             hearing_clause = " — and I heard it too"
+            heard = True
         elif aud.get("onset"):
             hearing_clause = " — I heard a sound, though nothing I see moved"
+            heard = True
         elif aud.get("level", 0) > 0.15:
             hearing_clause = " — a noisy space"
+            ambient = True
+    # modality ground truth, computed from the SAME conditions that composed the
+    # sentence — so downstream consumers (liveness binding) never have to guess
+    # modality from descriptor text (which was a declared stopgap, 2026-07-30).
+    if meta is not None:
+        m = ["vision"]
+        if heard or ambient:
+            m.append("audio")
+        meta["modalities"] = m
+        meta["audio_onset"] = heard
     return f"{prefix}{stance}{motion_clause}{self_clause}{hearing_clause}; {view}"
 
 
@@ -442,6 +456,8 @@ class Journal:
             ev = {"kind": "heartbeat", "salience": sal.get("salience", 0.0)}
         if ev is not None:
             ev.update({"ts": now, "descriptor": s["descriptor"]})
+            if "modalities" in s:  # ground-truth modality tags (2026-07-31)
+                ev["modalities"] = s["modalities"]
             self._append(ev); self.last_log = now
 
     def _append(self, ev: dict):
@@ -627,10 +643,12 @@ class VisualCortex:
                 prop = self.prop.state()
                 aud = self.hearing.state()
                 self._adjudicate_sensors(eyes, binoc, prop)  # still vs stalled, using ego-motion + cross-eye
+                dmeta = {}
                 state = {"ts": round(time.time(), 2), "cameras": {str(i): eyes[i] for i in range(2)},
                          "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
                          "binocular": binoc, "proprioception": prop, "audio": aud, "gaze": gaze,
-                         "descriptor": _object_phrase(self._objects) + describe(eyes, binoc, prop, gaze, aud)}
+                         "descriptor": _object_phrase(self._objects) + describe(eyes, binoc, prop, gaze, aud, meta=dmeta)}
+                state.update(dmeta)  # modalities + audio_onset, truth from composition time
                 sal = self.salience.score(state)
                 state["salience"] = sal
                 # binocular agreement: prefer SEMANTIC correspondence (both eyes name the same thing)

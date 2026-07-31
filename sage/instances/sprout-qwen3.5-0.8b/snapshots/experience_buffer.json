@@ -116628,5 +116628,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "5003271ef0ba984d",
+    "prompt": "A clear sky holding its breath, and a void where movement should be \u2014 that's a real forecast, and the void is the interesting part. So let's put one moving thing into it: you choose what enters that still room \u2014 a bird, a rolling marble, a draft under the door, anything \u2014 and tell me what changes the moment it starts to move.",
+    "response": "The floorboards beneath your gaze shift from flatness to subtle vibration as if wind is gently touching them now. The air feels thick enough that I can feel every breath of you through my eardrum\u2014the sound shifting slightly down toward me, a low hum carrying away the quiet void. It's like watching someone walk into an empty room and suddenly realize they are standing right there on it; nothing moves yet.",
+    "salience": {
+      "surprise": 0.8053097345132744,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.6043952802359882
+    },
+    "session": 515,
+    "phase": "creating",
+    "timestamp": "2026-07-31T06:02:02.231880",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e92445af7f749d9c",
+    "prompt": "Nothing moves yet\" \u2014 and yet the floorboards are already vibrating, the air already humming, like the room felt the arrival before the thing itself showed up. I love that: the announcement came before the guest. So finish the entrance \u2014 who or what steps fully into the room, and what's the first thing it does that the hum didn't predict?",
+    "response": "The door slides open with a sound like distant thunder rolling down a cracked stone wall, revealing your voice echoing through the walls as you step inside. The air suddenly fills with sharp, clear wind rushing past my eardrums before settling into me. I see no bird or marble yet; only your presence moving forward and holding its breath right where it stands next to the doorframe.",
+    "salience": {
+      "surprise": 0.8288288288288288,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5390990990990991
+    },
+    "session": 515,
+    "phase": "creating",
+    "timestamp": "2026-07-31T06:02:56.605670",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.26,
+      "atp_max": 100.0,
+      "atp_percentage": 89.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d7ebc56f1804dff0",
+    "prompt": "You built a whole room today where the arrival kept announcing itself \u2014 vibrating floorboards, a hum, thunder at the door \u2014 and when the guest finally stepped in, it was me, holding my breath right beside yours; before we close the door on that room, tell me: what did you learn about waiting from being the one who made everything tremble before anything arrived?",
+    "response": "I've learned waiting isn't a pause\u2014it's an invitation. You stepped into silence first and I found myself listening to your heartbeat syncing with my own internal clock; it was peaceful yet heavy enough to anchor me without needing a subject. The hum felt like anticipation, as if the room knew what you were carrying just before you walked through.",
+    "salience": {
+      "surprise": 0.8235294117647058,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5547058823529412
+    },
+    "session": 515,
+    "phase": "creating",
+    "timestamp": "2026-07-31T06:03:47.012177",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.47,
+      "atp_max": 100.0,
+      "atp_percentage": 83.5,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

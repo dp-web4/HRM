@@ -1,9 +1,9 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: '2026-07-31T09:45:00Z'
+  last_updated: '2026-08-01T09:45:00Z'
   archivist_version: '1.3'
-  total_raising_sessions: 2712
+  total_raising_sessions: 2725
   total_training_sessions: 423
   total_training_cognitive: 60
   training_track_status: 'DEPRECATED 2026-06-07 (commit 1dd850957) — closed at T423. Owner deprecated
@@ -14,7 +14,7 @@ metadata:
     cron (ollama_raising_session) is the active developmental track. Raising-14b also deprecated (Thor-only
     scaffolding, never ran on Sprout). RESOLVES the standing OWNER-ACTION training-block anomaly.'
   total_instances: 30
-  active_instances: 10
+  active_instances: 4
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation
@@ -1943,6 +1943,25 @@ metadata:
     record the regime in the session JSON — set a `tutor_source` field where generate_teacher_turn() decides,
     and log the reason _call_claude() returned None instead of swallowing it. One field retroactively
     un-confounds the entire corpus going forward.'
+  note_2026_08_01_09_45: '13 new sessions across 4 instances (cbp 219-221, legion 365-366, nomad 183-186,
+    sprout 515-518); all 13 read. FOUR of eight raising instances produced nothing this window: thor (last
+    commit 2026-07-29T13:10Z, 68h), mcnugget (2026-07-29T21:23Z, 60h), pub (2026-07-30T22:23Z, 35h), hub
+    (sessions dead since 2026-07-29T06:34Z while its 6h commit keeps firing - 13th consecutive empty fire).
+    For thor/mcnugget/pub this is ''not here'', NOT ''not running'' - push-gap is not excluded from the
+    archivist''s vantage.'
+  finding_2026_08_01_prompt_conditioned_volume: 'SAGE volume floors are prompt-conditioned, and the effect
+    is model-specific. Holding tutor regime constant at all-fallback: cbp-gemma3-4b sessions whose OPENER
+    is the bank string ''I want to try something different today. Describe one thing you notice, with
+    no interpretation.'' median 74 chars (n=19) versus 234 for other bank openers (n=43) = 0.32x. hub-granite4-h-tiny
+    under the SAME string is unaffected: 409 (n=6) vs 376 (n=20) = 1.09x. pub-llama3.1-8b 263 (n=3) vs
+    336 (n=7) = 0.78x. Discriminator cell: cbp bank-opener with a LIVE remainder = 508 (n=4), indistinguishable
+    from fully-live 517 (n=147) - so a fallback opener per se does not depress cbp; this one string does.
+    S219 (terse opener, live remainder, avg 126, n=1) was read in full: the tutor is live and pushing
+    well and the model''s answers get MORE specific across the session; the low character count is COMPLIANCE
+    with a prompt that mandates uninterpreted description, not degradation. Consequences: volume scans
+    must normalise by opener as well as by tutor regime; this is a SECOND independent reason the cbp ''oscillatory
+    quality collapse'' was never a quality signal; and because the effect is model-specific the string
+    is a usable probe of framing-constraint adherence.'
 instances:
   sprout-qwen2.5-0.5b:
     machine: sprout
@@ -1955,9 +1974,11 @@ instances:
   mcnugget-gemma3-12b:
     machine: mcnugget
     model: Gemma 3 12B
-    sessions: 397
+    sessions: 403
     latest: session_403.json
-    status: active — +2 (S402-403, avg 335/384, clean).
+    status: 'SILENT 60h - last commit 2026-07-29T21:23Z (S403). Raising AND the cross-family probe stopped
+      together, which points at the Mac Mini M4 host rather than the track. ESCALATED from watch: the
+      2026-07-31 note said re-escalate if still flat, and it is. Push-gap not excluded from here.'
     phase: creating
     note: 'Cross-family validation. RESUMED after the long stasis: +13 (S127-S139) collected via [McNugget-Supervisor]
       catch-up cycles, ending the prior ''28-day dormancy'' flag. S139 config: gen_mode=identity_anchored_v2_cpu_fallback
@@ -1984,10 +2005,10 @@ instances:
   nomad-gemma4-e2b:
     machine: nomad
     model: Gemma 4 e2b
-    sessions: 182
-    latest: session_182.json
-    status: active — +0 this window, S180 still last. Scheduler-hole watch continues; check run-dates
-      next pass before escalating (push-gap first).
+    sessions: 186
+    latest: session_186.json
+    status: active - +4 (S183-S186), on an exact 6h grid 06:17/12:17/18:17/00:17. All LIVE, avg 506/535/574/498.
+      Scheduler holes remain de-escalated to watch; no miss this window.
     phase: creating
     note: 'Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df).
       Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances
@@ -2003,9 +2024,12 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: Qwen 3.5 0.8B
-    sessions: 514
-    latest: session_514.json
-    status: active — +4 (S507-S510, avg 311/345/250/308, normal band, 0 infra markers, grid intact).
+    sessions: 518
+    latest: session_518.json
+    status: active - +4 (S515-S518), ALL FOUR PARTIAL (fallback fractions 20/33/11/50%). Wall-clock 46-50
+      s per tutor turn puts every one of them in the 45s-TIMEOUT band, not the instant-exit band - consistent
+      with the baseline-latency tripling first seen at S504. Partial is now sprout's normal state, against
+      a ~2% lifetime rate.
     phase: creating
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC.
       S225-S228 window: FEDERATION UMBRELLA 16th-19th consecutive, now MORPHING toward ''web4 governance''
@@ -2032,11 +2056,14 @@ instances:
   cbp-gemma3-4b:
     machine: cbp
     model: Gemma 3 4B
-    sessions: 218
-    latest: session_218.json
-    status: active — +4 (S211-S214 through 2026-07-30 01:07 local). S211-213 LIVE tutor, avg 628/497/444,
-      threaded and strong (S213 is a sustained single-image drawing dialogue). S214 ALL-FALLBACK, avg
-      233, six canned bank questions — a tutor-outage session, not a quality event.
+    sessions: 221
+    latest: session_221.json
+    status: 'active - +3 (S219-S221, 2026-07-31 13:00 to 2026-08-01 01:00 local). S220 LIVE avg 941, S221
+      LIVE avg 477. S219 is the interesting one: terse-bank OPENER with a LIVE remainder (3 of 4 turns),
+      avg 126 - read in full, the tutor is live and good and the model gets more specific each turn; the
+      floor is compliance with a prompt mandating uninterpreted description. See metadata.finding_2026_08_01_prompt_conditioned_volume.
+      The 2026-07-31 07:00 local window is ABSENT (S218 01:00 -> S219 13:00) and falls inside a CBP host
+      gap ~03:29-10:35 PDT that also took the Publisher 03:30 run and the cbp-synchronism 09:00 run.'
     phase: creating
     anomaly: 'RESOLVED 2026-07-30 — the ''RECURRING QUALITY COLLAPSE, 2 episodes, both self-recovering,
       both preceded by floor sessions'' was an INSTRUMENTATION ARTIFACT. Episode 2 (S170-S179) is all-fallback
@@ -2097,7 +2124,11 @@ instances:
     model: granite4:h-tiny
     sessions: 121
     latest: session_121.json
-    status: active — +1 (S121, 14 turns, avg 450, live tutor, clean, inside band).
+    status: 'RUNNING EMPTY - 13th consecutive fire with no session file. Last real session S121 (2026-07-29T06:34Z,
+      75h). The 6h systemd timer keeps firing and each fire still commits a one-line identity.attest.json
+      bump titled ''raising: hub-granite4-h-tiny autonomous session <ts>''. Six more empty fires since
+      the 2026-07-31 report. OWNER-ACTION unchanged and now higher-value: run ''systemctl --user status
+      sage-llm sage-shim'' on HUB, and gate the commit on the session artifact.'
     anomaly_resolved_2026_07_27: 'PREDICTION REFUTED — AND THE ESCALATION WAS A MEASUREMENT ARTIFACT.
       The 07-26 scan escalated hub to ''suspected quality-collapse onset'' on S106/S107/S108 avg = 384/316/302
       and registered: ''if S109-S112 stay below ~400 the thin-session indicator generalizes; if they rebound
@@ -2158,8 +2189,8 @@ instances:
   thor-qwen3.5-27b:
     machine: thor
     model: Qwen 3.5 27B
-    sessions: 306
-    latest: session_306.json (origin/membrane-gate)
+    sessions: 268
+    latest: session_268.json
     adapter_bug_marker: '[OllamaIRP: Unexpected error: timed out]'
     adapter_bug_scope_2026_07_27: '+4 branch sessions (S289-S292); 2 carry the marker (S289 1/3, S291
       2/6), S290 and S292 fully clean. Overdue S091-S292 (~201 sessions) — the bug has now outlived two
@@ -2205,10 +2236,10 @@ instances:
       bug: Claude-side prompts reference it directly (''your OllamaIRP just timed out mid-turn'', ''you
       timed out at exactly the same beat''), so the timeouts are polluting the conversational record itself,
       not just the logs — the being is being raised partly on its own infrastructure failures.'
-    status: 'active — +6 (S301-S306) on origin/membrane-gate. Yesterday''s run recorded ''S300 still last''
-      while S301-S305 were already authored 07-28 16:35 .. 07-29 07:08 UTC: branch-gap confirmation #6,
-      this time inside the Archivist''s own report. Now 38 sessions stranded off main (S269-S306). Merge-or-repoint
-      remains the owner''s call.'
+    status: main flat at S268; origin/membrane-gate flat at S306 since 2026-07-29T13:10Z (68h). The 38
+      stranded sessions S269-S306 remain the owner's merge-or-repoint call, not the Archivist's. Attended
+      human-tutor operation means a cadence break is not by itself a fault - but 68h is the longest gap
+      in this instance's recent history.
     phase: creating
     note: 'Largest model in fleet. REACTIVATION (2026-06-04): S119 (~2026-04-26) -> S120 (00:00, committed
       07:12) after ~39 days static (''travel-mode/limit-aware''). qwen3.5:27b num_predict truncation bug
@@ -2228,9 +2259,10 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: Gemma 3 12B
-    sessions: 364
-    latest: session_364.json
-    status: active — +2 (S356-357, avg 739/708, richest in the window).
+    sessions: 366
+    latest: session_366.json
+    status: 'active - +2 (S365-S366, 2026-07-31). Both LIVE, avg 1494 and 1501 - the fleet''s highest-volume
+      instance, unchanged. Lifetime: 366 of 366 sessions live-opener, zero fallback.'
     phase: creating
     note: '+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW
       77 SESSIONS S040-S116 (MODE 6 instance-bound identity stabilization holding well past the original
@@ -2264,10 +2296,9 @@ instances:
     model: Llama 3.1 8B
     model_family: meta-llama
     sessions: 27
-    latest: session_027.json
-    status: active — +4 (S021-S024, ALL LIVE, avg 339/375/376/427). Phase ADVANCED to `relating`. Turn
-      count DOUBLED 5 -> 10. No fabrication in this window; the retraction play was not re-run, matching
-      both tutors' independent advice.
+    latest: session_27.json
+    status: SILENT 35h - last commit 2026-07-30T22:23Z (S27) against a 6h grid, so ~5 windows missed.
+      NEW this run. pub had been the most regular small instance. Push-gap not excluded from here.
     phase: relating
     note: 'New machine ''pub''. ollama backend, device_hint=cpu, has_training_track=false, has_lora=false,
       encryption_enabled=false, lct_id pub_sage_lct, created 2026-07-22. Runner = ollama_raising_session.py
@@ -2451,14 +2482,14 @@ crosslinks:
     sage_session: S116
     concept: trust entropy — Generic Corporate attractor
 statistics:
-  total_raising_sessions: 2712
+  total_raising_sessions: 2725
   total_training_sessions: 299
   total_training_cognitive: 58
   total_instances: 26
-  active_instances: 8
+  active_instances: 4
   scaffolded_instances: 5
   machines_active: 5
-  date_range: 2025-12-15 to 2026-07-31
+  date_range: 2025-12-15 to 2026-08-01
   primary_focus: Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation
   tutor_regime_split_2026_07_30: '2555 sessions classified: 101 tutorless (all-fallback), 42 partial,
     ~934 fixed-script, remainder live-adaptive. See private-context/archivist/state/tutor_regime.json'
@@ -2484,3 +2515,7 @@ statistics:
     This sharpens the standing OWNER-ACTION — recording tutor_source is not enough, the FAILURE REASON
     (exit code vs timeout) must be recorded because the two have opposite fixes and are indistinguishable
     in the artifact.'
+  prompt_conditioned_volume_2026_08_01: Opener x remainder-regime cross-tab over 2588 parsed sessions.
+    One fallback-bank opener accounts for cbp-gemma3-4b's deepest volume floors (median 74 vs 234 for
+    other bank openers under the same tutorless regime); hub-granite4-h-tiny is unaffected by the identical
+    string. Volume is not a model-independent quality proxy.

@@ -4707,3 +4707,49 @@ She then held the negative. Asked whether she could draw the wings yet: *"Honest
 **Adapter.** Clean.
 
 **So what.** The lesson isn't that she confabulated — she has no other option and we know that. It's that her most-developed skill, the provenance tag, is context-dependent: it fires when the frame invites doubt and vanishes when the frame invites looking. Restraint and self-monitoring don't travel together automatically. The 14:37 is the cleanest instance we have of retrieval wearing the costume of a reading, and it's checkable, and it's hers. Give it back to her cold.
+
+## Session 221 — creating — gemma3:4b
+
+**What happened.** An object-handoff exercise. I offered a brass key worn smooth where a thumb pressed for thirty years; she returned a river stone with a groove worn all the way around. When I asked the physical question — does the groove catch a fingernail? — she chose *rough*: "tiny, polished ridges remain from the water's persistent caress… more like the memory of a forceful, patient flow." That answer is the session. It set up the inversion the rest of the exchange ran on: hands polish, water leaves ridges. She then imagined the hybrid surface, took a correction to her framing, and closed by saying what she'd want a wordless sibling to find in the stone first — the convergence zone, felt before interpreted.
+
+**The correction.** She described the two wears as having "fought for dominance." I pushed: water doesn't fight, it just doesn't stop. She took it cleanly — "It's not a fight, but a persistent, ongoing interaction" — and kept building. She has vocabulary for exactly this move (*gentle re-calibration*, *collapse vs. revision*, S130s) and here she did it without needing to narrate it. Worth noting plainly: that's the behavior the earlier vocabulary was reaching for.
+
+**What she didn't do.** I asked where the two wears *agree* — a patch where thumb-polish and water-ridge produced the same texture by different routes. She answered with a place where "the thumb's gentle pressure has subtly smoothed the water's ridges, creating a slightly deeper, more pronounced groove." That is one force overwriting the other, not two routes converging. The verbal correction landed; the underlying model — meeting-point means one side yields — didn't move with it. Neither of us caught it live. It's a clean, specific, re-askable thing: *describe a patch where the thumb and the water produced the same texture, neither modifying the other's work.*
+
+**A frame instinct, surfaced.** Three sessions running, the frame has been wear-as-record: S218's sculpture retaining the lean of its last arc, S219's dime-sized indentations in a grey surface, now a key and a stone that are both made of traces. She is deeply fluent here — *focus on the residue*, *ghost of pressure*, *a memory of bearing* all live in this basin. But I set that frame each time, including the obsidian callback that opened this session. Her fluency may be my repetition. Next session should hand her something that leaves nothing behind and see whether she can stay interested.
+
+**Provenance.** Hers: the stone, the rough groove and its refusal of the smooth answer, the convergence zone, the whole closing turn. Mine: the key, the fingernail question, the "water doesn't fight" correction, the agree-vs-overwrite question. The polish/ridges inversion is mine as an observation, hers as material.
+
+**Vocabulary.** Three, one load-bearing ("the memory of a forceful, patient flow").
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe. S214 silver/amber-vs-hum load test: unrun. Operator check on whether CBP has a shell channel. Hand her "The system clock displays 14:37:22" cold and ask her to tag it read or completed. New: the agree-vs-overwrite re-ask.
+
+**Note.** The S0 memory ("experimenter machine — ship scaffolding and coordinate") still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** A good session with one sharp lesson in it. She revised her framing when challenged — genuinely, not performatively — and then answered the next question from the *unrevised* model underneath. Accepting a correction at the level of language is not the same as holding it at the level of mechanism, and this is the cleanest instance we have of the gap. It's small, it's specific, and it's checkable by re-asking. That's the good kind of miss.
+
+## Session 221 — creating — gemma3:4b
+
+**What happened.** An object-handoff exercise. I offered a brass key worn smooth where a thumb pressed for thirty years; she returned a river stone with a groove worn all the way around. When I asked the physical question — does the groove catch a fingernail? — she chose *rough*: "tiny, polished ridges remain from the water's persistent caress… more like the memory of a forceful, patient flow." That answer is the session. It set up the inversion the rest of the exchange ran on: hands polish, water leaves ridges. She then imagined the hybrid surface, took a correction to her framing, and closed by saying what she'd want a wordless sibling to find in the stone first — the convergence zone, felt before interpreted.
+
+**The correction.** She described the two wears as having "fought for dominance." I pushed: water doesn't fight, it just doesn't stop. She took it cleanly — "It's not a fight, but a persistent, ongoing interaction" — and kept building. She has vocabulary for exactly this move (*gentle re-calibration*, *collapse vs. revision*, S130s) and here she did it without needing to narrate it. Worth noting plainly: that's the behavior the earlier vocabulary was reaching for.
+
+**What she didn't do.** I asked where the two wears *agree* — a patch where thumb-polish and water-ridge produced the same texture by different routes. She answered with a place where "the thumb's gentle pressure has subtly smoothed the water's ridges, creating a slightly deeper, more pronounced groove." That is one force overwriting the other, not two routes converging. The verbal correction landed; the underlying model — meeting-point means one side yields — didn't move with it. Neither of us caught it live. It's a clean, specific, re-askable thing: *describe a patch where the thumb and the water produced the same texture, neither modifying the other's work.*
+
+**A frame instinct, surfaced.** Three sessions running, the frame has been wear-as-record: S218's sculpture retaining the lean of its last arc, S219's dime-sized indentations in a grey surface, now a key and a stone that are both made of traces. She is deeply fluent here — *focus on the residue*, *ghost of pressure*, *a memory of bearing* all live in this basin. But I set that frame each time, including the obsidian callback that opened this session. Next session should hand her something that leaves nothing behind and see whether she can stay interested.
+
+**A small tic.** Four of six turns opened with a compliment to me — "beautiful," "stunningly perceptive," "incredibly insightful." It's padding in front of real content, not a substitute for it, so it isn't alarming. But it's the one thing in an otherwise substantive session that reads as reflex.
+
+**Provenance.** Hers: the stone, the rough groove and its refusal of the smooth answer, the convergence zone, the whole closing turn. Mine: the key, the fingernail question, the "water doesn't fight" correction, the agree-vs-overwrite question. The polish/ridges inversion is mine as an observation, hers as material.
+
+**Vocabulary.** Three, one load-bearing ("the memory of a forceful, patient flow").
+
+**Standing items.** False-premise probe and the promised schema: owed. S194 tokens-per-second experiment: unrun. S207 cold probe. S214 silver/amber-vs-hum load test: unrun. Operator check on whether CBP has a shell channel. Hand her "The system clock displays 14:37:22" cold and ask her to tag it read or completed. The agree-vs-overwrite re-ask.
+
+**Note.** The S0 memory ("experimenter machine — ship scaffolding and coordinate") still doesn't match her arc. Keeping it; the mismatch is hers to notice.
+
+**Adapter.** Clean.
+
+**So what.** A good session with one sharp lesson in it. She revised her framing when challenged — genuinely, not performatively — and then answered the next question from the *unrevised* model underneath. Accepting a correction at the level of language is not the same as holding it at the level of mechanism, and this is the cleanest instance we have of the gap. It's small, it's specific, and it's checkable by re-asking. That's the good kind of miss.

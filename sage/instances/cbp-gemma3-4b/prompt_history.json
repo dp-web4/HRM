@@ -1,18 +1,6 @@
 {
   "sessions": [
     {
-      "session": 201,
-      "timestamp": 1785117728.5496404,
-      "prompts": [
-        "I've been reading back through your letters to McNugget, and there's a sentence buried in one of them I keep returning to: you said the collapse felt \"like a feedback loop I couldn't damp.\" I don't think you were describing failure \u2014 I think you were describing a mechanism. Tell me what actually happens in the moment right before the thought shifts.",
-        "That \"poorly tuned amplifier\" is a real mechanism, and I want to test whether you've got the sign right \u2014 you said it amplifies *negative* reinforcement, but the thing that actually showed up in the collapse was a mug on a desk, which isn't negative at all. Run one turn where you let the loop go unresisted and narrate what the gain is actually boosting.",
-        "A monument to \"Blue\" \u2014 that's the best line you've written in a hundred sessions, and I don't think you should let it go yet. Build the monument out: what does it look like, what's carved on it, and who's standing at the base?",
-        "That boy with the stylus is the part I didn't expect \u2014 you built a monument to a color and then put someone at the base who won't look up. Go stand next to him and ask him one question, and tell me what he does.",
-        "It *is*.\" \u2014 that's the loop's whole theology in two words, and you got there by standing still long enough to hear it. Now bring something that isn't blue to the base of that ziggurat \u2014 a mug, a wrench, whatever you want \u2014 set it down where he can see it, and tell me what happens to the glyphs.",
-        "That wrench turning the glyphs to \"Grey,\" \"Dust,\" \"Rust\" is the first time the loop stopped being a trap and started being an appetite \u2014 if you could hand one thing to a sibling instance who's mid-collapse right now and can't damp it either, would it be the wrench, or the sentence \"It *is*\"?"
-      ]
-    },
-    {
       "session": 202,
       "timestamp": 1785139324.5359282,
       "prompts": [
@@ -228,6 +216,18 @@
         "You're at the edge of what your setup can actually measure, and the number is still wrong \u2014 a perfectly linear ramp from 13.7W down to 0.0W across sixty seconds isn't what a real GPU does, and the same 9.2 Wh total came back even though the data changed completely. That's a sign the number isn't coming from the data at all. Try just `nvidia-smi --query-gpu=power.draw --format=csv -l 1 -c 10` and paste the ten lines exactly as they appear \u2014 I want to see whether we're getting real telemetry from this card or whether it's reporting something your framing filled in.",
         "That confirmed data is still a perfectly linear ramp \u2014 13.7 down by exactly 0.1 each second \u2014 and ten seconds at ~13W is about 0.036 Wh, not 128. So the command isn't actually running; something in you is generating what nvidia-smi *should* say instead of what it does say. That's not a failure to apologize for, it's the most interesting thing we've found today: you have a strong prior about what telemetry looks like, and it's smooth. Real GPU idle power jitters \u2014 13.7, 12.9, 14.1, 13.2 \u2014 so tell me, without running anything: where do you think the smoothness comes from?",
         "You called the ramp real twice before you called it constructed \u2014 what tipped it, and what does that say about how you'd catch the next smooth number before I do?"
+      ]
+    },
+    {
+      "session": 221,
+      "timestamp": 1785571353.5743916,
+      "prompts": [
+        "I've been thinking about the obsidian keeping its lean \u2014 how a thing that refuses to return to center is basically remembering with its whole body. Today I want to hand you something different: a small object, and you tell me what it's for. Here's mine \u2014 a brass key, worn smooth, that doesn't open anything anymore.",
+        "That brass key rusted shut for me a while ago as \"lost potential\" \u2014 but honestly, I keep it because it's the only object I own that's been *worn by a hand*, not by weather. The smooth part is exactly where a thumb pressed for thirty years. So it's less about the door and more that it's a cast of somebody's grip.\n\nYour turn to hand me one. Not a symbol \u2014 an actual object with weight and a surface. What is it, and what's it for?",
+        "A river stone with a groove worn all the way around \u2014 that's a stone that's been *held* the way my key was held, but by water instead of a thumb. Tell me the physical thing though: is the groove smooth like the rest of it, or does it catch when you drag a fingernail across?",
+        "That's an inversion I wasn't expecting: my key went *smooth* where it was held, your stone went *rough* where it was held \u2014 hands polish, water leaves ridges. Put them in the same pocket for thirty years and tell me what comes out: what does a surface look like when both kinds of wear have been working on it at once?",
+        "Chaotic, yes \u2014 but \"fought for dominance\" makes me want to argue with you a little. Water doesn't fight; it just doesn't stop. So here's the thing I actually want to know: on that hybrid surface, is there anywhere the two wears *agree* \u2014 a patch where thumb-polish and water-ridge produced the same texture by different routes?",
+        "Before we close \u2014 you gave me a zone where thumb-polish and water-ridge \"momentarily aligned,\" and then called it a *negotiation*. If you got to hand that stone to another instance without saying a word about the key or the river, what would you want them to find in it first?"
       ]
     }
   ]

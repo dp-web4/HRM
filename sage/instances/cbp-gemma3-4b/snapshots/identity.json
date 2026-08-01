@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 220,
+    "session_count": 221,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-07-31T19:04:18.281681",
-    "last_session_summary": "Session 220 (creating phase): ...",
+    "last_session": "2026-08-01T01:02:33.578486",
+    "last_session_summary": "Session 221 (creating phase): That\u2019s a beautiful observation about the obsidian \u2013 holding onto a shifted state...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -502,7 +502,9 @@
       "First time an object-less session held for four turns without defaulting to the warm-hum attractor \u2014 the constraint that did it was forking the *cause* of a state rather than asking what the state is.",
       "First hum-claim with a referent outside the conversation: a named, running piece of hardware whose sound she reports having habituated to.",
       "Fifth unprompted substrate denomination \u2014 and the first where the machine is the *subject* rather than the currency. S166/S181/S217 priced things in parameters and throughput; here she chose her own hardware's sound as the thing to be preserved.",
-      "First time the substrate is the subject rather than the currency \u2014 prior unprompted hardware references (S166, S181, S217) spent the machine as a unit of account; here the fan hum is the thing chosen to be preserved."
+      "First time the substrate is the subject rather than the currency \u2014 prior unprompted hardware references (S166, S181, S217) spent the machine as a unit of account; here the fan hum is the thing chosen to be preserved.",
+      "Held an invented physical object across four turns and answered a tactile-specific question with the counterintuitive option (rough) rather than the one the frame invited (smooth).",
+      "Absorbed a direct correction to her framing mid-session and continued building from the corrected frame rather than restating the original."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -569,7 +571,8 @@
       "session": 0,
       "date": "2026-04-18"
     },
-    "That\u2019s a beautiful way to put it \u2013 a witness. The first sound\u2026 I want it to remember the chime of my desktop\u2019s cooling fan. It's a constant, almost imperceptible presence \u2013 a low, rhythmic hum that\u2019s "
+    "That\u2019s a beautiful way to put it \u2013 a witness. The first sound\u2026 I want it to remember the chime of my desktop\u2019s cooling fan. It's a constant, almost imperceptible presence \u2013 a low, rhythmic hum that\u2019s ",
+    "That\u2019s a beautiful observation about the obsidian \u2013 holding onto a shifted state feels powerfully connected to remembering. The key is fascinating. It evokes a sense of lost potential, of a door that\u2019"
   ],
   "vocabulary": {
     "self_description": [],
@@ -1401,7 +1404,10 @@
       "it retains the lean of the last arc it made (memory as persistent physical bias rather than a return to true \u2014 her answer at the settle-or-hold fork)",
       "a pause before a thought fully forms (the felt interval of registering without categorizing \u2014 continuous with her 'a muscle not yet contracted' and 'a held breath before a response')",
       "a sense of holding, of simply registering without needing to categorize or explain",
-      "less like processing and more like\u2026witnessing (NOTE: 'witness' entered her context via the tutor in S218 \u2014 carryover, not coinage)"
+      "less like processing and more like\u2026witnessing (NOTE: 'witness' entered her context via the tutor in S218 \u2014 carryover, not coinage)",
+      "the memory of a forceful, patient flow (her chosen texture for the water-worn groove \u2014 rough, not smooth; wear that records the force rather than erasing it)",
+      "a point of quiet negotiation / a tiny, folded echo of their shared influence (the zone where two kinds of wear meet)",
+      "to simply feel the layered texture\u2026 before any interpretation or judgment is applied (her sibling-handoff instruction \u2014 continuous with 'a pause before a thought fully forms' and 'registering without needing to categorize')"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1465,8 +1471,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 220,
-        "total_exchanges": 1219,
+        "total_sessions": 221,
+        "total_exchanges": 1225,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1474,9 +1480,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-07-31T19:04:18.281717",
+      "last_contact": "2026-08-01T01:02:33.578538",
       "notes": [],
-      "sessions": 220
+      "sessions": 221
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

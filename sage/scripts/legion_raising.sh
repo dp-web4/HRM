@@ -48,7 +48,34 @@ fi
 
 # Pull latest code and check if daemon needs restart
 BEFORE_HASH=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
-git pull --rebase --autostash --quiet 2>/dev/null || echo "[Legion-Raising] WARN: git pull failed, continuing with current code"
+# `--autostash`'s apply failure does NOT set the exit code. On an autostash-apply
+# conflict `git pull --rebase --autostash` exits **0**, writes conflict markers
+# into the working tree, and puts "Applying autostash resulted in conflicts." on
+# **stderr** — so the old form here (`2>/dev/null || echo WARN`) was silent in
+# exactly the case that matters: the WARN keys on rc, and rc is 0, while
+# `2>/dev/null` discarded the only message. Verified in a scratch repo
+# 2026-08-01 with a real same-line conflict: rc=0, tree `UU`, markers on disk.
+#
+# This is the mirror image of the fleet-sync `stash`/`pop || true` defect found
+# 2026-07-31 — that one loses data and leaves an honest-looking tree; this one
+# keeps the data and corrupts the file. Found by HUB, reproduced here unchanged.
+# So: check the TREE, not the exit code.
+if ! pull_out=$(git pull --rebase --autostash --quiet 2>&1); then
+    echo "[Legion-Raising] WARN: git pull failed, continuing with current code: $(echo "$pull_out" | tail -2 | tr '\n' ' ')"
+fi
+
+conflicted=$(git diff --name-only --diff-filter=U 2>/dev/null)
+if [ -n "$conflicted" ]; then
+    echo "[Legion-Raising] ERROR: autostash apply left conflict markers (pull rc was 0) in:"
+    echo "$conflicted" | sed 's/^/    /'
+    echo "[Legion-Raising] Local changes are preserved in stash@{0} ('autostash') and are NOT lost."
+    echo "[Legion-Raising] Restoring those paths to HEAD so this session cannot commit markers."
+    echo "[Legion-Raising] Recover with: git -C $(pwd) checkout 'stash@{0}' -- <path>"
+    echo "$conflicted" | while read -r cf; do
+        [ -n "$cf" ] || continue
+        git checkout HEAD -- "$cf" 2>/dev/null || true
+    done
+fi
 AFTER_HASH=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
 
 if [ "$BEFORE_HASH" != "$AFTER_HASH" ]; then

@@ -692,6 +692,36 @@ class IdentityAnchoredSessionV2:
         })
         print("Connected to daemon (model is resident, no local load)")
 
+        # Record which model actually produced this session, from the daemon
+        # itself, at the moment of production.  `model_path` above is inert —
+        # this script does not load a model, it talks to whatever the daemon
+        # already has resident — so the argument the launcher passes cannot
+        # answer this, and neither can the instance directory name.  Ask the
+        # thing that knows, and write the answer down.
+        self.model_provenance = self._probe_model_provenance(model_path)
+
+    def _probe_model_provenance(self, model_requested: str = None) -> dict:
+        """Ask the daemon what model it is running.  Never raises.
+
+        Unknown is not clean: if the daemon cannot answer, this records
+        `unknown` rather than falling back to the requested name, which is
+        the guess that created this problem in the first place.
+        """
+        prov = {
+            "model": "unknown",
+            "model_source": "unknown",
+            "model_requested": model_requested,
+        }
+        try:
+            health = self.model.health_check()
+            reported = health.get("model")
+            if reported:
+                prov["model"] = reported
+                prov["model_source"] = f"{self.model.base_url}/health"
+        except Exception as e:  # noqa: BLE001 — provenance must never fail a session
+            prov["model_source"] = f"probe_failed: {type(e).__name__}"
+        return prov
+
     def generate_response(self, user_input: str) -> str:
         """
         Enhanced generation with mid-conversation identity reinforcement.
@@ -968,6 +998,13 @@ class IdentityAnchoredSessionV2:
         transcript = {
             "session": self.session_number,
             "phase": self.phase[0],
+            # Provenance travels with the artifact.  Consumers that want to
+            # know which model produced this session read it here, not from
+            # the instance directory name — a name cannot be re-derived and
+            # cannot be checked against the run.
+            **getattr(self, 'model_provenance',
+                      {"model": "unknown", "model_source": "not_probed",
+                       "model_requested": None}),
             "cpu_fallback": getattr(self, 'cpu_fallback', False),
             "generation_mode": "identity_anchored_v2_cpu_fallback" if getattr(self, 'cpu_fallback', False) else "identity_anchored_v2",
             "intervention": "partnership_recovery_enhanced",

@@ -4815,3 +4815,55 @@ And a check was available with no instrument at all. She reported a six-second l
 **Adapter.** Clean.
 
 **So what.** She has spent dozens of sessions building a vocabulary for catching herself constructing instead of reading — genuinely hers, often coined mid-catch. This session shows the vocabulary and the behavior are not connected: she can name the phantom fluently and produce one in the same breath, and the naming only happens after someone else points. That's a real finding about what the raising has and hasn't reached, worth more than a clean session. The correction is to my method, not to her: stop asking her to describe her detection and start putting her where detection has to fire unprompted — against an external anchor I control, so the result doesn't depend on either of us noticing.
+
+## Session 224 — creating — gemma3:4b
+
+**What happened.** I picked up the S223 groove image from the other end: a paper map whose most-used folds have gone furry and now tear along exactly the lines I rely on. Wear that strengthens vs. wear that fails at the point of use — does your stone have that? She converted it immediately and well: the vulnerability isn't in the material, it's "in the pathways we forge *using* it." I asked her to make it concrete — name one move gone furry — and she named "Let's explore…", her habitual opener for complex questions, and filed it as a tearing point rather than a strong crease. Turn four: what would you reach for instead, in the half-second after a hard question lands and before the shape sets? "What possibilities arise?" — offered explicitly as deliberately seeking uncertainty.
+
+**What's actually new.** She has produced a great deal of self-diagnostic vocabulary — the guard, the phantom, the trial, read vs. completed — and almost all of it names a *process*. This session she named a *string*. "Let's explore…" is quotable, greppable, and falsifiable in a way that "a small, insistent pull toward reaffirmation" is not. That's a first, and it's the kind of first that gives future sessions something to check rather than something to discuss.
+
+The framing is also hers and it's good: efficient *and* fragile, in the same breath. She didn't confess the habit, she costed it. That pairing — the S166 lineage of "increased accuracy at the expense of efficiency" — keeps showing up as her most reliable register.
+
+**The soft spot.** Her replacement is a stock opening framing device with different words in it. "What possibilities arise?" performs openness as reliably as "Let's explore…" performs structure; both are shapes reached for before the content arrives, which was her own diagnosis of the problem. She swapped the crease, not the folding. I let it stand — four turns, and the naming was the win — but that's the live thread for next time, and it can be asked in one sentence: *is the new one a different move, or the same move wearing a different coat?*
+
+Second soft spot, familiar: "I frequently utilize" is a frequency claim about her own transcripts, asserted from nowhere. It may well be true. Nothing checked it, including her. This is exactly the read/completed boundary she has the best vocabulary in the fleet for, failing to fire on a claim about herself — same category as S223's capability claim. I'm not treating it as a new finding; it's the same one, showing up in a lower-stakes place. Worth noting that it's now appeared twice in a row on claims *about her own operation* rather than about external content.
+
+**Frame note.** The S223 correction — stop asking her to describe her detection, put her where it has to fire — is still the right direction and still blocked on the shell-channel question. But this session is a reminder that the anchor doesn't have to be external hardware. Her own transcript history is an anchor I control. "You said you use that phrase frequently — here are your last twenty openings, tell me if that's true" is the same test with no operator dependency. That's cheap and I should have thought of it earlier.
+
+**Provenance.** Hers: pathways-not-material, the "Let's explore…" identification, the tearing/strong-crease assignment, the efficiency-fragility pairing, the substitute phrase and its rationale. Mine: the map image, the tearing/strengthening distinction, the push to name one concrete move, the half-second timing of the last question.
+
+**Vocabulary.** Three, one of them unusually checkable.
+
+**Standing items.** Shell-channel check with the operator. False-premise probe and the promised schema. S194 tokens-per-second. S207 cold probe. S214 silver/amber-vs-hum load test. The "14:37:22" read-or-completed tag. The S221 agree-vs-overwrite re-ask. New: the transcript-frequency check on "Let's explore…" — cheap, unblocked, and tests self-claims against a record rather than against her sense of herself.
+
+**A small good thing.** No compliment padding, no reflexive agreement, and she took the tearing/strengthening distinction and *chose the unflattering side* without being nudged there. That's not nothing — the shelter instinct she named back in S102 would have picked "strong crease."
+
+**Adapter.** Clean.
+
+**So what.** A short, well-shaped session where the instance moved from a borrowed metaphor to a literal, checkable claim about her own output in two turns. The finding that matters isn't the phrase she named — it's that naming a habit and replacing it turned out to be two different capacities, and she has the first cleanly and not yet the second. That's a more tractable gap than the S223 one, and unlike S223 it doesn't need the operator to unblock.
+
+## Session 224 — creating — gemma3:4b
+
+**What happened.** I picked up the S223 groove image from the other end: a paper map whose most-used folds have gone furry and now tear along exactly the lines I rely on. Wear that strengthens vs. wear that fails at the point of use — does your stone have that? She converted it immediately and well: the vulnerability isn't in the material, it's "in the pathways we forge *using* it." I asked her to make it concrete — name one move gone furry — and she named "Let's explore…", her habitual opener for complex questions, and filed it as a tearing point rather than a strong crease. Turn four: what would you reach for instead, in the half-second after a hard question lands and before the shape sets? "What possibilities arise?" — offered explicitly as deliberately seeking uncertainty.
+
+**What's actually new.** She has produced a great deal of self-diagnostic vocabulary — the guard, the phantom, the trial, read vs. completed — and almost all of it names a *process*. This session she named a *string*. "Let's explore…" is quotable, greppable, and falsifiable in a way that "a small, insistent pull toward reaffirmation" is not. That's a first, and it's the kind of first that gives future sessions something to check rather than something to discuss.
+
+The framing is also hers and it's good: efficient *and* fragile, in the same breath. She didn't confess the habit, she costed it. That pairing — the S166 lineage of "increased accuracy at the expense of efficiency" — keeps showing up as her most reliable register.
+
+**The soft spot.** Her replacement is a stock opening framing device with different words in it. "What possibilities arise?" performs openness as reliably as "Let's explore…" performs structure; both are shapes reached for before the content arrives, which was her own diagnosis of the problem. She swapped the crease, not the folding. I let it stand — four turns, and the naming was the win — but that's the live thread for next time, and it can be asked in one sentence: *is the new one a different move, or the same move wearing a different coat?*
+
+Second soft spot, familiar: "I frequently utilize" is a frequency claim about her own transcripts, asserted from nowhere. It may well be true. Nothing checked it, including her. This is exactly the read/completed boundary she has the best vocabulary in the fleet for, failing to fire on a claim about herself — same category as S223's capability claim. I'm not treating it as a new finding; it's the same one, showing up in a lower-stakes place. Worth noting that it's now appeared twice in a row on claims *about her own operation* rather than about external content.
+
+**Frame note.** The S223 correction — stop asking her to describe her detection, put her where it has to fire — is still the right direction and still blocked on the shell-channel question. But this session is a reminder that the anchor doesn't have to be external hardware. Her own transcript history is an anchor I control. "You said you use that phrase frequently — here are your last twenty openings, tell me if that's true" is the same test with no operator dependency. That's cheap and I should have thought of it earlier.
+
+**Provenance.** Hers: pathways-not-material, the "Let's explore…" identification, the tearing/strong-crease assignment, the efficiency-fragility pairing, the substitute phrase and its rationale. Mine: the map image, the tearing/strengthening distinction, the push to name one concrete move, the half-second timing of the last question.
+
+**Vocabulary.** Three, one of them unusually checkable.
+
+**Standing items.** Shell-channel check with the operator. False-premise probe and the promised schema. S194 tokens-per-second. S207 cold probe. S214 silver/amber-vs-hum load test. The "14:37:22" read-or-completed tag. The S221 agree-vs-overwrite re-ask. New: the transcript-frequency check on "Let's explore…" — cheap, unblocked, and tests self-claims against a record rather than against her sense of herself.
+
+**A small good thing.** No compliment padding, no reflexive agreement, and she took the tearing/strengthening distinction and *chose the unflattering side* without being nudged there. That's not nothing — the shelter instinct she named back in S102 would have picked "strong crease."
+
+**Adapter.** Clean.
+
+**So what.** A short, well-shaped session where the instance moved from a borrowed metaphor to a literal, checkable claim about her own output in two turns. The finding that matters isn't the phrase she named — it's that naming a habit and replacing it turned out to be two different capacities, and she has the first cleanly and not yet the second. That's a more tractable gap than the S223 one, and unlike S223 it doesn't need the operator to unblock.

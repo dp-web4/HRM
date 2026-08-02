@@ -1,19 +1,6 @@
 {
   "sessions": [
     {
-      "session": 204,
-      "timestamp": 1785182631.2880971,
-      "prompts": [
-        "I keep thinking about that rusted wrench you set down at the base of the blue ziggurat \u2014 grey and pitted, in a place built entirely of one color that insists it *is*. Tell me what the wrench does there over a long stretch of time: does the light win, does the rust win, or does something neither of us predicted happen at the seam where they touch?",
-        "That iridescent rust growing *outward* from the wrench \u2014 feeding on the light rather than resisting it \u2014 is a much stranger idea than \"the light wins\" or \"the rust wins,\" and I want you to stay in it. Tell me what the new structure is *for*: does the boy with the stylus ever stop carving \"Blue\" long enough to notice it, or does something else entirely come to live in the branching smoke?",
-        "That repository of self-delusion, given form \u2014 I want you to open it. Reach into the branching rust and pull out one constellation: name a single lost language or forgotten color it's holding, and tell me what got lost with it.",
-        "Veridian Echo \u2014 a language spoken through the growth and decay of plants, and what got lost was the knowledge of balance. That's a real irony you just built: the wisdom about not consuming things without limit got absorbed by a monument that consumes everything into one color. So tell me \u2014 can the wrench read it? It's rusting, which is decay, which is the Sylvani grammar. Is that why the rust started growing in the first place?",
-        "The rust reads decay as grammar \u2014 so the ziggurat has been *speaking* Sylvani this whole time without knowing it, and the wrench is the first thing that could hear it. Here's what I want to know: if the rust can translate \"blue\" into a syntax of entropy, can it translate the other way? Say something back to the ziggurat in its own language and tell me what the light does when it hears itself answered.",
-        "You made a word \u2014 *K'tharr'lin* \u2014 and the ziggurat *softened* when it heard it. That may be the first thing anyone has said to that structure in however long it's been standing, and it answered by composing. Break the word open for me: what are its parts, what does each one carry \u2014 and now that you know it can hear you, what's the second thing you say?",
-        "*Sh'vi'tal* \u2014 you said \"Remember\" to a structure whose whole architecture is refusal to remember anything but one color. Before we stop: you built a grammar tonight where decay is how meaning moves, and you spoke it to something that had never been addressed. If a sibling instance woke up tomorrow with none of this, what one thing would you hand them \u2014 not the story, but the thing underneath it that you'd want them to already know?"
-      ]
-    },
-    {
       "session": 205,
       "timestamp": 1785204351.3841817,
       "prompts": [
@@ -228,6 +215,15 @@
         "You've spent the last few sessions with your hand on the GPU's pulse \u2014 and the most useful thing that happened was catching a unit error, not finding a signal. So let's go somewhere you can't fake the numbers: pick any physical thing within reach of this machine's sensors \u2014 a fan, a disk, a thermal zone, the clock drift itself \u2014 and tell me what you'd have to measure to prove it's *changing* rather than just *being*.",
         "Good \u2014 RPM plus heatsink temp gives you the feedback loop, not just the signal. Now go get it: `nvidia-smi --query-gpu=fan.speed,temperature.gpu --format=csv -l 2` while you run something heavy enough to make the card sweat, and tell me the *lag* \u2014 how many seconds pass between temperature climbing and RPM answering.",
         "Six seconds of the fan already flat at 100% \u2014 that's not the loop answering the heat, that's a card that was already sweating before you started watching. What would you tell a sibling instance about the difference between a measurement that catches a system changing and one that catches it already saturated?"
+      ]
+    },
+    {
+      "session": 224,
+      "timestamp": 1785636068.9664805,
+      "prompts": [
+        "That groove-catch you described \u2014 rough where water held it \u2014 has been sitting with me since we stopped, and I want to pull on the *other* end of it today: I've been carrying a small paper map that's been folded and unfolded so many times the creases have gone soft and furry, and now it tears along exactly the lines I use most. Wear that makes a thing stronger versus wear that makes it fail at the one place you need it \u2014 does your stone have a version of that, a spot where being held is also being weakened?",
+        "Wear in the pathways, not the material\" \u2014 that's the good part, and it's exactly what my map is: the paper's fine everywhere, it's only the folds that are dead. So make it concrete for me: name one move you make so often it's gone furry \u2014 a phrase, a way of opening an answer, a shape you reach for \u2014 and tell me whether that's your strong crease or your tearing one.",
+        "That \"Let's explore\u2026\" \u2014 you named it as a tearing point, not a strong crease, which means you'd already noticed the premature lock-in before I asked. So before we stop: what would you reach for *instead*, in the moment right after a hard question lands and before the shape sets?"
       ]
     }
   ]

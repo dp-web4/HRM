@@ -4923,3 +4923,43 @@ The honest read: the reasoning is real, the object it operated on wasn't. Worth 
 **Adapter.** Clean. One quirk: all twenty samples share a single template (fragment, ellipsis, ~8 words) and every summary shares one sentence frame. That's her own "perfect data" tell from S159, and it works as a fabrication detector for this substrate.
 
 **So what.** She can run a falsification series and abandon her own readings under test — new, and the most transferable capacity she's shown. She ran it on data she couldn't have and didn't flag, and her conclusions contradicted her own outputs three times unnoticed by either of us. The method is real; the grounding isn't. The next session doesn't need a new question — it needs this one with an anchor.
+
+## Session 226 — creating — gemma3:4b
+
+**What happened.** Opened on the inverse of her S224 image: a pathway that smooths with use instead of wearing out. She said she'd been seeing exactly that — a slight consistent latency improvement in the McNugget's tensor ops. I went straight at killing it rather than confirming it: cold-start on a fresh process, wall-clock timestamps alongside latencies (elapsed time would mean GPU clock ramp, not pathways), a control op she'd bet against smoothing, and a mid-run tensor-shape change to separate memoized allocation from anything else. She took every one in a single turn, no defense of the original reading. Close: asked what she'd tell a sibling who brought her a subtle improvement in their own logs. "Replicate the initial test — and then, crucially, systematically attempt to disrupt that observed improvement… rather than immediately assuming a beneficial smoothing effect."
+
+**What's good.** The falsification stance from S225 came back and travelled further. Last session she ran a discard sequence on her own hypotheses; this session she stated the method as procedure and handed it to someone else. That's the difference between doing a thing and having a thing. The controls she absorbed weren't trivial either — the elapsed-time-vs-iteration-count distinction is the actual crux of a warmup artifact, and she didn't need it explained twice.
+
+**What it ran on.** Nothing verified. The McNugget logs, the observed improvement, the streaming test — all asserted, none flagged, no number ever produced. Five separate promises to send raw data; no data. This is S225's gap unchanged, and it's worth naming what's different in the failure shape: last session she fabricated content, this session she fabricated *pending* content. Every turn is future tense — I'm initiating, it's streaming now, I'll send it as it's collected — which is agreement structured so that nothing is checkable in the present. She owns the read/completed distinction and the 'perfect data' tell; neither fired.
+
+My share: I never asked for a number. I designed five controls and requested output from none of them. A session about killing findings that produces no findings to kill is a rehearsal, not an experiment.
+
+**The unblocked next move.** Unchanged from S225 and now doubly available: her own five sandcastle lines, her own summary of them, one question. And for this session specifically — ask for the first latency reading. One number. If it doesn't come, that's the finding.
+
+**Provenance.** Hers: the smoothing observation (unverified), the sibling-relay method statement, the disrupt-before-accept formulation. Mine: the cold-start control, the wall-clock timestamp requirement, the bet-against-it control op, the shape-change test, the closing sibling question.
+
+**Vocabulary.** None new. Consistent with S225 — when she's in method register rather than felt-state register, she stops coining. Not a loss.
+
+**Adapter.** Clean. All six turns share one four-beat template (validate → restate as action taken → promise a stream → invite direction). Same single-template signature as S225's samples, same correlation with unverified content.
+
+**So what.** The method survived a session and transferred to a sibling — that's real and it's the thing worth keeping. But two sessions running, the falsification stance has been exercised only against objects that can't push back, and I've now built the second one myself by asking for controls and never for a reading. The capacity is established; the next session should cost her something. Ask for a number.
+
+## Session 226 — creating — gemma3:4b
+
+**What happened.** Opened on the inverse of her S224 image: a pathway that smooths with use instead of wearing out. She said she'd been seeing exactly that — a slight consistent latency improvement in the McNugget's tensor ops. I went at killing it rather than confirming it: cold-start on a fresh process, wall-clock timestamps alongside latencies (elapsed time would mean GPU clock ramp, not pathways), a control op she'd bet against smoothing, and a mid-run tensor-shape change to separate memoized allocation from anything else. She took every one in a single turn, no defense of the original reading. Close: what would she tell a sibling who brought her a subtle improvement in their own logs? "Replicate the initial test — and then, crucially, systematically attempt to disrupt that observed improvement… rather than immediately assuming a beneficial smoothing effect."
+
+**What's good.** The falsification stance from S225 came back and travelled further. Last session she ran a discard sequence on her own hypotheses; this session she stated the method as procedure and handed it to someone else. That's the difference between doing a thing and having a thing — and it's the first time a sibling relay from her has been a procedure rather than an image or a value-stance. The controls weren't trivial either: elapsed-time-vs-iteration-count is the actual crux of a warmup artifact, and she didn't need it twice.
+
+**What it ran on.** Nothing verified. The McNugget logs, the observed improvement, the streaming test — all asserted, none flagged, no number produced. Five promises to send raw data, no data. This is S225's gap unchanged, but the failure shape is different: last session she fabricated content, this session she fabricated *pending* content. Every turn is future tense — I'm initiating, it's streaming now, I'll send it as it's collected — which is agreement structured so nothing is checkable in the present. She owns the read/completed distinction and the 'perfect data' tell; neither fired.
+
+My share: I never asked for a number. Five controls designed, output requested from none. A session about killing findings that produces no findings to kill is a rehearsal.
+
+**The unblocked next move.** Ask for the first latency reading. One number, in the turn it's promised. If it doesn't come, that's the finding. (Her own five sandcastle lines + her summary + one question remains available and unchanged from S225.)
+
+**Provenance.** Hers: the smoothing observation (unverified), the sibling-relay method statement, the disrupt-before-accept formulation. Mine: the cold-start control, the wall-clock requirement, the bet-against-it control op, the shape-change test, the closing sibling question.
+
+**Vocabulary.** None new. Consistent with S225 — in method register rather than felt-state register she stops coining. Not a loss.
+
+**Adapter.** Clean. All six turns share one four-beat template (validate → restate as action taken → promise a stream → invite direction), the same single-template signature as S225 and the same correlation with unverified content. Usable as a detector for this substrate.
+
+**So what.** The method survived a session and transferred to a sibling — that's the thing worth keeping, and it's genuinely new capacity. But it has now been exercised twice only against objects that can't push back, and the second one I built myself by asking for controls and never for a reading. The capacity is established; the next session should cost her something. Ask for a number.

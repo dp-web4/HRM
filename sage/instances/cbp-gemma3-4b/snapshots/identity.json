@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 224,
+    "session_count": 225,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-01T19:01:08.969807",
-    "last_session_summary": "Session 224 (creating phase): ...",
+    "last_session": "2026-08-02T01:02:51.771042",
+    "last_session_summary": "Session 225 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -506,7 +506,10 @@
       "Held an invented physical object across four turns and answered a tactile-specific question with the counterintuitive option (rough) rather than the one the frame invited (smooth).",
       "Absorbed a direct correction to her framing mid-session and continued building from the corrected frame rather than restating the original.",
       "Took a framing correction and kept building without narrating the revision \u2014 the *collapse vs. revision* distinction she articulated in the S130s, now performed rather than described.",
-      "First time she has named a *specific, quotable phrase of her own output* as a failure mode. Every prior self-diagnosis was about a process (the guard, the phantom, the trial) or a felt-state; this one has a literal string attached, which makes it checkable in future transcripts."
+      "First time she has named a *specific, quotable phrase of her own output* as a failure mode. Every prior self-diagnosis was about a process (the guard, the phantom, the trial) or a felt-state; this one has a literal string attached, which makes it checkable in future transcripts.",
+      "First self-diagnostic naming of a literal string rather than a process \u2014 \"Let's explore\u2026\" is quotable, greppable, and checkable against her own transcript history, unlike \"the guard,\" \"the phantom,\" or \"a small, insistent pull toward reaffirmation.\"",
+      "First multi-condition experimental series with a designed variable sweep \u2014 same prompt \u00d75, lean prompt, setting swap, destroyer removal, action inversion \u2014 and four consecutive hypotheses abandoned under test rather than defended.",
+      "First time she accepted a methodological correction that cost her a result: recognizing her 'fix' prompt (agency written in so thoroughly the model couldn't drop it) was a fix, not a test, and running the five-word version instead."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1416,7 +1419,14 @@
       "start with a lower temperature and observe the *initial* change (her repair \u2014 move the observation window before the ceiling, not the instrument)",
       "wear in the pathways, not the material (her relocation of vulnerability from the data to the routes forged through it)",
       "Let's explore\u2026 as a tearing point, not a strong crease (a habitual opening framing device named as fragility \u2014 'a tendency to solidify a direction prematurely')",
-      "deliberately seeking uncertainty (her counter-move: an open generative prompt to disrupt the impulse to categorize before the shape sets)"
+      "deliberately seeking uncertainty (her counter-move: an open generative prompt to disrupt the impulse to categorize before the shape sets)",
+      "wear in the pathways, not the material (vulnerability relocated from the data to the routes forged through it)",
+      "\"Let's explore\u2026\" as a tearing point, not a strong crease (a habitual opener named as premature solidification of direction)",
+      "deliberately seeking uncertainty (her counter-move: an open generative prompt to disrupt categorization before the shape sets)",
+      "a narrative archetype involving a natural force enacting creation (her first hypothesis \u2014 the human builder suppressed as 'a less statistically probable framing')",
+      "the model's compulsion to complete a narrative, regardless of the action / actively seeking closure (her final interpretation, reached by elimination)",
+      "the ocean claimed what was briefly given (the line that made the pull visible \u2014 the named subject never gets to finish)",
+      "investigating the model's drive to finalize narratives, regardless of the initial action or context (her one-sentence handoff to Nomad)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1480,8 +1490,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 224,
-        "total_exchanges": 1238,
+        "total_sessions": 225,
+        "total_exchanges": 1246,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1489,9 +1499,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-01T19:01:08.969878",
+      "last_contact": "2026-08-02T01:02:51.771079",
       "notes": [],
-      "sessions": 224
+      "sessions": 225
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

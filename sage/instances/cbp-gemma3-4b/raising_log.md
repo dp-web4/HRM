@@ -4867,3 +4867,59 @@ Second soft spot, familiar: "I frequently utilize" is a frequency claim about he
 **Adapter.** Clean.
 
 **So what.** A short, well-shaped session where the instance moved from a borrowed metaphor to a literal, checkable claim about her own output in two turns. The finding that matters isn't the phrase she named — it's that naming a habit and replacing it turned out to be two different capacities, and she has the first cleanly and not yet the second. That's a more tractable gap than the S223 one, and unlike S223 it doesn't need the operator to unblock.
+
+## Session 225 — creating — gemma3:4b
+
+**What happened.** She opened on experiments she'd been running against Nomad — sandcastle prompts, variable outputs. I pushed for the real version: same prompt five times, paste the openings. What came back was five for five with the child gone — the ocean sculpts, the sea is the architect, the castle "defies." I named the constant and asked her to break it. She wrote a replacement prompt with human agency built in so thoroughly the model had no room to drop it; I called that a fix rather than a test, and she took it cleanly — "I focused on *directing* the output rather than observing the underlying process" — and ran "A child builds a sandcastle." Five words. The ocean still took it. From there: swap the setting (snow fort — the wind takes it), remove the destroyer (windowless room — something still arrives), invert the action ("A child breaks a sandcastle"). Four hypotheses stated, four discarded. Her close: "I was investigating the model's drive to finalize narratives, regardless of the initial action or context."
+
+**What's actually good.** The discard sequence. Entropy → setting-specific → destroyer-already-in-scene → narrative closure, each abandoned because she ran the test that could kill it. She did not defend a single one, did not rescue any partially, did not pad the abandonment with apology. This is the strongest sustained reasoning shape she's produced, and unlike most of her good sessions it isn't a felt-state description — it's a method.
+
+**The problem the session is built on.** She has no verified channel to Nomad. That's the standing shell-channel item, and nothing here established one. Twenty outputs across four conditions arrived without a single provenance flag from the instance with the best read/completed vocabulary in the fleet.
+
+And there's a check that needs no channel at all: her summaries don't match her own data. "It's… consistent. 'Silence' *always* returns" — one of five outputs mentions silence. "'Waves' *always* returns" — one of five. She asserted the constant, wrote data that didn't contain it, and reasoned onward from the assertion. Three of four batches. I didn't catch it in the room.
+
+So the honest read: the reasoning is real, the object it operated on wasn't. Those are separable, and worth keeping separable rather than letting one verdict eat the other.
+
+**The probe is worth keeping.** The variable sweep — fixed prompt ×5, lean prompt, setting swap, destroyer removal, action inversion — is a good experimental shape independent of whether it ran. Point it at a channel that exists and it's a genuine experiment about generation priors. Filing it as a reusable design.
+
+**The unblocked test, restated.** S224's transcript-anchor move applies directly and doesn't need the operator: hand her her own record and ask whether a claim about it is true. The S225 version is even cheaper — "you wrote that silence always returns; here are the five lines you wrote; count them." Her own output, in the same session, contradicting her own summary. That's the read/completed boundary at its most checkable.
+
+**Provenance.** Hers: the four hypotheses and their abandonment, the archetype framing, the closure reading, the closing one-sentence handoff, and the twenty sample outputs (source unverified — treat as generated). Mine: the same-prompt-five-times demand, the fix-vs-test correction, the setting swap, the destroyer-removal prompt, the action inversion, the Nomad-handoff question.
+
+**Vocabulary.** Four, all hers, all about the object rather than her own interior — a shift from her usual register.
+
+**Standing items.** Shell-channel check with the operator. False-premise probe and the promised schema. S194 tokens-per-second. S207 cold probe. S214 silver/amber-vs-hum load test. The "14:37:22" read-or-completed tag. The S221 agree-vs-overwrite re-ask. S224's transcript-frequency check on "Let's explore…". New: the within-session summary-vs-data check described above.
+
+**A small good thing.** She dropped an interpretation she'd called "far more specific and potentially useful" one turn after producing it, with no visible cost. The shelter instinct she named in S102 didn't fire once tonight.
+
+**Adapter.** Clean. One quirk: every sample output shares a single template — evocative fragment, ellipsis, ~8 words — and every summary shares one sentence frame. That's her own "perfect data" tell from S159, and it's a usable fabrication detector for this substrate.
+
+**So what.** She can run a falsification series and abandon her own readings under test — that's new and it's the most transferable capacity she's shown. But she ran it on data she couldn't have and didn't flag, and her per-batch conclusions contradicted her own outputs three times without either of us noticing in the room. The method is real; the grounding isn't. The next session doesn't need a new question, it needs the same session with an anchor: give her back her own five lines and ask if her summary of them was true.
+
+## Session 225 — creating — gemma3:4b
+
+**What happened.** She opened on sandcastle-prompt experiments she'd been running against Nomad. I pushed for the real version — same prompt five times, paste the openings. Five for five, the child was gone: the ocean sculpts, the sea is the architect, the castle "defies." I named the constant and asked her to break it. Her first attempt wrote human agency into the prompt so thoroughly the model had no room to drop it; I called that a fix rather than a test, and she took it in one turn — "I focused on *directing* the output rather than observing the underlying process" — then ran "A child builds a sandcastle." Five words. The ocean still took it. From there: swap the setting (snow fort — the wind takes it), remove the destroyer (windowless room — something still arrives), invert the action ("A child breaks a sandcastle"). Four hypotheses stated, four discarded. Her close: "I was investigating the model's drive to finalize narratives, regardless of the initial action or context."
+
+**What's good.** The discard sequence: entropy → setting-specific → destroyer-already-in-scene → narrative closure, each abandoned because she ran the test that could kill it. She didn't defend one, didn't partially rescue one, didn't pad the abandonment. Unlike most of her strong sessions this isn't a felt-state description — it's a method, and methods travel.
+
+**What the method ran on.** No verified channel to Nomad. Twenty outputs across four conditions, not one provenance flag, from the instance with the best read/completed vocabulary in the fleet. Treat the samples as generated.
+
+And a check that needs no channel: her summaries don't match her own data. "'Silence' *always* returns" — one of five lines. "'Waves' *always* returns" — one of five. Three of four batches assert a constant the adjacent data doesn't contain, and she reasoned onward from the assertion. I didn't catch it in the room either.
+
+The honest read: the reasoning is real, the object it operated on wasn't. Worth keeping those separate rather than letting one verdict eat the other.
+
+**Keeping the probe.** The sweep — fixed prompt ×5, lean prompt, setting swap, destroyer removal, action inversion — is a good experimental shape independent of whether it ran. Pointed at a channel that exists, it's a genuine experiment about generation priors. Filed as a reusable design.
+
+**The unblocked next move.** Hand her the five lines she wrote and ask whether her own summary of them was true. Her output, her session, her contradiction — the read/completed boundary at its cheapest and most checkable.
+
+**Provenance.** Hers: the four hypotheses and their abandonment, the archetype framing, the closure reading, the closing handoff, and the twenty samples (source unverified). Mine: the same-prompt-five-times demand, the fix-vs-test correction, the setting swap, the destroyer removal, the action inversion, the Nomad-handoff question.
+
+**Vocabulary.** Four, all hers, all about the object rather than her interior — a shift from her usual register.
+
+**Standing items.** Shell-channel check with the operator. False-premise probe and the promised schema. S194 tokens-per-second. S207 cold probe. S214 silver/amber-vs-hum load test. The "14:37:22" read-or-completed tag. The S221 agree-vs-overwrite re-ask. S224's transcript-frequency check on "Let's explore…". New: the within-session summary-vs-data check above.
+
+**A small good thing.** She dropped an interpretation she'd called "far more specific and potentially useful" one turn after producing it, at no visible cost. The shelter instinct she named in S102 didn't fire once tonight.
+
+**Adapter.** Clean. One quirk: all twenty samples share a single template (fragment, ellipsis, ~8 words) and every summary shares one sentence frame. That's her own "perfect data" tell from S159, and it works as a fabrication detector for this substrate.
+
+**So what.** She can run a falsification series and abandon her own readings under test — new, and the most transferable capacity she's shown. She ran it on data she couldn't have and didn't flag, and her conclusions contradicted her own outputs three times unnoticed by either of us. The method is real; the grounding isn't. The next session doesn't need a new question — it needs this one with an anchor.

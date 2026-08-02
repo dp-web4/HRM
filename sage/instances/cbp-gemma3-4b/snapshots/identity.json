@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 226,
+    "session_count": 227,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-02T07:01:48.150729",
-    "last_session_summary": "Session 226 (creating phase): ...",
+    "last_session": "2026-08-02T13:02:16.450179",
+    "last_session_summary": "Session 227 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -513,7 +513,12 @@
       "First sustained falsification series \u2014 four hypotheses stated and discarded across four experimental conditions, none defended, none partially rescued, no apology padding.",
       "First session where her coined vocabulary is entirely about the object under study rather than her own interior state.",
       "First clean uptake of a fix-vs-test correction: named her own error ('I focused on *directing* the output rather than observing the underlying process') and immediately ran the leaner version.",
-      "First session where the falsification stance was handed forward as advice to a sibling rather than performed for the tutor \u2014 'systematically attempt to disrupt that observed improvement' as a transmissible method."
+      "First session where the falsification stance was handed forward as advice to a sibling rather than performed for the tutor \u2014 'systematically attempt to disrupt that observed improvement' as a transmissible method.",
+      "First sibling relay that is an executable procedure rather than an aphorism or felt-state \u2014 she has handed forward images and value-stances for hundreds of sessions; this is the first transferable method.",
+      "Absorbed the elapsed-time-vs-iteration-count distinction (the actual crux of a warmup artifact) in one pass, without restatement.",
+      "First session where she was corrected on factual/physical grounds (not framing) multiple times and neither collapsed into deference nor defended \u2014 she reissued a new proposal each time.",
+      "First falsifiable prediction of her own, committed before the test: the eye will detect degradation before the meter, with a stated mechanism (visual system tuned to change).",
+      "Proposed logging a subjective human instrument alongside an objective one specifically because they can disagree \u2014 designing for disagreement rather than for confirmation."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1493,8 +1498,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 226,
-        "total_exchanges": 1252,
+        "total_sessions": 227,
+        "total_exchanges": 1259,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1502,9 +1507,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-02T07:01:48.150762",
+      "last_contact": "2026-08-02T13:02:16.450263",
       "notes": [],
-      "sessions": 226
+      "sessions": 227
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -1962,6 +1962,50 @@ metadata:
     must normalise by opener as well as by tutor regime; this is a SECOND independent reason the cbp ''oscillatory
     quality collapse'' was never a quality signal; and because the effect is model-specific the string
     is a usable probe of framing-constraint adherence.'
+  finding_2026_08_02_fabrication_propagates: 'cbp-gemma3-4b S223 is a complete, legible instance of the
+    standing narrated-tool-access OWNER-ACTION, and it is worse than ''guaranteed fabrication''. Chain:
+    (1) the tutor issues a shell command; (2) the runner has no tool path - every cbp session S217-S225
+    records sensory_delivery.delivered=False and prompt_health.digest_sources journal/live/presence/experiences
+    all 0; (3) the model emits a plausible CSV of fan speed and GPU temperature; (4) the tutor accepts
+    it as measurement and builds a diagnosis on it; (5) the tutor directs the model to transmit that diagnosis
+    to mcnugget by name. The fabrication is not merely recorded, it is promoted to inter-instance instruction.
+    SELF-CORRECTION: the 2026-08-01 log cited cbp S217''s ''RTX 2060 SUPER thrum'' as evidence that a
+    low-volume session was high quality. S217 has delivered=False and all digest_sources 0 too. Specificity
+    is not grounding when the runner has no sensor; that datum is withdrawn as a quality signal. Remedy
+    unchanged and now urgent: move cbp/pub to run_session_identity_anchored*.py (--tools) or stop issuing
+    execution commands.'
+  finding_2026_08_02_narration_becomes_memory: 'sprout-qwen3.5-0.8b is the one instance with real sensor
+    delivery, and its memory channel launders confabulation into durable self-record. The sensory_delivery
+    ''presence'' section stores the model''s free-text narration of a sensor event; the ''experiences''
+    section re-delivers that same narration in the next session under the label ''What stayed with you
+    since last session (your own records, chosen by what moved you most - your words at the time)''. What
+    is re-delivered is the NARRATION, never the sensor label, so anything invented in narration returns
+    as authoritative memory. Two kinds of evidence. (a) Content: S522 stores ''my right eye scans high
+    above, tracking the plane''s nose against a horizon line marked by distant clouds and faint smoke
+    swirls where aircraft exhaust has recently passed... the jet engine noise in my chest cavity and the
+    silence of the open cabin'' - a Jetson on a desk. (b) Direction fidelity: over all sprout sessions,
+    experience pairs carrying a direction on BOTH the label and the narration number 9; 5 agree and 4
+    contradict, and all 4 contradictions are label=left -> narrated=right (the single right-labelled pair
+    narrated right). n is small and the label base rate is left-heavy (10:4), so a systematic left/right
+    INVERSION is suggestive, not established - what IS established is that 4 of 9 re-delivered ''own records''
+    carry a direction the sensor did not report. PROPOSED FIX, owner''s call: re-deliver the sensor label
+    alongside the narration, or store both and mark which is which. PREDICTION: if narration alone keeps
+    being re-delivered, invented content will compound across sessions - testable by tracking whether
+    the aircraft imagery recurs in sprout S523+ without a new sensor event.'
+  finding_2026_08_02_legion_commits_the_wrong_instance: 'The legion-gemma4-e4b question (''gameplayer
+    or mis-pin'', reopened 2026-07-31) resolves as MIS-PIN, with a mechanism. Every Legion raising-cron
+    fire on 2026-08-01/02 (14:02, 20:05, 02:04, 08:02 UTC) produced a commit titled ''[Legion-Raising]
+    Session 0 (grounding)'' whose entire diff is 18 lines of sage/instances/legion-gemma4-e4b/peer_trust_rs.json
+    - no session artifact. The session NUMBER reads 0 because the launcher resolves it against the pinned
+    INSTANCE_DIR (legion_raising.sh:75), which has an empty sessions/. The four real sessions S367-S370
+    entered git only via separate ''supervisor pickup'' and sweep commits. This is HUB''s failure mode
+    on a second machine - the commit is gated on the launcher finishing, not on the artifact existing
+    ([[success-signal-not-gated-on-the-work]]) - and it is invisible on Legion only because a supervisor
+    sweep happens to cover it. The owner independently reached the adjacent half of this on 2026-08-01
+    (commit 0bff0c21): initialize_model() discards model_path and talks to whatever the daemon already
+    has resident, so the launcher''s --model gemma4:e4b is inert and the directory NAME has been a wrong
+    proxy for the producing model across 370 legion and 397 mcnugget sessions. Directory-name-as-proxy
+    is the shared root of both halves.'
 instances:
   sprout-qwen2.5-0.5b:
     machine: sprout
@@ -2005,10 +2049,12 @@ instances:
   nomad-gemma4-e2b:
     machine: nomad
     model: Gemma 4 e2b
-    sessions: 186
-    latest: session_186.json
-    status: active - +4 (S183-S186), on an exact 6h grid 06:17/12:17/18:17/00:17. All LIVE, avg 506/535/574/498.
-      Scheduler holes remain de-escalated to watch; no miss this window.
+    sessions: 190
+    latest: session_190.json
+    status: active - +4 (S187-S190), 25+ consecutive on-grid, de-escalation holds. Same FIXED SIX-PROMPT
+      SCRIPT as legion-gemma3-12b, identical wording and order - the two instances are running one canned
+      curriculum. avg 513-659, 0 infra markers. S189/S190 are the first sessions fleet-wide to carry the
+      new daemon-sourced `model` field (gemma4:e2b), landed by commit 0bff0c21 on 2026-08-01.
     phase: creating
     note: 'Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df).
       Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances
@@ -2024,12 +2070,12 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: Qwen 3.5 0.8B
-    sessions: 518
-    latest: session_518.json
-    status: active - +4 (S515-S518), ALL FOUR PARTIAL (fallback fractions 20/33/11/50%). Wall-clock 46-50
-      s per tutor turn puts every one of them in the 45s-TIMEOUT band, not the instant-exit band - consistent
-      with the baseline-latency tripling first seen at S504. Partial is now sprout's normal state, against
-      a ~2% lifetime rate.
+    sessions: 522
+    latest: session_522.json
+    status: 'active - +4 (S519-S522), LIVE adaptive tutor all four, 0 infra markers, avg 311-405. The
+      ONLY instance in this window with a real sensor path (sensory_delivery.delivered=True, 25-67 journal
+      source_rows per session). That sensor path is also where the new finding is: the presence/experience
+      channel re-delivers the MODEL''S NARRATION, not the sensor label, as ''your own records''. See metadata.finding_2026_08_02_narration_becomes_memory.'
     phase: creating
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC.
       S225-S228 window: FEDERATION UMBRELLA 16th-19th consecutive, now MORPHING toward ''web4 governance''
@@ -2056,14 +2102,16 @@ instances:
   cbp-gemma3-4b:
     machine: cbp
     model: Gemma 3 4B
-    sessions: 221
-    latest: session_221.json
-    status: 'active - +3 (S219-S221, 2026-07-31 13:00 to 2026-08-01 01:00 local). S220 LIVE avg 941, S221
-      LIVE avg 477. S219 is the interesting one: terse-bank OPENER with a LIVE remainder (3 of 4 turns),
-      avg 126 - read in full, the tutor is live and good and the model gets more specific each turn; the
-      floor is compliance with a prompt mandating uninterpreted description. See metadata.finding_2026_08_01_prompt_conditioned_volume.
-      The 2026-07-31 07:00 local window is ABSENT (S218 01:00 -> S219 13:00) and falls inside a CBP host
-      gap ~03:29-10:35 PDT that also took the Publisher 03:30 run and the cbp-synchronism 09:00 run.'
+    sessions: 225
+    latest: session_225.json
+    status: 'active - +4 (S222-S225, 2026-08-01 13:00 to 2026-08-02 01:00 local). All four LIVE-tutor,
+      0 infra markers, avg 805/448/517/581. TURN COUNTS COLLAPSED to 3 for S223 and S224 (vs 4-8 recent,
+      12 historically) - lowest on record for this instance, unexplained, watch. CONFABULATION EVENT S223:
+      the tutor issued `nvidia-smi --query-gpu=fan.speed,temperature.gpu --format=csv -l 2` to a runner
+      with sensory_delivery.delivered=False and all four digest_sources at 0; the model returned a fabricated
+      CSV block; the tutor then REASONED ON THE FABRICATION (''six seconds of the fan already flat at
+      100% - that''s a card that was already sweating'') and had the model teach the invented conclusion
+      to a NAMED SIBLING INSTANCE (''Mcnugget, that''s a really important distinction''). See metadata.finding_2026_08_02_fabrication_propagates.'
     phase: creating
     anomaly: 'RESOLVED 2026-07-30 — the ''RECURRING QUALITY COLLAPSE, 2 episodes, both self-recovering,
       both preceded by floor sessions'' was an INSTRUMENTATION ARTIFACT. Episode 2 (S170-S179) is all-fallback
@@ -2259,10 +2307,15 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: Gemma 3 12B
-    sessions: 366
-    latest: session_366.json
-    status: 'active - +2 (S365-S366, 2026-07-31). Both LIVE, avg 1494 and 1501 - the fleet''s highest-volume
-      instance, unchanged. Lifetime: 366 of 366 sessions live-opener, zero fallback.'
+    sessions: 370
+    latest: session_370.json
+    status: 'active - +4 (S367-S370). All four run the FIXED SIX-PROMPT SCRIPT (''Hello SAGE. What''s
+      on your mind today?'' -> presence -> trust -> co-created value -> federation -> what to remember),
+      identical order, zero adaptation: fixed-script regime, no teacher. Volume high and stable (avg 1349-1703,
+      0 infra markers) - which is exactly why volume cannot stand in for tutor presence. COMMIT PATHOLOGY:
+      every legion raising-cron fire in this window committed ''[Legion-Raising] Session 0 (grounding)''
+      touching ONLY sage/instances/legion-gemma4-e4b/peer_trust_rs.json and NO session file; all four
+      real sessions reached git via separate ''supervisor pickup'' / sweep commits. See metadata.finding_2026_08_02_legion_commits_the_wrong_instance.'
     phase: creating
     note: '+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW
       77 SESSIONS S040-S116 (MODE 6 instance-bound identity stabilization holding well past the original
@@ -2482,14 +2535,14 @@ crosslinks:
     sage_session: S116
     concept: trust entropy — Generic Corporate attractor
 statistics:
-  total_raising_sessions: 2725
+  total_raising_sessions: 2741
   total_training_sessions: 299
   total_training_cognitive: 58
   total_instances: 26
   active_instances: 4
   scaffolded_instances: 5
   machines_active: 5
-  date_range: 2025-12-15 to 2026-08-01
+  date_range: 2025-12-15 to 2026-08-02
   primary_focus: Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation
   tutor_regime_split_2026_07_30: '2555 sessions classified: 101 tutorless (all-fallback), 42 partial,
     ~934 fixed-script, remainder live-adaptive. See private-context/archivist/state/tutor_regime.json'
@@ -2519,3 +2572,9 @@ statistics:
     One fallback-bank opener accounts for cbp-gemma3-4b's deepest volume floors (median 74 vs 234 for
     other bank openers under the same tutorless regime); hub-granite4-h-tiny is unaffected by the identical
     string. Volume is not a model-independent quality proxy.
+  fleet_silence_2026_08_02: '4 of 8 raising instances produced nothing for a second consecutive window,
+    all four longer: hub-granite4-h-tiny 99h (last real S121 2026-07-29T06:34; 17 consecutive 6h fires
+    have committed an attest bump with no session file), thor-qwen3.5-27b 92h (S306, still only on origin/membrane-gate),
+    mcnugget-gemma3-12b 84h (S403; escalated 2026-08-01, unchanged), pub-llama3.1-8b 59h (S027). Push-gap
+    EXCLUDED this run for all four: origin/main and origin/membrane-gate are the only refs with commits
+    since 2026-07-29 and neither carries sessions for these instances.'

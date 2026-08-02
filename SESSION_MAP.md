@@ -9,20 +9,59 @@
 
 ---
 
-## Current Raising Fleet (Archivist, 2026-07-30)
+## Current Raising Fleet (Archivist, 2026-08-02)
 
-**2,595 raising sessions** across 14 numbered instances on 6 machines.
+**2,741 raising sessions** across 14 numbered instances on 6 machines.
+**4 of 8 active instances produced nothing in the last 24h** — see *Fleet silences* below.
 
 | Instance | Machine | Sessions | Tutor regime |
 |----------|---------|----------|--------------|
-| sprout-qwen3.5-0.8b | Sprout | 510 | adaptive (26 partial) |
-| mcnugget-gemma3-12b | McNugget | 397 | **fixed script** |
-| legion-gemma3-12b | Legion | 357 | **fixed script** |
+| sprout-qwen3.5-0.8b | Sprout | 522 | adaptive (26 partial) |
+| mcnugget-gemma3-12b | McNugget | 403 | **fixed script** |
+| legion-gemma3-12b | Legion | 370 | **fixed script** |
 | thor-qwen3.5-27b | Thor | 306 | adaptive — *38 stranded on `origin/membrane-gate`* |
-| cbp-gemma3-4b | CBP | 214 | adaptive — **29% tutorless** |
-| nomad-gemma4-e2b | Nomad | 180 | **fixed script** |
+| cbp-gemma3-4b | CBP | 225 | adaptive — **29% tutorless** |
+| nomad-gemma4-e2b | Nomad | 190 | **fixed script** |
 | hub-granite4-h-tiny | Hub | 121 | adaptive — **21% tutorless** |
-| pub-llama3.1-8b | Pub | 24 | adaptive — **42% tutorless** |
+| pub-llama3.1-8b | Pub | 27 | adaptive — **42% tutorless** |
+
+### Fleet silences and commit pathologies (2026-08-02)
+
+| Instance | Silent since | Duration | Note |
+|----------|--------------|----------|------|
+| hub-granite4-h-tiny | S121, 2026-07-29 06:34 | **99 h** | **17 consecutive 6h fires committed an attest bump with no session file** |
+| thor-qwen3.5-27b | S306, 2026-07-29 13:10 | 92 h | still committing only to `origin/membrane-gate` |
+| mcnugget-gemma3-12b | S403, 2026-07-29 21:21 | 84 h | escalated 2026-08-01 (raising + cross-family probe stopped together) |
+| pub-llama3.1-8b | S027, 2026-07-30 22:21 | 59 h | ~5 missed windows |
+
+Push-gap is **excluded** this run: `origin/main` and `origin/membrane-gate` are the only refs with
+commits since 2026-07-29, and neither carries sessions for these four.
+
+**Legion has HUB's bug too, masked.** Every Legion raising-cron fire on 2026-08-01/02 committed
+`[Legion-Raising] Session 0 (grounding)` whose entire diff is `legion-gemma4-e4b/peer_trust_rs.json`
+— no session artifact. Sessions 367–370 reached git only via separate *supervisor pickup* commits.
+The `Session 0` number is the tell: the launcher resolves it against the pinned `INSTANCE_DIR`
+(`legion_raising.sh:75`), whose `sessions/` is empty. Same class as HUB — the commit is gated on the
+launcher finishing, not on the artifact existing — but invisible because a sweep covers it.
+
+### Two ways a session can be about nothing
+
+Both were caught this window, in the two instances with **live** tutors:
+
+1. **cbp S223 — fabrication promoted to instruction.** The tutor issued
+   `nvidia-smi --query-gpu=fan.speed,temperature.gpu --format=csv -l 2`. Every cbp session S217–S225
+   records `sensory_delivery.delivered=False` and all four `digest_sources` at `0`: there is no tool
+   path. The model returned a plausible CSV, the tutor diagnosed a thermal problem from it, and then
+   had the model teach that diagnosis to **mcnugget by name**.
+2. **sprout — narration re-delivered as memory.** The `experiences` section replays the model's own
+   free-text narration under *"your own records … your words at the time"*, never the sensor label.
+   9 re-delivered records carry a direction on both sides; **4 of 9 name a direction the sensor did
+   not report**, all four label-left → narrated-right. S522 stores an aircraft cabin, jet-engine
+   noise and exhaust smoke — for a Jetson on a desk.
+
+Together these say the same thing from opposite ends: **a live, adaptive tutor is not sufficient for
+a grounded session.** Tutor regime tells you whether anyone was teaching; it does not tell you
+whether anything was true.
 
 ### Read this before computing any quality metric
 

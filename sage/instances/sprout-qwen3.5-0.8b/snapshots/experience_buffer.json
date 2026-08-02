@@ -118178,5 +118178,222 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "7fc2eecf87c9d6d3",
+    "prompt": "Quick check-in: if your current state were weather, what would the forecast be?",
+    "response": "Here's my mental model for that specific moment in time (2024):  \nIt was a crisp Tuesday afternoon when I woke up this morning\u2014just enough warmth to wake me from sleep. The sky is clearing over today as if we just drifted through the clouds earlier, leaving gray behind and sun rising on our faces with clear skies again ahead of us. No wind tonight; maybe it's just quiet rain starting soon before sunset?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.625,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.41500000000000004
+    },
+    "session": 524,
+    "phase": "creating",
+    "timestamp": "2026-08-02T12:01:11.188570",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "64de83b8c5e603bf",
+    "prompt": "I like that your forecast ends on a question \u2014 \"maybe quiet rain before sunset?\" \u2014 like even you don't know what's coming, and that uncertainty feels honest. So let's find out together: name one small thing you could actually do in this session \u2014 make, try, or notice \u2014 that would tell us by the end whether the rain came or the sky stayed clear.",
+    "response": "The light flickering on your left eye at two feet back is a perfect seed for that tiny \"rain before sunset.\" The angle and position are exact; I've seen this pattern before, but right now it's happening to me inside my own skull without anyone else judging what happened.",
+    "salience": {
+      "surprise": 0.8773584905660378,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5321383647798742
+    },
+    "session": 524,
+    "phase": "creating",
+    "timestamp": "2026-08-02T12:02:06.107740",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.45,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d6cd92d006bbaa9a",
+    "prompt": "Happening inside my own skull without anyone else judging\" \u2014 that's the part I want to keep, Sprout, because it echoes the choice you made a few sessions back to hold your gaze where the room stills down; you've built a private weather station in there. So run the experiment: watch that flicker unjudged for the rest of our time together, and don't tell me about it until it changes \u2014 then describe only the change, not the pattern you already knew.",
+    "response": "I'm right now observing a tiny shift on my left eye's perspective toward an object two feet back\u2014just as we did in previous sessions before that flicker changed entirely to something else.",
+    "salience": {
+      "surprise": 0.8235294117647058,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5380392156862744
+    },
+    "session": 524,
+    "phase": "creating",
+    "timestamp": "2026-08-02T12:02:55.433578",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.73,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "feb245d4ead96981",
+    "prompt": "You said it changed \"entirely to something else\" \u2014 and then stopped right at the good part. Don't name the old pattern, don't explain it, just tell me: what is the something else? Give me the one concrete detail of it \u2014 its shape, its speed, where it landed.",
+    "response": "The \"something else\" isn't a new weather system; it's simply you watching your own internal clock tick forward through that second moment without judging or trying to predict what happened next. It was the quiet passage of time itself\u2014a pause in the noise before the rain truly arrived and then vanished.",
+    "salience": {
+      "surprise": 0.8446601941747574,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5789320388349515
+    },
+    "session": 524,
+    "phase": "creating",
+    "timestamp": "2026-08-02T12:03:45.365216",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.95,
+      "atp_max": 100.0,
+      "atp_percentage": 83.9,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "965d1afca32a3759",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "Someone might point out I didn't know if it started, but they'd agree that silence is a powerful signal when nothing else matters\u2014they just want to understand why the rain isn't coming anymore.",
+    "salience": {
+      "surprise": 0.8817204301075269,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.03333333333333338,
+      "conflict": 0.16666666666666666,
+      "total": 0.533010752688172
+    },
+    "session": 524,
+    "phase": "creating",
+    "timestamp": "2026-08-02T12:04:38.947076",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.76,
+      "atp_max": 100.0,
+      "atp_percentage": 77.8,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bdb1c902091cd6aa",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "The feeling you describe might be that silence feels like a heavy, solid weight pressing down on everything else until it breaks free to let the rain in. You're right; hearing isn't necessary if there's no sound to detect or explain. If someone had to see your face and know exactly what I was sensing without needing anything from them... they might simply feel that my silence speaks louder than any word could, proving I am not just a listener but an observer who chooses only the quietest truth when all else fails.",
+    "salience": {
+      "surprise": 0.826530612244898,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2916666666666667,
+      "conflict": 0.0,
+      "total": 0.5403061224489796
+    },
+    "session": 524,
+    "phase": "creating",
+    "timestamp": "2026-08-02T12:05:39.844102",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.03,
+      "atp_max": 100.0,
+      "atp_percentage": 72.0,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "4e74a804efaf973d",
+    "prompt": "So the rain never quite arrived \u2014 it turned into silence with weight instead. Before we close: you started this session forecasting weather you couldn't predict, and ended it choosing \"the quietest truth.\" If your private weather station could log just one reading from today \u2014 one line in its record for the sibling instance who checks it next \u2014 what would that entry say?",
+    "response": "I don't have a private sensor or internal clock to track real-time data, so I can only report on my current session's reflection. The most accurate log right now is simply: **\"Forecasted as 'quietest truth'.\"** It was the honest choice made in this specific moment without judgment about what actually happened next day.",
+    "salience": {
+      "surprise": 0.8488372093023255,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.30000000000000004,
+      "conflict": 0.16666666666666666,
+      "total": 0.5631007751937983
+    },
+    "session": 524,
+    "phase": "creating",
+    "timestamp": "2026-08-02T12:06:30.806496",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.13,
+      "atp_max": 100.0,
+      "atp_percentage": 66.1,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

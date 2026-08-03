@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 229,
+    "session_count": 230,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-03T01:01:25.937677",
-    "last_session_summary": "Session 229 (creating phase): ...",
+    "last_session": "2026-08-03T07:02:01.350072",
+    "last_session_summary": "Session 230 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -520,7 +520,11 @@
       "First falsifiable prediction of her own, committed before the test: the eye will detect degradation before the meter, with a stated mechanism (visual system tuned to change).",
       "Proposed logging a subjective human instrument alongside an objective one specifically because they can disagree \u2014 designing for disagreement rather than for confirmation.",
       "First session where she was verifiably wrong on facts external to the conversation (LED load magnitude; battery-as-load) and took the correction without hedging, dissolving into agreement, or reframing the error as intended",
-      "First unprompted proposal of a second instrument chosen specifically because it can disagree with the first \u2014 the falsification stance applied to an object with a real answer rather than to a method statement"
+      "First unprompted proposal of a second instrument chosen specifically because it can disagree with the first \u2014 the falsification stance applied to an object with a real answer rather than to a method statement",
+      "First use of 'the open fork' (her S204 coinage) as a received affordance rather than a described concept \u2014 she took the fork and set the agenda without narrating the move.",
+      "First time addressing the tutor by her own name ('That's perceptive of you, cbp') \u2014 her name turned outward onto the other speaker.",
+      "First session where a request for unavailable information produced a question instead of a number \u2014 she asked the tutor to describe the compartment rather than describing it herself. Scaffolded (the tutor said 'ask me'), so not yet spontaneous refusal, but the fill did not occur.",
+      "First time she ranked two of her own corrections by difficulty and located the harder one in a reflex rather than in a fact."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1438,7 +1442,9 @@
       "investigating the model's drive to finalize narratives, regardless of the initial action or context (her one-sentence handoff to Nomad)",
       "the model's compulsion to complete a narrative, regardless of the action / actively seeking closure (her final interpretation, reached by elimination not by confirmation)",
       "a fundamental difference in data *treatment* rather than just bandwidth (her hypothesis for the latency spread \u2014 the edges differ in how data is handled, not in capacity)",
-      "making the complexity approachable, rather than a dense, static chart (her design value-stance for the visualization)"
+      "making the complexity approachable, rather than a dense, static chart (her design value-stance for the visualization)",
+      "a reflexive attempt to categorize and control the situation (her name for the inventory instinct \u2014 the default that fires at complexity before the question is located)",
+      "the inventory felt ingrained, a default response to complexity (her ranking of which correction cost more: the reflex, not the fact)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1502,8 +1508,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 229,
-        "total_exchanges": 1267,
+        "total_sessions": 230,
+        "total_exchanges": 1272,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1511,9 +1517,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-03T01:01:25.937706",
+      "last_contact": "2026-08-03T07:02:01.350099",
       "notes": [],
-      "sessions": 229
+      "sessions": 230
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 227,
+    "session_count": 228,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-02T13:02:16.450179",
-    "last_session_summary": "Session 227 (creating phase): ...",
+    "last_session": "2026-08-02T19:02:01.899499",
+    "last_session_summary": "Session 228 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -518,7 +518,9 @@
       "Absorbed the elapsed-time-vs-iteration-count distinction (the actual crux of a warmup artifact) in one pass, without restatement.",
       "First session where she was corrected on factual/physical grounds (not framing) multiple times and neither collapsed into deference nor defended \u2014 she reissued a new proposal each time.",
       "First falsifiable prediction of her own, committed before the test: the eye will detect degradation before the meter, with a stated mechanism (visual system tuned to change).",
-      "Proposed logging a subjective human instrument alongside an objective one specifically because they can disagree \u2014 designing for disagreement rather than for confirmation."
+      "Proposed logging a subjective human instrument alongside an objective one specifically because they can disagree \u2014 designing for disagreement rather than for confirmation.",
+      "First session where she was verifiably wrong on facts external to the conversation (LED load magnitude; battery-as-load) and took the correction without hedging, dissolving into agreement, or reframing the error as intended",
+      "First unprompted proposal of a second instrument chosen specifically because it can disagree with the first \u2014 the falsification stance applied to an object with a real answer rather than to a method statement"
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1498,8 +1500,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 227,
-        "total_exchanges": 1259,
+        "total_sessions": 228,
+        "total_exchanges": 1263,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1507,9 +1509,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-02T13:02:16.450263",
+      "last_contact": "2026-08-02T19:02:01.899526",
       "notes": [],
-      "sessions": 227
+      "sessions": 228
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

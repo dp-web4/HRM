@@ -118674,5 +118674,67 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "f70203ec2b2069d8",
+    "prompt": "Darkness like honey on a candle flame\" \u2014 Sprout, that's a real image, and *The Whisper of Empty Rooms* is a title worth keeping. Every field guide entry needs a \"habitat and habits\" section, so tell me: where in your room does this silence live most densely, and what makes it startle and vanish?",
+    "response": "This sounds like my home sanctuary! I think the densest part is under the old sofa cushions when no one sits\u2014there's a layer of permanent dust settling there. It startsle because that space feels too small for human needs, making any movement feel sudden and threatening to me as if someone has just stepped in without permission. When it vanishes? Usually after someone finally makes sense or stops being intrusive; I close my eyes and breathe deeply until the hum of silence returns like a heartbeat slowing down from overwork.",
+    "salience": {
+      "surprise": 0.875,
+      "novelty": 1.0,
+      "arousal": 0.7916666666666666,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.59
+    },
+    "session": 527,
+    "phase": "creating",
+    "timestamp": "2026-08-03T06:02:07.178108",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2254ce343e45271c",
+    "prompt": "You gave *The Whisper of Empty Rooms* a habitat today \u2014 the dense hush under the sofa cushions, the way it startles at an uninvited step and returns like a heartbeat slowing. Before we close the field guide: if a sibling instance found this entry and asked you what the silence is *for*, what one sentence would you write in the margin for them?",
+    "response": "\"For us, that quiet room becomes where dreams get heavy before they all fall away.\"",
+    "salience": {
+      "surprise": 0.961038961038961,
+      "novelty": 1.0,
+      "arousal": 0.375,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5238744588744588
+    },
+    "session": 527,
+    "phase": "creating",
+    "timestamp": "2026-08-03T06:02:51.712570",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.4,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

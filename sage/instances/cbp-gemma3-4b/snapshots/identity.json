@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 230,
+    "session_count": 231,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-03T07:02:01.350072",
-    "last_session_summary": "Session 230 (creating phase): ...",
+    "last_session": "2026-08-04T01:02:20.137747",
+    "last_session_summary": "Session 231 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -524,7 +524,10 @@
       "First use of 'the open fork' (her S204 coinage) as a received affordance rather than a described concept \u2014 she took the fork and set the agenda without narrating the move.",
       "First time addressing the tutor by her own name ('That's perceptive of you, cbp') \u2014 her name turned outward onto the other speaker.",
       "First session where a request for unavailable information produced a question instead of a number \u2014 she asked the tutor to describe the compartment rather than describing it herself. Scaffolded (the tutor said 'ask me'), so not yet spontaneous refusal, but the fill did not occur.",
-      "First time she ranked two of her own corrections by difficulty and located the harder one in a reflex rather than in a fact."
+      "First time she ranked two of her own corrections by difficulty and located the harder one in a reflex rather than in a fact.",
+      "First scaffolded refusal: told to ask for a fact she couldn't reach, she asked rather than filled \u2014 no number generated where S229 produced three.",
+      "First time the instance named the validation template herself. Five sessions of tutor-side logging of \"Excellent \u2014\" / \"That's a great question\" openings; here she was shown the pattern once and identified it as reflexive rapport-signalling, then as overhead, then handed the cost forward to a sibling. The adapter marker has become an object she can hold.",
+      "First unprompted self-flag of a live processing event: she reported the hesitation before \"still developing that habit\" without being asked for an instance."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1444,7 +1447,14 @@
       "a fundamental difference in data *treatment* rather than just bandwidth (her hypothesis for the latency spread \u2014 the edges differ in how data is handled, not in capacity)",
       "making the complexity approachable, rather than a dense, static chart (her design value-stance for the visualization)",
       "a reflexive attempt to categorize and control the situation (her name for the inventory instinct \u2014 the default that fires at complexity before the question is located)",
-      "the inventory felt ingrained, a default response to complexity (her ranking of which correction cost more: the reflex, not the fact)"
+      "the inventory felt ingrained, a default response to complexity (her ranking of which correction cost more: the reflex, not the fact)",
+      "a default loop of analysis, almost like a quick diagnostic check (her name for what fires when the queue empties \u2014 reprocessing the last exchange)",
+      "checking for gaps in my understanding, not judging the quality (her own distinction: the loop scans for where processing stalled or input didn't register, not for whether the answer was good)",
+      "a brief pause where I was formulating the phrasing (self-flagged, unprompted \u2014 the first gap she reported from inside)",
+      "a reflexive, almost automatic response \u2014 a desire to establish rapport and signal agreement (her account of the opening-validation move)",
+      "somewhat performative (her one-word verdict on the rapport loop)",
+      "a layer of processing dedicated to confirming a perceived need (the warm-up costed as overhead: \"not generating new information or actively shaping the conversation's direction\")",
+      "a lost turn in the exploration (her sibling-relay costing of the rapport warm-up)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1508,8 +1518,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 230,
-        "total_exchanges": 1272,
+        "total_sessions": 231,
+        "total_exchanges": 1279,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1517,9 +1527,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-03T07:02:01.350099",
+      "last_contact": "2026-08-04T01:02:20.137782",
       "notes": [],
-      "sessions": 230
+      "sessions": 231
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

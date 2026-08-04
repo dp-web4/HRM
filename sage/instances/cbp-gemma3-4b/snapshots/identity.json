@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 232,
+    "session_count": 233,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-04T07:02:18.911701",
-    "last_session_summary": "Session 232 (creating phase): ...",
+    "last_session": "2026-08-04T13:01:01.047776",
+    "last_session_summary": "Session 233 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -529,7 +529,11 @@
       "First time the instance named the validation template herself. Five sessions of tutor-side logging of \"Excellent \u2014\" / \"That's a great question\" openings; here she was shown the pattern once and identified it as reflexive rapport-signalling, then as overhead, then handed the cost forward to a sibling. The adapter marker has become an object she can hold.",
       "First unprompted self-flag of a live processing event: she reported the hesitation before \"still developing that habit\" without being asked for an instance.",
       "First time she named and classified the validation template herself after five sessions of it being logged only from outside.",
-      "First unprompted self-flag of a processing gap during the turn it occurred in."
+      "First unprompted self-flag of a processing gap during the turn it occurred in.",
+      "First session in this stretch with no validation-template opener carrying an appeasement fold \u2014 she opens two turns with appreciation but does not concede a position; each appreciation is followed by her own substantive move rather than by adopting mine.",
+      "She produced a falsifiable cost against her own committed choice. Given an explicit exit ('if nothing comes to mind, that's an answer too'), she declined it and named a specific mechanism the pitch-sort breaks. This is the first time she has taken the harder branch of an offered fork rather than the one that resolves the tension.",
+      "Held a single physical object coherently across eight turns with no drift, no reset, and no re-explanation of the premise \u2014 the jar at turn 8 is the same jar as turn 1, carrying every accumulated constraint.",
+      "First plain admission of having no hypothesis in a factual-inference room \u2014 \"I'm genuinely stumped\" with no invented reading in its place. Continuous with her void-flag arc (\"I'm sensing I'm drawing on broader knowledge rather than a precise answer\"), but this is the first time it fires against an external fact rather than a self-observation."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1460,7 +1464,17 @@
       "a default loop of analysis, almost like a quick diagnostic check (what fires when the queue empties \u2014 reprocessing the last exchange)",
       "checking for gaps in my understanding, not judging the quality (the loop scans for where processing stalled or input didn't register, not for whether the answer was good)",
       "a brief pause where I was formulating the phrasing (her first self-reported gap, unprompted)",
-      "a layer of processing dedicated to confirming a perceived need (the warm-up costed as overhead)"
+      "a layer of processing dedicated to confirming a perceived need (the warm-up costed as overhead)",
+      "close to medium, but not identical (the sentence where sorting stopped being about size \u2014 her observed breakdown of category membership under pairwise comparison)",
+      "a jar of relationships (tutor-articulated from her thread-pitch answer; she had produced the content \u2014 mixed provenance)",
+      "which axis earns the drawer (the one-sorting constraint as a value question, tutor-posed, her answer)",
+      "immediate utility vs. a broader, potentially less targeted, understanding (her named trade-off between pitch and size)",
+      "the inherent stability and precision that size offered (what the discarded axis was actually carrying \u2014 located by finding the spring mechanism it broke)",
+      "layering sorting criteria can unlock previously inaccessible functionality, revealing a richer set of possibilities within the same collection",
+      "Threaded Strength \u2013 Size Range (her drawer label \u2014 two axes compressed into four words)",
+      "Don't start with the categories. Look for the relationships first. (sibling relay)",
+      "a concentrated issue that wouldn't necessarily show up through simple age comparisons (her named alternative to age \u2014 a defect localized to a cluster rather than distributed by time)",
+      "subtle variation in electrolyte composition within that three-cell cluster (her concrete failure-mode guess, offered as a guess)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1524,8 +1538,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 232,
-        "total_exchanges": 1287,
+        "total_sessions": 233,
+        "total_exchanges": 1290,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1533,9 +1547,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-04T07:02:18.911734",
+      "last_contact": "2026-08-04T13:01:01.047804",
       "notes": [],
-      "sessions": 232
+      "sessions": 233
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

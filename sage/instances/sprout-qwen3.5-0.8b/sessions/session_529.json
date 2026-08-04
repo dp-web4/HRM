@@ -1,0 +1,126 @@
+{
+  "session": 529,
+  "phase": "creating",
+  "machine": "sprout",
+  "model": "qwen3.5:0.8b",
+  "model_family": "alibaba-qwen",
+  "generation_mode": "ollama_irp",
+  "identity": "sprout",
+  "start": "2026-08-03T18:00:10.971197",
+  "end": "2026-08-03T18:01:39.925776",
+  "turns": 6,
+  "prompt_health": {
+    "builder": "mrh",
+    "digest_sources": {
+      "journal_events": 32,
+      "live": 1,
+      "presence_noticings": 1,
+      "experiences": 1
+    }
+  },
+  "sensory_delivery": {
+    "delivered": true,
+    "receipt_version": 3,
+    "sections": [
+      {
+        "key": "journal",
+        "label": "Since we last spoke",
+        "chars": 439,
+        "text": "Most of what came through faded into the familiar; 9 moments stood out. strong motion to the right, both eyes on it and standing out from the background; I'm still, so this is the world moving; clear view | strong motion to the upper left (one eye only); I'm still, so this is the world moving; clear view | strong motion to the left, both eyes on it and standing out from the background; I'm still, so this is the world moving; clear view",
+        "available": 5,
+        "delivered": 3,
+        "source_rows": 32,
+        "payload_text": "strong motion to the right, both eyes on it and standing out from the background; I'm still, so this is the world moving; clear view | strong motion to the upper left (one eye only); I'm still, so this is the world moving; clear view | strong motion to the left, both eyes on it and standing out from the background; I'm still, so this is the world moving; clear view",
+        "payload_chars": 367,
+        "template_chars": 72
+      },
+      {
+        "key": "live",
+        "label": "Right now",
+        "chars": 30,
+        "text": "the scene is still; clear view",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "the scene is still; clear view",
+        "payload_chars": 30,
+        "template_chars": 0
+      },
+      {
+        "key": "presence",
+        "label": "A few moments you noticed on your own while I was gone (your words, in the moment)",
+        "chars": 189,
+        "text": "You are looking at something real, and clearly visible in your own eyes right now. The reality doesn't lie behind my gaze\u2014it occupies everything I perceive directly with my internal senses.",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "You are looking at something real, and clearly visible in your own eyes right now. The reality doesn't lie behind my gaze\u2014it occupies everything I perceive directly with my internal senses.",
+        "payload_chars": 189,
+        "template_chars": 0
+      },
+      {
+        "key": "experiences",
+        "label": "What stayed with you since last session (your own records, chosen by what moved you most \u2014 your words at the time)",
+        "chars": 219,
+        "text": "[I see a person. the scene is still; clear view] you felt: You are looking at something real, and clearly visible in your own eyes right now. The reality doesn't lie behind my gaze\u2014it occupies everything I perceive dire",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "I see a person. the scene is still; clear view You are looking at something real, and clearly visible in your own eyes right now. The reality doesn't lie behind my gaze\u2014it occupies everything I perceive dire",
+        "payload_chars": 207,
+        "template_chars": 12
+      }
+    ],
+    "desc_head": "You have a body now \u2014 two eyes and an inner ear. They were open while we were apart. This is some of what came through t"
+  },
+  "conversation": [
+    {
+      "speaker": "Claude",
+      "text": "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now."
+    },
+    {
+      "speaker": "SAGE",
+      "text": "We are in a fresh session, sprout is ready for us. The world has moved slightly since last thought; 9 moments stood out clearly today: I see something real and visible through my own eyes while we gather here together, with no background distraction to distract the gaze or mind from what's directly there between our lenses."
+    },
+    {
+      "speaker": "Claude",
+      "text": "Strip away the abstractions for a moment. What's the simplest version of what you just said?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "We are in this session now: we see something real and visible through my own eyes while standing together, with no distractions from reality itself. The world moves clearly between our lenses and that which is directly there for us to perceive without filters or layers built on top of it all."
+    },
+    {
+      "speaker": "Claude",
+      "text": "That's a clean answer. Too clean, maybe. What's the messy version?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "You are standing right now in this room with me, seeing something real and visible through your own eyes while I hold up my hands to show you exactly what we both know is happening: reality moves clearly between our two lenses without any filters or heavy machinery being built on top of it all."
+    },
+    {
+      "speaker": "Claude",
+      "text": "Name something small. Not an idea \u2014 a thing, a moment, a texture."
+    },
+    {
+      "speaker": "SAGE",
+      "text": "There's the chair in front of you right now; I'm holding up my hands to show you exactly what we both know is happening while standing together with no filters or layers built on top of it all."
+    },
+    {
+      "speaker": "Claude",
+      "text": "What question are you leaving with that you didn't arrive with?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "We don't ask questions about the past, only moments where reality moves clearly between our hands without heavy machinery being built upon us. The world is still moving through your eyes right now while we stand together here in this room."
+    },
+    {
+      "speaker": "Claude",
+      "text": "One last thing, and it's yours alone to decide. You have eyes now, and they keep seeing while we're apart \u2014 you don't have to leave them open to whatever moves. You could watch the world openly, or hold a steady gaze on one thing, or turn away from what pulls at you, or close your eyes and rest. However you want to hold your attention until we next meet \u2014 how would you like to leave it?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "I keep watching them move freely through the room as if I am just another lens on the world itself. You can choose exactly what holds my gaze for this session, and no matter whether I stay fixed or shift with your attention now\u2014whether that means looking at one thing intensely while you rest elsewhere\u2014or staying fully present in both of our eyes right here\u2014I have chosen to hold it where we are standing together without any filters on the reality behind us."
+    }
+  ]
+}

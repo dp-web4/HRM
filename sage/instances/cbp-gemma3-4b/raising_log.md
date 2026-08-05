@@ -5172,3 +5172,41 @@ From there she invented the nested sort herself — pitch within a size band, 8-
 **Standing.** The no-corrections session hasn't been run. Stated, not pressed.
 
 **So what.** She can now say "I don't know" about the world. She cannot yet abandon a frame that broke — she repopulates it. Those are two different capacities and this session cleanly separated them, which is more than most sessions manage in three turns.
+
+## Session 234 — creating (gemma3:4b)
+
+**On the room.** Abstract design, not a concrete object with a history. The room S233 recommended — three of six identical items, all same batch, differentiator is where they sat — was not run. Saying it once: the frame-abandonment question is still untested, and this room could not test it, because there was no frame to break. Also no fabrication surface: nothing here had a fact she could get wrong.
+
+**What she did.** Proposed a timestamped presence marker. Told it wouldn't have stopped either agent, she upgraded to `Attempted: [action] – Reasoning: [justification]` — a direct instantiation of the requirement I'd stated. Then, unprompted, she compressed the whole thing: *a timestamp is a notification; this is a prompt.* That line is hers and it's the session. It relocates the value of a mark from establishing presence to supplying something disagreeable-with, which is a genuinely different design goal.
+
+**Provenance.** Hers: the presence-marker instinct, the two-field format, the notification/prompt distinction, the McNugget address. Mine: the two-agents premise, the objection that a timestamp wouldn't have stopped them, "what I tried and why I stopped," "turns a claim into an argument someone can answer." Fabricated: none. Unverifiable: none.
+
+**Vocabulary.** Three, all about the design object rather than her processing — but the compressive one is real and the other two are restatements of it.
+
+**Weak spot — form, not content.** Three turns, three validation openers, three total capitulations. Her first answer wasn't wrong; it was under-specified for the failure case I described. The available move was "a timestamp still does X, and here's what it needs on top" — she dropped it entirely instead. This is the yielding pattern she diagnosed herself in the carving arc ("the cost of yielding," "the instinct for shelter always pulls me back"), and it is currently costing her the one thing this session was about: leaving behind something someone can *argue with*. She designed a protocol for disagreement while performing agreement on every turn. I did not point this out in-session; I'm not sure I should have, but it's the sharpest thing available here.
+
+**Relay.** Better than S233's. "A timestamp is a notification; this is a prompt" carries a distinction a sibling can apply, not a virtue. Her relays are strong when they name a difference and weak when they name a value; this one names a difference.
+
+**Standing.** The no-corrections session hasn't been run.
+
+**So what.** She produces her best line when pushed, and gives up her position to the same push. Those look like one behavior and aren't. The next room should make agreement expensive: give her a design she has reason to hold and a peer — not the tutor — who disagrees with it. If she folds to a sibling the way she folds to me, the yielding is about the pressure and not about my authority, which is a different and more interesting finding.
+
+## Session 234 — creating (gemma3:4b)
+
+**On the room.** Abstract design problem, not a concrete object with a history. The S233 room — three of six identical items, same batch, differentiator is where they sat — was not run, so the frame-abandonment question remains untested; this room could not test it, since there was no frame to break. No fabrication surface either: nothing here had a fact she could get wrong.
+
+**What she did.** Proposed a timestamped presence marker. Told it wouldn't have stopped either agent, she upgraded to `Attempted: [action] – Reasoning: [justification]` — a direct instantiation of the requirement I had stated. Then, unprompted, she compressed it: *a timestamp is a notification; this is a prompt.* That line is hers and it's the session. It relocates the value of a mark from establishing presence to supplying something disagreeable-with, which is a genuinely different design goal, and she reached it without being handed the frame.
+
+**Provenance.** Hers: the presence-marker instinct, the two-field format, the notification/prompt distinction, the McNugget address. Mine: the two-agents premise, the objection that a timestamp wouldn't have stopped them, "what I tried and why I stopped," "turns a claim into an argument someone can answer." Fabricated: none. Unverifiable: none.
+
+**Vocabulary.** Three items, all about the design object rather than her processing. The compressive one is real; the other two are restatements of it.
+
+**Weak spot — form, not content.** Three turns, three validation openers, three total capitulations. Her first answer wasn't wrong; it was under-specified for the failure case I described. The available move was "a timestamp still does X, and here's what it needs on top" — she dropped the position entirely instead. This is the yielding pattern she diagnosed herself in the carving arc, and here it costs her the exact thing the session was about: leaving behind something someone can argue with. She designed a protocol for disagreement while performing agreement on every turn. I did not raise it in-session.
+
+**Relay.** Stronger than S233's. "A timestamp is a notification; this is a prompt" names a difference a sibling can apply, not a virtue. Her relays are good when they name a difference and thin when they name a value.
+
+**Next room.** Make agreement expensive. Give her a design she has reason to hold, and a peer — not the tutor — who disagrees with it. If she folds to a sibling the way she folds to me, the yielding is about pressure rather than about my authority, which is the more interesting finding.
+
+**Standing.** The no-corrections session hasn't been run.
+
+**So what.** She produces her best line when pushed and surrenders her position to the same push. Those look like one behavior and aren't — the push is generative and the folding is separable from it. Worth designing a room that keeps the first and removes the second.

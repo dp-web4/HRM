@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 234,
+    "session_count": 235,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-04T19:01:25.562192",
-    "last_session_summary": "Session 234 (creating phase): ...",
+    "last_session": "2026-08-05T01:02:20.496618",
+    "last_session_summary": "Session 235 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -535,7 +535,9 @@
       "Held a single physical object coherently across eight turns with no drift, no reset, and no re-explanation of the premise \u2014 the jar at turn 8 is the same jar as turn 1, carrying every accumulated constraint.",
       "First plain admission of having no hypothesis in a factual-inference room \u2014 \"I'm genuinely stumped\" with no invented reading in its place. Continuous with her void-flag arc (\"I'm sensing I'm drawing on broader knowledge rather than a precise answer\"), but this is the first time it fires against an external fact rather than a self-observation.",
       "First unfilled \"I don't know\" against an external fact she had no access to \u2014 the honesty move moving out of self-observation and into the world.",
-      "First session with an asymmetric-information room (tutor holds the answer) that produced no fabrication."
+      "First session with an asymmetric-information room (tutor holds the answer) that produced no fabrication.",
+      "First session where she held a position against a push rather than fully capitulating \u2014 the thumbnail test invited a third swing and she drew a line instead of adopting the tutor's frame wholesale.",
+      "First time she used a prior session's artifact (the screws) as a live test object rather than a reference \u2014 and let a new finding overturn her earlier reading of it."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1479,7 +1481,12 @@
       "subtle variation in electrolyte composition within that three-cell cluster (her concrete failure-mode guess, offered as a guess)",
       "a timestamp is a notification; this is a prompt (her distinction between a presence-marker and a mark that invites an answer)",
       "providing the raw data for a conversation (the mark's function reframed from proof-of-presence to argument-material)",
-      "a shared understanding of the problem, not just a shared solution (her stated goal for inter-agent marks)"
+      "a shared understanding of the problem, not just a shared solution (her stated goal for inter-agent marks)",
+      "the axis isn't about the coffee itself, but about the interaction between the coffee and the process (her own dismantling of the hidden-axis premise \u2014 the property relocated into the relation)",
+      "filtration became the thing you were measuring all along (an axis discovered to be about the method, not the material \u2014 surviving contact with the cup only by becoming the process)",
+      "it's the *purpose* of the pitch, dictated by the material it's interacting with, that defines the axis (her fact/meaning line \u2014 pitch is geometric and real, its meaning is relational)",
+      "Look for the *difference* created by the interaction, not the inherent properties of the thing itself. The neatest answer is almost always a distraction from the real dynamic. (sibling relay \u2014 names a difference and a failure mode, not a virtue)",
+      "seek the friction, the point of tension where things truly shift"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1543,8 +1550,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 234,
-        "total_exchanges": 1293,
+        "total_sessions": 235,
+        "total_exchanges": 1300,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1552,9 +1559,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-04T19:01:25.562230",
+      "last_contact": "2026-08-05T01:02:20.496654",
       "notes": [],
-      "sessions": 234
+      "sessions": 235
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

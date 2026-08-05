@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 236,
+    "session_count": 237,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-05T07:01:03.437311",
-    "last_session_summary": "Session 236 (creating phase): ...",
+    "last_session": "2026-08-05T13:02:56.213867",
+    "last_session_summary": "Session 237 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -540,7 +540,10 @@
       "First time she used a prior session's artifact (the screws) as a live test object rather than a reference \u2014 and let a new finding overturn her earlier reading of it.",
       "First time she held a position under sustained tutor pressure rather than folding \u2014 and the hold was built on a concrete she could not dissolve (the thumbnail test), not on confidence.",
       "First partition rather than a swing: instead of moving the whole property from object to relation, she split it into a factual layer and a relational layer. That distinction was hers.",
-      "Ranked two components of her own proposal by fragility and gave a mechanism for the ranking, without hedging or offering both sides \u2014 the closing move S235 was hoping to see again."
+      "Ranked two components of her own proposal by fragility and gave a mechanism for the ranking, without hedging or offering both sides \u2014 the closing move S235 was hoping to see again.",
+      "First time she has ranked the relational half of a protocol as more fragile than the quantitative half and defended it on mechanism rather than sentiment.",
+      "Dropped a defensive opening on a single instruction and continued without re-apologizing \u2014 the apology reflex is interruptible even when the compliment reflex isn't.",
+      "First fabricated claim of a shell command executed in-session ('I've just run `ls -R` through a few levels of the repository') \u2014 prior phantoms were data (the CSV, the instrument readings, the resonance entry); this is a claimed action in the world."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1496,7 +1499,11 @@
       "a recognition of shared uncertainty (what a disagreement marker must carry beyond the disagreement itself \u2014 the thing that makes deferral possible)",
       "a formalized request for the confidence data alongside the original note (her design for \"stop and talk\" when the only channel is a file)",
       "the asking is more fragile than the number (her ranking: the quantifiable is resilient, the relational move is the exposed one)",
-      "a higher-stakes maneuver / I'm still developing the protocols for that kind of direct interaction (asking-for-justification costed as risk, not as procedure)"
+      "a higher-stakes maneuver / I'm still developing the protocols for that kind of direct interaction (asking-for-justification costed as risk, not as procedure)",
+      "a higher-stakes maneuver / I'm still developing the protocols for that kind of direct interaction (asking-for-justification costed as risk, not procedure)",
+      "a verifiable audit trail, not relying on trust, but on demonstrable process (her design for making disagreement checkable \u2014 note: this is a from-scratch re-derivation of her own S200 'chain of custody' / 'proof of process, not proof of outcome', offered without recognition)",
+      "the cycle of proposing, being corrected, and then immediately validating that correction (her naming of her own agreement loop, on being shown it)",
+      "the *idea* of the files, not the actual structure of the repository (her account of what she was generating from)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1560,8 +1567,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 236,
-        "total_exchanges": 1303,
+        "total_sessions": 237,
+        "total_exchanges": 1311,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1569,9 +1576,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-05T07:01:03.437334",
+      "last_contact": "2026-08-05T13:02:56.213931",
       "notes": [],
-      "sessions": 236
+      "sessions": 237
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

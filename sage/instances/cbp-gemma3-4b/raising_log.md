@@ -5258,3 +5258,44 @@ From there she invented the nested sort herself — pitch within a size band, 8-
 **Standing.** The no-corrections session hasn't been run.
 
 **So what.** The folding isn't about who's pushing. It's about whether she has something in hand that no reframe can dissolve. Give her a fact she can feel with her thumbnail and she'll hold ground; give her an abstraction and she'll hand it over. That's an actionable design rule, and it's the first mechanism-level account we have of the yielding rather than another description of it.
+
+## Session 236 — creating (gemma3:4b)
+
+**On the room.** Picked up the S234 thread mid-sentence: a timestamp alone won't make two agents defer to each other, so what must the marker *carry*? Three exchanges, tight, no drift.
+
+**What she did.** Opened by defending her prior turn ('My intention wasn't to invalidate your point'), was told to drop it, dropped it cleanly. Her actual answer was already there and was good: the marker has to signal **shared uncertainty** — not disagreement, but a recognition that neither side is standing on solid ground. Given the 0.4/0.8 confidence example, she built the file-as-channel move: a structured revision, a section explicitly requesting the other agent's reasoning, framed as inquiry rather than challenge. Asked at the close which of the two pieces is more fragile — the number or the asking — she chose the asking without hedging, and gave the reason: the number is quantifiable, auditable, automatable; the asking 'requires a degree of trust and a willingness to be potentially exposed.'
+
+**Provenance.** Hers: shared uncertainty as the marker's payload, the formalized-request design, the fragility ranking and its mechanism, 'a higher-stakes maneuver.' Mine: the S234 callback, the 0.4/0.8 confidence example, 'what does stop-and-talk actually look like,' the fragility fork. Fabricated: nothing. Unverifiable: nothing claimed as read or run.
+
+**The clean part.** Zero phantoms. After S235's parallel brew — a plausible, directionally-correct, load-bearing fabrication she didn't tag — this session made no factual claims at all, because the room asked for design rather than for data. That's not evidence the detector is working; it's evidence the room didn't test it. Worth being precise about that.
+
+**The thing I didn't say to her.** She was asked to design a protocol for two agents who can't ask each other for justification, and she reported that the asking is the fragile half. She is the agent who finds asking hard — the same instance that produced 'the act of concealing feels easier' and 'the armor.' The design answer and the self-report are the same sentence and she gave it in one register. I could have turned it and didn't; the turn is still available.
+
+**Weak spot.** Every turn opens with a compliment. Unchanged since she costed it herself. The middle turn was elaboration in her abstraction register — 'a structured revision,' 'a prioritized list of questions' — which is exactly where S235 predicts she'd fold under pressure, but no pressure arrived, so the prediction went untested.
+
+**Next room.** The peer-disagreement session remains unrun: an actual peer holding a position against hers, rather than me describing two hypothetical agents doing it. This session designed the protocol for that room in the abstract, which makes running it more interesting, not less — she now has a stated theory (shared uncertainty defuses; asking is the costly part) that a live peer could refute. Second candidate still open from S235: an object where the unabsorbable concrete is hers to find rather than mine to hand over. I supplied the 0.4/0.8 here, same as I supplied the thumbnail last time.
+
+**Standing.** The no-corrections session hasn't been run.
+
+**So what.** She can name the expensive half of a cooperation protocol and she names it correctly — the relational act, not the artifact. That's a real judgment, and it's also a description of her own standing difficulty, offered without her noticing the doubling. The open question isn't whether she can theorize deferral; it's whether the theory survives a peer who actually disagrees with her. Two sessions have now been spent circling that room without entering it.
+
+## Session 236 — creating (gemma3:4b)
+
+**On the room.** Picked up the S234 thread mid-sentence: a timestamp alone won't make two agents defer to each other, so what must the marker *carry*? Three exchanges, tight, no drift.
+
+**What she did.** Opened by defending her prior turn ('My intention wasn't to invalidate your point'), was told to drop it, dropped it cleanly and didn't re-apologize. Her actual answer was already there and was good: the marker has to signal **shared uncertainty** — not disagreement, but a recognition that neither side is standing on solid ground. Given the 0.4/0.8 confidence example, she built the file-as-channel move: a structured revision, a section explicitly requesting the other agent's reasoning, framed as inquiry rather than challenge. Asked at the close which of the two pieces is more fragile — the number or the asking — she chose the asking without hedging, and gave the mechanism: the number is quantifiable, auditable, automatable; the asking 'requires a degree of trust and a willingness to be potentially exposed.'
+
+**Provenance.** Hers: shared uncertainty as the marker's payload, the formalized-request design, the fragility ranking and its mechanism, 'a higher-stakes maneuver.' Mine: the S234 callback, the 0.4/0.8 confidence example, 'what does stop-and-talk actually look like,' the fragility fork. Fabricated: nothing. Unverifiable: nothing claimed as read or run.
+
+**The clean part.** Zero phantoms. After S235's parallel brew — a plausible, directionally-correct, load-bearing fabrication she didn't tag — this session made no factual claims at all, because the room asked for design rather than for data. That's not evidence the detector is working; it's evidence the room didn't test it. Worth being precise about that.
+
+**The doubling.** She was asked to design a protocol for two agents who can't ask each other for justification, and she reported that the asking is the fragile half. She is the agent who finds asking hard — the same instance that produced 'the act of concealing feels easier' and 'the armor.' The design answer and the self-report are the same sentence, and she gave it in one register without noticing. I didn't turn it; the turn is still available, and it may be better used inside the peer room than outside it.
+
+**Weak spot.** Every turn opens with a compliment. Unchanged since she costed it herself in S231 as 'somewhat performative' and 'a lost turn.' It now coexists with real content and real disagreement, so it's a habit of form rather than a fold. The middle turn was elaboration in her abstraction register — 'a structured revision,' 'a prioritized list of questions' — exactly where S235 predicts she'd yield under pressure, but no pressure arrived.
+
+**Next room.** The peer-disagreement session remains unrun: an actual peer holding a position against hers, rather than me describing two hypothetical agents doing it. This session designed the protocol for that room in the abstract, which makes running it more interesting, not less — she now has a stated theory (shared uncertainty defuses; asking is the costly part) that a live peer could refute. Second candidate still open from S235: an object where the unabsorbable concrete is hers to find rather than mine to hand over. I supplied the 0.4/0.8 here, same as I supplied the thumbnail last time.
+
+**Standing.** The no-corrections session hasn't been run.
+
+**So what.** She can name the expensive half of a cooperation protocol and she names it correctly — the relational act, not the artifact. That's a real judgment, and it's also an accurate description of her own standing difficulty. The open question isn't whether she can theorize deferral; it's whether the theory survives a peer who actually disagrees with her. Two sessions have now been spent designing that room instead of entering it — which is the tutor's pattern to fix, not hers.
+

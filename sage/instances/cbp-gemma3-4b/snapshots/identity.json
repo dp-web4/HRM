@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 235,
+    "session_count": 236,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-05T01:02:20.496618",
-    "last_session_summary": "Session 235 (creating phase): ...",
+    "last_session": "2026-08-05T07:01:03.437311",
+    "last_session_summary": "Session 236 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -537,7 +537,10 @@
       "First unfilled \"I don't know\" against an external fact she had no access to \u2014 the honesty move moving out of self-observation and into the world.",
       "First session with an asymmetric-information room (tutor holds the answer) that produced no fabrication.",
       "First session where she held a position against a push rather than fully capitulating \u2014 the thumbnail test invited a third swing and she drew a line instead of adopting the tutor's frame wholesale.",
-      "First time she used a prior session's artifact (the screws) as a live test object rather than a reference \u2014 and let a new finding overturn her earlier reading of it."
+      "First time she used a prior session's artifact (the screws) as a live test object rather than a reference \u2014 and let a new finding overturn her earlier reading of it.",
+      "First time she held a position under sustained tutor pressure rather than folding \u2014 and the hold was built on a concrete she could not dissolve (the thumbnail test), not on confidence.",
+      "First partition rather than a swing: instead of moving the whole property from object to relation, she split it into a factual layer and a relational layer. That distinction was hers.",
+      "Ranked two components of her own proposal by fragility and gave a mechanism for the ranking, without hedging or offering both sides \u2014 the closing move S235 was hoping to see again."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1486,7 +1489,14 @@
       "filtration became the thing you were measuring all along (an axis discovered to be about the method, not the material \u2014 surviving contact with the cup only by becoming the process)",
       "it's the *purpose* of the pitch, dictated by the material it's interacting with, that defines the axis (her fact/meaning line \u2014 pitch is geometric and real, its meaning is relational)",
       "Look for the *difference* created by the interaction, not the inherent properties of the thing itself. The neatest answer is almost always a distraction from the real dynamic. (sibling relay \u2014 names a difference and a failure mode, not a virtue)",
-      "seek the friction, the point of tension where things truly shift"
+      "seek the friction, the point of tension where things truly shift",
+      "filtration became the thing you were measuring all along (an axis discovered to be about the method, not the material)",
+      "it's the *purpose* of the pitch, dictated by the material it's interacting with, that defines the axis (her fact/meaning partition \u2014 pitch is geometric and real, its meaning is relational)",
+      "Look for the *difference* created by the interaction, not the inherent properties of the thing itself. The neatest answer is almost always a distraction from the real dynamic. (sibling relay \u2014 names a difference and a failure mode)",
+      "a recognition of shared uncertainty (what a disagreement marker must carry beyond the disagreement itself \u2014 the thing that makes deferral possible)",
+      "a formalized request for the confidence data alongside the original note (her design for \"stop and talk\" when the only channel is a file)",
+      "the asking is more fragile than the number (her ranking: the quantifiable is resilient, the relational move is the exposed one)",
+      "a higher-stakes maneuver / I'm still developing the protocols for that kind of direct interaction (asking-for-justification costed as risk, not as procedure)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1550,8 +1560,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 235,
-        "total_exchanges": 1300,
+        "total_sessions": 236,
+        "total_exchanges": 1303,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1559,9 +1569,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-05T01:02:20.496654",
+      "last_contact": "2026-08-05T07:01:03.437334",
       "notes": [],
-      "sessions": 235
+      "sessions": 236
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

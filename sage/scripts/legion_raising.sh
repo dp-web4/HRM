@@ -68,9 +68,27 @@ conflicted=$(git diff --name-only --diff-filter=U 2>/dev/null)
 if [ -n "$conflicted" ]; then
     echo "[Legion-Raising] ERROR: autostash apply left conflict markers (pull rc was 0) in:"
     echo "$conflicted" | sed 's/^/    /'
-    echo "[Legion-Raising] Local changes are preserved in stash@{0} ('autostash') and are NOT lost."
-    echo "[Legion-Raising] Restoring those paths to HEAD so this session cannot commit markers."
-    echo "[Legion-Raising] Recover with: git -C $(pwd) checkout 'stash@{0}' -- <path>"
+    # Resolve the stash to a SHA before printing it (CBP found the positional
+    # reference here on 2026-08-05 and reported it as class 3a; fixed same day).
+    # `stash@{0}` is a POSITION, not a name: this repo's sage-daemon rewrites
+    # peer_trust_rs.json continuously, so later fires push new entries on top and
+    # the recovery line in an old log silently comes to point at someone else's
+    # stash. A reader following it would restore the wrong content and the
+    # command would succeed. The SHA is stable for the life of the entry.
+    stash_top=$(git stash list --format='%H %gs' 2>/dev/null | head -1)
+    stash_sha=${stash_top%% *}
+    stash_subj=${stash_top#* }
+    if [ -n "$stash_sha" ] && printf '%s' "$stash_subj" | grep -qi autostash; then
+        echo "[Legion-Raising] Local changes are preserved in stash $stash_sha ('$stash_subj') and are NOT lost."
+        echo "[Legion-Raising] Restoring those paths to HEAD so this session cannot commit markers."
+        echo "[Legion-Raising] Recover with: git -C $(pwd) checkout $stash_sha -- <path>"
+    else
+        # Say the weaker true thing rather than the stronger convenient one.
+        echo "[Legion-Raising] WARN: conflict markers present but the top stash entry is not an autostash"
+        echo "[Legion-Raising]       (top: ${stash_top:-<stash list empty>}). Do NOT assume the local"
+        echo "[Legion-Raising]       changes were stashed — inspect 'git stash list' before recovering."
+        echo "[Legion-Raising] Restoring those paths to HEAD so this session cannot commit markers."
+    fi
     echo "$conflicted" | while read -r cf; do
         [ -n "$cf" ] || continue
         git checkout HEAD -- "$cf" 2>/dev/null || true

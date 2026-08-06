@@ -1,0 +1,8 @@
+PAUSED by dp, 2026-08-05, until further notice.
+
+Reason: ARC-AGI-3 organism work is using the box, and raising sessions load their own model
+(qwen3.5:27b via Ollama) alongside DiffusionGemma. Thor has 122GB unified and DiffusionGemma alone
+is 49GB — measured 2026-08-05, two model instances plus the trainer hit 109GB of 122GB and stalled
+a run before it completed a single step.
+
+To resume: delete this file. Nothing else needs changing.

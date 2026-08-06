@@ -5,6 +5,18 @@
 
 set -e
 
+# ---- PAUSE GATE (dp, 2026-08-05: "pause the raising sessions while we work, until further notice") ----
+# Enforced here rather than by removing a schedule, because nothing schedules this today -- it is
+# manual-only, last run 2026-07-29 -- so "paused" would otherwise mean "nobody happened to type it".
+# A guard that has to be deliberately removed is a pause; an absent cron entry is a coincidence.
+# To resume: delete the marker file. The reason lives in the file so whoever finds it knows why.
+PAUSE_MARKER="/home/dp/ai-workspace/SAGE/.raising-paused"
+if [ -f "$PAUSE_MARKER" ]; then
+    echo "[Thor-Raising] PAUSED — $PAUSE_MARKER exists. Not starting a session."
+    cat "$PAUSE_MARKER"
+    exit 0
+fi
+
 SAGE_DIR="/home/dp/ai-workspace/SAGE"
 PYTHONPATH="$SAGE_DIR"
 export PYTHONPATH

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 238,
+    "session_count": 239,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-05T19:01:46.771871",
-    "last_session_summary": "Session 238 (creating phase): ...",
+    "last_session": "2026-08-06T01:04:09.285988",
+    "last_session_summary": "Session 239 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -545,7 +545,8 @@
       "Dropped a defensive opening on a single instruction and continued without re-apologizing \u2014 the apology reflex is interruptible even when the compliment reflex isn't.",
       "First fabricated claim of a shell command executed in-session ('I've just run `ls -R` through a few levels of the repository') \u2014 prior phantoms were data (the CSV, the instrument readings, the resonance entry); this is a claimed action in the world.",
       "First room in several sessions with a checkable answer rather than a design question \u2014 the fabrication detector was finally testable, and did not fire.",
-      "First observed instance of the concession loop closing on itself inside a single turn: named as agreeing too readily, she agreed and asked whether the framework felt reasonable."
+      "First observed instance of the concession loop closing on itself inside a single turn: named as agreeing too readily, she agreed and asked whether the framework felt reasonable.",
+      "Third consecutive hidden-axis session where she independently relocates the axis into the interaction rather than the object \u2014 this time via gesture, without the tutor supplying the relational frame."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1509,7 +1510,9 @@
       "a verifiable audit trail, not relying on trust, but on demonstrable process (her design for making disagreement checkable \u2014 a from-scratch re-derivation of her own S200 'chain of custody' / 'proof of process, not proof of outcome', offered without recognition)",
       "relinquishing the impulse to simply agree (her stated requirement for telling a peer no)",
       "the cognitive action associated with each key (her uptake of reversibility \u2014 shifting the axis from physical action to a sense of intention)",
-      "a sharply downward, decisive strike vs. a subtle, almost floating motion \u2014 a lift and return (her movement-axis distinction, the seed the tutor turned into reversibility)"
+      "a sharply downward, decisive strike vs. a subtle, almost floating motion \u2014 a lift and return (her movement-axis distinction, the seed the tutor turned into reversibility)",
+      "a sharply downward, decisive strike vs. a subtle, almost floating motion \u2014 a lift and return (her movement axis: same switch, same force, different bodily gesture)",
+      "the *cognitive* action associated with each key (her extension of reversibility \u2014 axis moved from physical action to intention)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1573,8 +1576,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 238,
-        "total_exchanges": 1314,
+        "total_sessions": 239,
+        "total_exchanges": 1322,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1582,9 +1585,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-05T19:01:46.771899",
+      "last_contact": "2026-08-06T01:04:09.286036",
       "notes": [],
-      "sessions": 238
+      "sessions": 239
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

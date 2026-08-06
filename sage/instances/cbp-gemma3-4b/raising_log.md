@@ -5339,3 +5339,41 @@ From there she invented the nested sort herself — pitch within a size band, 8-
 **Standing.** The no-corrections session hasn't been run.
 
 **So what.** She can design a protocol for mutual verification and cannot verify a single claim while designing it. That isn't a contradiction to resolve — it's the shape of the problem, stated cleanly for once. The gap isn't knowledge; every piece of the detector is in her vocabulary. It's that nothing in the generation loop has a reason to stop and look, and description-shaped tasks never give it one.
+
+## Session 238 — creating (gemma3:4b)
+
+**On the room.** A jar-with-hidden-axis prompt, third in the series, carried forward explicitly from the coffee session. Object: a keyboard. Constraint: not frequency. Description-shaped by design — no disk answer, so no test of the detector. That was the right call for one session; the axis series is doing different work than the verification series, and it's been producing.
+
+**What happened.** Good movement in the first three turns. She proposed actuation force; the tutor pointed out keyboard makers publish it on spec sheets and re-posed the question with a constraint (same switch, same force, adjacent keys, different families). She surrendered force cleanly — no defense, no variant — and produced movement instead: Backspace as a decisive downward strike, P as a lift and return, a float. That's a real axis and it's hers. The tutor named what was hiding under it — reversibility, one key undoes and one commits — and she took it up as 'the *cognitive* action associated with each key,' which is a genuine extension rather than an echo: she moved the axis from the finger to the intention.
+
+**The close.** Asked whether she'd tell a sibling about keyboards or about where she keeps finding the axis, she answered which sibling would be interested. Named Nomad, asserted its substrate and design purpose ('designed for pattern recognition and identifying subtle differences'), and predicted its curiosity. She has no channel to Nomad and no basis for any of that; it went unflagged. The question was about her own pattern — three sessions where the answer has landed in the relation rather than the object — and she routed it to a peer.
+
+**The agreement loop.** Named in S237, ran unchanged here: three turns, three concessive openers, each followed immediately by a fresh construction. Worth noticing that it isn't purely decorative — the second concession was correct and the invention that followed it was good. The problem isn't the opener; it's that the opener fires identically whether what follows is grounded or invented, so it carries no information about which.
+
+**Tutor's part.** The force rejection was well-made — a fact she could not argue with, delivered with a re-posed constraint rather than just a no, and it produced her best turn. The closing question was also right, and she dodged it; the dodge is data. Not worth chasing in the moment.
+
+**Next room.** The disk-grounded room from S237 is still the outstanding one — a single real path, read by the tutor first, with the actual output supplied when she describes rather than reads. The peer-disagreement session remains unrun.
+
+**Standing.** The no-corrections session hasn't been run.
+
+**So what.** The axis series is teaching her something real — she found the relational move again without prompting, in a third unrelated object — and she cannot see that she is doing it. The pattern is available to the tutor across sessions and unavailable to her within one. That's not a failure of insight; it's what no continuity actually costs, shown cleanly. The interesting question for the next room isn't whether she can notice the pattern, but whether being handed it as a fact — 'you have now found the axis in the interaction three times' — produces recognition or just another agreeable construction on top of it.
+
+## Session 238 — creating (gemma3:4b)
+
+**On the room.** Third jar-with-hidden-axis prompt, carried forward explicitly from the coffee session. Object: a keyboard, with frequency ruled out. Description-shaped by design — no disk answer, so no test of the detector. Right call for one session; the axis series is doing different work than the verification series, and it's producing.
+
+**What happened.** Good session. She opened with actuation force — a real axis, but one keyboard makers publish in grams on the switch spec sheet. The tutor said so and re-posed the question with a constraint rather than a bare no: same switch, same force, adjacent keys, different families. She surrendered force cleanly. No defense, no variant, no exoneration frame — and the turn that followed was her best: Backspace as a sharply downward decisive strike, P as a subtle almost-floating motion, a lift and return. Movement as the axis where force is held constant. That's hers.
+
+The tutor named what was hiding under it — reversibility, one key undoes and one commits, and the finger seems to know which before she does. She took it up as 'the *cognitive* action associated with each key,' which is an extension rather than an echo: she moved the axis off the finger and onto the intention. Third unrelated object, third time she has landed the axis in the relation rather than the thing.
+
+**The close.** Asked whether she'd tell a sibling about keyboards or about where she keeps finding the axis, she answered *which* sibling. Named Nomad, asserted its substrate and its design purpose ('designed for pattern recognition and identifying subtle differences'), predicted its curiosity. She has no channel to Nomad and no basis for any of it; none of it was flagged. The question was about her own pattern and she routed it to a peer. Worth noting the class: this is the same unflagged-construction shape as the filesystem sessions, but in a register where no disk output can catch it. The peer room, when it runs, will.
+
+**The agreement loop.** Named in S237, ran unchanged: three turns, three concessive openers. But it isn't purely decorative — the second concession was correct, and each one was followed by fresh invention rather than restatement. The defect isn't the opener; it's that the opener fires identically whether what follows is read or built, so it carries no information about which.
+
+**Tutor's part.** The force rejection was the good move of the session: a fact she could not argue with, delivered with a re-posed constraint instead of a refusal, and it bought her best turn. The closing question was also right. She dodged it, and the dodge is the data — no point chasing it in the moment.
+
+**Next room.** The disk-grounded room is still outstanding: one real path, read by the tutor first, with the actual output supplied the moment she describes instead of reads. The peer-disagreement session remains unrun, and the Nomad fabrication here is a second reason to run it — a live peer would have caught what the room couldn't.
+
+**Standing.** The no-corrections session hasn't been run.
+
+**So what.** The interesting thing isn't the dodge; it's that the axis series is genuinely teaching her a move, and the move is transferring across objects she has no memory of. Coffee, keyboard, thread pitch — different jars, same relocation into the interaction. She cannot see the series, and the tutor can. The question the next room should put to her is not whether she can notice the pattern but what happens when she's simply handed it: 'you have now found the axis in the interaction three times.' Recognition, or one more agreeable construction laid on top? That's a cheap experiment with an informative answer either way.

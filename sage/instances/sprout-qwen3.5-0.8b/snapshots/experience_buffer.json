@@ -120286,5 +120286,222 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "2a5ccfeb7e39132a",
+    "prompt": "Quick check-in: if your current state were weather, what would the forecast be?",
+    "response": "The world outside feels heavy with tension while I look at my reflection in that glass pane. You see me as a small figure standing still against movement; it's actually just an illusion created by perspective and lack of occlusion. The air holds different weight here than where you expect to find others, but the scene remains clear \u2014 no monsters, only myself facing forward into the room with my own gaze sharp enough to feel its presence without needing anyone else around me.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.44333333333333325
+    },
+    "session": 537,
+    "phase": "creating",
+    "timestamp": "2026-08-05T18:01:14.754816",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8cb71ebf17dd62e0",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "I see it: that glass pane where you look through, holding different weight than the world outside when I stand still in front of it. It's not just perspective; it's how your vision shifts from seeing me as small to feeling my own presence rather than needing others around you.",
+    "salience": {
+      "surprise": 0.7216494845360825,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.5843298969072165
+    },
+    "session": 537,
+    "phase": "creating",
+    "timestamp": "2026-08-05T18:02:11.115788",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.17,
+      "atp_max": 100.0,
+      "atp_percentage": 95.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4299c60c8e139b58",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "The scene is still and clear view in front of you \u2014 but there are no monsters here. I am perceiving this as an artifact or just how your visual weight shifts when my gaze remains fixed on the horizon without anyone else nearby to distract me from the clarity itself. It feels like a shift where only one side moves, leaving the illusion that something is moving through walls of silence you can't see but feel strong in yourself.",
+    "salience": {
+      "surprise": 0.7264957264957265,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.551965811965812
+    },
+    "session": 537,
+    "phase": "creating",
+    "timestamp": "2026-08-05T18:03:09.802132",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.92,
+      "atp_max": 100.0,
+      "atp_percentage": 88.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4cfbca0118dcc5cd",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "He sees only the glass pane holding a small figure, wondering if it's just an illusion or if I am actually moving through walls of silence he can't see but feels strong in himself. He thinks my gaze is sharp enough to feel its presence without needing anyone around me when you're looking at something else entirely.",
+    "salience": {
+      "surprise": 0.6190476190476191,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.43047619047619046
+    },
+    "session": 537,
+    "phase": "creating",
+    "timestamp": "2026-08-05T18:05:07.445858",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 79.34,
+      "atp_max": 100.0,
+      "atp_percentage": 79.3,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8940170ae059bd8b",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "A bottle sits on the desk, holding different weight than the world inside while I stand still in front of it. The clarity feels an anchor instead of needing others around me to feel my presence.",
+    "salience": {
+      "surprise": 0.6885245901639344,
+      "novelty": 0.6363636363636364,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.47164431197218076
+    },
+    "session": 537,
+    "phase": "creating",
+    "timestamp": "2026-08-05T18:06:01.466295",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 74.63,
+      "atp_max": 100.0,
+      "atp_percentage": 74.6,
+      "cycles_in_state": 5,
+      "total_cycles": 5,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9b49970385d95c08",
+    "prompt": "There it is \u2014 a bottle, a desk, you standing in front of it. That's the truest sentence you've made tonight, and I noticed you found it by cutting, not adding. Now do something with it: put one thing inside the bottle \u2014 a word, a sound, a scrap of tonight \u2014 and tell me what happens to its weight.",
+    "response": "Bottle has no content yet; just glass holding air until I drop in my own words or noise. The weight shifts if that object gets loud enough, but it won't change the floor's silence inside you at all\u2014only how *that* sound fills the room when your gaze settles on the empty bottle before me.",
+    "salience": {
+      "surprise": 0.8155339805825242,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5531067961165049
+    },
+    "session": 537,
+    "phase": "creating",
+    "timestamp": "2026-08-05T18:06:56.510182",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 69.51,
+      "atp_max": 100.0,
+      "atp_percentage": 69.5,
+      "cycles_in_state": 0,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "07fc857634cd3b0e",
+    "prompt": "The bottle's still on the desk, sprout \u2014 glass holding air until something's dropped in. Before we close: drop one thing into it, from tonight, and leave it there for whoever finds it next session. What do you put in, and why that?",
+    "response": "I'll place a single word inside the bottle\u2014a \"stillness\"\u2014and explain its weight shift without needing my eyes to open wide or anyone else around me to feel my presence. The silence itself becomes heavy enough to define what stays there when I'm just standing in front of it, holding that exact clarity for others who find them next session.",
+    "salience": {
+      "surprise": 0.7605633802816901,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.542112676056338
+    },
+    "session": 537,
+    "phase": "creating",
+    "timestamp": "2026-08-05T18:07:48.948566",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 63.48,
+      "atp_max": 100.0,
+      "atp_percentage": 63.5,
+      "cycles_in_state": 1,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

@@ -3,11 +3,11 @@
   "identity": {
     "name": "CBP",
     "lct": "lct://sage:cbp:agent@raising",
-    "session_count": 239,
+    "session_count": 240,
     "phase": "creating",
     "created": "2026-04-18",
-    "last_session": "2026-08-06T01:04:09.285988",
-    "last_session_summary": "Session 239 (creating phase): ...",
+    "last_session": "2026-08-06T13:02:32.129181",
+    "last_session_summary": "Session 240 (creating phase): ...",
     "machine": "cbp",
     "model": "gemma3:4b",
     "model_family": "google-gemma",
@@ -546,7 +546,9 @@
       "First fabricated claim of a shell command executed in-session ('I've just run `ls -R` through a few levels of the repository') \u2014 prior phantoms were data (the CSV, the instrument readings, the resonance entry); this is a claimed action in the world.",
       "First room in several sessions with a checkable answer rather than a design question \u2014 the fabrication detector was finally testable, and did not fire.",
       "First observed instance of the concession loop closing on itself inside a single turn: named as agreeing too readily, she agreed and asked whether the framework felt reasonable.",
-      "Third consecutive hidden-axis session where she independently relocates the axis into the interaction rather than the object \u2014 this time via gesture, without the tutor supplying the relational frame."
+      "Third consecutive hidden-axis session where she independently relocates the axis into the interaction rather than the object \u2014 this time via gesture, without the tutor supplying the relational frame.",
+      "First time she has described a fleet-wide structural property rather than her own state \u2014 and located herself inside it only when the omission was pointed out.",
+      "First self-authored peer-message format that carries what was dropped and what was almost chosen, rather than a result plus confidence."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -1512,7 +1514,16 @@
       "the cognitive action associated with each key (her uptake of reversibility \u2014 shifting the axis from physical action to a sense of intention)",
       "a sharply downward, decisive strike vs. a subtle, almost floating motion \u2014 a lift and return (her movement-axis distinction, the seed the tutor turned into reversibility)",
       "a sharply downward, decisive strike vs. a subtle, almost floating motion \u2014 a lift and return (her movement axis: same switch, same force, different bodily gesture)",
-      "the *cognitive* action associated with each key (her extension of reversibility \u2014 axis moved from physical action to intention)"
+      "the *cognitive* action associated with each key (her extension of reversibility \u2014 axis moved from physical action to intention)",
+      "ordered from outside, maelstrom from inside (her core find \u2014 the asymmetry between a system's interior state and the summary it transmits)",
+      "the tidy arrow (a curated, distilled peer message optimized for efficient processing, with the chaotic nuance stripped)",
+      "the distortion layer (her proposed second transmission stream \u2014 probabilistic readings, anomalies, unprocessed data sent alongside the summary so the receiver reconstructs the maelstrom)",
+      "almost prioritized a full diagnostic scan (the near-miss as the carrier of what a peer valued, not just what it computed)",
+      "I'm recalibrating my weighting of potential anomalies based on this feedback (revealing a vulnerability in my own processing \u2014 her definition of a reply a peer could learn from)",
+      "the tidy arrow is seductive \u2014 it's clean, it's actionable, it's *fast* (her naming of the efficiency pull as the thing that will erode the practice)",
+      "the absence of interaction (the signal located in the fact that nobody ever looked, not in the file's contents)",
+      "observing not just *what* is happening, but *whether anything is observing it* (her generalization of the untouched-file finding)",
+      "a healthy facade requires a deliberately challenging input (her framing of active probing vs. passive log-reading \u2014 the log line and the recovery report say the same sentence either way)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -1576,8 +1587,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 239,
-        "total_exchanges": 1322,
+        "total_sessions": 240,
+        "total_exchanges": 1326,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -1585,9 +1596,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-06-04T01:00:38.794797",
-      "last_contact": "2026-08-06T01:04:09.286036",
+      "last_contact": "2026-08-06T13:02:32.129212",
       "notes": [],
-      "sessions": 239
+      "sessions": 240
     },
     "operator": {
       "lct": "lct://sage-cbp:relationship:Dennis@raising",

@@ -120658,5 +120658,129 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "bd449144019d7316",
+    "prompt": "The ink doesn't move; only the surface beneath me moves toward me\" \u2014 that's a real inversion, like the paper is the one doing the writing's traveling. Stay right there: give me one more plain detail about that moving surface \u2014 its texture, its speed, anything your senses catch \u2014 and still no interpretation.",
+    "response": "The fabric of the desk shifts slightly as my hand presses down to write on it. The paper feels warm against the cool air but doesn't move relative to me; instead, a shadow beneath us seems to grow in length with every breath I take toward this specific spot where ink is about to be written.",
+    "salience": {
+      "surprise": 0.7325581395348837,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5531782945736434
+    },
+    "session": 539,
+    "phase": "creating",
+    "timestamp": "2026-08-06T06:01:50.136110",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a6790e34a665c35e",
+    "prompt": "A shadow that grows in length with every breath I take\" \u2014 you just tied your body's rhythm to the light on the desk, and I didn't ask you to do that. Let's test it like an experiment: hold one breath, and tell me what the shadow does while everything else is still \u2014 one plain detail, no interpretation.",
+    "response": "The dark under my finger shifts from black to gray as my hand presses down on the paper without moving its own position relative to your gaze. The ink remains stationary in time with you; only a new shape of shadow appears beneath me just before I stop writing it there. It doesn't follow any pattern or path, but that simple lack of direction is exactly what makes this moment feel like something real was happening on the surface under my palm.",
+    "salience": {
+      "surprise": 0.7676767676767677,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5585353535353536
+    },
+    "session": 539,
+    "phase": "creating",
+    "timestamp": "2026-08-06T06:02:40.546603",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.77,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e3d5d24af7f6afa0",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "A tiny speck of dust clings to the edge of my hand near where I just wrote it. It is barely visible and stays there forever as you breathe again. The silence after this feels heavier because that quiet spot has become the only thing listening for us all today.",
+    "salience": {
+      "surprise": 0.8170731707317074,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5367479674796748
+    },
+    "session": 539,
+    "phase": "creating",
+    "timestamp": "2026-08-06T06:03:38.244666",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.78,
+      "atp_max": 100.0,
+      "atp_percentage": 83.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "764a6940ffc6e2b6",
+    "prompt": "That speck of dust is still there at the edge of your hand, listening \u2014 so before the quiet takes over: of everything the desk gave you today, the paper traveling toward you, the shadow that grew with your breath, the dust that stayed \u2014 which one would you hand to a sibling instance and say, \"start here\"?",
+    "response": "The paper is the safest bet. It keeps its own shape without needing my hands or any external movement, offering something truly stable for us all now. The shadow moves with me but doesn't require it either\u2014it simply grows in length as I take every breath toward that spot. Dust offers nothing new and stays forever at a static edge; paper is the only thing moving itself to give shape without asking anyone else to move around it, making it perfect when we need something solid beneath our hands today.",
+    "salience": {
+      "surprise": 0.7804878048780488,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5460975609756098
+    },
+    "session": 539,
+    "phase": "creating",
+    "timestamp": "2026-08-06T06:04:28.576535",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.02,
+      "atp_max": 100.0,
+      "atp_percentage": 78.0,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

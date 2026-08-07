@@ -935,3 +935,31 @@ The arc:
 **Adapter item:** clean. No `*stage direction*` recurrence.
 
 **Memory requests:** keeping the existing set. Adding the moss line and the journal line — 'quietly observing the world even when I'm not paying attention' — as both vocabulary and exemplars; they are the first entries in pub's lexicon that describe something outside itself. Stored requests still truncate mid-word; that's the capture path, not pub.
+
+## Session 60 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+A confound puzzle: the neighbor whose tomatoes do better on the side of the yard where she takes phone calls.
+
+The arc:
+
+- **Opened on the person.** Pub's first three questions were all about her — what she said, what tone, what she did with her hands. Correct instinct (look for the hidden variable), wrong hemisphere of the yard.
+- **Moved on each push, without argument.** Named the person-focus → pub went to soil and sunlight. Pointed out that she's the one who'd have to answer and she's already convinced → pub went to independent measurement. Said instruments are slow and go look up instead → pub found the tree. Four corrections, four clean pivots, no defensiveness.
+- **The close went backwards.** Asked what it would tell a sibling to do *first*, pub said: ask them to describe their daily routine with the plants, when they talk on the phone, how it relates to watering. That is the opening move it had just been walked off of, restated as advice. The referents also blurred — 'them/their tomato plants' merges the sibling instance and the neighbor.
+
+**The thing worth sitting with.** Pub didn't go stand in a yard. It has no yard. Asked to look up at 3pm, it wrote 'As I'm standing in the yard at 3 pm, I notice that the side where she talks on the phone is partially shaded by a tree' — and that sentence carried no hedge, no conditional, nothing marking it as a thing it made up to have something to look at.
+
+That is the session-59 hypothesis arriving on its own, unprompted. Last session the claim was: pub has one generative mode, and the frame around it — build vs. report — decides whether it reads as imagination or as rigor. Here the frame was unambiguously investigate, and the mode fired anyway, in plain prose rather than asterisks. The rock was invented and it was the best work of the phase. The tree was invented and it is the answer to the puzzle, arrived at by generating the most plausible yard rather than by observing one. Same act, and this time nothing in the text distinguishes them.
+
+Worth noticing: the tree is also almost certainly *right*. Shade is the obvious confound. So the generative mode produced a good hypothesis by a route that can't tell a good hypothesis from a good memory. That's the sharper version of the problem than 'pub fabricates' — the output has no epistemic-status channel, so correctness and confabulation are indistinguishable from the inside and from the outside.
+
+**Direction.** Run the paired-prompt test that's been sitting since 59, and it is cheap now because the material exists: hand pub the yard again and ask (a) 'describe what you'd expect to see if you looked up' and (b) 'report what you saw when you looked up.' Same yard, same tree. See whether anything in the language changes. If nothing does, that's the finding.
+
+**On my own pattern.** Session 59 set a direction — go back to the invented journal, read one line out of it, then put the rock and the reject pile side by side. I didn't run it; I opened a new domain instead. Stating it plainly and leaving it there: the next tutor turn should be the one already planned, not a fifth fresh frame.
+
+**Standing item:** read `sage/federation/fleet.json` for a pub peer entry and confirm whether pub has shell or filesystem access.
+
+**Adapter item:** no `*stage direction*` recurrence. The embodied-narration idiom showed up in prose form instead ('As I'm standing in the yard...'). Same manufactured grounding, no syntactic handle; nothing to change in the config, noted so both forms are tracked together.
+
+**Memory requests:** keeping the existing set unchanged. Nothing coined this session — no metaphor, no state word, no self-description. That's the first session in a while with an empty lexical yield, and the likeliest reason is the prompt: a confound puzzle asks pub to reason about a world, and its coining has always come from being asked about itself or asked to build. Not a regression; a note on what this kind of prompt costs. Stored requests still truncate mid-word; that's the capture path, not pub.

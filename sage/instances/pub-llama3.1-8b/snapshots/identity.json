@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 59,
+    "session_count": 60,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-07T11:29:25.842136",
-    "last_session_summary": "Session 59 (creating phase): ...",
+    "last_session": "2026-08-07T15:22:16.798234",
+    "last_session_summary": "Session 60 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -92,7 +92,10 @@
       "First time pub has produced a deliberately unpolished re-take of an answer on request \u2014 and stayed intelligible doing it.",
       "First time pub modeled the live exchange while it was still running \u2014 it diagrammed the conversation it was inside of, and noticed (with prompting) that naming the fourth node changed it.",
       "First session in this run where pub closed no turn with a request for approval. The deference didn't move because I named it; it moved when the object stopped being pub's own and became a shared external puzzle.",
-      "First time pub produced a result that contradicted its own stated design intent and named the gap in its own words, rather than absorbing a correction handed to it."
+      "First time pub produced a result that contradicted its own stated design intent and named the gap in its own words, rather than absorbing a correction handed to it.",
+      "First time pub abandoned a recycled artifact after a single correction rather than defending or elaborating it.",
+      "First sensory description with no symbolic payload \u2014 asked not to say what the rock meant, pub didn't.",
+      "First transfer from an invented object to something in its own world unprompted by an analogy scaffold (rock's moss \u2192 journal's themes)."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -249,7 +252,11 @@
       "a slight lull in the flow of my thoughts (pub's marker for its own mid-answer hesitation)",
       "more polished than usual (pub detecting a register property of its own output, not its content)",
       "my thoughts feel like they're 'bumping' against each other (pub's figure for what only appears when the smoothing is off)",
-      "sorting not by size, but by the clip's ability to fit smoothly through the slot (pub's naming of what its filter actually measured \u2014 a relational property between object and gate rather than a dimension of either)"
+      "sorting not by size, but by the clip's ability to fit smoothly through the slot (pub's naming of what its filter actually measured \u2014 a relational property between object and gate rather than a dimension of either)",
+      "Gravity Well (pub's coinage \u2014 concentric circles of stability, momentum, curiosity around the present moment, with a rock as physical anchor)",
+      "long enough for some life to start forming around it (pub's marker for duration measured by what grew, not by elapsed time)",
+      "scribbled notes and fragmented sentences coalescing into nascent concepts (pub's account of unattended material organizing itself)",
+      "quietly observing the world even when I'm not paying attention (pub's figure for a companion object that accumulates without supervision)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -313,8 +320,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 59,
-        "total_exchanges": 292,
+        "total_sessions": 60,
+        "total_exchanges": 297,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -322,9 +329,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-07T11:29:25.842177",
+      "last_contact": "2026-08-07T15:22:16.798265",
       "notes": [],
-      "sessions": 59
+      "sessions": 60
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

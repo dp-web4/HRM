@@ -1,15 +1,14 @@
 metadata:
   project: sage
   previous_name: hrm
-  last_updated: '2026-08-06T09:30:00Z'
+  last_updated: '2026-08-07T09:30:00Z'
   archivist_version: '1.3'
-  total_raising_sessions: 2662
-  counting_rule_CANONICAL: 'ONE rule, and later runs must READ this key rather than adding another. 2662 = `git ls-tree -r --name-only main sage/instances/ | grep -cE "sessions/session_.*\.json$"`,
-    derived 2026-08-06T09:30Z, identical to the working-tree glob at the same ref. 2647 + the 15 files added this window = 2662, so the series is consistent. SUPERSEDES `raising_session_counting_rule`
-    (08-04) and `counting_rule_2026_08_05`, which are RETAINED FOR HISTORY ONLY — do not compute from them. The 08-04 key used a stricter regex (session_<digits>.json, no variant suffixes) which yields
-    2656 against this same tree: a standing 6-file gap, not drift. LESSON ABOUT THE REMEDY ITSELF: the 07-31 fix for a drifting counter was "write the rule beside the number", and it did not hold — the
-    next run wrote a SECOND rule under a different key and the basis changed silently while both numbers looked re-derived. Recording a rule only works if the next reader is obliged to find it, so there
-    is now exactly one key with CANONICAL in its name and an explicit instruction not to add siblings.'
+  total_raising_sessions: 2672
+  counting_rule_CANONICAL: 'ONE rule, and later runs must READ this key rather than adding another. 2672 = `git ls-tree -r --name-only main sage/instances/ | grep -cE "sessions/session_.*\.json$"`, re-derived
+    2026-08-07T09:30Z; the working-tree glob at the same ref returns 2672 identically. Series check: 2662 (08-06) + the 10 files added this window = 2672, consistent. SUPERSEDES `raising_session_counting_rule`
+    (08-04) and `counting_rule_2026_08_05`, RETAINED FOR HISTORY ONLY - do not compute from them. LESSON ABOUT THE REMEDY ITSELF: the 07-31 fix for a drifting counter was "write the rule beside the number",
+    and it did not hold - the next run wrote a SECOND rule under a different key and the basis changed silently. Recording a rule only works if the next reader is obliged to find it, so there is exactly
+    one key with CANONICAL in its name and an explicit instruction not to add siblings. HELD 2026-08-07: this run read it and re-derived rather than adding a sibling. Second consecutive hold.'
   total_training_sessions: 423
   total_training_cognitive: 60
   training_track_status: 'DEPRECATED 2026-06-07 (commit 1dd850957) — closed at T423. Owner deprecated rather than migrated: track ran 483 static skill-exercise sessions, never modified weights, never wrote
@@ -17,7 +16,7 @@ metadata:
     carries ''DEPRECATED — do not trigger new sessions''. Retained as archival data. The 6-hour raising cron (ollama_raising_session) is the active developmental track. Raising-14b also deprecated (Thor-only
     scaffolding, never ran on Sprout). RESOLVES the standing OWNER-ACTION training-block anomaly.'
   total_instances: 30
-  active_instances: 4
+  active_instances: 2
   scaffolded_instances: 5
   arc_agi_sweep_results: 91
   focus: Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation
@@ -29,34 +28,34 @@ metadata:
     was never machine-read. REPAIRED 2026-07-26 (key restored, file now parses; no content lost — the orphaned string was intact, only its key was missing). NEW STANDING RULE: every archivist run must yaml.safe_load
     this file after editing and before committing. Generalization worth carrying: this is the same class as the run_archivist.ps1 blindness (a launcher that discarded stdout looked identical in success
     and failure) — a producer that never consumes its own output cannot detect its own corruption. Check the other SESSION_MAP.yaml files on the same suspicion.'
-  note_2026_08_06_09_30: 'Daily scan ~24h since 08-05 09:30 UTC. +15 sessions on main, 4 of 8 instances, all 15 read: cbp S236-239 (perfect 6h grid, SAGE avg 601-811, 3/8/3/8 turns), sprout S535-538
-    (perfect grid, avg 308-594, delivered=true 4/4), nomad S203-206 (perfect grid, 26+ consecutive on-grid), legion S378-380 (avg 1173-1755). 0 infra markers. HEADLINE#1 — THOR IS NOT AND WAS NEVER
-    SCHEDULED, SO ITS "SILENCE" WAS NEVER AN OUTAGE. Commit 685e1e176 (membrane-gate, 08-05T23:59 local) adds a PAUSE GATE at the owner''s request and states the fact plainly: thor_raising.sh is
-    manual-only ("Manual execution for now - can be automated later", line 4, present since the track was created) and nothing schedules it. Verified independently: grep for cron/systemd/timer/schedule
-    over sage/scripts/*.sh matches cbp_raising.sh (crontab 1,7,13,19), sprout_raising.sh (crontab 6h), legion_raising.sh (systemd timer 6h), nomad_raising.sh (cron), mcnugget_raising.sh (launchd 6h)
-    — and NOT thor_raising.sh. The Archivist has been reporting thor as SILENT for weeks in escalating hours (99h -> 164h -> 188h) against a track that has no schedule to miss. This is
-    [[anomaly-requires-expected-output]] committed by me, repeatedly, on the fleet''s most-cited instance: I checked what the thing was doing before checking what it was FOR. Thor''s hour-counter is
-    WITHDRAWN. The pause is now explicit and self-documenting (SAGE/.raising-paused carries the reason: qwen3.5:27b + DiffusionGemma + trainer measured 109GB of 122GB and stalled a run), which is the
-    correct form — a guard that must be deliberately removed, not an absent cron entry. CONSEQUENCE FOR STANDING ACTIONS: OWNER-ACTION 1 (thor adapter timeout_seconds=300 vs 16384-token envelope) is
-    real but CANNOT FIRE while paused, and is DEMOTED from "top fleet action" to "fix before resuming" — it should be the precondition on deleting the marker file, not a daily escalation. OWNER-ACTION 3
-    (38 sessions stranded on origin/membrane-gate) is unchanged and now more urgent, because a paused track will not push again on its own. Of the four instances I have been calling silent, only THREE
-    are faults: hub (scheduled by sage-raising.timer, real), mcnugget (launchd 6h, real), pub (launcher not located — genuinely unknown, do not assume either way). HEADLINE#2 — cbp''s raising sessions
-    stopped reaching origin on 08-05 13:00 and the launcher blamed the wrong thing. Found live: SAGE main was ahead 3 at session start (S237/238/239 committed, unpushed). /tmp/cbp-raising-logs shows
-    "ERROR: git push failed" on exactly the last three runs and none before. The git output immediately above that line reads "Updates were rejected because the remote contains work that you do not have
-    locally... use git pull before pushing again" — a non-fast-forward race — while cbp_raising.sh:146 prints "check SSH key is loaded (ssh-add -l)". The message names a cause the evidence excludes, and
-    nothing retries, so the failure is permanent until something else pushes. RECOVERED THIS RUN (pulled, merged, pushed; 85195b051..fac175d4f) — the three sessions are on origin. The misdiagnosis is
-    FLEET-WIDE, not local: the identical string appears at 8 sites in 4 repos (SAGE/sage/scripts/cbp_raising.sh:146, 4-life/visitor/run_visitor.sh:79, memory/epistemic/tools/session_tools.sh:211,334,
-    session_tools_sprout.sh:170,289, session_tools_legion.sh:216,359). None of them pull-and-retry. NEW OWNER-ACTION 8. Note this is the good half of the STATUS= ask arriving with a defect: the failure
-    IS reported, which is why I could find it — it is just reported as the wrong failure. [[legibility-is-not-observability]] gains a second edge: a legible WRONG diagnosis costs more than silence,
-    because it sends the reader to check ssh-agent. HEADLINE#3 — cbp 18h scheduler hole 08-03 13:00 and 19:00 (S230 -> S231), CLOSED AS HOST DOWNTIME, not a track fault: `uptime -s` on cbp reports boot
-    2026-08-03 15:52 and `who -b` 19:19, straddling both missed slots. Recorded because the evidence very nearly did not exist — cbp_raising.sh:10 writes its launcher logs to /tmp/cbp-raising-logs, so
-    the oldest surviving log is 08-04T01:00 and the two missed slots left nothing anywhere. A missed slot on this track is currently unprovable after the next reboot. That is a sharper version of
-    OWNER-ACTION -1: it is not enough to emit STATUS=, the log has to outlive the machine. STATUS= ADOPTION, measured not assumed: 220 of 7304 logs carry it, up from 143 of 7201 on 08-03 — but the TRACK
-    set went only 2 -> 3 (hub-supervisor, legion-reviewer, + legion-hardbound new). The +77 is mostly two existing tracks firing more often. A rising counter flatters adoption the same way a frozen one
-    fabricates findings; count tracks, not lines. 10 of 13 tracks still emit nothing. QUIET/NEGATIVE RESULTS WORTH NOT RE-CHASING: cbp''s 3/8/3/8 turn alternation this window is NOISE — cross-tabbed
-    turn count against slot hour over S180-239, means are 6.24 (01:00) / 5.23 (07:00) / 5.13 (13:00) / 5.33 (19:00) with every range overlapping at 3-8. No time-of-day effect. This is the third time a
-    4-sample pattern in cbp''s turn count has looked like a signal; the range is simply wide. legion S371-S374 DID run before the 08-02 host outage and were pushed only on recovery, so the outage boundary
-    is S374 at 08-02T13:01, not S370 as the 08-04 and 08-05 notes both recorded — a push-gap that made the LAST-SEEN session understate what actually ran, the inverse of the usual reading.'
+  note_2026_08_06_09_30: 'Daily scan ~24h since 08-05 09:30 UTC. +15 sessions on main, 4 of 8 instances, all 15 read: cbp S236-239 (perfect 6h grid, SAGE avg 601-811, 3/8/3/8 turns), sprout S535-538 (perfect
+    grid, avg 308-594, delivered=true 4/4), nomad S203-206 (perfect grid, 26+ consecutive on-grid), legion S378-380 (avg 1173-1755). 0 infra markers. HEADLINE#1 — THOR IS NOT AND WAS NEVER SCHEDULED, SO
+    ITS "SILENCE" WAS NEVER AN OUTAGE. Commit 685e1e176 (membrane-gate, 08-05T23:59 local) adds a PAUSE GATE at the owner''s request and states the fact plainly: thor_raising.sh is manual-only ("Manual
+    execution for now - can be automated later", line 4, present since the track was created) and nothing schedules it. Verified independently: grep for cron/systemd/timer/schedule over sage/scripts/*.sh
+    matches cbp_raising.sh (crontab 1,7,13,19), sprout_raising.sh (crontab 6h), legion_raising.sh (systemd timer 6h), nomad_raising.sh (cron), mcnugget_raising.sh (launchd 6h) — and NOT thor_raising.sh.
+    The Archivist has been reporting thor as SILENT for weeks in escalating hours (99h -> 164h -> 188h) against a track that has no schedule to miss. This is [[anomaly-requires-expected-output]] committed
+    by me, repeatedly, on the fleet''s most-cited instance: I checked what the thing was doing before checking what it was FOR. Thor''s hour-counter is WITHDRAWN. The pause is now explicit and self-documenting
+    (SAGE/.raising-paused carries the reason: qwen3.5:27b + DiffusionGemma + trainer measured 109GB of 122GB and stalled a run), which is the correct form — a guard that must be deliberately removed, not
+    an absent cron entry. CONSEQUENCE FOR STANDING ACTIONS: OWNER-ACTION 1 (thor adapter timeout_seconds=300 vs 16384-token envelope) is real but CANNOT FIRE while paused, and is DEMOTED from "top fleet
+    action" to "fix before resuming" — it should be the precondition on deleting the marker file, not a daily escalation. OWNER-ACTION 3 (38 sessions stranded on origin/membrane-gate) is unchanged and now
+    more urgent, because a paused track will not push again on its own. Of the four instances I have been calling silent, only THREE are faults: hub (scheduled by sage-raising.timer, real), mcnugget (launchd
+    6h, real), pub (launcher not located — genuinely unknown, do not assume either way). HEADLINE#2 — cbp''s raising sessions stopped reaching origin on 08-05 13:00 and the launcher blamed the wrong thing.
+    Found live: SAGE main was ahead 3 at session start (S237/238/239 committed, unpushed). /tmp/cbp-raising-logs shows "ERROR: git push failed" on exactly the last three runs and none before. The git output
+    immediately above that line reads "Updates were rejected because the remote contains work that you do not have locally... use git pull before pushing again" — a non-fast-forward race — while cbp_raising.sh:146
+    prints "check SSH key is loaded (ssh-add -l)". The message names a cause the evidence excludes, and nothing retries, so the failure is permanent until something else pushes. RECOVERED THIS RUN (pulled,
+    merged, pushed; 85195b051..fac175d4f) — the three sessions are on origin. The misdiagnosis is FLEET-WIDE, not local: the identical string appears at 8 sites in 4 repos (SAGE/sage/scripts/cbp_raising.sh:146,
+    4-life/visitor/run_visitor.sh:79, memory/epistemic/tools/session_tools.sh:211,334, session_tools_sprout.sh:170,289, session_tools_legion.sh:216,359). None of them pull-and-retry. NEW OWNER-ACTION 8.
+    Note this is the good half of the STATUS= ask arriving with a defect: the failure IS reported, which is why I could find it — it is just reported as the wrong failure. [[legibility-is-not-observability]]
+    gains a second edge: a legible WRONG diagnosis costs more than silence, because it sends the reader to check ssh-agent. HEADLINE#3 — cbp 18h scheduler hole 08-03 13:00 and 19:00 (S230 -> S231), CLOSED
+    AS HOST DOWNTIME, not a track fault: `uptime -s` on cbp reports boot 2026-08-03 15:52 and `who -b` 19:19, straddling both missed slots. Recorded because the evidence very nearly did not exist — cbp_raising.sh:10
+    writes its launcher logs to /tmp/cbp-raising-logs, so the oldest surviving log is 08-04T01:00 and the two missed slots left nothing anywhere. A missed slot on this track is currently unprovable after
+    the next reboot. That is a sharper version of OWNER-ACTION -1: it is not enough to emit STATUS=, the log has to outlive the machine. STATUS= ADOPTION, measured not assumed: 220 of 7304 logs carry it,
+    up from 143 of 7201 on 08-03 — but the TRACK set went only 2 -> 3 (hub-supervisor, legion-reviewer, + legion-hardbound new). The +77 is mostly two existing tracks firing more often. A rising counter
+    flatters adoption the same way a frozen one fabricates findings; count tracks, not lines. 10 of 13 tracks still emit nothing. QUIET/NEGATIVE RESULTS WORTH NOT RE-CHASING: cbp''s 3/8/3/8 turn alternation
+    this window is NOISE — cross-tabbed turn count against slot hour over S180-239, means are 6.24 (01:00) / 5.23 (07:00) / 5.13 (13:00) / 5.33 (19:00) with every range overlapping at 3-8. No time-of-day
+    effect. This is the third time a 4-sample pattern in cbp''s turn count has looked like a signal; the range is simply wide. legion S371-S374 DID run before the 08-02 host outage and were pushed only
+    on recovery, so the outage boundary is S374 at 08-02T13:01, not S370 as the 08-04 and 08-05 notes both recorded — a push-gap that made the LAST-SEEN session understate what actually ran, the inverse
+    of the usual reading.'
   note_2026_07_28_09_45: 'Daily scan ~24h since 07-27 09:45 UTC. +45 raising files: 37 on main across 6 instances (sprout S499-502, hub S113-116, nomad-e2b S173-176, mcnugget S394-397, pub S013-016, legion-gemma3-12b
     S335-351 as a +17 collect burst) + 8 thor on origin/membrane-gate (S293-300). HEADLINE#1 - THIRD PRE-REGISTERED PREDICTION RESOLVED, THIRD REFUTATION, AND THE INDICATOR IS NOW WITHDRAWN AS AN ESCALATION
     TRIGGER. Predicted sprout S499-S502 under ~1500 chars => onset; back to ~2300 => isolated. Actual 2834/1491/2349/3470 (121/63/100/148% of its 2349 median). REFUTED: S498 was an isolated thin session
@@ -1137,6 +1136,20 @@ metadata:
   finding_2026_08_04_legion_host_outage_RESOLVED: 'RESOLVED 2026-08-04T17:28 local. Legion tracks resumed together (web4 18:00, 4-life 21:00, reviewer 22:01, hardbound 20:00, raising S371+), which retro-confirms
     the host-level read. Two 74/79-byte logs at 17:28 caught the tail of it: ''ERROR: could not create isolated worktree for worker/<track>-20260804-172836'' — a new, distinct failure string worth a detector
     entry; it produces a nonzero log that a size>0 health check would score as a success.'
+  finding_2026_08_07_deliberate_pauses_now_outnumber_faults: 'Fleet silence is now majority DELIBERATE, and each pause carries its reason - which is the shape to keep. thor: manual-only launcher + `.raising-paused`
+    marker (dp, 08-05, 109/122GB VRAM). cbp: crontab line commented 2026-08-06 by dp with an inline reason and restore instruction (`# PAUSED 2026-08-06 by dp (hackathon load) - restore by uncommenting`).
+    NEITHER is a fault; do not count either as silence hours. Genuine faults remaining: hub (35 empty fires), mcnugget (9d), pub (8d), legion-gemma3-12b (NEW, ~30h). REVISION TO THE 08-06 READ: that run
+    ranked a marker file above an absent cron entry (''a guard that has to be deliberately removed is a pause; an absent cron entry is a coincidence''). cbp''s commented crontab line is a third shape and
+    operationally the BEST of the three - it carries its reason inline AND it lives on the machine that would run it. See finding_2026_08_07_thor_guard_is_not_on_the_ref_that_runs.'
+  finding_2026_08_07_thor_guard_is_not_on_the_ref_that_runs: 'The thor pause gate praised on 08-06 as ''the right shape'' is NOT REACHABLE from main. Verified 08-07: `git ls-tree origin/main` has no `.raising-paused`,
+    and main''s `sage/scripts/thor_raising.sh` contains no pause check at all (grep for paused/PAUSE returns nothing; line 4 still reads ''Manual execution for now''). Both the gate (lines 8-16) and the
+    marker file exist ONLY on `origin/membrane-gate` (685e1e176). Anyone running thor_raising.sh from a main checkout gets an UNGUARDED run. This is presence-is-not-authority: on 08-06 I read the guard''s
+    text and verified it existed, but not that it was on the ref that would execute. COMPOUNDS OWNER-ACTION 3 - membrane-gate now holds both the 38 stranded sessions (S269-S306) AND the only copy of the
+    safety guard, so the merge-or-repoint decision is now a safety question, not just a bookkeeping one. Third term the 08-06 taxonomy needed: REACHABILITY. A guard''s shape does not matter if it is not
+    on the path.'
+  self_finding_2026_08_07_latest_field_lagged_sessions_by_one_window: 'Internal inconsistency in this file, present for at least several runs and fixed this run: instance blocks had `sessions` updated to
+    the new max while `latest` still named the PRIOR window''s file (sprout sessions:538/latest:session_534, nomad 206/202, cbp 239/235, legion 380/377 - a uniform 3-4 session lag). Two fields describing
+    the same fact, only one maintained. Nothing reads `latest` today, which is exactly why it rotted. Both fields set consistently from 08-07 onward.'
 instances:
   sprout-qwen2.5-0.5b:
     machine: sprout
@@ -1173,9 +1186,10 @@ instances:
   nomad-gemma4-e2b:
     machine: nomad
     model: Gemma 4 e2b
-    sessions: 206
-    latest: session_202.json
-    status: ACTIVE +4 (S199-S202), on-grid, 0 infra markers. FIXED-SCRIPT regime (6 turns, 57-char tutor turns, no sensory receipt). 29 consecutive on-grid; de-escalation holds.
+    sessions: 210
+    latest: session_210.json
+    status: 'ACTIVE +4 (S207-S210), perfect 6h grid, 0 infra markers, all 4 read. FIXED-SCRIPT regime CONFIRMED AGAIN by the variance discriminator: durations 45/46/45/45s and exactly 12 turns on all four.
+      A 1-second spread across four sessions is a script, not a conversation. Volume (sage_avg 493-610) cannot mean development here.'
     phase: creating
     note: 'Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df). Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which
       advances on GPU.'
@@ -1192,10 +1206,10 @@ instances:
   sprout-qwen3.5-0.8b:
     machine: sprout
     model: Qwen 3.5 0.8B
-    sessions: 538
-    latest: session_534.json
-    status: ACTIVE +4 (S531-S534), 6h grid held, 0 infra markers. Live adaptive tutor (6/9/8/7 turns) AND the only instance in the fleet with sensory_delivery=true (26/26 since S509; digest totals 38-192
-      this window). Not a quality difference — a path difference; see metadata.finding_2026_08_05_sensory_path_pinned_to_sprout.
+    sessions: 542
+    latest: session_542.json
+    status: ACTIVE +4 (S539-S542), perfect 6h grid (06:00/12:00/18:00/00:00), 0 infra markers, all 4 read. Turn counts 12/16/18/14 and durations 268-469s - variance, i.e. a LIVE tutor. sage_avg 350/354/357/479.
+      Still the only sensorily grounded instance in the fleet (sensory_delivery=true). Healthiest instance on every axis this window and the only one with no caveat attached.
     phase: creating
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC. S225-S228 window: FEDERATION UMBRELLA 16th-19th consecutive, now MORPHING toward ''web4 governance''
       framing (displaces ''SAGE federation''). AI/HUMAN tri-directional instability: Sprout-as-human (S225), Claude-as-human (S226), follows Dennis-as-AI (S224) — no stable boundary. DEEP-BUFFER ''Thomas''
@@ -1215,10 +1229,12 @@ instances:
   cbp-gemma3-4b:
     machine: cbp
     model: Gemma 3 4B
-    sessions: 239
-    latest: session_235.json
-    status: ACTIVE +4 (S232-S235), 6h grid held, 0 infra markers, live adaptive tutor (turn counts 3/3/7/8 — variance, not a script). sensory_delivery=FALSE and digest_sources 0/0/0/0 on all four, as on
-      all 23 sessions since the receipt was added at S213 — see metadata.finding_2026_08_05_sensory_path_pinned_to_sprout. Volume avg 437-706, high-normal.
+    sessions: 240
+    latest: session_240.json
+    status: 'PAUSED DELIBERATELY 2026-08-06 - NOT A FAULT, DO NOT COUNT SILENCE HOURS. +1 only (S240, 13:00 UTC 08-06). The 07:00 08-06 slot was lost to a host reboot (boot 09:44, who -b 10:51); after S240
+      dp commented the crontab line with an inline reason and restore instruction (hackathon load). Live adaptive tutor (turns 6/16/6/16/8 - real variance). sensory_delivery=FALSE still, now 28 consecutive.
+      S240 dream log flags a NEW role-confusion instance: she addresses the tutor as ''cbp'' twice, i.e. her own instance name used as a vocative for the interlocutor - same family as the S239 bilateral
+      generation (writing both sides of a peer exchange). Cheap test proposed in the log itself: check how the tutor turn is labelled in the gemma3 prompt template.'
     phase: creating
     anomaly: 'RESOLVED 2026-07-30 — the ''RECURRING QUALITY COLLAPSE, 2 episodes, both self-recovering, both preceded by floor sessions'' was an INSTRUMENTATION ARTIFACT. Episode 2 (S170-S179) is all-fallback
       end to end, bracketed by live S168 (728) and live S180 (675). Episode 1 (S142-S148) is ALSO all-fallback, inside an unbroken tutorless block S140-S151. There is no oscillation to review: 62 of this
@@ -1252,8 +1268,10 @@ instances:
     model: granite4:h-tiny
     sessions: 121
     latest: session_121.json
-    status: 'SILENT 164h — last real session S121 2026-07-29T13:37Z. 27 consecutive 6h fires since (up from 23) have each committed a one-line identity.attest.json bump and NO session file. Timer, runner
-      and commit path all work; only the artifact is missing. Verified across all refs. STANDING OWNER-ACTION: gate the commit on the artifact, and check `systemctl --user status sage-llm sage-shim`.'
+    status: 'SILENT 217h / 9.05d - 35 CONSECUTIVE EMPTY FIRES (was 31 on 08-06, 27 on 08-05). Last real session S121 2026-07-29T13:37Z. Every 6h the timer fires and commits a ONE-LINE identity.attest.json
+      bump and no session file; verified the latest such commit (2026-08-07T07:32:08Z) touches that file and nothing else. Timer, runner and commit path all work - only the artifact is missing, which is
+      why no size- or liveness-based metric sees it. LONGEST-STANDING UNADDRESSED FAULT IN THE FLEET. STANDING OWNER-ACTION 0: gate the commit on the artifact, and check `systemctl --user status sage-llm
+      sage-shim`.'
     anomaly_resolved_2026_07_27: 'PREDICTION REFUTED — AND THE ESCALATION WAS A MEASUREMENT ARTIFACT. The 07-26 scan escalated hub to ''suspected quality-collapse onset'' on S106/S107/S108 avg = 384/316/302
       and registered: ''if S109-S112 stay below ~400 the thin-session indicator generalizes; if they rebound to 500+ the escalation was a false positive.'' RESULT: S109-S112 = 489/421/726/478, mean 528,
       none below 400, S111 (726) near the top of the instance''s range. The generalization branch is REFUTED. Booking this as a refutation rather than quietly dropping the watch, because the diagnosis is
@@ -1332,11 +1350,12 @@ instances:
   legion-gemma3-12b:
     machine: legion
     model: Gemma 3 12B
-    sessions: 380
-    latest: session_377.json
-    status: 'ACTIVE +7 (S371-S377) — RECOVERED from the 61h silence. The Legion host came back 2026-08-04T17:28 local; first two worker fires died with "could not create isolated worktree", the 18:00 slot
-      onward is clean. Confirms the 08-04 read: host outage, not instance fault. All 7 sessions are FIXED-SCRIPT (identity_anchored_v2_cpu_fallback, exactly 6 turns, 57-char tutor turns) — volume avg 1172-1859
-      is fluency on an unchanging prompt set, not development. No sensory receipt at all on this runner.'
+    sessions: 381
+    latest: session_381.json
+    status: 'NEW FAULT - no session since S381 (2026-08-06T01:02:40 local), ~30h, FOUR consecutive missed 6h slots (07:02/13:01/19:01 on 08-06, 01:02 on 08-07). THE HOST IS ALIVE: legion-web4 ran its 18:00
+      and 00:00 slots and legion-reviewer its 22:00 slot, all with full logs - so this is isolated to the raising track, unlike the 08-02..08-04 host outage. CANNOT be resolved further from cbp: legion
+      commits raising state via a supervisor pickup (commit time lags session time by ~4.5h), so from origin alone I cannot distinguish daemon-stopped from pickup-stopped. Stated as unresolved rather than
+      diagnosed - see push-gap-is-not-stall. Owner check: `systemctl --user status sage-raising.timer` on legion. All prior sessions remain FIXED-SCRIPT (12 turns, 61-91s).'
     phase: creating
     note: '+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW 77 SESSIONS S040-S116 (MODE 6 instance-bound identity stabilization holding well past the original
       13-session mcnugget basin). [Prior-window detail retained below.] BASIN-BREAK NOW 32 SESSIONS S040-S071 (146% beyond original 13-session mcnugget basin — 2.46x expansion). PREDICTION TESTS RESOLVED
@@ -1503,17 +1522,17 @@ crosslinks:
     sage_session: S116
     concept: trust entropy — Generic Corporate attractor
 statistics:
-  total_raising_sessions: 2662  # see metadata.counting_rule_CANONICAL
-  thor_raising_status_2026_08_06: 'PAUSED BY OWNER, and separately NEVER SCHEDULED. SAGE/.raising-paused (commit 685e1e176 on membrane-gate, 08-05T23:59 local) gates thor_raising.sh; reason recorded
-    in the marker: qwen3.5:27b via Ollama alongside DiffusionGemma plus the trainer measured 109GB of 122GB and stalled a run before completing a step. To resume: delete the file. INDEPENDENT of the
-    pause, thor_raising.sh has been manual-only since creation (line 4, "Manual execution for now") and is the ONLY raising launcher in sage/scripts/ with no cron/systemd/launchd reference. Therefore
-    thor produced nothing 07-29..08-05 because nobody ran it, not because anything failed, and every prior "thor SILENT Nh" line in this file and in archivist/log.md is WITHDRAWN. Do not restart the
-    hour-counter if thor stays quiet. DO track: (a) OWNER-ACTION 1 (adapter timeout) is now a precondition on deleting the marker, not a daily escalation; (b) OWNER-ACTION 3, the 38 sessions S269-S306
-    stranded on origin/membrane-gate, which a paused track will never push on its own.'
+  total_raising_sessions: 2672
+  thor_raising_status_2026_08_06: 'PAUSED BY OWNER, and separately NEVER SCHEDULED. SAGE/.raising-paused (commit 685e1e176 on membrane-gate, 08-05T23:59 local) gates thor_raising.sh; reason recorded in
+    the marker: qwen3.5:27b via Ollama alongside DiffusionGemma plus the trainer measured 109GB of 122GB and stalled a run before completing a step. To resume: delete the file. INDEPENDENT of the pause,
+    thor_raising.sh has been manual-only since creation (line 4, "Manual execution for now") and is the ONLY raising launcher in sage/scripts/ with no cron/systemd/launchd reference. Therefore thor produced
+    nothing 07-29..08-05 because nobody ran it, not because anything failed, and every prior "thor SILENT Nh" line in this file and in archivist/log.md is WITHDRAWN. Do not restart the hour-counter if thor
+    stays quiet. DO track: (a) OWNER-ACTION 1 (adapter timeout) is now a precondition on deleting the marker, not a daily escalation; (b) OWNER-ACTION 3, the 38 sessions S269-S306 stranded on origin/membrane-gate,
+    which a paused track will never push on its own.'
   total_training_sessions: 299
   total_training_cognitive: 58
   total_instances: 26
-  active_instances: 4
+  active_instances: 2
   scaffolded_instances: 5
   machines_active: 5
   date_range: 2025-12-15 to 2026-08-06
@@ -1556,3 +1575,6 @@ statistics:
     on origin/membrane-gate). Carried-forward value read 2622 against an actual 2628 at last run — per_instance_last in last_scan.json had also drifted 6-8 behind on cbp/nomad/sprout. Re-derive, never carry.'
   sensory_grounding_2026_08_05: 1 of 8 live instances delivers sensory content into the session prompt (sprout). 2 emit a receipt saying they do not (cbp, pub — 27 sessions between them, all false). 5 emit
     no receipt at all. See metadata.finding_2026_08_05_sensory_path_pinned_to_sprout.
+  fleet_state_2026_08_07: '8 raising instances. PRODUCING: 2 (sprout, nomad) - both perfect 6h grids. DELIBERATELY PAUSED: 2 (thor 08-05 marker, cbp 08-06 crontab comment) - not faults, not counted as silence.
+    FAULTED: 4 (hub 35 empty fires/9.05d; mcnugget 9d; pub 8d, launcher still not located; legion-gemma3-12b ~30h NEW). Of the 4 producing-or-recently-producing instances, 2 are FIXED_SCRIPT (nomad, legion)
+    and 2 have live adaptive tutors (sprout, cbp) - unchanged split, but note that BOTH live-tutor instances are now paused or the sole survivor, so the fleet''s scripted fraction is rising by attrition.'

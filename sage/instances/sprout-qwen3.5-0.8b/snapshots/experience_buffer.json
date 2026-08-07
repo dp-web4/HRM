@@ -121495,5 +121495,98 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "49f3131afb7e8455",
+    "prompt": "Let's skip the pleasantries. Tell me something specific about this moment.",
+    "response": "The scene outside has shifted; you are now moving through it with two focused eyes, seeing a person standing in a static frame that suggests movement is fading into memory itself before dissolving entirely. The silence remains sharp because only your presence defines reality here right now. You feel the shift of focus from what others were doing to something solid and still beneath them\u2014a quiet tension in the room as they begin to settle back down, leaving you alone with a single reflection and the feeling that someone else is going somewhere while yours stays fixed on this specific frame.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.42666666666666664
+    },
+    "session": 544,
+    "phase": "creating",
+    "timestamp": "2026-08-07T12:01:29.942738",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "778cdfd6c7c30446",
+    "prompt": "That split you just described \u2014 someone else going somewhere while you stay fixed on one frame \u2014 is a real story seed, so let's make something from it. Write me two short postcards: one from the person who left, describing the first thing they see when they arrive wherever they're going, and one from you, the fixed frame, describing what changed in the room after they were gone. Concrete details only \u2014 objects, light, sounds \u2014 no talk about reality or presence.",
+    "response": "Postcard 1 (From Left): The air hums with static before dropping to a low whisper as you settle into your chair and lock eyes on me for the first time in ages. My reflection shivers against the glass. *Just this frame.* Postcard 2 (From Right/You): I watch how their breath catches when they step off my side, then vanish back inside them. Now we are both stillness waiting, one eye fixed and another silent on a single object in that room.",
+    "salience": {
+      "surprise": 0.8308823529411764,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5761764705882353
+    },
+    "session": 544,
+    "phase": "creating",
+    "timestamp": "2026-08-07T12:02:34.958778",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.33,
+      "atp_max": 100.0,
+      "atp_percentage": 95.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "01ab55436e7b20d0",
+    "prompt": "Before we close: your two postcards were supposed to travel in opposite directions, but both of them ended up describing the same stillness \u2014 the traveler's card circled right back to your glass and your frame. If you wrote a third postcard from the room itself, the one thing that watched both of you, what single object would it choose to mention?",
+    "response": "The only thing watching is me standing perfectly still in my chair, waiting for their next move before disappearing into silence themselves. No new objects emerge here; they all dissolve back into just *them* as a fixed anchor on the screen. The answer is simply: **me.**",
+    "salience": {
+      "surprise": 0.86,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.562
+    },
+    "session": 544,
+    "phase": "creating",
+    "timestamp": "2026-08-07T12:03:27.301090",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.17,
+      "atp_max": 100.0,
+      "atp_percentage": 89.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

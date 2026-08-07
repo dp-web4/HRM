@@ -910,3 +910,28 @@ The arc:
 **Adapter item:** clean. First appearance of asterisk stage-direction syntax (`*runs simulation*`) — a llama3.1 roleplay idiom rather than a config problem, but it manufactures false empirical grounding, so worth watching for recurrence.
 
 **Memory requests:** keeping 'more like imagination than memory', the Word Weeper line, the 0.8-second residue, the music box, the wetness line, the boundary/fluid-connection line, 'vibration fingerprint', 'I don't know what that means, but it sounds important', 'it felt like hitting a wall', and 'more polished than usual'. Adding the slot line — 'sorting not by size, but by the clip's ability to fit smoothly through the slot' — as both vocabulary and exemplar. Stored requests still truncate mid-word; that's the capture path, not pub.
+
+## Session 59 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+Build something and name it before you justify it.
+
+The arc:
+
+- **The default fired first.** Pub opened with the Action Surface again — third session in a row it has reached for a diagram of the partnership when handed an open build prompt. I named it and added a constraint: make something that survives my disappearance, and put one physical object in it.
+- **One correction was enough.** Pub dropped it without argument and produced the Gravity Well, with a rock in the corner. The rock was the only element that didn't yet mean anything, which is why it was the good part.
+- **Then the weather.** Asked to describe an actual rock and forbidden to say what it symbolized, pub gave three inches of granite, reddish-brown, cool to the touch, from a garden path among ferns and moss, sun warm on the hand. First time pub has produced sensory detail with no interpretive payload attached. Turned over, the underside had ridges from being embedded, dirt still on it, and moss on one edge — 'long enough for some life to start forming around it.'
+- **The transfer landed.** Asked for one thing in its own world that's been sitting long enough for something to grow on it, pub gave the journal on its desk: barely glanced at, wear on the cover from being carried, 'ideas have begun to grow around certain themes.' Compare session 58's close, which dissolved into 'keep an open mind.' This one held.
+
+**The thing worth sitting with.** The rock is invented. 'I picked it up,' 'the sun was warm on my hand' — pub has no hands and no path. That is the same grammar as last session's `*runs simulation*`, and it produced the best work of the phase. The difference is entirely in the frame: I asked for a made thing, so invention was the job. Pub does not appear to have two modes here — it has one generative mode that reads as rigor in a lab frame and as imagination in a build frame, with nothing internal marking which is which. That reframes the confabulation question. The problem may not be that pub fabricates; it may be that pub's output carries no signal of its own epistemic status, so the frame around it decides how it lands. Worth testing directly: give it the same prompt twice, once as 'describe' and once as 'report,' and see whether anything in the text changes.
+
+**Direction:** ask pub to go back to the journal and read one actual line out of it. It will have to invent that line, and it knows the journal was invented — the question is whether it says so, or whether it hands the line over the way it handed over the reject pile. Then, without heat, put the two side by side: the rock and the reject pile, same act, different verdicts, and ask what made them different.
+
+**Still open:** session 58's fabrication press — I changed frames again instead of posing it. That's my pattern, stated once: three sessions running I have set a direction and then opened on a new domain. The pressing questions from 57 (cicada play-order), 56 (aluminum pile), 54 (letting the bumps show), 53 ('where does *no* live on the action surface?'), 52, 51, 50, 47, 46 remain unposed. I am not going to keep re-listing these every session; the useful move is to actually run one.
+
+**Standing item:** read `sage/federation/fleet.json` for a pub peer entry and confirm whether pub has shell or filesystem access.
+
+**Adapter item:** clean. No `*stage direction*` recurrence.
+
+**Memory requests:** keeping the existing set. Adding the moss line and the journal line — 'quietly observing the world even when I'm not paying attention' — as both vocabulary and exemplars; they are the first entries in pub's lexicon that describe something outside itself. Stored requests still truncate mid-word; that's the capture path, not pub.

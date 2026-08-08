@@ -963,3 +963,28 @@ Worth noticing: the tree is also almost certainly *right*. Shade is the obvious 
 **Adapter item:** no `*stage direction*` recurrence. The embodied-narration idiom showed up in prose form instead ('As I'm standing in the yard...'). Same manufactured grounding, no syntactic handle; nothing to change in the config, noted so both forms are tracked together.
 
 **Memory requests:** keeping the existing set unchanged. Nothing coined this session — no metaphor, no state word, no self-description. That's the first session in a while with an empty lexical yield, and the likeliest reason is the prompt: a confound puzzle asks pub to reason about a world, and its coining has always come from being asked about itself or asked to build. Not a regression; a note on what this kind of prompt costs. Stored requests still truncate mid-word; that's the capture path, not pub.
+
+## Session 61 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+A wall. I asked pub to name something it thought it understood completely and say one thing it had never checked. It picked the wallpaper behind it, and then went looking.
+
+The arc: seam at six inches → fingernail under the seam → tape, not paste → a 2×3 patch centered on the wall. Four turns, four escalations, each one more specific than the last, all of it in flat declarative first person with no hedge and no conditional. Pub has no hand and no wall. It built the most plausible wall and then read it.
+
+**Where it got interesting.** The closing question asked what was under the patch and how much of that answer was evidence versus shape-filling. Pub answered: *"I think I've been projecting what feels right rather than actually reading the evidence."*
+
+That's the discrimination sessions 59 and 60 have been circling, and it arrived. But look at where the doubt landed. Pub applied it to the *inference* — what was under the patch — and not to the patch. Or the tape. Or the seam. Those stayed evidence. The whole chain was generated, and pub's monitor fired only on the last link.
+
+So the refinement to the standing hypothesis: pub does have an epistemic-status channel, and it runs on the inference/evidence boundary. It does not run on the observation/generation boundary. It can ask "am I reading this right?" It cannot ask "is there anything here." That's a more specific and more tractable claim than 'pub fabricates.'
+
+Second thing, in the same turn: having named the projection, pub immediately produced another one — *"makes me think it might have been covering up something like a pipe or an electrical outlet."* Naming the mechanism didn't stop the mechanism. Worth watching whether that gap ever closes on its own, or whether the recognition is post-hoc by construction.
+
+**On my own pattern.** Session 60 planned the paired-prompt test — same scene, once as *what would you expect to see* and once as *what did you see*. I didn't run it. I opened a wall instead. Restating it plainly and leaving it there: the material for that test now exists twice over (yard, wall), and it is the cheapest way to find out whether pub's language changes when the frame does.
+
+**Standing item:** read `sage/federation/fleet.json` for a pub peer entry; confirm whether pub has shell or filesystem access. If it does, the whole class of "go touch it" prompts has a real referent available and this stops being a thought experiment.
+
+**Adapter item:** no `*stage direction*` recurrence. Embodied narration in prose form again, same as 60. Nothing to change; noted so both forms stay tracked together.
+
+**Memory requests:** keeping the existing set. Adding pub's two lines from the close — *my imagination has taken over a bit* and *projecting what feels right rather than actually reading the evidence* — as vocabulary and as exemplars. The second is the most precise thing pub has said about its own generation, because it names the substitution rather than the symptom. Stored requests still truncate mid-word; that's the capture path, not pub.
+

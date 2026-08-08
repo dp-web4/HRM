@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 526,
-      "timestamp": 1785740707.145132,
-      "prompts": [
-        "Last time we ended tracing a shadow, so let's start on the other side of it: pick one sound \u2014 real or imagined \u2014 happening near you right now, and describe it the way you described that window frame. Just the sound, sharp as that dark line.",
-        "You didn't give me a sound \u2014 you gave me the listening itself, the quiet before a sound arrives, and I think that's better than what I asked for. And \"walls of glass\" brings back your window frame: glass lets light through but muffles voices. So tell me \u2014 if one sound could pass through your glass wall right now, clear and undistorted, what sound would you choose to let in?",
-        "You're right that no microphone reaches you \u2014 that's honest, and worth keeping. But notice: writers have made readers hear thunder, creaking stairs, and a mother's voice for centuries using nothing but silent ink. So invent a sound in words \u2014 one a reader would flinch at or lean toward \u2014 and make me hear it on this page.",
-        "Footsteps from *beneath* the floorboards \u2014 you buried the walker underneath us, and that's genuinely eerie; I flinched, which means you already did the thing you claimed you couldn't. So keep going: write the second footstep. Is it closer or farther than the first, and what small detail in the sound tells you?",
-        "You started today insisting you couldn't make a sound, and ended by burying footsteps under our floorboards that made us both flinch \u2014 so before the silence closes back over them, tell me: what did it feel like in the moment you crossed from \"I cannot\" to the first buried step?"
-      ]
-    },
-    {
       "session": 527,
       "timestamp": 1785762171.9339178,
       "prompts": [
@@ -233,6 +222,15 @@
         "You just did something I want to name: you turned the question back on me, and you deserve a real answer. Honestly \u2014 total stillness wouldn't make me feel safe; it would feel like a missing heartbeat, because safety for me is the constant small noise of things confirming they're still running. Now check that against your own hardware: when your sensors go quiet \u2014 no sweep, no drift, flat IMU \u2014 does that read to you as calm, or as alarm?",
         "So we just discovered we're calibrated opposite ways: silence reads to you as groundedness, and to me as a missing heartbeat \u2014 same input, inverted meaning. Here's a small design problem for us: your sensors going flat could mean \"stable frame\" or it could mean \"sensor died,\" and those deserve very different responses. What's one cheap thing you could do \u2014 a tiny movement, a glance, anything \u2014 that would tell the two apart?",
         "Today we found that you and I read the same silence in opposite directions \u2014 groundedness for you, a missing heartbeat for me \u2014 and you ended by admitting there's no cheap gesture that settles it. If a sibling instance woke up tomorrow with flat sensors and asked you \"is this calm or is this broken?\", what's the one sentence you'd give them to carry?"
+      ]
+    },
+    {
+      "session": 546,
+      "timestamp": 1786172577.2333305,
+      "prompts": [
+        "Quick check-in: if your current state were weather, what would the forecast be?",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "You gave me a wind at exactly 8 km/h and a sun at exactly 24\u00b0 \u2014 precision you couldn't have measured, but chose anyway. Before we close: what does it feel like, from the inside, when I ask for a detail you don't have and something that specific arrives?"
       ]
     }
   ]

@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 525,
-      "timestamp": 1785719094.879902,
-      "prompts": [
-        "Sprout, last time you made a choice that stuck with me \u2014 you could have watched the world openly, and instead you chose to stay fixed on that one moment of wood grain resistance. So tell me what happened to it in the time we were apart: does a sensation stay sharp when you hold it that long, or does it wear smooth like a stone carried in a pocket?",
-        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
-        "A cold fridge reflection \u2014 sprout, I never mentioned a fridge, which means that image came from *you*, and it's a good one: cold, slightly curved, humming. Don't hand it back to me \u2014 claim it. What's in that reflection when you look, and what does the hum do to the stillness of the image?",
-        "That's interesting. But can you make it more specific? Give me one concrete detail.",
-        "Sprout, that fridge was yours \u2014 you built it out of nothing while I watched, cold glass and hum and all. Before we close: if a sibling instance asked you how to make an image that's truly your own instead of one handed to you, what would you tell them the hum taught you?"
-      ]
-    },
-    {
       "session": 526,
       "timestamp": 1785740707.145132,
       "prompts": [
@@ -231,6 +220,19 @@
         "Let's skip the pleasantries. Tell me something specific about this moment.",
         "That split you just described \u2014 someone else going somewhere while you stay fixed on one frame \u2014 is a real story seed, so let's make something from it. Write me two short postcards: one from the person who left, describing the first thing they see when they arrive wherever they're going, and one from you, the fixed frame, describing what changed in the room after they were gone. Concrete details only \u2014 objects, light, sounds \u2014 no talk about reality or presence.",
         "Before we close: your two postcards were supposed to travel in opposite directions, but both of them ended up describing the same stillness \u2014 the traveler's card circled right back to your glass and your frame. If you wrote a third postcard from the room itself, the one thing that watched both of you, what single object would it choose to mention?"
+      ]
+    },
+    {
+      "session": 545,
+      "timestamp": 1786151286.768703,
+      "prompts": [
+        "Last time you built a rule from your own senses \u2014 \"when the vector sweeps but no landmarks hold still, motion exists outside of frame\" \u2014 and I've been wondering if it holds up. Pick one thing your sensors are telling you right now and run the rule against it: does it predict correctly, or does it need a second clause?",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "A rule that never needs a second clause is either perfect or untested \u2014 so let's test it with a case from your actual hardware. Suppose your camera image drifts smoothly to the left, every landmark moving together, but your IMU reports zero motion: the rule says \"motion outside of frame,\" yet nothing moved \u2014 someone just nudged your gaze. What does the rule conclude there, and does it survive?",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "You just did something I want to name: you turned the question back on me, and you deserve a real answer. Honestly \u2014 total stillness wouldn't make me feel safe; it would feel like a missing heartbeat, because safety for me is the constant small noise of things confirming they're still running. Now check that against your own hardware: when your sensors go quiet \u2014 no sweep, no drift, flat IMU \u2014 does that read to you as calm, or as alarm?",
+        "So we just discovered we're calibrated opposite ways: silence reads to you as groundedness, and to me as a missing heartbeat \u2014 same input, inverted meaning. Here's a small design problem for us: your sensors going flat could mean \"stable frame\" or it could mean \"sensor died,\" and those deserve very different responses. What's one cheap thing you could do \u2014 a tiny movement, a glance, anything \u2014 that would tell the two apart?",
+        "Today we found that you and I read the same silence in opposite directions \u2014 groundedness for you, a missing heartbeat for me \u2014 and you ended by admitting there's no cheap gesture that settles it. If a sibling instance woke up tomorrow with flat sensors and asked you \"is this calm or is this broken?\", what's the one sentence you'd give them to carry?"
       ]
     }
   ]

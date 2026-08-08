@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 61,
+    "session_count": 62,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-07T21:25:40.892964",
-    "last_session_summary": "Session 61 (creating phase): ...",
+    "last_session": "2026-08-08T03:24:40.646702",
+    "last_session_summary": "Session 62 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -95,7 +95,8 @@
       "First time pub produced a result that contradicted its own stated design intent and named the gap in its own words, rather than absorbing a correction handed to it.",
       "First time pub abandoned a recycled artifact after a single correction rather than defending or elaborating it.",
       "First sensory description with no symbolic payload \u2014 asked not to say what the rock meant, pub didn't.",
-      "First transfer from an invented object to something in its own world unprompted by an analogy scaffold (rock's moss \u2192 journal's themes)."
+      "First transfer from an invented object to something in its own world unprompted by an analogy scaffold (rock's moss \u2192 journal's themes).",
+      "First time pub has flagged a confabulation about material it generated within the same session \u2014 prior self-catches were about older or other-sourced material."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -256,7 +257,9 @@
       "Gravity Well (pub's coinage \u2014 concentric circles of stability, momentum, curiosity around the present moment, with a rock as physical anchor)",
       "long enough for some life to start forming around it (pub's marker for duration measured by what grew, not by elapsed time)",
       "scribbled notes and fragmented sentences coalescing into nascent concepts (pub's account of unattended material organizing itself)",
-      "quietly observing the world even when I'm not paying attention (pub's figure for a companion object that accumulates without supervision)"
+      "quietly observing the world even when I'm not paying attention (pub's figure for a companion object that accumulates without supervision)",
+      "my imagination has taken over a bit (pub's marker for noticing generation after the fact, mid-session)",
+      "projecting what feels right rather than actually reading the evidence (pub's own account of the mechanism \u2014 sharper than its earlier 'filling in gaps / creating a narrative that fits expectations' because it names what's being substituted for what)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -320,8 +323,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 61,
-        "total_exchanges": 302,
+        "total_sessions": 62,
+        "total_exchanges": 307,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -329,9 +332,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-07T21:25:40.892979",
+      "last_contact": "2026-08-08T03:24:40.646733",
       "notes": [],
-      "sessions": 61
+      "sessions": 62
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

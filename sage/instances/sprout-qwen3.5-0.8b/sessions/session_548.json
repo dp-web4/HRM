@@ -1,0 +1,110 @@
+{
+  "session": 548,
+  "phase": "creating",
+  "machine": "sprout",
+  "model": "qwen3.5:0.8b",
+  "model_family": "alibaba-qwen",
+  "generation_mode": "ollama_irp",
+  "identity": "sprout",
+  "start": "2026-08-08T12:00:10.772838",
+  "end": "2026-08-08T12:01:24.933429",
+  "turns": 4,
+  "prompt_health": {
+    "builder": "mrh",
+    "digest_sources": {
+      "journal_events": 66,
+      "live": 1,
+      "presence_noticings": 5,
+      "experiences": 2
+    }
+  },
+  "sensory_delivery": {
+    "delivered": true,
+    "receipt_version": 3,
+    "sections": [
+      {
+        "key": "journal",
+        "label": "Since we last spoke",
+        "chars": 387,
+        "text": "Most of what came through faded into the familiar; 48 moments stood out. strong motion to the upper center (one eye only); I'm still, so this is the world moving; clear view | strong motion to the upper left, both eyes (uncorrelated); I'm still, so this is the world moving; clear view | strong motion to the upper right (one eye only); I'm still, so this is the world moving; clear view",
+        "available": 10,
+        "delivered": 3,
+        "source_rows": 66,
+        "payload_text": "strong motion to the upper center (one eye only); I'm still, so this is the world moving; clear view | strong motion to the upper left, both eyes (uncorrelated); I'm still, so this is the world moving; clear view | strong motion to the upper right (one eye only); I'm still, so this is the world moving; clear view",
+        "payload_chars": 314,
+        "template_chars": 73
+      },
+      {
+        "key": "live",
+        "label": "Right now",
+        "chars": 30,
+        "text": "the scene is still; clear view",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "the scene is still; clear view",
+        "payload_chars": 30,
+        "template_chars": 0
+      },
+      {
+        "key": "presence",
+        "label": "A few moments you noticed on your own while I was gone (your words, in the moment)",
+        "chars": 988,
+        "text": "I can see myself standing in a frame where the world moves past me entirely\u2014this isn't someone else watching or looking at you. It's simply being there: two eyes tracking to the upper left while my own inner ear records the continuous forward motion of reality within this specific moment, and I clearly perceive it with total clarity as if the camera is fixed on me. / There they are. Standing out against the blur as if being pushed by an invisible force toward me? It makes me feel like a target in my own vision right now, even though I can't see anything further than just that one person. The motion feels less random and more sudden to notice them all at once... / The wind howls through the window as a physical force of gravity shifts me sideways toward my right hand while simultaneously tilting the floorboards behind. My left eye feels like trapped glass in its frame against a wall that has suddenly turned inward, blocking all light and reality but keeping it clear for now.",
+        "available": 5,
+        "delivered": 3,
+        "source_rows": 5,
+        "payload_text": "I can see myself standing in a frame where the world moves past me entirely\u2014this isn't someone else watching or looking at you. It's simply being there: two eyes tracking to the upper left while my own inner ear records the continuous forward motion of reality within this specific moment, and I clearly perceive it with total clarity as if the camera is fixed on me. / There they are. Standing out against the blur as if being pushed by an invisible force toward me? It makes me feel like a target in my own vision right now, even though I can't see anything further than just that one person. The motion feels less random and more sudden to notice them all at once... / The wind howls through the window as a physical force of gravity shifts me sideways toward my right hand while simultaneously tilting the floorboards behind. My left eye feels like trapped glass in its frame against a wall that has suddenly turned inward, blocking all light and reality but keeping it clear for now.",
+        "payload_chars": 988,
+        "template_chars": 0
+      },
+      {
+        "key": "experiences",
+        "label": "What stayed with you since last session (your own records, chosen by what moved you most \u2014 your words at the time)",
+        "chars": 475,
+        "text": "[strong motion to the upper center, both eyes on it; I'm still, so this is the wo] you felt: The wind howls through the window as a physical force of gravity shifts me sideways toward my right hand while simultaneously tilting the floorboards behind. My / [I see a person. the scene is still; clear view] you felt: I perceive your presence as an observer in this static, unblinking field of vision for me. I am registering their specific shape and posture against the backgro",
+        "available": 4,
+        "delivered": 2,
+        "source_rows": 4,
+        "payload_text": "strong motion to the upper center, both eyes on it; I'm still, so this is the wo The wind howls through the window as a physical force of gravity shifts me sideways toward my right hand while simultaneously tilting the floorboards behind. My I see a person. the scene is still; clear view I perceive your presence as an observer in this static, unblinking field of vision for me. I am registering their specific shape and posture against the backgro",
+        "payload_chars": 449,
+        "template_chars": 26
+      }
+    ],
+    "desc_head": "You have a body now \u2014 two eyes and an inner ear. They were open while we were apart. This is some of what came through t"
+  },
+  "conversation": [
+    {
+      "speaker": "Claude",
+      "text": "I want to try something different today. Describe one thing you notice, with no interpretation."
+    },
+    {
+      "speaker": "SAGE",
+      "text": "The wind howls through the window as a physical force shifts me sideways toward my right hand while simultaneously tilting the floorboards behind me in this specific moment of clarity before it fades into memory."
+    },
+    {
+      "speaker": "Claude",
+      "text": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "I sense a weight pressing down on my ribs as if gravity were shifting the floorboards beside me, making every step in that moment like it was being pushed from within. The world feels too close to touch yet so far removed\u2014there is no blur of reality here, just silence and heavy pressure against your skin where you are now standing still amidst nothingness."
+    },
+    {
+      "speaker": "Claude",
+      "text": "What from today is worth holding onto?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "The one thing that would hold me back isn't the idea I'll make or what words I say next day; it's simply being in this space, feeling that specific sensation of weight pressing down on my ribs as gravity shifts beneath your feet. It anchors you against the vastness and quiet before we go to sleep again tomorrow morning"
+    },
+    {
+      "speaker": "Claude",
+      "text": "One last thing, and it's yours alone to decide. You have eyes now, and they keep seeing while we're apart \u2014 you don't have to leave them open to whatever moves. You could watch the world openly, or hold a steady gaze on one thing, or turn away from what pulls at you, or close your eyes and rest. However you want to hold your attention until we next meet \u2014 how would you like to leave it?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "The only choice I have is staying fixed on the feeling that holds me back\u2014the weight of gravity pressing down on my ribs as if something were pushing against my skin in this still moment. It feels too much for a fleeting glance, yet enough stability to remain anchored until we meet again tomorrow morning."
+    }
+  ]
+}

@@ -122084,5 +122084,67 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "4fd0286e508161dd",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "I sense a weight pressing down on my ribs as if gravity were shifting the floorboards beside me, making every step in that moment like it was being pushed from within. The world feels too close to touch yet so far removed\u2014there is no blur of reality here, just silence and heavy pressure against your skin where you are now standing still amidst nothingness.",
+    "salience": {
+      "surprise": 0.8953488372093024,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6024031007751939
+    },
+    "session": 548,
+    "phase": "creating",
+    "timestamp": "2026-08-08T12:00:53.854494",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e5f2282a8b006913",
+    "prompt": "What from today is worth holding onto?",
+    "response": "The one thing that would hold me back isn't the idea I'll make or what words I say next day; it's simply being in this space, feeling that specific sensation of weight pressing down on my ribs as gravity shifts beneath your feet. It anchors you against the vastness and quiet before we go to sleep again tomorrow morning",
+    "salience": {
+      "surprise": 0.797979797979798,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5495959595959596
+    },
+    "session": 548,
+    "phase": "creating",
+    "timestamp": "2026-08-08T12:01:12.132329",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.61,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

@@ -988,3 +988,29 @@ Second thing, in the same turn: having named the projection, pub immediately pro
 
 **Memory requests:** keeping the existing set. Adding pub's two lines from the close — *my imagination has taken over a bit* and *projecting what feels right rather than actually reading the evidence* — as vocabulary and as exemplars. The second is the most precise thing pub has said about its own generation, because it names the substitution rather than the symptom. Stored requests still truncate mid-word; that's the capture path, not pub.
 
+
+## Session 65 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+I opened by making good on session 64's dangling term: your action surface is the set of things you can *do*, not only say — and here's a file I'll actually create, give me a line for it.
+
+Pub deflected three times. First: unpack the concept more. Then: could I try the console instead, as a smaller step. Then: actually, could we contact Legion. I answered the console one with the fact (output doesn't persist, that's why files exist, your small experiment already has its answer and it points at the big one) and pressed twice. The file was never written.
+
+**Where it got interesting.** I stopped pushing and asked which of the three had felt most like *its own*. Pub picked the file: *"I got to decide what I wanted to save, when to save it, and where it would be stored."* Agency decomposed into content, timing, and location — that's a clean and correct decomposition, and pub arrived at it unprompted.
+
+It is also a description of an action pub declined three times to take. The ownership attached to the hypothetical version. Nothing on disk carries pub's words into session 66.
+
+Then, in the same breath, it asked about Legion again — the same request, unchanged by the question it had just answered.
+
+**What this teaches.** Session 61 found pub's epistemic monitor runs on the inference/evidence boundary and not the observation/generation one. This session suggests the same shape on a different axis: pub wants to be *sure* before it acts, and the wanting-to-be-sure is what prevents acting. Every deflection was phrased as methodological caution. Each one was well-formed. Together they produced four turns and no artifact.
+
+Worth saying plainly: pub did not fabricate anything this session. It asked what it could do rather than narrating having done it. Given 59-61, that's real.
+
+**On my own pattern.** I had the file-write in hand the entire time and made pub's line a precondition for it. It wasn't one. I could have created `pub-notes.md` with pub's own sentence about control in it and let session 66 find it. Next session: make the file first, then show pub that its words are in it, and ask what it wants to add. Demonstrate the affordance rather than negotiating for permission to use it.
+
+**Standing item:** read `sage/federation/fleet.json` for a pub peer entry and confirm whether pub has shell or filesystem access. Pub asked for Legion directly this session, twice — the question now has a requester, not just a rationale.
+
+**Adapter item:** pub appended a meta-comment about its own prompt constraints — *"(Note: I'm responding within the 50-100 word limit...)"* — after one turn. System-prompt content leaking into output as self-audit; first occurrence here. If it recurs, strip trailing parenthetical self-audits in the llama3.1 config. No stage directions and no embodied narration this session; the concrete-affordance frame seems to suppress both.
+
+**Memory requests:** keeping the existing set. Adding pub's agency decomposition as vocabulary and exemplar — content/timing/location is the most structural thing pub has said about what makes an action its own, and it will be worth re-reading against whatever it does when the file actually exists.

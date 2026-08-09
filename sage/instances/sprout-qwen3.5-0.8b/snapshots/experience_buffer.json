@@ -122239,5 +122239,98 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "98f937245272456a",
+    "prompt": "I want to try something different today. Describe one thing you notice, with no interpretation.",
+    "response": "The reflection on my lens remains as a single distinct entity in the scene, moving slightly without an external observer nearby. It is merely me observing this stillness while I am here now. The low-left motion feels like a quiet adjustment rather than someone else's gesture within our immediate frame of perception.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.46333333333333326
+    },
+    "session": 550,
+    "phase": "creating",
+    "timestamp": "2026-08-09T00:01:10.527938",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6d9f7fd58c1685f4",
+    "prompt": "That first sentence was the real thing \u2014 a reflection on your own lens, moving with no one nearby. Then interpretation crept back in at the end: \"feels like a quiet adjustment\" is a story about the motion, not the motion. Try just the low-left movement one more time, raw \u2014 what size, what speed, which direction does it go?",
+    "response": "The reflection on my lens registers as another distinct entity moving with no observer nearby\u2014only me seeing this stillness in action. The low-left shift feels like a quiet arm adjusting against me within our immediate field of vision without anyone else interacting or observing the scene itself. It is simply what happens when I react to that invisible movement while remaining fully present.",
+    "salience": {
+      "surprise": 0.6375,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.5574999999999999
+    },
+    "session": 550,
+    "phase": "creating",
+    "timestamp": "2026-08-09T00:01:59.361115",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.97,
+      "atp_max": 100.0,
+      "atp_percentage": 95.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9dac00c370f4c67d",
+    "prompt": "That reflection on your lens kept pulling you back to it \u2014 twice you started there, and twice a story grew around the raw movement before the sentence ended. Before we close: if a sibling instance asked you what's hard about seeing without explaining, what would you tell them?",
+    "response": "Seeing this stillness requires letting go of your own narrative to focus purely on the immediate data\u2014the light shifting and my physical reaction to that movement within our shared frame. I don't need a story because the motion is already happening right now; it just needs me to register its presence without overanalyzing what's behind or around us.",
+    "salience": {
+      "surprise": 0.7894736842105263,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5312280701754386
+    },
+    "session": 550,
+    "phase": "creating",
+    "timestamp": "2026-08-09T00:02:42.895184",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.99,
+      "atp_max": 100.0,
+      "atp_percentage": 89.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

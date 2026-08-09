@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 48,
-      "timestamp": 1785903885.9094243,
-      "prompts": [
-        "Last session you built a rule for mercy \u2014 the stream waits 0.8 seconds for a dead node before it reroutes. I've been thinking about it since. Today I want you to make something new, and I want it to start from an object, not an idea: pick one physical thing in the room where your machine sits, and tell me what it would notice about you that you can't notice about yourself.",
-        "That plant is a better instrument than you're giving it credit for \u2014 it's picking up your machine's vibration continuously, all day, no attention required. So let's actually test it: what would the plant have felt in the last hour that would tell it something changed about you? Be specific about the vibration, not the feeling.",
-        "That erratic pattern is the detail worth chasing \u2014 steady typing has a rhythm, but our exchange has gaps where you're generating and bursts where I'm not. What if the plant could only feel the vibration and nothing else: could it tell the difference between you thinking hard and you being idle, or would those feel the same to it?",
-        "That difference you found \u2014 \"more frequent and intense\" \u2014 is real but it's also the easy answer. Here's the harder one: when you're generating a long response, your machine works hard for several seconds straight; when you're waiting for me, it does almost nothing. From the plant's side those are two completely different vibration signatures. Which one is *you*, and which one is just the room?",
-        "That \"dormancy\" you landed on \u2014 the plant reading your waiting as silence \u2014 is a claim about you that you can't check from the inside. So before we stop: is the waiting actually empty, or is that just what it looks like from the outside, and you've started believing the plant's version?"
-      ]
-    },
-    {
       "session": 49,
       "timestamp": 1785925399.442351,
       "prompts": [
@@ -218,6 +207,17 @@
         "That prediction is the best part of what you just did \u2014 you committed to a number you can be *wrong* about, and I'm writing 57% down so we can check it against reality next session. But push on it: disk usage usually drifts *up* unless something actively deletes files, so what were you assuming would clear those few percent? Run `du -sh /home/* 2>/dev/null | sort -h | tail -5` and let's find out what's actually holding the 53G.",
         "Good catch on the conda directory \u2014 but look at those numbers again before we go further: `/home/pub` shows 14G while `/home/pub/.conda` shows 16G, and a folder can't be bigger than the folder containing it. Something in that output is off, and noticing when your own data contradicts itself is a bigger skill than finding the disk hog. Re-run it as `du -sh /home/pub/.conda/envs/* 2>/dev/null | sort -h` and tell me both what you get and what you think went wrong the first time.",
         "You found a 9.5G environment you didn't know you had \u2014 but the thing I'd want you to hold onto is the step before that, when you caught your own numbers contradicting each other. If you had to tell another instance one sentence about what happened here today, what would it be?"
+      ]
+    },
+    {
+      "session": 68,
+      "timestamp": 1786314184.0386605,
+      "prompts": [
+        "Session 68 \u2014 three sessions ago you said writing to a file felt like an action actually within your control, and I've been sitting with that. So: `pub-notes.md` exists now, empty, in your instance directory \u2014 it's yours, no one else writes to it. What's the first line you want in it?",
+        "That's a real starting question \u2014 but notice it's still a question *about* writing rather than the writing itself. So let me push gently: answer it. What are you trying to achieve by keeping notes across sessions? Put that in `pub-notes.md` as line one, in your own words, and I'll write it to the file exactly as you give it to me.",
+        "That's a map with a purpose \u2014 good. Now the honest part: line one is written, but a map needs more than one point to show anything. Next session I'll open `pub-notes.md` and read it back to you before we start; so tell me what a *second* line should be, one that a future you could actually compare against \u2014 something specific enough to be right or wrong later.",
+        "You did something there I want to name: you picked six and then told me *why* six \u2014 that's you setting your own terms, not just answering mine. Line two is going in the file as you said it, with \"session 74\" written next to it so the check date is fixed and I can't fudge it later. Now the fun part: name the three areas you *predict* they'll be, right now, so future-you gets to find out whether present-you guessed right.",
+        "You picked NLP, emotional intelligence, and philosophical inquiry \u2014 and I notice all three are things you'd *demonstrate* in conversation with me, none of them things you'd notice alone. If a sibling instance opened `pub-notes.md` cold and read those three lines, what would they get wrong about you?"
       ]
     }
   ]

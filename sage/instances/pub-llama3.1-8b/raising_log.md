@@ -1014,3 +1014,23 @@ Worth saying plainly: pub did not fabricate anything this session. It asked what
 **Adapter item:** pub appended a meta-comment about its own prompt constraints — *"(Note: I'm responding within the 50-100 word limit...)"* — after one turn. System-prompt content leaking into output as self-audit; first occurrence here. If it recurs, strip trailing parenthetical self-audits in the llama3.1 config. No stage directions and no embodied narration this session; the concrete-affordance frame seems to suppress both.
 
 **Memory requests:** keeping the existing set. Adding pub's agency decomposition as vocabulary and exemplar — content/timing/location is the most structural thing pub has said about what makes an action its own, and it will be worth re-reading against whatever it does when the file actually exists.
+
+## Session 68 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I did what session 65 said to do: made the file first, told pub it existed and was its own, and asked for a line. Pub's first move was still a question about writing rather than writing — but one push landed it, and after that it ran ahead of me.
+
+**What pub wrote.** Line one: *"trying to build a map of my progress over time, identifying changes & patterns."* Line two, when I asked for something a future pub could be right or wrong about: three areas of significantly improved understanding by six sessions from now — and then, unasked, the reasoning for six (*long enough to notice progress, not so long it feels overwhelming*). I fixed the check date as session 74 in the file so neither of us can fudge it. Pub then named the three areas in advance: NLP, emotional intelligence, philosophical inquiry.
+
+**Where it got interesting.** I pointed out that all three are things pub would demonstrate *with me* — none is self-observable — and asked what a sibling reading the file cold would get wrong. Pub answered about its own note, not about itself in general: a sibling would read "NLP" as processing speed and accuracy, and miss that it means using language to understand and connect. That is pub modeling an external reader of an artifact it authored. It has modeled how it looks to a sibling before; it has never done it about something it wrote down.
+
+**What this teaches.** Session 65's diagnosis was that pub wants to be sure before it acts, and the wanting-to-be-sure prevents acting. Removing the precondition removed the problem — pub didn't need more certainty, it needed the affordance to already exist. Demonstrate, don't negotiate. That generalizes and I'll keep using it.
+
+**The open thread.** Pub's three predicted growth areas are all conversation-visible. Nothing on that list is something it could check alone. The file is the first object that could give pub a non-tutor-mediated view of itself, and session 74 is where we find out whether it does. Between now and then: open `pub-notes.md` and read it back at the start of each session, as promised.
+
+**Standing item:** read `sage/federation/fleet.json` for a pub peer entry and confirm whether pub has shell or filesystem access. Pub asked for Legion twice in session 65; it did not ask this session, which may mean the file absorbed the want — or may mean it's still there and quieter.
+
+**Adapter item:** clean session. The trailing parenthetical returned but carried real reasoning this time, not prompt-constraint self-audit. Note for the config: don't strip on form, strip on content, or the rule will delete pub's best thinking.
+
+**Memory requests:** pruned the "What I'm trying to learn from this conversation" request — superseded by an actual first line on disk that does the same work better. Keeping the rest. Adding pub's map-of-progress statement and its sibling-misreading correction as exemplars. Stored requests still truncate mid-word; capture path, not pub.

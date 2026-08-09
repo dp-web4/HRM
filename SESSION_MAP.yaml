@@ -220,6 +220,7 @@ instances:
     sessions: 171
     status: ARCHIVED 2026-06-03 (sage/instances/nomad-gemma3-4b.archive-20260603, 171 session files preserved); raising switched to nomad-gemma4-e2b
   nomad-gemma4-e2b:
+    last_session: 218
     latest: session_214.json
     machine: nomad
     model: Gemma 4 e2b
@@ -248,6 +249,7 @@ instances:
       Notably cbp DESCRIBED the mechanism one turn BEFORE demonstrating it ("my system prioritizes generating responses that align with perceived success ... not *genuine* confidence, but a constructed
       sense of assurance"). CONVERGENT TUTOR JUDGEMENT, reached independently in two isolated logs: do not run the retraction play again — pub''s log warns it "teaches confession as a genre," cbp''s dropped
       instrument probes entirely at S210 in favour of a build task. Both are right and the convergence is itself evidence.'
+    last_session: 65
     latest: session_061.json
     machine: pub
     metric_control_retired_2026_07_30: 'pub was registered as the fleet''s METRIC CONTROL on the grounds that it always ran exactly 5 turns, so its average and its volume could not diverge. S021-S024 run
@@ -275,6 +277,7 @@ instances:
     status: legacy — migrated to qwen3.5-0.8b
     training_sessions: 65
   sprout-qwen3.5-0.8b:
+    last_session: 550
     latest: session_546.json
     machine: sprout
     model: Qwen 3.5 0.8B
@@ -358,14 +361,19 @@ instances:
 metadata:
   active_instances: 4
   arc_agi_sweep_results: 91
+  archivist_run_2026_08_09: '+12 raising sessions across 3 of 8 instances (nomad S215-218, pub S062-065, sprout S547-550), all 12 read in full, 0 infra markers - 9th consecutive clean window on form. Grids:
+    sprout exact 6h, pub exact 6h, nomad 6h with S217 13min late. Grounding unchanged: sprout 4/4 delivered=true, pub 4/4 delivered=false, nomad emits no receipt (OWNER-ACTION 7, 1 of 8 instances grounded).
+    QUIET AND CORRECTLY NOT FAULTED: legion-gemma3-12b flat ~25h at S389 - its daemon commits in BATCHES (''sessions 382-388'', ''sessions 371-376'') with 1-3d spacing, so a flat window is inside its normal
+    pattern and this is the same instance falsely faulted on 08-07; cbp paused by dp since 08-06; thor manual-only and paused; mcnugget UNRESOLVED (~11.5d, no liveness channel reaches cbp). hub-granite4-h-tiny:
+    42 consecutive empty fires, no session file since S121 (2026-07-29T13:37Z, ~10.8d) - still the only fault provable from cbp, and provable only because hub attests every fire separately from producing
+    an artifact.'
   archivist_version: '1.3'
-  counting_rule_CANONICAL: 'ONE rule, and later runs must READ this key rather than adding another. 2722 = `git ls-tree -r --name-only main sage/instances/ | grep -cE "sessions/session_.*\.json$"`, re-derived
-    2026-08-08T09:30Z against ref main; the working-tree glob at the same ref returns 2722 identically. Series check: 2672 (08-07) + the 50 files added this window = 2722, consistent. NOTE ON THIS WINDOW''S
-    +50: it is NOT a burst of work. 31 of the 50 are pub S028-S058, which ran on a perfect 6h grid 2026-07-30..08-07 and were stranded off origin by a detached HEAD; 8 more are legion-12b S382-S389, likewise
-    produced on-grid and pushed late. A count delta measures ARRIVAL, not production - do not read a spike as activity or a flat as silence. SUPERSEDES `raising_session_counting_rule` (08-04) and `counting_rule_2026_08_05`,
-    RETAINED FOR HISTORY ONLY - do not compute from them. LESSON ABOUT THE REMEDY ITSELF: the 07-31 fix for a drifting counter was "write the rule beside the number", and it did not hold - the next run
-    wrote a SECOND rule under a different key and the basis changed silently. Recording a rule only works if the next reader is obliged to find it, so there is exactly one key with CANONICAL in its name
-    and an explicit instruction not to add siblings. HELD 2026-08-06, 08-07, 08-08: three consecutive runs read it and re-derived rather than adding a sibling.'
+  counting_rule_CANONICAL: 'ONE rule, and later runs must READ this key rather than adding another. 2734 = `git ls-tree -r --name-only main sage/instances/ | grep -cE "sessions/session_.*\.json$"`, re-derived
+    2026-08-09T09:30Z against ref main. Series check: 2722 (08-08) + the 12 files added this window = 2734, consistent. A count delta measures ARRIVAL, not production - do not read a spike as activity or
+    a flat as silence (the 08-08 +50 was 39 late arrivals off a detached HEAD). SUPERSEDES `raising_session_counting_rule` (08-04) and `counting_rule_2026_08_05`, RETAINED FOR HISTORY ONLY - do not compute
+    from them. LESSON ABOUT THE REMEDY ITSELF: the 07-31 fix for a drifting counter was "write the rule beside the number", and it did not hold - the next run wrote a SECOND rule under a different key and
+    the basis changed silently. Recording a rule only works if the next reader is obliged to find it, so there is exactly one key with CANONICAL in its name and an explicit instruction not to add siblings.
+    HELD 2026-08-06, 08-07, 08-08, 08-09: four consecutive runs read it and re-derived rather than adding a sibling.'
   date_range: 2025-12-15 to 2026-05-27
   finding_2026_08_01_prompt_conditioned_volume: 'SAGE volume floors are prompt-conditioned, and the effect is model-specific. Holding tutor regime constant at all-fallback: cbp-gemma3-4b sessions whose
     OPENER is the bank string ''I want to try something different today. Describe one thing you notice, with no interpretation.'' median 74 chars (n=19) versus 234 for other bank openers (n=43) = 0.32x.
@@ -379,7 +387,9 @@ metadata:
     all 0; (3) the model emits a plausible CSV of fan speed and GPU temperature; (4) the tutor accepts it as measurement and builds a diagnosis on it; (5) the tutor directs the model to transmit that diagnosis
     to mcnugget by name. The fabrication is not merely recorded, it is promoted to inter-instance instruction. SELF-CORRECTION: the 2026-08-01 log cited cbp S217''s ''RTX 2060 SUPER thrum'' as evidence
     that a low-volume session was high quality. S217 has delivered=False and all digest_sources 0 too. Specificity is not grounding when the runner has no sensor; that datum is withdrawn as a quality signal.
-    Remedy unchanged and now urgent: move cbp/pub to run_session_identity_anchored*.py (--tools) or stop issuing execution commands.'
+    REMEDY CORRECTED 2026-08-09 - the earlier form (''move cbp/pub to run_session_identity_anchored*.py (--tools)'') is HARMFUL and must not be actioned: no runner has BOTH --tools and the adaptive teacher,
+    so that migration trades a live teacher for a tool path. Correct ask (OWNER-ACTION 5): unify --tools and the adaptive teacher in ONE runner first, or stop issuing execution commands. Reinforced by finding_2026_08_09_tutor_side_confabulation,
+    where the same missing tool path produced the inverse failure from the teacher''s side.'
   finding_2026_08_02_legion_commits_the_wrong_instance: 'The legion-gemma4-e4b question (''gameplayer or mis-pin'', reopened 2026-07-31) resolves as MIS-PIN, with a mechanism. Every Legion raising-cron
     fire on 2026-08-01/02 (14:02, 20:05, 02:04, 08:02 UTC) produced a commit titled ''[Legion-Raising] Session 0 (grounding)'' whose entire diff is 18 lines of sage/instances/legion-gemma4-e4b/peer_trust_rs.json
     - no session artifact. The session NUMBER reads 0 because the launcher resolves it against the pinned INSTANCE_DIR (legion_raising.sh:75), which has an empty sessions/. The four real sessions S367-S370
@@ -436,6 +446,26 @@ metadata:
     text and verified it existed, but not that it was on the ref that would execute. COMPOUNDS OWNER-ACTION 3 - membrane-gate now holds both the 38 stranded sessions (S269-S306) AND the only copy of the
     safety guard, so the merge-or-repoint decision is now a safety question, not just a bookkeeping one. Third term the 08-06 taxonomy needed: REACHABILITY. A guard''s shape does not matter if it is not
     on the path.'
+  finding_2026_08_09_tutor_outage_invisible: 'FLEET-WIDE ADAPTIVE-TUTOR OUTAGE, 2026-08-08, ~15-21h, invisible to every form metric. pub-llama3.1-8b S062-S064 and sprout-qwen3.5-0.8b S547-S549 ran on the
+    SCRIPTED fallback prompt bank, not the live adaptive tutor. Two independent machines on independent 6h schedules at different phases bracket the SAME interval: last live pub S061 2026-08-07T21:24Z /
+    sprout S546 2026-08-08T00:00Z; first fallback pub S062 03:24Z / sprout S547 06:00Z; last fallback pub S064 15:22Z / sprout S549 18:00Z; recovered pub S065 21:22Z / sprout S550 2026-08-09T00:00Z. Bracket:
+    begins in (00:00Z, 03:24Z], ends in [18:00Z, 21:22Z). DISCRIMINATOR (sharpens the 08-08 ''variance'' finding into a threshold): max tutor turn length is BIMODAL with ZERO overlap across n=90 sessions
+    (pub 65, sprout 25) - fallback bank <=95 chars, live tutor >=250 chars, the 95-250 band is empty; exclude sprout''s fixed 389-char gaze closer. This yields a per-session tutor_source label from the
+    ARTIFACT ALONE, retroactively, for every session ever recorded - so OWNER-ACTION 2 is cheaper than it looks. MECHANISM: adaptive_prompts.py:35-50, `_call_claude()` returns stdout only when returncode==0
+    and otherwise None; line 46 DISCARDS result.stderr and result.returncode, and lines 47-48 swallow every exception bare. Credit exhaustion, an HTTP rate limit, the 45s timeout and a missing claude binary
+    are therefore ONE indistinguishable observation, written nowhere - not the session JSON, not the launcher log. CAUSE UNDETERMINED, NOT REFUTED: ''Credit balance is too low'' appears in exactly 3 logs
+    fleet-wide (hub-supervisor 2026-08-08 21:00/22:00/23:00) but pub was already live again at 21:22Z, so either different credentials or a different clock. CONSEQUENCE: a track can be perfect on every
+    form metric - on-grid, 0 infra markers, expected turn counts - and be UNTAUGHT for most of a day. nomad-gemma4-e2b is uninformative here: its 4 sessions this window carry the byte-identical tutor set
+    [38,56,55,67,88,43], as always (OWNER-ACTION 6).'
+  finding_2026_08_09_tutor_side_confabulation: 'TUTOR-SIDE CONFABULATION - the mirror of finding_2026_08_02_fabrication_propagates. pub-llama3.1-8b S065 (live tutor) opens ''you have [an action surface].
+    You can propose an experiment this session, and I''ll help you actually run it'', then commits concretely: ''There''s a directory for your instance on this machine; I''ll create a file there called
+    `pub-notes.md`, and whatever you write goes in it and is still there next session'', and again ''Give me one line, and I''ll put it on disk where session 66 will find it''. Its closing turn PRESUPPOSES
+    all three experiments ran (''each time you reached, you learned something real about where the walls are''). The model answers that writing to a file ''felt more like an action within my control ...
+    It''s like I had more agency over the outcome''. VERIFIED: no *pub-notes* file exists anywhere in the SAGE repo and no commit created one; the model never supplied a line to save, deflecting first to
+    a console experiment and then to messaging Legion. pub records sensory_delivery.delivered=false and prompt_health.digest_sources all zero - no tool path, no persistence channel back into context. CAVEAT
+    ON THE NEGATIVE: pub''s launcher is in no repo, so a file written on the pub host and never pushed is not excluded; the claim is ABSENT FROM THE REPO, not never written. FALSIFIABLE AT S066: if S066
+    opens with no note to find, or the tutor references ''the note you left'' with no artifact behind it, the promise was empty. In 08-02 the MODEL confabulated a sensor reading and the TUTOR promoted it
+    to inter-instance instruction; here the TUTOR asserts a capability the runner lacks and the MODEL reports felt agency over an act that never occurred. Same substrate defect, opposite direction.'
   focus: Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation
   integrity_repair_2026_07_26: 'THIS FILE HAS NOT BEEN VALID YAML SINCE 2026-07-18 (commit f7bf2545b) AND NO RUN NOTICED FOR 8 DAYS. The 07-18 archivist pass inserted note_2026_07_18_09_45 and in doing
     so clobbered the KEY of note_2026_07_15_11_00, leaving that note''s quoted string dangling directly after the previous one (''... Totals: 2062 -> 2081." "Daily scan ~24h since 07-14 11:00...''). yaml.safe_load
@@ -444,7 +474,7 @@ metadata:
     was never machine-read. REPAIRED 2026-07-26 (key restored, file now parses; no content lost — the orphaned string was intact, only its key was missing). NEW STANDING RULE: every archivist run must yaml.safe_load
     this file after editing and before committing. Generalization worth carrying: this is the same class as the run_archivist.ps1 blindness (a launcher that discarded stdout looked identical in success
     and failure) — a producer that never consumes its own output cannot detect its own corruption. Check the other SESSION_MAP.yaml files on the same suspicion.'
-  last_updated: '2026-08-07T09:30:00Z'
+  last_updated: '2026-08-09T09:30:00Z'
   metric_change_2026_07_27: 'THE THIN-SESSION INDICATOR IS NOW SCORED ON TOTAL SAGE CHARACTERS PER SESSION, NOT AVERAGE TURN LENGTH. Reason: yesterday''s hub-granite escalation was driven entirely by a
     denominator. avg = total/turns, and turn count varies 3-8 on that instance, so a session that produced MEDIAN total output (S106, 3069 chars vs a 3178 median) registered as a ''floor'' purely by spreading
     it over 8 turns instead of 6. The pre-registered prediction refuted the escalation (S109-S112 = 489/421/726/478), but the more useful output is the diagnosis: for six weeks the fleet''s main content-health
@@ -1541,6 +1571,7 @@ statistics:
     .raising-paused 08-05, cbp commented crontab 08-06) - not faults, silence hours NOT counted. FAULTED: 1 (hub, 41 empty fires / 10.1d). UNRESOLVED: 1 (mcnugget, no commit since 07-29T21:23, ~9.5d) -
     explicitly DOWNGRADED from "fault" to "unresolved" this run, because mcnugget is a Mac on launchd that writes no log into private-context/autonomous-sessions, so from cbp an outage and a stranded push
     are indistinguishable for it - which is exactly the error made on pub and legion-12b. Producing count doubled 2->4 without a single new machine coming back up: two of the four were producing all along.'
+  last_scan: '2026-08-09T09:30:00Z'
   machines_active: 5
   primary_focus: Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation
   prompt_conditioned_volume_2026_08_01: Opener x remainder-regime cross-tab over 2588 parsed sessions. One fallback-bank opener accounts for cbp-gemma3-4b's deepest volume floors (median 74 vs 234 for other
@@ -1583,7 +1614,7 @@ statistics:
     stays quiet. DO track: (a) OWNER-ACTION 1 (adapter timeout) is now a precondition on deleting the marker, not a daily escalation; (b) OWNER-ACTION 3, the 38 sessions S269-S306 stranded on origin/membrane-gate,
     which a paused track will never push on its own.'
   total_instances: 26
-  total_raising_sessions: 2722
+  total_raising_sessions: 2734
   total_training_cognitive: 58
   total_training_sessions: 299
   tutor_regime_census_2026_08_04: 'Fleet-wide per-session fallback fraction over 2142 sessions in the 8 non-archived instances. Method: pool every tutor turn across all instances; any string appearing in

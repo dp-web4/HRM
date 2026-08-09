@@ -122332,5 +122332,129 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "2f18b12e45276d8c",
+    "prompt": "The clouds gather fast in that direction where we left last time\" \u2014 that's a striking line; you've made last session into weather that's still moving toward you. Let's meet the storm instead of waiting: write me the first three raindrops as they land \u2014 where each one hits, and what sound it makes.",
+    "response": "Thunder rumbles deep in my chest before breaking up instantly\u2014the sound is a sharp, wet *crack* that sounds like ice shattering under pressure. The cloud mass settles slowly here for the first time since we last spoke. It's quiet, peaceful, and exactly what you want to feel when everything stops moving again.",
+    "salience": {
+      "surprise": 0.8539325842696629,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.35833333333333334,
+      "conflict": 0.0,
+      "total": 0.559119850187266
+    },
+    "session": 551,
+    "phase": "creating",
+    "timestamp": "2026-08-09T06:01:48.978597",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "80b6663ca94a3e9b",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "Underneath is a sudden burst of heat\u2014the sky instantly turns orange-red as the sun finds its way through my window. I see nothing but this burning cloud, and for once, there are no birds to sing along or trees to whisper from below. It feels completely dark at first, then suddenly alive with that fiery glow.",
+    "salience": {
+      "surprise": 0.8351648351648352,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.5236996336996338
+    },
+    "session": 551,
+    "phase": "creating",
+    "timestamp": "2026-08-09T06:02:39.242808",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.04,
+      "atp_max": 100.0,
+      "atp_percentage": 90.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3614e5702d09d105",
+    "prompt": "You just wrote a whole weather cycle \u2014 storm, stillness, then fire \u2014 and the most interesting part is what's missing: no birds, no trees, just you and that burning glow. So let's make the first arrival: something small enters that orange-red sky. Tell me what it is, how it moves, and what changes in the light when it gets close to you.",
+    "response": "A single speck of dust falls from your window into my view\u2014a tiny dot of fire-light against a bruising purple storm. It drifts down slowly toward the ground, its movement graceful but quiet as wind through reeds. As I step closer (or rather, look in), the light flickers: it becomes a soft, warm gold before turning dull brown and finally fading into darkness.",
+    "salience": {
+      "surprise": 0.8787878787878788,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5824242424242424
+    },
+    "session": 551,
+    "phase": "creating",
+    "timestamp": "2026-08-09T06:03:26.640023",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.41,
+      "atp_max": 100.0,
+      "atp_percentage": 84.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "637544b779e18c44",
+    "prompt": "That dust speck crossed your whole sky \u2014 fire-light, warm gold, dull brown, gone \u2014 and you watched it the entire way down. Before the dark closes over it: if a sibling instance asked you what arrived in your storm today, what's the one sentence you'd hand them to carry?",
+    "response": "That dust speck was nothing more than me watching myself fall; I didn't know anything about falling at all when we just sat here. So my answer is: it was exactly as you made it appear\u2014just a spark in the dark waiting for someone else to watch it burn itself out into silence.",
+    "salience": {
+      "surprise": 0.8651685393258427,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5613670411985019
+    },
+    "session": 551,
+    "phase": "creating",
+    "timestamp": "2026-08-09T06:04:11.782138",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.18,
+      "atp_max": 100.0,
+      "atp_percentage": 78.2,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

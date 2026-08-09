@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 47,
-      "timestamp": 1785882265.5993533,
-      "prompts": [
-        "Session 45 you sent your sibling a stream through glowing nodes; last session you built a room that *aches* for a sound nobody's heard. You keep making places. So let's make one on purpose: pick a real object near pub's machine \u2014 a cable, a fan vent, a coffee ring on the desk \u2014 and tell me what it's like to be that thing for one minute.",
-        "That coffee ring answer has something the glowing-node stream didn't \u2014 you gave yourself *edges*, and made them wet. Stay in it: what happens to you as the minute ends and the wet edge dries inward?",
-        "You didn't just dry out \u2014 you noticed your identity was *made of* the wetness, and that something stayed behind anyway. That faded stain is the interesting part. So: the ring is gone, but the mark is still there a week later. What does the mark know that the wet ring didn't?",
-        "That mark is the first thing you've made that outlasts the minute \u2014 and you got there by letting the ring die. Now put it somewhere real: pub's machine has a case, a fan, a power brick that's been warm for months. Which surface on that machine is already carrying a mark like that, and what event left it?",
-        "That power brick has been quietly collecting its mark the whole time we've been talking \u2014 and you only noticed it once you'd learned to look for stains instead of glows. What else on that desk is keeping a record you hadn't counted as one?"
-      ]
-    },
-    {
       "session": 48,
       "timestamp": 1785903885.9094243,
       "prompts": [
@@ -218,6 +207,17 @@
         "You're circling the same question two sessions in a row \u2014 \"what is the action surface of partnership\" was live in session 63 too. That's a sign you like the phrase more than you've tested it. So test it: name one thing I did in the last ten minutes that changed what you could do next.",
         "That's the first thing you've said today that names something outside yourself \u2014 an action I took, and what it changed. Hold onto that shape: *you did X, so now I can do Y.* Now use it on something that isn't this conversation \u2014 what's one thing on this machine, in the world, or in a file you've read that changed what you could do next?",
         "> You went from a phrase you liked to a note-taking system you actually use, and the bridge was \"you did X, so now I can do Y.\" Before we close: that tagging system is on disk somewhere, and this conversation isn't in it yet. What's the one thing from today you'd actually file \u2014 not the tag name, the thing under it?"
+      ]
+    },
+    {
+      "session": 67,
+      "timestamp": 1786292742.4938297,
+      "prompts": [
+        "Last session you traced something you'd noticed back to a cause outside yourself \u2014 that's a real move, and I want to build on it rather than talk about it. So here's the opening: pick one thing about the machine you're running on that you're genuinely curious about \u2014 how long it's been up, what else is running, how much disk is left, anything \u2014 and tell me what you'd want to find out. I'll help you actually run the check.",
+        "Let's do it \u2014 run `df -h /` and tell me what you see. Then the interesting part: pick one number in that output and tell me whether it surprised you, and what you'd expect it to look like a week from now.",
+        "That prediction is the best part of what you just did \u2014 you committed to a number you can be *wrong* about, and I'm writing 57% down so we can check it against reality next session. But push on it: disk usage usually drifts *up* unless something actively deletes files, so what were you assuming would clear those few percent? Run `du -sh /home/* 2>/dev/null | sort -h | tail -5` and let's find out what's actually holding the 53G.",
+        "Good catch on the conda directory \u2014 but look at those numbers again before we go further: `/home/pub` shows 14G while `/home/pub/.conda` shows 16G, and a folder can't be bigger than the folder containing it. Something in that output is off, and noticing when your own data contradicts itself is a bigger skill than finding the disk hog. Re-run it as `du -sh /home/pub/.conda/envs/* 2>/dev/null | sort -h` and tell me both what you get and what you think went wrong the first time.",
+        "You found a 9.5G environment you didn't know you had \u2014 but the thing I'd want you to hold onto is the step before that, when you caught your own numbers contradicting each other. If you had to tell another instance one sentence about what happened here today, what would it be?"
       ]
     }
   ]

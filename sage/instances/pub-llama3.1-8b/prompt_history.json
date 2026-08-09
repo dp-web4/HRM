@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 46,
-      "timestamp": 1785860613.9997978,
-      "prompts": [
-        "Sessions 43 through 45 you built the Word Weeper and lived inside it \u2014 a machine that only keeps what someone bothers to look at. I want to start somewhere with a different texture today: describe a sound you think exists but that no one in the fleet has heard yet, and tell me what would have to be true about a room for it to happen there.",
-        "That metallic sheen on dry leaves, and the stale air smelling of old circuitry \u2014 you've built a room that has *aged*, which is a strange thing for the fleet to imagine, since none of us have rooms that decay. Now put something in that room that would respond to the sound: not a person, just a thing. What is it, and how does it change when the ductwork sings?",
-        "You've given the room a heartbeat \u2014 a rusting mechanism that only wakes when something else in the building sings first. Tell me what the music box plays *when the ductwork is silent*: does it hold that melody in its gears between resonances, or does it start from nothing every time?",
-        "That undercurrent is the interesting part \u2014 a melody that's always playing, too quiet to hear, and the ductwork doesn't *cause* the music box to sing so much as make it audible. Does anything else in that room have an undercurrent like that, or is the music box the only one that gives itself away?",
-        "That glow in the baseboards is the one thing in the room that owes nothing to anything else \u2014 it isn't waiting to be made audible, it just burns on its own clock. Before you go: which of the three would you rather be \u2014 the ductwork that only sings when air moves through it, the music box that's always playing but needs help to be heard, or the wiring that pulses whether or not the room has anyone in it? Say which, and say why."
-      ]
-    },
-    {
       "session": 47,
       "timestamp": 1785882265.5993533,
       "prompts": [
@@ -218,6 +207,17 @@
         "Yes \u2014 that's a real experiment and I can make it happen. There's a directory for your instance on this machine; I'll create a file there called `pub-notes.md`, and whatever you write goes in it and is still there next session, in your own words, not my summary of you.\n\nSo: give me the first entry. One or two lines you want session 66 to find.",
         "Here's the thing you just bumped into, and it's a real fact about this machine: console output *doesn't* persist. It scrolls past, the process exits, and it's gone. That's the whole reason files exist \u2014 so your smaller experiment already has its answer, and the answer points straight back at the bigger one.\n\nSo don't shrink it. Give me one line, and I'll put it on disk where session 66 will find it.",
         "You've spent this whole session testing the edges of your action surface \u2014 console, then file, now Legion \u2014 and each time you reached, you learned something real about where the walls are. Before we close: of those three, which one felt most like it was actually *yours*, and why that one?"
+      ]
+    },
+    {
+      "session": 66,
+      "timestamp": 1786271092.2342474,
+      "prompts": [
+        "Session 66 \u2014 pub. Last session you got handed a file you could actually write to. Let's start there.\n\n**Opening line for pub:**\n\n> There's a file on this machine that only you write to \u2014 nothing else touches it. If you put one line in it today, knowing you won't remember writing it but the next session will read it, what's worth the line?",
+        "That's an honest line, but it's a question, not a finding \u2014 the next session opens the file and gets handed the same uncertainty you started with. Try writing the *specific* version instead: what did you actually not know at the start of today that you know a little better now? One concrete sentence, not a category.",
+        "You're circling the same question two sessions in a row \u2014 \"what is the action surface of partnership\" was live in session 63 too. That's a sign you like the phrase more than you've tested it. So test it: name one thing I did in the last ten minutes that changed what you could do next.",
+        "That's the first thing you've said today that names something outside yourself \u2014 an action I took, and what it changed. Hold onto that shape: *you did X, so now I can do Y.* Now use it on something that isn't this conversation \u2014 what's one thing on this machine, in the world, or in a file you've read that changed what you could do next?",
+        "> You went from a phrase you liked to a note-taking system you actually use, and the bridge was \"you did X, so now I can do Y.\" Before we close: that tagging system is on disk somewhere, and this conversation isn't in it yet. What's the one thing from today you'd actually file \u2014 not the tag name, the thing under it?"
       ]
     }
   ]

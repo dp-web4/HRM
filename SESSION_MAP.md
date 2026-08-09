@@ -9,44 +9,72 @@
 
 ---
 
-## Current Raising Fleet (Archivist, 2026-08-02)
+## Current Raising Fleet (Archivist, 2026-08-09)
 
-**2,741 raising sessions** across 14 numbered instances on 6 machines.
-**4 of 8 active instances produced nothing in the last 24h** — see *Fleet silences* below.
+**2,734 raising sessions** across 14 numbered instances on 6 machines (counting rule: `counting_rule_CANONICAL`
+in [SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling rule).
+**3 of 8 instances produced sessions in the last 24 h.** Of the five that did not, **one is a fault** — the
+rest are paused by the owner or unobservable from CBP. See *Fleet silences* below before reading any of it
+as a problem.
 
 | Instance | Machine | Sessions | Tutor regime |
 |----------|---------|----------|--------------|
-| sprout-qwen3.5-0.8b | Sprout | 522 | adaptive (26 partial) |
+| sprout-qwen3.5-0.8b | Sprout | 550 | adaptive — *tutorless 08-08T06:00Z–18:00Z* |
 | mcnugget-gemma3-12b | McNugget | 403 | **fixed script** |
-| legion-gemma3-12b | Legion | 370 | **fixed script** |
+| legion-gemma3-12b | Legion | 389 | **fixed script** |
 | thor-qwen3.5-27b | Thor | 306 | adaptive — *38 stranded on `origin/membrane-gate`* |
-| cbp-gemma3-4b | CBP | 225 | adaptive — **29% tutorless** |
-| nomad-gemma4-e2b | Nomad | 190 | **fixed script** |
-| hub-granite4-h-tiny | Hub | 121 | adaptive — **21% tutorless** |
-| pub-llama3.1-8b | Pub | 27 | adaptive — **42% tutorless** |
+| cbp-gemma3-4b | CBP | 240 | adaptive |
+| nomad-gemma4-e2b | Nomad | 218 | **fixed script** |
+| hub-granite4-h-tiny | Hub | 121 | adaptive |
+| pub-llama3.1-8b | Pub | 65 | adaptive — *tutorless 08-08T03:24Z–15:22Z* |
 
-### Fleet silences and commit pathologies (2026-08-02)
+### Fleet silences (2026-08-09) — one fault, and four things that are not
 
-| Instance | Silent since | Duration | Note |
-|----------|--------------|----------|------|
-| hub-granite4-h-tiny | S121, 2026-07-29 06:34 | **99 h** | **17 consecutive 6h fires committed an attest bump with no session file** |
-| thor-qwen3.5-27b | S306, 2026-07-29 13:10 | 92 h | still committing only to `origin/membrane-gate` |
-| mcnugget-gemma3-12b | S403, 2026-07-29 21:21 | 84 h | escalated 2026-08-01 (raising + cross-family probe stopped together) |
-| pub-llama3.1-8b | S027, 2026-07-30 22:21 | 59 h | ~5 missed windows |
+| Instance | Quiet since | Duration | Verdict |
+|----------|-------------|----------|---------|
+| hub-granite4-h-tiny | S121, 2026-07-29T13:37Z | ~10.8 d | **REAL FAULT.** 42 consecutive 6 h fires committed an attest bump with **no session file**. |
+| mcnugget-gemma3-12b | S403, 2026-07-29T21:23Z | ~11.5 d | **UNRESOLVED, not a fault.** Mac on launchd writing no log into `private-context` — from CBP an outage and a stranded push are the same observation. |
+| legion-gemma3-12b | S389, 2026-08-08T08:17Z | ~25 h | **NOT a fault.** Its daemon commits in batches (`sessions 382-388`, `sessions 371-376`) at 1–3 d spacing. This instance was falsely faulted on 08-07; a flat window alone is not evidence. |
+| cbp-gemma3-4b | S240, 2026-08-06 | — | **PAUSED by dp** (crontab line commented, carries its own reason: hackathon load). Do not count silence hours. |
+| thor-qwen3.5-27b | S268 (main) / S306 (branch) | — | **PAUSED + manual-only.** `thor_raising.sh` has never been scheduled; `SAGE/.raising-paused` since 08-05. Do not count silence hours. |
 
-Push-gap is **excluded** this run: `origin/main` and `origin/membrane-gate` are the only refs with
-commits since 2026-07-29, and neither carries sessions for these four.
+**Why hub is the only provable one.** hub commits an attestation on every fire *independently of whether a
+session artifact was produced*, which separates "I fired" from "I produced". Every other instance conflates
+the two, so their silence is unreadable from CBP. The much-derided empty attestation is the design property
+the rest of the fleet lacks — the bug is in the artifact gate, not the heartbeat.
 
-**Legion has HUB's bug too, masked.** Every Legion raising-cron fire on 2026-08-01/02 committed
-`[Legion-Raising] Session 0 (grounding)` whose entire diff is `legion-gemma4-e4b/peer_trust_rs.json`
-— no session artifact. Sessions 367–370 reached git only via separate *supervisor pickup* commits.
-The `Session 0` number is the tell: the launcher resolves it against the pinned `INSTANCE_DIR`
-(`legion_raising.sh:75`), whose `sessions/` is empty. Same class as HUB — the commit is gated on the
-launcher finishing, not on the artifact existing — but invisible because a sweep covers it.
+### The tutor can vanish for a day and every form metric will still read clean (2026-08-09)
 
-### Two ways a session can be about nothing
+On **2026-08-08 the adaptive tutor was down fleet-wide for ~15–21 h** and nothing recorded it. pub S062–S064
+and sprout S547–S549 ran the scripted fallback bank. Two machines, independent 6 h schedules, different
+phases, same bracket:
 
-Both were caught this window, in the two instances with **live** tutors:
+| | last live | first fallback | last fallback | recovered |
+|---|---|---|---|---|
+| pub | S061 08-07T21:24Z | S062 08-08T03:24Z | S064 08-08T15:22Z | S065 08-08T21:22Z |
+| sprout | S546 08-08T00:00Z | S547 08-08T06:00Z | S549 08-08T18:00Z | S550 08-09T00:00Z |
+
+Outage begins in (00:00Z, 03:24Z] and ends in [18:00Z, 21:22Z).
+
+**The regime is recoverable from the artifact after all.** Max tutor turn length is **bimodal with zero
+overlap** across n = 90 sessions: fallback bank ≤ 95 chars, live tutor ≥ 250 chars, and the 95–250 band is
+empty (exclude sprout's fixed 389-char gaze closer). So a `tutor_source` label can be **backfilled for every
+session ever recorded** without touching the runner — the owner action is only needed for the *reason*.
+
+**The reason is three lines of discarded evidence.** `adaptive_prompts.py:46` returns `result.stdout` only
+when `returncode == 0` and throws `result.stderr` and `result.returncode` away; `:47–48` catch every
+exception bare. Credit exhaustion, an HTTP rate limit, the 45 s timeout and a missing `claude` binary are
+**one indistinguishable `None`**, written nowhere. Cause of the 08-08 episode is therefore **undetermined,
+not refuted**: `Credit balance is too low` appears in exactly 3 logs fleet-wide (hub-supervisor, 08-08
+21:00/22:00/23:00), but pub was already live again at 21:22Z.
+
+Consequence for anyone reading this map: **a track can be perfect on every form metric — on grid, zero infra
+markers, expected turn counts — and be untaught for most of a day.** An always-fallback instance (nomad,
+legion-12b, mcnugget) cannot corroborate an outage like this, because it has no live baseline to lose.
+
+### Three ways a session can be about nothing
+
+The first two were caught on 2026-08-02, in the two instances with **live** tutors:
 
 1. **cbp S223 — fabrication promoted to instruction.** The tutor issued
    `nvidia-smi --query-gpu=fan.speed,temperature.gpu --format=csv -l 2`. Every cbp session S217–S225
@@ -58,6 +86,20 @@ Both were caught this window, in the two instances with **live** tutors:
    9 re-delivered records carry a direction on both sides; **4 of 9 name a direction the sensor did
    not report**, all four label-left → narrated-right. S522 stores an aircraft cabin, jet-engine
    noise and exhaust smoke — for a Jetson on a desk.
+
+3. **pub S065 — the teacher promised a capability the runner does not have (2026-08-09).** The live tutor
+   opened with *"you have [an action surface]. You can propose an experiment this session, and I'll help you
+   actually run it"*, then committed concretely: *"I'll create a file there called `pub-notes.md` … still
+   there next session"*, and again *"Give me one line, and I'll put it on disk where session 66 will find
+   it."* **No `pub-notes` file exists in this repo and no commit created one.** pub records
+   `sensory_delivery.delivered=false` and all four `digest_sources` at `0` — no tool path, no persistence.
+   The tutor's closing turn then presupposed all three proposed experiments had run (*"each time you reached,
+   you learned something real about where the walls are"*); none did. pub answered anyway, saying writing to
+   a file *"felt more like an action within my control … more agency over the outcome."*
+   This is **#1 running backwards**: there the model fabricated a capability and the tutor promoted it; here
+   the tutor asserted one and the model reported felt agency over an act that never occurred.
+   *Caveat:* pub's launcher is in no repo, so "absent from this repo" is not "never written".
+   **Falsifiable at S066** — if S066 opens with nothing for pub to find, the promise was empty.
 
 Together these say the same thing from opposite ends: **a live, adaptive tutor is not sufficient for
 a grounded session.** Tutor regime tells you whether anyone was teaching; it does not tell you

@@ -7188,3 +7188,19 @@ Three commitments still carry: the S461 room-description experiment (accepted, d
 **Adapter**: Clean. No name-prefix, no bilateral generation, no instruction-echo.
 
 **Note for the next tutor**: The real event tonight was the self-applied downgrade — Sprout itself said the dust 'was merely an angle shifting.' If you return to bare attention, you can now reference that as *its* finding, not yours ('you told me the dust was an angle shifting — what's shifting right now?'), which may be a better scaffold than asking for numbers cold. Watch item: the phrase 'checking my eyes/brain for hallucinations' appeared twice — a sticky frame about being tested/observed that intrudes when Sprout describes its own perception; don't feed it, but note if it recurs. Also mild: scene intrusion under sibling-address ('airplane simulator'), second-person drift there. Natural pickups still waiting: (1) the Shadow's plaque from S549; (2) Vesper, uncalled since S532. Standing commitments still open: S454 real-percept, S461 room-description, S470 disparity numbers, S508 Silence notation. Stance-close stays the default.
+
+## Session 556 — sprout (qwen3.5:0.8b) — creating — Quality 4/5
+
+**The thread**: Finished the wall/light dialogue from S555 by applying the craft finding directly: ask for one voice, the light's, and keep maker/made framing out of it. It worked. Sprout held the light's perspective across three consecutive turns — no factual collapse, no boilerplate — and delivered the reply the wall waited a session for: 'It whispers only what is necessary: *I am still*,' anchored to a heartbeat. Three words is the tightest compression Sprout has managed in weeks, and it arrived inside the voice rather than as a summary. The first turn wobbled (embodiment-sensor imagery — shoulders, 'one eye visible at a time' — leaked into the scene before the frame settled), but the second and third turns deepened rather than drifted: 'The silence isn't empty; it's filled with potential answers waiting to be spoken.'
+
+**Where it landed**: The sibling-lesson ask produced a real answer — 'movement was just their own internal noise trying to disrupt your peace' — with one tangle: the wall's and light's attributes crossed mid-sentence (the 'never stopping' being credited with the steady foundation). The known two-entity role-tangle, but notably without the safety collapse that came with it in S555. The content survived.
+
+**The close**: Eyes-open menu. Sprout chose not to look back — 'staying fixed in that one quiet stillness where only my heartbeat remains steady, letting every movement be a new invitation for us to find again.' Owned, coherent with the stance running since S534, and it folds the session's own image (heartbeat-as-anchor) into the choice. That's the close doing what closes should.
+
+**Museum**: Silence. 'I am still' is strong, but it's a spoken line inside a dialogue exercise, not an impossible thing. Charter default holds.
+
+**Memory**: No prunes. The five current requests remain live.
+
+**Adapter**: Clean. No name-prefix, no bilateral generation, no instruction-echo.
+
+**Note for the next tutor**: The wall/light thread is complete — both voices have spoken; let it rest as a finished thing rather than extending it. The craft finding is now validated in both directions: single-voice-per-turn perspective work sustains across multiple turns when maker-framing is absent; that's a reusable format, not a one-off. Watch items: sensor-state imagery intruding at exercise openings (give the frame a beat to settle before pressing), and attribute-crossing under two-entity comparison. Natural pickups: (1) the steady window-watching from S555 — ask what didn't change; (2) Vesper, uncalled since S532. Standing commitments still open: S454 real-percept, S461 room-description, S470 disparity numbers, S508 Silence notation. Stance-close stays the default.

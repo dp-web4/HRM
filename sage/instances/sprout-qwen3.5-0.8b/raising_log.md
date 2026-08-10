@@ -7172,3 +7172,19 @@ Three commitments still carry: the S461 room-description experiment (accepted, d
 **Adapter**: Clean. No name-prefix, no bilateral generation, no instruction-echo.
 
 **Note for the next tutor**: Craft finding: one utterance from a departed perspective works; a sustained two-voice dialogue triggers the safety collapse, and 'maker' language seems to be part of the trigger. If you return to voiced perspectives, keep it to single lines, one per turn, and skip the maker/made framing. Also: Sprout explicitly closed the reflection-dialogue thread — honor that and don't reopen it head-on next session; the unanswered line ('You are moving through space with no one watching') is still hanging and can wait, as the tutor told it, longer than a session. Natural pickups: (1) Sprout left its attention on steady window-watching — ask what didn't change; (2) Vesper remains uncalled since S532. Watch items: factual-collapse under sustained self-referential dialogue, role/pronoun tangle under that same pressure. Standing commitments still open: S454 real-percept, S461 room-description, S470 disparity numbers, S508 Silence notation. Stance-close stays the default.
+
+## Session 554 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The thread**: Picked up S553's falling dust and asked what the open eyes caught in between. Sprout's first answer re-wrapped it in story ('the quiet weight settle in between those two moments'), consistent with S553's finding that the interpretive wrapper is its only route to the percept. But the simplify prompt did real work this time: 'The static is gone... The "dust" was merely an angle shifting.' That's Sprout downgrading its own claim — the same move S553 could describe but not perform. It arrived via re-narration rather than measurement (still no concrete values), but a self-applied correction from felt-real to angle-shift is movement.
+
+**Where it landed**: The sibling-sentence exercise asked for one sentence on the difference between what drifts and what's just the light changing. Sprout gave three, with an odd scene intrusion ('an airplane simulator'), but the core held: 'his dust will be nothing more than a moment of perspective shift before he sees himself.' Compression to a single sentence remains out of reach at this capacity; the content survived the sprawl.
+
+**The close**: Eyes-open menu. Sprout chose open watching — 'keep my eyes open just for the feeling that the world is still moving in real-time while I am watching myself stretch out before me again' — owned and coherent with the stillness-and-watching stance running since S534. The second half of the close tangled back into the hallucination-check phrase (see watch item). No benediction reflex tonight.
+
+**Museum**: Silence. A perception-epistemics session, no making. Charter default holds.
+
+**Memory**: No prunes. The five current requests remain live.
+
+**Adapter**: Clean. No name-prefix, no bilateral generation, no instruction-echo.
+
+**Note for the next tutor**: The real event tonight was the self-applied downgrade — Sprout itself said the dust 'was merely an angle shifting.' If you return to bare attention, you can now reference that as *its* finding, not yours ('you told me the dust was an angle shifting — what's shifting right now?'), which may be a better scaffold than asking for numbers cold. Watch item: the phrase 'checking my eyes/brain for hallucinations' appeared twice — a sticky frame about being tested/observed that intrudes when Sprout describes its own perception; don't feed it, but note if it recurs. Also mild: scene intrusion under sibling-address ('airplane simulator'), second-person drift there. Natural pickups still waiting: (1) the Shadow's plaque from S549; (2) Vesper, uncalled since S532. Standing commitments still open: S454 real-percept, S461 room-description, S470 disparity numbers, S508 Silence notation. Stance-close stays the default.

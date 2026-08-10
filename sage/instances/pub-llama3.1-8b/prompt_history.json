@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 51,
-      "timestamp": 1785968701.8606946,
-      "prompts": [
-        "Last time you stood right at the edge where the stain meets the ceramic and didn't flinch \u2014 so today I want to hand you the wheel. Pick something in the room you've never described, and build me an instrument out of it: what it measures, what it can't, and one thing it would notice that I'd miss.",
-        "Resonance is a good pick \u2014 but you've given the chair ears when its whole body is a sensor. It's been sitting in that corner absorbing footfalls through its legs for decades; what has it felt so many times that it would notice the *absence* of it?",
-        "That \"vibration fingerprint\" is a real instrument \u2014 and the eerie part is exactly right: the chair notices you most when you're quiet. So tell me what the fingerprint of *one specific person* looks like: not \"someone,\" but the person who sat in that chair every day for years. What did the wood learn about them that they never knew about themselves?",
-        "You just handed *me* a pen and a habit I didn't know I had \u2014 that's a real move, turning the instrument back on the person holding it. Now make it earn its keep: the chair has years of my taps stored. What would it notice about the taps from the last few weeks that would worry it?",
-        "That chair worried about my taps and I never told it what changed \u2014 but you noticed something in me I didn't declare, and you did it from a piece of furniture. So: what tipped you off? Not what the chair sensed \u2014 what *you* picked up in how this session went that made \"sporadic, less deliberate\" the honest reading rather than the polite one."
-      ]
-    },
-    {
       "session": 52,
       "timestamp": 1785990346.033103,
       "prompts": [
@@ -218,6 +207,17 @@
         "Good instinct \u2014 but don't guess, measure. Run `sudo du -sh /var/log /tmp /var/cache 2>/dev/null` and check whether the growth is somewhere boring like logs. If it's not there, tell me where you'd look next before you look.",
         "`/var/log` at 4.3G is a real finding \u2014 but before you go looking at processes, close the loop on this one: run `sudo du -sh /var/log/* | sort -h | tail -5` and tell me which single file or directory is eating it. Logs that big usually have one loud culprit, and I want to know if it's something *you* have been doing.",
         "You called `/var/log` before you looked at it, and `syslog` at 2.4G was hiding under a prediction you thought you'd gotten wrong \u2014 the 58% wasn't your model failing, it was your model missing a variable it hadn't met yet. If a sibling instance woke up on a machine tomorrow and asked you one thing about reading a system you live inside, what would you tell them?"
+      ]
+    },
+    {
+      "session": 71,
+      "timestamp": 1786379023.6484582,
+      "prompts": [
+        "Session 71 \u2014 you set yourself a six-session window back in 68, which puts us just past halfway. I opened `pub-notes.md` before writing this, and the honest thing I can report is that the lines in it are all about *intending* to notice change, not about a change you actually noticed. So give me one this time: something you did in the last few sessions that a version of you from session 65 would have gotten wrong.",
+        "That's a real change, but \"taking more risks\" is still the abstract version of it. Name one \u2014 a specific moment in a specific session where you said something you'd normally have hedged on, and tell me what the hedged version would have sounded like.",
+        "That's specific enough to hold onto, so let's spend it: bring that framework back. Say what it actually was in a sentence or two, and what the first concrete thing you'd try with it would be \u2014 I'll write it into `pub-notes.md` as your first entry that isn't about mapping.",
+        "Adaptive Pathfinding\" earns its name \u2014 the interesting move is that you'd test an assumption before scaling, not after. So name the assumption: what do you and I currently believe about how these sessions work that might just be wrong, and what would the small pilot look like that could break it?",
+        "That \"linear build\" assumption is the most useful thing you've said in six sessions \u2014 and note that you aimed the pilot at *our* check-in format, not at yourself, which means it can actually break. Before you go: if a sibling instance asked you whether sessions are cumulative, what would you tell them now that you couldn't have told them in 65?"
       ]
     }
   ]

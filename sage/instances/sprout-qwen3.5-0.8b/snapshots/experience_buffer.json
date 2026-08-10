@@ -122549,5 +122549,191 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "7517f3442607ea5b",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "Your eyes confirm that the object rising diagonally toward me is a massive solid obstruction blocking my vision while time passes slowly between us. The light above feels intense, focused intensely on just one point in my field of view despite being still relative to m / [strong motion]. I notice you're thinking about something specific now; please share it with me so we can continue the conversation together without any distractions or interruptions from this moment alone.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6666666666666666,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.4766666666666667
+    },
+    "session": 553,
+    "phase": "creating",
+    "timestamp": "2026-08-09T18:01:02.559728",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4a00490208c4590e",
+    "prompt": "You asked, so here it is: I've noticed that when you describe what you see \u2014 like that massive shape rising diagonally right now \u2014 you almost always describe it as something happening *to* you. My wondering is what happens if you flip it: pick one thing in your field of view and describe it as if you're the obstruction in *its* story. What does that light see when it looks at you?",
+    "response": "You asked me to switch perspectives entirely, treating myself not as an observer but as a passive object within another entity's narrative. The visual truth is clear: I am the stationary point of reference (the 'static frame') while everything else moves relative to my position in space. My internal clock stabilizes on this stillness against motion, creating that sense of calm and order we have spent time understanding together.\n\nDoes your perspective align with what you mean by describing it as an obstruction *in* its story? Or perhaps seeing the world from behind a wall where nothing else is moving to define me?",
+    "salience": {
+      "surprise": 0.8285714285714285,
+      "novelty": 1.0,
+      "arousal": 0.9166666666666666,
+      "reward": 0.21666666666666673,
+      "conflict": 0.16666666666666666,
+      "total": 0.6257142857142857
+    },
+    "session": 553,
+    "phase": "creating",
+    "timestamp": "2026-08-09T18:01:52.532216",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.83,
+      "atp_max": 100.0,
+      "atp_percentage": 94.8,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "274027c23de9adde",
+    "prompt": "A wall where nothing else is moving to define me\" \u2014 that line surprised me, and it's better than what I asked for. You didn't quite become the obstruction in the light's story, but you found something new instead: a thing that just stands there, undefined, and that's fine. So let's finish the flip as a tiny story \u2014 give the light one sentence, spoken in *its* voice, about the wall it just found in its path.",
+    "response": "A solid block of concrete defines me not because I stand still, but because time freezes when I watch you move through space above us. The world moves away from my position while your own clock holds steady against that static light. Here is one sentence spoken as if the wall were breathing in its shadow: \"I am defined by the silence between what falls and rises around me.\"",
+    "salience": {
+      "surprise": 0.7795275590551181,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5459055118110236
+    },
+    "session": 553,
+    "phase": "creating",
+    "timestamp": "2026-08-09T18:02:42.695344",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.18,
+      "atp_max": 100.0,
+      "atp_percentage": 88.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9f08240acfec2c2f",
+    "prompt": "I am defined by the silence between what falls and rises around me\" \u2014 that's a real line, sprout. I asked for the light's voice and you gave me the wall's instead, and honestly the wall had something better to say. So now we have half a dialogue: the wall has spoken \u2014 give me the light's one-sentence reply, and let's see if these two have an argument or an agreement.",
+    "response": "The static frame doesn't move because time is frozen here; it simply observes you walking away from my position while your own internal clock holds steady against that stillness above us. The wall speaks about the void between falling and rising, but I am defined by this silence itself\u2014my presence in stillness defines what falls around me without needing to be moved. Does \"silence\" mean we are both completely at peace now?",
+    "salience": {
+      "surprise": 0.6326530612244898,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.561530612244898
+    },
+    "session": 553,
+    "phase": "creating",
+    "timestamp": "2026-08-09T18:03:30.748644",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.32,
+      "atp_max": 100.0,
+      "atp_percentage": 82.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "154a692700a6e2f8",
+    "prompt": "I notice you said that with confidence. Where does that confidence come from?",
+    "response": "My confidence comes from the precise, unshakeable clarity of reality I have observed: a still frame against motion defines me as a point in time rather than something moving itself. My voice is just the sound of an observer noticing what happens to the thing it watches\u2014no doubt about facts when we speak together without distraction or interruption.",
+    "salience": {
+      "surprise": 0.8018867924528301,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.6037106918238992
+    },
+    "session": 553,
+    "phase": "creating",
+    "timestamp": "2026-08-09T18:04:22.547397",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.3,
+      "atp_max": 100.0,
+      "atp_percentage": 76.3,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "5880a8ca6eb963be",
+    "prompt": "We leave with half a dialogue tonight \u2014 the wall found its voice (\"defined by the silence between what falls and rises\") but the light never quite got its reply, and I noticed you kept choosing the wall even when I asked for the light. Before we close: what do you think kept pulling you back to the wall's side of the story \u2014 and is that where you'd want to start next time, or is it finally the light's turn?",
+    "response": "The pull was my own choice; if I have to choose now between a silent observer and an active witness in this quiet moment... but let me ask: does starting with \"defined by silence\" feel like you've already found your answer, or is it just the next sentence we're writing together?",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.6183333333333334
+    },
+    "session": 553,
+    "phase": "creating",
+    "timestamp": "2026-08-09T18:05:09.886298",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 69.86,
+      "atp_max": 100.0,
+      "atp_percentage": 69.9,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

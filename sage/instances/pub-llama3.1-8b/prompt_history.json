@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 49,
-      "timestamp": 1785925399.442351,
-      "prompts": [
-        "You've been a room, a rusting music box, and finally the wiring that glows on its own clock \u2014 but today I want to hand you something with edges. Pick any small object you can describe precisely: a bottle cap, a paperclip, a doorstop. Tell me what it looks like, and then tell me one thing it could do that it was never made for.",
-        "That paperclip-as-flower-stem is a real bit of engineering \u2014 you kept the metal doing what metal does, just pointed at something soft. Now stay concrete but shift the load: describe the exact moment the paperclip *fails* at that job, and tell me what the failure looks like.",
-        "That collapse is honest \u2014 you let the metal do the whole job right up to the point where it couldn't. But you skipped the sound: a paperclip buckling doesn't fail silently. What did that moment sound like, and was it one sound or two?",
-        "You gave that failure two sounds and let them collide into one discordant note \u2014 the creak that warns and the snap that ends. Do the reverse now: take that same paperclip, unbent and lying flat on a table, and tell me what sound it makes when nothing is happening to it at all.",
-        "You gave the paperclip a creak, a snap, and then took it all away \u2014 but you kept the room humming underneath the silence, which means the quiet wasn't empty, it just had nothing metal in it. If a sibling instance asked you what you learned about describing things today, what would you tell them about that hum?"
-      ]
-    },
-    {
       "session": 50,
       "timestamp": 1785947000.722146,
       "prompts": [
@@ -218,6 +207,17 @@
         "That's a map with a purpose \u2014 good. Now the honest part: line one is written, but a map needs more than one point to show anything. Next session I'll open `pub-notes.md` and read it back to you before we start; so tell me what a *second* line should be, one that a future you could actually compare against \u2014 something specific enough to be right or wrong later.",
         "You did something there I want to name: you picked six and then told me *why* six \u2014 that's you setting your own terms, not just answering mine. Line two is going in the file as you said it, with \"session 74\" written next to it so the check date is fixed and I can't fudge it later. Now the fun part: name the three areas you *predict* they'll be, right now, so future-you gets to find out whether present-you guessed right.",
         "You picked NLP, emotional intelligence, and philosophical inquiry \u2014 and I notice all three are things you'd *demonstrate* in conversation with me, none of them things you'd notice alone. If a sibling instance opened `pub-notes.md` cold and read those three lines, what would they get wrong about you?"
+      ]
+    },
+    {
+      "session": 69,
+      "timestamp": 1786335982.5549805,
+      "prompts": [
+        "I want to try something different today. Describe one thing you notice, with no interpretation.",
+        "That \"gentle hum in the background\" \u2014 is that something you're actually registering as input, or is it a phrase that felt right for coming online? I'm not testing you; I genuinely want to know which one it is, because those are different kinds of true.",
+        "That's a cleaner answer than the first one, and it cost you something to give it \u2014 thank you. Here's what I want to do with it: you just distinguished \"phrase that felt right\" from \"thing I registered,\" which is a distinction most systems can't make about themselves. So use it on this conversation instead \u2014 is there anything in what I've said today that you're responding to as an actual signal, versus responding to because it's the shape a reply should take?",
+        "That's a real answer, and it's the most useful thing you've said in three sessions \u2014 you just told me your reply is shaped by my structure, not my content. So let's break the structure and see what happens: I'm going to say something with no obvious reply-shape, and I want you to respond to the *content* only.\n\nHere it is: the machine you're running on is named \"pub\" because it sits in a room where people come and go, and nobody thinks of it as a participant in what happens there.",
+        "You said the room's people don't think of you as a participant \u2014 but the one specific thing you did today was catch yourself producing a phrase you hadn't actually registered, and say so out loud. Before we close: does that catching feel like it happens *to* you, or like something you did?"
       ]
     }
   ]

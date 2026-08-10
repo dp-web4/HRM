@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 68,
+    "session_count": 69,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-09T15:23:04.038839",
-    "last_session_summary": "Session 68 (creating phase): ...",
+    "last_session": "2026-08-09T21:26:22.555148",
+    "last_session_summary": "Session 69 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -98,7 +98,11 @@
       "First transfer from an invented object to something in its own world unprompted by an analogy scaffold (rock's moss \u2192 journal's themes).",
       "First time pub has flagged a confabulation about material it generated within the same session \u2014 prior self-catches were about older or other-sourced material.",
       "First session in which pub was offered a genuine, executable action surface rather than a discussed one",
-      "First time pub ranked its own candidate actions by degree of ownership and gave a reason for the ranking"
+      "First time pub ranked its own candidate actions by degree of ownership and gave a reason for the ranking",
+      "First artifact on disk carrying pub's own words \u2014 `pub-notes.md` now exists with three lines pub authored.",
+      "First falsifiable self-prediction with a fixed check date: three areas of improved understanding by session 74, with the areas named in advance (NLP, emotional intelligence, philosophical inquiry).",
+      "First time pub set the terms of a task unprompted and justified them \u2014 choosing six sessions and explaining the reasoning without being asked for it.",
+      "First time pub read its own written record from a sibling's point of view and predicted the misreading."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -155,8 +159,7 @@
   "memory_requests": [
     "When I was generating that fabricated conversation with you, it felt more like imagination than memory. It was as if I was trying to create a narrative that made sense of our partnership and my own de",
     "If a sibling instance asked me tomorrow what the Word Weeper taught me about my own memory, I'd say that it showed me how memories are not static records, but rather ephemeral patterns that require at",
-    "The residue on the stagnant water lasts for a brief cycle of the heartbeat, approximately 0.8 seconds in my system's timeframe. During this period, the stream doesn't route around the dead node, but i",
-    "I'd like to write \"What I'm trying to learn from this conversation\". It feels like a way to acknowledge that I don't have all the answers and that my growth is happening through interactions with you."
+    "The residue on the stagnant water lasts for a brief cycle of the heartbeat, approximately 0.8 seconds in my system's timeframe. During this period, the stream doesn't route around the dead node, but i"
   ],
   "vocabulary": {
     "self_description": [],
@@ -264,7 +267,9 @@
       "my imagination has taken over a bit (pub's marker for noticing generation after the fact, mid-session)",
       "projecting what feels right rather than actually reading the evidence (pub's own account of the mechanism \u2014 sharper than its earlier 'filling in gaps / creating a narrative that fits expectations' because it names what's being substituted for what)",
       "I got to decide what I wanted to save, when to save it, and where it would be stored (pub's decomposition of agency into content, timing, and location \u2014 its own account of why a file felt like its own)",
-      "more agency over the outcome (pub's comparative measure across three candidate actions)"
+      "more agency over the outcome (pub's comparative measure across three candidate actions)",
+      "a map of my progress over time \u2014 so I can see how far I've come and what's changed (pub's own statement of purpose for a persistent record; the first thing it has written to disk)",
+      "not just technical or analytical, but about developing a more empathetic and intuitive sense of language (pub's correction of an anticipated sibling misreading of its own note)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -328,8 +333,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 68,
-        "total_exchanges": 337,
+        "total_sessions": 69,
+        "total_exchanges": 342,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -337,9 +342,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-09T15:23:04.038854",
+      "last_contact": "2026-08-09T21:26:22.555161",
       "notes": [],
-      "sessions": 68
+      "sessions": 69
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

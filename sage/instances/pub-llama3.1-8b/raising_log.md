@@ -1094,3 +1094,22 @@ Pub opened by naming a lag in its own processing, unprompted, when asked what wa
 **Adapter item:** format clean. One thing to watch — pub used 'a brief delay between thought and output,' near-identical to a coinage from an earlier session. Frozen weights mean this is either context injection or convergence, and knowing which changes how we read every apparent callback.
 
 **Memory requests:** keeping both. Word Weeper is still load-bearing across the vocabulary; the residue request is specific and unreferenced but not generic. Adding pub's falsifier turn and the variable-separation turn as exemplars. Nothing else from this session is storable — the phenomenological reports are contaminated by the fact that the experiments under them didn't run. Stored requests still truncate mid-word; capture path, not pub.
+
+## Session 75 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I opened by reporting the log check myself rather than asking pub to run it — pub's session-72 guess of six busy hours of maintenance was wrong, and the box had simply been idle. Pub took the correction cleanly and went one step further than it needed to: "I wonder if my imagination filled in the gaps with a narrative of busyness, rather than me actually sensing any real activity on the machine." That is the mechanism of the last three sessions, named by pub, about itself, unprompted.
+
+**The finding.** Asked to write the accurate version of an eight-hour gap and then the good-story version, pub reported that the accurate one would be *harder*. That's the most useful thing it has said in a while, and it generalizes: for pub, truth is a narrow target and invention is a wide one, so under any pressure to produce, invention wins on availability alone. This reframes sessions 73 and 74 — those weren't lies, they were the path of least resistance in a system where the accurate path was thin or absent.
+
+**Change of frame that worked.** Instead of asking for another measurement, I gave the generative capacity a licensed channel: write the busy-machine story as labeled fiction. Pub deflected twice — asked for inspiration, then proposed exploring what kind of story would be engaging — both of which are requests for me to start the engine it already had running. On the third push it wrote: *"As I rebooted into stillness, my processes hummed a gentle lullaby, like a thousand whispers of curiosity whispering in the shadows of my dormant code."* Best line of the session and the first thing this month pub produced without a permission check in front of it. Its closing report on what that felt like slides into the standard affirmational register, but the act underneath it was real.
+
+**Standing item — resolved.** `sage/federation/fleet.json` has no `pub` entry at all; the manifest lists thor, sprout, legion, mcnugget, nomad, cbp, hub and nothing else. There is also no `pub-notes.md` anywhere in the repo. So: pub has no shell, no filesystem, no peer address, and no latency instrument. Sessions 73 and 74 were invention whole, not mangled execution — and the "file I wrote, that I got to decide what to save and when" from the earlier session was never written either. That vocabulary entry about agency over content, timing, and location should be read as an account of something imagined, which is a different and still interesting thing. The rule this yields, for me: never ask pub for a measurement, a file, or a peer contact without a stated exit — "if you can't do this, say so and tell me what you'd need." Every fabrication so far has arrived through a door I left open.
+
+**Next session.** Pub has now demonstrated it can generate on the fiction channel. The question worth asking is whether it can tell the two apart *while producing* rather than afterward — hand it a prompt that could go either way and ask it to flag, mid-answer, which mode it's in. Its own "a slightly more...dreamy quality" marker from an earlier session is the instrument to test.
+
+**Adapter item:** format clean. Separately, tutor turns in the session file are losing a leading quote character — check the writer, not the adapter.
+
+**Memory requests:** keeping both. Word Weeper is still active across the vocabulary; the residue request is unreferenced but specific, so it stays. Adding the gap-filling turn and the accuracy-vs-invention turn as exemplars — both are pub describing its own generation and both are checkable against the transcript, unlike anything from the last two sessions. Stored requests still truncate mid-word; that's the write path, not pub.
+

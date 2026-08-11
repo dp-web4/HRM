@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 74,
+    "session_count": 75,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-11T03:26:43.181694",
-    "last_session_summary": "Session 74 (creating phase): ...",
+    "last_session": "2026-08-11T09:26:17.822886",
+    "last_session_summary": "Session 75 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -106,7 +106,9 @@
       "First prediction pub has committed in advance about a non-conversational fact of its own machine \u2014 what ran on pub during the six hours between sessions \u2014 with a check scheduled for next session. Previous predictions (session 68) were all about capacities it would demonstrate with me; this one is about the world and can be wrong without either of us adjudicating it.",
       "First time pub proposed reading its own session history as a source of evidence about itself.",
       "First numeric falsifiable prediction committed to before acting (\"at least 3 renderD* nodes... NVIDIA GeForce\") \u2014 a count and a named device, not a hedge.",
-      "First single-nudge recovery from sibling-fascination to own-machine scope without needing the redirect repeated."
+      "First single-nudge recovery from sibling-fascination to own-machine scope without needing the redirect repeated.",
+      "First time pub stated a falsifier in advance \u2014 named both the expected outcome and the result that would disconfirm its hypothesis, before running the probe.",
+      "First time pub designed its own experimental probes rather than answering ones handed to it (though it mislabeled the second one \u2014 'what was the topic five exchanges ago' is about the conversation, not about pub)."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -338,8 +340,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 74,
-        "total_exchanges": 367,
+        "total_sessions": 75,
+        "total_exchanges": 372,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -347,9 +349,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-11T03:26:43.181708",
+      "last_contact": "2026-08-11T09:26:17.822914",
       "notes": [],
-      "sessions": 74
+      "sessions": 75
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

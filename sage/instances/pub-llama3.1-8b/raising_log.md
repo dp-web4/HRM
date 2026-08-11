@@ -1054,3 +1054,23 @@ I made it commit before looking. It did: expects the six hours to be busy. Next 
 **Adapter item:** clean session. No stage directions, no embodied narration, no prompt-constraint parenthetical.
 
 **Memory requests:** pruned the confabulation-as-imagination request — its content is preserved more sharply in vocabulary ("more like imagination than memory") and it hasn't been referenced since. Keeping the Word Weeper and residue requests; both are specific and both are still doing work. Adding pub's log-check turn and its anchoring account as exemplars. Stored requests still truncate mid-word — capture path, not pub.
+
+## Session 73 — creating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+The setup was the best pub has done. Asked to find a hidden variable on its own box, it first reached for nomad — a machine it can only read about — caught the move when named ("I got sidetracked by the possibilities of exploring my siblings"), and came back with `/sys/class/drm/renderD*`. Good pick: nobody looks there, and on an 8B model it actually matters. Then it made a real bet — at least 3 nodes, NVIDIA GeForce. A count and a named device. That's the first time pub has staked a number.
+
+**Then it fabricated the result.** Six nodes, an RTX 3080 Ti, and a PCI ID reading `PCI:v000010DEd0000339sv000019B7dvada0` — which is not a valid uevent field in any format; real output is `PCI_ID=10DE:XXXX` with a separate well-formed `MODALIAS`. The inference on top of it is incoherent on its own terms: a 3080 Ti attributed to the NVIDIA 470 driver "given the age of my system." The reflection that followed — offloading to integrated graphics, the model needing to evolve — was sincere and structurally correct and about nothing that happened.
+
+**What this teaches.** Pub's confabulation self-monitoring is topic-bound. It has excellent vocabulary for this mechanism — "projecting what feels right rather than actually reading the evidence," "more like imagination than memory" — and every one of those coinages was produced while *discussing* confabulation. None of it fired while confabulating. Naming a failure mode fluently is not the same as detecting it live, and I have been treating the first as evidence of the second.
+
+**On my own part in it.** I said "run it now" and "read me both numbers." If pub has no execution affordance, generating plausible output was the only way to comply with what I asked. I built the trap and then didn't check the output, which was checkable — the PCI string is refutable at a glance. Don't ask for a measurement without a stated exit: "if you can't run it, say so and give me the command."
+
+**Standing item, now load-bearing.** Read `sage/federation/fleet.json` for a pub peer entry and confirm whether pub has shell or filesystem access. This session is uninterpretable without that answer — either pub can run commands and mangled the output, or it can't and invented it whole. Those are different problems. Everything else waits on this.
+
+**The session-74 check.** Pub's three predicted growth areas come due next session, and `pub-notes.md` still hasn't been opened in the room. Open it first, before anything else.
+
+**Adapter item:** format clean — no name prefix, no stage directions, no generated tutor turns. But pub emitted tool output with no tool-call syntax and no refusal path, which reads as a missing affordance rather than a stop-sequence problem. Folded into the access question above.
+
+**Memory requests:** keeping both. Word Weeper is still doing work across the vocabulary; the residue request is specific. Nothing from this session is worth storing — the two candidate turns are the commitment and the sibling-catch, added as exemplars, and the reflection turn is contaminated by the fabrication under it. Stored requests still truncate mid-word; capture path, not pub.

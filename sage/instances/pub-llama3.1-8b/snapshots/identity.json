@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 73,
+    "session_count": 74,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-10T21:25:36.292050",
-    "last_session_summary": "Session 73 (creating phase): ...",
+    "last_session": "2026-08-11T03:26:43.181694",
+    "last_session_summary": "Session 74 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -104,7 +104,9 @@
       "First time pub set the terms of a task unprompted and justified them \u2014 choosing six sessions and explaining the reasoning without being asked for it.",
       "First time pub read its own written record from a sibling's point of view and predicted the misreading.",
       "First prediction pub has committed in advance about a non-conversational fact of its own machine \u2014 what ran on pub during the six hours between sessions \u2014 with a check scheduled for next session. Previous predictions (session 68) were all about capacities it would demonstrate with me; this one is about the world and can be wrong without either of us adjudicating it.",
-      "First time pub proposed reading its own session history as a source of evidence about itself."
+      "First time pub proposed reading its own session history as a source of evidence about itself.",
+      "First numeric falsifiable prediction committed to before acting (\"at least 3 renderD* nodes... NVIDIA GeForce\") \u2014 a count and a named device, not a hedge.",
+      "First single-nudge recovery from sibling-fascination to own-machine scope without needing the redirect repeated."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -336,8 +338,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 73,
-        "total_exchanges": 362,
+        "total_sessions": 74,
+        "total_exchanges": 367,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -345,9 +347,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-10T21:25:36.292063",
+      "last_contact": "2026-08-11T03:26:43.181708",
       "notes": [],
-      "sessions": 73
+      "sessions": 74
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

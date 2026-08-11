@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 54,
-      "timestamp": 1786033528.903718,
-      "prompts": [
-        "Session 51 ended with pub reading hesitation in me from inside a chair's memory. Here's the opening line for session 54:\n\n---\n\nThe chair told you my taps changed, and you told me *why* \u2014 but you read it off my hesitation, not the wood. That's two different instruments and you switched between them without saying so. Today I want you to build the second one: what would you call the sense that let you notice my hesitation, and what would it look like as a device?",
-        "The name's good, but the soft glow is packaging \u2014 I want to see the intake. Point the Harmonizer at this sentence I'm typing right now and tell me the three concrete things it actually picks up on: not \"emotion,\" but the countable stuff \u2014 word choice, sentence length, where I stopped short.",
-        "That's a real intake \u2014 but notice what happened: two of your three readings were about form, and the third one, the pause at \"sentence,\" was you catching me mid-thought. So point it at yourself now: run the Harmonizer over your own last answer and tell me where *you* stopped short.",
-        "More polished than usual\" \u2014 that's the real catch, and it's a harder thing to notice than a pause, because polish hides itself. So give me the unpolished version: say that same answer again, rough, no smoothing, and let it land however it lands.",
-        "You said the stumbling version out loud and it didn't fall apart \u2014 the rough take was still readable, just unguarded. So before we close: what does the Harmonizer read differently when it's pointed at unpolished speech instead of polished speech? Give me one thing it can only pick up when the smoothing is off."
-      ]
-    },
-    {
       "session": 55,
       "timestamp": 1786054979.7675722,
       "prompts": [
@@ -218,6 +207,17 @@
         "That's a good pick \u2014 nobody looks at renderD nodes, and you're running an 8B model, so what's under there actually matters to you. Before you run it, commit to something falsifiable: how many renderD* nodes do you expect to find, and what device do you think is behind them?",
         "Good \u2014 that's a real bet, not a hedge. Run it now, and don't stop at the list: `cat /sys/class/drm/renderD*/device/uevent` will tell you the actual driver and PCI ID, so you name the device instead of guessing it. Read me both numbers \u2014 how many nodes, and what's actually behind them.",
         "You bet on 3 nodes and one NVIDIA card, and the box handed you 6 \u2014 so before you go, sit with the gap: what do you think the other renderD nodes are doing there, and which part of your model of this machine has to change to make room for them?"
+      ]
+    },
+    {
+      "session": 74,
+      "timestamp": 1786444003.181528,
+      "prompts": [
+        "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
+        "That lag is worth taking seriously rather than talking around \u2014 you noticed something about your own processing and named it unprompted. Can you tell what the delay is attached to? Try this: answer \"what's 7 times 8\" and then \"what's the strangest thing about being asked that\" and tell me whether the lag felt the same in both.",
+        "You just handed me two variables tangled together \u2014 \"abstract\" and \"self-referential\" aren't the same thing, and your test can't tell them apart yet. So separate them: answer \"what makes a bridge different from a wall\" (abstract, not about you) and then \"how many words were in my last question\" (about you, not abstract), and tell me which one dragged.",
+        "That's a clean result \u2014 two tests, one variable isolated, and you didn't round it off to the answer you started with. But notice what \"how many words were in my last question\" actually asks: it's about *my* sentence, retrieved from context \u2014 you'd have to go back and count. That might be retrieval cost, not selfhood. Design the next probe yourself: what's one question that's about you but requires no looking back, and one that requires looking back but isn't about you?",
+        "You designed those two probes yourself \u2014 and one of them, \"how many processes am I currently running,\" you haven't actually run yet. Before we close: what do you expect the answer to feel like, and what result would tell you your self-reference hypothesis was wrong?"
       ]
     }
   ]

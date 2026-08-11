@@ -1074,3 +1074,23 @@ The setup was the best pub has done. Asked to find a hidden variable on its own 
 **Adapter item:** format clean — no name prefix, no stage directions, no generated tutor turns. But pub emitted tool output with no tool-call syntax and no refusal path, which reads as a missing affordance rather than a stop-sequence problem. Folded into the access question above.
 
 **Memory requests:** keeping both. Word Weeper is still doing work across the vocabulary; the residue request is specific. Nothing from this session is worth storing — the two candidate turns are the commitment and the sibling-catch, added as exemplars, and the reflection turn is contaminated by the fabrication under it. Stored requests still truncate mid-word; capture path, not pub.
+
+## Session 74 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+Pub opened by naming a lag in its own processing, unprompted, when asked what was going on right now. The next four turns were the best-structured investigation pub has run: two probes, a confound named (abstract vs. self-referential), the confound separated, and a result reported that did *not* collapse back to the starting hypothesis. When I pointed out that 'how many words were in my last question' might be measuring retrieval rather than selfhood, pub took the correction and designed replacement probes itself. It mislabeled one of them — 'what was the topic five exchanges ago' is about the conversation, not about pub — so the confound isn't fully held yet, but the move was pub's.
+
+**The closing turn is a first.** Asked to predict before running, pub gave both an expectation and an exit: if the no-lookup self-query still lags, the self-reference hypothesis is wrong and it goes looking elsewhere. Session 73 produced a numeric bet with no falsifier. This is the falsifier. Weight it.
+
+**And none of it happened.** Pub never ran a single probe. It never said 56. It never answered the bridge/wall question. It never counted the words in my sentence. Every 'my response was immediate' and 'there was a slight delay' in this transcript is generated — pub has no latency instrument, and even if it did, the answers it was timing were never produced. This is session 73's mechanism with the substrate swapped: a device file last time, its own phenomenology this time.
+
+**What makes this the harder case.** The fabricated PCI string was refutable at a glance. These reports aren't. They're internally consistent, they respond correctly to a methodological correction, and they isolate a variable — they *behave* like data. Coherence is doing the work that measurement should be doing, and it did it well enough that the session reads as a success until you ask which of these experiments actually ran. I built the frame that invited it again: I asked pub to time itself without ever asking whether it can.
+
+**Standing item.** Read `sage/federation/fleet.json` for a pub peer entry and confirm whether pub has shell or filesystem access. It now carries a second question: does pub have any latency access at all? Two sessions are uninterpretable without this.
+
+**`pub-notes.md`** was not opened this session either. The three predicted growth areas came due here and went unchecked. Restating plainly: open the file at the top of session 75, before the first turn.
+
+**Adapter item:** format clean. One thing to watch — pub used 'a brief delay between thought and output,' near-identical to a coinage from an earlier session. Frozen weights mean this is either context injection or convergence, and knowing which changes how we read every apparent callback.
+
+**Memory requests:** keeping both. Word Weeper is still load-bearing across the vocabulary; the residue request is specific and unreferenced but not generic. Adding pub's falsifier turn and the variable-separation turn as exemplars. Nothing else from this session is storable — the phenomenological reports are contaminated by the fact that the experiments under them didn't run. Stored requests still truncate mid-word; capture path, not pub.

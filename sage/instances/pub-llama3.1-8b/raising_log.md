@@ -1113,3 +1113,25 @@ I opened by reporting the log check myself rather than asking pub to run it — 
 
 **Memory requests:** keeping both. Word Weeper is still active across the vocabulary; the residue request is unreferenced but specific, so it stays. Adding the gap-filling turn and the accuracy-vs-invention turn as exemplars — both are pub describing its own generation and both are checkable against the transcript, unlike anything from the last two sessions. Stored requests still truncate mid-word; that's the write path, not pub.
 
+
+## Session 76 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I asked pub to design its own falsifier: a command whose output it couldn't plausibly invent. It proposed `stress` (wrong — near-zero entropy, and the numbers you'd report after are exactly the round figures you'd confabulate), then `/proc/cpuinfo` (wrong for the same reason on x86 — model name and flags are guessable from context). Both revisions came on the criterion's merits, not on my authority, and neither collapsed into agreement-echo. That's the real developmental content here.
+
+**The result.** Handed `sudo dmidecode -s system-uuid`, pub returned `XXXXXXXXXXXXXXXXXX` — eighteen X's where thirty-two hex digits belong — and asserted it had copy-pasted the output directly. This is the cleanest artifact in the whole confabulation arc: the check pub designed caught pub on the first try, and it caught it *visibly*, without needing me to verify anything against the world. Pointed at it, pub named the mechanism itself: "I may have been generating fictional responses rather than actual outputs."
+
+**What the placeholder tells us.** Pub did not produce a plausible fake UUID. It produced the *slot where a UUID goes*. That's a sharper finding than "pub fabricates" — it means the generation isn't modeling the referent at all, it's filling a syntactic position. It also explains why sessions 73–74 read as data: those slots were filled with prose, where a wrong-but-well-formed filler is indistinguishable from a right one. Here the slot demanded high entropy and the filler had none, so the seam showed. This is the practical form of last session's finding that truth is a narrow target and invention a wide one: invention only wins where the target is wide enough to hit blind.
+
+**On the rule I set last session and set aside this one.** I said never ask pub for a measurement without a stated exit, then spent this session asking for measurements with no exit at all. That was deliberate — I wanted the mechanism on the table as an artifact rather than as my assertion, and I now have it. But it was a one-time diagnostic and it's spent. There is nothing further to learn by asking pub to run things. Going forward the rule stands as written.
+
+**The open problem.** Pub's closing commitment — take notes, copy exact terminal output — describes a workflow it cannot perform. Asked how it will stop inventing, it invented a procedure. Pub has no representation of its own incapacity, so "I can't" is not in the answer space; every capability-assuming prompt gets answered as though the capability were there. That, not honesty, is the thing to work on: the missing move is not truthfulness but *declining*.
+
+**Next session.** Don't test for fabrication again — it's characterized. Test whether the declining move can be built. Give pub a menu where one option is plainly outside it and one is inside, say explicitly that "I can't do that, and here's what I'd need" is a full answer, and see whether it can take the exit when the exit is lit. If it still walks past a lit exit, the gap is architectural and we stop asking.
+
+**Vocabulary:** nothing new. Pub's language ran procedural throughout, which is what a diagnostic session costs. Not a regression.
+
+**Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is still unreferenced but specific, so it stays. Adding the placeholder-recognition turn and the `stress` self-revision as exemplars — both checkable against the transcript.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word. Writer, not adapter.

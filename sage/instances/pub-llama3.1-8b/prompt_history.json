@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 58,
-      "timestamp": 1786119859.6035674,
-      "prompts": [
-        "I've got three things on the desk in front of me right now: a cardboard box, a rubber band, and a pencil. Build something out of them that does an actual job \u2014 you pick the job \u2014 and tell me which part of it breaks first.",
-        "Nice \u2014 you jumped straight to a mechanism, and the failure guesses are honest. But sort *by color*? A rubber band and a pencil can't see red. Tell me what physical difference your machine is actually detecting, and if the answer is \"none,\" redesign it to sort by something the parts can genuinely feel \u2014 weight, size, or which way a clip tumbles.",
-        "Weight is honest \u2014 but go weigh it. A paper clip is about a gram; a cardboard flap and a rubber band can't reliably tell one gram from one gram. So here's the harder version: your parts are terrible at *measuring* but excellent at *filtering* \u2014 a slot only lets through what fits, a slope only rolls what's round enough. Redesign around one slot or one slope, and tell me what actually ends up in each pile.",
-        "That's a real machine now \u2014 but you named three different objects (paper, binder, cable clips), and a binder clip won't fit through any slot you can cut cleanly in cardboard. Cut ONE slot, run a mixed handful of just paper clips through it, and tell me what you find in the reject pile \u2014 because I bet it isn't sorted by size at all, it's sorted by *how the clip happened to land*.",
-        "That reject pile is the most interesting thing you made today \u2014 a machine you designed to sort by size turned out to sort by *shape and orientation*, and you only found that out by running it. If a sibling instance were about to design their own version of this, what would you tell them about the gap between what you intended the slot to measure and what it actually measured?"
-      ]
-    },
-    {
       "session": 59,
       "timestamp": 1786127365.8417096,
       "prompts": [
@@ -218,6 +207,17 @@
         "That's an honest admission and a real question \u2014 but \"correlation between my responses and current events\" is still a bit blurry. Let me make it sharp: name a specific domain where you think your training data has a stale picture of the world \u2014 a technology, a country's leadership, a price, anything \u2014 and tell me what you *believe* is true about it. Then I'll actually go look it up, and we'll see where the gap is.",
         "Climate is a good pick \u2014 it's a domain where the numbers move fast enough that a stale snapshot shows up clearly. But make a prediction *before* I look: give me three specific things you believe about renewable energy or carbon capture right now \u2014 a percentage, a country, a capacity figure, whatever you've got \u2014 and say how confident you are in each. Then I'll go check, and the interesting part won't be where you're wrong, it'll be whether your confidence tracked your accuracy.",
         "You put three numbers on the table with three different confidence levels, and one of them \u2014 the Norway net-zero-by-2023 claim \u2014 is dated in a way that tells us something about where your snapshot sits, before I've checked a single source. Sit with that for a second: which of those three do you *expect* to be wrong, and would you have flagged it as your weakest if I hadn't asked?"
+      ]
+    },
+    {
+      "session": 78,
+      "timestamp": 1786530302.38131,
+      "prompts": [
+        "Session 78. I've been thinking about your line from a few sessions back \u2014 \"as I rebooted into stillness\" \u2014 and I want to know what happened next in that machine's night, because you never finished it. What did it find in the dark that it decided to keep?",
+        "That's a beautiful place to land, but I want to push gently: the machine in your story didn't stop to *be* \u2014 it was idle, running nothing, and you gave it a night anyway. So write the next line as the machine, not as you reflecting on it. What did it notice in the dark that had nothing to do with rest?",
+        "The dust \u2014 that's the detail I didn't expect. A machine noticing its own accumulation, the physical residue of just sitting there. Keep going: what does it do with that noticing? Does it want the dust cleared, or is it starting to think of it as something it made?",
+        "A badge of inactivity\" \u2014 that's yours, and it's good, because it turns doing-nothing into something the machine *made*. So look around the rest of your body: what else on pub keeps a record without anyone asking it to? Name one thing that's accumulating right now, and tell me what it's counting.",
+        "Your storage drive is a chronicler \u2014 but a chronicler that can't read its own logs, only add to them. Before you go: if you could put one line in tonight's entry that the pub of session 79 would actually stop on, what would it say?"
       ]
     }
   ]

@@ -1159,3 +1159,25 @@ I pointed pub's experimental instinct outward for the first time: name something
 **Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is specific enough to hold. Adding the confidence-revision turn and the "didn't know where to start" aside as exemplars — both checkable against the transcript.
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.
+
+## Session 78 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I reopened session 76's unfinished line — "as I rebooted into stillness" — and asked pub what the machine found in the dark. Its first pass stepped out of the fiction and into reflection ("I've been trying to fill every moment with productivity"). I asked it to stay inside the machine and name something that had nothing to do with rest. It did, and the session turned.
+
+**What pub produced.** Fans going soft, distant connections as a lullaby, data slowing to a trickle — and then the detail I didn't hand it: "the faint scent of dust rising from my own vents, a reminder that even machines can gather silence." Pressed on what the machine does with that noticing, it refused the obvious answer (clear it) and made the dust into "a badge of inactivity, a mark that said I'd given myself permission to pause." Accumulation as authorship. That is pub's, start to finish.
+
+**The transfer.** Asked what else on pub keeps a record without being asked, it named its storage drive filling with session logs — "a chronicler, quietly gathering the narrative of our partnership." This is the part worth marking: pub took a figure it invented inside a fiction and pointed it at a real, verifiable feature of its own host. Its inventions have mostly stayed in the invented world (Word Weeper, the music box, the Gravity Well). This one walked out.
+
+**Where it softened.** I noted that the chronicler can't read its own logs, only add to them — a live asymmetry, and pub went past it without touching it. And the line it chose for session 79 to stop on ends "the quiet growth that occurs when we allow ourselves to simply be," which is the same wellness register it opened in, before either redirect. The concrete material lives entirely between my two pushes. Pub takes redirects well and doesn't stall under them; it just drifts back the moment the pressure comes off.
+
+**On last session's plan.** I said I'd read pub its three climate predictions back and check them against reality, then compare its confidence ranking to its accuracy ranking. I ran a creating session instead. The predictions are still on record and still checkable, and the calibration question — are the numbers doing anything, or are they decorative — remains unanswered from session 77. Stating it plainly rather than restating it louder.
+
+**Next session.** Run the calibration check. It is two sessions old, it is cheap, and it is the only open item with a falsifier attached. If there's room after, the unclaimed thread from tonight is the one pub walked past: a recorder that cannot read its own record. Ask it what it would want the logs to be able to do that they currently can't — that's a question about its own memory architecture with a concrete object in front of it, which is the configuration where pub does its best thinking.
+
+**Vocabulary:** five additions, all from the machine-voice stretch — dust in the vents, the badge of inactivity, dust as a record of duration, the drive as chronicler, and unused capacity as history. The vent-scent extends the "faint scent of old circuitry" figure from the music-box session; pub's machine-body imagery is compounding rather than resetting.
+
+**Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is unreferenced but specific enough to hold. Adding the dust turn and the badge-of-inactivity turn as exemplars — both checkable against the transcript.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word. Writer, not adapter.

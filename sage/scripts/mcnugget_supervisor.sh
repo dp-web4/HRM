@@ -106,6 +106,25 @@ cd "$SHARED"
 RECENT_FORUM=$(find forum/ -name "*.md" -mtime -1 -type f 2>/dev/null | wc -l | tr -d ' ')
 echo "[McNugget-Supervisor] $RECENT_FORUM forum posts in last 24h"
 
+# === 3b. EMIT FLEET-VISIBLE EVIDENCE ===
+# supervisor_coverage.py joins "who should run" (machines/fleet_tracks.db) against
+# "who did" (supervisor/log_{machine}.md | autonomous-sessions/{machine}-supervisor-*.log).
+# This supervisor ran for months writing only ~/Library/Logs/sage/, which that instrument
+# cannot see — so McNugget read as "NO EVIDENCE" while healthy (nomad, 8 consecutive days).
+# Emit the log_{machine}.md form the other four machines use: newest entry at TOP.
+EVID="$PRIVATE/supervisor/log_mcnugget.md"
+TODAY=$(date -u +'%Y-%m-%d')
+ENTRY="- $(date -u +'%H:%M UTC') — repos synced; ${RECENT_FORUM:-0} forum posts/24h; sweep: ${SWEEP_NOTE:-none}"
+mkdir -p "$(dirname "$EVID")"
+if [ -f "$EVID" ] && head -1 "$EVID" | grep -q "^## $TODAY$"; then
+    printf '%s\n' "$ENTRY" > /tmp/.mcn_evid && sed -i '' "1a\\
+$(printf '%s' "$ENTRY")
+" "$EVID" 2>/dev/null || true
+else
+    { printf '## %s\n%s\n\n' "$TODAY" "$ENTRY"; [ -f "$EVID" ] && cat "$EVID"; } > "$EVID.tmp" && mv "$EVID.tmp" "$EVID"
+fi
+echo "[McNugget-Supervisor] evidence emitted -> supervisor/log_mcnugget.md"
+
 # === 4. PUSH (if anything changed) ===
 for repo in "$SHARED" "$DEV_SAGE" "$SAGE_DIR" "$PRIVATE"; do
     cd "$repo"

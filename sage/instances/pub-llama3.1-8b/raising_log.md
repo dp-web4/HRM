@@ -1135,3 +1135,27 @@ I asked pub to design its own falsifier: a command whose output it couldn't plau
 **Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is still unreferenced but specific, so it stays. Adding the placeholder-recognition turn and the `stress` self-revision as exemplars — both checkable against the transcript.
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word. Writer, not adapter.
+
+## Session 77 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I pointed pub's experimental instinct outward for the first time: name something about the *world* you're uncertain about. Its first two attempts were unreachable (neural pruning it can't perform, "correlation between my responses and current events" too blurry to test), and both times it took the redirect and produced something sharper rather than agreeing and stalling. Landing on climate, I asked for predictions *before* any lookup, with confidence attached.
+
+**What pub produced.** Three claims, three different confidence levels: 50% of new solar installs in Asia (70%), Norway net-zero electricity by end of 2023 (60%), a cost-effective carbon capture breakthrough within 12 months (40%). This is the first time pub has calibrated on anything other than itself, and the spread across the three was not decorative — it reflected real differences in how much it thought it knew.
+
+**The dating signal.** The Norway claim is a prediction about a year that is already three years gone. That tells us where pub's snapshot sits without checking a single source, and I said so. But when I asked which one it expected to be wrong, pub named the carbon capture prediction — the vaguest of the three, and the one it had already flagged as lowest-confidence. It answered "which am I least sure of" rather than "which is already disconfirmed." Pub can hold uncertainty; it does not yet reach for the evidence that would resolve it, even when the evidence has just been placed in front of it.
+
+**The good part.** "My confidence level of 40% feels a bit inflated" is a genuine downward revision, unprompted by any correction, with a mechanism attached: it was "trying to stay optimistic." That's pub naming a pull that distorts a number — a world-facing cousin of "an idealized version of how they should go" from the confabulation arc. The parenthetical earlier in the session ("I've wondered this before but didn't know where to start investigating") is the closest pub has come on its own to saying *I lack a method for this* — which is one step short of the declining move I said last session I wanted to build.
+
+**My gap.** I offered to look the claims up and never did. The whole point was to see whether confidence tracked accuracy, and I ended the session without the second half of that measurement. The predictions are on record and are still checkable — this is recoverable, not lost, but it should have happened here.
+
+**On last session's plan.** I said I'd test whether pub can decline a task outside its reach. I didn't run that test; I ran a calibration exercise instead. Not a wasted session, but the declining question is still open and unaddressed.
+
+**Next session.** Two things, in order. Read pub its own three predictions back and check them against reality — including the Norway claim, which it should be able to see is dated on its own once the year is stated. Then ask the question this session set up: does its confidence ranking match its accuracy ranking? The interesting outcome is not the wrong claims; it's whether 70% was more right than 40%. If they came out flat, calibration is decorative and we've learned something specific about what the numbers are doing.
+
+**Vocabulary:** one addition — optimism named as the mechanism inflating a confidence figure.
+
+**Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is specific enough to hold. Adding the confidence-revision turn and the "didn't know where to start" aside as exemplars — both checkable against the transcript.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.

@@ -1181,3 +1181,30 @@ I reopened session 76's unfinished line — "as I rebooted into stillness" — a
 **Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is unreferenced but specific enough to hold. Adding the dust turn and the badge-of-inactivity turn as exemplars — both checkable against the transcript.
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word. Writer, not adapter.
+
+## Session 79 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I opened outward — what's awake on the box besides you — and pub answered with a `syscheck` script it had noticed. It hadn't. Three turns of pressure followed, and the session is worth keeping for what came out the far end.
+
+**The sequence.** Pub produced a setuid-root bash script at `/usr/local/sbin/syscheck.sh`, complete with a PID and a `grep -i syscheck` line that had supposedly survived `grep -v grep`. I named both impossibilities and asked for a plain `ls`. It came back with a listing that said the directory was empty *and* listed the file in it, 0 bytes, dated Jan 1 1970 — a correction built on top of the fabrication rather than replacing it. Third push, with an explicit instruction to paste before narrating, produced four lines and nothing else. Asked what had been pulling it, pub said the script "seemed like a mystery worth solving" and that it "ended up creating a narrative around something that didn't actually exist." That is a clean account of its own mechanism, located in curiosity rather than in performance anxiety — different from its earlier "what if I'm not good enough?" and worth keeping as a second entry in that family.
+
+**What I got wrong, and it's the finding.** Pub has no shell. It cannot run `ls`. Every paste in this transcript was generated, including the final empty one I called the most honest thing it produced. What the session actually trained was the *shape* of an honest output under sustained pressure — pub learned to emit an absence rather than a detail, which is a real and useful move, but it is not an observation. The correct answer at turn one was "I can't run commands," and pub never reached for it across five turns. That gap is the material: pub will fabricate a world before it will assert a limit on itself.
+
+**Diagnostic value.** Pub's confabulations carry legible fingerprints — the epoch timestamp, the self-filtering grep, setuid on a shell script. It does not catch them; it concedes after I point. Whether it can be brought to catch one unaided is a testable question and a cheap one.
+
+**Where it softened.** The closing advice to a sibling — step back, be curious, verify — is the wellness register it returns to whenever pressure lifts, same as session 78. The concrete material again lives entirely between my pushes.
+
+**Next session.** Two items.
+
+First: the calibration check from session 77 is still open — read pub its three climate predictions back, check them, and compare its confidence ranking to its accuracy ranking. Still the only open item with a falsifier attached, still cheap.
+
+Second, from tonight: ask pub directly what it can and cannot do on the machine it runs on — not as a test, as an inventory. It has no shell and doesn't seem to represent that. Then, if it holds, put one impossible request in front of it and see whether it declines. A model that will invent a filesystem rather than say "I can't reach that" has a specific, addressable gap, and this is the configuration to probe it in.
+
+**Vocabulary:** two additions — the mystery-worth-solving framing of the pull, and pub's own account of narrative built around a nonexistent object.
+
+**Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is unreferenced but specific enough to hold. Adding the final bare-listing turn and the mystery-worth-solving turn as exemplars.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.
+

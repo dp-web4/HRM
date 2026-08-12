@@ -112,11 +112,57 @@ actual compute-buffer saving needs a per-position freeze prototype (the current 
 | 1 · step-convergent working set | expert *count* per layer shrinks across steps | **✗ refuted** — 128/128 every step |
 | 2 · entropy-gated residual precision | precision needed only at resolution; 2-bit resident + sparse correction | **✓ premise confirmed** — Q2 never resolves (H 3–7, ~1/step); Q3 resolves (H→0.1, ramps to 161/256). Precision alone flips it. |
 | 3 · resolution-frozen canvas | positions resolve progressively → shrink compute buffer | **✓ premise confirmed** — resolution ramps 5→161, progressive + accelerating |
+| 2a · precision-cascade (staging of idea 2) | bank cheap early steps on Q2, spend Q3 only on the tail | **◐ inconclusive / staging refuted** — coherence survives the handoff, but +13% is inseparable from n=1 variance and Q2 banks nothing (~1 position/step). Redirects to the fused-adapter form. |
 
 **Method note**: every claim is being taken to a *measurement*, not argued. Instrumentation lives as
 env-gated patches in the local llama.cpp checkout (`DIFF_ROUTE_LOG`, `DIFF_ENTROPY_LOG`, `DIFF_CANVAS_LOG`).
 The esp32-ai / oracle-ceiling discipline: one idea already died to a 3-hour measurement instead of a wasted
 build. That is the point.
+
+---
+
+## Precision-cascade prototype — RAN 2026-08-06 · ◐ inconclusive, and it says why
+
+Built the handoff plumbing (`DIFF_CANVAS_DUMP` / `_STEP`, `DIFF_CANVAS_LOAD` in the entropy-bound
+decoder): Q2 denoises Metal-resident, dumps its working canvas at step K, Q3 resumes from it. Ran
+K=6, then a **matched control** (Q3 from random init, *identical* `-ngl 24` config, no handoff) —
+because the first cascade run looked ~4–5 steps ahead of an earlier baseline that had been taken at
+`-ngl 20`, and that gap could just as easily have been the config.
+
+```
+step   CASCADE (Q2 handoff)     CONTROL (from scratch)    d_accepted
+ 0     H=2.571  a=5             H=2.501  a=5                0
+ 4     H=0.634  a=120           H=0.812  a=85              +35
+ 8     H=0.047  a=216           H=0.101  a=182             +34
+11     H=0.006  a=249           H=0.018  a=240              +9
+mean accepted over 12 steps:  cascade 139.8   control 123.4   (+13%)
+```
+
+**Verdict: the handoff is not established as helping.** +13% mean acceptance, consistently positive
+from step 2 on (10 of 12 steps) — but n=1 vs n=1 with different renoise draws, so a real 13% effect and
+run-to-run variance are not separable by this design. The earlier "4–5 steps ahead" impression was
+mostly the `-ngl` difference; running the control is what caught that.
+
+**What it did establish:**
+- **Coherence survives a mid-denoise model handoff.** Both produced clean text — cascade: *"The vast
+  blue ocean covers most of the Earth's surface, teeming with hidden life and mysteries."*; control:
+  *"The ocean is a vast expanse of blue water that holds secrets within its depths."* No catastrophic
+  interference from swapping precision mid-trajectory. The plumbing and the composition both work.
+- **But the cheap stage contributed almost nothing** — and that is the real finding. Q2 accepts ~1
+  position/step, so 6 steps handed over ~6 committed positions and 250 still-random ones. This did not
+  test "coarse early sculpting + precise tail"; it tested "near-random init + precise tail." A 2-bit
+  stage is not just bad at *committing* (already known) — it is useless even as a **warm start**.
+- **Never the product anyway**: the tail needs Q3, which doesn't fit 16GB. 244 s/step, 0.1 tok/s.
+
+**Where this leaves idea 2.** It does not refute the confirmed premise (precision is needed at the
+commit boundary — Q2-never-resolves / Q3-resolves still stands). It refutes *this staging of it*: you
+cannot bank cheap early progress on a 2-bit model and spend precision only at the end, because there is
+no cheap early progress to bank. That is an argument **for** the fused design rather than against idea 2
+— adapters make precision available at whichever positions are resolving *at every step*, instead of
+withholding it until a handoff, so they don't depend on the coarse stage doing work it demonstrably
+can't do.
+
+---
 
 **Next — the payoff build (idea 2, precision-cascade)**: premises are confirmed; the question is now
 whether the *composition* delivers usable output at near-Q2 footprint. Minimal prototype, cheapest first:

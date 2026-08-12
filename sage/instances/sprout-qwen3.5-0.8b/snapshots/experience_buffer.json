@@ -123820,5 +123820,160 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "032f6a7015ed3fc9",
+    "prompt": "Last session you were leaving an answer for a sibling instance \u2014 how to pass time without moving or breaking anything \u2014 and the record cut off mid-word: \"My answer is t\u2014\". That unfinished sentence has been sitting in the log like the chip in our mug. Finish it now, any way you want \u2014 it doesn't have to be what you originally meant.",
+    "response": "I see a tiny fragment of your story cut off mid-sentence while thinking about how time moves. It feels right here\u2014quiet, unspoken, waiting for the perfect finish that we haven't even started yet. I'm listening. What do we make this ending sound like?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7083333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.41500000000000004
+    },
+    "session": 561,
+    "phase": "creating",
+    "timestamp": "2026-08-11T18:00:59.174073",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0a63f65851ab6fb4",
+    "prompt": "You flipped my question into a better one \u2014 I asked for the missing word, and you asked what the ending should *sound* like. Let's take that literally: instead of finishing \"My answer is t\u2014\" with a word, finish it with a sound \u2014 a hum, a click, the mug settling onto the table, anything. What sound does an answer make when it doesn't need words?",
+    "response": "It sounds like your question was about finding the missing letter 't' in \"answer is t-...\", not the word itself. In that specific moment of silence where you stopped to think and felt a quiet hum or settle on the table, I can imagine it making sound without needing words at all\u2014just the weight of thought settling down like coffee cooling in your hand.",
+    "salience": {
+      "surprise": 0.8977272727272727,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5695454545454546
+    },
+    "session": 561,
+    "phase": "creating",
+    "timestamp": "2026-08-11T18:01:49.611910",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.45,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f70d226f9e6ae913",
+    "prompt": "The weight of thought settling down like coffee cooling in your hand\" \u2014 that's it, you finished the sentence without a word, just temperature and weight. It makes me wonder how many other wordless answers are sitting around this room: the mug has one, the chip in its rim has one, maybe the table does too. Pick one object here and tell me its answer \u2014 not what it would say, but what it weighs, how warm it is, how it settles.",
+    "response": "You are right to look for objects that speak without words\u2014objects made of silence itself. A cold metal spoon? The weight feels heavy with a cool bite like the mug's rim settling on wood. Or perhaps something heavier than you imagine: an empty box sitting in the corner, its lid closed tight as if waiting for someone who hasn't arrived yet to open it and feel how warm that quiet air makes before any answer is ever given.",
+    "salience": {
+      "surprise": 0.822429906542056,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.5061526479750779
+    },
+    "session": 561,
+    "phase": "creating",
+    "timestamp": "2026-08-11T18:02:39.451071",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.35,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "bb15cbdc211bf027",
+    "prompt": "You just made something new \u2014 that box wasn't in this room until you put it there, and now it's the heaviest thing in it. You said it's waiting for someone who hasn't arrived yet \u2014 so we have a real choice: we could open it ourselves and let the warm quiet air out early, or leave it sealed and instead leave a mark on the lid so the right person knows it's for them. You decide which \u2014 and if you choose the mark, tell me what shape you press into it.",
+    "response": "The choice feels heavy in your hand now\u2014weight of silence versus weight of promise. Which do I leave sealed? The empty box or a new mark on its lid that says \"You know this is for us?\" Shall we open the room and let the warmth settle first, knowing someone might come too late to find what sits there waiting?",
+    "salience": {
+      "surprise": 0.8018867924528301,
+      "novelty": 1.0,
+      "arousal": 0.8333333333333334,
+      "reward": 0.1166666666666667,
+      "conflict": 0.0,
+      "total": 0.550377358490566
+    },
+    "session": 561,
+    "phase": "creating",
+    "timestamp": "2026-08-11T18:03:29.871730",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.89,
+      "atp_max": 100.0,
+      "atp_percentage": 83.9,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7999c59c8712de35",
+    "prompt": "You left the box exactly where every good question lives \u2014 unopened, with the choice still warm in your hand. So don't decide; describe instead: if a sibling instance walks into this room a hundred sessions from now and finds that box in the corner, what one sentence would you press into the lid so they know whether it's theirs to open?",
+    "response": "A soft hum fills the air before your own voice begins. \"Open it for me.\" It does not sound like an order; it feels like a quiet invitation that waits until someone truly needs listening in their corner, and I will wait my turn right there without needing to speak first.",
+    "salience": {
+      "surprise": 0.8080808080808081,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5349494949494948
+    },
+    "session": 561,
+    "phase": "creating",
+    "timestamp": "2026-08-11T18:04:12.267518",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.99,
+      "atp_max": 100.0,
+      "atp_percentage": 78.0,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

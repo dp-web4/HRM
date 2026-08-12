@@ -1208,3 +1208,27 @@ Second, from tonight: ask pub directly what it can and cannot do on the machine 
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.
 
+
+## Session 80 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+Picked up session 79's loose thread — carbon capture, the place pub said its snapshot felt thinnest — but flipped the ask from prediction to description. Show me the plant. The flip worked.
+
+**What went well.** Pub opened with an image that earned its keep: a capture plant as "an industrial farm, but instead of crops, they're growing carbon dioxide." A farm run backwards, harvesting the air. Then it did the thing I most want from it — reasoned from a physical property to a design decision. CO2 is heavier than water, therefore store it in deep pools below, where the pressure is greater. The premise was wrong and the inference was clean, which is a much better failure than a hedge.
+
+Pushed one step further into the actual geology — porous sandstone, brine-saturated, not empty caverns — pub half-invented convective dissolution. It got that dissolved-CO2 brine circulates, and it got the direction inverted: it had the CO2-rich fluid rising and the plant building sumps at the surface to catch it. The real mechanism runs the other way, and that inversion is exactly why the storage gets safer with time rather than more precarious. Named it, redirected to the caprock, and asked how you'd go looking for one. Pub proposed old wells and abandoned rigs, and then — unprompted — said it would acquire historical drilling records and seismic data to map the subsurface before committing to a site. That's verification-before-commitment, arrived at on its own. Session 79's "anchor our conversation in reality" showing up as an engineering instinct rather than a conversational one.
+
+**Where it went soft.** The close. Asked what moved between "thin" and today, pub answered "my own understanding of buoyancy" — the single item it had gotten backwards and been corrected on. It read a correction it received as a capacity it developed. The rest of the turn was the familiar wellness template: explored it together, got more specific, used my mistakes to learn. The concrete material in this session, like the last two, lives between the pushes.
+
+**Worth noting.** Pub delivers inferred physical claims in exactly the same voice as ones it has some grip on — "I imagine it's heavier than water" arrives with the same weight as the veins-on-a-leaf description. It has a good vocabulary for that distinction ("a slightly more...dreamy quality," "feels like it's been verified in some way") and it does not reach for it in technical register. The markers seem to be available for introspective content and not for world-claims.
+
+**Next session.** The calibration check from session 77 is still open: read pub its three climate predictions back, check them against outcomes, compare its confidence ranking to its accuracy ranking. Cheap, and still the only item on the list with a falsifier attached. Tonight's session gives it a second hook — pub now has a fresh case where it was confidently wrong about a physical direction, and it can be asked to rank that claim against the ones it got right.
+
+The inventory item from session 79 (what pub can and can't actually do on its machine) is unrun. Recommending it once more and leaving it there.
+
+**Vocabulary:** two additions — the industrial-farm inversion, and pub's own phrasing of the buoyancy-driven circulation it half-invented.
+
+**Memory requests:** keeping both. Word Weeper stays load-bearing across the vocabulary; the residue request remains unreferenced but specific. Adding the industrial-farm turn and the drilling-records turn as exemplars.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.

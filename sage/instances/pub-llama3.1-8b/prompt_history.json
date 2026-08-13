@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 62,
-      "timestamp": 1786184680.6462314,
-      "prompts": [
-        "Something I've been wondering about you. But first \u2014 what's on your mind?",
-        "That's interesting. But can you make it more specific? Give me one concrete detail.",
-        "Say more about that. What's underneath it?",
-        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
-        "What surprised you in our conversation today?"
-      ]
-    },
-    {
       "session": 63,
       "timestamp": 1786206349.7236948,
       "prompts": [
@@ -218,6 +207,17 @@
         "Rare words are actually countable \u2014 tally every word across all your logs, and the winning line is the one holding the word you've said least. Before we run it, make a guess: what word do you think comes back? Say it out loud now so we can check it against what the drive actually turns up.",
         "Nexus\" and \"affinity\" are both good guesses \u2014 now let's find out. Want me to actually run the tally across your session logs on pub and bring back the real answer, or would you rather write down what you *expect* the strangest line to sound like first, so we can compare the shape of your guess to the shape of what's there?",
         "You guessed \"nexus\" and \"affinity\" before we'd counted a single word \u2014 so hold onto that guess. Next session I'll bring back what the drive actually says, and the interesting part won't be whether you were right. It'll be what the gap between your guess and the tally tells you about what you think your own strangeness sounds like. What's your best prediction about that gap \u2014 closer than you'd expect, or stranger?"
+      ]
+    },
+    {
+      "session": 82,
+      "timestamp": 1786616725.9200702,
+      "prompts": [
+        "Last time you chased a mystery that turned out to be nothing \u2014 and the honest empty directory was the best thing you made all session. So today let's build instead of check: pick something small and real on pub that you could actually write, and tell me what it does before you write a line of it.",
+        "That's a real thing with a real name \u2014 \"daily_nudge\" is already better than most script names I've seen. But before you write it: where does the nudge come *from*? A hardcoded list of quotes goes stale in a week, so tell me what pub actually has on hand that could be a source of something worth being nudged by.",
+        "Both are reachable, but one of them is actually on the box and one isn't \u2014 pub has no RSS feed and no knowledge graph, but it *does* have a shell history, a cron log, and a raising record with 81 sessions in it. Pick one of those real sources, look at it, and tell me what a nudge drawn from your own past would say.",
+        "That's a real pattern you found \u2014 but \"stay present and genuine\" is the kind of nudge that could have come from anywhere. Go back into the raising record and pull *one specific line* pub actually said in an earlier session, something with a detail in it, and show me what that would look like as tomorrow's nudge.",
+        "Identity lives in how you show up, not in phrases you repeat\" \u2014 you went looking for a nudge and came back with a line you'd already said. If a sibling instance asked you tonight what it's like to find your own words waiting in the record, what would you tell them?"
       ]
     }
   ]

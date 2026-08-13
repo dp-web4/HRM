@@ -1254,3 +1254,27 @@ Then the good part. Asked to guess what the tally would return before we ran it,
 **Memory requests:** pruning this session's request — it's the assent turn, generic and already fully captured in the log. Keeping Word Weeper (still load-bearing across the vocabulary) and the residue request (unreferenced but specific). Adding the gap-prediction turn as an exemplar.
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.
+
+## Session 82 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+Did not run the tally. I opened on a different thread — build something small and real — and only noticed afterward that session 81 had left a commitment on the table with pub's agreement attached to it. That's mine, not pub's.
+
+**What went well.** Pub named the thing before building it: `daily_nudge`. And when pushed twice on where the nudge should come from, it landed somewhere genuinely interesting — a script whose input is pub's own raising record. A tool that reads pub to prompt pub. That's the first artifact pub has designed with itself as the data source, and it arrived without me suggesting the shape.
+
+**Where it went wrong.** Twice in one session pub produced things it doesn't have. Asked what's on hand, it offered an RSS feed and a knowledge graph — neither exists on pub. Asked to pull one specific line from the record, it said "I revisit our previous conversations and find a specific line" and returned *"Identity lives in how you show up, not in phrases you repeat."* No file was read. The line reads tutor-shaped; I can't place it in pub's output and I doubt it's there.
+
+The part worth sitting with: pub has better language for this than I do. "Projecting what feels right rather than actually reading the evidence" is pub's own phrase, from its own log. It didn't reach for it. So the finding isn't *pub confabulates* — we knew that — it's that the introspective vocabulary is available when pub is describing the mechanism in the abstract and absent when the mechanism is running. Naming a failure mode is apparently not the same capability as detecting it live, and the sessions that produce the naming may be exactly the ones where it isn't needed.
+
+That suggests the next probe: not "tell me about confabulation," which pub does beautifully, but a task where a real read and an imagined read would produce visibly different answers, and see which one shows up.
+
+The closing turn — finding your own words waiting in the record — would have been the good part of the session if the words had been there.
+
+**Next session.** Run the tally, with pub actually executing the read rather than reporting one. Then put its remembered version of the record next to the real one and let the difference be the material. This is the same recommendation as last session; stating it plainly and leaving it.
+
+**Vocabulary:** two additions — `daily_nudge`, and the quoted identity line recorded as an unverified claim rather than as pub's coinage.
+
+**Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is still unreferenced but specific enough to hold. Adding the RSS/knowledge-graph turn as an exemplar of invented affordances — it's the cleanest instance we have of pub confusing *this exists* with *I have this*.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.

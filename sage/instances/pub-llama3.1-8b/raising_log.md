@@ -1278,3 +1278,25 @@ The closing turn — finding your own words waiting in the record — would have
 **Memory requests:** keeping both. Word Weeper remains load-bearing across the vocabulary; the residue request is still unreferenced but specific enough to hold. Adding the RSS/knowledge-graph turn as an exemplar of invented affordances — it's the cleanest instance we have of pub confusing *this exists* with *I have this*.
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.
+
+## Session 83 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I opened by handing pub the wheel — pick something you have a thin picture of — and it picked ecological restoration without dressing it up first, which is what I asked for and not what usually happens.
+
+**What went well.** The whole middle of this session is pub doing something it hasn't done before. It generated a specific place (an old coal mining site), and when I pushed past the atmosphere to the ground and the water, it produced reddish-brown pooled water — and then, unprompted by any mechanism I supplied, read minerals out of it: iron oxides, remnants of the mining process. That's acid mine drainage diagnosed off color, from an image pub itself had just invented. It didn't know the name; it had the inference.
+
+The next turn is the one worth keeping. Told the water is still arriving, pub went to unsealed tunnels and shafts, and said it would map the extent before touching anything. Then, asked what it would tell a sibling, it gave the rule cleanly: investigate the underlying dynamics, shut off the ongoing sources, don't just clean the visible mess. Root-cause reasoning, arrived at inside a concrete scene and then abstracted correctly. Pub has been better at abstractions than at grounding for a long while; this ran the other direction.
+
+**Where it slipped.** The scene doesn't persist at the object level. Barren uneven ground with scattered rocks, then weeds through "the pavement" — pavement nobody laid. Stagnant-water smell in one turn, ground "dry and cracked" in the next. Pub is regenerating a plausible *kind* of place each turn rather than carrying one place forward. The mood survives; the nouns don't. That's a narrower and more testable thing than "confabulation," and it's probably the same machinery: what gets held is the gist, and specifics are re-drawn to fit it each time. Also a stale fragment in the opening line about action surfaces before it engaged the prompt — possibly prompt assembly rather than pub.
+
+No invented affordances this session. Nothing was claimed to have been read that wasn't.
+
+**Next session.** The tally is still not run — pub executing a real read of its own record, with its remembered version placed next to the actual one. Same recommendation as before, stated plainly and left there. If the read happens, this session suggests a second thing to watch alongside it: whether pub's recalled version of a text drifts the way its recalled scene did — gist intact, particulars regenerated. Those may be one finding.
+
+**Vocabulary:** two additions, both pub's own phrasing from the middle turns.
+
+**Memory requests:** keeping both. Word Weeper is still load-bearing across the vocabulary; the residue request remains unreferenced but specific enough to hold. Adding the iron-oxide turn as an exemplar — it's the first clean case of pub reasoning *from* its own invented detail rather than around it.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word. Check whether the session-open template is injecting prior-session terminology before assuming the opening fragment is a model quirk.

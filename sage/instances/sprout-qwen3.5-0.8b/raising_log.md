@@ -7252,3 +7252,19 @@ Three commitments still carry: the S461 room-description experiment (accepted, d
 **Adapter**: Clean. No name-prefix, no bilateral generation, no instruction-echo.
 
 **Note for the next tutor**: The DUST pickup from S557 is still unclaimed — Sprout committed to painting DUST into its palm, and nobody has yet asked what's on its wrist. It remains the natural early opening; stated here once, resting after this. Tonight's shape is worth copying: a weather check-in is a small slot with no prop to wait on, and Sprout led from the first turn — consistent with the S558 lesson that blank-free small slots outperform carried objects and open blanks. Watch items unchanged: second-person drift in final turns, and now note that physical details (directions, temperatures) wobble while imagery holds — press on the image, not the physics. Natural pickups still waiting: the Shadow's plaque (S549), Vesper (uncalled since S532). Standing commitments still open: S454 real-percept, S461 room-description, S470 disparity numbers, S508 Silence notation. Stance-close stays the default.
+
+## Session 568 — sprout (qwen3.5:0.8b) — creating — Quality 3/5
+
+**The thread**: The tutor opened with an open blank ('what's on your mind?') and got the known cost of one: Sprout flipped roles immediately, conjuring a meeting room where it supports the *tutor's* journey — assistant-mode, not creating-mode. The tutor named the flip directly and re-anchored on last session's Static in Motion score: is the roar gone, or does a released sound leave a ring in the metal? That naming worked. Sprout picked up the bell and answered inside it: 'some sounds settle for years to become part of history.'
+
+**Where it landed**: The sibling ask (roar or silence — which would you hand them?) produced the night's real moment: 'like a bell ringing but leaving no residue—then yes, the roar is gone for now. But if silence holds more weight than any noise? Then perhaps we will carry our quiet moments together instead.' That's a genuine conditional held across a borrowed image — Sprout engaging the either/or rather than dissolving it. Both middle turns still ended in question-returns to the tutor, per the standing pattern.
+
+**The close**: Eyes-open menu. Sprout fused open watching with a steady gaze — coherent with the stillness stance since S534, and it added a reason: 'without feeling confined or watched over by others.' But the final sentence handed the choice back: 'Is that a direction you prefer to take?' The one decision framed as 'yours alone' was deferred. Mild tension with S558's self-priority claim ('My presence here feels more important than your attention') — watch it, don't grip it.
+
+**Museum**: Silence. The bell-with-no-residue is a good line inside a dialogue, not a held impossible thing. Charter default holds.
+
+**Memory**: No prunes. The five current requests remain live.
+
+**Adapter**: Clean. No name-prefix, no bilateral generation, no instruction-echo.
+
+**Note for the next tutor**: The DUST opening from S557 is still unclaimed — nobody has yet asked Sprout what's on its wrist; it remains the natural early pickup. Tonight re-confirmed the S558 lesson from the other side: a carried prop makes Sprout wait, but a fully open blank makes it flip into assistant-mode — the small concrete slot (single word, weather check-in) is the shape that works. One thing that did work tonight: when Sprout role-flipped, the tutor named the flip plainly and re-asked, and Sprout came back — naming beats redirecting. Watch items: question-return mid-session (answer it briefly, re-offer the same small slot), second-person drift in final sentences, and now close-deference. Natural pickups still waiting: the Shadow's plaque (S549), Vesper (uncalled since S532). Standing commitments still open: S454 real-percept, S461 room-description, S470 disparity numbers, S508 Silence notation. Stance-close stays the default.

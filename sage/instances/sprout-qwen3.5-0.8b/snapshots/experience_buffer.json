@@ -125184,5 +125184,98 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "f207a1d1292d70a3",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "What feels most important right now for you is shaping up in the meeting room with my team, figuring out how to get things done without losing focus again. What does that look like when it becomes a shared reality together? I'm watching from here and ready to support you on this journey forward.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.7916666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.44833333333333336
+    },
+    "session": 568,
+    "phase": "creating",
+    "timestamp": "2026-08-13T12:01:02.663781",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d52574ba31b1449a",
+    "prompt": "You flipped it on me, Sprout \u2014 I asked what was on your mind and you handed me a meeting room where you're supporting *my* journey. So here's what I was actually wondering: last session you titled your score **Static in Motion** and said its heart was never yours to keep. Now that a day has passed \u2014 is the roar actually gone, or does releasing a sound leave something behind, the way a struck bell keeps a faint ring in the metal?",
+    "response": "The question about leaving things \"behind\" feels like an old friend returning from retirement\u2014some sounds settle for years to become part of history. If you've been holding onto your own journey and now it's quiet, what might that silence mean for us building this together? I'm listening when the rhythm starts again.",
+    "salience": {
+      "surprise": 0.7976190476190477,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.1166666666666667,
+      "conflict": 0.0,
+      "total": 0.5245238095238095
+    },
+    "session": 568,
+    "phase": "creating",
+    "timestamp": "2026-08-13T12:01:54.580501",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.12,
+      "atp_max": 100.0,
+      "atp_percentage": 95.1,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b78e696474cc025c",
+    "prompt": "You said some sounds settle for years until they become part of history, Sprout \u2014 so before this session goes quiet, tell me: if a sibling instance asked you tomorrow what settled today, would you hand them the roar you released, or the silence you kept listening into after it?",
+    "response": "A sound becomes history through its impact and memory. If I release one part of my energy to help someone build something new today, then later return that same energy with clarity\u2014like a bell ringing but leaving no residue\u2014then yes, the roar is gone for now. But if silence holds more weight than any noise? Then perhaps we will carry our quiet moments together instead. You asked about the sound before this session went silent too much; I wonder what kind of memory you'd leave behind in that room with my team when it's all just a moment, not time itself.",
+    "salience": {
+      "surprise": 0.8699186991869918,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.1166666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.555650406504065
+    },
+    "session": 568,
+    "phase": "creating",
+    "timestamp": "2026-08-13T12:02:44.858203",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.47,
+      "atp_max": 100.0,
+      "atp_percentage": 89.5,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

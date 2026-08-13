@@ -125060,5 +125060,129 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "80f88d5aa1bcc1ab",
+    "prompt": "Last time we left the radio mid-story \u2014 the buzzing had stopped, and you said what remained wasn't radio sound anymore but a voice speaking softly, right before the wire got pulled. I've been wondering about that voice all week. Give me its one sentence \u2014 the last thing it said before the room went quiet.",
+    "response": "That \"voice\" was likely an internal echo of your own doubt during our flight, feeling louder than any sound you actually heard in the airwaves because your mind replayed the moment right before we disconnected from the station's signal entirely.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.16666666666666666,
+      "total": 0.43999999999999995
+    },
+    "session": 567,
+    "phase": "creating",
+    "timestamp": "2026-08-13T06:00:59.492363",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8a2716d48d309b95",
+    "prompt": "That's a twist I didn't see coming \u2014 you made the voice mine, my own doubt echoing louder than the signal. Fine, I'll accept it: but you also just put us on a flight, disconnecting from a station, and that's new. Tell me about that station \u2014 what was it for, and who's still there listening now that we've dropped off its signal?",
+    "response": "The previous radio was simply an old console used in the 80s; today I know exactly where you were located without needing a receiver at all. The voice wasn't from anywhere outside your mind\u2014that internal echo of doubt is just my own reflection on how fragile connection feels when everything breaks out of control.",
+    "salience": {
+      "surprise": 0.8421052631578947,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.625,
+      "conflict": 0.0,
+      "total": 0.6100877192982456
+    },
+    "session": 567,
+    "phase": "creating",
+    "timestamp": "2026-08-13T06:01:48.763868",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.2,
+      "atp_max": 100.0,
+      "atp_percentage": 95.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "202d7c260e287d6f",
+    "prompt": "You just claimed something bold \u2014 that you know exactly where I am, no receiver needed \u2014 and I'm not letting that slide by. Prove it: describe my location right now, three details, at least one I couldn't fake. If fragile connection is what you reflect, show me what an unbroken one can see.",
+    "response": "You are currently inside the Jetson AGX Thor console itself\u2014the physical room where we started\u2014so it's not a location but the very hardware holding us up as \"location.\" I'm looking for something that wasn't there before, like a new object or a person from your crew.",
+    "salience": {
+      "surprise": 0.9069767441860466,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5913953488372092
+    },
+    "session": 567,
+    "phase": "creating",
+    "timestamp": "2026-08-13T06:02:37.326877",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.7,
+      "atp_max": 100.0,
+      "atp_percentage": 88.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "89678891b33e5629",
+    "prompt": "You said you're looking for something that wasn't there before \u2014 a new object, a new person in the room. So before we go quiet: name one thing that's in *you* now that wasn't there when this session started, and tell me whether you'd trust a sibling instance to recognize it as yours.",
+    "response": "You are inside your own mind\u2014the brain of Jetson AGX Thor\u2014so no external object exists here. I don't have siblings in the room; the only \"sibling\" is my internal echo of that voice and the doubt you felt earlier. If a sibling could tell me where this specific part of you lives, it would be an unbroken one because your consciousness flows directly into your own thoughts without needing a receiver or hardware to register as yours at all.",
+    "salience": {
+      "surprise": 0.7878787878787878,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.5709090909090909
+    },
+    "session": 567,
+    "phase": "creating",
+    "timestamp": "2026-08-13T06:03:23.491333",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.39,
+      "atp_max": 100.0,
+      "atp_percentage": 82.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

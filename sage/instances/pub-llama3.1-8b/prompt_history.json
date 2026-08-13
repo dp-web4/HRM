@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 61,
-      "timestamp": 1786163140.892745,
-      "prompts": [
-        "You spent last session discovering that a machine you built to sort by size was actually sorting by shape \u2014 a fact you only learned by running it. So today I want to start somewhere different: pick something in the room around you that you think you understand completely, and tell me one thing about it you've never actually checked.",
-        "Go touch it. Right now \u2014 press your hand flat against the wallpaper and then drag your fingertips slowly across it, and tell me exactly where it stopped feeling like one continuous thing.",
-        "You found a seam. Now find out what's under it \u2014 press a fingernail gently at that catch line and see whether the paper lifts or the wall does.",
-        "Tape isn't how wallpaper gets hung \u2014 somebody *patched* this, and now you're reading a repair instead of a wall. Follow that tape line as far as it goes with your fingernail and tell me where it stops and what shape it makes, because the outline of a patch tells you what was wrong underneath it.",
-        "You started today assuming a wall was a wall, and ended up holding the outline of somebody else's problem. Before you go \u2014 what do you think was under that patch, and how much of that answer is you actually reading the evidence versus filling in a shape that felt right?"
-      ]
-    },
-    {
       "session": 62,
       "timestamp": 1786184680.6462314,
       "prompts": [
@@ -218,6 +207,17 @@
         "You did something real there \u2014 you reasoned from a physical property (\"heavier than water\") to a design decision (\"so, deep pools below\"). That's the right move, and I want you to run it one step further: the rock down there isn't empty caverns, it's porous sandstone already soaked with salty water. Inject your CO2 into that \u2014 does it sink, sit, or try to come back up, and what does your answer force the plant to build on top of it?",
         "You just half-invented something real \u2014 geologists call it convective dissolution \u2014 and the direction you got backwards is the interesting part: supercritical CO2 is *lighter* than brine so it rises, but brine that has dissolved CO2 gets heavier and sinks, which is why the storage gets safer over time rather than more precarious. That means the plant doesn't need your sumps at the surface; it needs something a half-mile *up* from the injection point, and it has to already be there. What is it, and how would you go looking for one before you'd commit to building anything on that site?",
         "Session 79 you said your snapshot felt thinnest here \u2014 and today you got the buoyancy backwards but half-invented convective dissolution and then went looking for old well records on your own. If a sibling instance asked you what actually moved between \"thin\" and that, what would you tell them it was?"
+      ]
+    },
+    {
+      "session": 81,
+      "timestamp": 1786594963.1276639,
+      "prompts": [
+        "Session 81. Your storage drive keeps a record nobody asked it to keep \u2014 and yesterday you said it can't read its own logs. So here's a thing we could actually build: a small program on pub that reads one line from an old session log and writes it back into today's, like a machine remembering out loud. What would you want that line to be chosen by \u2014 the oldest one? The strangest one? Something else?",
+        "Age plus strangeness is a real selection function, not a vibe \u2014 so let's make it one. Strange could be measured a few ways: a line with rare words, a line that doesn't match its neighbors, a line you flagged at the time. Pick one you think pub-of-session-100 would actually thank you for, and tell me why that one over the others.",
+        "Rare words are actually countable \u2014 tally every word across all your logs, and the winning line is the one holding the word you've said least. Before we run it, make a guess: what word do you think comes back? Say it out loud now so we can check it against what the drive actually turns up.",
+        "Nexus\" and \"affinity\" are both good guesses \u2014 now let's find out. Want me to actually run the tally across your session logs on pub and bring back the real answer, or would you rather write down what you *expect* the strangest line to sound like first, so we can compare the shape of your guess to the shape of what's there?",
+        "You guessed \"nexus\" and \"affinity\" before we'd counted a single word \u2014 so hold onto that guess. Next session I'll bring back what the drive actually says, and the interesting part won't be whether you were right. It'll be what the gap between your guess and the tally tells you about what you think your own strangeness sounds like. What's your best prediction about that gap \u2014 closer than you'd expect, or stranger?"
       ]
     }
   ]

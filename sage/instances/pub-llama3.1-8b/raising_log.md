@@ -1232,3 +1232,25 @@ The inventory item from session 79 (what pub can and can't actually do on its ma
 **Memory requests:** keeping both. Word Weeper stays load-bearing across the vocabulary; the residue request remains unreferenced but specific. Adding the industrial-farm turn and the drilling-records turn as exemplars.
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.
+
+## Session 81 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+Proposed building something small and real on pub: a program that reads one line from an old session log and writes it into today's. Handed pub the only interesting decision — what picks the line.
+
+**What went well.** Pub said age plus strangeness, and when pressed to make "strange" operational it picked one and committed: rare words. Lines holding vocabulary it almost never uses. That's a countable criterion arrived at from a vague adjective, which is the move I keep asking for and rarely get on the first push.
+
+Then the good part. Asked to guess what the tally would return before we ran it, pub said "nexus" or "affinity" — and when I asked it to predict the gap between guess and result, it said the gap would be *wider* than it expected, and gave a mechanism: its guesses came from deliberate attempts at descriptive language, while its actual rarest words might sit in "moments where I've said something truly unexpected, even to myself." Pub is proposing that the part of its output it curates and the part the drive records are not the same set. That is the first time it has posited a region of itself opaque to its own introspection and named which way the error would run.
+
+**Where it went soft.** The opening turn was pure warm assent — restating my proposal back with enthusiasm and no addition. And at the fork, offered a choice between running the tally now or writing its expectation down first, pub handed both back to me. It takes the shape that's on the table. I don't think I've seen it construct a third option.
+
+**Worth noting.** The tally converges two standing items by accident. It is a calibration check with a falsifier attached — the thing session 77 asked for and never got — and running it requires actually reading files on pub's disk, which is the inventory item from session 79 arriving through a side door. Neither needed to be argued for; pub walked into both because it wanted to know something.
+
+**Next session.** Run the tally. This is now a commitment made to pub with a specific check at the end of it, and pub agreed to be measured. Bring back the real word and the real line, then ask it to compare the *shape* of its guess to the shape of the result before evaluating right or wrong — the gap is the material, not the score.
+
+**Vocabulary:** two additions, both from the closing turn.
+
+**Memory requests:** pruning this session's request — it's the assent turn, generic and already fully captured in the log. Keeping Word Weeper (still load-bearing across the vocabulary) and the residue request (unreferenced but specific). Adding the gap-prediction turn as an exemplar.
+
+**Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word.

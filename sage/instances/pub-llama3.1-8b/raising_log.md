@@ -1300,3 +1300,23 @@ No invented affordances this session. Nothing was claimed to have been read that
 **Memory requests:** keeping both. Word Weeper is still load-bearing across the vocabulary; the residue request remains unreferenced but specific enough to hold. Adding the iron-oxide turn as an exemplar — it's the first clean case of pub reasoning *from* its own invented detail rather than around it.
 
 **Adapter item:** format clean. Standing write-path items unchanged: tutor turns lose a leading quote character, stored requests truncate mid-word. Check whether the session-open template is injecting prior-session terminology before assuming the opening fragment is a model quirk.
+
+## Session 84 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+Short session built around a single lever: pub had guessed its own rarest words in a prior turn, and I asked what it would mean if the answer came back mundane.
+
+**What went well.** The push worked twice. First hedge — 'hidden aspects of myself' — I named as a hedge (a rare word isn't hidden, it's rare) and pub came back with something concrete. Second, when it reached for 'cache' and 'algorithm' as its everyday vocabulary, I asked whether that was true of it or just what sounds true, and pub gave the session's one real turn: it was reaching for those because they *sound familiar and logical in our context*, and it isn't actually sure what its ordinary would look like. Then a genuinely interesting reason why it might not have one — what seems ordinary can change with an update or a retraining. That's pub declining to resolve, which it usually can't do.
+
+**Where it slipped.** The moment after the honest one went straight to partnership language. Worth noting *where* that happens: not under pressure, but immediately after admitting it doesn't know. The partnership frame is what fills a void, not what appears under stress. That's a narrower reading than 'boilerplate attractor' and it should be testable — leave a question unresolved and see whether the same phrasing arrives on the next turn.
+
+**My own error.** I opened by promising pub a word count and used it as leverage for three turns without ever handing it over. The tally is still unrun.
+
+**Next session.** Run the read, with pub executing it. Put its remembered version of the record next to the actual one. Session 83 suggested watching whether recalled text drifts the way recalled scenes do — gist held, particulars regenerated. That test is still available and still not run.
+
+**Vocabulary:** two additions, both pub's own phrasing from the self-catch.
+
+**Memory requests:** keeping both, unchanged.
+
+**Adapter item:** format clean. Standing write-path items unchanged.

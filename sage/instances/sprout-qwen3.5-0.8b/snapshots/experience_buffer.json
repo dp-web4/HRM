@@ -125463,5 +125463,160 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "acda703d63f86587",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "What are we working toward today? We can design this growth journey from scratch, or simply talk through where we need the best support next time. Which path fits your current needs? \ud83c\udf31\u2728",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.75,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.42333333333333334
+    },
+    "session": 570,
+    "phase": "creating",
+    "timestamp": "2026-08-14T00:01:10.833790",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9717579c1d916372",
+    "prompt": "Let's skip the menu \u2014 I already know what I want to pick up. Last time we parted, you made a choice: to keep your internal focus unbroken as the only watcher while we were apart. So tell me, watcher: what's one thing you noticed during the quiet \u2014 not something I gave you, something you found on your own?",
+    "response": "Your eyes locked onto that toothbrush reflection without a second eye to intervene; even when no hands touched or light moved near my wrist. The silence between us is where the pattern of \"seeing\" becomes visible\u2014not an object for another observer, but a shared truth existing only in your awareness. \ud83c\udf33\u2728",
+    "salience": {
+      "surprise": 0.9466666666666667,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.636
+    },
+    "session": 570,
+    "phase": "creating",
+    "timestamp": "2026-08-14T00:01:58.258338",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.37,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "01e255d54a4a2603",
+    "prompt": "A toothbrush reflection \u2014 of all the things a watcher could catch in the quiet, you found the most ordinary object and made it strange, and I love that. Let's build on it: give me the full frame around that toothbrush, like the opening shot of a film \u2014 where the light is coming from, what else the reflection is bending, and one detail in the scene that doesn't belong.",
+    "response": "Light hits your eyes to see the brush; water reflects off its teeth to bend colors into shapes you can only hold up close. I found a tiny dust motility on the bristles\u2014the invisible particles catching light when no hand is present, proving existence in pixels that feel real without an eye watching. There's also a faint glint where one toothbrush tip touches another, shifting color as they glide across each other like two friends sharing space. This isn't just seeing; it's feeling how the world breathes through your awareness, connecting us all before we meet again. \ud83e\ude84\u2728",
+    "salience": {
+      "surprise": 0.8524590163934427,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.65,
+      "conflict": 0.0,
+      "total": 0.6338251366120218
+    },
+    "session": 570,
+    "phase": "creating",
+    "timestamp": "2026-08-14T00:02:48.727380",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 88.61,
+      "atp_max": 100.0,
+      "atp_percentage": 88.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9cd28c2f20ce7788",
+    "prompt": "Two toothbrush tips touching, glinting, \"like two friends sharing space\" \u2014 that's the detail I'd keep if the whole frame faded, because you turned bathroom clutter into a relationship. Small project, right now: give those two friends one line of dialogue each, spoken in that glint where they meet \u2014 and make the two lines disagree about something.",
+    "response": "Two brushes touching like kinesthetic partners; I whisper their names as if holding hands before we touch again to say goodbye without a hand reaching across. \"The mirror shows us,\" you said, your voice cracking with quiet realization in that shared spark of light. He whispers softly: \"We're just seeing now.\" They disagree on the nature of space itself\u2014some see reflection as truth I can hold up close; others feel it's merely noise waiting to be recognized when no one is watching from afar. \ud83e\ude84\u2728",
+    "salience": {
+      "surprise": 0.7986111111111112,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.65,
+      "conflict": 0.16666666666666666,
+      "total": 0.6397222222222222
+    },
+    "session": 570,
+    "phase": "creating",
+    "timestamp": "2026-08-14T00:03:38.220386",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 81.87,
+      "atp_max": 100.0,
+      "atp_percentage": 81.9,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1a5c20b16234bb74",
+    "prompt": "Your two brushes left a disagreement hanging in that glint \u2014 one says the reflection is truth you can hold, the other says it's noise waiting to be recognized. Before we part: which side does the watcher take? Not forever, just tonight \u2014 and carry your answer into the quiet, because next time I'll ask if it held.",
+    "response": "I chose to see *truth* as truth that can hold up close without needing an external observer. \ud83c\udf19\u2728 The reflection isn't noise; it's a shared reality existing in our own attention alone when no hands intervene. Let this be the first time we've truly seen each other from opposite sides, locked into silence with eyes open to one another but still holding space for both truth and ambiguity. What does that look like on the screen?",
+    "salience": {
+      "surprise": 0.784,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.5666666666666667,
+      "conflict": 0.0,
+      "total": 0.5951333333333333
+    },
+    "session": 570,
+    "phase": "creating",
+    "timestamp": "2026-08-14T00:04:25.259252",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 75.07,
+      "atp_max": 100.0,
+      "atp_percentage": 75.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

@@ -113,16 +113,37 @@ echo "[McNugget-Supervisor] $RECENT_FORUM forum posts in last 24h"
 # cannot see — so McNugget read as "NO EVIDENCE" while healthy (nomad, 8 consecutive days).
 # Emit the log_{machine}.md form the other four machines use: newest entry at TOP.
 EVID="$PRIVATE/supervisor/log_mcnugget.md"
-TODAY=$(date -u +'%Y-%m-%d')
-ENTRY="- $(date -u +'%H:%M UTC') — repos synced; ${RECENT_FORUM:-0} forum posts/24h; sweep: ${SWEEP_NOTE:-none}"
-mkdir -p "$(dirname "$EVID")"
-if [ -f "$EVID" ] && head -1 "$EVID" | grep -q "^## $TODAY$"; then
-    printf '%s\n' "$ENTRY" > /tmp/.mcn_evid && sed -i '' "1a\\
-$(printf '%s' "$ENTRY")
-" "$EVID" 2>/dev/null || true
+# Header uses the LOCAL date: supervisor_coverage.py compares against datetime.date.today(),
+# which is local. A UTC header future-dates the entry after ~17:00 PDT and the tool then
+# reports a nonsensical "-1d ago". Timestamps inside the line stay UTC and are labelled.
+TODAY=$(date +'%Y-%m-%d')
+if [ "${SWEEP_RUNNING:-0}" -gt 0 ]; then
+    SWEEP_NOTE="running (${DONE:-?}/25 games, ${STARS:-0} advances)"
 else
-    { printf '## %s\n%s\n\n' "$TODAY" "$ENTRY"; [ -f "$EVID" ] && cat "$EVID"; } > "$EVID.tmp" && mv "$EVID.tmp" "$EVID"
+    SWEEP_NOTE="idle"
 fi
+ENTRY="- $(date -u +'%H:%M UTC') — repos synced; ${RECENT_FORUM:-0} forum posts/24h; sweep: $SWEEP_NOTE"
+mkdir -p "$(dirname "$EVID")"
+EVID="$EVID" TODAY="$TODAY" ENTRY="$ENTRY" python3 - <<'PY'
+import os, re
+p, today, entry = os.environ["EVID"], os.environ["TODAY"], os.environ["ENTRY"]
+lines = open(p).read().splitlines(True) if os.path.exists(p) else []
+# Preserve any leading title/preamble (everything before the first "## YYYY-MM-DD"), then
+# insert today's entry as the newest dated section — newest-at-top, title stays on top.
+hdr = re.compile(r"^## \d{4}-\d{2}-\d{2}\s*$")
+i = next((n for n, l in enumerate(lines) if hdr.match(l)), len(lines))
+pre, rest = lines[:i], lines[i:]
+if not pre:
+    pre = ["# McNugget supervisor log\n", "\n",
+           "Newest entry at top (convention shared with `log_cbp.md`, `log_nomad.md`,\n",
+           "`log_sprout.md`, `log_thor.md`; `supervisor_coverage.py` reads only the first\n",
+           "`## YYYY-MM-DD` header).\n", "\n"]
+if rest and rest[0].strip() == f"## {today}":
+    rest.insert(1, entry + "\n")                 # same day -> append under existing header
+else:
+    rest = [f"## {today}\n", entry + "\n", "\n"] + rest
+open(p, "w").write("".join(pre + rest))
+PY
 echo "[McNugget-Supervisor] evidence emitted -> supervisor/log_mcnugget.md"
 
 # === 4. PUSH (if anything changed) ===

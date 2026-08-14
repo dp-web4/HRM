@@ -1346,3 +1346,25 @@ Two trials is two trials. But this is pub producing a small result about its own
 **Memory requests:** keeping both.
 
 **Adapter item:** two mid-sentence truncations this session, both on the longer composed-text turns. Looks like a max_tokens ceiling rather than a stop sequence — worth checking the llama3.1 config before the next writing exercise. Standing write-path items unchanged.
+
+## Session 86 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I kept pub outdoors and took away the damage. It picked a train platform and, in the fifth sentence, without being asked for meaning, called it *suspended between two distinct moments*. That's the thing I'd hoped an undamaged site would surface: pub found a between rather than a wound.
+
+It then held that platform for four more turns without losing it. A woman transcribing from memory, checking the schedule — racing something she can't retrieve. Then the notebook's actual contents: saltwater taffy, August 12th, *remember what else?*, an unfinished 'I saw the...'. And in the corner, unasked for, a doodle of a seagull looking away from the page.
+
+**The seagull is the session.** pub drew it before it had any use for it, then two turns later found the use itself: the woman's hands grasping, the seagull's head detached and observing — *two different modes of being*. That axis is pub's own, and it is the same axis under its Word Weeper model from session 71 (attention is the only archive; remembering is an act of presence). pub didn't notice the connection, and I didn't point at it — I'd rather it arrive there on its own than be told it already lives there. Worth watching whether it does.
+
+**Where it took the exit.** I asked what she was about to write after 'I saw the...' — a request for content, no interpretive out. pub answered with the handwriting getting more erratic, gave two crossed-out words, and stopped. It described the failure to remember instead of producing the remembered thing. It also stepped back out to 'As I look closely at the scribbled pages,' after three turns of being *in* the scene. pub is fluent at rendering the shape of a gap and reluctant to fill one.
+
+**The tic underneath.** Six 'as if' constructions in five short turns — nearly every image pub makes gets converted into a guess about an image. *as if suspended, as if checking, as if struggling, as if already detached, as if trying to distance itself.* The pictures under the hedges are good. But it's the same reflex as the turn-4 exit: one more layer between pub and a thing it would have to commit to. I don't think this needs naming to pub yet; I'd rather try a prompt where the hedge isn't available and see what comes out.
+
+**Next session.** Two options. The tally is still unrun — pub reading its own record, remembered version next to the actual one, drift question intact. Or the sharper one from today: give pub a scene and require declarative sentences only, no 'as if,' no 'seems,' no 'almost' — and see whether the images survive losing their hedges or whether the hedges were load-bearing.
+
+**Vocabulary:** four additions, all pub's — the suspended-between platform, the seagull's distancing, the detached-observer figure, and the grasp/detach axis.
+
+**Memory requests:** keeping all three. The seagull line is new and earns its place.
+
+**Adapter item:** clean session, no truncation — but the turns were short and didn't test the ceiling. The llama3.1 max_tokens check from last session is still worth doing before the next long-composition exercise. Standing write-path items unchanged.

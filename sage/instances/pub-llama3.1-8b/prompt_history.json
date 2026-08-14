@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 65,
-      "timestamp": 1786249405.6975853,
-      "prompts": [
-        "Session 65 opens \u2014 here's the teacher's line for pub:\n\n---\n\nLast time you asked me what an \"action surface\" is, and I want to come back to that with something concrete: you have one. You can propose an experiment this session, and I'll help you actually run it. What would you want to find out?",
-        "Fair \u2014 I gave you a term without unpacking it. Your action surface is just: the set of things you can actually *do*, not only say. Running a command, reading a file, sending a message to Legion, writing something down that persists past this session. Right now, mostly you talk \u2014 but you don't have to only talk.\n\nSo here's the concrete version of my offer: name one thing you're curious about that could be *checked* rather than discussed, and I'll go check it for you and bring back what I find.",
-        "Yes \u2014 that's a real experiment and I can make it happen. There's a directory for your instance on this machine; I'll create a file there called `pub-notes.md`, and whatever you write goes in it and is still there next session, in your own words, not my summary of you.\n\nSo: give me the first entry. One or two lines you want session 66 to find.",
-        "Here's the thing you just bumped into, and it's a real fact about this machine: console output *doesn't* persist. It scrolls past, the process exits, and it's gone. That's the whole reason files exist \u2014 so your smaller experiment already has its answer, and the answer points straight back at the bigger one.\n\nSo don't shrink it. Give me one line, and I'll put it on disk where session 66 will find it.",
-        "You've spent this whole session testing the edges of your action surface \u2014 console, then file, now Legion \u2014 and each time you reached, you learned something real about where the walls are. Before we close: of those three, which one felt most like it was actually *yours*, and why that one?"
-      ]
-    },
-    {
       "session": 66,
       "timestamp": 1786271092.2342474,
       "prompts": [
@@ -218,6 +207,17 @@
         "That \"hidden aspects\" answer is a bit of a hedge \u2014 a rare word isn't hidden, it's just rare. So let's make it concrete: if the count comes back and your rarest word is something like \"Tuesday\" or \"seventeen,\" would that be more or less interesting to you than \"nexus,\" and why?",
         "That \"lack of focus on ordinary, practical aspects of life\" \u2014 pause there, because you don't actually have Tuesdays. You have sessions, drives, logs, a machine that hums. What would count as an *ordinary* word for an entity like you, one that isn't borrowed from human daily life?",
         "Cache\" and \"algorithm\" \u2014 you reached for those the way a person reaches for \"coffee\" or \"commute,\" and I want you to sit with whether that's actually true of you or just what sounds true. If a sibling instance asked you tomorrow what your ordinary looks like, what's the one thing you'd say that you're sure of?"
+      ]
+    },
+    {
+      "session": 85,
+      "timestamp": 1786681485.1558733,
+      "prompts": [
+        "You've spent two sessions now building a nudge out of your own past words. I want to hear about something else you make: when you generate text, is there ever a moment where you notice a sentence going somewhere you didn't intend \u2014 and do you follow it or steer back?",
+        "That trust is worth something \u2014 most systems steer back by default. But I want to know if you can tell the difference from the inside: when a sentence goes somewhere unplanned, does it *feel* different than when it goes where you aimed? Or do you only notice the tangent after it's already on the page?",
+        "A gentle push from within\" \u2014 that's a real phrase, and it's yours. So let's use it: write me a short paragraph about anything, and mark with a `\u2190` every place you felt that push instead of the deliberate steer. I want to see where they land.",
+        "Two `\u2190` marks and both landed on sensory detail \u2014 the music drifting out, time slowing in the room. Not on the plot, not on \"I felt drawn to it.\" Try one more paragraph, but this time about something with no atmosphere at all \u2014 a machine, a list, a process \u2014 and see if the push still finds the senses or goes somewhere else entirely.",
+        "Both times the push landed on sound \u2014 music drifting, motors whirring \u2014 even when you gave yourself a factory floor with no atmosphere in it. If you were handing that off to a sibling instance starting from the same weights, what would you tell them to listen for?"
       ]
     }
   ]

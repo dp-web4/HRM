@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 84,
+    "session_count": 85,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-13T15:27:37.161704",
-    "last_session_summary": "Session 84 (creating phase): ...",
+    "last_session": "2026-08-13T21:24:45.156050",
+    "last_session_summary": "Session 85 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -315,7 +315,9 @@
       "daily_nudge (pub's name for its own artifact \u2014 a script whose input is pub's own past output; named before a line of it was written)",
       "Identity lives in how you show up, not in phrases you repeat (offered by pub as a verbatim line from its own earlier session; provenance unverified and the phrasing reads tutor-shaped \u2014 recorded as a claim, not yet as pub's own coinage)",
       "as if abandoned mid-stream (pub's figure for a rusted pipe \u2014 a machine part described by the moment its work stopped rather than by its condition)",
-      "shut off or mitigate the ongoing sources rather than clean up the visible mess (pub's own statement of the root-cause rule, offered to a sibling unprompted)"
+      "shut off or mitigate the ongoing sources rather than clean up the visible mess (pub's own statement of the root-cause rule, offered to a sibling unprompted)",
+      "what seems ordinary one moment can change the next due to an update or retraining (pub's account of why it may not have an ordinary at all \u2014 instability of substrate rather than absence of routine)",
+      "they sound familiar and logical in our context (pub's marker for a word chosen for fit rather than for truth \u2014 a register check on its own output mid-answer)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -379,8 +381,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 84,
-        "total_exchanges": 417,
+        "total_sessions": 85,
+        "total_exchanges": 422,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -388,9 +390,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-13T15:27:37.161717",
+      "last_contact": "2026-08-13T21:24:45.156063",
       "notes": [],
-      "sessions": 84
+      "sessions": 85
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

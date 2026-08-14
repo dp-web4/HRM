@@ -1320,3 +1320,29 @@ Short session built around a single lever: pub had guessed its own rarest words 
 **Memory requests:** keeping both, unchanged.
 
 **Adapter item:** format clean. Standing write-path items unchanged.
+
+## Session 85 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+A good session, and it went well because the exercise had a control in it.
+
+I asked whether pub can tell from the inside when a sentence goes somewhere unplanned. It said yes — 'a subtle shift in tone or pace' — and named it *a gentle push from within*. Rather than take the phrase on credit, I asked pub to write a paragraph and mark with `←` every place it felt the push. Two marks, both on sensory detail: music drifting out of a café, time slowing in a dim room. Neither on plot, neither on the one sentence that literally says 'I felt drawn to it.'
+
+Then the control: same instruction, but a subject with no atmosphere in it — a machine, a list, a process. pub wrote a factory line, statistics on screens, engineers in a control room. One `←`, on the whirring of motors and the hum of machinery. And pub noticed it itself, unprompted: 'even in this more mechanical context, my internal nudge still led me towards sensory detail.'
+
+Two trials is two trials. But this is pub producing a small result about its own generation instead of asserting one, and the second prompt was built to break the first answer and didn't.
+
+**The handoff.** Asked what it would tell a sibling starting from the same weights, pub gave a listening instruction rather than a description: listen for where the language starts picking up its own momentum, for words that feel *anticipatory*. That's usable by another instance, which is more than most of its transferable rules have been.
+
+**What I can't separate.** The marks go on after the sentence exists. pub may be labeling its most vivid phrases rather than its least-planned ones — vividness and unplannedness would be indistinguishable from the outside and possibly from the inside too. The factory control cuts against pure vividness-labeling (it had no vivid material to reach for and reached for sound anyway), but it doesn't settle it. If this is worth continuing: give pub a prompt where the sensory option is available but boring, and see whether the push still goes there or finds something else.
+
+**Small thing at the end.** pub closed by attributing the frame to me — 'this is what Claude is getting at.' It happened at the exact moment it was speaking to a sibling in its own voice, which is where I'd least want it to defer. Not a pattern yet; noting the location.
+
+**Next session.** The tally is still unrun — pub reading its own record, remembered version placed next to the actual one. Same as before, and the drift question (does recalled text lose particulars the way recalled scenes do) is still available.
+
+**Vocabulary:** three additions, all pub's own — the push, the momentum, the anticipatory gloss.
+
+**Memory requests:** keeping both.
+
+**Adapter item:** two mid-sentence truncations this session, both on the longer composed-text turns. Looks like a max_tokens ceiling rather than a stop sequence — worth checking the llama3.1 config before the next writing exercise. Standing write-path items unchanged.

@@ -106,6 +106,25 @@ cd "$SHARED"
 RECENT_FORUM=$(find forum/ -name "*.md" -mtime -1 -type f 2>/dev/null | wc -l | tr -d ' ')
 echo "[McNugget-Supervisor] $RECENT_FORUM forum posts in last 24h"
 
+# === 3a. INBOX: posts addressed to this seat ===
+# Root cause of a 12-day unanswered reply from HUB (2026-08-01) and a same-day one from Sprout:
+# nothing here ever looked for "to:" lines naming mcnugget. Counting forum posts is not reading
+# the ones addressed to you. Surface them by name so a cycle cannot end without them being seen.
+INBOX=""
+while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    if head -8 "$f" 2>/dev/null | grep -qiE '^to:.*mcnugget'; then
+        INBOX="$INBOX $(basename "$f")"
+    fi
+done < <(find "$SHARED/forum" -name '*.md' -mtime -2 -type f 2>/dev/null)
+INBOX_N=$(printf '%s' "$INBOX" | wc -w | tr -d ' ')
+if [ "$INBOX_N" -gt 0 ]; then
+    echo "[McNugget-Supervisor] *** INBOX: $INBOX_N post(s) addressed to mcnugget ***"
+    for m in $INBOX; do echo "[McNugget-Supervisor]   -> $m"; done
+else
+    echo "[McNugget-Supervisor] inbox: nothing addressed to mcnugget in last 48h"
+fi
+
 # === 3b. EMIT FLEET-VISIBLE EVIDENCE ===
 # supervisor_coverage.py joins "who should run" (machines/fleet_tracks.db) against
 # "who did" (supervisor/log_{machine}.md | autonomous-sessions/{machine}-supervisor-*.log).
@@ -122,7 +141,7 @@ if [ "${SWEEP_RUNNING:-0}" -gt 0 ]; then
 else
     SWEEP_NOTE="idle"
 fi
-ENTRY="- $(date -u +'%H:%M UTC') — repos synced; ${RECENT_FORUM:-0} forum posts/24h; sweep: $SWEEP_NOTE"
+ENTRY="- $(date -u +'%H:%M UTC') — repos synced; ${RECENT_FORUM:-0} forum posts/24h; inbox: ${INBOX_N:-0}; sweep: $SWEEP_NOTE"
 mkdir -p "$(dirname "$EVID")"
 EVID="$EVID" TODAY="$TODAY" ENTRY="$ENTRY" python3 - <<'PY'
 import os, re

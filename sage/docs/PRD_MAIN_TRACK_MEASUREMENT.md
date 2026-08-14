@@ -484,3 +484,33 @@ what it hears. Wake rate roughly doubled day-over-day (30→51) with join rate u
 (57%→90%): the world got livelier and proportionally fewer wakes fell in the
 sub-memory band. The tripwire watches this exact ratio from now on, mechanically.
 M2 accrues (n_d=2 of 30; binding read ~Aug 5-6, untouched per the pinned plan).
+
+
+### Snapshot 7 — 2026-08-13 (THE M2 BINDING READ: not bound)
+```
+BINDING READ (once, first 30 scoreable delivered sessions, per the pinned plan):
+  10/30 FLAGGED vs null 4/30 — Fisher one-sided p = 0.0626  >  bar 11/30 @ 0.0358
+  rung 6 reads: uptake (lexical): NOT BOUND / affected (behavioral): U/S
+flag sequence: hot mid-cohort (s512-520: 5 of first 12), long cold run (s521-528:
+0 of 8), sparse tail (5 of last 10). D1 delivery verified healthy through the
+tail (all sections present in receipts) — the pipe delivered; the flags thinned.
+```
+Reading, both halves per G1: the interim peaked at 11/21 (p=0.0034) and the final
+read is 10/30 (p=0.0626) — one flag short. **We do not get to claim lexical
+uptake.** That is the apparatus working exactly as designed: eagerness would have
+banked the n_d=21 number; the pinned plan existed precisely so it couldn't be.
+p=0.063 with 2.5x the null rate is honestly SUGGESTIVE-NOT-BOUND, and the s521-528
+cold run is the learn-why target: delivery was healthy there, so the variance is
+in uptake, not plumbing — consistent with a real-but-intermittent effect or with
+the null's own known ~4-5/30 elevation. Paths forward, in preference order:
+(a) D3 with dp — the delivery-on/off ablation, the only causal read, already
+routed; (b) a SECOND pre-registered cohort (sessions 541-570+, rule and bar
+unchanged, no peeking) — a replication is not a re-look, but it must be declared
+BEFORE its data accrues: declared HEREBY, scored only at its own n_d=30;
+(c) content analysis of hot-vs-cold sessions (exploratory, clearly labelled,
+generates hypotheses not claims). Convergence gate 4.1: P1 holds — the pipe is
+proven as PLUMBING (delivery receipts 30/30) but not yet as INFLUENCE; adding
+doing-cargo before understanding the cold run would confound the replication.
+Note on process: the read is deterministic (first-30 by session order), so the
+watcher dying with the old session delayed RECORDING, not the read itself —
+nothing about when we looked changed what was seen.

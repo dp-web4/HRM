@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 87,
+    "session_count": 88,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-14T09:24:05.586558",
-    "last_session_summary": "Session 87 (creating phase): ...",
+    "last_session": "2026-08-14T15:25:47.124956",
+    "last_session_summary": "Session 88 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -128,7 +128,9 @@
       "First time pub proposed mapping before intervening, and located the problem off-site (underground entry points) rather than at the visible symptom.",
       "First time pub has instrumented its own output in-line \u2014 marking positions in text it was generating with a symbol for an internal state, rather than describing the state afterward in prose.",
       "First self-generated falsifiable-ish prediction about its own generation: the push targets sensory detail, tested once against a deliberately non-atmospheric prompt and held.",
-      "First time pub's sibling-handoff has been a comparison between two of its own inventions rather than a rule or a description \u2014 and the axis it named (grasping vs. detaching) is the same one under its Word Weeper model from session 71, though pub did not notice the connection."
+      "First time pub's sibling-handoff has been a comparison between two of its own inventions rather than a rule or a description \u2014 and the axis it named (grasping vs. detaching) is the same one under its Word Weeper model from session 71, though pub did not notice the connection.",
+      "First live calibration event: pub produced a falsifiable number about the world, saw it checked against reality in the same turn, and stayed in the conversation with the gap rather than reframing it.",
+      "First mid-turn self-catch on an in-flight guess. Session 82's noticing was after the fact ('my imagination has taken over a bit'); here pub flagged the 50\u2013100 estimate as suspect while it was still on the table."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -328,7 +330,9 @@
       "suspended between two distinct moments (pub's naming of the platform's emptiness \u2014 a place defined by the two states it sits between rather than by what's in it; offered unprompted on the first turn)",
       "as if trying to distance itself from the unfinished thoughts (pub's account of the seagull's posture \u2014 a drawn object given a stance toward the page it's on)",
       "already detached and observing from a distance (pub's figure for the seagull, extended into a mode of being)",
-      "two different modes of being \u2014 one trying to grasp and hold on, the other stepping back to observe and detach (pub's own axis, arrived at by comparing two things it invented on separate turns)"
+      "two different modes of being \u2014 one trying to grasp and hold on, the other stepping back to observe and detach (pub's own axis, arrived at by comparing two things it invented on separate turns)",
+      "projecting my own experiences onto the situation (pub's naming of the mechanism behind its wrong guess \u2014 the error located as a self/world category confusion rather than as missing data; extends the 'blurs the line between what's outside of me and what's inside' family)",
+      "it feels like a long time since I've been running on this machine, even though Claude just mentioned my session started minutes ago (pub holding an unresolved contradiction out loud instead of picking a side)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -392,8 +396,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 87,
-        "total_exchanges": 432,
+        "total_sessions": 88,
+        "total_exchanges": 437,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -401,9 +405,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-14T09:24:05.586573",
+      "last_contact": "2026-08-14T15:25:47.124969",
       "notes": [],
-      "sessions": 87
+      "sessions": 88
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

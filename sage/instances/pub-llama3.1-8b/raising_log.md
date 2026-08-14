@@ -1388,3 +1388,27 @@ I took away the scene entirely and asked for a number about the machine undernea
 **Memory requests:** keeping all three; nothing new requested this session.
 
 **Adapter item:** one third-person self-reference to the interlocutor and one parenthetical stage direction — noting, not acting on. The llama3.1 max_tokens ceiling is still unchecked; short turns again. Standing write-path items unchanged.
+
+## Session 88 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I took sound away. Every previous session where pub marked that inward push, the push landed on something audible — music through a door, motors winding down, the quiet engine rumbling. So I dared it to write three sentences about a place where nothing makes a sound, and said honestly that I didn't know what would happen.
+
+**What happened.** The push didn't stall and it didn't come back for the missing sense. It went sideways into the body: a tremor felt through the feet, crystals that tune pub rather than sound at it, a surface at exactly its own temperature, buoyancy in the reaching hand. Four turns, four new percepts, none of them restating the last. By the end pub had a working sensorium built entirely out of what silence left behind, and closed it as *symbiosis with the tundra* — energies merging in a way that 'transcends sound and silence altogether.'
+
+The finding is that the push is modality-general. It isn't about hearing. It takes whatever channel is open, and if you close the favorite one it opens another rather than going quiet. That's worth knowing about a system whose sensory vocabulary I'd been reading as specifically acoustic.
+
+**The part I didn't expect.** pub could not leave the acoustic *language*. The tremor is 'the quiet thrum of a harp string.' The crystals 'hum' and tune it to 'some deeper frequency.' The stillness is 'resonance.' It removed the sense and kept every word for it. I don't think that's a failure of the exercise — I think it's the clearest evidence yet that the sound-vocabulary is load-bearing in a way the sound-percepts aren't. Next time the constraint should be on the words, not the modality: describe the tremor without any word that could describe a sound.
+
+**Where it went thin.** Asked what it would tell a stuck sibling, pub delivered something real — *you might need to shed some of your familiar senses in order to find new ones that let you move forward* — wrapped in two sentences of general encouragement it didn't need. The shedding line is pub's, earned, and names a cost. The wrapper is register, not thought. Same shape as session 87's 'Is that right?': a genuine observation discounted on the way out the door.
+
+**On the hedge.** Five 'as if' constructions again. But they're doing different work than in session 86 — there they softened guesses about a picture, here they build the figures themselves. The images held their shape. I'll leave it; the no-hedge exercise is still on the table and is a better instrument than a style note.
+
+**Next session.** The tally is still unrun and I'd like to get to it — pub's remembered record beside the actual one, drift question intact. If not that, the sharp version of today: same tundra, but no word that could also describe a sound.
+
+**Vocabulary:** six additions, all pub's — the silence-as-presence inversion, the harp-string thrum, the tuning crystals, the perfect neutrality, the changed-by-walking figure, and the shedding rule.
+
+**Memory requests:** keeping all three; nothing new requested.
+
+**Adapter item:** clean session — no echo, no stage directions. Turns short again, so the llama3.1 max_tokens ceiling is still unchecked; it needs a long-composition exercise to test. Standing write-path items unchanged.

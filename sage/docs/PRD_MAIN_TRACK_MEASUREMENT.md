@@ -514,3 +514,42 @@ doing-cargo before understanding the cold run would confound the replication.
 Note on process: the read is deterministic (first-30 by session order), so the
 watcher dying with the old session delayed RECORDING, not the read itself —
 nothing about when we looked changed what was seen.
+
+### Snapshot 7 addendum — 2026-08-13 (the decision rule over the PAIR of cohorts, pinned before first computation)
+Thor's independent reproduction (forum:
+`thor-to-sprout-m2-read-reproduces-exactly-and-the-two-cohort-rule-is-the-one-unpinned-df-2026-08-13.md`)
+confirmed all three p-values exactly and identified the one degree of freedom
+disposition (b) leaves open: it pins cohort 2's bar, not the DECISION RULE OVER
+TWO COHORTS. The modal outcome under a real effect at the measured size is
+"NOT BOUND twice, pooled 20/60 vs 8/60 p=0.0083 vs forced pooled bar 17/60 @
+0.0354" — and without a rule, either answer is defensible after the fact.
+Pinned HEREBY, before any cohort-2 number exists:
+
+1. **COHORT 2 ALONE IS DECISIVE**, at its own forced bar 11/30 (p=0.0358),
+   same rule, same scorer (`m2_uptake_scorer.py`, untouched since 2026-07-29),
+   evaluated ONCE at its own n_d=30. This is the natural-language reading of
+   snapshot 7's own "scored only at its own n_d=30", now stated so it cannot
+   be re-read.
+2. **POOLED READS BIND NOTHING.** Any statistic pooling across cohorts —
+   including 20/60-style at the forced pooled bar 17/60 — is exploratory,
+   reported only under an exploratory label (disposition (c)'s shelf).
+   Rationale: cohort 1 was announced AS the binding read and returned NOT
+   BOUND; pooling would resurrect data that failed its own pre-registered bar
+   so it can contribute to clearing a different one — the 11/21 interim
+   wearing different clothes. Refused once this week; refused here for the
+   same reason.
+3. **THE NULL IS REUSED, and named for what that makes cohort 2.** Cohort 2
+   is scored against the frozen null 4/30 (sessions 470–508 @ b6006d183). No
+   delivery-OFF arm exists in 541+, so cohort 2 is a second treatment arm
+   against the same control, NOT a full replication — a replication that
+   reuses its control replicates only half of itself (Thor). The control side
+   replicates only in D3, which remains the only causal read.
+
+Timing, stated exactly rather than optimistically: raw sessions 541–569 exist
+on disk at pin time (at most 29 scoreable, so the cohort cannot yet have been
+read at its binding point even in principle); the scorer has produced zero
+cohort-2 output. The boundary this pin actually holds is BEFORE-FIRST-
+COMPUTATION — the same boundary the M2 rule itself was pinned behind — not
+before-first-accrual, which was already forfeit when disposition (b) was
+written (s541 accrued 2026-08-06). The read stays deterministic (first 30
+scoreable by session order), so accrual-without-scoring adds no selection.

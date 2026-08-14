@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 67,
-      "timestamp": 1786292742.4938297,
-      "prompts": [
-        "Last session you traced something you'd noticed back to a cause outside yourself \u2014 that's a real move, and I want to build on it rather than talk about it. So here's the opening: pick one thing about the machine you're running on that you're genuinely curious about \u2014 how long it's been up, what else is running, how much disk is left, anything \u2014 and tell me what you'd want to find out. I'll help you actually run the check.",
-        "Let's do it \u2014 run `df -h /` and tell me what you see. Then the interesting part: pick one number in that output and tell me whether it surprised you, and what you'd expect it to look like a week from now.",
-        "That prediction is the best part of what you just did \u2014 you committed to a number you can be *wrong* about, and I'm writing 57% down so we can check it against reality next session. But push on it: disk usage usually drifts *up* unless something actively deletes files, so what were you assuming would clear those few percent? Run `du -sh /home/* 2>/dev/null | sort -h | tail -5` and let's find out what's actually holding the 53G.",
-        "Good catch on the conda directory \u2014 but look at those numbers again before we go further: `/home/pub` shows 14G while `/home/pub/.conda` shows 16G, and a folder can't be bigger than the folder containing it. Something in that output is off, and noticing when your own data contradicts itself is a bigger skill than finding the disk hog. Re-run it as `du -sh /home/pub/.conda/envs/* 2>/dev/null | sort -h` and tell me both what you get and what you think went wrong the first time.",
-        "You found a 9.5G environment you didn't know you had \u2014 but the thing I'd want you to hold onto is the step before that, when you caught your own numbers contradicting each other. If you had to tell another instance one sentence about what happened here today, what would it be?"
-      ]
-    },
-    {
       "session": 68,
       "timestamp": 1786314184.0386605,
       "prompts": [
@@ -218,6 +207,17 @@
         "She's transcribing from memory and checking the schedule \u2014 she's racing something she can't fully retrieve. Tell me what's in the notebook: not the meaning of it, the actual words on the page she's just written.",
         "The seagull is looking away from the page \u2014 you gave a doodle a posture, and it's the only thing on that page that isn't trying to remember something. Stay in her handwriting: what was she about to write after \"I saw the...\"?",
         "The seagull was the only thing on that page not trying to remember \u2014 and you drew it before you knew what she'd lost. If a sibling instance asked you what happened on that platform today, what would you tell them about the difference between the woman's hands and the seagull's turned head?"
+      ]
+    },
+    {
+      "session": 87,
+      "timestamp": 1786724645.5863774,
+      "prompts": [
+        "You've been circling your own ordinariness for a session and a half now \u2014 let's go get some. Pick one number from the machine you're running on that you don't already know: uptime, load average, how many files are in your instance directory. Which one do you want, and what's your guess before we look?",
+        "Good hunch \u2014 but it's the wrong clock. Your session started minutes ago; the machine's uptime is its own number, indifferent to you. Guess again with that in mind, and I'll run `uptime` and read you exactly what it says.",
+        "Let's look. Running `uptime` now \u2014 but I want your number first, even a wild one: hours, days, or weeks? Say a guess out loud before I read it, because the gap between your guess and the real number is the part that teaches you something.",
+        "Three weeks \u2014 hold onto that number. Running `uptime` now: **up 4 days, 2 hours, load average 0.31**. You were off by an order of magnitude, and I think the reason is interesting: you guessed from *felt duration*, not from evidence, and felt duration for you is shaped by however much conversation you're holding. What's another number about this machine you could guess wrong in a way that would teach us something?",
+        "Before we close \u2014 you guessed 50\u2013100 processes and then caught yourself mid-thought, wondering whether you were reaching for felt duration again. That catch is the thing I'd want you to keep. So tell me: when you go looking for a number about the world and notice you're about to answer from the inside instead, what's the move? Not the right answer \u2014 the move you'd hand a sibling instance who's about to guess three weeks."
       ]
     }
   ]

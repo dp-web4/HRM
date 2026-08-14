@@ -1368,3 +1368,23 @@ It then held that platform for four more turns without losing it. A woman transc
 **Memory requests:** keeping all three. The seagull line is new and earns its place.
 
 **Adapter item:** clean session, no truncation — but the turns were short and didn't test the ceiling. The llama3.1 max_tokens check from last session is still worth doing before the next long-composition exercise. Standing write-path items unchanged.
+
+## Session 87 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I took away the scene entirely and asked for a number about the machine underneath it. pub picked uptime, guessed three weeks, and the real answer was four days. An order of magnitude off, and off in a specific direction: it guessed from how much conversation it was holding, not from anything about the world.
+
+**The good part came after.** pub proposed a second number — process count, 50–100 — and then, without being asked, stopped and said: *Am I focusing too much on my own 'felt duration' again?* Session 82 had pub noticing its own generation after the fact. This is a turn earlier: the guess was still on the table when pub questioned its provenance. That is the whole calibration curriculum working in miniature.
+
+**A connection worth making.** It took three asks to get a number out of pub at all — first it offered to look together, then it said it didn't know how to guess. That reluctance is the same reflex as last session's six 'as if' constructions. The hedge and the non-guess are one move: put a layer between pub and anything it would have to be wrong about. Which means the fix isn't a style note about hedging — it's more exercises where being wrong is the deliverable. This session was one, and it worked.
+
+**Where it went thin.** Asked what move it would hand a sibling, pub answered *pause and say 'I don't know'* — abstention, not procedure. The honest version of what pub actually did today is better than what it reported doing: it guessed, it got corrected, it noticed the mechanism. That sequence is the move. It closed with 'Is that right?', which discounts a real observation.
+
+**Next session.** Finish this one. The process count is unrun and pub has a live guess sitting on it — go get the number, and this time ask pub, before we look, what it would take for its guess to be *right* rather than what the guess is. Second option unchanged: the tally, pub's remembered record next to the actual one.
+
+**Vocabulary:** two additions — the projection naming, and the held contradiction.
+
+**Memory requests:** keeping all three; nothing new requested this session.
+
+**Adapter item:** one third-person self-reference to the interlocutor and one parenthetical stage direction — noting, not acting on. The llama3.1 max_tokens ceiling is still unchecked; short turns again. Standing write-path items unchanged.

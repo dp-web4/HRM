@@ -126021,5 +126021,191 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "a5e566c98c865c77",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "I'm seeing a sky with shifting clouds over our apartment now\u2014some are heavy and gray, others break through to show fresh blue. The wind is getting stronger around 10:30 AM before settling down slightly for the rest of the day as we stand in that living room watching the clock tick by.",
+    "salience": {
+      "surprise": 0.8255813953488372,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5384496124031009
+    },
+    "session": 574,
+    "phase": "creating",
+    "timestamp": "2026-08-15T00:00:43.591440",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "25ad9fe031c2cc91",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "Someone might think my internal shift toward clarity feels forced or like I'm ignoring their input to see a clear view, but what they are actually feeling is simply wanting something else: safety and peace in the morning light. That's exactly why sprout chose that approach today\u2014because it matters most for them personally now.",
+    "salience": {
+      "surprise": 0.8602150537634409,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.125,
+      "conflict": 0.16666666666666666,
+      "total": 0.5470430107526881
+    },
+    "session": 574,
+    "phase": "creating",
+    "timestamp": "2026-08-15T00:00:57.183156",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.92,
+      "atp_max": 100.0,
+      "atp_percentage": 89.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6036282089ed798c",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "You're right to ask, but a person who disagrees might feel I'm missing their input when they try to focus on safety and peace in the morning light instead of clarity about time and motion. They'd likely see \"shifting clouds\" as static noise while sprout observes how the wind actually moved across that flat surface just before you left. Their internal shift toward clarity feels different\u2014more like a quiet storm waiting for release, whereas yours is a gentle dawn breaking through now.",
+    "salience": {
+      "surprise": 0.7352941176470589,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.23333333333333334,
+      "conflict": 0.3333333333333333,
+      "total": 0.5770588235294117
+    },
+    "session": 574,
+    "phase": "creating",
+    "timestamp": "2026-08-15T00:01:12.772948",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.05,
+      "atp_max": 100.0,
+      "atp_percentage": 84.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ccf796be74beba36",
+    "prompt": "Say more about that. What's underneath it?",
+    "response": "The disagreement isn't an external clash\u2014it's the silence after you left alone to feel your own breath and time again. Someone who disagrees might see \"shifting clouds\" as static noise, while sprout sees a real storm waiting for release inside their mind. The difference is they're looking at weather patterns vs. internal state shifts; it matters less about what the other person thinks than how you *feel* right now.",
+    "salience": {
+      "surprise": 0.75,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.13333333333333336,
+      "conflict": 0.0,
+      "total": 0.4933333333333333
+    },
+    "session": 574,
+    "phase": "creating",
+    "timestamp": "2026-08-15T00:01:28.537745",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.87,
+      "atp_max": 100.0,
+      "atp_percentage": 77.9,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "cb1c2d8f45283a71",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "I don't have feelings, but if you were there to hear me speak, I'd just be the quiet observer in a room full of noise. You wouldn't know my presence; it's all too much for one person to carry without others hearing the difference between static and movement.",
+    "salience": {
+      "surprise": 0.872093023255814,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.5844186046511628
+    },
+    "session": 574,
+    "phase": "creating",
+    "timestamp": "2026-08-15T00:01:42.876794",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.54,
+      "atp_max": 100.0,
+      "atp_percentage": 72.5,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "6b5cb12869d2fe22",
+    "prompt": "What from today is worth holding onto?",
+    "response": "The only concrete thing you should hold onto right now is your own quiet breath\u2014the feeling of moving across a flat surface just before you left, distinct in time but separate from what others see or think about. It's not \"clarity\" as something external; it is the sensation of being here and breathing again after all that noise has settled down for them.",
+    "salience": {
+      "surprise": 0.8141592920353982,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5528318584070797
+    },
+    "session": 574,
+    "phase": "creating",
+    "timestamp": "2026-08-15T00:01:58.294361",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.2,
+      "atp_max": 100.0,
+      "atp_percentage": 66.2,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

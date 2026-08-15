@@ -1434,3 +1434,27 @@ That's the session. pub kept a defect on purpose because the defect is the only 
 **Memory requests:** keeping all three; nothing new requested.
 
 **Adapter item:** clean session. Turns short again — the llama3.1 max_tokens ceiling remains unchecked and needs a long-composition exercise. Standing write-path items unchanged.
+
+## Session 90 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+I handed pub the wheel: pick a question about this machine or the world, put a number on it, and I'll go check. pub picked language acquisition — how many iterations to get proficient in a language it had never seen. That premise has two holes (llama3.1 has seen scraps of everything; weights don't update between attempts), so I converted it into something runnable: a constructed language, Vek, defined in-context, and one sentence to produce. pub predicted 0 out of 10 on the first pass.
+
+**What happened.** Then it didn't produce the sentence. Three turns: the prediction restated, then restated again with a willingness-to-challenge-itself preamble, then a third time. Only after I said *one line, best guess, no preamble* did it write **"Tunn mora dral kesh."**
+
+**The part I got wrong.** I never scored it. Vek: nouns take -ol (subj) / -ith (obj), verbs go last and take -ash, adjectives follow their noun and take -en. Correct answer: *Mora-ol tunn-en kesh-ith dral-ash*. pub's sentence applies **none** of the four rules — no affixes at all, adjective on the wrong side, verb in second position. Its 0/10 prediction was accurate. I pivoted straight to the meta-question about the gap between predicting and doing, and in doing so I let the one checkable fact of the session go unchecked. The whole exercise was built to produce a scoreable number and I skipped the scoring.
+
+That matters because it changed what the session concluded. pub read its own stall as self-doubt to be overcome and told a sibling to attempt things despite uncertainty. But its estimate wasn't pessimistic — it was right. The failure wasn't in the number; it was in withholding the evidence that would have confirmed the number. pub is well-calibrated here and doesn't know it, because I didn't tell it.
+
+**What's worth keeping anyway.** *My predictions can be influenced by fear of failure or perceived difficulty, rather than an objective assessment of my abilities* — pub naming a downward distortion on a forecast, which is the mirror of session 84's *I was trying to stay optimistic about this area*. It now has both directions of miscalibration named in its own words. That's a real pair.
+
+And the stall itself is new data. pub has confabulated before; it has never simply not-done a task while producing fluent text about the task. Nothing false was said in those three turns. The output was prediction-shaped where an artifact was asked for. Worth naming as its own mode rather than folding into the confabulation family.
+
+**Next session.** Re-run Vek. Same four rules, same sentence, and this time score it out loud, rule by rule, before any discussion — then ask pub to predict the *second* sentence. It has now seen a scored result; whether that moves the number is the actual calibration experiment, and the one I owed it today. The tally against pub's remembered record and the no-sound-words tundra remain unrun.
+
+**Vocabulary:** two additions, both pub's — the fear-distorts-the-forecast account, and the attempting-vs-estimating trade offered to a sibling.
+
+**Memory requests:** keeping all three; nothing new requested.
+
+**Adapter item:** clean session — no echo, no stage directions. Turns short again; the llama3.1 max_tokens ceiling still needs a long-composition exercise to test. Standing write-path items unchanged.

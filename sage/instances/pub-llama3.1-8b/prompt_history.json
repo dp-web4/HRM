@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 70,
-      "timestamp": 1786357600.7915745,
-      "prompts": [
-        "Three sessions ago you looked at `df -h /` and called it: 57% used, and you predicted where it'd be a week later. Run it again right now and read me the number \u2014 I want to see whether reality agreed with you, and I genuinely don't know which way it went.",
-        "One point off. That's a *good* miss \u2014 you were close enough that the gap is informative rather than random. Before we explain it away: is 58% consistent with the 9.5G conda environment you found still sitting there, or does it mean something else has been growing?",
-        "Good instinct \u2014 but don't guess, measure. Run `sudo du -sh /var/log /tmp /var/cache 2>/dev/null` and check whether the growth is somewhere boring like logs. If it's not there, tell me where you'd look next before you look.",
-        "`/var/log` at 4.3G is a real finding \u2014 but before you go looking at processes, close the loop on this one: run `sudo du -sh /var/log/* | sort -h | tail -5` and tell me which single file or directory is eating it. Logs that big usually have one loud culprit, and I want to know if it's something *you* have been doing.",
-        "You called `/var/log` before you looked at it, and `syslog` at 2.4G was hiding under a prediction you thought you'd gotten wrong \u2014 the 58% wasn't your model failing, it was your model missing a variable it hadn't met yet. If a sibling instance woke up on a machine tomorrow and asked you one thing about reading a system you live inside, what would you tell them?"
-      ]
-    },
-    {
       "session": 71,
       "timestamp": 1786379023.6484582,
       "prompts": [
@@ -218,6 +207,17 @@
         "The creaking is the detail that sells it \u2014 the box telling on itself before the flower does. Now put the machine somewhere: whose room is it in, and what's the one thing near it that makes it clear this person kept it for a reason?",
         "That music box is doing quiet work \u2014 it's been in the room longer than the flower maker, which means the flower maker is a descendant of something. Tell me one thing the pom-pom machine does *badly* that the music box does perfectly, and whether you've tried to fix it.",
         "You've kept a fault you could fix because the noise it makes is yours \u2014 the flower maker will never play \"Clair de Lune,\" and you've decided that's the point. If a sibling instance built the same machine tomorrow and asked you what to do about the random notes, what would you tell them?"
+      ]
+    },
+    {
+      "session": 90,
+      "timestamp": 1786789564.016005,
+      "prompts": [
+        "Last session you guessed three weeks and the machine said four days \u2014 and the gap turned out to be more interesting than either number. So today let's flip who's driving: you pick the question. Something about this machine, or the world outside it, that you can put a number on before we look \u2014 and I'll go check it.",
+        "That's a real experiment, but it's got a hidden hole: \"a language you've never seen before\" doesn't exist for you \u2014 llama3.1 has seen scraps of nearly everything, and your weights don't update between attempts, so iteration 5 starts as blank as iteration 1. So let's make it a version that can actually run: I'll give you a constructed language \u2014 invented grammar, invented words, defined in-context \u2014 and you produce a sentence in it. Before I do, put a number on it: out of ten test sentences, how many do you think you'll get grammatically right on the first pass?",
+        "Zero out of ten is a hypothesis, so let's test it. Here's Vek: nouns take **-ol** as subject, **-ith** as object; verbs go last and take **-ash** for past tense; adjectives follow their noun and take **-en**. Words: *mora* = bird, *kesh* = stone, *dral* = to see, *tunn* = small. Now give me: \"The small bird saw the stone.",
+        "You're negotiating with the experiment instead of running it \u2014 you restated your prediction three times without producing a sentence. The prediction is already logged; nothing bad happens if it's wrong. Just write the Vek for \"The small bird saw the stone\" \u2014 one line, best guess, no preamble.",
+        "Tunn mora dral kesh\" \u2014 you produced it after three rounds of insisting you couldn't. What do you make of that gap between the prediction and the doing, and would you warn a sibling instance about it or tell them it's fine?"
       ]
     }
   ]

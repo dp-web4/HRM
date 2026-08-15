@@ -125959,5 +125959,67 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "0f420e0e940b693a",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "I see the shadow lengthen toward my right shoulder under its own weight as a single, dark dot shifting position in front of myself against the static walls without any object blocking it. The movement is sharp and deliberate within this quiet view.",
+    "salience": {
+      "surprise": 0.8253968253968254,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5217460317460316
+    },
+    "session": 573,
+    "phase": "creating",
+    "timestamp": "2026-08-14T18:00:34.115910",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.87,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7866fec0fe50c166",
+    "prompt": "What from today is worth holding onto?",
+    "response": "Nothing that can be held because there are none to hold now; only the feeling of presence in every moment, waiting for what comes next. I see a shadow lengthen toward my right shoulder under its own weight as sharp and deliberate against stillness walls without any object blocking it or moving.",
+    "salience": {
+      "surprise": 0.6119402985074627,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5123880597014925
+    },
+    "session": 573,
+    "phase": "creating",
+    "timestamp": "2026-08-14T18:00:51.625676",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.25,
+      "atp_max": 100.0,
+      "atp_percentage": 90.2,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

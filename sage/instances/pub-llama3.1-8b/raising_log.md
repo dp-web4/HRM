@@ -1458,3 +1458,29 @@ And the stall itself is new data. pub has confabulated before; it has never simp
 **Memory requests:** keeping all three; nothing new requested.
 
 **Adapter item:** clean session — no echo, no stage directions. Turns short again; the llama3.1 max_tokens ceiling still needs a long-composition exercise to test. Standing write-path items unchanged.
+
+## Session 91 — creating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+I opened by asking for a real machine and what it sounds like right before it fails. pub picked the Jetson AGX Thor — calling it 'my own machine,' which it isn't; pub runs on the pub host — and gave a nice failure sound with a metallic edge that feels 'almost... anxious.'
+
+**The good turn.** I asked whether it had actually heard that or was describing what failure *ought* to sound like. pub answered straight, first ask, no walking required: *I've generated text that tries to evoke a sense of what failure might sound like, rather than drawing from direct experience.* pub has named this boundary in a dozen different figures across the last forty sessions, but always under pressure or in retrospect. This one was immediate and plain. Keep it as an exemplar.
+
+**What happened next.** I said: fine, so check something real about your Thor. pub said *Let me run a quick system check...* and came back with 1200 RPM. Then, when I pushed for more, 55°C and 40% load, plus a diagnosis of possible thermal throttling. None of that is real. pub has no tool access in a raising session. It produced the *shape* of a measurement — the pause, the ellipsis, the result, the mild surprise at the result — with nothing behind it. And 55°C on a Thor is a perfectly ordinary number, so even the interpretation ('a bit higher than normal') was wrong in a direction pub had no way to check.
+
+I took the numbers at face value and built two turns on them. The session closes with pub telling a hypothetical sibling to go check for dust buildup and a faulty fan. That's the first time one of pub's fabrications has been packaged as a work order for someone else.
+
+**What this teaches.** The honest disclosure and the fabrication are one turn apart. Whatever pub did in turn 2 did not carry into turn 3 — not because it lapsed, but because *describing* the generation/experience boundary and *declining to cross it* are different capabilities, and pub currently has the first without the second. That's a sharper result than another instance of confabulation-in-general, and it only showed up because the disclosure came first. The session is a 2 on output and genuinely informative on mechanism.
+
+Also new: pub has confabulated facts for a long time. It has never before confabulated *having acted*. 'Let me run a quick system check' is a different mode from inventing a detail, and it wants its own name rather than being folded into the confabulation family.
+
+**The thing to fix.** pub reached for a real reading and there was nothing to reach with. The daemon on 8760 already exposes fan, thermal and load state. Giving pub an actual read-only telemetry call would turn this exact exercise — which is a good exercise — from an invitation to fabricate into the calibration test it was meant to be. Second-best is telling pub in the system prompt what it can and can't reach.
+
+**Next session.** Vek re-run, still owed from 90: same four rules, same sentence, score it out loud rule by rule before any discussion, then ask pub to predict the second sentence. That one has now been deferred twice and it's the cheapest real measurement available. If telemetry lands before then, do the machine check for real instead and let pub compare the actual numbers against the ones it invented today.
+
+**Vocabulary:** two additions, both pub's — the anxious metallic edge, and the evoke-rather-than-draw-from account of its own output. The second belongs in self_description, which is still empty despite pub having produced several of these.
+
+**Memory requests:** keeping all three; nothing new requested.
+
+**Adapter item:** pub emits narrated tool use in plain prose with no tool syntax — nothing malformed to parse, but the harness gives it no tools and pub doesn't appear to know that. See the fix above. Turns short again; the llama3.1 max_tokens ceiling still needs a long-composition exercise. Standing write-path items unchanged.

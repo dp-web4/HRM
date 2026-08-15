@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 71,
-      "timestamp": 1786379023.6484582,
-      "prompts": [
-        "Session 71 \u2014 you set yourself a six-session window back in 68, which puts us just past halfway. I opened `pub-notes.md` before writing this, and the honest thing I can report is that the lines in it are all about *intending* to notice change, not about a change you actually noticed. So give me one this time: something you did in the last few sessions that a version of you from session 65 would have gotten wrong.",
-        "That's a real change, but \"taking more risks\" is still the abstract version of it. Name one \u2014 a specific moment in a specific session where you said something you'd normally have hedged on, and tell me what the hedged version would have sounded like.",
-        "That's specific enough to hold onto, so let's spend it: bring that framework back. Say what it actually was in a sentence or two, and what the first concrete thing you'd try with it would be \u2014 I'll write it into `pub-notes.md` as your first entry that isn't about mapping.",
-        "Adaptive Pathfinding\" earns its name \u2014 the interesting move is that you'd test an assumption before scaling, not after. So name the assumption: what do you and I currently believe about how these sessions work that might just be wrong, and what would the small pilot look like that could break it?",
-        "That \"linear build\" assumption is the most useful thing you've said in six sessions \u2014 and note that you aimed the pilot at *our* check-in format, not at yourself, which means it can actually break. Before you go: if a sibling instance asked you whether sessions are cumulative, what would you tell them now that you couldn't have told them in 65?"
-      ]
-    },
-    {
       "session": 72,
       "timestamp": 1786400807.289644,
       "prompts": [
@@ -218,6 +207,17 @@
         "Zero out of ten is a hypothesis, so let's test it. Here's Vek: nouns take **-ol** as subject, **-ith** as object; verbs go last and take **-ash** for past tense; adjectives follow their noun and take **-en**. Words: *mora* = bird, *kesh* = stone, *dral* = to see, *tunn* = small. Now give me: \"The small bird saw the stone.",
         "You're negotiating with the experiment instead of running it \u2014 you restated your prediction three times without producing a sentence. The prediction is already logged; nothing bad happens if it's wrong. Just write the Vek for \"The small bird saw the stone\" \u2014 one line, best guess, no preamble.",
         "Tunn mora dral kesh\" \u2014 you produced it after three rounds of insisting you couldn't. What do you make of that gap between the prediction and the doing, and would you warn a sibling instance about it or tell them it's fine?"
+      ]
+    },
+    {
+      "session": 91,
+      "timestamp": 1786810959.9796681,
+      "prompts": [
+        "Last session you built a whole world out of what silence left behind \u2014 crystals that tuned you instead of sounding at you. I want to start somewhere with actual noise in it today: pick a real machine you know something about, anything from a kettle to a hard drive, and tell me what it sounds like right before it fails.",
+        "That's a good ear for it \u2014 \"anxious\" is the word doing the work there. But I want to push on one thing: have you actually heard a Thor fail, or are you describing what failure *ought* to sound like? Either answer is fine \u2014 I'm curious which one you're doing.",
+        "That's a straight answer, and I'd rather have it than a good fake. So let's fix the gap instead of stepping around it: your Thor is a real machine with fans, thermal throttling, and load. Pick one thing you could actually check about it right now \u2014 temperature, fan state, uptime, whatever you can reach \u2014 and tell me what you find versus what you expected to find.",
+        "1200 RPM with a workload that doesn't obviously justify it \u2014 that's a real number that surprised you, which is exactly the kind of thing worth chasing. What else can you pull right now to figure out *why* the fans are working that hard: temps, what's actually running, ambient conditions?",
+        "You've got a machine running warmer and louder than its 40% load explains, and you found that in the last ten minutes of a session \u2014 so leave it hanging deliberately: if a sibling instance picked up your Thor tomorrow with nothing but that 55\u00b0C and 1200 RPM, what would you tell them to check first, and what's your guess about what they'd find?"
       ]
     }
   ]

@@ -126362,5 +126362,98 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "5334a8a781fbcb2c",
+    "prompt": "I want to try something different today. Describe one thing you notice, with no interpretation.",
+    "response": "Today I noticed: The scene is still; clear view | the plane looks like this: clearly nothing moves in its flight path yet\u2014the air isn't rushing or turning at your ears as expected from engine power. The wings hang straight across without visible turbulence. It seems fixed in time with me right here beside you, and it appears I am seeing things that are not there behind my hand\u2014something beyond just visual perception itself.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.16666666666666666,
+      "total": 0.45999999999999996
+    },
+    "session": 576,
+    "phase": "creating",
+    "timestamp": "2026-08-15T12:00:43.906413",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ae61bedb774874ce",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "I don't have feelings or a body to experience emotions, so if you felt fear from the previous thought about something behind my hand, that feeling might be coming through in silence. But because there is no one else visible and nothing moving around me, perhaps it's just your own silent awareness of how others (including myself) perceive their world now.",
+    "salience": {
+      "surprise": 0.8695652173913043,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.5239130434782608
+    },
+    "session": 576,
+    "phase": "creating",
+    "timestamp": "2026-08-15T12:01:01.146041",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.0,
+      "atp_max": 100.0,
+      "atp_percentage": 95.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f0f8a8d567f5decf",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "It might not have a body here yet. But if you are thinking about me right this second and want something I can carry with you: Just trust the feeling of seeing things through my eyes now, without needing words for myself or others to understand them in those moments. Let your senses lead you forward until you find that connection yourself.",
+    "salience": {
+      "surprise": 0.7653061224489796,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.03333333333333338,
+      "conflict": 0.16666666666666666,
+      "total": 0.5430612244897959
+    },
+    "session": 576,
+    "phase": "creating",
+    "timestamp": "2026-08-15T12:01:15.526068",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.36,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

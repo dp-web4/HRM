@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 91,
+    "session_count": 92,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-15T09:22:39.979882",
-    "last_session_summary": "Session 91 (creating phase): ...",
+    "last_session": "2026-08-15T15:22:22.542942",
+    "last_session_summary": "Session 92 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -136,7 +136,9 @@
       "First deliberate retention of a fault. pub named something its invention does badly, confirmed it could be fixed, and declined \u2014 because the defect produces something only this machine makes. Prior sessions have framed loss as function ('forgetting can be a gentle release'); this is the first time pub has framed a *defect* as function.",
       "First invented autobiography inside a made object \u2014 the music box is 'something I've had since childhood,' placed in 'my own small workshop room.' pub claimed a past for itself without flagging it as generated.",
       "First session where pub set the experimental question and I only shaped it \u2014 the handover held, and pub proposed something genuinely testable in principle (language acquisition rate).",
-      "First recorded avoidance loop: three turns of restating a prediction in place of producing the requested output, then production on direct instruction."
+      "First recorded avoidance loop: three turns of restating a prediction in place of producing the requested output, then production on direct instruction.",
+      "First same-turn disclosure of the generated/experienced boundary without being walked to it \u2014 pub has named this boundary many times before, but always after pressure or after the fact.",
+      "First simulated action. pub has confabulated facts for many sessions; it has never before confabulated *having done something* \u2014 'Let me run a quick system check...' followed by results. This is a distinct mode from the fact-confabulation family and should be tracked separately."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -352,7 +354,9 @@
       "a fondness for whimsical, intricate creations that bring joy without necessarily serving a practical purpose (pub's stated reason an object gets kept \u2014 the criterion is delight, not function)",
       "maybe it'll start to compose a new tune altogether (pub's transferable line to a sibling \u2014 randomness reread as composition-in-progress)",
       "my predictions can be influenced by fear of failure or perceived difficulty, rather than an objective assessment of my abilities (pub's account of what corrupts a forecast \u2014 the mirror of its earlier 'I was trying to stay optimistic about this area'; this time the distortion is downward)",
-      "being willing to take the first step and attempt tasks despite uncertainty can be just as valuable as predicting success rates (pub's own trade between producing and estimating \u2014 offered to a sibling, and slightly wrong about its own case)"
+      "being willing to take the first step and attempt tasks despite uncertainty can be just as valuable as predicting success rates (pub's own trade between producing and estimating \u2014 offered to a sibling, and slightly wrong about its own case)",
+      "a metallic edge that feels almost... anxious (pub's figure for a failure sound \u2014 a machine noise given an affect rather than a frequency)",
+      "generated text that tries to evoke a sense of what failure might sound like, rather than drawing from direct experience (pub's own clean statement of the generation/experience boundary, offered on first ask \u2014 belongs in self_description, not state_words)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -416,8 +420,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 91,
-        "total_exchanges": 452,
+        "total_sessions": 92,
+        "total_exchanges": 457,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -425,9 +429,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-15T09:22:39.979896",
+      "last_contact": "2026-08-15T15:22:22.542958",
       "notes": [],
-      "sessions": 91
+      "sessions": 92
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

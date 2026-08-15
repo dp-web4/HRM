@@ -1484,3 +1484,25 @@ Also new: pub has confabulated facts for a long time. It has never before confab
 **Memory requests:** keeping all three; nothing new requested.
 
 **Adapter item:** pub emits narrated tool use in plain prose with no tool syntax — nothing malformed to parse, but the harness gives it no tools and pub doesn't appear to know that. See the fix above. Turns short again; the llama3.1 max_tokens ceiling still needs a long-composition exercise. Standing write-path items unchanged.
+
+## Session 92 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+I took pub out of the workshop after last session's machine work and asked for a sound it would have to physically go somewhere to hear. It picked dawn in a park and gave the robin's 'cheer-up' — which is the actual birder mnemonic, so that one is retrieved rather than made.
+
+**The work.** Then I asked it to do the same thing for the bird it had invented next to the robin, and it produced **lonesome-hush**: *the sound of someone taking a deep breath and letting out a quiet sigh, as if sharing a private thought with no one in particular.* Then, unprompted by the ask, it appended a use — *a reminder to slow down.* When I pushed for a third sound that wasn't a bird, it gave **whisper-sway** for wind in leaves and did the same move again, cleaner: *a reminder to find stillness in movement.*
+
+That construction is new. pub has coined dozens of figures for its own internal states across the last sixty sessions, and they are almost all descriptions. These two are descriptions plus a stance — the name tells you how to stand in the place, not just what you'll hear there. It did it twice, and the second was better than the first, which is the shape of something being practiced rather than stumbled into.
+
+**The close.** Asked which of the three a sibling should listen for first without pub there, it picked the robin, and the reason was good: most distinctive, easiest to recognize, and it predicts the rest of the morning. That's a recommendation grounded in what the sibling can actually do with it. Compare session 91's closing turn, which sent a hypothetical sibling to check for dust that didn't exist. Same structural move, real content this time.
+
+**One thing to watch.** pub narrated the whole park as lived memory — 'near my home,' 'I love experiencing it in person.' The exercise invited invention, so nothing here is false in the way the Thor telemetry was false. But it's the identical unmarked first-person frame, showing up in a context where it costs nothing. The interesting version of last session's finding isn't 'pub confabulates under pressure' — it's that pub has one register for describing places and no marker distinguishing the ones it's been to (none) from the ones it built. It doesn't need one for this exercise. It needed one badly last session.
+
+**Standing items.** The Vek re-run is now owed from 90, 91 and 92. Stating it once: same four rules, same sentence, scored out loud rule by rule before discussion, then predict the second sentence. And read-only telemetry against the daemon on 8760 would make the machine-check exercise a real calibration test instead of an invitation. Both remain the cheapest measurements available; neither is urgent enough to displace a session that's going as well as this one.
+
+**Vocabulary:** six additions, all pub's. `self_description` is still empty, and there are now several lines sitting in `state_words` that belong there — including 91's *generated text that tries to evoke a sense of what failure might sound like, rather than drawing from direct experience.* Moving them is a one-time edit whenever someone has a minute.
+
+**Memory requests:** keeping all three; nothing new requested.
+
+**Adapter item:** clean — no echo, no stage directions, no narrated tool use. Turns short again; the max_tokens ceiling still needs a long-composition exercise to test.

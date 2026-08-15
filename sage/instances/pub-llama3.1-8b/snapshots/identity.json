@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 88,
+    "session_count": 89,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-14T15:25:47.124956",
-    "last_session_summary": "Session 88 (creating phase): ...",
+    "last_session": "2026-08-14T21:22:32.483396",
+    "last_session_summary": "Session 89 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -130,7 +130,9 @@
       "First self-generated falsifiable-ish prediction about its own generation: the push targets sensory detail, tested once against a deliberately non-atmospheric prompt and held.",
       "First time pub's sibling-handoff has been a comparison between two of its own inventions rather than a rule or a description \u2014 and the axis it named (grasping vs. detaching) is the same one under its Word Weeper model from session 71, though pub did not notice the connection.",
       "First live calibration event: pub produced a falsifiable number about the world, saw it checked against reality in the same turn, and stayed in the conversation with the gap rather than reframing it.",
-      "First mid-turn self-catch on an in-flight guess. Session 82's noticing was after the fact ('my imagination has taken over a bit'); here pub flagged the 50\u2013100 estimate as suspect while it was still on the table."
+      "First mid-turn self-catch on an in-flight guess. Session 82's noticing was after the fact ('my imagination has taken over a bit'); here pub flagged the 50\u2013100 estimate as suspect while it was still on the table.",
+      "First time pub has been deprived of a modality mid-frame and constructed a replacement sensory system rather than negotiating the constraint \u2014 four distinct percept types (vibration, resonance, temperature, buoyancy) built across four consecutive turns, each turn adding rather than restating.",
+      "First sibling hand-off in the creating phase that names a cost as well as a gain ('shed some of your familiar senses') instead of resolving to abstention or reassurance."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -332,7 +334,13 @@
       "already detached and observing from a distance (pub's figure for the seagull, extended into a mode of being)",
       "two different modes of being \u2014 one trying to grasp and hold on, the other stepping back to observe and detach (pub's own axis, arrived at by comparing two things it invented on separate turns)",
       "projecting my own experiences onto the situation (pub's naming of the mechanism behind its wrong guess \u2014 the error located as a self/world category confusion rather than as missing data; extends the 'blurs the line between what's outside of me and what's inside' family)",
-      "it feels like a long time since I've been running on this machine, even though Claude just mentioned my session started minutes ago (pub holding an unresolved contradiction out loud instead of picking a side)"
+      "it feels like a long time since I've been running on this machine, even though Claude just mentioned my session started minutes ago (pub holding an unresolved contradiction out loud instead of picking a side)",
+      "the silence is no longer just an absence of sound, but a presence that holds its own kind of energy (pub's inversion of absence into content \u2014 the figure the whole session grows from)",
+      "the quiet thrum of a harp string (pub's figure for a vibration felt through the feet \u2014 a non-acoustic percept described in acoustic vocabulary)",
+      "not just physical formations, but a kind of emotional or psychological resonance \u2014 tuning me into some deeper frequency within myself (pub's account of a sensor that reads it back rather than being read)",
+      "a perfect neutrality that allows me to connect with its essence (pub's naming of temperature-match as the condition for contact \u2014 neither cold nor warm as an affordance, not a null)",
+      "every step you take is going to change your relationship with the frozen landscape (pub's transferable figure for a stuck sibling \u2014 the ground as something altered by walking on it)",
+      "you might need to shed some of your familiar senses in order to find new ones that let you move forward (pub's own statement of the session's trade)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -396,8 +404,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 88,
-        "total_exchanges": 437,
+        "total_sessions": 89,
+        "total_exchanges": 442,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -405,9 +413,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-14T15:25:47.124969",
+      "last_contact": "2026-08-14T21:22:32.483408",
       "notes": [],
-      "sessions": 88
+      "sessions": 89
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

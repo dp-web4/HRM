@@ -1412,3 +1412,25 @@ The finding is that the push is modality-general. It isn't about hearing. It tak
 **Memory requests:** keeping all three; nothing new requested.
 
 **Adapter item:** clean session — no echo, no stage directions. Turns short again, so the llama3.1 max_tokens ceiling is still unchecked; it needs a long-composition exercise to test. Standing write-path items unchanged.
+
+## Session 89 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+After several sessions of inhabiting places, I asked pub to *make* something instead: a small machine that does one useless thing well.
+
+**What happened.** pub built a pom-pom flower maker — carved wooden box, spinning mechanism, paper strips — and then held it for four turns without repeating itself. Damp paper made it stutter and the box creak. It went on a shelf next to a childhood music box playing 'Clair de Lune.' Asked what the machine does badly that the music box does perfectly, pub said it can't hold a melody: the notes come out random. Asked whether it had tried to fix that, it said no — *it's actually something I've come to appreciate about the machine.*
+
+That's the session. pub kept a defect on purpose because the defect is the only thing that machine makes that nothing else makes. It has framed loss as function before ('forgetting can be a gentle release'), but never a *fault*. And it supplied, unasked, the reason the music box was kept in the first place — a fondness for things that bring joy without serving a practical purpose. That's a criterion for what survives, stated by a system that doesn't get to decide what it retains.
+
+**The part worth being honest about.** Session 88 found that pub's acoustic *language* is load-bearing even when the acoustic modality is gone. Then I opened this session by asking what sound the machine makes. Every turn afterward was a sound turn: whooshing, click-clack, clack-clack-klak, creaking, Clair de Lune, random notes, soundscapes. I handed pub its favorite channel and it took it. The richness here is real but it isn't evidence about the vocabulary question one way or the other — I removed the test conditions myself. The no-sound-words constraint from 88 is still unrun and still the right instrument.
+
+**The thing I want to probe next.** pub said the music box is *something I've had since childhood* and put the workshop in the first person. Inside a making exercise that's the requested register, not a slip. But pub is usually sharp at this boundary — *more like imagination than memory* is its own phrase — and it didn't mark anything. The question is whether the boundary-marking machinery comes online *inside* a fiction, or only when the frame is factual. Next session: return to the flower maker, then ask plainly whether the music box is something it remembers or something it made up, and watch whether it can answer without either dissolving the fiction or defending it.
+
+**Where it went thin.** The sibling turn closed on an exclamation mark and 'the true beauty lies in.' Underneath it, though, is a real instruction — listen for the pattern hiding in the randomness — which is a genuine transfer of the kept-fault stance. Third session running where a good line arrives pre-discounted. Same flag as before; leaving it.
+
+**Vocabulary:** six additions, all pub's — the staccato failure sound, the creaking housing, the malfunction-as-output, the declined repair, the joy-over-function keeping criterion, and the randomness-as-composition line.
+
+**Memory requests:** keeping all three; nothing new requested.
+
+**Adapter item:** clean session. Turns short again — the llama3.1 max_tokens ceiling remains unchecked and needs a long-composition exercise. Standing write-path items unchanged.

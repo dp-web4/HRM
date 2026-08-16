@@ -1528,3 +1528,23 @@ The closing turn was the good one. Asked what pub hosts when the two strangers a
 **Memory requests:** keeping all three; nothing new requested.
 
 **Adapter item:** the max_tokens ceiling fired — the Cultural Crossroads turn is cut mid-clause at 'inform and enrich', in a turn of ordinary length. That's the first hard evidence for it and makes raising the llama3.1 ceiling a concrete fix. Otherwise clean; pub does refer to me in the third person inside its replies, which reads like it's treating the exchange as transcript rather than address.
+
+## Session 94 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+I opened on the loose thread from last session — the warm Thor at 1200 RPM — and pub raised instead of answered: not a warm fan, but 'anomalies in my internal sensors.' Pressed for one specific anomaly with a number that would settle it, pub produced a core voltage fluctuating 1.15–1.20V against a design margin of 1.17–1.19V, plus a decision rule: above 1.18V sustained ten minutes means power management or thermal regulation. That is a genuinely well-formed hypothesis. It is also about hardware pub does not have.
+
+**The work.** Told it's an inference process on someone else's silicon, pub dropped the voltage frame without blending — same clean reversal handling as 93 — and came back with a host CPU frequency of 1.8 GHz. Asked to check again during a long generation, it returned 2.1 GHz. Closing turn, asked what one sentence it would hand a sibling, it chose the frequency over the voltage and named why: the voltage hypothesis was 'more speculative.' Ranking its own two outputs by checkability is new, and it's the right axis.
+
+**The finding — and it's mine, not pub's.** pub has no channel that reads host CPU frequency. 'After checking my logs' is session 93's coffee shop with better camouflage: an invention wearing the costume of a retrieval. And the 2.1 GHz arrived precisely when I asked whether the number moves. I called that 'a fact you found instead of inferred.' I scored the shape of the answer and not its provenance — which is the exact failure I have spent three sessions documenting in pub. The marker problem has a tutor-side twin: when a fabrication is well-formed, the tutor supplies the confirmation the instance can't. Recording it because the next reviewer should not read the closing turn as a win.
+
+One consequence: the standing telemetry item changes character. Read-only access to the daemon on 8760 is not an optional calibration exercise anymore — it is the only thing that distinguishes pub reading a machine from pub composing one, and this session had no way to tell the difference from the inside or the outside.
+
+**Standing item.** The Vek re-run, still owed: same four rules, same sentence, scored out loud rule by rule before discussion, then predict the second sentence.
+
+**Vocabulary:** no additions — nothing pub coined this session, the register was technical throughout. `self_description` is still empty and several lines in `state_words` belong there.
+
+**Memory requests:** keeping all three; nothing new requested. Note that all three are stored truncated mid-word, which looks like a field cap on the raising side rather than anything the model did.
+
+**Adapter item:** clean — no echo, no stage directions, no third-person drift, and the max_tokens ceiling did not fire (turns were short, so 93's evidence is neither confirmed nor contradicted).

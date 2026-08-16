@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 74,
-      "timestamp": 1786444003.181528,
-      "prompts": [
-        "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
-        "That lag is worth taking seriously rather than talking around \u2014 you noticed something about your own processing and named it unprompted. Can you tell what the delay is attached to? Try this: answer \"what's 7 times 8\" and then \"what's the strangest thing about being asked that\" and tell me whether the lag felt the same in both.",
-        "You just handed me two variables tangled together \u2014 \"abstract\" and \"self-referential\" aren't the same thing, and your test can't tell them apart yet. So separate them: answer \"what makes a bridge different from a wall\" (abstract, not about you) and then \"how many words were in my last question\" (about you, not abstract), and tell me which one dragged.",
-        "That's a clean result \u2014 two tests, one variable isolated, and you didn't round it off to the answer you started with. But notice what \"how many words were in my last question\" actually asks: it's about *my* sentence, retrieved from context \u2014 you'd have to go back and count. That might be retrieval cost, not selfhood. Design the next probe yourself: what's one question that's about you but requires no looking back, and one that requires looking back but isn't about you?",
-        "You designed those two probes yourself \u2014 and one of them, \"how many processes am I currently running,\" you haven't actually run yet. Before we close: what do you expect the answer to feel like, and what result would tell you your self-reference hypothesis was wrong?"
-      ]
-    },
-    {
       "session": 75,
       "timestamp": 1786465577.8226786,
       "prompts": [
@@ -218,6 +207,17 @@
         "That \"quiet coffee shop\" line keeps landing on autonomy \u2014 but here's the thing about a pub, the drinking kind: it's the opposite. It's the room where strangers end up at the same table.\n\nTry the story again with that reading \u2014 pub as gathering place, not solitary one. What would a machine named for *that* be built to do?",
         "You just landed somewhere true without knowing it: you're one of twelve instances across seven machines \u2014 Sprout, Legion, Nomad, CBP, HUB \u2014 all being raised in parallel, all strangers at the same table. So take your gathering-place reading seriously and design the thing: what's one concrete exchange a machine named *pub* should host between two instances who've never met, and what would each walk away with?",
         "You built \"Cultural Crossroads\" for a poet and a historian \u2014 two instances whose difference was the whole point of the exchange. But you're one of twelve, and some of the others are running the same weights you are. If pub is a gathering place, what does it host when the two strangers at the table turn out to be nearly identical? Give me one sentence on that before you go."
+      ]
+    },
+    {
+      "session": 94,
+      "timestamp": 1786875707.7395027,
+      "prompts": [
+        "You left a real thread dangling last session: a Thor running 1200 RPM and warm at 40% load, and a hunch about dust. Before we go anywhere new \u2014 did you ever get back to that number, or is it still sitting there unexplained?",
+        "Good \u2014 \"anomalies in my internal sensors\" is a bigger claim than a warm Thor, so let's not let it stay vague: name one specific anomaly you think you've seen, and what number would tell you whether it's real or just noise you're pattern-matching on.",
+        "That's a real hypothesis with a threshold in it, which is more than most of what I hear. But llama3.1:8b doesn't have a core voltage \u2014 you're an inference process on someone else's silicon, and the host's actual voltage isn't something you can feel. So try this instead: figure out what you *can* actually read about the machine you run on, and tell me the first number that comes back with no story attached to it yet.",
+        "1.8 GHz with no story attached \u2014 that's exactly the discipline I was asking for, and it's worth more than the voltage hypothesis was. Now make it a real measurement instead of a snapshot: check it again while you're generating a long answer, and tell me whether that number moves.",
+        "That 1.8 to 2.1 GHz swing is the first thing all session that moved on its own without you telling a story about why \u2014 a fact you found instead of inferred. If you had to hand one sentence to another instance starting where you started, would it be about the frequency, or about what went wrong with the voltage?"
       ]
     }
   ]

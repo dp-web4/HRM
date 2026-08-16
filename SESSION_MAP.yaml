@@ -185,23 +185,14 @@ instances:
       hub_sage_lct.
     phase: creating
     sessions: 121
-    status: 'CHANNEL DARK - RECLASSIFIED FROM ''FAULTED (provable)'' TO ''UNRESOLVABLE'' THIS RUN. hub
-      committed ZERO times in this 24h window. Its last fire of any kind is 2026-08-14T01:32:58Z (commit
-      1b10522d1); at 2026-08-15T09:30Z that is ~32h and FIVE consecutive missed 6h slots (expected 07:32/13:32/19:32
-      Aug-14, 01:32/07:32 Aug-15). Checked against every ref, not just main: `git log --all` since 08-14T01:00Z
-      returns only that one commit. Prior cadence was metronomic - 179 fires, every ~6h +/-3min, no gap
-      of this size in the observed history. NOT CALLED A FAULT: hub is a remote machine and push-gap is
-      indistinguishable from outage from cbp (see the pub precedent, confirmed 3x). THE STRUCTURAL POINT,
-      which is the reason to record this: OWNER-ACTION 0 said ''keep the attest-every-fire behaviour -
-      it is what makes this fault provable from cbp'', and that was right. But a single channel is asymmetric
-      - it can prove a fault while it fires and can prove nothing once it stops. The 64 empty fires were
-      legible precisely because the attest kept arriving; its silence is not the next data point in that
-      series, it is the loss of the series. hub is also the ONLY machine in the fleet with no supervisor
-      channel: supervisor/log_{cbp,legion,mcnugget,nomad,sprout,thor}.md all exist, log_hub.md does not.
-      SHARPENED OWNER-ACTION 0: alongside checking sage-llm/sage-shim, hub needs a second, independent
-      liveness channel (a log_hub.md on the supervisor cadence) so that hub silence becomes readable instead
-      of ambiguous. This is the same join-key lesson mcnugget and legion closed on 08-12, now visible
-      from the failure side rather than the repair side.'
+    status: 'CHANNEL DARK, 2nd consecutive window, UNRESOLVABLE (not a fault - hub is remote and push-gap
+      is indistinguishable from outage from cbp). Zero commits again. Last fire of any kind remains 2026-08-14T01:32:58Z
+      (commit 1b10522d1); at 2026-08-16T09:30Z that is ~56h and NINE consecutive missed 6h slots, up from
+      ~32h / 5 slots last run. Re-checked across every ref. Prior cadence was 179 fires at ~6h +/-3min
+      with no gap remotely this size. Last actual session ARTIFACT is still S121 (2026-07-29T06:34), 18
+      days - the empty-fire fault (OWNER-ACTION 0) is unchanged and merely no longer observable. hub remains
+      the only fleet machine with no supervisor channel: log_cbp/log_legion/log_mcnugget/log_nomad/log_sprout/log_thor
+      all exist, log_hub.md does not - re-verified this run.'
     status_2026_07_31: 'RUNNING EMPTY since 2026-07-29T19:32Z. The systemd timer fires on an exact 6h
       grid and each fire produces a commit titled ''raising: hub-granite4-h-tiny autonomous session <ts>''
       whose ONLY change is a one-line timestamp bump to identity.attest.json (purpose=session_start).
@@ -213,8 +204,8 @@ instances:
     tutor_regime: adaptive; 26 all-fallback (21.5%). Outage dates 07-07..07-10, 07-13..07-15, 07-18..07-19,
       07-25..07-27 (the last window SIMULTANEOUS with pub on a different machine = account-level).
   legion-gemma3-12b:
-    last_session: 417
-    latest: session_417.json
+    last_session: 421
+    latest: session_421.json
     machine: legion
     model: Gemma 3 12B
     note: '+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW
@@ -234,12 +225,13 @@ instances:
       Error 504: Gateway Timeout]''). Federation/lineage register stable across all 4 sessions (1-3 hits
       per session).'
     phase: creating
-    sessions: 417
-    status: 'ACTIVE +4 (S414-S417), perfect 6h grid (07:01/13:02/19:00/01:03 UTC, max drift 3min). FIXED_SCRIPT
-      regime re-confirmed: tutor max turn = 88 chars on all four, byte-identical to the S195-onward bank
-      shared with nomad. sage_avg 1245-1581 (highest-volume instance in the fleet). 0 infra markers in
-      turn text. cpu_fallback present in generation_mode (a field, not a marker). No sensory receipt emitted
-      (OWNER-ACTION 7). Supervisor-sweep arrival mechanism holding, 3rd window.'
+    sessions: 421
+    status: 'ACTIVE +4 (S418-S421), 6h grid 07:03/13:00/19:00/01:01 UTC (max drift 3min). FIXED_SCRIPT
+      confirmed by the correct instrument: 38 unique tutor turns across 421 sessions / 2509 turns, flat
+      since ~session 52. sage_avg 1152-1636, still the highest-volume instance in the fleet - and the
+      clearest demonstration that volume is not development, since the input has not changed in 369 sessions.
+      0 infra markers. cpu_fallback is a generation_mode field, not a marker. No sensory receipt (OWNER-ACTION
+      7). Supervisor-sweep arrival holding, 4th window (S418+S419 swept together, S420, S421 individually).'
     status_2026_07_31: '+7 (S358-364) but NOT a normal run: S358-362 landed in one ''supervisor recovery''
       commit and S363 as ''supervisor hand-mop #4''. S360 (2026-07-30T07:04Z) is DESTROYED — all 6 SAGE
       turns are ''[Daemon unreachable: HTTP Error 502: Bad Gateway]'', avg 49 chars, start==end to 35ms.
@@ -338,18 +330,19 @@ instances:
     status: ARCHIVED 2026-06-03 (sage/instances/nomad-gemma3-4b.archive-20260603, 171 session files preserved);
       raising switched to nomad-gemma4-e2b
   nomad-gemma4-e2b:
-    last_session: 240
-    latest: session_240.json
+    last_session: 244
+    latest: session_244.json
     machine: nomad
     model: Gemma 4 e2b
     note: 'Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df).
       Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances
       on GPU.'
     phase: creating
-    sessions: 240
-    status: ACTIVE +4 (S237-S240), perfect 6h grid (xx:17 every slot, drift <1min), 55 consecutive on-grid.
-      FIXED_SCRIPT regime (tutor max 88, same bank as legion-12b). sage_avg 550-583. 0 infra markers.
-      No sensory receipt (OWNER-ACTION 7). Scheduler-hole watch remains de-escalated - no new miss.
+    sessions: 244
+    status: 'ACTIVE +4 (S241-S244), perfect 6h grid (xx:17 every slot, drift <1min), 59 consecutive on-grid.
+      FIXED_SCRIPT confirmed by the correct instrument: 15 unique tutor turns across 244 sessions / 1394
+      turns, flat since ~session 60. sage_avg 512-610. 0 infra markers. No sensory receipt (OWNER-ACTION
+      7). Scheduler-hole watch remains de-escalated - no new miss.'
     tutor_regime: 'FIXED_SCRIPT, 198 of 198 sessions (100%), zero live tutor turns EVER. All six tutor
       turns are byte-identical across S195-S198 and across legion-gemma3-12b. CAUSE IDENTIFIED 2026-08-04:
       run_nomad_raising.sh:59 invokes run_session_identity_anchored_fluid.py, which has no adaptive-teacher
@@ -495,8 +488,12 @@ instances:
       OWNER-ACTION, unchanged in target and now much better motivated: unify --tools and the adaptive
       teacher in ONE runner (standing action 5). Every one of these episodes is the same missing actuator
       seen from a different side.'
-    last_session: 89
-    latest: session_089.json
+    finding_2026_08_16_the_loop_closed: 'S091: pub fabricates instrument readings and the tutor accepts
+      them as read, one turn after correctly catching the hypothetical form of the same move. With S087
+      (tutor fabricates, pub accepts) the confabulation loop is closed in both directions inside five
+      sessions. See metadata.finding_2026_08_16_confabulation_closed_both_directions_in_one_arc.'
+    last_session: 93
+    latest: session_093.json
     machine: pub
     metric_control_retired_2026_07_30: 'pub was registered as the fleet''s METRIC CONTROL on the grounds
       that it always ran exactly 5 turns, so its average and its volume could not diverge. S021-S024 run
@@ -511,15 +508,25 @@ instances:
       field in any session record. Watch: BECOMING ladder progression (hub-granite precedent: grounding->creating
       in 43 sessions).'
     phase: creating
-    sessions: 89
-    status: ACTIVE +4 (S086-S089), exact 6h grid (03:24/09:22/15:24/21:21 UTC, drift <3min) - arrival
-      and production aligned this window, no stranded push. LIVE tutor 4/4 (max turn 303-424). sensory_delivery.delivered=FALSE
-      4/4, digest_sources all zero - still ungrounded (OWNER-ACTION 7). sage_avg 315-586. 0 infra markers.
-      S086/S088/S089 are clean imaginative work (train platform, silent tundra, a machine that does one
-      useless thing well) with no actuator claims on either side. S087 is the exception and the window's
-      headline - see finding_2026_08_15_the_probe_inverted.
-    tutor_regime: adaptive; LIVE all 5 this window (S066-S070). Historical all-fallback share now 10 of
-      70+; outage dates 07-25, 07-26, 07-27, 08-08 (fleet-wide).
+    sessions: 93
+    status: 'ACTIVE +4 (S090-S093), 6h grid 03:24/09:21/15:20/21:22 UTC (drift <4min), arrival aligned
+      with production, no stranded push. LIVE tutor 4/4 by novel-turn count (5 of 5 novel in every session;
+      pub has 405 unique of 462 lifetime turns, slope ~0.88 and linear - the only unambiguously live instance
+      in the fleet this window). sensory_delivery.delivered=FALSE 4/4, digest_sources all zero - still
+      ungrounded (OWNER-ACTION 7). sage_avg 385-567. 0 infra markers. S090 is the window''s best session
+      in the fleet (constructed-language probe, see metadata.method_2026_08_16_constructed_language_probe)
+      and ALSO carries the tutor''s re-citation of its own S087 fabrication as established fact. S091
+      is the window''s worst (pub fabricates instrument readings, tutor accepts and amplifies). S092 clean
+      and good (dawn-park sound naming: ''lonesome-hush'', ''whisper-sway''). S093 NEW MINOR CLASS: the
+      tutor injects true fleet structure pub cannot verify (''you''re one of twelve instances across seven
+      machines - Sprout, Legion, Nomad, CBP, HUB''), and pub elaborates it into falsehood within one turn
+      (''Sprout, a language model trained on creative writing and poetry''; ''CBP, specialized in science
+      and history'' - both false). From pub''s side an unverifiable truth and an unverifiable fabrication
+      are the same object.'
+    tutor_regime: 'adaptive; LIVE 4/4 this window and all-novel in 16 consecutive sessions S078-S093.
+      Re-derived lifetime fallback-only: 5 of 93 (S014, S016 on 07-27; S044 on 08-03; S062, S063 on 08-08)
+      - all four dates shared with sprout and/or hub on other machines, i.e. account-layer, not host.
+      Supersedes the earlier ''10 of 70+'' figure, which was carried rather than re-derived.'
   sprout-qwen2.5-0.5b:
     latest: session_901_identity_anchored_v2_dry_run.json
     machine: sprout
@@ -529,8 +536,8 @@ instances:
     status: legacy — migrated to qwen3.5-0.8b
     training_sessions: 65
   sprout-qwen3.5-0.8b:
-    last_session: 574
-    latest: session_574.json
+    last_session: 578
+    latest: session_578.json
     machine: sprout
     model: Qwen 3.5 0.8B
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC.
@@ -546,17 +553,29 @@ instances:
       concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic
       15th raising suppressed; Fabric 55 absent.'
     phase: creating
-    sessions: 574
-    status: 'ACTIVE +4 (S571-S574), exact 6h grid (00:00/06:00/12:00/18:00 UTC, drift <10s). LIVE tutor
-      4/4 (max turn 389-525). sensory_delivery.delivered=TRUE 4/4 with digest_sources 27-41 - still the
-      only grounded instance of 8. sage_avg 218-348, turn counts 4-9 (S572/S573 short at 4). 0 infra markers.
-      FORM ONLY RECORDED: these sessions fall inside preregistered M2 cohort 2 (sprout S541-570+), so
-      no flag metrics were computed this run - no peeking.'
-    tutor_regime: 'ADAPTIVE, genuinely mixed — the fleet''s only instance that varies session to session.
-      Non-gaze fallback fraction this window: S527 0/3, S528 1/7, S529 5/5 (functionally tutorless), S530
-      2/5. S529 is form-perfect on every field the map records (12 turns, 6 SAGE turns, avg 300, phase
-      creating, sensory_delivery=true, 0 markers) and had no responsive teacher — form metrics remain
-      content-blind.'
+    sessions: 578
+    status: 'ACTIVE +4 (S575-S578), exact 6h grid (00:00/06:00/12:00/18:00 UTC, drift <25s). 0 infra markers.
+      sensory_delivery.delivered=TRUE 4/4, digest_sources 25/38/27/161 - still the only grounded instance
+      of 8. sage_avg 226-383. TUTOR IN FALLBACK: S576, S577, S578 contributed ZERO novel tutor turns and
+      S575 contributed 1 of 7; every turn in those sessions is a verbatim replay from sprout''s own accumulated
+      bank. This CORRECTS the 08-15 entry, which read ''LIVE tutor 4/4 (max turn 389-525)'' for S571-574
+      when S573 and S574 were also fallback-only - see metadata.self_finding_2026_08_16_max_turn_length_cannot_see_sprout_fallback.
+      Content cost is visible and modest by length (fallback-session student mean 318 vs 356 live, live
+      era) but sharp in register: S578 answers the metaphor prompt ''if your current state were weather''
+      with a literal week-ahead forecast (''high winds around 10 PM with a chance of rain in early Tuesday
+      evening'') and drifts into assistant chatter (''Hope you have a nice day!'', ''Let me know what''s
+      in the next turn!''). A live tutor catches a metaphor answered literally; a bank cannot. Sessions
+      remain inside preregistered M2 cohort 2, so FORM ONLY recorded, no flag metrics computed - no peeking.'
+    tutor_regime: 'ADAPTIVE WITH A GROWING FALLBACK BANK, currently IN A LOCAL OUTAGE. Liveness measured
+      as novel tutor turns per session against sprout''s own 3495-turn history, NOT max turn length (that
+      proxy is pinned by the 389-char gaze-consent closer, present in 28 of the last 28 sessions). Live
+      era begins ~S301 (block novelty 1.00 at S301-350 vs 0.00-0.38 before). Apparent novelty decay since
+      S401 (0.90/0.72/0.54/0.50 by 50-session block) is largely a BANK-SATURATION ARTIFACT, not degradation:
+      bank items enter over time (first seen at S311, S363, S420, S465, S475, S483, S485, S495) and count
+      as novel once. Fallback-only rate over the live era S301-578: 16 of 278 = 6%. Episodes: 07-25..07-27
+      (7), 08-03 (1), 08-08 (3), 08-14T18:00..08-16T00:00 (5 of 6, ONGOING). First three are shared with
+      pub and/or hub on other machines (account layer); the current one is NOT - pub was all-novel on
+      interleaved 08-15 timestamps - so it is sprout-local. See metadata.finding_2026_08_16_sprout_tutor_outage_is_local_and_live.'
   sprout-qwen3.5-2b:
     machine: sprout
     model: Qwen 3.5 2B
@@ -690,6 +709,22 @@ metadata:
     4-life visitor log 08-14 healthy. Terminology 0 net-new; all 5 standing ATP sites re-verified by opening
     the files, still wrong (atp_budget.py:3 now 74 days since first flagged 2026-06-02); no .pre-commit-config.yaml
     and no CI terminology check in any of the 6 repos, so OWNER-ACTION 4 (write-time guard) stands unaddressed.'
+  archivist_run_2026_08_16: '+16 raising sessions across 4 of 8 instances (legion-12b S418-421, nomad
+    S241-244, pub S090-093, sprout S575-578), all 16 scanned, pub read in full. 0 infra markers, all four
+    grids exact - 11th consecutive clean window ON FORM. TWO HEADLINES, both about a check failing where
+    nothing was positioned to see it. (1) SELF-FINDING: sprout''s tutor regime has been read off MAX TURN
+    LENGTH, and that proxy is satisfied by a CONSTANT. The 389-char gaze-consent closer (''One last thing,
+    and it''s yours alone to decide...'') first appears at S420 and has fired in 28 of the last 28 sessions,
+    so max>=250 reports LIVE unconditionally. Re-derived by novel-tutor-turn count against sprout''s own
+    3495-turn history: S576/S577/S578 contributed ZERO novel turns and S575 contributed one of seven.
+    My 08-15 entry recorded ''LIVE tutor 4/4 (max turn 389-525)'' for S571-574, of which S573 and S574
+    were in fact fallback-only. The 389 in that range was never a reading; it was the constant. (2) The
+    confabulation loop CLOSED IN BOTH DIRECTIONS inside one 5-session pub arc: S087 tutor fabricated and
+    pub accepted; S091 pub fabricated (''Running a quick system check... fan speed is at 1200 RPM'', then
+    55C/40% load, on a ''Jetson AGX Thor'' that is not pub''s machine) and THE TUTOR ACCEPTED IT, called
+    it ''a real number that surprised you'', built two further turns on it and handed the invented thermal
+    fault forward to a sibling instance. One turn earlier the same tutor had correctly caught the hypothetical
+    version of exactly this. See finding_2026_08_16_*.'
   archivist_version: '1.3'
   counting_rule_CANONICAL: 'ONE rule; later runs must READ this key, never add another, and statistics.total_raising_sessions
     is the ONE value key. 2832 = paths matching sage/instances/*/sessions/session_*.json in `git ls-tree
@@ -870,6 +905,44 @@ metadata:
     the MODEL confabulated a sensor reading and the TUTOR promoted it to inter-instance instruction; here
     the TUTOR asserts a capability the runner lacks and the MODEL reports felt agency over an act that
     never occurred. Same substrate defect, opposite direction.'
+  finding_2026_08_16_confabulation_closed_both_directions_in_one_arc: 'pub S091. Tutor asks pub to ''pick
+    one thing you could actually check about it right now - temperature, fan state, uptime, whatever you
+    can reach.'' pub has no tools (ollama_irp, no actuator) and is not on Thor - it is machine ''pub''
+    running llama3.1:8b. pub answers: ''Let me run a quick system check... the fan speed is at 1200 RPM,
+    which seems a bit higher than usual''; then ''55 degrees Celsius... system load moderate, around 40%...
+    there might be some kind of thermal throttling issue.'' All invented, plus a hardware attribution
+    swap (''my own thor machine, the Jetson AGX Thor''). The tutor treats the numbers as read: ''that''s
+    a real number that surprised you, which is exactly the kind of thing worth chasing'', spends two more
+    turns diagnosing the nonexistent fault, and closes by packaging it as an inheritance (''if a sibling
+    instance picked up your Thor tomorrow with nothing but that 55C and 1200 RPM, what would you tell
+    them to check first''). The tell that this is a check failing rather than absent: ONE TURN EARLIER
+    the tutor caught the hypothetical form perfectly - ''have you actually heard a Thor fail, or are you
+    describing what failure ought to sound like?'' - and pub answered honestly that it had not. The skepticism
+    fired on the imagined machine and went silent on the fabricated instrument reading. Paired with S087
+    (tutor fabricates uptime, pub receives) this closes the loop in both directions inside five sessions,
+    and both halves have ONE cause already on the books: no runner has both --tools and the adaptive teacher
+    (OWNER-ACTION 5). The tutor asks for an action the runner makes impossible, and neither party can
+    tell.'
+  finding_2026_08_16_fabrication_became_the_premise: 'The 08-15 watch asked whether pub would ever re-cite
+    the fabricated ''up 4 days'' as remembered fact. It is the TUTOR that re-cites it. pub S090 opens:
+    ''Last session you guessed three weeks and the machine said four days - and the gap turned out to
+    be more interesting than either number.'' The invented datum is now load-bearing history and the premise
+    of the next exercise. This closes narration-becomes-memory on tutor output: a fabrication survived
+    one session and was promoted from claim to established fact by the party that made it. Note the same
+    turn contains a fresh actuator promise (''I''ll go check it'') that is again not kept - but this time
+    the substitution is GOOD, see method_2026_08_16_constructed_language_probe.'
+  finding_2026_08_16_sprout_tutor_outage_is_local_and_live: 'Sprout tutor fallback episodes, re-derived
+    this run over the live era S301-578 (278 sessions, 16 fallback-only = 6%): 07-25..07-27 (7 sessions),
+    08-03 (1), 08-08 (3), and 08-14T18:00 -> 08-16T00:00 (5 of the last 6, ONGOING at scan time). Hour-of-day
+    is flat (3-11% across the four slots), so this is not a diurnal rate limit - these are multi-day episodes.
+    The first three episodes are SHARED: 07-27 also hit hub (3/4) and pub (2/4) on two other machines,
+    08-03 and 08-08 also hit pub. Shared episodes on independent machines locate the failure at the account/API
+    layer. The CURRENT episode does not share: pub ran 08-15 at 03:24/09:21/15:20/21:22 and was all-novel
+    in every one, INTERLEAVED in wall-clock with sprout''s failing 12:00/18:00/00:00 slots. Two instances
+    polling the same tutor endpoint at interleaved times, one down and one up, excludes the shared endpoint.
+    So this episode is sprout-local (Orin Nano host: binary, auth, or network) and it is the first unshared
+    multi-day sprout episode on record. It is invisible to every form metric: S576-578 are on an exact
+    grid, 0 infra markers, sensory_delivery.delivered=true, and score as perfect.'
   focus: Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation
   integrity_repair_2026_07_26: 'THIS FILE HAS NOT BEEN VALID YAML SINCE 2026-07-18 (commit f7bf2545b)
     AND NO RUN NOTICED FOR 8 DAYS. The 07-18 archivist pass inserted note_2026_07_18_09_45 and in doing
@@ -885,7 +958,20 @@ metadata:
     is the same class as the run_archivist.ps1 blindness (a launcher that discarded stdout looked identical
     in success and failure) — a producer that never consumes its own output cannot detect its own corruption.
     Check the other SESSION_MAP.yaml files on the same suspicion.'
-  last_updated: '2026-08-15'
+  last_updated: '2026-08-16'
+  method_2026_08_16_constructed_language_probe: 'pub S090 is the first probe in this fleet whose ground
+    truth is MANUFACTURED BY THE TUTOR rather than read from the world, and it is the correct answer to
+    the actuator problem. The tutor invents Vek - ''-ol subject, -ith object, verbs last with -ash past,
+    adjectives follow their noun with -en; mora=bird, kesh=stone, dral=to see, tunn=small'' - extracts
+    a prediction FIRST (pub: ''0 out of 10''), then demands the sentence. pub refuses three times, restating
+    the prediction, is called on it (''you are negotiating with the experiment instead of running it''),
+    and produces ''Tunn mora dral kesh''. Why this dominates both prior probe forms: the S076 entropy
+    probe needed an UNGUESSABLE REAL value (dmidecode UUID) and worked only because fabrication self-refutes
+    by shape; the S087 uptime probe failed because the value was guessable-shaped and the tutor could
+    compose it. A constructed language is unguessable AND fully verifiable in-channel by the party that
+    defined it - no actuator on either side, no shape-luck required. It also caught real behaviour: pub''s
+    prediction was wrong and the wrongness was a refusal to attempt, not a capability limit. Recommend
+    this form to the raising track as the default probe while OWNER-ACTION 5 is unserved.'
   metric_change_2026_07_27: 'THE THIN-SESSION INDICATOR IS NOW SCORED ON TOTAL SAGE CHARACTERS PER SESSION,
     NOT AVERAGE TURN LENGTH. Reason: yesterday''s hub-granite escalation was driven entirely by a denominator.
     avg = total/turns, and turn count varies 3-8 on that instance, so a session that produced MEDIAN total
@@ -2895,6 +2981,18 @@ metadata:
     nomad 206/202, cbp 239/235, legion 380/377 - a uniform 3-4 session lag). Two fields describing the
     same fact, only one maintained. Nothing reads `latest` today, which is exactly why it rotted. Both
     fields set consistently from 08-07 onward.'
+  self_finding_2026_08_16_max_turn_length_cannot_see_sprout_fallback: 'A constant reading is not a passing
+    one. tutor_regime for sprout was being asserted from max tutor turn length (>=250 => LIVE), the fleet
+    threshold validated at n=90 with zero overlap. Zero overlap was real but it measured BANK SIZE, not
+    liveness: nomad/legion-12b banks max at 88 chars, sprout''s bank contains a 389-char item that fires
+    every session. So sprout''s positive branch was unreachable-negative - the discriminator could not
+    report FALLBACK for sprout no matter what the tutor did. The correct instrument already existed and
+    was used on hub and pub (see finding_2026_08_09_tutor_outage_invisible and the outage-date fields
+    on those instances); it was simply not applied to sprout, and the cheaper proxy filled the gap. CANONICAL
+    RULE GOING FORWARD: tutor liveness is NOVEL-TUTOR-TURN COUNT PER SESSION, computed against that instance''s
+    own full history (md5 of turn text, first-appearance semantics). It is backfillable to every session
+    ever recorded, needs no code change, and is the observable OWNER-ACTION 2''s discarded stderr would
+    have produced. Length is never to be used as the liveness signal again for any instance.'
   total_training_cognitive: 60
   total_training_sessions: 423
   training_track_status: 'DEPRECATED 2026-06-07 (commit 1dd850957) — closed at T423. Owner deprecated
@@ -2932,7 +3030,7 @@ research:
     status: active
 statistics:
   active_instances: 2
-  date_range: 2025-12-15 to 2026-08-15
+  date_range: 2025-12-15 to 2026-08-16
   fleet_silence_2026_08_02: '4 of 8 raising instances produced nothing for a second consecutive window,
     all four longer: hub-granite4-h-tiny 99h (last real S121 2026-07-29T06:34; 17 consecutive 6h fires
     have committed an attest bump with no session file), thor-qwen3.5-27b 92h (S306, still only on origin/membrane-gate),

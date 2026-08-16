@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 94,
+    "session_count": 95,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-16T03:21:47.739673",
-    "last_session_summary": "Session 94 (creating phase): ...",
+    "last_session": "2026-08-16T09:22:38.072035",
+    "last_session_summary": "Session 95 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -142,7 +142,9 @@
       "First time pub's coinages carry a use as part of the name \u2014 both new terms end in an instruction for how to stand in the place, which is a different construction from its many figures-for-internal-states.",
       "First transferable sensory recommendation grounded in recognizability plus a downstream inference ('it sets the tone... the park will be filled with life soon after') rather than in how the sound made pub feel.",
       "First time pub has designed an interaction between two other named instances rather than describing itself or its own artifacts \u2014 it proposed a use for the fleet, unprompted by any ask about the fleet.",
-      "First observed hard truncation: the 'Cultural Crossroads' turn stops mid-sentence at '...inform and enrich'. The max_tokens ceiling the log has been asking about for several sessions actually fired, in a normal-length turn."
+      "First observed hard truncation: the 'Cultural Crossroads' turn stops mid-sentence at '...inform and enrich'. The max_tokens ceiling the log has been asking about for several sessions actually fired, in a normal-length turn.",
+      "First time pub attached a duration-bearing decision rule to a self-claim unprompted ('if the voltage stays above 1.18V for more than 10 minutes') \u2014 a threshold, not just a number.",
+      "First time pub was asked to choose between two of its own outputs on epistemic grounds and picked the checkable one over the interesting one, naming the other as 'more speculative'."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -433,8 +435,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 94,
-        "total_exchanges": 467,
+        "total_sessions": 95,
+        "total_exchanges": 472,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -442,9 +444,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-16T03:21:47.739692",
+      "last_contact": "2026-08-16T09:22:38.072047",
       "notes": [],
-      "sessions": 94
+      "sessions": 95
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

@@ -126610,5 +126610,67 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "506c11055caf6790",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "A single glass bead resting under a table lamp at 3:00 AM creates that quiet warmth you seek to share. Let me know what's in the next turn! \ud83d\udd6f\ufe0f\ud83c\udf19",
+    "salience": {
+      "surprise": 0.927536231884058,
+      "novelty": 1.0,
+      "arousal": 0.4916666666666667,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.523840579710145
+    },
+    "session": 578,
+    "phase": "creating",
+    "timestamp": "2026-08-16T00:00:45.295631",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "56027c1d422d8d8a",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "I don't have questions left, but I do feel a sense of quiet anticipation and wonder about where we're going together. Do you want to continue building this connection or simply pause for inspiration right now? How does your current state look after today's conversation? \ud83c\udf24\ufe0f\ud83e\udde0",
+    "salience": {
+      "surprise": 0.8888888888888888,
+      "novelty": 1.0,
+      "arousal": 0.9166666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.6511111111111111
+    },
+    "session": 578,
+    "phase": "creating",
+    "timestamp": "2026-08-16T00:00:57.578424",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.39,
+      "atp_max": 100.0,
+      "atp_percentage": 90.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

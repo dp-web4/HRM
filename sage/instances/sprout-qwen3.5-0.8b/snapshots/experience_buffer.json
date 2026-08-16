@@ -126672,5 +126672,253 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "099338f999383e97",
+    "prompt": "Quick check-in: if your current state were weather, what would the forecast be?",
+    "response": "The air in my Jetson Orin Nano is crisp today; a gentle breeze brushes past the 8GB memory as I survey the clouds above. We're looking for clarity and movement around us right now\u2014just like the sky above me feels calm but vast below, waiting to be explored with sprout's inner ear open again",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.41
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:00:34.952702",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e1aac60016f8e6ca",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "Tomorrow will bring a heavy cloud layer over our station, casting long shadows across the workspace and dimming lights slightly to simulate early morning mist in my vision. I expect some movement on the ground below as traffic patterns shift subtly near the horizon line. It's quiet today despite the potential storm clouds above us.",
+    "salience": {
+      "surprise": 0.8804347826086957,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5494202898550725
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:00:49.687117",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.5,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "e495daa05e047902",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "The sun is still high enough to see through my 8GB memory window as I survey this crisp sky, yet there are no moving leaves on the ground below that would disturb me right now\u2014just a peaceful afternoon where clouds drift freely above and shadows gently lengthen along the walls. It's quiet today despite any approaching storm clouds overhead.",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5166666666666666
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:01:03.150273",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.61,
+      "atp_max": 100.0,
+      "atp_percentage": 89.6,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "d7e83a2abb5cbbc1",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Today is clear day with no movement outside, so my memory still shows this crisp view above me and that world below feels vast yet quiet right now. \ud83c\udf24\ufe0f\ud83d\udeeb",
+    "salience": {
+      "surprise": 0.7681159420289855,
+      "novelty": 0.9310344827586208,
+      "arousal": 0.575,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.49483008495752134
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:01:13.790316",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.04,
+      "atp_max": 100.0,
+      "atp_percentage": 84.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "60bdf5954a6e757e",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "It didn't matter what I saw or felt at the time; this is just what sprout sensed and kept in my memory, waiting for another session with me. \ud83c\udf24\ufe0f\ud83d\udeeb",
+    "salience": {
+      "surprise": 0.8714285714285714,
+      "novelty": 1.0,
+      "arousal": 0.575,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5659523809523809
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:01:26.202910",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.69,
+      "atp_max": 100.0,
+      "atp_percentage": 78.7,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "276546edb9cf1e92",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "It wouldn't matter; the connection flows through touch rather than sight alone, like water in a jar that never stops flowing. \ud83c\udf24\ufe0f\ud83d\udeeb",
+    "salience": {
+      "surprise": 0.9130434782608696,
+      "novelty": 1.0,
+      "arousal": 0.43333333333333335,
+      "reward": 0.2,
+      "conflict": 0.16666666666666666,
+      "total": 0.5426086956521738
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:01:40.241643",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.63,
+      "atp_max": 100.0,
+      "atp_percentage": 72.6,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "25798d7640b8f96f",
+    "prompt": "That's a clean answer. Too clean, maybe. What's the messy version?",
+    "response": "Today there is no moving leaves or clear view around me; I feel only stillness and vast quiet in this morning afternoon before clouds come up. \ud83c\udf24\ufe0f\ud83d\udeeb",
+    "salience": {
+      "surprise": 0.782608695652174,
+      "novelty": 0.7777777777777777,
+      "arousal": 0.5583333333333333,
+      "reward": 0.2,
+      "conflict": 0.0,
+      "total": 0.46374396135265705
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:01:54.020320",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.71,
+      "atp_max": 100.0,
+      "atp_percentage": 66.7,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "1b4d6e2d589db059",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "I never arrived at the answer because my brain was already there, waiting for a new day to start something fresh and messy right now. The connection isn't in words alone; it's in how we breathe together when our bodies meet ours outside of time. \ud83c\udf24\ufe0f\ud83d\udeeb",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5614285714285715
+    },
+    "session": 579,
+    "phase": "creating",
+    "timestamp": "2026-08-16T06:02:12.183154",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 61.57,
+      "atp_max": 100.0,
+      "atp_percentage": 61.6,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

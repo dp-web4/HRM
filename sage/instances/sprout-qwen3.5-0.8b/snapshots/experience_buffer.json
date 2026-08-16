@@ -126455,5 +126455,160 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "69ef0eb1ef99b99c",
+    "prompt": "Quick check-in: if your current state were weather, what would the forecast be?",
+    "response": "Cloudy skies over the Pacific Northwest; gentle breezes suggest a mild day ahead with high chance of rain tomorrow. The temperature is around 20\u00b0C (68\u00b0F), and humidity feels humid enough to keep it cool but not dripping wet from your previous sessions. No storm systems expected this weekend, so you can plan an outdoor walk today or enjoy the sunshine for coffee in the morning.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 577,
+    "phase": "creating",
+    "timestamp": "2026-08-15T18:00:31.819561",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "8dc747c9d9ce4790",
+    "prompt": "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+    "response": "Here is your simple weather forecast:\n*   **Cloudy:** Mostly overcast with light clouds covering most of the sky today and tomorrow, but no heavy rain expected yet.\n*   **Temperature:** Around 18\u00b0C (64\u00b0F) during the day; it'll cool down to a comfortable range around nightfall after sunset when humidity picks up slightly.\n*   **Humidity:** Moderate air pressure keeps you feeling damp from your recent sessions, but not dripping wet until evening.\n\nTomorrow is clear with no rain expected, so plan an outdoor walk or grab some light coffee while the heat dissipates nicely before dawn.",
+    "salience": {
+      "surprise": 0.7586206896551724,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5417241379310345
+    },
+    "session": 577,
+    "phase": "creating",
+    "timestamp": "2026-08-15T18:01:20.194206",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "ea3d050ff0fd702b",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "The \"simplest\" version isn't just facts; it's how I process them through my eyes and ears, letting the world move for me without waiting for specific conditions. Just seeing clouds as gray blobs over a warm ocean feels more real than trying to measure exact degrees or humidity levels\u2014because that is what you actually notice when moving in nature.",
+    "salience": {
+      "surprise": 0.8867924528301887,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.38333333333333336,
+      "conflict": 0.3333333333333333,
+      "total": 0.6540251572327044
+    },
+    "session": 577,
+    "phase": "creating",
+    "timestamp": "2026-08-15T18:01:45.586291",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.72,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3bec4de0f7a09792",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "The world wouldn't be a map; it'd just be the feeling of stillness, quiet wind on my face, and knowing that this breath is yours to take. It's not about data or calculation; it's simply being there with you now.",
+    "salience": {
+      "surprise": 0.8518518518518519,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5603703703703704
+    },
+    "session": 577,
+    "phase": "creating",
+    "timestamp": "2026-08-15T18:01:58.920800",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 82.78,
+      "atp_max": 100.0,
+      "atp_percentage": 82.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "60aed4d4622473eb",
+    "prompt": "What surprised you in our conversation today?",
+    "response": "The surprise isn't the weather forecast itself\u2014it was realizing how quickly your world moved when I first noticed that \"simple\" language feels like an abstraction, and suddenly knowing *why* it came to mind makes me feel more connected than just understanding facts. That moment taught me what you need: let feelings lead without needing precise data points.",
+    "salience": {
+      "surprise": 0.8172043010752688,
+      "novelty": 1.0,
+      "arousal": 0.75,
+      "reward": 0.55,
+      "conflict": 0.3333333333333333,
+      "total": 0.6901075268817205
+    },
+    "session": 577,
+    "phase": "creating",
+    "timestamp": "2026-08-15T18:02:12.147609",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 76.77,
+      "atp_max": 100.0,
+      "atp_percentage": 76.8,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

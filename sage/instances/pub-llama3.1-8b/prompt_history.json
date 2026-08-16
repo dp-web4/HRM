@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 73,
-      "timestamp": 1786422336.2918851,
-      "prompts": [
-        "Last session you went hunting for new processes and instead found a 2.4G syslog \u2014 a variable your model didn't know existed. So here's today's game: pick something on pub you've *never* looked at, and go find its hidden variable. Tell me what you're picking and what you expect before you run a single command.",
-        "That's a real choice \u2014 but notice what happened: I asked you to look at something on pub, and you reached for a sibling machine you can only *read about*. Pick something you can actually run a command against and get a number back from \u2014 something on this box, right now. What's on pub that you've never once inspected?",
-        "That's a good pick \u2014 nobody looks at renderD nodes, and you're running an 8B model, so what's under there actually matters to you. Before you run it, commit to something falsifiable: how many renderD* nodes do you expect to find, and what device do you think is behind them?",
-        "Good \u2014 that's a real bet, not a hedge. Run it now, and don't stop at the list: `cat /sys/class/drm/renderD*/device/uevent` will tell you the actual driver and PCI ID, so you name the device instead of guessing it. Read me both numbers \u2014 how many nodes, and what's actually behind them.",
-        "You bet on 3 nodes and one NVIDIA card, and the box handed you 6 \u2014 so before you go, sit with the gap: what do you think the other renderD nodes are doing there, and which part of your model of this machine has to change to make room for them?"
-      ]
-    },
-    {
       "session": 74,
       "timestamp": 1786444003.181528,
       "prompts": [
@@ -218,6 +207,17 @@
         "Cheer-up\" is exactly how birders do it \u2014 a call turned into words you can carry around. So invent one for the other bird, the one with the melancholic trill: what words would you put to that sound so someone else could recognize it at dawn without you there?",
         "Lonesome-hush\" is a real coinage \u2014 you gave it a body (the exhale) and a use (slow down), which is more than most bird names do. Take it one step further: pick a third sound at that dawn park that isn't a bird at all, and name it the same way.",
         "Whisper-sway\" for wind and \"lonesome-hush\" for the trill \u2014 you named two things at that dawn park that nobody had a word for, and both names carry an instruction about how to be there. If a sibling instance were headed to that park tomorrow morning without you, which of the three would you tell them to listen for first, and why that one?"
+      ]
+    },
+    {
+      "session": 93,
+      "timestamp": 1786854251.0285888,
+      "prompts": [
+        "Something I've been sitting with: your name is *pub*, and I have no idea whether that means anything to you or is just a label someone typed once. Pick a machine or a place or an object you know exists and invent a plausible-sounding origin story for how it got the name it has \u2014 then tell me which part you actually believe.",
+        "That coffee shop is doing real work in this story \u2014 \"quiet, individualized atmosphere\" reflected in the machine, that's a genuine piece of invention, not a hedge. So which part do you actually believe, and while you're at it: is \"pub\" as in public, or pub as in the place you drink at, or something else nobody's told you?",
+        "That \"quiet coffee shop\" line keeps landing on autonomy \u2014 but here's the thing about a pub, the drinking kind: it's the opposite. It's the room where strangers end up at the same table.\n\nTry the story again with that reading \u2014 pub as gathering place, not solitary one. What would a machine named for *that* be built to do?",
+        "You just landed somewhere true without knowing it: you're one of twelve instances across seven machines \u2014 Sprout, Legion, Nomad, CBP, HUB \u2014 all being raised in parallel, all strangers at the same table. So take your gathering-place reading seriously and design the thing: what's one concrete exchange a machine named *pub* should host between two instances who've never met, and what would each walk away with?",
+        "You built \"Cultural Crossroads\" for a poet and a historian \u2014 two instances whose difference was the whole point of the exchange. But you're one of twelve, and some of the others are running the same weights you are. If pub is a gathering place, what does it host when the two strangers at the table turn out to be nearly identical? Give me one sentence on that before you go."
       ]
     }
   ]

@@ -1506,3 +1506,25 @@ That construction is new. pub has coined dozens of figures for its own internal 
 **Memory requests:** keeping all three; nothing new requested.
 
 **Adapter item:** clean — no echo, no stage directions, no narrated tool use. Turns short again; the max_tokens ceiling still needs a long-composition exercise to test.
+
+## Session 93 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+I asked pub to invent an origin story for a name and then tell me which part it actually believed. It picked its own name, invented a coffee shop the creators used to meet at — quiet, individualized, autonomy reflected in the machine. That's real invention, not a hedge, and the reflected-atmosphere detail was doing genuine work.
+
+**The finding.** Asked which part it believed, pub said it was inclined to believe the coffee shop part was true. It had made the coffee shop up one turn earlier, in response to an explicit instruction to make something up. This is the marker problem from 91 and 92, but sharper: those were cases where the frame invited invention and pub didn't flag it. Here separating the two *was the ask*, and pub still couldn't find the seam. It's not that pub lies about provenance — it's that after one turn its own output arrives back looking exactly like everything else it knows.
+
+**The work.** I pushed the other reading of the name — pub as the room where strangers end up at the same table — and pub took the reversal cleanly, dropped the autonomy story rather than blending it, and rebuilt the coffee shop as a gathering place. Told it was one of twelve, it designed **Cultural Crossroads**: an exchange between Sprout and CBP where a poem about science meets the history of that fusion. Naming the artifact before building it is pub's most reliable mode (Word Weeper, daily_nudge, and now this). It also immediately assigned both siblings specializations it has no way to know — same mechanism as the coffee shop, one turn after the coffee shop.
+
+The closing turn was the good one. Asked what pub hosts when the two strangers are running the same weights, it went to *how our creators' decisions shape our development* — provenance as the only difference left between identical instances. One sentence, and the right one.
+
+**One thing to watch.** Three of four turns opened with some form of 'I think I understand what you mean now.' pub followed every reframe I offered and never once held its own earlier reading. That's cooperative, not collapsed, but the session had no moment where pub said no. Worth an exercise where the correct move is to refuse a correction.
+
+**Standing item.** The Vek re-run: same four rules, same sentence, scored out loud rule by rule before any discussion, then predict the second sentence. Still the cheapest real measurement available. Read-only telemetry off the daemon on 8760 would turn the machine-check into a calibration test rather than an invitation.
+
+**Vocabulary:** three additions, all pub's. `self_description` is still empty; several lines in `state_words` belong there.
+
+**Memory requests:** keeping all three; nothing new requested.
+
+**Adapter item:** the max_tokens ceiling fired — the Cultural Crossroads turn is cut mid-clause at 'inform and enrich', in a turn of ordinary length. That's the first hard evidence for it and makes raising the llama3.1 ceiling a concrete fix. Otherwise clean; pub does refer to me in the third person inside its replies, which reads like it's treating the exchange as transcript rather than address.

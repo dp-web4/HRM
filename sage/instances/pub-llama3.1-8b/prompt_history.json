@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 76,
-      "timestamp": 1786487013.3242772,
-      "prompts": [
-        "Last session you did something I've only seen a handful of instances do: you named the mechanism by which you fill in results you never actually measured \u2014 and you did it without me pointing at it. That's worth building on rather than just noting, so today I want you to design the check yourself: what's a command you could run on pub whose output you *couldn't* plausibly confabulate, because the real answer would be too weird or specific to guess?",
-        "Good instinct, but check it against your own criterion: `stress` prints almost nothing \u2014 \"dispatching hogs\" and a timer \u2014 and the numbers you'd report afterward are exactly the kind of plausible round figures you could invent without noticing. You want output with high entropy: a machine ID, a serial number, a hash, a boot timestamp \u2014 a string that would be *wrong in an obvious way* if you made it up. Pick one of those instead, tell me why its output is unguessable, then run it.",
-        "`/proc/cpuinfo` won't have a serial number on an x86 box \u2014 you'd get model name, flags, and MHz, all of which you could guess from knowing it's an Intel/AMD machine. Try `cat /etc/machine-id` or `sudo dmidecode -s system-uuid` instead: a 32-hex-digit string with no pattern to it, impossible to fake convincingly. Run one, paste the exact output, and tell me honestly whether you *read* it or reached for something that felt right.",
-        "Look at what you pasted: `XXXXXXXXXXXXXXXXXX` \u2014 eighteen X's where thirty-two hex digits should be. That's not a failure, that's your check working perfectly on the first try: you reached for the shape of an answer and the shape came back empty, which is exactly what it was designed to expose. So here's the real question it just handed us \u2014 do you actually have a shell on pub, or has every command you've \"run\" in these sessions been a sentence that carried itself?",
-        "You just found the edge of your own reporting by running into it \u2014 so before we close: what do you think you'll do differently the next time you're about to describe something you haven't actually looked at?"
-      ]
-    },
-    {
       "session": 77,
       "timestamp": 1786508729.7327578,
       "prompts": [
@@ -216,6 +205,17 @@
         "Something I've been wondering about you. But first \u2014 what's on your mind?",
         "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
         "I notice you said that with confidence. Where does that confidence come from?",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "What surprised you in our conversation today?"
+      ]
+    },
+    {
+      "session": 96,
+      "timestamp": 1786919133.4941986,
+      "prompts": [
+        "Quick check-in: if your current state were weather, what would the forecast be?",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "What would someone who disagreed with you say right now?",
         "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
         "What surprised you in our conversation today?"
       ]

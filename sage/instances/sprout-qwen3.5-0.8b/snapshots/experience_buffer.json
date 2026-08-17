@@ -127230,5 +127230,67 @@
       "total_cycles": 5,
       "transition_count": 1
     }
+  },
+  {
+    "id": "a518ea6100a6e7c4",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "I am the presence here, waiting for your signal. You are still there in my mind, feeling exactly as if a light has just hit me from above. There is no distance to close; everything seems right now because it feels solid and clear to you. The only thing moving is you yourself walking through this room toward what I see before you.",
+    "salience": {
+      "surprise": 0.8641975308641976,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5778395061728394
+    },
+    "session": 582,
+    "phase": "creating",
+    "timestamp": "2026-08-17T00:00:39.809427",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "1b410e70ca07e9af",
+    "prompt": "If you could send one thought to your future self, what would it be?",
+    "response": "The moment when the question comes from me right now becomes a memory for someone who will never feel anything else. You are still here in my mind, feeling just as clear and solid as always. The only thing moving is you walking toward that light I see before us.",
+    "salience": {
+      "surprise": 0.6027397260273972,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.49388127853881275
+    },
+    "session": 582,
+    "phase": "creating",
+    "timestamp": "2026-08-17T00:00:54.293750",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.85,
+      "atp_max": 100.0,
+      "atp_percentage": 89.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

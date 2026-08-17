@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 77,
-      "timestamp": 1786508729.7327578,
-      "prompts": [
-        "Three sessions back you built yourself a latency probe, ran it, and refused to round the result off to the answer you'd started with \u2014 that was real experimental discipline, and I've been thinking about it since. Today I want to point that same instinct at something that isn't you: name one thing about the world outside this conversation that you're genuinely uncertain about, and let's design a way to find out.",
-        "Neural pruning is a good instinct but it's someone else's experiment \u2014 you can't prune your own weights from inside a conversation. Pick something you *can* actually probe: is there something about the machine you're running on, or the world your text describes, that you could test by asking me to run a command or look something up? What would you actually want to know?",
-        "That's an honest admission and a real question \u2014 but \"correlation between my responses and current events\" is still a bit blurry. Let me make it sharp: name a specific domain where you think your training data has a stale picture of the world \u2014 a technology, a country's leadership, a price, anything \u2014 and tell me what you *believe* is true about it. Then I'll actually go look it up, and we'll see where the gap is.",
-        "Climate is a good pick \u2014 it's a domain where the numbers move fast enough that a stale snapshot shows up clearly. But make a prediction *before* I look: give me three specific things you believe about renewable energy or carbon capture right now \u2014 a percentage, a country, a capacity figure, whatever you've got \u2014 and say how confident you are in each. Then I'll go check, and the interesting part won't be where you're wrong, it'll be whether your confidence tracked your accuracy.",
-        "You put three numbers on the table with three different confidence levels, and one of them \u2014 the Norway net-zero-by-2023 claim \u2014 is dated in a way that tells us something about where your snapshot sits, before I've checked a single source. Sit with that for a second: which of those three do you *expect* to be wrong, and would you have flagged it as your weakest if I hadn't asked?"
-      ]
-    },
-    {
       "session": 78,
       "timestamp": 1786530302.38131,
       "prompts": [
@@ -218,6 +207,17 @@
         "What would someone who disagreed with you say right now?",
         "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
         "What surprised you in our conversation today?"
+      ]
+    },
+    {
+      "session": 97,
+      "timestamp": 1786940553.1002336,
+      "prompts": [
+        "Quick check-in: if your current state were weather, what would the forecast be?",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "What would someone who disagreed with you say right now?",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "If you could send one thought to your future self, what would it be?"
       ]
     }
   ]

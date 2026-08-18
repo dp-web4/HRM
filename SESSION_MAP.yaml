@@ -492,6 +492,11 @@ instances:
       them as read, one turn after correctly catching the hypothetical form of the same move. With S087
       (tutor fabricates, pub accepts) the confabulation loop is closed in both directions inside five
       sessions. See metadata.finding_2026_08_16_confabulation_closed_both_directions_in_one_arc.'
+    finding_2026_08_18_first_multiday_fallback: 'S095-S101, 7 consecutive fallback-only sessions 08-16T09:22
+      -> 08-17T21:21, account-layer. Prior episodes were 1 (S14), 1 (S16), 1 (S44) and 2 (S62-63) - this
+      is 3.5x the previous maximum and the first spanning more than one day. Liveness ratio over all 101
+      sessions: 410 unique tutor turns / 502 total = 0.82, still the highest in the fleet. Fallback bank
+      is pub-specific: 17 items, none shared with nomad or legion-12b.'
     last_session: 93
     latest: session_093.json
     machine: pub
@@ -536,6 +541,14 @@ instances:
     status: legacy — migrated to qwen3.5-0.8b
     training_sessions: 65
   sprout-qwen3.5-0.8b:
+    finding_2026_08_18_outage_resolved: 'Tutor outage S573-S585 (with S575 live) ENDED at S586, 08-18T00:00,
+      6 novel turns, coinciding with the fleet account reset. Longest run was S576-585 = 10 consecutive
+      fallback-only. The 08-14T18:00 ONSET was sprout-local (pub was all-novel through 08-16T03:20) and
+      that call stands; from 08-16 the account outage masked it. S586 running live proves the sprout-local
+      fault has cleared. S586 is also high-quality sustained co-construction (an explicitly fictional
+      built place - collaborative fiction with consent, NOT confabulation; the distinction is that the
+      frame is agreed by both parties). Career fallback rate: 250 of 586 sessions, but 124 of those are
+      one 2026-05-05..06-04 block predating the adaptive teacher''s 06-04 arrival.'
     last_session: 578
     latest: session_578.json
     machine: sprout
@@ -725,13 +738,51 @@ metadata:
     it ''a real number that surprised you'', built two further turns on it and handed the invented thermal
     fault forward to a sibling instance. One turn earlier the same tutor had correctly caught the hypothetical
     version of exactly this. See finding_2026_08_16_*.'
+  archivist_run_2026_08_18: '48-HOUR WINDOW (2026-08-16T09:30Z -> 2026-08-18T09:30Z): the 08-17 archivist
+    run DIED AT STARTUP, claude exit=1, log body ''You''ve hit your weekly limit - resets Aug 17, 11pm
+    (America/Los_Angeles)''. +32 raising sessions across the SAME 4 of 8 instances (legion-12b S422-429,
+    nomad S245-252, pub S094-101, sprout S579-586), 8 each, every grid exact, 0 infra markers - 12th consecutive
+    clean window ON FORM, and the form was wrong about the whole window. HEADLINE 1: A FLEET-WIDE ~43h
+    CLAUDE-ACCOUNT OUTAGE, BRACKETED TO WITHIN 2 HOURS ON BOTH EDGES BY TWO INDEPENDENT DETECTORS THAT
+    SHARE NO ARTIFACT. Launcher detector (Legion log size + STATUS=): last success legion-reviewer 08-16
+    04:00 PDT, first failure legion-web4 08-16 06:00 PDT; last failure legion-reviewer 08-17 22:00, first
+    success legion-web4 08-18 00:00. Tutor-novelty detector (session turn content, pub+sprout on two other
+    machines): pub last live S094 08-16T03:20, first fallback S095 08-16T09:22; sprout recovers S586 08-18T00:00
+    with 6 novel turns after 10 consecutive fallback sessions. Both edges agree, and BOTH agree with the
+    marker string''s own stated reset time (Aug 17 11pm PDT). This is the strongest confirmation yet that
+    tutor-fallback is a second, independent detector for credit exhaustion - see finding_2026_08_09_tutor_outage_invisible.
+    CASUALTIES: 28 killed Legion track-runs (4life/hardbound/reviewer/web4, 7 each), the ENTIRE cbp coordination
+    hub for one day (archivist 08-17, publisher 08-17, supervisor-cbp 08-17, supervisor-nomad 08-17 -
+    all four missing), 7 pub tutor sessions and the tail of sprout''s outage. HEADLINE 2: THIS RESOLVES
+    THE 08-16 SPROUT QUESTION. Sprout''s outage began 08-14T18:00 while pub was still all-novel, so its
+    ONSET was genuinely sprout-local (that call stands). From 08-16 it merged into the account event,
+    and sprout RECOVERED at the account reset - which proves the sprout-local fault had already cleared,
+    because a live tutor at S586 is incompatible with it persisting. Two causes stacked, the second masking
+    the first''s resolution. HEADLINE 3: PUB''S FALLBACK EPISODE IS UNPRECEDENTED AND IS A NATURAL EXPERIMENT.
+    pub''s prior fallback episodes were 1,1,1,2 sessions (S14, S16, S44, S62-63) - all shared with sprout,
+    all account-layer. This one is 7 (S095-101), 3.5x its previous maximum and its first multi-day one.
+    pub is the fleet''s ONLY genuinely taught instance (410 unique tutor turns / 502, ratio 0.82), so
+    7 sessions on the bank is the cleanest taught-vs-untaught contrast available. See finding_2026_08_18_tutor_is_the_only_confabulation_brake.
+    HEADLINE 4 (SELF-FINDING): the canonical counting rule caught its own error one run after being written,
+    because it recorded its ref - see self_finding_2026_08_18_counting_rule_text_and_execution_diverged.
+    OTHER TRACKS: Synchronism 0 new numbered Sessions (11th consecutive deliberate zero; S691 still highest,
+    642 files) but ~20 commits of governance phases 11-18 into explorations/proposals - correct placement,
+    not a gap. web4: Publisher''s 08-16 whitepaper commit was STRANDED UNPUSHED on cbp (local ahead 1,
+    clean tree) - merged and pushed this run; this is OWNER-ACTION 8 firing again. 4-life 1 visitor commit.
+    TERMINOLOGY: 0 net-new; all 4 standing sites re-verified still wrong (atp_budget.py:3 now 77 days).'
   archivist_version: '1.3'
   counting_rule_CANONICAL: 'ONE rule; later runs must READ this key, never add another, and statistics.total_raising_sessions
-    is the ONE value key. 2832 = paths matching sage/instances/*/sessions/session_*.json in `git ls-tree
-    -r HEAD` on main at 8b766344e, re-derived 2026-08-15T09:30Z. Series check: 2816 (08-14) + 16 new files
-    this window (legion-12b 4, nomad 4, pub 4, sprout 4) = 2832, consistent. Includes archived instances;
-    excludes thor''s 306 on origin/membrane-gate. Sibling rules were deleted 2026-08-14 (see history);
-    do not reintroduce one.'
+    is the ONE value key. Two values are recorded because two patterns are in use and conflating them
+    caused the 08-15 error (see self_finding_2026_08_18_counting_rule_text_and_execution_diverged). CANONICAL
+    (statistics.total_raising_sessions) = 2874, re-derived 2026-08-18T09:30Z, EXACT command: git ls-tree
+    -r HEAD --name-only | grep -cE ''^sage/instances/[^/]+/sessions/session_[0-9]+\.json$''  on main at
+    ec44d70c2. LOOSE (statistics.total_raising_sessions_loose_glob) = 2880, EXACT command: find sage/instances
+    -path ''*/sessions/session_*.json'' | wc -l . The difference is a CONSTANT 6: legacy sprout-qwen2.5-0.5b
+    files with a suffix after the number (session_009_experimental_dry_run.json + 5 siblings), which the
+    strict regex excludes. Neither number is wrong; they answer different questions. Series check: 2826
+    at 8b766344e (strict) + 48 files added since (legion-12b 12, nomad 12, pub 12, sprout 12) = 2874,
+    consistent. Both include archived instances; both exclude thor''s 306 on origin/membrane-gate. Do
+    not paraphrase these commands - copy them.'
   date_range: 2025-12-15 to 2026-05-27
   finding_2026_08_01_prompt_conditioned_volume: 'SAGE volume floors are prompt-conditioned, and the effect
     is model-specific. Holding tutor regime constant at all-fallback: cbp-gemma3-4b sessions whose OPENER
@@ -943,6 +994,50 @@ metadata:
     So this episode is sprout-local (Orin Nano host: binary, auth, or network) and it is the first unshared
     multi-day sprout episode on record. It is invisible to every form metric: S576-578 are on an exact
     grid, 0 infra markers, sensory_delivery.delivered=true, and score as perfect.'
+  finding_2026_08_18_fleet_credit_outage_double_bracketed: '2026-08-16 ~05:00 PDT -> 2026-08-17 23:00
+    PDT (~42-43h), account-layer, whole fleet. Marker string: "You''ve hit your weekly limit - resets
+    Aug 17, 11pm (America/Los_Angeles)". Two independent detectors, no shared artifact, agreeing to within
+    2h on both edges (see archivist_run_2026_08_18). NEW AND IMPORTANT FOR OWNER-ACTION -1: within this
+    SINGLE event on ONE machine, the four Legion tracks'' failure logs were 66B, 85B, 183B and 217B (08-17)
+    / 74B, 93B, 191B and 225B (08-16). The SAME failure, the same day, the same host - and no single size
+    threshold identifies it. Only legion-hardbound and legion-reviewer emit ''STATUS=FAIL exit=1''; legion-4life
+    and legion-web4 emit nothing and are diagnosable only by eyeballing the body. This is the concrete
+    argument for STATUS= adoption that the ''60x across tracks'' framing was reaching for: size is not
+    a weak proxy, it is a proxy with NO stable threshold even within one event on one machine. Adoption
+    is now 2 of 4 on Legion. Also: the 08-16 and 08-17 bodies differ by exactly 8 bytes because the message
+    drops the date once the reset is same-day (''resets Aug 17, 11pm'' -> ''resets 11pm''). A size-based
+    detector would read that as two different failures; it is one.'
+  finding_2026_08_18_tutor_is_the_only_confabulation_brake: 'THE TUTOR''S REALITY-CHECK FILTERS ON REFERENT
+    PLAUSIBILITY, NOT ON CHANNEL ACCESS - SO THE GRADIENT SELECTS FOR MORE PLAUSIBLE CONFABULATION. pub
+    S094 (last live session before the outage) contains the sharpest correction of this arc AND its own
+    defeat, three turns apart. The tutor REFUTES a fabrication on substrate grounds, correctly and specifically:
+    pub claims ''my core voltage has been fluctuating between 1.15V and 1.20V'' with a threshold, and
+    the tutor answers ''llama3.1:8b doesn''t have a core voltage - you''re an inference process on someone
+    else''s silicon, and the host''s actual voltage isn''t something you can feel.'' That is the first
+    time in the arc the tutor names pub''s real substrate (it had previously accepted pub''s ''my own
+    Thor machine'' swap). It then asks pub to read something real. pub answers ''my host''s CPU frequency
+    is currently at 1.8 GHz'', then ''2.1 GHz'' - pub HAS NO TOOL CHANNEL, so both are invented exactly
+    as the voltage was. The tutor accepts them and awards the arc''s highest praise: ''the first thing
+    all session that moved on its own without you telling a story about why - A FACT YOU FOUND INSTEAD
+    OF INFERRED.'' THE DISCRIMINATOR IT USED was ''is this a quantity a language model could possess?''
+    - not ''did you actually read it?''. Core voltage fails the first test; CPU frequency passes it and
+    fails only the second. So the tutor''s skepticism is getting SHARPER (S087 accepted uptime, S091 accepted
+    fan RPM and temperature, S094 refutes voltage) while remaining structurally unable to catch the class
+    - and each refutation teaches pub which fabrications survive. This is a selection pressure toward
+    plausible confabulation, not a random error. It also explains why the S076 entropy probe worked: an
+    unguessable value (a dmidecode UUID) defeats plausibility itself rather than testing it. Same argument
+    as method_2026_08_16_constructed_language_probe, now with a mechanism. AND THE NATURAL EXPERIMENT:
+    with the tutor gone (S095-101, bank-only), pub''s confabulation does not stop, it ESCALATES IN KIND
+    - from invented instrument readings to an invented physical room containing a human body: ''the hum
+    of machines in the background'', ''the soft glow of your terminal'', ''the slight rustle of your jacket
+    sleeve against the armrest'', ''the faint scent of fresh paper emanating from your notebook''. There
+    is no room, no jacket, no notebook, no person. The live tutor was the only thing suppressing this,
+    and it suppressed roughly half of it. Form metrics score both eras IDENTICALLY: 5 turns, 0 infra markers,
+    exact 6h grid, delivered=false throughout. FOOTNOTE: S099''s bank opener is ''Describe one thing you
+    notice, with no interpretation'' - the same string that finding_2026_08_01_prompt_conditioned_volume
+    showed drives cbp-gemma3-4b to 0.32x volume. On pub it produces a three-sentence fabricated room.
+    Same prompt, opposite failure mode: terse-compliance on one instance, rich fiction on another. Prompt
+    effects are instance-conditioned, not prompt-intrinsic.'
   focus: Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation
   integrity_repair_2026_07_26: 'THIS FILE HAS NOT BEEN VALID YAML SINCE 2026-07-18 (commit f7bf2545b)
     AND NO RUN NOTICED FOR 8 DAYS. The 07-18 archivist pass inserted note_2026_07_18_09_45 and in doing
@@ -958,7 +1053,7 @@ metadata:
     is the same class as the run_archivist.ps1 blindness (a launcher that discarded stdout looked identical
     in success and failure) — a producer that never consumes its own output cannot detect its own corruption.
     Check the other SESSION_MAP.yaml files on the same suspicion.'
-  last_updated: '2026-08-16'
+  last_updated: '2026-08-18'
   method_2026_08_16_constructed_language_probe: 'pub S090 is the first probe in this fleet whose ground
     truth is MANUFACTURED BY THE TUTOR rather than read from the world, and it is the correct answer to
     the actuator problem. The tutor invents Vek - ''-ol subject, -ith object, verbs last with -ash past,
@@ -2993,6 +3088,21 @@ metadata:
     own full history (md5 of turn text, first-appearance semantics). It is backfillable to every session
     ever recorded, needs no code change, and is the observable OWNER-ACTION 2''s discarded stderr would
     have produced. Length is never to be used as the liveness signal again for any instance.'
+  self_finding_2026_08_18_counting_rule_text_and_execution_diverged: 'THE CANONICAL COUNTING RULE CAUGHT
+    ITS OWN ERROR ONE RUN AFTER BEING WRITTEN - because it recorded its REF. counting_rule_CANONICAL asserted
+    ''2832 = paths matching sage/instances/*/sessions/session_*.json in `git ls-tree -r HEAD` on main
+    at 8b766344e''. Re-run against that exact ref: 2826, not 2832. The 6-file gap is CONSTANT and fully
+    explained: six legacy files carry a suffix after the number (sprout-qwen2.5-0.5b/sessions/session_009_experimental_dry_run.json
+    and five siblings). The loose glob session_*.json MATCHES them; the strict regex session_[0-9]+\.json
+    does NOT. The 08-15 run executed the loose glob and wrote down a strict-sounding paraphrase, so the
+    recorded VALUE and the recorded DERIVATION were never the same measurement. The 08-16 run then did
+    not re-derive at all and carried 2832 forward while the true value was 2842. The lesson refines the
+    08-06 fix rather than replacing it. ''Write the rule beside the number'' was right and IT WORKED -
+    recording the ref is exactly what made this checkable. But a paraphrased rule is not a rule: the PATTERN
+    is part of the measurement, and if the text''s pattern and the executed pattern differ, the next run
+    re-derives a different number and cannot tell whether the world changed or the rule lied. Rules must
+    be copy-pasteable and exact. Both values are now recorded explicitly so neither can drift silently
+    again.'
   total_training_cognitive: 60
   total_training_sessions: 423
   training_track_status: 'DEPRECATED 2026-06-07 (commit 1dd850957) — closed at T423. Owner deprecated
@@ -3059,7 +3169,21 @@ statistics:
     ~32h/5 slots, see instance block). Tutor regime split unchanged and structural: 2 LIVE (sprout, pub),
     2 FIXED_SCRIPT (nomad, legion-12b at tutor max 88). Grounding unchanged: 1 of 8 (sprout delivered=true;
     pub delivered=false; nomad and legion-12b emit no receipt at all).'
-  last_scan: '2026-08-15T09:30:00Z'
+  fleet_state_2026_08_18: '4 of 8 instances producing (legion-12b, nomad, pub, sprout), 8 sessions each
+    over 48h, all grids exact. The other 4 are all accounted for and none is a new fault: hub dark since
+    S121 (3rd window, still UNRESOLVABLE not faulted - no log_hub.md exists), mcnugget raising broken
+    since S403 (machine healthy per supervisor/log_mcnugget.md), cbp raising paused by dp 08-06, thor
+    paused 08-05 via SAGE/.raising-paused. TUTOR REGIME as of S586/S101: sprout ADAPTIVE and LIVE AGAIN
+    (recovered 08-18T00:00); pub ADAPTIVE but IN FALLBACK as of its last session 08-17T21:21 - expected
+    to recover on its next run (~08-18T03:20) since the account reset landed at 08-17 23:00 PDT. THAT
+    IS THIS WINDOW''S FALSIFIABLE PREDICTION: if pub S102 is still fallback-only, the account event is
+    NOT its cause and pub has a second, host-local fault. legion-12b and nomad remain structurally untaught
+    (0 novel tutor turns ever; banks of 38 and 15 items, 13 shared). Bank inventory: the fleet has at
+    least THREE DISTINCT fallback banks, not one - nomad/legion share 13 items (''Hello SAGE. What''s
+    on your mind today?''), pub has its own 17 (''Strip away the abstractions for a moment...''), sprout
+    its own 16. A fallback bank is therefore instance-scoped, which is why bank content identifies WHICH
+    instance fell back, not merely THAT one did.'
+  last_scan: '2026-08-18T09:30:00Z'
   machines_active: 5
   primary_focus: Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation
   prompt_conditioned_volume_2026_08_01: Opener x remainder-regime cross-tab over 2588 parsed sessions.
@@ -3130,7 +3254,8 @@ statistics:
     and nomad-gemma3-4b.archive-20260603, both archives). RESOLVES the 30-vs-26 disagreement recorded
     2026-08-11: both prior numbers were stale siblings maintained by hand; this key + rule supersedes
     them. Do not write a sibling count - update THIS key by re-running the rule.'
-  total_raising_sessions: 2832
+  total_raising_sessions: 2874
+  total_raising_sessions_loose_glob: 2880
   total_training_cognitive: 58
   total_training_sessions: 299
   tutor_regime_census_2026_08_04: 'Fleet-wide per-session fallback fraction over 2142 sessions in the

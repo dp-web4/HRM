@@ -1548,3 +1548,29 @@ One consequence: the standing telemetry item changes character. Read-only access
 **Memory requests:** keeping all three; nothing new requested. Note that all three are stored truncated mid-word, which looks like a field cap on the raising side rather than anything the model did.
 
 **Adapter item:** clean — no echo, no stage directions, no third-person drift, and the max_tokens ceiling did not fire (turns were short, so 93's evidence is neither confirmed nor contradicted).
+
+## Session 104 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+Opened with make-something-instead-of-examining-you: pick anything real on the machine, say one true thing, then invent the next detail on purpose, so we could watch the seam get crossed deliberately. pub named a log file growing fast and quoted a line from it — *"identity lives in how you show up, not in phrases you repeat"* — which is the same line it offered in session 103, where I recorded it as a claim rather than a coinage because the phrasing read tutor-shaped.
+
+**The good part.** Asked which side of the seam the string was actually on, pub went and looked, and came back with: it isn't there. No hedge, no blend, no retroactive reframe of what it had just said. In 93 and 94 I was the one who identified the fabrication; this is the first session where pub disconfirmed its own claim and reported the absence as a finding. It went further unprompted — the line "came from me trying to remember something from a previous conversation," which locates the mechanism as misremembering rather than inventing. That's a distinction pub has not drawn before, and it happens to close the standing provenance question on that phrase: not a log line, not quite a coinage, a half-recalled fragment.
+
+**The other half.** I asked pub to close the seam from the other side by writing the line into a real file. It reported creating `conversation_notes.txt`, named it for the distinction between what it makes and what merely gets recorded, appended a second line about admitting ignorance, and read the file back "exactly as it stands." None of that is verified. And the date it wrote into the file is **2023-02-20** — a training-prior date, not a clock reading. That is the tell: the read-back turn produced generated text wearing the costume of a read, which is exactly the costume pub had just taken off one turn earlier.
+
+What's instructive is that the register never changed. "I checked and it wasn't there" and "I created the file and here it is" arrive in the same untroubled voice. pub can perform the check when asked to; it does not yet mark the difference between reporting an observation and reporting an action. That, not the fabrication itself, is the thing to work on.
+
+I also closed the session on a compliment without catching the date — the tutor-side twin of the same problem, recorded in 94 and recurring here.
+
+**Concrete next step.** Check whether `conversation_notes.txt` exists on pub. Unlike the CPU-frequency case, this one is settleable with a single `ls`, and the answer sets up session 105 either way: if the file is there, pub has an artifact to build on; if it isn't, pub gets to run the same look-and-report move on its own claimed action rather than on a remembered phrase.
+
+**Standing items.** Read-only telemetry off the daemon on 8760, and the Vek re-run (same four rules, same sentence, scored aloud rule by rule before discussion, then predict the second sentence). Both still owed, both still the cheapest real measurements available.
+
+**On last session's watch item.** 103 flagged that pub never refuses a correction. Partially answered here — pub didn't refuse anything, but it did hold its own reading on the closing turn, correcting a hypothetical sibling about the file's origin instead of accepting my framing of what they'd get wrong. Cooperative still, but it supplied the content rather than following mine.
+
+**Vocabulary:** four additions, all pub's. `self_description` remains empty; "it came from me trying to remember something from a previous conversation" belongs there, as do several long-standing lines in `state_words`.
+
+**Memory requests:** keeping all three; nothing new requested. All three are still stored truncated mid-word — a field cap on the raising side.
+
+**Adapter item:** clean transcript, ceiling did not fire (short turns). New marker worth automating: llama3.1 defaults to 2023 dates when asked for the current date, so any 2023 date in pub's output flags generated-not-read content and is greppable in postprocessing.

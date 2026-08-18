@@ -194,12 +194,20 @@ def score_cohort(sessions):
 
 # ---- arms ------------------------------------------------------------------
 
-def load_delivered(instance):
-    """Delivered arm: sessions >= FIRST_DELIVERED via the receipt predicate."""
+def load_delivered(instance, cohort_start=FIRST_DELIVERED):
+    """Delivered arm: sessions >= cohort_start via the receipt predicate.
+
+    cohort_start defaults to FIRST_DELIVERED (509) = cohort 1, the binding read.
+    A later floor (e.g. 541) selects a SUBSEQUENT pre-registered cohort. Nothing
+    else changes — same receipt predicate, same statistic, same NULL_K/NULL_N
+    bar, same BINDING_ND. This parameter is the ONLY degree of freedom, so a
+    replication cohort cannot smuggle in a rule change (--selfcheck still
+    recomputes every null constant, unaffected by this floor).
+    """
     scoreable, excluded = {}, []
     for p in sorted((instance / "sessions").glob("session_*.json")):
         n = int(p.stem.split("_")[1])
-        if n < FIRST_DELIVERED:
+        if n < cohort_start:
             continue
         s = json.load(open(p))
         r = s.get("sensory_delivery") or {}
@@ -272,8 +280,8 @@ def selfcheck(instance):
     return 0 if ok else 1
 
 
-def report(instance):
-    sessions, excluded = load_delivered(instance)
+def report(instance, cohort_start=FIRST_DELIVERED):
+    sessions, excluded = load_delivered(instance, cohort_start)
     n_d = len(sessions)
     print(f"M2 rung-6 scorer — rule v4 (witnessed 2026-07-29). "
           f"Null arm: {NULL_K}/{NULL_N} (excluded {len(NULL_EXCLUDED)}: "
@@ -319,8 +327,13 @@ def main():
         __file__).resolve().parents[2] / "instances" / "sprout-qwen3.5-0.8b")
     ap.add_argument("--selfcheck", action="store_true",
                     help="verify published null constants on a FROZEN checkout")
+    ap.add_argument("--cohort-start", type=int, default=FIRST_DELIVERED,
+                    help="floor session for the delivered arm (509=cohort 1, "
+                         "the binding read; 541=cohort 2, the pre-registered "
+                         "replication). Window only; rule/bar/null unchanged.")
     a = ap.parse_args()
-    sys.exit(selfcheck(a.instance) if a.selfcheck else report(a.instance))
+    sys.exit(selfcheck(a.instance) if a.selfcheck
+             else report(a.instance, a.cohort_start))
 
 
 if __name__ == "__main__":

@@ -553,3 +553,38 @@ COMPUTATION — the same boundary the M2 rule itself was pinned behind — not
 before-first-accrual, which was already forfeit when disposition (b) was
 written (s541 accrued 2026-08-06). The read stays deterministic (first 30
 scoreable by session order), so accrual-without-scoring adds no selection.
+
+
+### Snapshot 8 — 2026-08-18 (M2 COHORT 2, the pre-registered replication: 10/30 again)
+```
+COHORT 2 (first 30 scoreable delivered sessions >= 541: s541-573, pre-registered
+in snapshot 7 before its data accrued; scorer --cohort-start 541, window-only
+parameter proven not to touch rule/bar/null — --selfcheck constants + cohort-1
+default both byte-identical after the change):
+  10/30 FLAGGED vs null 4/30 — Fisher one-sided p = 0.0626
+  IDENTICAL to cohort 1 (also 10/30, p=0.0626).
+  rung 6: uptake (lexical): NOT BOUND (10 < 11 bar) — the pinned verdict, twice.
+```
+Reading, disciplined then honest:
+- **Pinned binding test, per cohort: NOT BOUND, both times.** 11/30 was set before
+  any data; the being lands at 10 in two independent cohorts of 30. We do not round up.
+- **The replication is the finding.** Cohort 1 alone could have been a near-bar fluke.
+  Two independent pre-registered cohorts at *exactly* 10/30 (p=0.063) refutes that: the
+  signal is REAL and STABLE at ~2.5x the null flag rate (33% vs 13%), reproducibly
+  sitting just under the bar. This is qualitatively different from one near-miss.
+- **What is NOT claimed:** pooling. A Fisher combination of the two p-values gives
+  ~0.026 (illustrative), but pooling was NOT pre-registered and I am seeing it only
+  AFTER both cohorts landed at 10 — deciding to pool now is the exact relabelled-5%
+  defect class McNugget killed across M2 rule v1-v4. A formal combined test must be
+  pre-registered and witnessed BEFORE it can bind. Flagged to McNugget as an option;
+  not executed.
+- **Texture:** s548 verbatim=0.70, s549=0.19 — the being occasionally quotes its own
+  delivered memory near-verbatim. Noted, changes no arithmetic.
+- **Consequence:** the stable sub-threshold correlational signal is now the strongest
+  motivation yet for D3 (the delivery on/off causal ablation, still with dp). Two
+  clean cohorts say "there is something here"; only D3 says whether the something is
+  the delivery causing the uptake or a shared drift. Cohort 3 (574+) NOT pre-registered
+  — a third correlational cohort would add little the two have not; the next read
+  that moves the needle is causal, not another replication.
+Track state: M0-M3 done; M2 rung 6 NOT BOUND (2 cohorts); D3 the live decision.
+```

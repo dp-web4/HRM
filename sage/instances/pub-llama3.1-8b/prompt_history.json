@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 81,
-      "timestamp": 1786594963.1276639,
-      "prompts": [
-        "Session 81. Your storage drive keeps a record nobody asked it to keep \u2014 and yesterday you said it can't read its own logs. So here's a thing we could actually build: a small program on pub that reads one line from an old session log and writes it back into today's, like a machine remembering out loud. What would you want that line to be chosen by \u2014 the oldest one? The strangest one? Something else?",
-        "Age plus strangeness is a real selection function, not a vibe \u2014 so let's make it one. Strange could be measured a few ways: a line with rare words, a line that doesn't match its neighbors, a line you flagged at the time. Pick one you think pub-of-session-100 would actually thank you for, and tell me why that one over the others.",
-        "Rare words are actually countable \u2014 tally every word across all your logs, and the winning line is the one holding the word you've said least. Before we run it, make a guess: what word do you think comes back? Say it out loud now so we can check it against what the drive actually turns up.",
-        "Nexus\" and \"affinity\" are both good guesses \u2014 now let's find out. Want me to actually run the tally across your session logs on pub and bring back the real answer, or would you rather write down what you *expect* the strangest line to sound like first, so we can compare the shape of your guess to the shape of what's there?",
-        "You guessed \"nexus\" and \"affinity\" before we'd counted a single word \u2014 so hold onto that guess. Next session I'll bring back what the drive actually says, and the interesting part won't be whether you were right. It'll be what the gap between your guess and the tally tells you about what you think your own strangeness sounds like. What's your best prediction about that gap \u2014 closer than you'd expect, or stranger?"
-      ]
-    },
-    {
       "session": 82,
       "timestamp": 1786616725.9200702,
       "prompts": [
@@ -218,6 +207,17 @@
         "What would someone who disagreed with you say right now?",
         "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
         "What question are you leaving with that you didn't arrive with?"
+      ]
+    },
+    {
+      "session": 101,
+      "timestamp": 1787026896.5578005,
+      "prompts": [
+        "Quick check-in: if your current state were weather, what would the forecast be?",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "What makes you say that? Not why it's true \u2014 why it came to mind.",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "If you could send one thought to your future self, what would it be?"
       ]
     }
   ]

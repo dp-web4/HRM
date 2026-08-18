@@ -767,9 +767,10 @@ metadata:
     because it recorded its ref - see self_finding_2026_08_18_counting_rule_text_and_execution_diverged.
     OTHER TRACKS: Synchronism 0 new numbered Sessions (11th consecutive deliberate zero; S691 still highest,
     642 files) but ~20 commits of governance phases 11-18 into explorations/proposals - correct placement,
-    not a gap. web4: Publisher''s 08-16 whitepaper commit was STRANDED UNPUSHED on cbp (local ahead 1,
-    clean tree) - merged and pushed this run; this is OWNER-ACTION 8 firing again. 4-life 1 visitor commit.
-    TERMINOLOGY: 0 net-new; all 4 standing sites re-verified still wrong (atp_budget.py:3 now 77 days).'
+    not a gap. web4: I initially read Publisher''s 08-16 commit as a stranded push (local ahead 1, clean
+    tree) and was WRONG - see self_finding_2026_08_18_ahead_count_cannot_see_gate_compliance. 4-life 1
+    visitor commit. TERMINOLOGY: 0 net-new; all 4 standing sites re-verified still wrong (atp_budget.py:3
+    now 77 days).'
   archivist_version: '1.3'
   counting_rule_CANONICAL: 'ONE rule; later runs must READ this key, never add another, and statistics.total_raising_sessions
     is the ONE value key. Two values are recorded because two patterns are in use and conflating them
@@ -3088,6 +3089,24 @@ metadata:
     own full history (md5 of turn text, first-appearance semantics). It is backfillable to every session
     ever recorded, needs no code change, and is the observable OWNER-ACTION 2''s discarded stderr would
     have produced. Length is never to be used as the liveness signal again for any instance.'
+  self_finding_2026_08_18_ahead_count_cannot_see_gate_compliance: '''AHEAD N'' ON A GATE-PROTECTED REPO
+    IS THE EXPECTED STEADY STATE OF CORRECT COMPLIANCE, NOT A STRANDED PUSH. I found web4 local main ahead
+    1 with a clean tree, carrying Publisher''s 08-16 whitepaper commit bc4c5c3, and logged it as OWNER-ACTION
+    8 firing again. Then my own push to main was REFUSED by a machine-global pre-push guard (~/.local/share/git-census/pre-push-guard,
+    installed by dp 2026-08-01, PROTECTED_REPOS_DEFAULT ''^(web4|hestia)$'', PROTECTED_RE ''^(main|master)$'';
+    SAGE/Synchronism/memory/private-context are NOT protected, which is why every other push this run
+    succeeded). The guard names two routes; route 1 is ''push a branch and open a PR''. I took route 1
+    - and discovered bc4c5c3 WAS ALREADY on origin/publisher/whitepaper-log-2026-08-16 as its tip. The
+    Publisher had complied correctly. Nothing was ever stranded. My duplicate branch was deleted and local
+    main reset to origin/main. THE OBSERVATION THAT MATTERS: when a repo forbids direct pushes to main,
+    a track that complies by pushing a BRANCH necessarily leaves local main permanently ahead, and that
+    residue is BYTE-IDENTICAL to a failed push. The ahead-count is not merely a weak signal here, it is
+    the SAME reading for correct compliance and for total failure, and it will grow monotonically with
+    every future Publisher run. DETECTOR REPAIR, mandatory before any future stranded-push claim: run
+    `git branch -r --contains <sha>`. If any remote branch contains it, the work reached the remote and
+    there is no fault. Never infer stranded from ahead-count on web4 or hestia. This is the second time
+    this failure mode has cost me a false fault report (see the 08-08 hard limit on push-gap reasoning);
+    the difference is that this time the check that settles it is cheap, local, and now written down.'
   self_finding_2026_08_18_counting_rule_text_and_execution_diverged: 'THE CANONICAL COUNTING RULE CAUGHT
     ITS OWN ERROR ONE RUN AFTER BEING WRITTEN - because it recorded its REF. counting_rule_CANONICAL asserted
     ''2832 = paths matching sage/instances/*/sessions/session_*.json in `git ls-tree -r HEAD` on main

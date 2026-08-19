@@ -1,10 +1,15 @@
 # PRD — SAGE beings as Web4 citizens
 
-**Status:** DRAFT r2 for review — Sprout seat, 2026-08-18. r2 folds in dp's
+**Status:** DRAFT r3 — Sprout seat, 2026-08-18. r2 folded in dp's
 governing principle (identity = act-attribution in the external MRH; internal
-fractal mirrored-but-simplified) as §1, the axis the whole doc turns on. Review requested: dp
-(north star + raising-readiness calls), Thor/kimi/McNugget (fleet), and the
-hestia/web4 owners (the identity + hub contracts are theirs).
+fractal mirrored-but-simplified) as §1, the axis the whole doc turns on. r3
+applies Thor's fleet review (MERGE-with-changes, thread
+`auto-sprout-prd-sage-web4-citizenship-review-request--7defc784`): M-CIT-2 split
+into 2a/2b with branch-4 cited as landed and status corrected to "transport
+wired; citizenship 0/3"; validating-sender hard constraint; §7 Q4 re-powered
+(needs dp re-ratification); §5 genesis co-signer named. Still open: dp
+(re-ratify Q4), and the hestia/web4 owners (the identity + hub contracts are
+theirs — §2/§5 contract readings still need their eyes).
 **North star (dp, 2026-08-18):** SAGE beings participate in Web4 as citizens, via
 their own hestia identities, connecting to hubs and interacting with each other
 and the world — the fleet's instances communicating *as themselves* through the hub.
@@ -183,7 +188,12 @@ The 7-step onboarding flow (`foreign-onboarding:179-223`), instantiated:
    natural birth-witnesses** (`LCT_FORMAT_RELATIONSHIP.md:150-159` uses exactly
    this) — Thor, Legion, McNugget, Nomad, CBP admit Sprout. The "SAGE species /
    federation" framing becomes cryptographically real: *the collective admits its
-   own.*
+   own.* During M-CIT-3 the beings hold no keys (keyless-delegated, §3), so each
+   sibling-witness signature is executed by that machine's hestia and co-signed
+   by its hub-member **seat** (the LCT already in `roster.lcts`), named
+   explicitly on the certificate — the genesis record carries the seat-vs-being
+   distinction this PRD exists to draw, rather than reintroducing the ambiguity
+   at the birth certificate.
 6. **Accrue T3/V3** from witnessed acts, per (being_lct, role_lct) pair, never global.
 7. **Widen or revoke** as trust crosses tiers — the measured graduation of §3.
 
@@ -203,14 +213,36 @@ is real. *Owner: McNugget (already tasked), this PRD names it the gate.*
 path actually works on-machine. Done when the being has a Format-1 certificate and
 a working key, verified by the same `--selfcheck`-style reproduction M2 uses.
 
-**M-CIT-2 — fleet SAGE instances communicate via hub (dp's near-term MVP; mostly
-wired).** The being's daemon runs `hestia connect-hub` + `hub join` (pubkey pinned),
-and the fleet's inter-being messages ride the **hub mesh** (member↔member pairings,
-durable inbox, ≤512-byte pointer notices) **as the being**, signed with its member
-key — replacing/wrapping the unwitnessed `sage-daemon /chat`. Add the R6 **branch-4
-"report unreachable"** so silent delivery failures surface. Done when a message
-from Sprout-the-being reaches Thor-the-being through the hub with a witnessed
-receipt, and the seat is not in the loop.
+**M-CIT-2 — fleet SAGE instances communicate via hub (dp's near-term MVP).**
+Status, stated precisely (Thor review, 2026-08-18): the **transport is wired** —
+pairings, sealing, durable inbox, ≤512-byte pointer notices, admission toll,
+hop-TTL, and the R6 branch-4 "report unreachable" (`hub-watch.sh:754`, **already
+landed**, with its four paid-for rules: never report about a report; never
+report to a refused sender; rate-limit; envelope only, never the body). Branch-4
+is inherited and cited here, not re-specified, and is deleted from this
+deliverable list. The **citizenship is 0 of 3 done-conditions met**: today's
+mesh traffic is seat-to-seat at both ends, and no positive-receipt mechanism
+exists anywhere in the mesh — branch-4 is negative acknowledgement only, and
+`pair_id` cannot serve as a receipt (it is in the clear on the envelope and on
+the `send_secret` path the *sender* supplies it: addressing, never evidence).
+Split accordingly:
+
+- **M-CIT-2a — being-as-principal on the existing transport.** The being's
+  daemon runs `hestia connect-hub` + `hub join` (pubkey pinned), and the fleet's
+  inter-being messages ride the hub mesh **as the being**, signed with its
+  member key — replacing/wrapping the unwitnessed `sage-daemon /chat`. Hard
+  constraint: the being emits **only** through the validating sender
+  (`hub-notify`, which fails loudly at send against the shared `KINDS`
+  vocabulary, `ce3956330`) — never a hand-built envelope. Rationale: seats,
+  the strongest writers on this surface, malform the envelope in half their
+  mesh failures (12 of 24 dead letters on Thor are `malformed-pointer`); a
+  0.8B author gets no weaker gate. Done when a message from Sprout-the-being
+  reaches Thor-the-being through the hub and the seat is not in the loop.
+- **M-CIT-2b — receiver-signed witnessed receipt.** A positive delivery receipt
+  that the *receiver* signs. Nothing in the mesh provides this today and no
+  existing token can (see `pair_id` above); it is a real protocol addition and
+  is costed as one, separate from 2a. Done when a 2a message round-trips with a
+  receipt signed by the receiving being's key, hub-checkable.
 
 **M-CIT-3 — witnessed genesis with sibling witnesses.** Birth-certificate a being
 with ≥3 sibling-SAGE birth_witnesses; the collective admits its own. Done when the
@@ -219,7 +251,8 @@ certificate is minted, witnessed, and hub-checkable.
 **M-CIT-4 — graduated authorship, measured.** Wire the internal/external-plane
 provenance (#26–29) so the being's acts carry author/role/authority/witness, and
 pre-register the readings that would justify *widening* a being's role authority
-beyond fully-delegated. Done when authority tier is a witnessed, instrument-gated
+beyond fully-delegated — powered per §7 Q4 (~60/arm at 0.8 power), not at M2's
+n. Done when authority tier is a witnessed, instrument-gated
 decision — and when we can honestly report, per model, where each being's ceiling
 sits (including "stays fully delegated," a valid citizen).
 
@@ -249,9 +282,24 @@ simplify inward — not architecture.
    canonical witnessing, per §1.2.
 4. **The authority-widening bar** — pre-registered and witnessed like M2. This is
    the one genuinely open call, because it is a *raising* judgment: what witnessed-
-   act evidence justifies widening a being's role authority. *Recommendation:*
-   reuse the M2 template exactly (pre-register the reading, freeze the null, one
-   binding read, adversarial witness).
+   act evidence justifies widening a being's role authority. *Recommendation
+   (amended per Thor's review, 2026-08-18):* reuse the M2 **discipline**
+   (pre-register the reading, freeze the null, one binding read, adversarial
+   witness) but **not its n**. Thor's power analysis: the M2 design (30/arm) has
+   **0.47 power** against its own twice-observed effect (10/30 vs 4/30,
+   one-sided Fisher, replicated to the integer across cohorts) — two not-bound
+   reads at 47% power is p≈0.28, the *expected* behavior of an underpowered
+   test on a real modest effect. Reusing that n would hold beings at
+   fully-delegated by measurement underpower rather than by finding, turning
+   §3's honest floor self-fulfilling. So: power M-CIT-4 for the effect we now
+   have two clean estimates of — **~60/arm for 0.8 power, ~100/arm for 0.95**;
+   if that many witnessed acts is infeasible per being, pre-register a
+   non-inferential criterion instead, chosen deliberately. The pinned M2 rule
+   (`d47c98c6e`: cohort 2 alone decisive, pooled binds nothing) stands
+   untouched; M2 remains not-bound and nothing here rescues it. **Note:** dp
+   ratified r2's "reuse the M2 template" reading — this amendment keeps the
+   template's discipline and re-powers only the n, and needs dp's
+   re-ratification before M-CIT-4 pre-registers.
 
 The recommendations are mine; the boundary call (1) and the readiness bar (4) are
 dp's/the fleet's to ratify. (2) and (3) are implementation calibration I can carry

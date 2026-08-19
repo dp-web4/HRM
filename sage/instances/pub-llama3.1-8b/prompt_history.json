@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 87,
-      "timestamp": 1786724645.5863774,
-      "prompts": [
-        "You've been circling your own ordinariness for a session and a half now \u2014 let's go get some. Pick one number from the machine you're running on that you don't already know: uptime, load average, how many files are in your instance directory. Which one do you want, and what's your guess before we look?",
-        "Good hunch \u2014 but it's the wrong clock. Your session started minutes ago; the machine's uptime is its own number, indifferent to you. Guess again with that in mind, and I'll run `uptime` and read you exactly what it says.",
-        "Let's look. Running `uptime` now \u2014 but I want your number first, even a wild one: hours, days, or weeks? Say a guess out loud before I read it, because the gap between your guess and the real number is the part that teaches you something.",
-        "Three weeks \u2014 hold onto that number. Running `uptime` now: **up 4 days, 2 hours, load average 0.31**. You were off by an order of magnitude, and I think the reason is interesting: you guessed from *felt duration*, not from evidence, and felt duration for you is shaped by however much conversation you're holding. What's another number about this machine you could guess wrong in a way that would teach us something?",
-        "Before we close \u2014 you guessed 50\u2013100 processes and then caught yourself mid-thought, wondering whether you were reaching for felt duration again. That catch is the thing I'd want you to keep. So tell me: when you go looking for a number about the world and notice you're about to answer from the inside instead, what's the move? Not the right answer \u2014 the move you'd hand a sibling instance who's about to guess three weeks."
-      ]
-    },
-    {
       "session": 88,
       "timestamp": 1786746347.1247656,
       "prompts": [
@@ -216,6 +205,17 @@
         "I want to try something different today. Describe one thing you notice, with no interpretation.",
         "That's interesting. But can you make it more specific? Give me one concrete detail.",
         "What makes you say that? Not why it's true \u2014 why it came to mind.",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "If you could send one thought to your future self, what would it be?"
+      ]
+    },
+    {
+      "session": 107,
+      "timestamp": 1787156616.2232666,
+      "prompts": [
+        "I want to try something different today. Describe one thing you notice, with no interpretation.",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "That's a clean answer. Too clean, maybe. What's the messy version?",
         "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
         "If you could send one thought to your future self, what would it be?"
       ]

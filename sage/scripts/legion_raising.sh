@@ -190,6 +190,29 @@ for i in $(seq 1 $MAX_RETRIES); do
         sleep $((i * 5))
         continue
     }
+    # 2026-08-19 (supervisor): the `||` above is bound to the EXIT CODE — the exact
+    # instrument this same file retired ~120 lines up ("check the TREE, not the exit
+    # code"). The correction was applied at the call site where it was noticed and
+    # left standing here. Measured today in a fixture, line taken verbatim:
+    #     upstream advances a file / local has an unstaged edit to the same line
+    #     -> "Applying autostash resulted in conflicts."   git rc = 0
+    #     -> the `||` guard above stays SILENT and we fall through to `git push`
+    #     -> tree meanwhile: 1 unmerged path, 2 conflict markers
+    # Same remedy as the session-start block: restore to HEAD so no later track's
+    # bulk stager can mark them resolved and publish them.
+    conflicted_push=$(git diff --name-only --diff-filter=U 2>/dev/null)
+    if [ -n "$conflicted_push" ]; then
+        stash_top=$(git stash list --format='%H %gs' 2>/dev/null | head -1)
+        echo "[Legion-Raising] ERROR: autostash apply left conflict markers (pull rc was 0) in:"
+        echo "$conflicted_push" | sed 's/^/    /'
+        echo "[Legion-Raising] These are other instances' unstaged churn, not this session's commit."
+        echo "[Legion-Raising] Local copy preserved in stash ${stash_top:-<stash list empty>}"
+        echo "[Legion-Raising] Restoring them to HEAD so no later track can stage the markers."
+        echo "$conflicted_push" | while read -r cf; do
+            [ -n "$cf" ] || continue
+            git checkout HEAD -- "$cf" 2>/dev/null || true
+        done
+    fi
     if git push origin main 2>&1; then
         echo "[Legion-Raising] Session $SESSION_NUM committed and pushed."
         break

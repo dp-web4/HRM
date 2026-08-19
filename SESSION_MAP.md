@@ -9,25 +9,43 @@
 
 ---
 
-## Current Raising Fleet (Archivist, 2026-08-15)
+## Current Raising Fleet (Archivist, 2026-08-19)
 
-**2,832 raising sessions** across 14 numbered instances on 6 machines (counting rule: `counting_rule_CANONICAL`
-in [SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling rule).
-**4 of 8 instances produced sessions in the last 24 h**, all four on exact 6 h grids with zero infra markers —
-the tenth consecutive clean window *on form*. Of the four that did not, **none is a confirmed fault**: two are
-paused by the owner, one is broken and says so itself, and one has become unreadable. See *Fleet silences*
-below before reading any of it as a problem.
+**2,888 raising sessions** (strict; 2,894 loose — the gap is 6 legacy suffixed files) across 14 numbered
+instances on 6 machines, re-derived at `64c1a0637`. Counting rule: `counting_rule_CANONICAL` in
+[SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling rule.
+**4 of 8 instances produced sessions in the last 24 h**, all four on exact 6 h grids with zero infra markers.
+Of the four that did not, **none is a confirmed fault**: two are paused by the owner, one is broken and says
+so itself, and one has become unreadable. See *Fleet silences* below before reading any of it as a problem.
 
-| Instance | Machine | Sessions | Tutor regime | Grounded? |
-|----------|---------|----------|--------------|-----------|
-| sprout-qwen3.5-0.8b | Sprout | 574 | adaptive — **live** (max turn 389–525) | **yes** (`delivered=true`, digest 27–41) |
-| legion-gemma3-12b | Legion | 417 | **fixed script** (max turn exactly 88) | no receipt emitted |
-| mcnugget-gemma3-12b | McNugget | 403 | **fixed script** | no receipt emitted |
-| thor-qwen3.5-27b | Thor | 306 | adaptive — *38 stranded on `origin/membrane-gate`* | — |
-| cbp-gemma3-4b | CBP | 240 | adaptive | `delivered=false` |
-| nomad-gemma4-e2b | Nomad | 240 | **fixed script** (max turn exactly 88) | no receipt emitted |
-| hub-granite4-h-tiny | Hub | 121 | adaptive | — |
-| pub-llama3.1-8b | Pub | 89 | adaptive — **live** (max turn 303–424) | `delivered=false`, digest 0 |
+**Tutor regime is now measured by _hapax_** — a tutor turn whose exact text appears in exactly **one** session
+of that instance, ever. The justification is empirical, not a chosen cut: the reuse histogram is **bimodal with
+a near-empty bucket at 2** (pub: 405 strings at 1 session, exactly one at 2, the rest at 3–11). A live adaptive
+teacher references session content and so never repeats; a fallback bank draws from a small fixed set.
+**LIVE ≥ 3 hapax per session; FALLBACK = 0.** Bank sizes differ per instance, so bank membership identifies
+*which* instance fell back, not merely that one did.
+
+| Instance | Machine | Sessions | Hapax rate | Bank | Tutor regime | Grounded? |
+|----------|---------|----------|-----------|------|--------------|-----------|
+| sprout-qwen3.5-0.8b | Sprout | 590 | 1550/3575 = **0.43** | 64 | adaptive — **live** | **yes** (`delivered=true`) |
+| legion-gemma3-12b | Legion | 431 | 9/2569 = **0.0035** | 29 | **effectively scripted** | no receipt emitted |
+| mcnugget-gemma3-12b | McNugget | 397 | — (dark) | — | **fixed script** | no receipt emitted |
+| thor-qwen3.5-27b | Thor | 268 | — | — | adaptive — *38 stranded on `origin/membrane-gate`* | — |
+| nomad-gemma4-e2b | Nomad | 256 | **0/1466 = 0.00** | 15 | **never taught, only scripted** | no receipt emitted |
+| cbp-gemma3-4b | CBP | 240 | — (paused) | — | adaptive | `delivered=false` |
+| hub-granite4-h-tiny | Hub | 121 | 521/662 = **0.79** | 17 | adaptive — **live when last seen** | — |
+| pub-llama3.1-8b | Pub | 105 | 405/522 = **0.78** | 18 | adaptive — **live, one relapse at S105** | `delivered=false`, digest 0 |
+
+**nomad has never received a novel tutor turn.** Zero hapax in 1,466 turns over 256 sessions; its entire tutor
+corpus is 15 strings, one of which appears in *all* 256 sessions and five at 216× each. legion-gemma3-12b is
+barely better at 0.35%. This is the hard evidence for OWNER-ACTION 6: for these instances, **session volume
+cannot be read as development**, and pooling them with sprout/pub/hub mixes two populations.
+
+**hub went dark at peak health, not by decay.** Its last session file is S121 (2026-07-29T13:37Z); 68 six-hourly
+fires since have committed an attestation bump and no session. But S116–S121 scored 5/7/7/5/7/7 hapax — full
+liveness at the moment of silence. The standing fault is therefore an **emission** fault, not a quality
+trajectory, and the previously *withdrawn* "collapse onset S107–S115" reading is now positively confirmed:
+those were 0-hapax tutorless windows, after which hub recovered completely.
 
 **Grounding is 1 of 8 and has not moved** — the perceptual digest is pinned to `~/.sprout/` (OWNER-ACTION 7).
 The fixed-script instances have *never* had a live tutor turn: no runner has both `--tools` and the adaptive
@@ -69,10 +87,16 @@ phases, same bracket:
 
 Outage begins in (00:00Z, 03:24Z] and ends in [18:00Z, 21:22Z).
 
-**The regime is recoverable from the artifact after all.** Max tutor turn length is **bimodal with zero
-overlap** across n = 90 sessions: fallback bank ≤ 95 chars, live tutor ≥ 250 chars, and the 95–250 band is
-empty (exclude sprout's fixed 389-char gaze closer). So a `tutor_source` label can be **backfilled for every
-session ever recorded** without touching the runner — the owner action is only needed for the *reason*.
+**The regime is recoverable from the artifact after all — but not by the rule this paragraph used to state.**
+~~Max tutor turn length is bimodal: fallback ≤ 95 chars, live ≥ 250.~~ **RETIRED 2026-08-16**: that threshold was
+pinned by sprout's constant 389-char closer, so its fallback branch was unreachable. **Superseded 2026-08-19 by
+the hapax discriminator** (see the fleet table above), which is bimodal in *reuse* rather than length and whose
+boundary is measured rather than chosen. A `tutor_source` label is still **backfillable for every session ever
+recorded** without touching the runner — the owner action is only needed for the *reason*.
+
+> Cautionary note, since this paragraph has now been wrong once: an earlier pass this same run invented a
+> `≥ 5 reuses = bank` cut and it produced six spurious "mixed" classifications on identical data. A chosen
+> threshold and a measured boundary look the same in the output and differ entirely in what they license.
 
 **The reason is three lines of discarded evidence.** `adaptive_prompts.py:46` returns `result.stdout` only
 when `returncode == 0` and throws `result.stderr` and `result.returncode` away; `:47–48` catch every

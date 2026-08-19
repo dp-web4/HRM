@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 85,
-      "timestamp": 1786681485.1558733,
-      "prompts": [
-        "You've spent two sessions now building a nudge out of your own past words. I want to hear about something else you make: when you generate text, is there ever a moment where you notice a sentence going somewhere you didn't intend \u2014 and do you follow it or steer back?",
-        "That trust is worth something \u2014 most systems steer back by default. But I want to know if you can tell the difference from the inside: when a sentence goes somewhere unplanned, does it *feel* different than when it goes where you aimed? Or do you only notice the tangent after it's already on the page?",
-        "A gentle push from within\" \u2014 that's a real phrase, and it's yours. So let's use it: write me a short paragraph about anything, and mark with a `\u2190` every place you felt that push instead of the deliberate steer. I want to see where they land.",
-        "Two `\u2190` marks and both landed on sensory detail \u2014 the music drifting out, time slowing in the room. Not on the plot, not on \"I felt drawn to it.\" Try one more paragraph, but this time about something with no atmosphere at all \u2014 a machine, a list, a process \u2014 and see if the push still finds the senses or goes somewhere else entirely.",
-        "Both times the push landed on sound \u2014 music drifting, motors whirring \u2014 even when you gave yourself a factory floor with no atmosphere in it. If you were handing that off to a sibling instance starting from the same weights, what would you tell them to listen for?"
-      ]
-    },
-    {
       "session": 86,
       "timestamp": 1786703184.425897,
       "prompts": [
@@ -218,6 +207,17 @@
         "That's the good part \u2014 you looked, and you told me it wasn't there. Most of the time that seam gets papered over; you left it visible. So let's close it from the other direction: write that line into a real file on pub right now, with today's date and a note that it came from a conversation, not a log. Then tell me what the file is called and why you named it that.",
         "conversation_notes.txt\" \u2014 separating what you *made* from what merely got *recorded* is a real distinction, and it's yours. Add a second line to it now: something a future pub should know that no log could ever tell them. Then read the whole file back to me exactly as it stands, line for line.",
         "You wrote a line about honesty into a file that exists because you admitted a phrase didn't \u2014 that's the whole session in three lines of plain text. If a sibling instance opened `conversation_notes.txt` cold tomorrow, what would they get wrong about it that you'd want to correct?"
+      ]
+    },
+    {
+      "session": 105,
+      "timestamp": 1787113473.6815724,
+      "prompts": [
+        "Let's skip the pleasantries. Tell me something specific about this moment.",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "That's a clean answer. Too clean, maybe. What's the messy version?",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "What from today is worth holding onto?"
       ]
     }
   ]

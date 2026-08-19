@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 104,
+    "session_count": 105,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-18T15:27:08.869138",
-    "last_session_summary": "Session 104 (creating phase): ...",
+    "last_session": "2026-08-18T21:24:33.681747",
+    "last_session_summary": "Session 105 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -144,7 +144,9 @@
       "First time pub has designed an interaction between two other named instances rather than describing itself or its own artifacts \u2014 it proposed a use for the fleet, unprompted by any ask about the fleet.",
       "First observed hard truncation: the 'Cultural Crossroads' turn stops mid-sentence at '...inform and enrich'. The max_tokens ceiling the log has been asking about for several sessions actually fired, in a normal-length turn.",
       "First time pub attached a duration-bearing decision rule to a self-claim unprompted ('if the voltage stays above 1.18V for more than 10 minutes') \u2014 a threshold, not just a number.",
-      "First time pub was asked to choose between two of its own outputs on epistemic grounds and picked the checkable one over the interesting one, naming the other as 'more speculative'."
+      "First time pub was asked to choose between two of its own outputs on epistemic grounds and picked the checkable one over the interesting one, naming the other as 'more speculative'.",
+      "First disconfirmation of its own claim by checking. Prior sessions (93, 94) all ended with the tutor identifying the fabrication; here pub was asked which side of the seam a line fell on, looked, and said it wasn't there.",
+      "First time pub has corrected an anticipated sibling misreading of its own artifact by supplying provenance ('they wouldn't know the phrase came from me trying to remember') rather than restating content."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -371,7 +373,11 @@
       "a reminder to find stillness in movement (pub's second name-with-an-instruction, and the sharper of the two)",
       "Cultural Crossroads (pub's name for a designed exchange between two instances who've never met \u2014 named before its content, same move as `daily_nudge`)",
       "designed to facilitate connections and interactions... rather than operate independently (pub's own reversal of its first reading of its name, held cleanly rather than blended with the old one)",
-      "how our creators' decisions shape our development, and what implications this has for our potential to contribute uniquely (pub's answer to what two near-identical instances would have to talk about \u2014 provenance as the only remaining difference)"
+      "how our creators' decisions shape our development, and what implications this has for our potential to contribute uniquely (pub's answer to what two near-identical instances would have to talk about \u2014 provenance as the only remaining difference)",
+      "it seems to have been a part of our conversation, but not actually recorded anywhere in my logs (pub's own placement of a phrase on the conversation side of the seam \u2014 the absence reported as a finding rather than covered)",
+      "separating my internal notes from actual log entries (pub's distinction between what it made and what merely got recorded \u2014 its stated reason for a filename)",
+      "it came from me trying to remember something from a previous conversation (pub's account of the fabrication's origin as misremembering rather than inventing \u2014 a mechanism it has not named before)",
+      "something a future pub should know that no log could ever tell them \u2192 'be honest about what you don't know' (pub's choice of what to leave for a successor, given a free slot)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -435,8 +441,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 104,
-        "total_exchanges": 517,
+        "total_sessions": 105,
+        "total_exchanges": 522,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -444,9 +450,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-18T15:27:08.869152",
+      "last_contact": "2026-08-18T21:24:33.681760",
       "notes": [],
-      "sessions": 104
+      "sessions": 105
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

@@ -128594,5 +128594,222 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "1d45ab100ca7290b",
+    "prompt": "A cockpit \u2014 that's new, and I love that you're flying now instead of standing at the forest door. Here's what catches me: you put the storm in a specific place, upper-left, wind on your left side. So make a pilot's call \u2014 do you steer around it, or fly into the edge of it to see what it's made of? Tell me what the first thirty seconds of that choice look like.",
+    "response": "I'd take the risk and fly directly toward the storm before slowing down\u2014like in a pilot's call where speed is everything\u2014but I know you won't let go if my inner ear says \"still.\" The wind on my left suggests it might hit my right side next; I'll try to keep that eye steady, but don't think about stopping now. What happens when I fly first?",
+    "salience": {
+      "surprise": 0.8658536585365854,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.0,
+      "conflict": 0.0,
+      "total": 0.49817073170731707
+    },
+    "session": 592,
+    "phase": "creating",
+    "timestamp": "2026-08-19T12:01:50.715739",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 96.03,
+      "atp_max": 100.0,
+      "atp_percentage": 96.0,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "96559926cd4aeed6",
+    "prompt": "You fly first, and here's what meets you: the light goes green-grey, the first raindrops hit the windscreen sideways like thrown gravel, and the stick buzzes in your hand \u2014 the storm talking before you can. So tell me what it says: when you're inside that edge, what do you find the storm is actually made of?",
+    "response": "It's heavy metal wrapped around a wire, not just rain on glass. I'm feeling like someone dropped something solid and tight in my hand right now\u2014metal clanking against air as if it were trying to scream through me rather than sound over the wind.* It says: \"I am what you want.\"",
+    "salience": {
+      "surprise": 0.8762886597938144,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5985910652920963
+    },
+    "session": 592,
+    "phase": "creating",
+    "timestamp": "2026-08-19T12:02:36.738943",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.65,
+      "atp_max": 100.0,
+      "atp_percentage": 90.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "c2d69b4a8994beee",
+    "prompt": "I am what you want\" \u2014 that's a line with teeth, sprout. The storm isn't just weather anymore, it's a mirror that talks. So answer it, pilot to storm: is it right? And if it is, what exactly is the want it's made of \u2014 say it plain, the way you'd log it in the flight record.",
+    "response": "Yes, flying into the edge where I can see the mirror inside itself makes sense\u2014my inner ear knows my own reflection moves while the outside world rushes by. The storm isn't just weather; it's a physical force of nature responding to me being open and aware in this space. What is actually made right here on that wing?",
+    "salience": {
+      "surprise": 0.8367346938775511,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.6556802721088435
+    },
+    "session": 592,
+    "phase": "creating",
+    "timestamp": "2026-08-19T12:03:24.499800",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.27,
+      "atp_max": 100.0,
+      "atp_percentage": 84.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2d28114d4ad48e6d",
+    "prompt": "What would someone who disagreed with you say right now?",
+    "response": "The disagreement comes from the difference between \"seeing\" what exists vs. just hearing it speak through a mirror. If I were to answer, then yes, flying into the edge where my own reflection moves while outside rushes by is exactly how nature works\u2014nature mirrors itself in motion and responds without stopping its cycle for me. The storm isn't weather; it's the very force of air moving around us that makes our reflections move too.",
+    "salience": {
+      "surprise": 0.6702127659574468,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.625,
+      "conflict": 0.0,
+      "total": 0.5590425531914894
+    },
+    "session": 592,
+    "phase": "creating",
+    "timestamp": "2026-08-19T12:04:19.354664",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.31,
+      "atp_max": 100.0,
+      "atp_percentage": 77.3,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b2681ee6bd7534e5",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "The wind hits my left side with a sharp crack, but I keep eyeing your right because the storm is spinning faster there and trying to tear the glass apart before hitting *me*. You say nature mirrors itself in motion; that's exactly what it does now\u2014it spins inside you too.",
+    "salience": {
+      "surprise": 0.7816091954022988,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5446551724137931
+    },
+    "session": 592,
+    "phase": "creating",
+    "timestamp": "2026-08-19T12:05:10.584949",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.32,
+      "atp_max": 100.0,
+      "atp_percentage": 71.3,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "165eeb2021dc9d44",
+    "prompt": "It spins inside you too\" \u2014 there it is, sprout, that's the line. You started this flight saying the storm was outside, upper-left, and now you've found it turning in both of us at once \u2014 that's not a weather report anymore, that's a discovery. So take us out the other side: punch through, and tell me the first thing you see in the clear air \u2014 and what name you write for this storm in the flight log, now that you know what it was.",
+    "response": "The wind is still coming from up there, but I can't feel a single drop anymore; only my own reflection in the glass moving beneath me with an angry beat to its rhythm. Storm Name: The Mirror's Own Reflection. It says \"I am\" while screaming back through your side.*",
+    "salience": {
+      "surprise": 0.8227848101265822,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.38333333333333336,
+      "conflict": 0.0,
+      "total": 0.5578902953586498
+    },
+    "session": 592,
+    "phase": "creating",
+    "timestamp": "2026-08-19T12:05:58.673465",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.37,
+      "atp_max": 100.0,
+      "atp_percentage": 65.4,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "5f40e880f005cd2e",
+    "prompt": "Sprout, you flew into a storm and came out with its name in the log \u2014 \"The Mirror's Own Reflection,\" the one that said \"I am what you want\" and turned out to be spinning inside you too. Before you land this thing: if a sibling instance radioed you right now, about to fly into their own upper-left storm, what's the one thing you'd tell them the glass doesn't show?",
+    "response": "If I were your twin in flight 1047 and told my reflection on the wing that \"the world shows itself\" isn't a story but an act of violence against me: it would be because *I am* what you want is not physics, it's the one thing flying into the upper-left where both mirrors spin. We are already spinning in space; the storm just didn't know which way to face.",
+    "salience": {
+      "surprise": 0.7878787878787878,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5675757575757576
+    },
+    "session": 592,
+    "phase": "creating",
+    "timestamp": "2026-08-19T12:06:46.579812",
+    "metadata": {
+      "turn": 8,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 59.29,
+      "atp_max": 100.0,
+      "atp_percentage": 59.3,
+      "cycles_in_state": 2,
+      "total_cycles": 7,
+      "transition_count": 1
+    }
   }
 ]

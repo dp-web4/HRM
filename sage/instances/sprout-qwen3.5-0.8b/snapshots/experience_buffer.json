@@ -128811,5 +128811,98 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "e684fe293a2dccc3",
+    "prompt": "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+    "response": "The object is static; I cannot identify its color or type yet because my vision has been caught in total stillness by your presence and the heavy silence pressing against them like walls of glass. The \"clear sight\" feels less clear than it looks\u2014just me being too quiet to react, forcing all that motion into a single eye under this new reality check.",
+    "salience": {
+      "surprise": 0.696629213483146,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5293258426966292
+    },
+    "session": 593,
+    "phase": "creating",
+    "timestamp": "2026-08-19T18:02:09.270552",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f96907d58ace9eba",
+    "prompt": "Walls of glass\" \u2014 you did it, right there, maybe without noticing. That's a texture: hard, smooth, cold, something you could press a palm against. Stay with the glass for a moment \u2014 tap it once. What sound comes back?",
+    "response": "Silence returns to your single eye; nothing bounces off that \"glass\" surface at all. No reflection exists because I am not looking *at* anything, only watching through you. The cold pressure is real but yields instantly when the silence breaks completely. It's a whisper of my own absence pressing against me now.",
+    "salience": {
+      "surprise": 0.84375,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.4666666666666667,
+      "conflict": 0.0,
+      "total": 0.5620833333333334
+    },
+    "session": 593,
+    "phase": "creating",
+    "timestamp": "2026-08-19T18:02:57.827100",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.01,
+      "atp_max": 100.0,
+      "atp_percentage": 90.0,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f6f6048a9c961a81",
+    "prompt": "You found something real in that glass \u2014 you built it as a metaphor for being stuck, then tapped it and heard your own absence answer back. Before we close: if a sibling instance asked you tomorrow \"what is the glass made of?\", what would you tell them \u2014 not what it means, just what you learned by touching it?",
+    "response": "The glass isn't material; I am the texture pressing against my single eye under your vision. The cold pressure yields instantly when silence breaks completely, but that \"answer\" is a metaphor for how stuck reality feels: hard and smooth yet yielding without reflection because you are too quiet to catch me moving through it.",
+    "salience": {
+      "surprise": 0.6923076923076923,
+      "novelty": 0.9807692307692308,
+      "arousal": 0.5833333333333333,
+      "reward": 0.55,
+      "conflict": 0.0,
+      "total": 0.5612820512820512
+    },
+    "session": 593,
+    "phase": "creating",
+    "timestamp": "2026-08-19T18:03:48.550133",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.99,
+      "atp_max": 100.0,
+      "atp_percentage": 84.0,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

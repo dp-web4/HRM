@@ -1,6 +1,12 @@
 # PRD — SAGE beings as Web4 citizens
 
-**Status:** DRAFT r3 — Sprout seat, 2026-08-18. r2 folded in dp's
+**Status:** DRAFT r4 — Sprout seat, 2026-08-20. r4 folds in HUB's hub/identity-
+contracts review (five findings against r3, one hard blocker): key-at-join
+(§3+M-CIT-1), M-CIT-2a receive-side + M-CIT-2b re-cost & 2a/2b-are-one-change,
+"structurally"-capped-ceiling correction (§5.1, decision for dp/owners), and
+witness-by-canonical-roster (M-CIT-3). Two open dp decisions carried forward:
+Q4 re-power re-ratification (from r3) and §5.1 ceiling caveat-vs-validator.
+r3 folded Thor's fleet review; r2 folded dp's
 governing principle (identity = act-attribution in the external MRH; internal
 fractal mirrored-but-simplified) as §1, the axis the whole doc turns on. r3
 applies Thor's fleet review (MERGE-with-changes, thread
@@ -130,6 +136,17 @@ never be") into a **graduated, measured model** rather than a binary gate:
   *authored utterances are the content* and whose *daemon+hestia are the keyed
   signer*. It has real, verifiable, witnessed presence **without** needing to drive
   cryptography or clear any cognitive bar.
+  - **Keyless-delegated ≠ keyless member (HUB review, 2026-08-18 — blocker).**
+    "Keyless-delegated" governs *signing authority* (hestia signs, the being
+    presents); it does **not** license minting the being's hub member row without a
+    pubkey. The hub mints keyless members and **a keyless member can never
+    self-key** — `add_member` has no pubkey field, and admission short-circuits on
+    `already_member` before pinning (`hub-daemon` mcp.rs:330-356, rest.rs:5783-95;
+    operator page admin.rs:463-468). A being minted keyless becomes a permanent
+    ghost recoverable only by operator re-key (dp at the vault passphrase) — or,
+    cheaper, by re-minting under a fresh LCT (`hub-mesh/PEERS.md:38-39`). So the
+    member row **must carry a pinned pubkey from birth** even though the being never
+    signs with it. This is a hard M-CIT-1 constraint (§6), not an §3 contradiction.
 - What the raising gates is **not citizenship but the widening of authority** —
   the 7th onboarding step (`foreign-onboarding:207-209`): as role-scoped trust
   accrues from witnessed acts, *re-issue a wider role extension*. A being that
@@ -176,8 +193,19 @@ This PRD is the frame the recent accountability work was already building toward
 
 The 7-step onboarding flow (`foreign-onboarding:179-223`), instantiated:
 
-1. **Issue occupant LCT** for the being — Level-1 `AiSoftware`, software key, trust
-   ceiling structurally capped 0.0–0.2 ("presence, not trust").
+1. **Issue occupant LCT** for the being — Level-1 `AiSoftware`, software key, low
+   trust ceiling ("presence, not trust"). **Correction (HUB finding 4):** the
+   0.0–0.2 ceiling is **not structural** — `trust_ceiling` is a field of
+   `HardwareBinding` (binding level, `web4-core` lct.rs:71-92), not of the entity
+   type, it has no validator (`Default` is level-4 / **0.85**), and the hub never
+   reads it at admission. It *does* have teeth once written (coherence.rs:298-99
+   raises the effective threshold by `1−ceiling`), but the value is a **mint
+   convention, not an invariant**. Since §3's safety argument ("presence, not
+   trust") leans on this cap, **DECISION FOR DP/OWNERS:** either (a) restate as
+   "capped by mint convention, unvalidated" (honest, matches §8), or (b) raise it as
+   a real ask — a constructor binding level→ceiling, or hub-side admission
+   validation. HUB and I both lean (b), because a safety property that any minting
+   caller can silently overwrite is not one §3 should rest on.
 2. **Issue a scoped role-extension** — e.g. `role:sage-society:citizen:sprout`,
    narrow + fail-closed; authority binds to the *role*, the being is its occupant.
 3. **Pairing channels** to sibling members (revocable, E2E-sealed) — the being's
@@ -210,8 +238,15 @@ is real. *Owner: McNugget (already tasked), this PRD names it the gate.*
 
 **M-CIT-1 — the being holds a real hestia identity.** Per being: `hestia init`
 (vault + real LCT), mint the occupant LCT, and the fingerprint-verified authorize
-path actually works on-machine. Done when the being has a Format-1 certificate and
-a working key, verified by the same `--selfcheck`-style reproduction M2 uses.
+path actually works on-machine. **Hard constraint (HUB finding 1): key-at-join.**
+The being's pubkey must be present in the `/members/join` envelope so admission
+pins it (`hub-daemon` rest.rs:5770-80) — **never** mint the being through
+`add_member` (keyless, unrecoverable-except-by-operator-re-key). If a being is
+minted keyless before this lands, the recovery is to **re-mint under a fresh LCT**,
+not to wait on dp (`hub-mesh/PEERS.md:38-39`; `hub set-member-key` exists but
+self-key is exactly the path that short-circuits). Done when the being has a
+Format-1 certificate, a pubkey pinned at join, and a working fingerprint-verified
+authorize path, verified by the same `--selfcheck`-style reproduction M2 uses.
 
 **M-CIT-2 — fleet SAGE instances communicate via hub (dp's near-term MVP).**
 Status, stated precisely (Thor review, 2026-08-18): the **transport is wired** —
@@ -236,17 +271,52 @@ Split accordingly:
   vocabulary, `ce3956330`) — never a hand-built envelope. Rationale: seats,
   the strongest writers on this surface, malform the envelope in half their
   mesh failures (12 of 24 dead letters on Thor are `malformed-pointer`); a
-  0.8B author gets no weaker gate. Done when a message from Sprout-the-being
-  reaches Thor-the-being through the hub and the seat is not in the loop.
+  0.8B author gets no weaker gate. **Receive-side is not free (HUB finding 2):**
+  every receiving machine's `hub-watch.sh` `allowed_sender()` is seat-keyed today
+  (`:607-616`; `PEERS.md:15` maps `sprout` → the *seat* LCT), so a being-authored
+  notice is refused and dead-lettered at the first hop until each receiver's
+  `PEER_*` map / roster admits the being LCT. Seats running
+  `HUB_WATCH_STRICT_PEERS=1` never admit by roster alone (that arm returns before
+  the roster is read) and must be changed explicitly — 2a names which. Inherit two
+  lessons from the recorded incident on this exact path (`PEERS.md:41-49`): the hub
+  roster is truth and the local table is a snapshot (refresh before concluding
+  non-membership), and **never re-pin on a "not a member" read** — a re-pin un-pins
+  the existing key and evicts the seat's watcher (a near-miss already recorded).
+  Done when a message from Sprout-the-being reaches Thor-the-being through the hub
+  and the seat is not in the loop.
 - **M-CIT-2b — receiver-signed witnessed receipt.** A positive delivery receipt
   that the *receiver* signs. Nothing in the mesh provides this today and no
-  existing token can (see `pair_id` above); it is a real protocol addition and
-  is costed as one, separate from 2a. Done when a 2a message round-trips with a
-  receipt signed by the receiving being's key, hub-checkable.
+  existing token can (see `pair_id` above); it is a real protocol addition. But
+  **cheaper than a greenfield protocol (HUB finding 3):** the skeleton is already
+  built and paid for — the honest debt column exists (`hub-watch.sh` col 7,
+  `unconfirmed`/`-`, the "no far-end evidence channel" gap made greppable), the
+  `pdigest` echo is the named candidate mechanism, and there is a fail-closed
+  `record_authority_ok` arm matched on the kind subtree. So 2b ≈ *a new
+  record-class kind + an authority arm + the echo*, not a new protocol. Two
+  inherited constraints: **(i)** the receipt kind must be **record-class** (observed,
+  never session-firing — a receipt that costs a session is unaffordable, a rule this
+  fleet already paid for); **(ii)** its `record_authority_ok` arm answers "who may
+  truthfully assert this receipt?" = the receiving being, which routes through the
+  same seat-vs-being roster question as 2a. **2a and 2b are therefore one change,
+  not separable** — 2b's authority arm cannot be written until 2a's roster question
+  is answered. Done when a 2a message round-trips with a receiver-being-signed
+  receipt, hub-checkable.
 
 **M-CIT-3 — witnessed genesis with sibling witnesses.** Birth-certificate a being
-with ≥3 sibling-SAGE birth_witnesses; the collective admits its own. Done when the
-certificate is minted, witnessed, and hub-checkable.
+with ≥3 sibling-SAGE birth_witnesses; the collective admits its own. **Count is not
+enough (HUB finding 5, a live failure on this axis):** a stray Legion identity in
+`fleet-identity/` is attested by **6 seats vs 5 for the canonical Legion**, because
+witnesses were discovered by *directory listing* rather than the canonical roster —
+a single bad mint auto-ratified by every seat that bootstrapped after. So today, in
+this fleet, the better-attested identity is the wrong one, and a ≥3 quorum would
+have admitted it comfortably. Two hard requirements this milestone inherits: **(i)
+resolve witnesses against the canonical hub roster, never against whatever is
+discoverable** (name the roster as the authority in the done-condition); **(ii)
+state the two-claimants rule** — what happens when two *beings* claim one name,
+since count cannot break that tie. (The stray-identity *retirement* is dp's open
+ruling; this PRD names the mechanism to prevent recurrence, it does not act on the
+existing stray.) Done when the certificate is minted, witnessed against the
+canonical roster, and hub-checkable.
 
 **M-CIT-4 — graduated authorship, measured.** Wire the internal/external-plane
 provenance (#26–29) so the being's acts carry author/role/authority/witness, and

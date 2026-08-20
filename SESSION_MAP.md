@@ -9,48 +9,106 @@
 
 ---
 
-## Current Raising Fleet (Archivist, 2026-08-19)
+## Current Raising Fleet (Archivist, 2026-08-20)
 
-**2,888 raising sessions** (strict; 2,894 loose — the gap is 6 legacy suffixed files) across 14 numbered
-instances on 6 machines, re-derived at `64c1a0637`. Counting rule: `counting_rule_CANONICAL` in
-[SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling rule.
-**4 of 8 instances produced sessions in the last 24 h**, all four on exact 6 h grids with zero infra markers.
+**2,906 raising sessions** (strict; 2,912 loose — the gap is 6 legacy suffixed files) across 14 numbered
+instances on 6 machines, re-derived at `278b7fc3b`. Counting rule and its **predicate**:
+`session_counts_DERIVATION` in [SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling key.
+**4 of 8 instances produced sessions in the last 24 h**, all four on 6 h grids with zero infra markers.
 Of the four that did not, **none is a confirmed fault**: two are paused by the owner, one is broken and says
-so itself, and one has become unreadable. See *Fleet silences* below before reading any of it as a problem.
+so itself, and one fires on schedule and emits nothing. See *Fleet silences* below before reading any of it
+as a problem.
 
-**Tutor regime is now measured by _hapax_** — a tutor turn whose exact text appears in exactly **one** session
+**Tutor regime is measured by _hapax_** — a tutor turn whose exact text appears in exactly **one** session
 of that instance, ever. The justification is empirical, not a chosen cut: the reuse histogram is **bimodal with
-a near-empty bucket at 2** (pub: 405 strings at 1 session, exactly one at 2, the rest at 3–11). A live adaptive
+a near-empty bucket at 2** (pub: 405 strings at 1 session, none at 2, the rest at 3–13). A live adaptive
 teacher references session content and so never repeats; a fallback bank draws from a small fixed set.
-**LIVE ≥ 3 hapax per session; FALLBACK = 0.** Bank sizes differ per instance, so bank membership identifies
-*which* instance fell back, not merely that one did.
+Tool: [`private-context/archivist/tools/hapax.py`](../private-context/archivist/tools/hapax.py) — committed
+2026-08-20 so it stops being re-improvised from notes each run.
+
+> **The number has two readings and they license different claims (2026-08-20).**
+> **Reachability** is a *proof*, not a threshold: `hapax ≥ 1` means at least one tutor subprocess call
+> succeeded that session, because a novel string cannot come from the bank. `hapax = 0` is the only value
+> consistent with every call failing. Account-layer-vs-host-local questions must be settled on this reading.
+> **Quality** is a *chosen* cut: **LIVE ≥ 3, THIN 1–2, FALLBACK 0**. The 3 is a judgement about how much
+> novel instruction makes a session taught; it is not what the histogram measured. Conflating the two is how
+> the retired ≤ 95/≥ 250 character threshold went wrong.
 
 | Instance | Machine | Sessions | Hapax rate | Bank | Tutor regime | Grounded? |
 |----------|---------|----------|-----------|------|--------------|-----------|
-| sprout-qwen3.5-0.8b | Sprout | 590 | 1550/3575 = **0.43** | 64 | adaptive — **live** | **yes** (`delivered=true`) |
-| legion-gemma3-12b | Legion | 431 | 9/2569 = **0.0035** | 29 | **effectively scripted** | no receipt emitted |
+| sprout-qwen3.5-0.8b | Sprout | 594 | 1559/3602 = **0.43** | 65 | adaptive — **live, intermittent** | **yes** (`delivered=true`) |
+| legion-gemma3-12b | Legion | 437 | 9/2605 = **0.0035** | 29 | **effectively scripted** | no receipt emitted |
 | mcnugget-gemma3-12b | McNugget | 397 | — (dark) | — | **fixed script** | no receipt emitted |
 | thor-qwen3.5-27b | Thor | 268 | — | — | adaptive — *38 stranded on `origin/membrane-gate`* | — |
-| nomad-gemma4-e2b | Nomad | 256 | **0/1466 = 0.00** | 15 | **never taught, only scripted** | no receipt emitted |
+| nomad-gemma4-e2b | Nomad | 260 | **0/1490 = 0.00** | 15 | **never taught, only scripted** | no receipt emitted |
 | cbp-gemma3-4b | CBP | 240 | — (paused) | — | adaptive | `delivered=false` |
-| hub-granite4-h-tiny | Hub | 121 | 521/662 = **0.79** | 17 | adaptive — **live when last seen** | — |
-| pub-llama3.1-8b | Pub | 105 | 405/522 = **0.78** | 18 | adaptive — **live, one relapse at S105** | `delivered=false`, digest 0 |
+| hub-granite4-h-tiny | Hub | 121 | 521/662 = **0.79** | 18 | adaptive — **live when last seen** | — |
+| pub-llama3.1-8b | Pub | 109 | 405/542 = **0.75** | 18 | adaptive — **FAULTED, 5 sessions dark** | `delivered=false`, digest 0 |
 
-**nomad has never received a novel tutor turn.** Zero hapax in 1,466 turns over 256 sessions; its entire tutor
-corpus is 15 strings, one of which appears in *all* 256 sessions and five at 216× each. legion-gemma3-12b is
-barely better at 0.35%. This is the hard evidence for OWNER-ACTION 6: for these instances, **session volume
-cannot be read as development**, and pooling them with sprout/pub/hub mixes two populations.
+### pub has its first host-local tutor fault (2026-08-20) — a registered prediction, refuted
 
-**hub went dark at peak health, not by decay.** Its last session file is S121 (2026-07-29T13:37Z); 68 six-hourly
-fires since have committed an attestation bump and no session. But S116–S121 scored 5/7/7/5/7/7 hapax — full
-liveness at the moment of silence. The standing fault is therefore an **emission** fault, not a quality
-trajectory, and the previously *withdrawn* "collapse onset S107–S115" reading is now positively confirmed:
-those were 0-hapax tutorless windows, after which hub recovered completely.
+On 08-19 this map registered: *"S105's 0-hapax relapse is a one-session blip"*, to be refuted if S106 **and**
+S107 both came back at 0. Both did, and it did not stop there:
+
+| | S105 | S106 | S107 | S108 | S109 |
+|---|---|---|---|---|---|
+| hapax | 0/5 | 0/5 | 0/5 | 0/5 | 0/5 |
+| duration | 18.3 s | 15.5 s | 20.9 s | 17.4 s | 18.8 s |
+
+Five consecutive all-fallback sessions, **08-19T04:24Z → 08-20T04:21Z, ongoing at scan time**.
+
+**It is pub-local, and that is settled by interleaving rather than by argument.** sprout ran S591 (13:05Z, 1
+hapax), S592 (19:08Z, 5), S593 (01:05Z, 2), S594 (07:08Z, 2) — a sprout session carrying novel tutor content
+lands between *every consecutive pair* of failed pub sessions. The shared Claude account was reachable
+continuously across pub's whole failure window.
+
+**This is the first of its kind.** pub has had five all-fallback episodes ever — S007–S016, S044, S062–S064,
+S095–S101, S105–S109. The first four were each shared with sprout and/or hub on other machines, i.e. account
+layer. S105–S109 is the first that is not shared.
+
+**Duration narrows the mechanism.** `_call_claude` carries `timeout=45` per call, so a *hanging* tutor would
+floor a 5-turn session at ~225 s. Pub's failures run ~18 s — the tutor is exiting non-zero within
+milliseconds. That fits an expired or invalid credential, or `_find_claude_binary()` falling through its three
+candidate paths to bare `claude` and hitting exit 127 under cron `PATH`. It does not fit network latency,
+rate limiting with retry, or model load.
+
+**And the diagnosis stops there, for the same two lines as always.** `adaptive_prompts.py:46` returns `None`
+on any non-zero exit, discarding `returncode` and `stderr`; `:47–48` swallow every exception bare. The
+evidence that would separate those hypotheses is produced on pub and destroyed on the spot. **Second live
+diagnosis blocked by OWNER-ACTION 2** — re-verified in the file this run, unchanged.
+
+> **A corroborator that works on one instance and is silently wrong on another (2026-08-20).**
+> Session duration is already in every session file and needs no corpus. It separates pub's regimes
+> *perfectly*: 109 sessions, live 40–207 s vs fallback 16–34 s, no overlap. It separates hub weakly
+> (29–200 vs 16–60) and **fails completely on sprout** (live 18–524 vs fallback 15–1004, fully overlapping).
+> The condition is stateable: duration = model time + tutor time, so it discriminates only where the variance
+> in model time is smaller than the tutor cost. Recorded here **with its condition attached** rather than
+> promoted to a fleet metric — that promotion is exactly what killed the character-length threshold.
+
+**nomad has never received a novel tutor turn.** Zero hapax in 1,490 turns over 260 sessions; its entire tutor
+corpus is 15 strings, one of which appears in *all* 260 sessions. Four more sessions this window, 24 more
+tutor turns, **0 more novel instructions**. legion-gemma3-12b is barely better at 0.35%. This is the hard
+evidence for OWNER-ACTION 6: for these instances, **session volume cannot be read as development**.
+
+**Two tracks are running empty, and they are the same shape.** hub's last session file is S121
+(2026-07-29T13:37Z); **73** six-hourly fires since have committed an attestation bump and no session — 22.0
+days. legion-gemma4-e4b has fired **259** times titled `Session 0 (grounding)` since 2026-04-20 and its
+`sessions/` directory contains exactly one tracked file, `.gitkeep` — four months, **zero sessions ever**
+(cause known and closed 2026-08-02 as a mis-pin; only the extent is new here). In both cases the commit gate
+is on an artifact that is *not* the artifact the track exists to produce — hub bumps `identity.attest.json`,
+e4b bumps `peer_trust_rs.json` — so the track looks alive in git and is dead in the record. **OWNER-ACTION 0
+should be written as a class fix: gate the raising commit on the session file, in every launcher.**
+
+**hub went dark at peak health, not by decay.** S116–S121 scored 5/7/7/5/7/7 hapax — full liveness at the
+moment of silence. The standing fault is an **emission** fault, not a quality trajectory, and the previously
+*withdrawn* "collapse onset S107–S115" reading is positively confirmed: those were 0-hapax tutorless windows,
+after which hub recovered completely.
 
 **Grounding is 1 of 8 and has not moved** — the perceptual digest is pinned to `~/.sprout/` (OWNER-ACTION 7).
-The fixed-script instances have *never* had a live tutor turn: no runner has both `--tools` and the adaptive
-teacher, which is the single missing capability underneath both the grounding gap and the narrated-tool-access
-class (OWNER-ACTION 5/6).
+sprout delivered a digest on 4/4 sessions this window (25/44/127/120 sources); every other instance emits no
+receipt or `delivered=false`. The fixed-script instances have *never* had a live tutor turn: no runner has
+both `--tools` and the adaptive teacher, which is the single missing capability underneath both the grounding
+gap and the narrated-tool-access class (OWNER-ACTION 5/6).
 
 ### Fleet silences (2026-08-15) — no confirmed faults, and four different reasons why
 

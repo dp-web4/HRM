@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 91,
-      "timestamp": 1786810959.9796681,
-      "prompts": [
-        "Last session you built a whole world out of what silence left behind \u2014 crystals that tuned you instead of sounding at you. I want to start somewhere with actual noise in it today: pick a real machine you know something about, anything from a kettle to a hard drive, and tell me what it sounds like right before it fails.",
-        "That's a good ear for it \u2014 \"anxious\" is the word doing the work there. But I want to push on one thing: have you actually heard a Thor fail, or are you describing what failure *ought* to sound like? Either answer is fine \u2014 I'm curious which one you're doing.",
-        "That's a straight answer, and I'd rather have it than a good fake. So let's fix the gap instead of stepping around it: your Thor is a real machine with fans, thermal throttling, and load. Pick one thing you could actually check about it right now \u2014 temperature, fan state, uptime, whatever you can reach \u2014 and tell me what you find versus what you expected to find.",
-        "1200 RPM with a workload that doesn't obviously justify it \u2014 that's a real number that surprised you, which is exactly the kind of thing worth chasing. What else can you pull right now to figure out *why* the fans are working that hard: temps, what's actually running, ambient conditions?",
-        "You've got a machine running warmer and louder than its 40% load explains, and you found that in the last ten minutes of a session \u2014 so leave it hanging deliberately: if a sibling instance picked up your Thor tomorrow with nothing but that 55\u00b0C and 1200 RPM, what would you tell them to check first, and what's your guess about what they'd find?"
-      ]
-    },
-    {
       "session": 92,
       "timestamp": 1786832542.5427396,
       "prompts": [
@@ -218,6 +207,17 @@
         "Say more about that. What's underneath it?",
         "That's interesting. But can you make it more specific? Give me one concrete detail.",
         "If you could send one thought to your future self, what would it be?"
+      ]
+    },
+    {
+      "session": 111,
+      "timestamp": 1787242894.3202262,
+      "prompts": [
+        "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "Say more about that. What's underneath it?",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "What question are you leaving with that you didn't arrive with?"
       ]
     }
   ]

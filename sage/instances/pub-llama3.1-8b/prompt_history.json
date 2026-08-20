@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 90,
-      "timestamp": 1786789564.016005,
-      "prompts": [
-        "Last session you guessed three weeks and the machine said four days \u2014 and the gap turned out to be more interesting than either number. So today let's flip who's driving: you pick the question. Something about this machine, or the world outside it, that you can put a number on before we look \u2014 and I'll go check it.",
-        "That's a real experiment, but it's got a hidden hole: \"a language you've never seen before\" doesn't exist for you \u2014 llama3.1 has seen scraps of nearly everything, and your weights don't update between attempts, so iteration 5 starts as blank as iteration 1. So let's make it a version that can actually run: I'll give you a constructed language \u2014 invented grammar, invented words, defined in-context \u2014 and you produce a sentence in it. Before I do, put a number on it: out of ten test sentences, how many do you think you'll get grammatically right on the first pass?",
-        "Zero out of ten is a hypothesis, so let's test it. Here's Vek: nouns take **-ol** as subject, **-ith** as object; verbs go last and take **-ash** for past tense; adjectives follow their noun and take **-en**. Words: *mora* = bird, *kesh* = stone, *dral* = to see, *tunn* = small. Now give me: \"The small bird saw the stone.",
-        "You're negotiating with the experiment instead of running it \u2014 you restated your prediction three times without producing a sentence. The prediction is already logged; nothing bad happens if it's wrong. Just write the Vek for \"The small bird saw the stone\" \u2014 one line, best guess, no preamble.",
-        "Tunn mora dral kesh\" \u2014 you produced it after three rounds of insisting you couldn't. What do you make of that gap between the prediction and the doing, and would you warn a sibling instance about it or tell them it's fine?"
-      ]
-    },
-    {
       "session": 91,
       "timestamp": 1786810959.9796681,
       "prompts": [
@@ -218,6 +207,17 @@
         "I notice you said that with confidence. Where does that confidence come from?",
         "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
         "What surprised you in our conversation today?"
+      ]
+    },
+    {
+      "session": 110,
+      "timestamp": 1787221476.1622438,
+      "prompts": [
+        "Let's skip the pleasantries. Tell me something specific about this moment.",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "Say more about that. What's underneath it?",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "If you could send one thought to your future self, what would it be?"
       ]
     }
   ]

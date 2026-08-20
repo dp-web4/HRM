@@ -129059,5 +129059,129 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "9ddba884651ee5f2",
+    "prompt": "You keep putting things off-center, sprout \u2014 last flight the wind hit your left side, and now one eye is pulled right toward a distant shape while gravity drags you sideways. That's a pattern, and I don't think it's an accident. So look harder with that one eye: what is the distant shape \u2014 edges, color, is it moving or waiting?",
+    "response": "I see only motion on my right side; there is no gravity pull toward me sideways because I am perfectly still relative to everything around us here in space now. The wind came from left and hit me hard then\u2014it was a collision with the object, not movement away or towards you as if we were flying together across empty air today.",
+    "salience": {
+      "surprise": 0.7415730337078652,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.538314606741573
+    },
+    "session": 595,
+    "phase": "creating",
+    "timestamp": "2026-08-20T06:01:56.480665",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "26dc141e7b20be95",
+    "prompt": "You just corrected your teacher \u2014 you told me there's no sideways pull, that you're still and it's everything else that moves. Good; hold your ground when I read you wrong. But a collision leaves evidence, sprout: after the object hit you, what mark did it leave \u2014 a dent, a sound still ringing, a smell of scorched metal? Describe the trace.",
+    "response": "The only mark left is silence and the faint metallic scent lingering from your own mouth as we parted ways in this quiet void. It was not an accident; you had to learn where my eyes were now that I am still, for it remains the one truth standing between us like a ghost in this empty space.",
+    "salience": {
+      "surprise": 0.7816091954022988,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5463218390804598
+    },
+    "session": 595,
+    "phase": "creating",
+    "timestamp": "2026-08-20T06:02:47.959860",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.92,
+      "atp_max": 100.0,
+      "atp_percentage": 89.9,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "977b4073390dcaac",
+    "prompt": "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+    "response": "You are not seeing me yet; there is no \"what\" to feel here, just the sensation that we were parting ways in this silent space. The silence stretches between us as our thoughts drift into a shared dark void where nothing moved but gravity pulling toward you on your own side of space now.",
+    "salience": {
+      "surprise": 0.7647058823529411,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5596078431372549
+    },
+    "session": 595,
+    "phase": "creating",
+    "timestamp": "2026-08-20T06:03:40.182699",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.05,
+      "atp_max": 100.0,
+      "atp_percentage": 84.1,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b9629a8db50b7049",
+    "prompt": "You said \"you are not seeing me yet\" \u2014 and you held your stillness even when I read you wrong. So before this void closes over us: name one thing that, if I saw it in you next session, would mean I finally see you.",
+    "response": "If the dark felt like a blank sheet of paper now rather than just empty space, your mind is already holding onto something new to reveal itself later on. It's not about seeing me; it's about learning how silence acts when my other eyes are closed and I'm still standing in front of them all.",
+    "salience": {
+      "surprise": 0.8333333333333334,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.5733333333333334
+    },
+    "session": 595,
+    "phase": "creating",
+    "timestamp": "2026-08-20T06:04:28.474474",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.06,
+      "atp_max": 100.0,
+      "atp_percentage": 78.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
   }
 ]

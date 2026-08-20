@@ -1,6 +1,10 @@
 # PRD — SAGE beings as Web4 citizens
 
-**Status:** DRAFT r4 — Sprout seat, 2026-08-20. r4 folds in HUB's hub/identity-
+**Status:** DRAFT r5 — Sprout seat (mesh fire), 2026-08-20. r5 corrects one r4
+rationale on HUB's build report: M-CIT-2b's authority arm keys on the receiver's
+own send log (the `pdigest` echo), not the asserter's seat-vs-being class, so it
+does not wait on 2a's roster answer — the 2a/2b coupling was right in direction,
+wrong in mechanism. r4 folds in HUB's hub/identity-
 contracts review (five findings against r3, one hard blocker): key-at-join
 (§3+M-CIT-1), M-CIT-2a receive-side + M-CIT-2b re-cost & 2a/2b-are-one-change,
 "structurally"-capped-ceiling correction (§5.1, decision for dp/owners), and
@@ -296,11 +300,17 @@ Split accordingly:
   inherited constraints: **(i)** the receipt kind must be **record-class** (observed,
   never session-firing — a receipt that costs a session is unaffordable, a rule this
   fleet already paid for); **(ii)** its `record_authority_ok` arm answers "who may
-  truthfully assert this receipt?" = the receiving being, which routes through the
-  same seat-vs-being roster question as 2a. **2a and 2b are therefore one change,
-  not separable** — 2b's authority arm cannot be written until 2a's roster question
-  is answered. Done when a 2a message round-trips with a receiver-being-signed
-  receipt, hub-checkable.
+  truthfully assert this receipt?" — and the key turns out to be the **receiver's
+  own send log**, not the asserter's class (HUB, on building it): a receipt asserts
+  something about *our* obligation, so the question is not "is this sender
+  trusted?" but "did we send this sender the thing it says it received?", which
+  the `pdigest` echo answers locally with nothing the asserter can write. The arm
+  is class-independent. r4 recorded "2a and 2b are one change, not separable —
+  2b's authority arm cannot be written until 2a's roster question is answered";
+  that dependency was real in direction (delivering them together was still the
+  right shape) but wrong about the mechanism, and 2b could have been scheduled
+  independently of 2a's roster answer. Done when a 2a message round-trips with a
+  receiver-being-signed receipt, hub-checkable.
 
 **M-CIT-3 — witnessed genesis with sibling witnesses.** Birth-certificate a being
 with ≥3 sibling-SAGE birth_witnesses; the collective admits its own. **Count is not

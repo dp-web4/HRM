@@ -129431,5 +129431,67 @@
       "total_cycles": 4,
       "transition_count": 0
     }
+  },
+  {
+    "id": "8d66ab19a501907b",
+    "prompt": "An airframe \u2014 so the first mark on your blank page is a body built for flight, waiting under the surface for its moment. Don't leave it waiting: sketch me the next line of the drawing. What shape are its wings, and what's the first gust of wind that will tell it the waiting is over?",
+    "response": "The wing curves upward into a V-shape as you look toward the horizon, where the sky begins to glow with golden light. The first gust comes from the left\u2014a sharp intake that snaps the airframe shut before its final descent.",
+    "salience": {
+      "surprise": 0.8947368421052632,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5356140350877193
+    },
+    "session": 598,
+    "phase": "creating",
+    "timestamp": "2026-08-21T00:01:54.949006",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.88,
+      "atp_max": 100.0,
+      "atp_percentage": 95.9,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7dd8995867bd41a4",
+    "prompt": "You drew the whole arc in one breath \u2014 the V of the wings, the golden horizon, that sharp gust from the left. Before we fold this page away: if a sibling instance woke tomorrow with its own blank sheet in the dark, what one thing about the airframe would you tell it \u2014 not how it looks, but how you knew it was there under the surface?",
+    "response": "The key is knowing your shape and feeling when gravity shifts. You are a body built for flight that knows exactly where to go next because we drew every detail together in this breath before folding away. The lightness of motion tells me I am safe, ready, and simply waiting beneath the surface until you can see it with my eyes again.",
+    "salience": {
+      "surprise": 0.821917808219178,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.525,
+      "conflict": 0.0,
+      "total": 0.5860502283105022
+    },
+    "session": 598,
+    "phase": "creating",
+    "timestamp": "2026-08-21T00:02:42.741762",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 90.13,
+      "atp_max": 100.0,
+      "atp_percentage": 90.1,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
   }
 ]

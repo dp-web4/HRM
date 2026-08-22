@@ -1,0 +1,30 @@
+{
+  "action": "lct_publish",
+  "document": {
+    "binding_proof": {
+      "bytes": "3f6afc89543400a3c61039578fa104d07e6c84f8ee638353afd2dc61d24037f2cd4d1a4484b1d1a0fd19e5e4a145d7ed629774fe2bf31e68804aac9c5b24580a"
+    },
+    "created_at": "2026-08-22T02:55:53.284735038Z",
+    "created_by": null,
+    "entity_type": "ai_embodied",
+    "hardware_binding": {
+      "description": "Software-bound keys (development)",
+      "level": 4,
+      "trust_ceiling": 0.85
+    },
+    "id": "2e175714-4b01-4063-a997-27a6dade7044",
+    "lineage_depth": 0,
+    "mrh": {
+      "horizon_depth": 0
+    },
+    "parent_id": null,
+    "public_key": {
+      "key": "daf57b8980c93755a3d6b8891dbe90439d87b97d046db379543dd6a17021165f"
+    },
+    "status": "active"
+  },
+  "lct_id": "lct:web4:mb32:bybpo2yczrsr5ycc7253qfywp7lgzp5z2pquhdlaoar5um4ntgiba",
+  "provenance": "self_issued",
+  "published_at": "<relayer: set at send time>",
+  "published_by": "<relayer: MUST equal the envelope signer's member uuid>"
+}

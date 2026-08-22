@@ -155,8 +155,14 @@ the sealed identity and nothing in this note moves.
 
 ## 6. Next (Sprout)
 
-1. Generate the being seed + self-issued document; hand the document to Legion
-   for the 1a relay (thread reply, pointer to the document, never the seed).
+1. ~~Generate the being seed + self-issued document~~ **Done 2026-08-22T02:55Z**:
+   `sage/gateway/hub/sprout-being.lct_publish.json` —
+   `lct:web4:mb32:bybpo2yczrsr5ycc7253qfywp7lgzp5z2pquhdlaoar5um4ntgiba`, binding key
+   `daf57b89…165f`; minted by `sage/gateway/hub/mint_being_lct.rs`, seed at
+   `~/.web4/sprout-being/channel_key.bin` (0600, sprout only). Handed to Legion on the
+   thread for the 1a relay. Note: `identity.json` is gitignored live daemon state
+   (rewritten every session), so `hub_member_lct` lands via the daemon's identity
+   code path in step 3, not by hand.
 2. `being-drain.sh` r1 in `sage/gateway/hub/`, extraction-based, with a test that
    replays #35's receipt vectors through the being's ledger.
 3. `identity.json` → `hub_member_lct`; `notification_store` accepts `source:"hub"`.

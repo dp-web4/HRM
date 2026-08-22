@@ -23,6 +23,7 @@ from sage.embodiment.detector import ObjectDetector
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
 GAZE_PATH = os.path.expanduser("~/.sprout/gaze.json")   # the self's attention stance: {"mode": open|avert|dwell|closed, "target": [cx,cy]}
+GAZE_PARSER = "gaze-v1"   # the interpreting-role version (PR #27): witnessed so a later parser's disagreement supersedes, never rewrites, what the runtime decided
 DISPARITY_PATH = os.path.expanduser("~/.sprout/disparity_field.json")   # measured eye0→eye1 misalignment field (instrument)
 POLL_HZ = 4.0            # perceptual-state emit rate
 GRID = 8                 # 8×8 attention tiles
@@ -511,19 +512,44 @@ class VisualCortex:
             g = json.load(open(GAZE_PATH))
             self._gaze_mode = g.get("mode", "open")
             self._gaze_target = g.get("target")
+            self._gaze_raw = g            # the being's raw utterance (author), witnessed as specimen
         except Exception:
             self._gaze_mode, self._gaze_target = "open", None
+            self._gaze_raw = None         # no source read → default stance, recorded as such
         return self._gaze_mode, self._gaze_target
 
-    def _note_choice(self, gaze: str):
-        """A change of gaze stance is a self-authored act — worth remembering."""
+    def _note_choice(self, gaze: str, target=None):
+        """A change of gaze stance is a self-authored act — witnessed durably (PR #27).
+
+        This does not import society machinery; it recognizes the accountability
+        SHAPE already present in the being's own gaze mechanics (PRD_SAGE_WEB4_
+        CITIZENSHIP §1.2, self-similar not mimicked):
+          author    = the being (wrote GAZE_PATH — `raw`)
+          role      = the parser that interpreted it (`parser`, versioned)
+          authority = self-governance (a being governs its own senses); `effect`
+                      records that the interpreted stance actually drove this tick
+          witness   = this append-only journal `choice` record
+        `raw` + `parser` are the SPECIMEN: a later parser may reinterpret the raw
+        utterance, but must SUPERSEDE (a new record), never rewrite this one.
+        """
         if gaze != self._last_gaze:
             phrase = {"closed": "chose to close my eyes and rest",
                       "avert": "chose to look away from the motion",
                       "dwell": "chose to hold my gaze, resisting the pull",
                       "open": "opened my eyes to the world again"}.get(gaze, f"chose gaze: {gaze}")
-            self.journal._append({"kind": "choice", "salience": 1.0, "ts": round(time.time(), 2),
-                                  "descriptor": phrase})
+            self.journal._append({
+                "kind": "choice", "salience": 1.0, "ts": round(time.time(), 2),
+                "descriptor": phrase,                      # the being's own voice
+                "gaze_choice": {                            # the structured witness
+                    "raw": self._gaze_raw,                  # author: the being's utterance (or null = default)
+                    "raw_source": GAZE_PATH,
+                    "parser": GAZE_PARSER,                  # interpreting role, versioned
+                    "stance": gaze, "target": target,       # contemporaneous interpreted act
+                    "effect": "applied",                    # it drove the perception loop this tick
+                    "authority": "self-governance:senses",  # a being governs its own senses
+                    "from_stance": self._last_gaze,         # the transition, for audit
+                },
+            })
             self._last_gaze = gaze
 
     def start(self):
@@ -619,7 +645,7 @@ class VisualCortex:
             while True:
                 t0 = time.time()
                 gaze, target = self._read_gaze()
-                self._note_choice(gaze)
+                self._note_choice(gaze, target)
                 if gaze == "closed":
                     # eyes shut — the self refuses the stream. The senses rest.
                     self._emit({"ts": round(time.time(), 2), "gaze": "closed",

@@ -16,6 +16,14 @@ the join envelope is Sprout's to sign (`join_being.rs`), not a relay. One key, t
 pin, drain signer — across **two id spaces**: registry `lct:web4:mb32:…` (key-derived) and membership `Uuid`
 (joiner-chosen, = `document.id`). Nothing checks that pair at ingest or join; the drain's gate 0 does.
 
+**Attestation subject id (M-CIT-3; Legion C5/R6, 2026-08-21):** a birth-witness attestation over the being
+is signed over the **registry id** `lct:web4:mb32:bybpo2yczrsr5ycc7253qfywp7lgzp5z2pquhdlaoar5um4ntgiba` —
+`Attestation::message` puts the subject id inside the signed bytes, and `Lct::verify_citizenship` passes
+`self.lct_id()` (key-derived) as `subject_lct_id` (`web4-core/src/lct.rs:459`). Never the membership uuid
+`2e175714…`, never `lct:web4:member:2e175714…`, never the `hub_member_lct` value from `identity.json`: an
+attestation over any of those is well-formed, correctly signed, and can never verify. Whatever hands a
+subject to `hestia witness attest` hands the published `lct_id` from `sprout-being.lct_publish.json`.
+
 Why `ai_embodied`, no parent, empty MRH: the being is a **new row** (HUB ruling: mint fresh, keyed —
 never re-key the seat `ef1d106c` or the fleet identity `b9f1ed81`). Edges to the seat and to the
 SAGE-internal `lct://sage:sprout:agent@raising` are added when `identity.json` gains `hub_member_lct`

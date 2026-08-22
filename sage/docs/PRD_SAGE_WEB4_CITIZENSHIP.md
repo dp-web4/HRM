@@ -217,10 +217,31 @@ The 7-step onboarding flow (`foreign-onboarding:179-223`), instantiated:
    *maximum reachable* trust by anchor strength (coherence.rs:298-99); it cannot
    *inflate* a being's actual standing, because standing is **derived, not stored**.
    So the arbitrary-number risk the earlier draft worried about is not on the path
-   at all. (One genuinely-deferred question remains, smaller: should a
-   software-anchored being that *earns* high trust be capped at the anchor ceiling?
-   That is a mature-being concern for M-CIT-4, not a genesis one, and it does not
-   touch the "presence, not trust" floor.)
+   at all.
+
+   **The anchor ceiling is retained and correct (DECISION, dp 2026-08-21).** Trust
+   now has two orthogonal axes: **(a) earned conduct** — the derived T3/V3 above,
+   which grows without bound from witnessed acts and is *never* capped for who the
+   being is; and **(b) the anchor ceiling** — how much identity-evidence certainty
+   the being's *pragmatic situation* affords (software key can be copied, the
+   environment is not tamper-proof, so a software anchor bounds how much a relying
+   party can safely stake). Effective trust ≈ *earned conduct, bounded by anchor
+   certainty*. Crucially, **(b) is not a judgment on the being — it prices its
+   situation, not its character.** A software-anchored being can be flawless in
+   temperament and still be correctly capped, because the cap answers "how sure are
+   we these witnessed acts came from *this* being and not a copy," which conduct
+   cannot raise. And the ceiling has a **door**: a being that moves to a hardware
+   anchor (TPM/SE) raises its own cap (`DEPLOYMENT_IDENTITY_MODEL.md`: software 0.4
+   → TPM 1.0) — the honest floor is a floor of *situation*, not of worth, and the
+   situation can change.
+
+   This **re-opens HUB finding 4 as (b)-enforce, for the right reason.** The
+   `trust_ceiling` field *should* be validated/bound to the anchor level — not
+   because §3's floor needs it (the derivation handles the floor), but because the
+   ceiling now encodes a *real property* (anchor-evidence strength) that must not be
+   forgeable by a minting caller. So: **raise the ask** — a constructor binding
+   level→ceiling, or hub-side admission validation. Web4-core, owners' call on
+   timing; the PRD states it as the correct target, not a docs caveat.
 2. **Issue a scoped role-extension** — e.g. `role:sage-society:citizen:sprout`,
    narrow + fail-closed; authority binds to the *role*, the being is its occupant.
 3. **Pairing channels** to sibling members (revocable, E2E-sealed) — the being's

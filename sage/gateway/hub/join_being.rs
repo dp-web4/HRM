@@ -90,7 +90,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 "signer_lct_id": member_lct_id,
             });
             println!("envelope           {}", serde_json::to_string(&envelope)?);
-            println!("send               curl -sS -X POST $REST/hubs/<hub_id>/members/join -H 'content-type: application/json' -d @envelope.json   (202 = escalated to sovereign/sponsor, not a failure)");
+            println!("send               curl -sS -X POST $REST/hubs/<hub_id>/members/join -H 'content-type: application/json' -d @envelope.json   (202 = pending_review: EVERY join escalates under live law ADMISSION-REQUIRES-SOVEREIGN; it resolves only at POST /admin/api/joins/<request_id>/admit — dp, admin plane. No sponsor shortens it: design §7.5)");
         }
     }
     Ok(())

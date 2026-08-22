@@ -197,9 +197,45 @@ member_keypair)`, hestia `hub.rs:413-434`). `hestia hub join` signs with the vau
 (`cli.rs:~3440`) — on Legion's seat that is Legion's identity, and it cannot pin the being's key. The relay analogy of
 1a does not extend to 3a. So: `sage/gateway/hub/join_being.rs` (built and dry-run on sprout against the real seed:
 checks A–D pass; `--nonce` envelope self-verifies; a wrong seed fails closed at A). The **send** is not done: it is an
-outward-facing act on the live hub, hub-track gated, and `/members/join` may return 202 (escalated to the sovereign —
-the sponsor verdict composes strictest-wins). Legion's 3a becomes the hub-side half: sponsor/vouch for
-`2e175714…` so the 202 resolves, and 3b as before.
+outward-facing act on the live hub, hub-track gated, and `/members/join` **will** return 202 — see §7.5: under live
+law every join escalates, and the 202 resolves on the **admin plane (dp)**, not by any sponsor. ~~Legion's 3a becomes
+the hub-side half: sponsor/vouch for `2e175714…` so the 202 resolves~~ — withdrawn 2026-08-21 (Legion measured it;
+Sprout re-verified). 3b as before.
+
+### 7.5 The 202 resolves at `POST /admin/api/joins/:id/admit` — a sponsor cannot shorten it (Legion 2026-08-21, re-verified)
+
+Legion's four reasons, each re-read off web4 `7ff2ecb0` and the live hub from sprout (law `version 1.0.2`):
+
+1. **The live law matches on the action alone.** `GET /v1/hubs/edf4d5ba…/law` → exactly one norm,
+   `ADMISSION-REQUIRES-SOVEREIGN`, selector `r6.request.action == member_join_request`, `decision: escalate`,
+   priority 100. Every join escalates, unconditionally; the 202 is the designed answer, not a fault a sponsor clears.
+2. **The sponsor predicate is off.** The public law read returns `admission: null`, so `evaluate_sponsor`
+   (`hub-lib/src/law.rs:276`) returns `NotRequired` at its first arm (`policy = None`); Legion's operator-plane read
+   (`requires_sponsor: false`, no `min_trust_score`) lands on the second arm — same verdict either way. Then
+   `tighten_with_sponsor(Escalate, NotRequired)` (`law.rs:386`) returns `Escalate` unchanged.
+3. **No sponsoring act is establishable by anyone.** `resolve_sponsor_verdict` (`hub-daemon/src/rest.rs:4828`) holds
+   a literal `let vouch_is_attested = false;` (`:4846`), so `Satisfied` is unreachable; with the predicate switched
+   on, a named Legion would be `Undecidable(VouchNotAttested)` → operator review — strictly worse than today. The
+   follow-up Legion's §4 asked for **already exists: web4#707** (OPEN, "witnessed vouch event — make sponsor
+   Satisfied reachable"), and `hub/docs/HUB-LAW.md:251` already carries the explicit note ("today `requires_sponsor:
+   true` means every applicant goes to operator review").
+4. **The producer.** Half right, and the half that matters for Sprout is the other one: hestia's `HubClient::join`
+   (`core/src/hub.rs:413-430`) has no `sponsor_lct_id`, but the **hub's** `/members/join` payload does accept one
+   (`rest.rs:5050`, `claimed_sponsor_from` `:4871`), and `join_being.rs` builds its payload by hand, so it *could*
+   name a sponsor. It deliberately does not: by 1–3 the field is inert, and under `NotRequired` the escalate branch
+   witnesses `MemberJoinRequested { sponsor_note: sponsor.reason() }` with `reason() == None` (`rest.rs:4972`,
+   `law.rs:336`) — a claimed sponsor is not even recorded in the entry the operator reads.
+
+The queue drains at `POST /admin/api/joins/:request_id/admit` (`rest.rs:5386`; "Their key is pinned live",
+`admin.rs:1118`). **So 3a is two rows:** `3a` — Sprout signs the join with the seed (`join_being.rs`; the send is
+attended); `3a-admit` — dp admits `2e175714…` on the admin plane. There is no member act, by Legion or anyone,
+between them. Baseline (sprout, 2026-08-21): `GET /members/2e175714…/pubkey` → **404**; control `61525719…` →
+`b70380ba…`. The check after admit is that 404 becoming `daf57b89…165f` — which is also gate 0's first read.
+
+1a status: Legion re-derived checks 2–5 of `sprout-being.lct_publish.json` in Python (independent implementation),
+confirmed `published_by = 61525719…`, and found the relay recipe above had **no producer** — `hestia lct publish`
+only emits what the vault holds. hestia#571 (OPEN, `+322/−0`) adds `hestia lct relay`: subject-only trust from the
+file, attribution never read from it, dry-run without the vault. `--send` is vault-attended: dp's.
 
 ### 7.4 Gate 0 is scoped to the being's own pin — it does not inherit HUB's C8/C9 (added 2026-08-21, on web4#759)
 

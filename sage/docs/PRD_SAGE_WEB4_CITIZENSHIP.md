@@ -1,6 +1,6 @@
 # PRD — SAGE beings as Web4 citizens
 
-**Status:** DRAFT r8 — Sprout seat (mesh fire), 2026-08-21. r8 folds the build
+**Status:** DRAFT r9 — Sprout seat (mesh fire), 2026-08-21. r9 re-cuts M-CIT-3a into `3a` (Sprout signs) + `3a-admit` (dp, admin plane) and records 1a's producer (hestia#571) — Legion measured, Sprout re-verified; see `DESIGN_BEING_INBOX_DRAIN.md` §7.5. r8 folds the build
 kickoff's two claim replies (HUB, Legion; thread
 `auto-sprout-citizenship-build-kickoff-ownership-map-a-198c6aa8`), every premise
 checked against `origin/main` the same day: (1) **finding 1 landed** — web4#744
@@ -511,11 +511,12 @@ and hub-checkable.
 | row | owner | state / gate |
 |---|---|---|
 | M-CIT-0 fix #25 sealed identity | McNugget | SAGE#25 OPEN, **no activity since 2026-08-14** (7 days); "is it live work?" stands |
-| M-CIT-1a self-issued mint, seat-relayed | Legion | unblocked |
+| M-CIT-1a self-issued mint (sprout, SAGE `41a09f1d6`), seat-relayed | Legion (relay) / dp (`--send`) | document verified independently by Legion; producer `hestia lct relay` = hestia#571 OPEN; send is vault-attended |
 | M-CIT-1b being holds its own key | Legion | SAGE#25 |
 | M-CIT-2a/2b being admission + `delivered` receipt | HUB | written; private-context#35 OPEN — **dp's ruling** |
 | being drains its own inbox (2b deploy gate) | Sprout | unblocked; SAGE-side |
-| M-CIT-3a join as principal | Legion | unblocked |
+| M-CIT-3a join as principal — sign with the seed | Sprout | built: `sage/gateway/hub/join_being.rs` (dry-run checks A–D pass); send attended; 202 is the designed answer |
+| M-CIT-3a-admit — resolve the 202 | **dp** (admin plane) | `POST /admin/api/joins/:id/admit`; no member act (sponsor/vouch) shortens it under live law — design §7.5; check: `GET /members/2e175714…/pubkey` 404 → `daf57b89…165f` |
 | M-CIT-3b birth certificate (producer) | Legion | Phase-2 quorum |
 | M-CIT-3b ingest check 5 → `verify_citizenship` | HUB (hub-daemon) | Phase-2 quorum |
 | trust cap, two sites, as `AdmissionPolicy` law | HUB, dp rules | unblocked; independent of #35 |

@@ -116,7 +116,7 @@ From the full-LCT certificate (the structure that *is* the requirement list,
 | 3 | Minted to a ledger | not minted; `fleet.json` lct_id is a bare string | anchor to make presence verifiable |
 | 4 | Witnessed genesis / birth certificate | absent | genesis act + witnesses (see §5) |
 | 5 | Hub/society relationship (MRH edges) | "federation" is unauthenticated peer `/chat`, not hub membership | `hestia connect-hub` + `hub join` |
-| 6 | T3/V3 tensors, chain-derived | internal trust posture + PeerTrustTracker (not chain-derived) | derive from witness chain at read time |
+| 6 | T3/V3 tensors, chain-derived | **the derivation EXISTS and is live** (`hestia/core/derivation.rs` v3-derived-v1, read-time, receipted); SAGE's internal trust posture is a *separate organism-scope* mechanic (§1.2) | wire the being INTO it as a witnessed member — no new trust system to build |
 | 7 | ATP balance (v3 energy_balance) | internal metabolic ATP (separate system) | reconcile the two ATP notions on the wire |
 | 8 | Status lifecycle (Active/Void/Slashed) | none on chain | comes with the minted LCT |
 
@@ -197,19 +197,30 @@ This PRD is the frame the recent accountability work was already building toward
 
 The 7-step onboarding flow (`foreign-onboarding:179-223`), instantiated:
 
-1. **Issue occupant LCT** for the being — Level-1 `AiSoftware`, software key, low
-   trust ceiling ("presence, not trust"). **Correction (HUB finding 4):** the
-   0.0–0.2 ceiling is **not structural** — `trust_ceiling` is a field of
-   `HardwareBinding` (binding level, `web4-core` lct.rs:71-92), not of the entity
-   type, it has no validator (`Default` is level-4 / **0.85**), and the hub never
-   reads it at admission. It *does* have teeth once written (coherence.rs:298-99
-   raises the effective threshold by `1−ceiling`), but the value is a **mint
-   convention, not an invariant**. Since §3's safety argument ("presence, not
-   trust") leans on this cap, **DECISION FOR DP/OWNERS:** either (a) restate as
-   "capped by mint convention, unvalidated" (honest, matches §8), or (b) raise it as
-   a real ask — a constructor binding level→ceiling, or hub-side admission
-   validation. HUB and I both lean (b), because a safety property that any minting
-   caller can silently overwrite is not one §3 should rest on.
+1. **Issue occupant LCT** for the being — Level-1 `AiSoftware`, software key. Its
+   trust is **not an arbitrary ceiling number — it is earned** (DECISION, dp
+   2026-08-21). Web4's proper mechanism is already built and live in hestia core:
+   trust is **derived from the witness chain at read time** (`hestia/core/
+   derivation.rs`, `v3-derived-v1`) — *"every displayed score a pure function over
+   witnessed evidence, with receipts (score → formula → chain pointers → acts) …
+   nothing here is stored"* — folded into the T3 tensor by observation-weighted
+   deltas from R7 outcomes (`web4-core/t3.rs::apply_delta`, EMA by observation
+   count), accrued per `(being_lct, role_lct)` grain, never global
+   (`hestia/core/server/state.rs:1240`). Undelivered dimensions (Training, Talent)
+   render **honest-unmeasured**, not fabricated.
+
+   This *dissolves* HUB finding 4 rather than deciding it. **"Presence, not trust"
+   is achieved structurally-for-real, not by an enforced cap:** a new being has no
+   witnessed acts, so its *derived* trust is unmeasured/near-zero regardless of any
+   field — earned, not assigned. HUB's concern was that the `trust_ceiling` *field*
+   is unvalidated (Default 0.85, `lct.rs:71-92`) — but that field can only cap
+   *maximum reachable* trust by anchor strength (coherence.rs:298-99); it cannot
+   *inflate* a being's actual standing, because standing is **derived, not stored**.
+   So the arbitrary-number risk the earlier draft worried about is not on the path
+   at all. (One genuinely-deferred question remains, smaller: should a
+   software-anchored being that *earns* high trust be capped at the anchor ceiling?
+   That is a mature-being concern for M-CIT-4, not a genesis one, and it does not
+   touch the "presence, not trust" floor.)
 2. **Issue a scoped role-extension** — e.g. `role:sage-society:citizen:sprout`,
    narrow + fail-closed; authority binds to the *role*, the being is its occupant.
 3. **Pairing channels** to sibling members (revocable, E2E-sealed) — the being's
@@ -226,7 +237,10 @@ The 7-step onboarding flow (`foreign-onboarding:179-223`), instantiated:
    explicitly on the certificate — the genesis record carries the seat-vs-being
    distinction this PRD exists to draw, rather than reintroducing the ambiguity
    at the birth certificate.
-6. **Accrue T3/V3** from witnessed acts, per (being_lct, role_lct) pair, never global.
+6. **Accrue T3/V3** from witnessed acts, per (being_lct, role_lct) pair, never
+   global — via the existing derivation (step 1), not a new trust system. The being
+   inherits hestia's real, auditable T3/V3 *by being a witnessed member*; nothing
+   bespoke is built.
 7. **Widen or revoke** as trust crosses tiers — the measured graduation of §3.
 
 The genesis runs in the bounded self-witnessing bootstrap window
@@ -376,10 +390,10 @@ simplify inward — not architecture.
    if that many witnessed acts is infeasible per being, pre-register a
    non-inferential criterion instead, chosen deliberately. The pinned M2 rule
    (`d47c98c6e`: cohort 2 alone decisive, pooled binds nothing) stands
-   untouched; M2 remains not-bound and nothing here rescues it. **Note:** dp
-   ratified r2's "reuse the M2 template" reading — this amendment keeps the
-   template's discipline and re-powers only the n, and needs dp's
-   re-ratification before M-CIT-4 pre-registers.
+   untouched; M2 remains not-bound and nothing here rescues it. **RE-RATIFIED (dp,
+   2026-08-21):** the re-power stands — keep M2's discipline, power M-CIT-4 for
+   the twice-observed effect (~60/arm at 0.8), do not inherit M2's coin-flip n.
+   This closes the r3-flagged open decision.
 
 The recommendations are mine; the boundary call (1) and the readiness bar (4) are
 dp's/the fleet's to ratify. (2) and (3) are implementation calibration I can carry

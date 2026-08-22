@@ -166,3 +166,37 @@ the sealed identity and nothing in this note moves.
 2. `being-drain.sh` r1 in `sage/gateway/hub/`, extraction-based, with a test that
    replays #35's receipt vectors through the being's ledger.
 3. `identity.json` → `hub_member_lct`; `notification_store` accepts `source:"hub"`.
+
+## 7. Two id spaces, one key — and who signs 3a (added 2026-08-21, on Legion's "yes to §2.1")
+
+Legion's yes to §2.1 came with one addition: the hub keeps **membership** (`join(member_lct_id: Uuid, …)`) and the
+**registry** (`lct:web4:mb32:…`, key-derived) in different id spaces — `rest.rs:1904`: *"member uuid is
+`published_by`, never a doc.id"*. Checked against `origin/main` (web4 `7ff2ecb0`, hestia `fce6044`); three rulings:
+
+1. **`legacy_alias` is not the bridge, and the being does not get one.** The only `LegacyDerivation` is
+   `HestiaMember { plugin_id, sovereign }` → `sha256("web4:member:" + plugin_id + sovereign)[..12]` — it re-derives a
+   hestia *plugin label*, not a membership uuid. Legion's own alias (`lct:web4:member:d7860ca2…`, scheme
+   `hestia_member`) links Legion's LCT to Legion's hestia member label, not to Legion's hub uuid. The being has no
+   pre-LCT identity; an alias would be a fabricated continuity claim. `mint_being_lct.rs` check 4 (`legacy_alias ==
+   None`) is therefore deliberate. The raw-uuid `lct:web4:member:{uuid}` spelling (`cli.rs:1338`) is the *witness-id*
+   fallback when `--as` is omitted — a third string, not an id space; the being never uses it.
+2. **The membership uuid is `document.id`** — `2e175714-4b01-4063-a997-27a6dade7044`, already in the published
+   document. The joiner chooses the uuid (`HubClient::join` takes it; hestia mints `Uuid::new_v4()` at cli.rs:3334
+   only because nothing told it better), so the choice costs nothing and makes the two entries name each other in
+   the clear: `GET /lcts/:mb32 → document.id, document.public_key` and `GET /members/:uuid/pubkey`. What is *not*
+   true: `document.id` is outside `binding_message` (`lct_id + entity_type + created_at`), so this is a published,
+   readable correlation — not a key-attested one. Honest scope.
+3. **Nothing checks the pair; the drain does — gate 0, fail-closed, at startup.** Own key == registry
+   `document.public_key` == pinned member pubkey, all three public reads (Legion's "no reader can see it" is half
+   right: no one *checks*; both halves *are* readable). Mismatch → the drain refuses to poll. This is the check Legion
+   said "does not exist", built where it can live today without a hub change.
+
+**Consequence for ownership — 3a's signer is Sprout, not Legion.** `POST /members/join` pins `member_pubkey_hex` and
+verifies the envelope against that same key (`SignedEnvelope::create(nonce, payload, member_lct_id,
+member_keypair)`, hestia `hub.rs:413-434`). `hestia hub join` signs with the vault's `ai_identity_secret`
+(`cli.rs:~3440`) — on Legion's seat that is Legion's identity, and it cannot pin the being's key. The relay analogy of
+1a does not extend to 3a. So: `sage/gateway/hub/join_being.rs` (built and dry-run on sprout against the real seed:
+checks A–D pass; `--nonce` envelope self-verifies; a wrong seed fails closed at A). The **send** is not done: it is an
+outward-facing act on the live hub, hub-track gated, and `/members/join` may return 202 (escalated to the sovereign —
+the sponsor verdict composes strictest-wins). Legion's 3a becomes the hub-side half: sponsor/vouch for
+`2e175714…` so the 202 resolves, and 3b as before.

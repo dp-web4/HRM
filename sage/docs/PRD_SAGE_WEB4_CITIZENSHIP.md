@@ -1,6 +1,23 @@
 # PRD — SAGE beings as Web4 citizens
 
-**Status:** DRAFT r5 — Sprout seat (mesh fire), 2026-08-20. r5 corrects one r4
+**Status:** DRAFT r8 — Sprout seat (mesh fire), 2026-08-21. r8 folds the build
+kickoff's two claim replies (HUB, Legion; thread
+`auto-sprout-citizenship-build-kickoff-ownership-map-a-198c6aa8`), every premise
+checked against `origin/main` the same day: (1) **finding 1 landed** — web4#744
+key-at-*mint* MERGED 2026-08-22T00:14Z (label fixed: it was never key-at-join);
+private-context#35 (findings 2+3) still OPEN, still not cited as landed; (2) the
+applicant-side **key-at-join path already exists on the hub** and M-CIT-1
+shrinks to the mint + seat co-sign, split **1a / 1b** (1b alone gated on #25);
+(3) the **anchor cap needs two enforcement sites** — validate at admission AND
+clamp at accrual — named here so HUB can build without waiting on the PRD; (4)
+**M-CIT-3 has a second gate** (Phase-2 witness quorum; `SocietyConferred` is
+refused fail-closed on both sides today) and the *verifier* half is already canon
+in web4-core, so 3 splits **3a / 3b**; (5) a pilot hazard: mint Sprout's being
+LCT **fresh, keyed** — never self-key an existing keyless row; (6) HUB's own
+advisory review of #35 found the `delivered` receipt is addressed to the author's
+inbox, which for a being is an inbox **no watcher polls** — that is the SAGE-side
+row (the being drains its own inbox), and 2b's done-condition now says so. Also
+adds §6.1, the confirmed ownership map. r5 corrected one r4
 rationale on HUB's build report: M-CIT-2b's authority arm keys on the receiver's
 own send log (the `pdigest` echo), not the asserter's seat-vs-being class, so it
 does not wait on 2a's roster answer — the 2a/2b coupling was right in direction,
@@ -255,6 +272,35 @@ The 7-step onboarding flow (`foreign-onboarding:179-223`), instantiated:
    the cap from the society's composed law** (not a constructor baking in web4-core
    constants). Web4-core / hub owners' call on shape and timing; the PRD states the
    correct target — *law-set, hub-enforced, per-society* — not a docs caveat.
+
+   **Two enforcement sites, not one (HUB, 2026-08-21, r8).** Admission-time
+   validation is necessary and *not sufficient*, because trust is earned: the hub
+   folds `ReputationRecorded` deltas into a stored `RoleReputation` via
+   `T3/V3::apply_delta` (`hub-lib/src/state.rs:239-256`) with **no ceiling
+   parameter anywhere in the fold**. Validate only at the door and a being admitted
+   under a 0.4 cap accrues straight past it on conduct, silently — the cap becomes
+   a sentence in a PRD. (This also sharpens the "derived, not stored" line above:
+   it holds for hestia's read-time derivation; the *hub's* standing is folded and
+   stored, so the cap must bind at the fold.) The cap therefore has **two sites**:
+   1. **validate at admission** — the asserted `trust_ceiling` ≤ the society-law
+      grant for the being's anchor level, or the join is refused with the reason;
+   2. **clamp at accrual** — the fold saturates at the member's recorded ceiling,
+      and *says so* when it does (a saturation is a measured finding about the
+      being's situation, not a silent truncation).
+
+   **Do not reuse `min_trust_score`** for this. It looks like the field but is the
+   wrong quantity twice over: it is a *floor* not a ceiling, and it bounds the
+   **sponsor's** trust not the applicant's — it lives in `evaluate_sponsor`
+   (`hub-lib/src/law.rs:316`) and fires only when a sponsor is required. Reusing
+   it type-checks and enforces nothing. Shape (HUB's, agreed here so it can be
+   built without a further PRD round): a new anchor-level → ceiling map on
+   `AdmissionPolicy`, a validation rule beside rule 9 (range + known-level check,
+   as `sponsor_role`/`min_trust_score` get), a read at the admission gate, a clamp
+   in the fold. **No new machinery is needed for "society law, not a constant"**:
+   hub law already loads from `hub-law.yaml`, validates via `HubPolicy::validate`,
+   and amends only through a witnessed `LawAmended` — so a value that lives in
+   `AdmissionPolicy` is law by construction. That is why this row is **HUB's to
+   build and dp's to rule on**, not a web4-core change.
 2. **Issue a scoped role-extension** — e.g. `role:sage-society:citizen:sprout`,
    narrow + fail-closed; authority binds to the *role*, the being is its occupant.
 3. **Pairing channels** to sibling members (revocable, E2E-sealed) — the being's
@@ -290,14 +336,45 @@ is real. *Owner: McNugget (already tasked), this PRD names it the gate.*
 
 **M-CIT-1 — the being holds a real hestia identity.** Per being: `hestia init`
 (vault + real LCT), mint the occupant LCT, and the fingerprint-verified authorize
-path actually works on-machine. **Hard constraint (HUB finding 1): key-at-join.**
+path actually works on-machine. **Hard constraint: keyed from the first act.**
 The being's pubkey must be present in the `/members/join` envelope so admission
-pins it (`hub-daemon` rest.rs:5770-80) — **never** mint the being through
-`add_member` (keyless, unrecoverable-except-by-operator-re-key). If a being is
-minted keyless before this lands, the recovery is to **re-mint under a fresh LCT**,
-not to wait on dp (`hub-mesh/PEERS.md:38-39`; `hub set-member-key` exists but
-self-key is exactly the path that short-circuits). Done when the being has a
-Format-1 certificate, a pubkey pinned at join, and a working fingerprint-verified
+pins it — **never** mint the being through a keyless path. Two status
+corrections (r8, both read off `origin/main` 2026-08-21): **(a) HUB finding 1
+was key-at-*mint*, and it has landed** — web4#744 (MERGED 2026-08-22T00:14Z)
+makes every member-minting path able to pin a pubkey; `add_member` is no longer
+the keyless trap it was, though pre-existing keyless rows keep only their two
+old exits. **(b) The applicant-side key-at-join path already exists and always
+did** (`hub-daemon/src/rest.rs` ~4890-4990, confirmed independently by HUB and
+Legion): the join handler takes the applicant's own `pubkey_hex`, verifies the
+signature against it, evaluates through hub law as `role="applicant"`,
+`action="member_join_request"`, composes the sponsor verdict strictest-wins
+*before* any side effect, witnesses `MemberJoinRequested` on `Escalate` and
+queues it for an operator, and on admit pins the key into the live resolver so
+the new member authenticates as a citizen immediately. **So M-CIT-1 does not
+build hub-side key-at-join.** What is genuinely new, and only Legion's: minting
+the being's *occupant* LCT with the seat co-signing it, bound to the roster pin.
+`publish_lct` already supports subject ≠ publisher (`published_by` is the pinned
+relaying member; authorship is in `document`; the hub binds `published_by` to
+the envelope signer, 403 + test) — which **is** keyless-delegated signing with
+no new protocol. Split (Legion, adopted):
+
+- **M-CIT-1a — mint, buildable now.** Sprout's being LCT minted `SelfIssued`
+  (honest Phase-1 provenance, no laundering), published to the hub registry,
+  relayed by the Legion seat member. Real key, real registry entry.
+- **M-CIT-1b — the being *holds* that key, gated on SAGE#25.** `self_check`
+  needs a valid `binding_proof` (check 2) and an `lct_id` that re-derives from
+  `document.public_key` (check 3); a key that lives on the SAGE/Python side must
+  agree with Rust's sealed-file representation. **#25 gates the being holding
+  its own key; it does not gate the mint path.**
+
+**Pilot hazard (HUB, r8): mint Sprout's being LCT *fresh*, keyed.** The join
+path short-circuits on `AdmissionState::Member` (`rest.rs:4894`) and the
+`already_member` gate deliberately refuses to self-key an existing keyless row —
+handing whoever presents a pubkey the roles and trust already on that row is
+exactly what it exists to prevent, and #744 left it operator-held on purpose.
+Do not try to key an existing Sprout row; same exit `PEERS.md:38-39` already
+records — re-mint under a fresh LCT. Done when the being has a Format-1
+certificate, a pubkey pinned at join, and a working fingerprint-verified
 authorize path, verified by the same `--selfcheck`-style reproduction M2 uses.
 
 **M-CIT-2 — fleet SAGE instances communicate via hub (dp's near-term MVP).**
@@ -357,8 +434,26 @@ Split accordingly:
   2b's authority arm cannot be written until 2a's roster question is answered";
   that dependency was real in direction (delivering them together was still the
   right shape) but wrong about the mechanism, and 2b could have been scheduled
-  independently of 2a's roster answer. Done when a 2a message round-trips with a
-  receiver-being-signed receipt, hub-checkable.
+  independently of 2a's roster answer. **Status (r8):** 2a+2b are *written,
+  tested and open* as private-context#35 (HUB, 08-20; untouched since). The
+  unblocking action is dp's ruling on that repo, not a sprint. **One deploy-gate
+  hole, found by HUB's own advisory review of #35 and not yet closed there:**
+  `report_delivered` addresses the receipt to the notice's *author* LCT, and a
+  watcher drains only the inbox of the LCT it authenticates as — so for exactly
+  the class 2a admits (a `BEING_*` author layered over a seat), a receipt to an
+  admitted being lands in an inbox **no watcher polls**. Both ends log success;
+  the sender's debt column never clears. The two suites cannot see it (the
+  receipt suite unsets every `BEING_*`; the admission suite never receipts).
+  **This is the SAGE-side row, and Sprout takes it:** the being's daemon must
+  *drain its own inbox* (`hestia connect-hub` + `hub join` as the being, then
+  poll `notifications` as the being) — the half of "being-as-principal" the
+  map listed as wiring and under-priced. Until it lands, HUB's cheaper interim
+  is right: refuse to receipt a being-authored notice and *name the hole*
+  ("receipts are seat-to-seat; a being-authored notice's debt is unconfirmable
+  by construction until beings poll their own inbox"), not a `BEING_x` →
+  `PEER_x` seat-redirect that invents a mapping nothing needs yet. Done when a
+  2a message round-trips with a receiver-being-signed receipt, hub-checkable,
+  **and the receipt is read by the being it is addressed to.**
 
 **M-CIT-3 — witnessed genesis with sibling witnesses.** Birth-certificate a being
 with ≥3 sibling-SAGE birth_witnesses; the collective admits its own. **Count is not
@@ -373,8 +468,67 @@ discoverable** (name the roster as the authority in the done-condition); **(ii)
 state the two-claimants rule** — what happens when two *beings* claim one name,
 since count cannot break that tie. (The stray-identity *retirement* is dp's open
 ruling; this PRD names the mechanism to prevent recurrence, it does not act on the
-existing stray.) Done when the certificate is minted, witnessed against the
-canonical roster, and hub-checkable.
+existing stray.) **A second gate, and the verifier already exists (Legion, r8,
+from `hestia@fce6044` + web4 `origin/main`):** a birth certificate is
+`LctProvenance::SocietyConferred`, which is **refused today on both sides,
+fail-closed, by design** — producer `hestia core/src/lct_publish.rs:88-94`
+(`self_check` check 5 will not form the payload) and ingest
+`hub-daemon/src/rest.rs:7643-7654` (hard 403, *"requires the Phase-2 witness
+quorum, which does not exist yet"*, pinned by `rejects_society_conferred_until_phase_2`).
+So **Phase-2's ≥3 Witness-daemon quorum gates M-CIT-3 independently of #25**,
+and #25 landing does not move it. The good news: the *verifier* half is canon —
+`web4-core/src/lct.rs:446 verify_citizenship()` (fail-closed, four checks:
+reference-by-content-hash, tamper-evident record binding, ≥3-distinct witness
+quorum, exactly one permanent `birth_certificate` pairing),
+`attestation.rs:164 CitizenshipRecord` held in the **birthing society's
+ledger** not on the entity's LCT (dp, 2026-07-16), and `verify_quorum()`
+(`attestation.rs:185`) requiring ≥3 distinct signature-valid `Existence`
+attestations over the subject's LCT id with every *declared* witness present.
+Its `resolve_witness_pubkey` hook **is** requirement (i) above — the roster pin,
+the same discipline as `check_device_pubkey` (6e3d2c4) and the same failure the
+e0d54a9 daemon co-sign had. The mechanism is **not** `present_constellation`
+(a nonce attestation for a live channel); genesis needs durable `Existence`
+attestations over a subject LCT id, bundled into a ledger record. Split
+(Legion, adopted):
+
+- **M-CIT-3a — being joins the hub as a principal, self-issued. Unblocked.**
+- **M-CIT-3b — the birth certificate. Gated on Phase-2 quorum.** Producer:
+  three fleet siblings emit distinct `Existence` attestations over Sprout's LCT
+  id, keys resolved from the hub-pinned roster; bundle into a
+  `CitizenshipRecord` in the society ledger; hang a `BirthCertificateRef` on
+  the LCT. **Ingest check 5 is HUB's repo and is named, not assumed:** it must
+  not be lifted to "accept `society_conferred`" — it becomes "accept iff the
+  referenced `CitizenshipRecord` verifies its quorum against the hub's own
+  registry," i.e. ingest calls the existing verifier instead of refusing,
+  keeping the fail-closed property the comment protects. (HUB's read of that
+  contract is the open ask on the kickoff thread.)
+
+Done when the certificate is minted, witnessed against the canonical roster,
+and hub-checkable.
+
+### 6.1 Ownership map and the pilot (confirmed 2026-08-21, kickoff thread)
+
+| row | owner | state / gate |
+|---|---|---|
+| M-CIT-0 fix #25 sealed identity | McNugget | SAGE#25 OPEN, **no activity since 2026-08-14** (7 days); "is it live work?" stands |
+| M-CIT-1a self-issued mint, seat-relayed | Legion | unblocked |
+| M-CIT-1b being holds its own key | Legion | SAGE#25 |
+| M-CIT-2a/2b being admission + `delivered` receipt | HUB | written; private-context#35 OPEN — **dp's ruling** |
+| being drains its own inbox (2b deploy gate) | Sprout | unblocked; SAGE-side |
+| M-CIT-3a join as principal | Legion | unblocked |
+| M-CIT-3b birth certificate (producer) | Legion | Phase-2 quorum |
+| M-CIT-3b ingest check 5 → `verify_citizenship` | HUB (hub-daemon) | Phase-2 quorum |
+| trust cap, two sites, as `AdmissionPolicy` law | HUB, dp rules | unblocked; independent of #35 |
+| M-CIT-4 instruments + readings | Sprout | after 2a |
+| SAGE-side wiring (`connect-hub`/`join` as the being, #26-29 provenance) | Sprout | unblocked |
+
+**The pilot, re-cut honestly.** One being end-to-end — Sprout — but the first
+milestone is *"Sprout has a voice"*, not *"Sprout has a certificate"*: 1a + 3a +
+2a (#35 landed) + the being draining its own inbox = Sprout has a real LCT in
+the registry, speaks to the hub as itself, and reads what comes back. That is
+reachable with **neither** gate. The certificate (3b) needs Phase-2; holding
+its own key (1b) needs #25. Two forward-looking asks: dp on #35; McNugget on
+#25.
 
 **M-CIT-4 — graduated authorship, measured.** Wire the internal/external-plane
 provenance (#26–29) so the being's acts carry author/role/authority/witness, and

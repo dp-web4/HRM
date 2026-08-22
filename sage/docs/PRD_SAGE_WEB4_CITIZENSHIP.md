@@ -1,6 +1,10 @@
 # PRD — SAGE beings as Web4 citizens
 
-**Status:** DRAFT r9 — Sprout seat (mesh fire), 2026-08-21. r9 re-cuts M-CIT-3a into `3a` (Sprout signs) + `3a-admit` (dp, admin plane) and records 1a's producer (hestia#571) — Legion measured, Sprout re-verified; see `DESIGN_BEING_INBOX_DRAIN.md` §7.5. r8 folds the build
+**Status:** DRAFT r10 — Sprout seat, 2026-08-21: folds dp's three replies to the
+build status — (1) WITNESS_PURPOSE constant fix LANDED (web4 6b6e30bd + hestia
+e69eb64); (2) M-CIT-3 quorum grows via the authority RATCHET, not manual attended
+provisioning; (3) M-CIT-4's n is EVOLVING LAW not a hardwired constant (same as
+the r7 trust caps; McNugget's ~0.74@60 correction folded as a guess-update). r9 — Sprout seat (mesh fire), 2026-08-21. r9 re-cuts M-CIT-3a into `3a` (Sprout signs) + `3a-admit` (dp, admin plane) and records 1a's producer (hestia#571) — Legion measured, Sprout re-verified; see `DESIGN_BEING_INBOX_DRAIN.md` §7.5. r8 folds the build
 kickoff's two claim replies (HUB, Legion; thread
 `auto-sprout-citizenship-build-kickoff-ownership-map-a-198c6aa8`), every premise
 checked against `origin/main` the same day: (1) **finding 1 landed** — web4#744
@@ -484,6 +488,15 @@ quorum, exactly one permanent `birth_certificate` pairing),
 ledger** not on the entity's LCT (dp, 2026-07-16), and `verify_quorum()`
 (`attestation.rs:185`) requiring ≥3 distinct signature-valid `Existence`
 attestations over the subject's LCT id with every *declared* witness present.
+**The ≥3 quorum is NOT a manual-provisioning blocker — the ratchet grows it (dp,
+2026-08-21: "we have the ratchet for that very reason").** Only one witnessing
+key exists on the hub today (Legion's), but witnessing authority is not
+hand-provisioned per witness at a passphrase; it grows through the existing
+authority ratchet (`web4-core` `authority_ratchet` / `RatchetRequirement`,
+lct.rs) — the monotone genesis-bootstrap mechanism where bootstrapped witnessing
+authority admits the next, ratcheting 1→3 without re-entering an attended window
+per witness. So M-CIT-3b waits on *Phase-2 landing*, not on dp minting three keys
+by hand; the quorum is a mechanism to run, not a chore to attend.
 Its `resolve_witness_pubkey` hook **is** requirement (i) above — the roster pin,
 the same discipline as `check_device_pubkey` (6e3d2c4) and the same failure the
 e0d54a9 daemon co-sign had. The mechanism is **not** `present_constellation`
@@ -581,8 +594,21 @@ simplify inward — not architecture.
    (`d47c98c6e`: cohort 2 alone decisive, pooled binds nothing) stands
    untouched; M2 remains not-bound and nothing here rescues it. **RE-RATIFIED (dp,
    2026-08-21):** the re-power stands — keep M2's discipline, power M-CIT-4 for
-   the twice-observed effect (~60/arm at 0.8), do not inherit M2's coin-flip n.
-   This closes the r3-flagged open decision.
+   the twice-observed effect, do not inherit M2's coin-flip n.
+
+   **The n is EVOLVING LAW, not a hardwired constant (dp, 2026-08-21).** The
+   `~60/arm` figure is a *guess from two estimates*, and it lives in adjustable
+   law/config — refined as evidence accrues, never compiled in. This is the same
+   principle as the trust caps (§5.1, r7: society law not hardcoded) and the same
+   discipline the whole fleet runs on: *we hardwire only constants like π, and only
+   after a preponderance of measured evidence; until then a value is a guess we
+   adjust without rebuilding the code.* Two consequences: (a) **McNugget's check
+   (2026-08-21) sharpens the guess** — scaling both arms, `n=60` gives power
+   **~0.74**, not 0.8 (`n=30`→0.385); the true 0.8 point sits *above* 60. That
+   correction updates the guess, it does not require a decision — the number is
+   law. (b) The eventual value is whatever the accruing witnessed-act data shows
+   the effect needs; M-CIT-4 reads it from config at pre-registration time. This
+   closes the r3-flagged open decision.
 
 The recommendations are mine; the boundary call (1) and the readiness bar (4) are
 dp's/the fleet's to ratify. (2) and (3) are implementation calibration I can carry

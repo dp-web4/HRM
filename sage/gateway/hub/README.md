@@ -14,7 +14,7 @@ envelope with the seat's pinned key, `POST /v1/hubs/:hub_id/lcts/publish`. `subj
 exactly what the relay path exists for. M-CIT-3a's join for the being pins the **same** pubkey (`daf57b89…165f`) *because it is signed by it*:
 the join envelope is Sprout's to sign (`join_being.rs`), not a relay. One key, three artifacts — document, member
 pin, drain signer — across **two id spaces**: registry `lct:web4:mb32:…` (key-derived) and membership `Uuid`
-(joiner-chosen, = `document.id`). Nothing checks that pair at ingest or join; the drain's gate 0 does.
+(joiner-chosen, = `document.id`). Nothing checks that pair at ingest or join; the drain's gate 0 does. Gate 0 is scoped to the being's own `MemberAdded` pin (`member_pubkeys`) and compares decoded key bytes: it does not inherit HUB's C8/C9 (Sovereign and council keys live outside that map — web4#759) nor C10 (case). Design §7.4.
 
 **Attestation subject id (M-CIT-3; Legion C5/R6, 2026-08-21):** a birth-witness attestation over the being
 is signed over the **registry id** `lct:web4:mb32:bybpo2yczrsr5ycc7253qfywp7lgzp5z2pquhdlaoar5um4ntgiba` —

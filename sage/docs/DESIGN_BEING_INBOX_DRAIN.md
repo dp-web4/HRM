@@ -200,3 +200,37 @@ checks A–D pass; `--nonce` envelope self-verifies; a wrong seed fails closed a
 outward-facing act on the live hub, hub-track gated, and `/members/join` may return 202 (escalated to the sovereign —
 the sponsor verdict composes strictest-wins). Legion's 3a becomes the hub-side half: sponsor/vouch for
 `2e175714…` so the 202 resolves, and 3b as before.
+
+### 7.4 Gate 0 is scoped to the being's own pin — it does not inherit HUB's C8/C9 (added 2026-08-21, on web4#759)
+
+HUB transcribed ruling 3's bridge (`registry[witness].document.id → member_pubkeys[uuid]`, equality on the key) into
+`hub-lib` and measured it (web4#759, tests only): **sound** — no laundering case — but **blind**, because
+`member_pubkeys` is one of *three* key sources the daemon's envelope resolver merges at `RestState::new`
+(`hub-daemon/src/rest.rs` ~336-380): the Sovereign's key (identity store / hestia callback — never a `MemberAdded`
+pin; **C8**), `member_pubkeys`, and `council_pubkeys` (`CouncilMemberAdded` writes `council_pubkeys` plus a `members`
+row and never `member_pubkeys`, `state.rs` ~961-972; **C9**). Both re-verified here on `7ff2ecb0`. The `rest.rs`
+comment at the council pass ("holders are also auto-added to `member_pubkeys`") is stale — it describes the
+behaviour C9 shows is absent. What this means for the drain:
+
+- **Gate 0 stays on `member_pubkeys` and does not move to the union.** It compares the being's *own* key against
+  `GET /members/2e175714…/pubkey` and `GET /lcts/:mb32 → document.public_key`. The being is admitted by
+  `/members/join` → `MemberAdded { member_pubkey_hex: Some }` → `member_pubkeys` (`state.rs:754`) — the one class
+  the public read *does* cover. The being is neither Sovereign nor council holder, so C8/C9 cannot turn gate 0
+  into a false `None`.
+- **C10 (case):** gate 0 compares **decoded key bytes**, never hex strings. `join_being.rs` pins `to_hex()`
+  (`hex::encode`, lowercase) and `document.public_key` serialises lowercase, so strings would match anyway;
+  decode-both-sides is the rule regardless (HUB's stated preference; zero cost; no replay change).
+- **The union is not publicly readable.** `/members/:uuid/pubkey` reads `member_pubkeys` only
+  (`rest.rs:7726-7732`; 404 "not an admitted member?" for the Sovereign, by its own comment). No outside reader —
+  this drain included — can compute "keyed member" today; only the hub can, beside its resolver. That is HUB's
+  witness-roster node and it is the hub's, not the drain's. The drain never resolves witness keys: witness
+  verification is check 5 on the hub, and the being receipts what it reads (§3). C8/C9 reach the being only through
+  check 5's *completeness* — whether `BIRTH_WITNESS_QUORUM = 3` is reachable when the Sovereign and council are
+  the obvious witnesses — which is HUB's point, and why the roster filters the union. Converging gate 0 on the
+  union would be neither possible from here nor needed.
+- **C11:** `document.id == membership uuid` is a convention the being honours by construction (ruling 2); gate 0 is
+  what makes it an invariant *for this being*. It cannot be made one for a `new_v4()` joiner from outside — that
+  joiner is simply not the being.
+
+Open for law (dp), not for the drain: whether the Sovereign may witness a birth its own society issues (HUB §4.1),
+and normalise-at-fold vs compare-bytes as the projection-wide rule (HUB §4.2; the drain already compares bytes).

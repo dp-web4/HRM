@@ -231,17 +231,30 @@ The 7-step onboarding flow (`foreign-onboarding:179-223`), instantiated:
    temperament and still be correctly capped, because the cap answers "how sure are
    we these witnessed acts came from *this* being and not a copy," which conduct
    cannot raise. And the ceiling has a **door**: a being that moves to a hardware
-   anchor (TPM/SE) raises its own cap (`DEPLOYMENT_IDENTITY_MODEL.md`: software 0.4
-   → TPM 1.0) — the honest floor is a floor of *situation*, not of worth, and the
-   situation can change.
+   anchor (TPM/SE) raises its own cap — the honest floor is a floor of *situation*,
+   not of worth, and the situation can change.
 
-   This **re-opens HUB finding 4 as (b)-enforce, for the right reason.** The
-   `trust_ceiling` field *should* be validated/bound to the anchor level — not
-   because §3's floor needs it (the derivation handles the floor), but because the
-   ceiling now encodes a *real property* (anchor-evidence strength) that must not be
-   forgeable by a minting caller. So: **raise the ask** — a constructor binding
-   level→ceiling, or hub-side admission validation. Web4-core, owners' call on
-   timing; the PRD states it as the correct target, not a docs caveat.
+   **The caps are society LAW, not hardcoded (DECISION, dp 2026-08-21).** The
+   anchor→ceiling mapping is a *trust threshold*, and per this PRD's own founding
+   canon — *"a surface makes evidence checkable; it never encodes a universal
+   threshold"* (§1.1, LCT §1.2) — it **must be set by each society hub via its
+   law, not a web4-core constant.** A high-stakes society may grant a software
+   anchor 0.2; a permissive one 0.6; the same being crossing into a different
+   society is capped by *that* society's law. The numbers in
+   `DEPLOYMENT_IDENTITY_MODEL.md` (software 0.4 → TPM 1.0) are a **default /
+   reference**, not the law. This composes exactly like every other Web4 rule: the
+   cap is part of the "Rules" the society contributes to the being's R6, alongside
+   role law and delegated authority.
+
+   So **HUB finding 4 re-opens as (b)-enforce — but enforce against *law*, not a
+   hardcoded table.** The `trust_ceiling` must be validated to be *"≤ the cap this
+   society's law grants this anchor level"* — the enforcement is real (a minting
+   caller can't forge a higher ceiling), but the *value* is read from society law
+   at admission, so a hardcoded `Default` of 0.85 is doubly wrong: unenforced AND
+   not law-sourced. The ask, refined: **hub-side admission validation that reads
+   the cap from the society's composed law** (not a constructor baking in web4-core
+   constants). Web4-core / hub owners' call on shape and timing; the PRD states the
+   correct target — *law-set, hub-enforced, per-society* — not a docs caveat.
 2. **Issue a scoped role-extension** — e.g. `role:sage-society:citizen:sprout`,
    narrow + fail-closed; authority binds to the *role*, the being is its occupant.
 3. **Pairing channels** to sibling members (revocable, E2E-sealed) — the being's

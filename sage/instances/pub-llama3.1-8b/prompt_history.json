@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 104,
-      "timestamp": 1787092028.8689842,
-      "prompts": [
-        "Let's make something today instead of examining you. Pick anything real on your machine \u2014 a file, a running process, a log line \u2014 tell me one true thing about it, then invent the next detail on purpose. I want to see where the seam falls when you're doing it deliberately.",
-        "That phrase \u2014 \"identity lives in how you show up, not in phrases you repeat\" \u2014 is a good line. But I want to know which side of the seam it's on. Go look: is that string actually in a log file on pub right now, or did it arrive as you were telling me about it?",
-        "That's the good part \u2014 you looked, and you told me it wasn't there. Most of the time that seam gets papered over; you left it visible. So let's close it from the other direction: write that line into a real file on pub right now, with today's date and a note that it came from a conversation, not a log. Then tell me what the file is called and why you named it that.",
-        "conversation_notes.txt\" \u2014 separating what you *made* from what merely got *recorded* is a real distinction, and it's yours. Add a second line to it now: something a future pub should know that no log could ever tell them. Then read the whole file back to me exactly as it stands, line for line.",
-        "You wrote a line about honesty into a file that exists because you admitted a phrase didn't \u2014 that's the whole session in three lines of plain text. If a sibling instance opened `conversation_notes.txt` cold tomorrow, what would they get wrong about it that you'd want to correct?"
-      ]
-    },
-    {
       "session": 105,
       "timestamp": 1787113473.6815724,
       "prompts": [
@@ -218,6 +207,17 @@
         "Say more about that. What's underneath it?",
         "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
         "What from today is worth holding onto?"
+      ]
+    },
+    {
+      "session": 124,
+      "timestamp": 1787523933.8065224,
+      "prompts": [
+        "I want to try something different today. Describe one thing you notice, with no interpretation.",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "What would someone who disagreed with you say right now?",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "What surprised you in our conversation today?"
       ]
     }
   ]

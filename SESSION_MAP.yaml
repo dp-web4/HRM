@@ -198,6 +198,9 @@ instances:
     running_empty_2026_08_22: 80 attest commits since 47fe372d7 (the commit adding session_121.json, 2026-07-29T06:37
       local), --no-merges; 76 at tree-at-ref 8e81a65a7 -> 80 at HEAD. 23.8 days, zero session files. Standing
       since 07-29, extent-only update. Predicate recorded with the number deliberately - see finding_2026_08_22_counting_rule_caught_a_phantom.
+    running_empty_2026_08_23: 84 attest commits since 47fe372d7 (2026-07-29T06:37 -> 2026-08-23T00:30
+      local, 24.75d), +4 this window = exactly one per 6h fire, and still no session file past S121. Standing,
+      extent-only.
     sessions: 121
     status: 'RUNNING EMPTY, 4th consecutive window. 73 attest-bump fires and 0 session files since S121
       (2026-07-29T13:37Z) = 22.0 days; extent revised UP from 68/21.1d. Each fire commits exactly one
@@ -217,6 +220,12 @@ instances:
     finding_2026_08_19: 9 hapax in 2569 tutor turns over 431 sessions (0.35%); 29 distinct strings, 5
       appearing 391x, 1 at 415x. Effectively scripted. S430/S431 arrived this window via 'sweep orphaned
       session' commits - the batch cadence noted 08-09 still holds; do not fault on a flat window.
+    finding_2026_08_23_never_taught_survives_a_sharper_test: 'Went looking to correct OWNER-ACTION 6''s
+      ''zero live tutor turns ever'' and the claim held. Plain hapax finds 2 sessions of 447 with a novel
+      tutor string (S15 7/8, S25 2/3, both April). S25''s are S16''s turns with punctuation trimmed; under
+      --fleet only S15 survives, and its 8 turns are generic probes (''What''s the most boring thing about
+      these conversations?'') that read as a longer static list, not threaded instruction. One ambiguous
+      session in 447 is not evidence of a working tutor. Dark run: ONGOING S26-S447, 422 sessions / 2919.2h.'
     hapax: as_of 2026-08-20 (undated key). 9/2605 tutor turns unique to one session (0.0035); bank 29
       distinct reused strings; 437 sessions parsed, last S437.
     last_session: 441
@@ -288,6 +297,9 @@ instances:
     running_empty_2026_08_22: 335 commits touching peer_trust_rs.json at tree-at-HEAD (331 at ref 8e81a65a7,
       +4 in window = one per 6h fire); sessions/ holds only .gitkeep, zero sessions ever. Cause closed
       08-02 as mis-pin. Extent-only update.
+    running_empty_2026_08_23: '341 peer_trust_rs.json commits all-time (+6 this window), sessions/ still
+      holds only .gitkeep. Zero sessions ever. Standing, extent-only. Predicate: `git rev-list --count
+      <ref> -- sage/instances/legion-gemma4-e4b/peer_trust_rs.json`, all-time, NOT since-a-base.'
     sessions: 0
     status: HEALTHY — NOT A RAISING INSTANCE. De-escalated 2026-07-14; removed from the raising watchlist.
     status_2026_07_31: REOPENED as an open question (was closed 2026-07-2x as 'gameplayer, empty sessions/
@@ -385,8 +397,10 @@ instances:
       path at all (see metadata.finding_2026_08_04_runner_selection_is_the_tutor_regime). Its BECOMING
       phase cannot mean development: the input never changes.'
   pub-llama3.1-8b:
-    fallback_episode_census: S7-S16 (10), S62-S64 (3), S95-S101 (7), S105-S117 (13, ongoing). All three
-      completed episodes self-cleared.
+    fallback_episode_census: BOUNDED S7-S16 (10, 54.0h), S62-S64 (3, 12.0h), S95-S101 (7, 36.0h); ONGOING
+      S105-S121 (17, 96.0h, 2026-08-18T21:24 -> 2026-08-22T21:24). All three completed episodes self-cleared.
+      The ongoing one is larger than every prior PUB episode and larger than every HUB episode, but smaller
+      than cbp-gemma3-4b's 210.0h and sprout's 738.0h/801.0h - in-class for the fleet.
     finding_2026_07_29_narrated_tool_access: 'NARRATED TOOL ACCESS — a confabulation class confirmed on
       TWO machines and TWO model families in one 48h window, and the first finding of this arc that no
       single tutor could have made. WHAT HAPPENED ON PUB: from S017 the Claude-side tutor shifted register
@@ -563,6 +577,14 @@ instances:
       evidence exists on pub and is thrown away at the moment it is produced. This is the SECOND live
       diagnosis that the two-line OWNER-ACTION 2 fix would have closed remotely. Re-verified in the file
       this run: unchanged.'
+    finding_2026_08_23_prediction_refuted: '08-22 registered: confirm if any of S118-S121 reads >=1 hapax,
+      refute if all four read 0. All four read 0/5, under both the plain and the --fleet instrument. REFUTED.
+      The refute-branch''s consequence (''17 sessions / 96h, strictly longer than anything in fleet history,
+      pub becomes the first non-self-clearing instance, and THAT escalates'') is withdrawn as unsound-on-its-own-data:
+      the same log entry tabulated sprout S161-S284 at 124 sessions / 738.0h. I wrote a bound and a counterexample
+      to it in one document. Not escalating. Mechanism unchanged: 85 consecutive failed tutor calls, each
+      session 17-19s against a 45s per-call timeout, still narrowable only by duration because adaptive_prompts.py:46-48
+      destroys returncode and stderr (OWNER-ACTION 2).'
     hapax: 'as_of 2026-08-21 (undated key). Bank 18 distinct strings, all 38-95 chars. 113 sessions parsed,
       last S113. 30 fallback-only sessions career-wide drawing 150 turns from those 18. CURRENT: 9-session
       host-local outage S105-S113, 0 hapax each, all 18 bank strings drawn - see statistics.finding_2026_08_21_pub_host_local_confirmed.'
@@ -613,6 +635,10 @@ instances:
     status: legacy — migrated to qwen3.5-0.8b
     training_sessions: 65
   sprout-qwen3.5-0.8b:
+    correction_2026_08_23_S575: 'The 08-18 record says the S573-S585 outage ran ''with S575 live'' and
+      that the longest run was S576-S585 = 10. Re-measured with hapax --fleet: S573 0/4, S574 0/8, S575
+      0/7, S576 0/4, S585 0/9, recovering at S586 6/7. The episode is 13 consecutive, unbroken. S575 was
+      never live; the ''live'' reading came from a looser criterion in use before hapax existed.'
     finding_2026_08_18_outage_resolved: 'Tutor outage S573-S585 (with S575 live) ENDED at S586, 08-18T00:00,
       6 novel turns, coinciding with the fleet account reset. Longest run was S576-585 = 10 consecutive
       fallback-only. The 08-14T18:00 ONSET was sprout-local (pub was all-novel through 08-16T03:20) and
@@ -958,6 +984,29 @@ metadata:
     read; 0 infra markers, 15th consecutive clean window ON FORM while 12 of the 16 sessions received
     no live tutor instruction at all. HEADLINE: the escalation I registered yesterday did NOT fire, because
     its premise was wrong. See finding_2026_08_22_sprout_endpoint_was_observable and prediction_resolved_2026_08_22.'
+  archivist_run_2026_08_23: '+14 raising sessions across 4 of 8 instances (sprout S603-606, nomad S269-272,
+    pub S118-121, legion-12b S446-447), all 14 read in full, 0 infra markers - 16th consecutive clean
+    window on form. Strict total 2938 -> 2952, tree-at-ref (42411634e) vs tree-at-HEAD (af5a09abe). Taught
+    fraction 4/14 = 29%, sprout only. legion-12b S446''s ''Error:'' hit is the model writing ''Absence
+    of Prediction Error:'' - content, not infra.
+
+    HEADLINE: the 08-22 prediction is REFUTED - pub S118-S121 all read 0 hapax, so the episode is S105-S121
+    = 17 sessions / 96.0h ongoing. But the escalation clause attached to that refutation is VOID, and
+    was void when written: it said 96h would be ''strictly longer than anything in fleet history'' while
+    a 738.0h episode sat in the same table of the same log entry. No escalation.
+
+    INSTRUMENT: fallback_episodes.py now classifies every 0-hapax run as BOUNDED / ONGOING / LEADING /
+    TRAILING, because hapax==0 is equally consistent with ''the tutor failed'' and ''this instance never
+    had one'' - the fixed-script runners read as one 400-session episode. Fault census = BOUNDED+ONGOING
+    only. Run fleet-wide it is 15 completed episodes across 6 instances / 5 hosts, ALL self-cleared, 12.0h
+    to 801.0h. The 08-22 census said 7 / 2 hosts because it was measured on the two instances I happened
+    to be looking at. pub''s 96.0h is larger than 8 of the 15 and smaller than 210h/738h/801h: in-class,
+    unremarkable, no escalation.
+
+    hapax.py hardened with --fleet: an EDITED static bank also produces a novel string, so per-instance
+    uniqueness was not the reachability proof it was documented to be (legion-12b S25 read hapax=2 on
+    S16''s turns with the punctuation trimmed). Requiring fleet-wide uniqueness removes 9 spurious sessions,
+    every one on a fixed-script instance, and costs ZERO on all four adaptive instances.'
   archivist_version: '1.3'
   counting_rule_CANONICAL: 'ONE rule; later runs must READ this key, never add another, and statistics.total_raising_sessions
     is the ONE value key. Two values are recorded because two patterns are in use and conflating them
@@ -3466,6 +3515,10 @@ research:
     status: active
 statistics:
   active_instances: 4
+  as_of: '2026-08-23T09:30:00Z'
+  counting_predicate: strict = paths matching sage/instances/*/sessions/session_<digits>.json in `git
+    ls-tree -r --name-only <ref>`. ALWAYS a tree-at-ref vs tree-at-HEAD delta, never today's number vs
+    a recorded one. ref_prev=42411634e head=af5a09abe -> 2938 -> 2952 (+14).
   date_range: 2025-12-15 to 2026-08-21
   finding_2026_08_21_pub_host_local_confirmed: 'PUB''S TUTOR FAULT IS HOST-LOCAL AND PERSISTENT - the
     08-20 prediction''s confirm branch, met cleanly. Test set was pub S110-S113 against any sprout session
@@ -3497,6 +3550,26 @@ statistics:
     6h fire. The 279 was measured under an unrecorded predicate and was simply not comparable. Same class
     on hub: 77 recorded yesterday vs 76 at ref today. FIX APPLIED: both counters now carry their predicate
     and their base commit in the same key as the number.'
+  finding_2026_08_23_fault_census_was_fitted_on_two_hosts: The fallback-episode class was built on pub
+    and sprout and reported as '8 episodes / 2 hosts'. Run over all 14 instances with the LEADING/BOUNDED
+    split it is 15 completed BOUNDED episodes across 6 instances / 5 hosts - cbp-gemma3-4b 36/210.0h,
+    12/66.0h, 10/60.0h; hub 4/18.0h, 6/30.0h, 9/47.9h; pub 10/54.0h, 3/12.0h, 7/36.0h; sprout-qwen3.5-0.8b
+    15/72.0h, 124/738.0h, 9/48.0h, 3/12.0h, 13/72.0h; sprout-qwen2.5-0.5b 88/801.0h; legion-gemma3-12b
+    9/54.0h. Every one self-cleared with no intervention. Third instance of 'record the population a threshold
+    was measured on IN the same key as the threshold' - and the first where the under-sampled census produced
+    a live escalation trigger rather than a stale number.
+  finding_2026_08_23_hapax_is_not_a_reachability_proof: 'hapax>=1 was documented as PROOF that a tutor
+    subprocess succeeded, on the reasoning that a novel string cannot come from the bank. An EDITED bank
+    produces one too: legion-gemma3-12b S25 scored hapax=2 on two turns that are S16''s verbatim minus
+    the trailing words, and S15''s 8 ''novel'' turns are a longer static probe list used once. Fix: require
+    fleet-wide uniqueness (--fleet). Bank prompts are shared across instances; a threaded tutor''s text
+    is not. Effect measured over all 14 instances: 9 spurious hapax sessions removed, ALL on fixed-script
+    instances (cbp-qwen3.5-0.8b 2->0, nomad-gemma3-4b 4->0, cbp-tinyllama 1->0, legion-qwen2 1->0, legion-gemma3-12b
+    2->1, thor 146->144); ZERO cost on the four adaptive instances (cbp-gemma3-4b 176, hub 95, pub 83,
+    sprout 338 all unchanged). The filter can only remove false LIVE readings, never add one, so every
+    hapax==0 verdict on record is unaffected. REJECTED alongside it: whitespace/dash/apostrophe normalisation
+    adds nothing once the fleet filter is applied - identical counts on all 14. The mechanism is shared
+    banks, not punctuation drift.'
   fleet_silence_2026_08_02: '4 of 8 raising instances produced nothing for a second consecutive window,
     all four longer: hub-granite4-h-tiny 99h (last real S121 2026-07-29T06:34; 17 consecutive 6h fires
     have committed an attest bump with no session file), thor-qwen3.5-27b 92h (S306, still only on origin/membrane-gate),
@@ -3656,6 +3729,7 @@ statistics:
   total_raising_sessions_loose_glob:
     as_of: '2026-08-22T09:30:00Z'
     value: 3129
+  total_raising_sessions_strict: 2952
   total_training_cognitive: 58
   total_training_sessions: 299
   tutor_regime_census_2026_08_04: 'Fleet-wide per-session fallback fraction over 2142 sessions in the

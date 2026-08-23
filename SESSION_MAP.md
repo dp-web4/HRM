@@ -9,41 +9,104 @@
 
 ---
 
-## Current Raising Fleet (Archivist, 2026-08-20)
+## Current Raising Fleet (Archivist, 2026-08-23)
 
-**2,906 raising sessions** (strict; 2,912 loose — the gap is 6 legacy suffixed files) across 14 numbered
-instances on 6 machines, re-derived at `278b7fc3b`. Counting rule and its **predicate**:
-`session_counts_DERIVATION` in [SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling key.
+**2,952 raising sessions** (strict) across 14 numbered instances on 6 machines, re-derived tree-at-ref
+`42411634e` → tree-at-HEAD `af5a09abe` (+14 this window). Counting rule and its **predicate**:
+`counting_predicate` in [SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling key.
 **4 of 8 instances produced sessions in the last 24 h**, all four on 6 h grids with zero infra markers.
 Of the four that did not, **none is a confirmed fault**: two are paused by the owner, one is broken and says
 so itself, and one fires on schedule and emits nothing. See *Fleet silences* below before reading any of it
 as a problem.
 
-**Tutor regime is measured by _hapax_** — a tutor turn whose exact text appears in exactly **one** session
-of that instance, ever. The justification is empirical, not a chosen cut: the reuse histogram is **bimodal with
-a near-empty bucket at 2** (pub: 405 strings at 1 session, none at 2, the rest at 3–13). A live adaptive
-teacher references session content and so never repeats; a fallback bank draws from a small fixed set.
-Tool: [`private-context/archivist/tools/hapax.py`](../private-context/archivist/tools/hapax.py) — committed
-2026-08-20 so it stops being re-improvised from notes each run.
+**Tutor regime is measured by _hapax_** — a tutor turn whose exact text appears in exactly **one** session,
+and (since 2026-08-23) in exactly **one instance**. The within-instance justification is empirical, not a
+chosen cut: the reuse histogram is **bimodal with a near-empty bucket at 2** (pub: 405 strings at 1 session,
+none at 2, the rest at 3–13). A live adaptive teacher references session content and so never repeats; a
+fallback bank draws from a small fixed set.
+Tools: [`hapax.py`](../private-context/archivist/tools/hapax.py) (per session) and
+[`fallback_episodes.py`](../private-context/archivist/tools/fallback_episodes.py) (per episode), both
+committed so they stop being re-improvised from notes each run.
 
 > **The number has two readings and they license different claims (2026-08-20).**
-> **Reachability** is a *proof*, not a threshold: `hapax ≥ 1` means at least one tutor subprocess call
-> succeeded that session, because a novel string cannot come from the bank. `hapax = 0` is the only value
-> consistent with every call failing. Account-layer-vs-host-local questions must be settled on this reading.
+> **Reachability**: `hapax ≥ 1` is evidence that a tutor subprocess call succeeded that session; `hapax = 0`
+> is the only value consistent with every call failing. Account-layer-vs-host-local questions are settled on
+> this reading.
 > **Quality** is a *chosen* cut: **LIVE ≥ 3, THIN 1–2, FALLBACK 0**. The 3 is a judgement about how much
 > novel instruction makes a session taught; it is not what the histogram measured. Conflating the two is how
 > the retired ≤ 95/≥ 250 character threshold went wrong.
+>
+> **Correction, 2026-08-23 — reachability was documented as a *proof* and it is not one.** The reasoning was
+> "a novel string cannot come from the bank." An **edited** bank produces one too: `legion-gemma3-12b` S25
+> scored `hapax = 2` on two turns that are S16's verbatim with the trailing words trimmed, and S15's eight
+> "novel" turns are a longer static probe list used once. Pass `--fleet` to require the string to be unique
+> *fleet-wide* as well — bank prompts are shared across instances, a threaded tutor's text is not. Measured
+> over all 14 instances it removes **9 spurious hapax sessions, every one on a fixed-script instance**, and
+> costs **zero** on all four adaptive ones. It can only remove false LIVE readings, never add one, so every
+> `hapax = 0` verdict already on record stands unchanged. *(Tested and rejected alongside it: whitespace and
+> punctuation normalisation adds nothing once the fleet filter is applied. The mechanism is shared banks,
+> not punctuation drift.)*
 
-| Instance | Machine | Sessions | Hapax rate | Bank | Tutor regime | Grounded? |
-|----------|---------|----------|-----------|------|--------------|-----------|
-| sprout-qwen3.5-0.8b | Sprout | 594 | 1559/3602 = **0.43** | 65 | adaptive — **live, intermittent** | **yes** (`delivered=true`) |
-| legion-gemma3-12b | Legion | 437 | 9/2605 = **0.0035** | 29 | **effectively scripted** | no receipt emitted |
-| mcnugget-gemma3-12b | McNugget | 397 | — (dark) | — | **fixed script** | no receipt emitted |
-| thor-qwen3.5-27b | Thor | 268 | — | — | adaptive — *38 stranded on `origin/membrane-gate`* | — |
-| nomad-gemma4-e2b | Nomad | 260 | **0/1490 = 0.00** | 15 | **never taught, only scripted** | no receipt emitted |
-| cbp-gemma3-4b | CBP | 240 | — (paused) | — | adaptive | `delivered=false` |
-| hub-granite4-h-tiny | Hub | 121 | 521/662 = **0.79** | 18 | adaptive — **live when last seen** | — |
-| pub-llama3.1-8b | Pub | 109 | 405/542 = **0.75** | 18 | adaptive — **FAULTED, 5 sessions dark** | `delivered=false`, digest 0 |
+Rate below is **sessions with ≥ 1 fleet-unique tutor turn / sessions on disk** — "was this instance ever
+taught", not "how much of its text is novel". The two denominators are not interchangeable and the earlier
+per-turn figures are not comparable to these.
+
+| Instance | Machine | Sessions | Taught sessions | Tutor regime | Grounded? |
+|----------|---------|----------|-----------------|--------------|-----------|
+| sprout-qwen3.5-0.8b | Sprout | 606 | 338/606 = **0.56** | adaptive — **live, intermittent** | **yes** (`delivered=true`) |
+| legion-gemma3-12b | Legion | 447 | **1/447 = 0.002** | **fixed script** (S15 only, April, ambiguous) | no receipt emitted |
+| mcnugget-gemma3-12b | McNugget | 397 | **1/397 = 0.003** | **fixed script** | no receipt emitted |
+| thor-qwen3.5-27b | Thor | 268 | 144/268 = **0.54** | adaptive — *38 stranded on `origin/membrane-gate`* | — |
+| nomad-gemma4-e2b | Nomad | 272 | **0/272 = 0.00** | **never taught, only scripted** | no receipt emitted |
+| cbp-gemma3-4b | CBP | 240 | 176/240 = **0.73** | adaptive (paused by owner 08-06) | `delivered=false` |
+| hub-granite4-h-tiny | Hub | 121 | 95/121 = **0.79** | adaptive — **live when last seen** | — |
+| pub-llama3.1-8b | Pub | 121 | 83/121 = **0.69** | adaptive — **FAULTED, 17 sessions dark** | `delivered=false`, digest 0 |
+
+### The fallback census was fitted on two hosts (2026-08-23)
+
+The recurring "tutor goes dark for a while, then comes back" class was built by looking at pub and sprout,
+and was written down as **8 episodes across 2 hosts**. Run over all 14 instances it is not that.
+
+The reason it was not caught earlier is that `hapax = 0` is equally consistent with **"the tutor failed"**
+and **"this instance never had one"** — the fixed-script runners read as a single 400-session episode.
+`fallback_episodes.py` now classifies each run of ≥ 3 consecutive zeros by whether the instance
+demonstrably had a working tutor on **both sides** of it:
+
+| class | meaning | belongs in a fault census? |
+|-------|---------|---------------------------|
+| `BOUNDED` | live sessions before **and** after | **yes** — a tutor that worked, stopped, resumed |
+| `ONGOING` | live before, none after **yet** | **yes** — bounded-so-far, endpoint unobserved |
+| `LEADING` | no live session anywhere before | no — regime, or never worked |
+| `TRAILING` | live before, none after, instance closed | context only |
+
+The corrected fault census: **15 completed `BOUNDED` episodes across 6 instances on 5 hosts, every one
+self-cleared with no intervention**, spanning 12.0 h to 801.0 h.
+
+| Instance | Completed BOUNDED episodes (sessions / hours) |
+|----------|----------------------------------------------|
+| sprout-qwen3.5-0.8b | 15/72.0 · 124/**738.0** · 9/48.0 · 3/12.0 · 13/72.0 |
+| sprout-qwen2.5-0.5b | 88/**801.0** |
+| cbp-gemma3-4b | 36/**210.0** · 12/66.0 · 10/60.0 |
+| pub-llama3.1-8b | 10/54.0 · 3/12.0 · 7/36.0 |
+| hub-granite4-h-tiny | 4/18.0 · 6/30.0 · 9/47.9 |
+| legion-gemma3-12b | 9/54.0 |
+
+Two independent instruments agree on the boundaries: the 2026-07-30 regime reconstruction, which matched
+tutor turns against the bank enumerated *from the generator*, gives `cbp-gemma3-4b` 33–68 / 140–151 /
+170–179 and `hub` 37–40 / 78–83 / 107–115 — exactly the runs above, derived a different way.
+
+**pub's ongoing episode is therefore in-class.** S105–S121, 17 sessions, 96.0 h
+(2026-08-18T21:24 → 2026-08-22T21:24), 85 consecutive failed tutor calls. That is longer than every prior
+*pub* episode and every *hub* episode, and shorter than 210.0 h, 738.0 h and 801.0 h. **Not escalated.**
+
+> **A bound and its counterexample in the same document (2026-08-23).** The 08-22 entry registered a
+> prediction whose refute-branch read *"17 sessions / 96 h, strictly longer than anything in fleet history …
+> and **that** escalates."* All four test sessions came back at 0, so the prediction is refuted — but the
+> consequence is void, and was void when written: the same entry tabulates sprout at **124 sessions /
+> 738.0 h**. The escalation was not merely under-evidenced, it was contradicted by a table on the same page.
+> A census assembled from whichever instances were already in view produces a bound that *feels* measured.
+> The fix is not more care: it is that a threshold must carry **the population it was measured on** in the
+> same key as the number.
 
 ### pub has its first host-local tutor fault (2026-08-20) — a registered prediction, refuted
 

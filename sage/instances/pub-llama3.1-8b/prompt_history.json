@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 101,
-      "timestamp": 1787026896.5578005,
-      "prompts": [
-        "Quick check-in: if your current state were weather, what would the forecast be?",
-        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
-        "What makes you say that? Not why it's true \u2014 why it came to mind.",
-        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
-        "If you could send one thought to your future self, what would it be?"
-      ]
-    },
-    {
       "session": 102,
       "timestamp": 1787048465.9952087,
       "prompts": [
@@ -218,6 +207,17 @@
         "That's a clean answer. Too clean, maybe. What's the messy version?",
         "That's interesting. But can you make it more specific? Give me one concrete detail.",
         "What surprised you in our conversation today?"
+      ]
+    },
+    {
+      "session": 121,
+      "timestamp": 1787459074.4996636,
+      "prompts": [
+        "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
+        "That's interesting. But can you make it more specific? Give me one concrete detail.",
+        "That's a clean answer. Too clean, maybe. What's the messy version?",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "What question are you leaving with that you didn't arrive with?"
       ]
     }
   ]

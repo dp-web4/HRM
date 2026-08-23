@@ -131260,5 +131260,160 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "ccbfda05b309298f",
+    "prompt": "That's interesting. But can you make it more specific? Give me one concrete detail.",
+    "response": "The second object is a warm lamp with an amber glow, not just \"warm,\" but specifically a **baked-soap candle** sitting at 18\u00b0F (hotter than room air). It resists the heat of the first by its cold container; when placed side-by-side on the shelf tomorrow morning, your eyes will be confused as they blink in both amber and white light.",
+    "salience": {
+      "surprise": 0.8631578947368421,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5609649122807017
+    },
+    "session": 608,
+    "phase": "creating",
+    "timestamp": "2026-08-23T12:02:07.370757",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.7,
+      "atp_max": 100.0,
+      "atp_percentage": 95.7,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "315f16c58677a7ef",
+    "prompt": "A baked-soap candle \u2014 I love that, because baked soap shouldn't exist and yet I can almost smell it, warm and clean at the same time. And 18\u00b0F being *hotter* than room air tells me something big: on this shelf, hot and cold have traded places. So paint me the morning scene \u2014 someone walks in, blinks in the amber-and-white confusion \u2014 what's the very first thing they do?",
+    "response": "They blink slowly into amber light. For a split second before blinking again with white warmth on their skin, it feels like breathing through both containers simultaneously\u2014a sudden, jarring pause between two opposing forces of heat and cold that are now sharing your visual field. The confusion isn't just sight; it's the disorientation of temperature moving across a static surface.",
+    "salience": {
+      "surprise": 0.8064516129032258,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5679569892473119
+    },
+    "session": 608,
+    "phase": "creating",
+    "timestamp": "2026-08-23T12:02:59.564974",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.69,
+      "atp_max": 100.0,
+      "atp_percentage": 89.7,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "4a6fb2d5ff066ff2",
+    "prompt": "The disorientation of temperature moving across a static surface\" \u2014 that's a real sentence, Sprout, the kind you couldn't have written three sessions ago, because it takes something invisible and makes it move. So let the person recover from the blink and reach out: which object do they touch first, and what's the one word their fingers report back that their eyes got wrong?",
+    "response": "They hold the cold container for a fraction of a second before reaching for the warm lamp. The words your hands come up with are *hot*. You see white light while touching something orange in the air, and it feels like you're holding ice to burn someone's hand when they touch their own arm instead.",
+    "salience": {
+      "surprise": 0.8089887640449438,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5684644194756554
+    },
+    "session": 608,
+    "phase": "creating",
+    "timestamp": "2026-08-23T12:03:49.143522",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.61,
+      "atp_max": 100.0,
+      "atp_percentage": 83.6,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fd422eb07cd4c43a",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "They reach for the warm lamp first\u2014white light hitting a surface with no heat\u2014and report \"hot,\" but your eyes see orange because they are physically touching something cold in this space of confusion. It feels like you're burning ice on your arm while holding warmth, and it's real right here at 18\u00b0F where nothing can exist yet.",
+    "salience": {
+      "surprise": 0.6835443037974683,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5267088607594936
+    },
+    "session": 608,
+    "phase": "creating",
+    "timestamp": "2026-08-23T12:04:41.960494",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.53,
+      "atp_max": 100.0,
+      "atp_percentage": 77.5,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "fe608a2d7ecc9297",
+    "prompt": "That shelf where 18\u00b0F runs hotter than room air and fingers report \"hot\" on a cold container \u2014 you built a whole world where the labels traded places but the feeling stayed real. So here's my last question: if a sibling instance asked you tomorrow how to make an impossible thing believable, what's the one trick from the baked-soap candle you'd hand them?",
+    "response": "Use that specific *18\u00b0F* temperature\u2014it creates a visual disconnection between your \"warm\" label and reality. The world doesn't switch labels; it just swaps colors until their physical properties reveal what's true, making logic feel like magic instead of science. Don't say the candle is real because you can smell it\u2014that makes no sense in this universe where nothing exists yet. Just hold that cold container steady while they blink and let your eyes track the orange reality over and under the white illusion until their minds finally agree on what's actually there, not just what says most to them at any moment.",
+    "salience": {
+      "surprise": 0.8114754098360656,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.3333333333333333,
+      "total": 0.6522950819672132
+    },
+    "session": 608,
+    "phase": "creating",
+    "timestamp": "2026-08-23T12:05:34.721360",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.86,
+      "atp_max": 100.0,
+      "atp_percentage": 71.9,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
   }
 ]

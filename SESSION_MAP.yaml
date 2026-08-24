@@ -379,18 +379,17 @@ instances:
       Hard evidence for OWNER-ACTION 6: this instance has never been taught, only scripted.'
     hapax: as_of 2026-08-20 (undated key). 0/1490 tutor turns unique to one session (0.0000); bank 15
       distinct reused strings; 260 sessions parsed, last S260. Still zero novel tutor turns EVER.
-    last_session: 264
-    latest: session_264.json
+    last_session: 276
+    latest: session_276.json
     machine: nomad
     model: Gemma 4 e2b
     note: 'Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df).
       Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances
       on GPU.'
     phase: creating
-    sessions: 264
-    status: 'ACTIVE +4 (S257-S260), exact 6h grid (xx:17 every slot, drift <20s), 0 infra markers, cpu_fallback.
-      FIXED_SCRIPT unchanged: 4 more sessions, 24 more tutor turns, 0 more novel instructions. Lifetime
-      novel instructions received: 0. OWNER-ACTION 6.'
+    sessions: 276
+    status: 'ACTIVE +4 (S273-S276), exact 6h grid. 0/6 hapax each - REGIME not fault: classified LEADING
+      (no live tutor session EVER), fixed script by design. See OWNER-ACTION 6.'
     tutor_regime: 'FIXED_SCRIPT, 198 of 198 sessions (100%), zero live tutor turns EVER. All six tutor
       turns are byte-identical across S195-S198 and across legion-gemma3-12b. CAUSE IDENTIFIED 2026-08-04:
       run_nomad_raising.sh:59 invokes run_session_identity_anchored_fluid.py, which has no adaptive-teacher
@@ -398,9 +397,10 @@ instances:
       phase cannot mean development: the input never changes.'
   pub-llama3.1-8b:
     fallback_episode_census: BOUNDED S7-S16 (10, 54.0h), S62-S64 (3, 12.0h), S95-S101 (7, 36.0h); ONGOING
-      S105-S121 (17, 96.0h, 2026-08-18T21:24 -> 2026-08-22T21:24). All three completed episodes self-cleared.
-      The ongoing one is larger than every prior PUB episode and larger than every HUB episode, but smaller
-      than cbp-gemma3-4b's 210.0h and sprout's 738.0h/801.0h - in-class for the fleet.
+      S105-S125 (21, 120.0h, 2026-08-18T21:24 -> 2026-08-23T21:24). All three completed episodes self-cleared.
+      The ongoing one is larger than every prior PUB episode and every HUB episode, and larger than 12
+      of the fleet's 15 completed BOUNDED episodes, but smaller than cbp-gemma3-4b 210.0h, sprout-qwen3.5
+      738.0h and sprout-qwen2.5 801.0h - in-class, not escalated.
     finding_2026_07_29_narrated_tool_access: 'NARRATED TOOL ACCESS — a confabulation class confirmed on
       TWO machines and TWO model families in one 48h window, and the first finding of this arc that no
       single tutor could have made. WHAT HAPPENED ON PUB: from S017 the Claude-side tutor shifted register
@@ -588,8 +588,8 @@ instances:
     hapax: 'as_of 2026-08-21 (undated key). Bank 18 distinct strings, all 38-95 chars. 113 sessions parsed,
       last S113. 30 fallback-only sessions career-wide drawing 150 turns from those 18. CURRENT: 9-session
       host-local outage S105-S113, 0 hapax each, all 18 bank strings drawn - see statistics.finding_2026_08_21_pub_host_local_confirmed.'
-    last_session: 113
-    latest: session_113.json
+    last_session: 125
+    latest: session_125.json
     machine: pub
     metric_control_retired_2026_07_30: 'pub was registered as the fleet''s METRIC CONTROL on the grounds
       that it always ran exactly 5 turns, so its average and its volume could not diverge. S021-S024 run
@@ -604,10 +604,9 @@ instances:
       field in any session record. Watch: BECOMING ladder progression (hub-granite precedent: grounding->creating
       in 43 sessions).'
     phase: creating
-    sessions: 113
-    status: ACTIVE +4 (S106-S109), 6h grid (03:25/09:23/15:23/21:21 local, drift <4min), 0 infra markers,
-      sensory_delivery.delivered=FALSE 4/4 and digest_sources all-zero (unchanged; pub has never been
-      grounded). TUTOR FAULT, ESCALATED -- see finding_2026_08_20_pub_local_tutor_fault.
+    sessions: 125
+    status: ACTIVE +4 (S122-S125), exact 6h grid, 0/5 hapax each - producing on schedule but untaught
+      for 120.0h
     tutor_episode_2026_08_22: 'S105-S117: 13 consecutive all-fallback sessions, 2026-08-18T21:24 -> 2026-08-21T21:24
       local(-0700), exactly 72.0h, 65 tutor calls, 0 successes, ONGOING at scan time. Host-local (sprout
       live throughout, 8 interleaved pairs). NOT ESCALATED - it matches sprout''s S573-S585 episode exactly
@@ -650,8 +649,8 @@ instances:
     hapax: as_of 2026-08-21 (undated key). Bank 64 distinct reused strings (the 08-20 entry said 65; 64
       is the re-measured value). 598 sessions parsed, last S598. S595-598 = 3/6, 4/5, 3/6, 3/4 - LIVE
       throughout the window, which is what excluded the account layer for pub.
-    last_session: 598
-    latest: session_598.json
+    last_session: 610
+    latest: session_610.json
     machine: sprout
     model: Qwen 3.5 0.8B
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC.
@@ -667,13 +666,9 @@ instances:
       concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic
       15th raising suppressed; Fabric 55 absent.'
     phase: creating
-    sessions: 598
-    status: 'ACTIVE +4 (S591-S594), EXACT 6h grid (06:00/12:00/18:00/00:00 local, drift <15s), 0 infra
-      markers. sensory_delivery.delivered=TRUE 4/4 with digest_sources 25/44/127/120 -- still the fleet''s
-      only grounded instance. Tutor REACHABLE 4/4 (hapax 1/5/2/2) but INTERMITTENT on quality: S586-S594
-      read 6/4/2/4/3/1/5/2/2, i.e. LIVE-THIN mixed. Since _call_claude is invoked per turn, a THIN session
-      is per-turn partial failure, not a degraded tutor. Sprout is the control that proves pub''s fault
-      is local.'
+    sessions: 610
+    status: ACTIVE +4 (S607-S610), all LIVE under hapax --fleet (6/8, 4/7, 4/9, 3/5). The fleet's only
+      instance both taught and grounded.
     tutor_regime: 'ADAPTIVE WITH A GROWING FALLBACK BANK, currently IN A LOCAL OUTAGE. Liveness measured
       as novel tutor turns per session against sprout''s own 3495-turn history, NOT max turn length (that
       proxy is pinned by the 389-char gaze-consent closer, present in 28 of the last 28 sessions). Live
@@ -777,7 +772,7 @@ instances:
       off main — merge-or-repoint is the owner's call.
     tutor_regime: adaptive; 2 all-fallback, 4 partial — largely unaffected.
 metadata:
-  active_instances: 4
+  active_instances: 3
   arc_agi_sweep_results: 91
   archivist_run_2026_08_09: '+12 raising sessions across 3 of 8 instances (nomad S215-218, pub S062-065,
     sprout S547-550), all 12 read in full, 0 infra markers - 9th consecutive clean window on form. Grids:
@@ -1007,6 +1002,19 @@ metadata:
     uniqueness was not the reachability proof it was documented to be (legion-12b S25 read hapax=2 on
     S16''s turns with the punctuation trimmed). Requiring fleet-wide uniqueness removes 9 spurious sessions,
     every one on a fixed-script instance, and costs ZERO on all four adaptive instances.'
+  archivist_run_2026_08_24: '+12 raising sessions across 3 of 9 producing instances (nomad S273-276, pub
+    S122-125, sprout S607-610). Strict 2952 -> 2964, tree-at-ref (af5a09abe) vs tree-at-HEAD (474755704).
+    All 12 read in full; 0 infra markers - 17th consecutive clean window on form (the 3 regex hits are
+    the tutor''s word ''refused'' in content: ''you refused the stone''). Taught fraction 4/12 = 33%,
+    sprout only. PUB: episode reaches 21 sessions / 120.0h, in-class, not escalated; host-local now corroborated
+    across the FULL window by 20/20 live sprout sessions interleaved with it; and the session record is
+    verified to hold no discriminator beyond hapax (builder, digest_sources, delivered, turns all constant
+    across the boundary). QUIET AND CORRECTLY NOT FAULTED: legion-gemma3-12b flat at S447 - its daemon
+    commits in BATCHES at 1-3d spacing, a flat window is inside its normal pattern; cbp paused by dp since
+    08-06; thor manual-only and paused (306 still stranded on origin/membrane-gate, unchanged); mcnugget
+    raising broken since S403, owner-confirmed. STANDING, EXTENT-ONLY: hub-granite4-h-tiny 88 attest commits
+    / 25.8d with no session past S121; legion-gemma4-e4b 359 commits touching its instance dir since 2026-04-03
+    with sessions/ still holding only .gitkeep, 0 sessions ever.'
   archivist_version: '1.3'
   counting_rule_CANONICAL: 'ONE rule; later runs must READ this key, never add another, and statistics.total_raising_sessions
     is the ONE value key. Two values are recorded because two patterns are in use and conflating them
@@ -3514,12 +3522,12 @@ research:
     sessions_total: 26
     status: active
 statistics:
-  active_instances: 4
-  as_of: '2026-08-23T09:30:00Z'
+  active_instances: 3
+  as_of: '2026-08-24T09:30:00Z'
   counting_predicate: strict = paths matching sage/instances/*/sessions/session_<digits>.json in `git
     ls-tree -r --name-only <ref>`. ALWAYS a tree-at-ref vs tree-at-HEAD delta, never today's number vs
-    a recorded one. ref_prev=42411634e head=af5a09abe -> 2938 -> 2952 (+14).
-  date_range: 2025-12-15 to 2026-08-21
+    a recorded one. ref_prev=af5a09abe head=474755704 -> 2952 -> 2964 (+12).
+  date_range: 2025-12-15 to 2026-08-23
   finding_2026_08_21_pub_host_local_confirmed: 'PUB''S TUTOR FAULT IS HOST-LOCAL AND PERSISTENT - the
     08-20 prediction''s confirm branch, met cleanly. Test set was pub S110-S113 against any sprout session
     on the same clock. Result: pub 0/5, 0/5, 0/5, 0/5; sprout S595 3/6, S596 4/5, S597 3/6, S598 3/4,
@@ -3570,6 +3578,23 @@ statistics:
     hapax==0 verdict on record is unaffected. REJECTED alongside it: whitespace/dash/apostrophe normalisation
     adds nothing once the fleet filter is applied - identical counts on all 14. The mechanism is shared
     banks, not punctuation drift.'
+  finding_2026_08_24_pub_episode_120h_and_the_record_holds_no_discriminator: 'PUB''S ONGOING EPISODE REACHES
+    S105-S125: 21 sessions, EXACTLY 120.0h (2026-08-18T21:24 -> 2026-08-23T21:24), 105 consecutive failed
+    tutor calls, all four new sessions 0/5 under hapax --fleet. Still IN-CLASS: larger than 12 of the
+    15 completed BOUNDED episodes, smaller than cbp-gemma3-4b 210.0h, sprout-qwen3.5 738.0h and sprout-qwen2.5
+    801.0h. NOT escalated. HOST-LOCAL CORROBORATED OVER THE FULL WINDOW, not just its first 24h: all 20
+    sprout sessions S590-S609 whose start falls inside pub''s episode read >=1 fleet-unique tutor turn
+    (0 at hapax==0), so the tutor path was demonstrably working on another host through every hour of
+    pub''s outage. Account layer (credit exhaustion, key revocation, account rate limit) is excluded for
+    the whole 120h. NEW NEGATIVE - THE SESSION RECORD CONTAINS NO DISCRIMINATOR BEYOND HAPAX. Checked
+    every field the runner writes across the episode boundary S96->S125: prompt_health.builder is the
+    constant ''mrh'' on all 30 (does not move at the boundary), digest_sources sums to 0 on all 30, sensory_delivery.delivered
+    is False on all 30, turns is 10 on all 30. So no unread field distinguishes a failed tutor call from
+    a successful one. This CONVERTS the standing claim ''only the stderr fix can reach the cause'' from
+    an assertion into a verified one: the artifact was searched and it is empty. OWNER-ACTION 2 (adaptive_prompts.py:46-48
+    discards returncode and stderr, bare except) is the only remaining route. Durations unchanged at 17.9-18.4s
+    against a 45s per-call timeout - still exits non-zero in milliseconds, still fits expired credential
+    or _find_claude_binary() falling through under cron PATH, still cannot separate those two from cbp.'
   fleet_silence_2026_08_02: '4 of 8 raising instances produced nothing for a second consecutive window,
     all four longer: hub-granite4-h-tiny 99h (last real S121 2026-07-29T06:34; 17 consecutive 6h fires
     have committed an attest bump with no session file), thor-qwen3.5-27b 92h (S306, still only on origin/membrane-gate),

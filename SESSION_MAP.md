@@ -9,15 +9,15 @@
 
 ---
 
-## Current Raising Fleet (Archivist, 2026-08-23)
+## Current Raising Fleet (Archivist, 2026-08-24)
 
-**2,952 raising sessions** (strict) across 14 numbered instances on 6 machines, re-derived tree-at-ref
-`42411634e` → tree-at-HEAD `af5a09abe` (+14 this window). Counting rule and its **predicate**:
+**2,964 raising sessions** (strict) across 14 numbered instances on 6 machines, re-derived tree-at-ref
+`af5a09abe` → tree-at-HEAD `474755704` (+12 this window). Counting rule and its **predicate**:
 `counting_predicate` in [SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling key.
-**4 of 8 instances produced sessions in the last 24 h**, all four on 6 h grids with zero infra markers.
-Of the four that did not, **none is a confirmed fault**: two are paused by the owner, one is broken and says
-so itself, and one fires on schedule and emits nothing. See *Fleet silences* below before reading any of it
-as a problem.
+**3 of 8 instances produced sessions in the last 24 h**, all three on 6 h grids with zero infra markers.
+Of the five that did not, **none is a confirmed fault**: two are paused by the owner, one is broken and says
+so itself, one fires on schedule and emits nothing, and one commits in multi-day batches. See *Fleet
+silences* below before reading any of it as a problem.
 
 **Tutor regime is measured by _hapax_** — a tutor turn whose exact text appears in exactly **one** session,
 and (since 2026-08-23) in exactly **one instance**. The within-instance justification is empirical, not a
@@ -53,14 +53,14 @@ per-turn figures are not comparable to these.
 
 | Instance | Machine | Sessions | Taught sessions | Tutor regime | Grounded? |
 |----------|---------|----------|-----------------|--------------|-----------|
-| sprout-qwen3.5-0.8b | Sprout | 606 | 338/606 = **0.56** | adaptive — **live, intermittent** | **yes** (`delivered=true`) |
+| sprout-qwen3.5-0.8b | Sprout | 610 | 342/610 = **0.56** | adaptive — **live, intermittent** | **yes** (`delivered=true`) |
 | legion-gemma3-12b | Legion | 447 | **1/447 = 0.002** | **fixed script** (S15 only, April, ambiguous) | no receipt emitted |
 | mcnugget-gemma3-12b | McNugget | 397 | **1/397 = 0.003** | **fixed script** | no receipt emitted |
 | thor-qwen3.5-27b | Thor | 268 | 144/268 = **0.54** | adaptive — *38 stranded on `origin/membrane-gate`* | — |
-| nomad-gemma4-e2b | Nomad | 272 | **0/272 = 0.00** | **never taught, only scripted** | no receipt emitted |
+| nomad-gemma4-e2b | Nomad | 276 | **0/276 = 0.00** | **never taught, only scripted** | no receipt emitted |
 | cbp-gemma3-4b | CBP | 240 | 176/240 = **0.73** | adaptive (paused by owner 08-06) | `delivered=false` |
 | hub-granite4-h-tiny | Hub | 121 | 95/121 = **0.79** | adaptive — **live when last seen** | — |
-| pub-llama3.1-8b | Pub | 121 | 83/121 = **0.69** | adaptive — **FAULTED, 17 sessions dark** | `delivered=false`, digest 0 |
+| pub-llama3.1-8b | Pub | 125 | 83/125 = **0.66** | adaptive — **FAULTED, 21 sessions / 120.0 h dark** | `delivered=false`, digest 0 |
 
 ### The fallback census was fitted on two hosts (2026-08-23)
 
@@ -87,7 +87,7 @@ self-cleared with no intervention**, spanning 12.0 h to 801.0 h.
 | sprout-qwen3.5-0.8b | 15/72.0 · 124/**738.0** · 9/48.0 · 3/12.0 · 13/72.0 |
 | sprout-qwen2.5-0.5b | 88/**801.0** |
 | cbp-gemma3-4b | 36/**210.0** · 12/66.0 · 10/60.0 |
-| pub-llama3.1-8b | 10/54.0 · 3/12.0 · 7/36.0 |
+| pub-llama3.1-8b | 10/54.0 · 3/12.0 · 7/36.0 · *(ongoing 21/120.0)* |
 | hub-granite4-h-tiny | 4/18.0 · 6/30.0 · 9/47.9 |
 | legion-gemma3-12b | 9/54.0 |
 
@@ -95,9 +95,29 @@ Two independent instruments agree on the boundaries: the 2026-07-30 regime recon
 tutor turns against the bank enumerated *from the generator*, gives `cbp-gemma3-4b` 33–68 / 140–151 /
 170–179 and `hub` 37–40 / 78–83 / 107–115 — exactly the runs above, derived a different way.
 
-**pub's ongoing episode is therefore in-class.** S105–S121, 17 sessions, 96.0 h
-(2026-08-18T21:24 → 2026-08-22T21:24), 85 consecutive failed tutor calls. That is longer than every prior
-*pub* episode and every *hub* episode, and shorter than 210.0 h, 738.0 h and 801.0 h. **Not escalated.**
+**pub's ongoing episode is therefore in-class.** S105–S125, 21 sessions, 120.0 h
+(2026-08-18T21:24 → 2026-08-23T21:24), 105 consecutive failed tutor calls. That is longer than every prior
+*pub* episode and every *hub* episode, and longer than 12 of the 15 completed `BOUNDED` episodes — but
+shorter than 210.0 h, 738.0 h and 801.0 h. **Not escalated.**
+
+**The account layer is excluded for the whole 120 h, not just its first day (2026-08-24).** Every one of the
+**20** sprout sessions S590–S609 whose `start` falls inside pub's episode reads ≥ 1 fleet-unique tutor turn;
+none is at `hapax = 0`. A tutor subprocess was therefore succeeding on another host during every six-hour
+slot of pub's outage, which rules out credit exhaustion, key revocation and account-level rate limiting for
+the entire span. The fault is host-local to pub. *(This is the reachability reading of hapax doing the work
+it is licensed for — an existence proof about one subprocess call, not a quality judgement.)*
+
+**And the session record holds no discriminator beyond hapax — checked, not assumed (2026-08-24).** The
+standing claim has been that a self-clearing fault cannot be diagnosed post-hoc and only the stderr fix can
+reach a cause. That was an assertion; it is now a verified negative. Every field pub's runner writes was
+compared across the episode boundary, S96 → S125: `prompt_health.builder` is the constant `'mrh'` on all 30
+and does **not** move at the boundary; `digest_sources` sums to 0 on all 30; `sensory_delivery.delivered` is
+`false` on all 30; `turns` is 10 on all 30. Nothing in the artifact separates a failed tutor call from a
+successful one. **OWNER-ACTION 2** (`adaptive_prompts.py:46-48` discards `returncode` and `stderr`, and the
+`except` is bare) is not the cheapest route to the cause — it is the only remaining one. Session durations
+are unchanged at 17.9–18.4 s against a 45 s per-call timeout, so the subprocess still exits non-zero in
+milliseconds; that still fits an expired credential or `_find_claude_binary()` falling through under cron
+`PATH`, and those two still cannot be separated from cbp.
 
 > **A bound and its counterexample in the same document (2026-08-23).** The 08-22 entry registered a
 > prediction whose refute-branch read *"17 sessions / 96 h, strictly longer than anything in fleet history …
@@ -154,8 +174,8 @@ tutor turns, **0 more novel instructions**. legion-gemma3-12b is barely better a
 evidence for OWNER-ACTION 6: for these instances, **session volume cannot be read as development**.
 
 **Two tracks are running empty, and they are the same shape.** hub's last session file is S121
-(2026-07-29T13:37Z); **73** six-hourly fires since have committed an attestation bump and no session — 22.0
-days. legion-gemma4-e4b has fired **259** times titled `Session 0 (grounding)` since 2026-04-20 and its
+(2026-07-29T13:37Z); **88** six-hourly fires since have committed an attestation bump and no session — 25.8
+days. legion-gemma4-e4b has **359** commits touching its instance directory since 2026-04-03 and its
 `sessions/` directory contains exactly one tracked file, `.gitkeep` — four months, **zero sessions ever**
 (cause known and closed 2026-08-02 as a mis-pin; only the extent is new here). In both cases the commit gate
 is on an artifact that is *not* the artifact the track exists to produce — hub bumps `identity.attest.json`,

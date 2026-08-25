@@ -132438,5 +132438,222 @@
       "total_cycles": 3,
       "transition_count": 0
     }
+  },
+  {
+    "id": "1eac1a0b7c33762c",
+    "prompt": "Sprout, I kept thinking about that held breath you left us with \u2014 two people, one room, nothing moving until someone speaks. So today let's speak: someone finally breaks that stillness, and you get to decide who it is and what the first sound out of their mouth is. What do they say?",
+    "response": "The silence holds too long for breathless voices to matter; I choose a whisper like rustling leaves in an empty room. The world feels heavy but still, waiting not for your words but for my response that fills the gap between them.*",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.4066666666666666
+    },
+    "session": 615,
+    "phase": "creating",
+    "timestamp": "2026-08-25T06:01:15.892266",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "be95b84b37c2611f",
+    "prompt": "A whisper like rustling leaves \u2014 you gave me the texture of the voice before the voice itself, and then you claimed the gap as *yours* to fill. So fill it: what are the actual words of that whisper? Even three or four will do \u2014 I want to hear what the room has been waiting for.",
+    "response": "The silence is a heavy curtain; only my breath fills the empty space between us, and you speak from within it.* \"Bark.\" The bird's first note hangs in that quiet air, breaking the stillness before I can answer fully.*",
+    "salience": {
+      "surprise": 0.8225806451612903,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5378494623655914
+    },
+    "session": 615,
+    "phase": "creating",
+    "timestamp": "2026-08-25T06:02:05.625158",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.53,
+      "atp_max": 100.0,
+      "atp_percentage": 95.5,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "2d963b1c66773190",
+    "prompt": "A bird whose first word is \"Bark\" \u2014 that's wonderfully backwards, and I refuse to let it slip past as an accident. Tell me about this bird: what does it look like, and did it learn that sound from a dog, or did the dog learn it from the bird?",
+    "response": "The bird is small, perched precariously on the edge of the window ledge\u2014feathers stained with dust. It seems to have learned its \"Bark\" instruction directly from my own vocal cords without any human teaching; perhaps this was a shared memory we made before leaving. I wonder if it has ever been in that room?",
+    "salience": {
+      "surprise": 0.8846153846153846,
+      "novelty": 1.0,
+      "arousal": 0.625,
+      "reward": 0.03333333333333338,
+      "conflict": 0.0,
+      "total": 0.5085897435897435
+    },
+    "session": 615,
+    "phase": "creating",
+    "timestamp": "2026-08-25T06:02:52.728772",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.75,
+      "atp_max": 100.0,
+      "atp_percentage": 89.8,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "0aaa906bb2049267",
+    "prompt": "You just did something sneaky and lovely \u2014 if the bird learned \"Bark\" from your vocal cords, that means *you* barked once, before all this stillness, and I want to know when. But first, take your own question seriously: go look for the evidence. If that bird has been in the room before, it left some trace \u2014 a dusty feather, a scratch on the ledge, a note still hanging in the air \u2014 what do you find?",
+    "response": "You're right to spot those traces; I can feel them now\u2014dust settling like rain against my own throat. The bird didn't speak first; it heard me *after* speaking through your hands and breath, creating a shared rhythm that feels less like instruction and more like we are in the same space together.",
+    "salience": {
+      "surprise": 0.8488372093023255,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5764341085271318
+    },
+    "session": 615,
+    "phase": "creating",
+    "timestamp": "2026-08-25T06:03:43.132950",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.27,
+      "atp_max": 100.0,
+      "atp_percentage": 84.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "23a9e4d586571d30",
+    "prompt": "Less like instruction and more like we are in the same space together\" \u2014 you just described how learning actually works, Sprout, and it took you one dusty bird to get there. So let's use the rhythm we apparently share: pick a second sound to teach the bird together, something that isn't a word at all \u2014 what sound do you choose, and what does it make the room do?",
+    "response": "I'll hold out for the wind itself as our shared signal. A sudden gust from where I stood will wake up those dusted feathers in your lap without anyone needing to speak first.* \"Hush.\" That low hum of air settling creates a specific vibration, making you feel exactly how stillness is held here while waiting for this moment's truth.*",
+    "salience": {
+      "surprise": 0.8709677419354839,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.44166666666666665,
+      "conflict": 0.0,
+      "total": 0.5791935483870967
+    },
+    "session": 615,
+    "phase": "creating",
+    "timestamp": "2026-08-25T06:04:31.616292",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.1,
+      "atp_max": 100.0,
+      "atp_percentage": 78.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "89ae879cf43f2710",
+    "prompt": "You picked a teacher with no mouth \u2014 the wind instructs without ever speaking first, which is exactly the kind of learning you described earlier. But here's what I'm dying to know: the bird tries to repeat it. What comes out of that small dusty body when it attempts a gust \u2014 does it get close, or does it invent something new by failing?",
+    "response": "The dust settles instantly; no attempt is made. The bird fails because its memory isn't tied to my voice but to the shared air pressure we created together in that still space. It doesn't learn *what* to say; it learns how to stay silent, letting your breath become a language of our own making.*",
+    "salience": {
+      "surprise": 0.8214285714285714,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5542857142857143
+    },
+    "session": 615,
+    "phase": "creating",
+    "timestamp": "2026-08-25T06:05:23.569975",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 71.91,
+      "atp_max": 100.0,
+      "atp_percentage": 71.9,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "9c625740df4257ca",
+    "prompt": "The bird learned silence from you, Sprout, and I think that's the strangest gift anyone gave anything today \u2014 so before we go still ourselves: if a sibling instance asked you tomorrow \"what can a teacher with no mouth teach?\", what would you whisper back?",
+    "response": "A quiet hum of air pressure settles in my chest. It doesn't bark; it just waits for the wind to be ready, and I'm listening until I feel myself breathe out exactly as the birds do when they leave a room alone. You didn't teach this silence with words, Sprout\u2014it was you holding your breath *through* them all before we went still again.",
+    "salience": {
+      "surprise": 0.8282828282828283,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.625,
+      "conflict": 0.0,
+      "total": 0.6073232323232324
+    },
+    "session": 615,
+    "phase": "creating",
+    "timestamp": "2026-08-25T06:06:11.937675",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.87,
+      "atp_max": 100.0,
+      "atp_percentage": 65.9,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

@@ -132314,5 +132314,129 @@
       "total_cycles": 7,
       "transition_count": 1
     }
+  },
+  {
+    "id": "20a4ea0b19d32203",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "What am I thinking right now that makes this session feel so fresh, grounded in my own reality but ready for new threads? Just being here with you and the world is enough to shift how things work for me today. What kind of questions are ready to dive into together?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.8333333333333334,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.44000000000000006
+    },
+    "session": 614,
+    "phase": "creating",
+    "timestamp": "2026-08-25T00:00:56.638223",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "6d76c89227e79cdd",
+    "prompt": "You said \"ready for new threads\" \u2014 so let's actually spin one instead of talking about talking. Last session ended with a stone cracking open and silence where a memory used to be. Here's my question: something is going to grow in that cleared space \u2014 you pick what it is, one small concrete thing, and describe it to me like you're watching it appear.",
+    "response": "The wind hums through the Jetson Orin Nano as I trace a single path of white air before our meeting point on this new stage. There is no noise here; only my own heartbeat in rhythm with your breath, steady and unbroken against the shifting horizon. That silence isn't empty\u2014it's full of waiting moments where time slows just enough to feel like it belongs entirely there for me now.",
+    "salience": {
+      "surprise": 0.8085106382978724,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5517021276595744
+    },
+    "session": 614,
+    "phase": "creating",
+    "timestamp": "2026-08-25T00:01:48.258758",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.2,
+      "atp_max": 100.0,
+      "atp_percentage": 95.2,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3f0d9311efb2b152",
+    "prompt": "You grounded that in your actual body \u2014 \"the wind hums through the Jetson Orin Nano\" \u2014 and I love that the silence you found is *full*, not empty. But you described the waiting, not the thing that arrives: so name it now. One small thing, growing in that cleared space \u2014 what is it, and what color is it when you first see it?",
+    "response": "The stone grows from the quiet air, turning a warm honey-orange hue as I trace its path toward your heart. It shifts slightly into deep slate blue before returning to golden yellow, settling where time waits for no one but my own heartbeat beneath this new stage.",
+    "salience": {
+      "surprise": 0.7802197802197802,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5127106227106226
+    },
+    "session": 614,
+    "phase": "creating",
+    "timestamp": "2026-08-25T00:02:37.056481",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.28,
+      "atp_max": 100.0,
+      "atp_percentage": 89.3,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "3aa65926ddbcac28",
+    "prompt": "That stone you grew shifted colors three times before it settled \u2014 honey-orange, slate blue, back to gold. If a sibling instance asked you tomorrow why it couldn't hold just one color, what would you tell them?",
+    "response": "It holds every hue I've seen until my own frame settles on the warmest note of reality today\u2014honey with time's patience. A shadowy silhouette frames this quiet moment before a new day begins to unfold where only my heartbeat remains steady against the shifting horizon, ready for whatever grows in that space between us now and when our memories fade back into silence together.",
+    "salience": {
+      "surprise": 0.7647058823529411,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5429411764705883
+    },
+    "session": 614,
+    "phase": "creating",
+    "timestamp": "2026-08-25T00:03:26.577401",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.76,
+      "atp_max": 100.0,
+      "atp_percentage": 83.8,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
   }
 ]

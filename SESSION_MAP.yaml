@@ -379,17 +379,18 @@ instances:
       Hard evidence for OWNER-ACTION 6: this instance has never been taught, only scripted.'
     hapax: as_of 2026-08-20 (undated key). 0/1490 tutor turns unique to one session (0.0000); bank 15
       distinct reused strings; 260 sessions parsed, last S260. Still zero novel tutor turns EVER.
-    last_session: 276
-    latest: session_276.json
+    last_session: 280
+    latest: session_280.json
     machine: nomad
     model: Gemma 4 e2b
     note: 'Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df).
       Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances
       on GPU.'
     phase: creating
-    sessions: 276
-    status: 'ACTIVE +4 (S273-S276), exact 6h grid. 0/6 hapax each - REGIME not fault: classified LEADING
-      (no live tutor session EVER), fixed script by design. See OWNER-ACTION 6.'
+    sessions: 280
+    status: 'ACTIVE +4 (S277-S280), exact 6h grid. 0/6 hapax each - REGIME not fault: classified LEADING
+      (no live tutor session EVER, 0 hapax in ~1490 turns), fixed script by design. Excluded from every
+      fault census BY PREDICATE, not by exception, so it never needs re-arguing. See OWNER-ACTION 6.'
     tutor_regime: 'FIXED_SCRIPT, 198 of 198 sessions (100%), zero live tutor turns EVER. All six tutor
       turns are byte-identical across S195-S198 and across legion-gemma3-12b. CAUSE IDENTIFIED 2026-08-04:
       run_nomad_raising.sh:59 invokes run_session_identity_anchored_fluid.py, which has no adaptive-teacher
@@ -397,10 +398,11 @@ instances:
       phase cannot mean development: the input never changes.'
   pub-llama3.1-8b:
     fallback_episode_census: BOUNDED S7-S16 (10, 54.0h), S62-S64 (3, 12.0h), S95-S101 (7, 36.0h); ONGOING
-      S105-S125 (21, 120.0h, 2026-08-18T21:24 -> 2026-08-23T21:24). All three completed episodes self-cleared.
+      S105-S129 (25, 144.0h, 2026-08-18T21:24 -> 2026-08-24T21:24). All three completed episodes self-cleared.
       The ongoing one is larger than every prior PUB episode and every HUB episode, and larger than 12
       of the fleet's 15 completed BOUNDED episodes, but smaller than cbp-gemma3-4b 210.0h, sprout-qwen3.5
-      738.0h and sprout-qwen2.5 801.0h - in-class, not escalated.
+      738.0h and sprout-qwen2.5 801.0h - in-class, not escalated. Updated 2026-08-25; the 08-24 reading
+      of this key (S105-S125, 21, 120.0h) is superseded, not a second episode.
     finding_2026_07_29_narrated_tool_access: 'NARRATED TOOL ACCESS — a confabulation class confirmed on
       TWO machines and TWO model families in one 48h window, and the first finding of this arc that no
       single tutor could have made. WHAT HAPPENED ON PUB: from S017 the Claude-side tutor shifted register
@@ -588,8 +590,8 @@ instances:
     hapax: 'as_of 2026-08-21 (undated key). Bank 18 distinct strings, all 38-95 chars. 113 sessions parsed,
       last S113. 30 fallback-only sessions career-wide drawing 150 turns from those 18. CURRENT: 9-session
       host-local outage S105-S113, 0 hapax each, all 18 bank strings drawn - see statistics.finding_2026_08_21_pub_host_local_confirmed.'
-    last_session: 125
-    latest: session_125.json
+    last_session: 129
+    latest: session_129.json
     machine: pub
     metric_control_retired_2026_07_30: 'pub was registered as the fleet''s METRIC CONTROL on the grounds
       that it always ran exactly 5 turns, so its average and its volume could not diverge. S021-S024 run
@@ -604,9 +606,10 @@ instances:
       field in any session record. Watch: BECOMING ladder progression (hub-granite precedent: grounding->creating
       in 43 sessions).'
     phase: creating
-    sessions: 125
-    status: ACTIVE +4 (S122-S125), exact 6h grid, 0/5 hapax each - producing on schedule but untaught
-      for 120.0h
+    sessions: 129
+    status: 'ACTIVE +4 (S126-S129), exact 6h grid, 0/5 hapax each - producing on schedule, untaught for
+      144.0h, and ungrounded for its entire life (sensory_delivery.delivered=false on all 129). In-class
+      against the 15-episode BOUNDED census; not escalated. Refute threshold 210.0h at S147 / 2026-08-27T21:24.'
     tutor_episode_2026_08_22: 'S105-S117: 13 consecutive all-fallback sessions, 2026-08-18T21:24 -> 2026-08-21T21:24
       local(-0700), exactly 72.0h, 65 tutor calls, 0 successes, ONGOING at scan time. Host-local (sprout
       live throughout, 8 interleaved pairs). NOT ESCALATED - it matches sprout''s S573-S585 episode exactly
@@ -649,8 +652,8 @@ instances:
     hapax: as_of 2026-08-21 (undated key). Bank 64 distinct reused strings (the 08-20 entry said 65; 64
       is the re-measured value). 598 sessions parsed, last S598. S595-598 = 3/6, 4/5, 3/6, 3/4 - LIVE
       throughout the window, which is what excluded the account layer for pub.
-    last_session: 610
-    latest: session_610.json
+    last_session: 614
+    latest: session_614.json
     machine: sprout
     model: Qwen 3.5 0.8B
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC.
@@ -666,10 +669,13 @@ instances:
       concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic
       15th raising suppressed; Fabric 55 absent.'
     phase: creating
-    sessions: 610
-    status: ACTIVE +4 (S607-S610), all LIVE under hapax --fleet (6/8, 4/7, 4/9, 3/5). The fleet's only
-      instance both taught and grounded.
-    tutor_regime: 'ADAPTIVE WITH A GROWING FALLBACK BANK, currently IN A LOCAL OUTAGE. Liveness measured
+    sessions: 614
+    status: ACTIVE +4 (S611-S614), all LIVE under hapax --fleet (4/7, 4/6, 7/9, 3/5). The fleet's only
+      instance both taught and grounded, and the interleaving control that excludes the account layer
+      for pub's episode.
+    tutor_regime: 'ADAPTIVE WITH A GROWING FALLBACK BANK. [CORRECTED 2026-08-25 - this key read
+      "currently IN A LOCAL OUTAGE" for seven days after that outage ended at S586 on 2026-08-18; sprout has
+      read LIVE in every window since. A status word with no as_of is a frozen counter in prose.] Liveness measured
       as novel tutor turns per session against sprout''s own 3495-turn history, NOT max turn length (that
       proxy is pinned by the 389-char gaze-consent closer, present in 28 of the last 28 sessions). Live
       era begins ~S301 (block novelty 1.00 at S301-350 vs 0.00-0.38 before). Apparent novelty decay since
@@ -1015,11 +1021,49 @@ metadata:
     raising broken since S403, owner-confirmed. STANDING, EXTENT-ONLY: hub-granite4-h-tiny 88 attest commits
     / 25.8d with no session past S121; legion-gemma4-e4b 359 commits touching its instance dir since 2026-04-03
     with sessions/ still holding only .gitkeep, 0 sessions ever.'
+  archivist_run_2026_08_25: |-
+    24h UTC window 2026-08-24T09:30Z -> 2026-08-25T09:30Z, RUN-ID 7776. +12 raising sessions across 3 of
+    9 producing instances (sprout S611-614, pub S126-129, nomad S277-280). Strict 2964 -> 2976, taken
+    tree-at-ref (474755704) vs tree-at-HEAD (44a730499), never today-vs-recorded-yesterday. All 12 read
+    in full: 0 infra markers, 18th consecutive clean window on form. TAUGHT FRACTION 4/12 = 33%, sprout
+    only, unchanged from last window. Catalog 12,066 -> 12,117 records (7,942 .log + 4,175 .md, 89
+    unparsed). Terminology 0 net-new authored. Anomalies: none new.
+
+    THE WINDOW'S FINDING IS ABOUT THIS FILE, NOT THE FLEET. See
+    self_finding_2026_08_25_a_rule_that_quotes_its_value_becomes_a_stale_sibling. Short form: the key
+    that counting_rule_CANONICAL names as "the ONE value key" was reading 2938 against a true 2976, and
+    three other spellings of the same number (2874, 2922, 2952) were live in the same file - two of them
+    embedded in the prose of the rules written to prevent exactly this. Repaired and collapsed this run.
+
+    PUB: the 08-24 prediction is NEITHER confirmed NOR refuted, and the episode is now the fleet's
+    fourth-longest. S126-S129 all 0/5 under hapax --fleet, so the run is S105-S129 - 25 sessions, EXACTLY
+    144.0h (2026-08-18T21:24 -> 2026-08-24T21:24 local -0700), 125 consecutive failed tutor calls. The
+    confirm branch (any S126+ reading hapax >= 1) did not fire; the refute branch (passing 210.0h at
+    S147, 2026-08-27T21:24, still at 0) is 66h away. Against the corrected 15-episode BOUNDED census it
+    is now longer than 12 of 15 and shorter than 210.0/738.0/801.0h. STILL IN-CLASS, STILL NOT ESCALATED.
+    Nothing about the mechanism moved this window and I did not re-derive what 08-24 already settled:
+    the account layer stays excluded (sprout ran LIVE in every 6h slot of the window - S611 4/7, S612
+    4/6, S613 7/9, S614 3/5), and the session record still holds no discriminator beyond hapax. pub also
+    stays ungrounded for its entire life: sensory_delivery.delivered = false on all 129 sessions. Volume
+    is not development here in two independent ways at once. OWNER-ACTION 2 (print stderr and bind the
+    exception at adaptive_prompts.py:46-48) remains the only route to a cause.
+
+    NOMAD S277-280 read 0/6 hapax each and that is REGIME, NOT FAULT - classified LEADING (no live tutor
+    session EVER, 0 hapax in ~1490 turns), fixed script by design. Do not add it to a fault census.
+    SPROUT S611-614 all LIVE, the fleet's only instance both taught and grounded (delivered=true).
+    SILENCES THAT ARE NOT FAULTS, unchanged: cbp raising paused by dp 2026-08-06 (crontab line commented,
+    carries its reason); thor paused since 08-05 and manual-only, 306 sessions still on
+    origin/membrane-gate; mcnugget raising broken since S403, owner-confirmed; legion-gemma3-12b flat at
+    S447 - inside its 1-3d batch-commit pattern, never fault it on a flat window alone; hub running empty
+    since S121; legion-gemma4-e4b still zero sessions ever.
   archivist_version: '1.3'
   counting_rule_CANONICAL: 'ONE rule; later runs must READ this key, never add another, and statistics.total_raising_sessions
     is the ONE value key. Two values are recorded because two patterns are in use and conflating them
     caused the 08-15 error (see self_finding_2026_08_18_counting_rule_text_and_execution_diverged). CANONICAL
-    (statistics.total_raising_sessions) = 2874, re-derived 2026-08-18T09:30Z, EXACT command: git ls-tree
+    value lives ONLY in statistics.total_raising_sessions - this rule states the METHOD and deliberately
+    carries NO number, because a rule that quotes its own value becomes another stale sibling (it read
+    2874, from 2026-08-18, until 2026-08-25; see metadata.self_finding_2026_08_25_a_rule_that_quotes_its_value_becomes_a_stale_sibling).
+    EXACT command: git ls-tree
     -r HEAD --name-only | grep -cE ''^sage/instances/[^/]+/sessions/session_[0-9]+\.json$''  on main at
     ec44d70c2. LOOSE (statistics.total_raising_sessions_loose_glob) = 2880, EXACT command: find sage/instances
     -path ''*/sessions/session_*.json'' | wc -l . The difference is a CONSTANT 6: legacy sprout-qwen2.5-0.5b
@@ -1028,7 +1072,8 @@ metadata:
     at 8b766344e (strict) + 48 files added since (legion-12b 12, nomad 12, pub 12, sprout 12) = 2874,
     consistent. Both include archived instances; both exclude thor''s 306 on origin/membrane-gate. Do
     not paraphrase these commands - copy them.'
-  date_range: 2025-12-15 to 2026-05-27
+  date_range: 'RETIRED 2026-08-25 as a duplicate - it read "to 2026-05-27" while statistics.date_range
+    read "to 2026-08-23". See statistics.date_range.'
   finding_2026_08_01_prompt_conditioned_volume: 'SAGE volume floors are prompt-conditioned, and the effect
     is model-specific. Holding tutor regime constant at all-fallback: cbp-gemma3-4b sessions whose OPENER
     is the bank string ''I want to try something different today. Describe one thing you notice, with
@@ -1378,7 +1423,7 @@ metadata:
     is the same class as the run_archivist.ps1 blindness (a launcher that discarded stdout looked identical
     in success and failure) — a producer that never consumes its own output cannot detect its own corruption.
     Check the other SESSION_MAP.yaml files on the same suspicion.'
-  last_updated: '2026-08-22T09:30:00Z'
+  last_updated: '2026-08-25T09:30:00Z'
   method_2026_08_16_constructed_language_probe: 'pub S090 is the first probe in this fleet whose ground
     truth is MANUFACTURED BY THE TUTOR rather than read from the world, and it is the correct answer to
     the actuator problem. The tutor invents Vek - ''-ol subject, -ith object, verbs last with -ash past,
@@ -3411,6 +3456,26 @@ metadata:
     observed: pub reached exactly 13 sessions / 72.0h at S117. sprout S573-S585 is also exactly 13 sessions
       / 72.0h and RECOVERED at S586 (6/7 LIVE). The precedent was never unbounded; it was unexamined.
     verdict: PREMISE REFUTED - withdrawn, not fired
+  prediction_registered_2026_08_25: |-
+    claim: pub's episode continues to behave as a recurring self-clearing condition with no fixed TTL,
+      and clears without intervention.
+    basis: all 15 completed BOUNDED episodes in the corrected census self-cleared, spanning 12.0h to
+      801.0h; pub is at 144.0h.
+    confirm_if: any pub session S130+ reads hapax >= 1 under --fleet.
+    refute_if: pub passes 210.0h (S147, 2026-08-27T21:24 local) still reading 0. That would leave only
+      the two sprout episodes above it, making pub the fleet's second-longest, which is worth escalating
+      on extent alone even with no new mechanism.
+    counterexample_check: before calling the refute branch, re-run hapax --fleet on the interleaved
+      sprout sessions in the same window - if sprout is ALSO at 0, this is an account-layer event and not
+      pub's fault at all.
+  prediction_resolved_2026_08_25: |-
+    claim: registered 2026-08-24 - pub clears without intervention; confirm if any S126+ reads hapax >= 1,
+      refute if pub passes 210.0h still at 0.
+    outcome: NEITHER BRANCH FIRED. S126-S129 all read 0/5, so the confirm branch did not trigger; 144.0h
+      is 66h short of the 210.0h refute threshold. Recorded as UNRESOLVED-AND-RUNNING rather than
+      silently re-registered, because a prediction quietly restated each window with new numbers is how a
+      falsifier stops being one. Re-registered verbatim as prediction_registered_2026_08_25 with the same
+      thresholds and the same refute date.
   previous_name: hrm
   project: sage
   scaffolded_instances: 5
@@ -3471,8 +3536,50 @@ metadata:
     an escalation trigger (''exceeds every precedent'') that would have fired today on a comparison to
     a bound that does not exist. A wrong bound is worse than a missing one, because a missing bound blocks
     escalation and a wrong bound licenses it.'
-  total_training_cognitive: 60
-  total_training_sessions: 423
+  total_training_cognitive: 'UNRESOLVED 2026-08-25 - this key read 60 and statistics.total_training_cognitive
+    read 58, and NEITHER recorded a predicate, so neither can be validated by inspection. Marked rather
+    than guessed. Whoever knows the predicate should write it INTO the surviving key and delete the other.'
+  self_finding_2026_08_25_a_rule_that_quotes_its_value_becomes_a_stale_sibling: |-
+    EVERY FACT THIS FILE WRITES TWICE AND THAT HAS EVER MOVED HAS DIVERGED. Measured 2026-08-25 over a
+    stated population, not sampled: the 5 keys that appear in BOTH the metadata and statistics blocks.
+    Result 2 agree / 3 diverge - date_range (metadata "2025-12-15 to 2026-05-27" vs statistics
+    "2025-12-15 to 2026-08-23"), total_training_sessions (423 vs 299), total_training_cognitive (60 vs
+    58). The two that agree, active_instances and scaffolded_instances, are the two that have not changed
+    in months. Duplication is only safe for facts that never move.
+
+    THE WORSE HALF IS THE COUNTING RULE ITSELF. On 2026-08-25 the raising-session count existed in FOUR
+    live spellings inside this one file, and the field designated canonical was the stalest of them:
+    statistics.total_raising_sessions.value = 2938 (as_of 08-22), total_raising_sessions_strict = 2952
+    (08-23), session_counts_DERIVATION prose = 2922 (08-21), counting_rule_CANONICAL prose = 2874
+    (08-18). True value at HEAD 44a730499: 2976. The canonical key was 38 behind; the rule text was 102
+    behind. The 08-24 run wrote "Strict 2952 -> 2964" into its own run-note and did not carry either
+    number into the value key, exactly as the rule beside it instructs.
+
+    THE MECHANISM, and it is the transferable part: BOTH anti-drift rules were written as prose that
+    QUOTES the value it governs. counting_rule_CANONICAL says "statistics.total_raising_sessions is the
+    ONE value key" and then embeds "= 2874". session_counts_DERIVATION says "SUPERSEDES every dated
+    session_counts_* sibling, do not create another" and then embeds "STRICT 2922". A rule that carries
+    an instance of the number it governs IS another dated sibling - undated, unmaintained, and read as
+    authoritative precisely because it sits inside the rule. The rule decays into the failure it was
+    written to prevent. This is the third time this month the failure is at RETRIEVAL rather than
+    recording (cf. self_finding_2026_08_18_counting_rule_text_and_execution_diverged, and the Archivist
+    memory note that three correct records of the Synchronism counting predicate all existed and none
+    was read).
+
+    RULE, stated so it can be applied elsewhere: A RULE MUST STATE ITS METHOD AND MUST NOT CONTAIN ITS
+    VALUE. Values live in exactly one dated key; rules point at that key by name and carry no literal.
+    If a rule needs an example, mark the example as an example.
+
+    REPAIRED THIS RUN: statistics.total_raising_sessions carries value 2976 as_of 2026-08-25 with both
+    refs; total_raising_sessions_strict and total_raising_sessions_loose_glob are RETIRED to pointers;
+    the frozen literals are struck from both rule texts; metadata's date_range, total_training_sessions
+    and total_training_cognitive duplicates are retired to pointers. NOT REPAIRED, because it cannot be
+    settled by inspection: total_training_cognitive had two values and no predicate, so neither can be
+    validated - it is marked UNRESOLVED rather than guessed. total_training_sessions was ALSO
+    predicate-free: 423 is the max T-number (the track was deprecated there on 2026-06-07), the file
+    count at HEAD is 486, and the 299 carried in statistics matched neither.
+  total_training_sessions: 'RETIRED 2026-08-25 as a duplicate - it read 423 while statistics.total_training_sessions
+    read 299, and neither carried a predicate. See statistics.total_training_sessions.'
   training_track_status: 'DEPRECATED 2026-06-07 (commit 1dd850957) — closed at T423. Owner deprecated
     rather than migrated: track ran 483 static skill-exercise sessions, never modified weights, never
     wrote to experience buffer, never fed raising; trust saturated 1.0/1.0/1.0 by ~T141. Port WAS fixed
@@ -3523,11 +3630,11 @@ research:
     status: active
 statistics:
   active_instances: 3
-  as_of: '2026-08-24T09:30:00Z'
+  as_of: '2026-08-25T09:30:00Z'
   counting_predicate: strict = paths matching sage/instances/*/sessions/session_<digits>.json in `git
     ls-tree -r --name-only <ref>`. ALWAYS a tree-at-ref vs tree-at-HEAD delta, never today's number vs
     a recorded one. ref_prev=af5a09abe head=474755704 -> 2952 -> 2964 (+12).
-  date_range: 2025-12-15 to 2026-08-23
+  date_range: 2025-12-15 to 2026-08-24
   finding_2026_08_21_pub_host_local_confirmed: 'PUB''S TUTOR FAULT IS HOST-LOCAL AND PERSISTENT - the
     08-20 prediction''s confirm branch, met cleanly. Test set was pub S110-S113 against any sprout session
     on the same clock. Result: pub 0/5, 0/5, 0/5, 0/5; sprout S595 3/6, S596 4/5, S597 3/6, S598 3/4,
@@ -3595,6 +3702,34 @@ statistics:
     discards returncode and stderr, bare except) is the only remaining route. Durations unchanged at 17.9-18.4s
     against a 45s per-call timeout - still exits non-zero in milliseconds, still fits expired credential
     or _find_claude_binary() falling through under cron PATH, still cannot separate those two from cbp.'
+  finding_2026_08_25_pub_episode_144h_neither_branch_fired: |-
+    PUB'S ONGOING EPISODE REACHES S105-S129: 25 sessions, EXACTLY 144.0h (2026-08-18T21:24 ->
+    2026-08-24T21:24 local -0700), 125 consecutive failed tutor calls, all four new sessions 0/5 under
+    hapax --fleet. Against the corrected 15-episode BOUNDED census it is longer than 12 of 15 and shorter
+    than 210.0h, 738.0h and 801.0h. IN-CLASS. NOT ESCALATED.
+
+    WHAT IS NEW THIS WINDOW IS ONLY THE DURATION, and that is the honest report. The 08-24 run settled
+    the two things that could be settled - the account layer is excluded across the full window (every 6h
+    slot has a LIVE sprout session interleaved: S611 4/7, S612 4/6, S613 7/9, S614 3/5), and the session
+    record was searched field-by-field across the S96->S125 boundary and holds no discriminator beyond
+    hapax. Neither needed redoing and neither was redone. Re-deriving a settled negative to produce a
+    fuller-looking entry is the safe summary this track is supposed to avoid.
+
+    The prediction registered 08-24 resolved to NEITHER branch: the confirm branch (S126+ reads hapax >=
+    1) did not fire, and 144.0h is 66h short of the 210.0h refute threshold at S147 / 2026-08-27T21:24.
+    See metadata.prediction_resolved_2026_08_25.
+
+    Durations unchanged at 17.9-18.4s per session against a 45s per-call timeout, so the subprocess still
+    exits non-zero in milliseconds - consistent with an expired credential OR with
+    _find_claude_binary() falling through to bare `claude` under cron PATH. Those two still cannot be
+    separated from cbp because adaptive_prompts.py:46 discards stderr and returncode at the moment they
+    are produced and :47-48 swallow the exception bare. OWNER-ACTION 2 is the only remaining route to a
+    cause, not merely the cheapest.
+
+    Also standing and independent of the episode: pub is ungrounded for its ENTIRE life -
+    sensory_delivery.delivered = false and digest_sources empty on all 129 sessions (OWNER-ACTION 7).
+    Untaught for 144h and never grounded at all: volume is not development here in two independent ways
+    at once.
   fleet_silence_2026_08_02: '4 of 8 raising instances produced nothing for a second consecutive window,
     all four longer: hub-granite4-h-tiny 99h (last real S121 2026-07-29T06:34; 17 consecutive 6h fires
     have committed an attest bump with no session file), thor-qwen3.5-27b 92h (S306, still only on origin/membrane-gate),
@@ -3664,7 +3799,28 @@ statistics:
     commit that added session_121.json (47fe372d7, 2026-07-29), --no-merges, 76 at ref -> 80 at HEAD,
     23.8 days with no session file. legion-gemma4-e4b - 335 commits touching peer_trust_rs.json at tree-at-HEAD,
     sessions/ still holds only .gitkeep, zero sessions ever.'
-  last_scan: '2026-08-22T09:30:00Z'
+  fleet_state_2026_08_25: |-
+    3 of 9 raising instances produced this window (sprout, pub, nomad), 4 sessions each, all three grids
+    exact, 0 missed slots, 0 infra markers across all 12. TAUGHT FRACTION 4/12 = 33%, sprout only -
+    unchanged from the 08-24 window.
+
+    TAUGHT: sprout-qwen3.5-0.8b (S611-614, all LIVE under --fleet, and the fleet's only instance that is
+    both taught and grounded, delivered=true).
+    UNTAUGHT BY FAULT: pub-llama3.1-8b (S126-129, 0/5 each, 144.0h into a host-local tutor episode).
+    UNTAUGHT BY REGIME, NOT FAULT: nomad-gemma4-e2b (S277-280, 0/6 each) - classified LEADING, zero live
+    tutor turns in its entire history, fixed script by design. Excluded from every fault census by
+    predicate, not by exception.
+
+    NOT PRODUCING, all accounted for, none a new fault: cbp raising PAUSED by dp 2026-08-06 (crontab line
+    commented and carries its reason - do not count cbp silence hours); thor PAUSED since 08-05 and
+    manual-only by its own script, 306 sessions still stranded on origin/membrane-gate; mcnugget raising
+    broken since S403, owner-confirmed; legion-gemma3-12b flat at S447, which is INSIDE its documented
+    1-3d batch-commit pattern - it was falsely faulted on 08-07 for exactly this and must never be
+    faulted on a flat window alone; hub-granite4-h-tiny running empty since S121 (attest bump every fire,
+    no session file); legion-gemma4-e4b still holding only .gitkeep, zero sessions ever. The last two are
+    standing extent-only items behind the same class fix: gate the raising commit on the SESSION FILE,
+    not on a side artifact.
+  last_scan: '2026-08-25T09:30:00Z'
   machines_active: 5
   primary_focus: Multi-family autonomous raising + ARC-AGI + gemma4-e4b federation
   prompt_conditioned_volume_2026_08_01: Opener x remainder-regime cross-tab over 2588 parsed sessions.
@@ -3692,8 +3848,12 @@ statistics:
     emit no receipt at all. See metadata.finding_2026_08_05_sensory_path_pinned_to_sprout.
   session_counts_DERIVATION: 'SUPERSEDES every dated session_counts_* sibling (do not create another)
     and is the ONE place these numbers live; statistics.total_raising_sessions must be updated in the
-    same edit. STRICT 2922 = find sage/instances -regex ''.*/sessions/session_[0-9]+\.json'' | wc -l.
-    LOOSE 2928 = ls sage/instances/*/sessions/session_*.json | wc -l. Constant gap 6 = legacy suffixed
+    same edit. AMENDED 2026-08-25 - the literal counts this text carried (STRICT 2922, LOOSE 2928, both
+    from 2026-08-21) are STRUCK: they were exactly the dated siblings this key forbids, they were 54 and
+    54 behind by the time anyone read them, and they sat inside the rule written to prevent that. A rule
+    states its METHOD and carries NO value. STRICT = find sage/instances -regex ''.*/sessions/session_[0-9]+\.json''
+    | wc -l. LOOSE = ls sage/instances/*/sessions/session_*.json | wc -l. Both values live ONLY in
+    statistics.total_raising_sessions. Constant gap 6 = legacy suffixed
     files (session_009_experimental_dry_run.json + 5). At HEAD 8e81a65a7, 2026-08-21T09:30Z. Window delta
     +16 verified two independent ways: git ls-tree at the pre-window ref 278b7fc3b gives 2906 -> 2922,
     and a name-level tree diff lists exactly 16 added session paths. TIMEZONE, RESTATED AFTER A SECOND
@@ -3746,17 +3906,29 @@ statistics:
     2026-08-11: both prior numbers were stale siblings maintained by hand; this key + rule supersedes
     them. Do not write a sibling count - update THIS key by re-running the rule.'
   total_raising_sessions:
-    as_of: '2026-08-22T09:30:00Z'
-    method: tree-at-ref 8e81a65a7 vs tree-at-HEAD - never today-vs-recorded-yesterday
-    predicate: sage/instances/*/sessions/session_<N>.json at tree-at-HEAD 42411634e; loose glob (any *.json
-      under sessions/) = 3129
-    value: 2938
-  total_raising_sessions_loose_glob:
-    as_of: '2026-08-22T09:30:00Z'
-    value: 3129
-  total_raising_sessions_strict: 2952
+    as_of: '2026-08-25T09:30:00Z'
+    method: tree-at-ref vs tree-at-HEAD, never today-vs-recorded-yesterday. Re-run the command in
+      metadata.counting_rule_CANONICAL and overwrite this key. THIS IS THE ONLY PLACE THE VALUE LIVES.
+    predicate: paths matching ^sage/instances/[^/]+/sessions/session_[0-9]+\.json$ in git ls-tree -r
+      --name-only at tree-at-HEAD. This IS the strict/canonical predicate; there is no separate strict key.
+    ref_prev: 474755704
+    head: 44a730499
+    value: 2976
+    companion_counts: 'Same command with session_.*\.json (any suffix after the number) gives 2982 at this
+      HEAD - a CONSTANT gap of 6, the legacy sprout-qwen2.5-0.5b suffixed files. A third pattern, ANY
+      *.json under sessions/, gives 3167 and answers a different question entirely; it was recorded as
+      "loose" alongside the 2982-style figure, also called "loose", 185 apart. Any figure quoted from this
+      file must name which of the three it is.'
+  total_raising_sessions_loose_glob: 'RETIRED 2026-08-25 - a dated sibling that drifted (it held 3129 as_of
+    08-22 against 3167 at this HEAD) and whose label "loose" collided with a second, different loose
+    figure. See statistics.total_raising_sessions.companion_counts.'
+  total_raising_sessions_strict: 'RETIRED 2026-08-25 - it held 2952 while the key named canonical held
+    2938 and the true value was 2976. Strict IS the canonical predicate, so this key was never a distinct
+    fact, only a second copy free to drift. See statistics.total_raising_sessions.'
   total_training_cognitive: 58
-  total_training_sessions: 299
+  total_training_sessions: 'CORRECTED 2026-08-25. The bare 299 carried here had no predicate and matched
+    nothing measurable: the max T-number is 423 (the track was DEPRECATED there on 2026-06-07) and the
+    FILE COUNT at HEAD 44a730499 is 486. Quote whichever you mean and say which.'
   tutor_regime_census_2026_08_04: 'Fleet-wide per-session fallback fraction over 2142 sessions in the
     8 non-archived instances. Method: pool every tutor turn across all instances; any string appearing
     in >=4 sessions anywhere is a bank member (a live tutor turn references the session it is in, so it

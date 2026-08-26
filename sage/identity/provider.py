@@ -188,6 +188,24 @@ class IdentityProvider:
         if identity_secret is None:
             return None
 
+        # VERIFY the unsealed secret actually produces the identity the manifest claims.
+        # XOR sealing provides no authentication: unsealing with the wrong key returns
+        # plausible bytes rather than an error (wrong machine, relocated instance dir, or
+        # a file sealed by the other language's provider). Without this check, the context
+        # below is constructed carrying the manifest's fingerprint ALONGSIDE a secret that
+        # may not produce it — it does not merely skip verification, it asserts a binding
+        # nobody checked, and _create_attestation() then publishes that fingerprint as the
+        # envelope's public_key. The failure mode is a signed-shaped attestation naming an
+        # identity the held secret cannot generate. Fail loudly instead.
+        actual = hashlib.sha256(identity_secret).hexdigest()[:16]
+        expected = self._manifest.public_key_fingerprint
+        if expected and actual != expected:
+            print(f"[Identity] AUTHORIZATION REFUSED: unsealed secret does not match the "
+                  f"manifest identity (fingerprint {actual} != {expected}). The sealed file "
+                  f"was written by a different machine, a different instance path, or the "
+                  f"other language's provider. Not constructing a signing context.")
+            return None
+
         self._context = SigningContext(
             identity_secret=identity_secret,
             public_key_fingerprint=self._manifest.public_key_fingerprint,

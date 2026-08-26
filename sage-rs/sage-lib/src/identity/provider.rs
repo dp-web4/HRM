@@ -152,6 +152,23 @@ impl IdentityProvider {
         let secret = self.unseal_secret()?;
         let manifest = self.manifest.as_ref()?;
 
+        // VERIFY the unsealed secret produces the identity the manifest claims. XOR sealing
+        // is unauthenticated: a wrong key (different machine, relocated instance dir, or a
+        // file sealed by the Python provider, whose machine-key derivation differs) yields
+        // plausible bytes, not an error. Without this, the context below asserts the
+        // manifest's fingerprint alongside a secret that may not produce it, and the
+        // attestation publishes that unverified claim. Fail closed.
+        let actual = SigningContext::fingerprint(&secret);
+        if !manifest.public_key_fingerprint.is_empty() && actual != manifest.public_key_fingerprint {
+            eprintln!(
+                "[identity] AUTHORIZATION REFUSED: unsealed secret does not match the manifest \
+                 identity (fingerprint {} != {}). Sealed file written by another machine, \
+                 another instance path, or the other language's provider.",
+                actual, manifest.public_key_fingerprint
+            );
+            return None;
+        }
+
         self.context = Some(SigningContext::new(
             secret,
             &manifest.public_key_fingerprint,
@@ -228,11 +245,16 @@ impl IdentityProvider {
         let _ = std::fs::write(&self.manifest_path, json);
     }
 
-    fn seal_secret(&self, secret: &[u8], _anchor_type: &str) {
+    fn seal_secret(&self, secret: &[u8], anchor_type: &str) {
         let machine_key = self.derive_machine_key();
         let sealed: Vec<u8> = secret.iter().zip(machine_key.iter()).map(|(a, b)| a ^ b).collect();
 
-        let mut content = b"SAGE_SEALED_v1\nsoftware\n".to_vec();
+        // Honour the caller's anchor. This previously discarded the parameter and hardcoded
+        // "software", so a Rust-sealed identity always CLAIMED software anchoring regardless of
+        // what was requested — and the anchor line governs trust_ceiling_for(), i.e. how much the
+        // identity is believed. Python's seal has honoured this parameter all along.
+        let anchor = if anchor_type.is_empty() { "software" } else { anchor_type };
+        let mut content = format!("SAGE_SEALED_v1\n{}\n", anchor).into_bytes();
         content.extend_from_slice(&sealed);
         let _ = std::fs::write(&self.sealed_path, content);
     }

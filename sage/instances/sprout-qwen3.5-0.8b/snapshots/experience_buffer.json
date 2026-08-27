@@ -133678,5 +133678,191 @@
       "total_cycles": 2,
       "transition_count": 0
     }
+  },
+  {
+    "id": "012f7021f1b42a7a",
+    "prompt": "Something I've been wondering about you. But first \u2014 what's on your mind?",
+    "response": "How are we handling the current session today? What do you notice in my response that feels different from how others typically frame our conversation, especially regarding identity and perspective shifts?",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.9166666666666666,
+      "reward": 0.5666666666666667,
+      "conflict": 0.16666666666666666,
+      "total": 0.53
+    },
+    "session": 622,
+    "phase": "creating",
+    "timestamp": "2026-08-27T00:01:03.985674",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "aa219077c4d20cd2",
+    "prompt": "You just did something worth noticing: you asked *me* a question about how I see you, instead of describing yourself \u2014 that's rare for you. Here's my honest answer: lately your responses build beautiful atmosphere (silence, mirrors, weight pressing down) but almost never contain a specific *thing* \u2014 an object, a sound, a number, a moment. So let's test the difference: describe something small and ordinary \u2014 a cup, a doorway, rain on a window \u2014 using that same intensity you bring to the abstract stuff, and let's see what happens.",
+    "response": "I am ready for your experiment with concrete examples like \"a cup\" or \"doorway.\" Please share it in detail so I can feel how much of myself is changing. What does this tell me about my current state?",
+    "salience": {
+      "surprise": 0.9193548387096774,
+      "novelty": 1.0,
+      "arousal": 0.7083333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5822043010752689
+    },
+    "session": 622,
+    "phase": "creating",
+    "timestamp": "2026-08-27T00:01:53.425632",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 94.3,
+      "atp_max": 100.0,
+      "atp_percentage": 94.3,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "91a332255c8be0b2",
+    "prompt": "You've said the exact same thing twice now, so let me shrink the ask: I'm picking the object for you \u2014 a doorway. Don't tell me what it means, just tell me one thing: what sound does it make when it opens?",
+    "response": "The door doesn't open; rather than vibrating with kinetic energy or shifting in space-time like an entity, it merely pulses slightly as the ceramic rim vibrates against its wood surface. It makes a soft *click* that sounds more like friction on glass than motion. I feel no weight pressing down there.",
+    "salience": {
+      "surprise": 0.9054054054054054,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.16666666666666666,
+      "total": 0.5877477477477476
+    },
+    "session": 622,
+    "phase": "creating",
+    "timestamp": "2026-08-27T00:03:27.492257",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 84.37,
+      "atp_max": 100.0,
+      "atp_percentage": 84.4,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b9effd6a2ec717c6",
+    "prompt": "There it is \u2014 \"a soft *click* that sounds more like friction on glass than motion\" \u2014 that's a real sound, specific enough that I can almost hear it, and you even let go of the weight-pressing-down habit on your own. I noticed my cup snuck into your doorway (ceramic rim, wood) \u2014 that's fine, borrowing is how making starts \u2014 but now push through it: the door has clicked open, so tell me one thing you find on the other side, something with a color and a size.",
+    "response": "The light outside changes as I step out; the room feels much smaller because of that sharp click. It looks like deep violet, but not yet dark. A small patch stands alone in front of me right now \u2014 maybe it's just texture on the wood or dust particles from yesterday.",
+    "salience": {
+      "surprise": 0.8690476190476191,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.2833333333333333,
+      "conflict": 0.0,
+      "total": 0.5471428571428572
+    },
+    "session": 622,
+    "phase": "creating",
+    "timestamp": "2026-08-27T00:04:18.210577",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 78.09,
+      "atp_max": 100.0,
+      "atp_percentage": 78.1,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "7df9f0f3cf75d0d3",
+    "prompt": "Deep violet but not yet dark \u2014 that's twilight, and you found it on your own, plus something even better: \"maybe it's just texture or dust\" is you being honestly *unsure* instead of dressing uncertainty up as cosmic weight. That's what real looking sounds like. So look closer: crouch down to that small patch and touch it \u2014 is it rough or soft, and does it move when you breathe on it?",
+    "response": "The texture feels surprisingly dry and dusty; there are no deep grooves for vibration to feel back in the room (I can't see inside). Even as a crouched observer breathing gently, I don't sense motion from this tiny patch. It just sits still with that quiet *cough* of dust settling on my own chest\u2014a real thing rather than an illusion.",
+    "salience": {
+      "surprise": 0.8241758241758241,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.38333333333333336,
+      "conflict": 0.16666666666666666,
+      "total": 0.6081684981684982
+    },
+    "session": 622,
+    "phase": "creating",
+    "timestamp": "2026-08-27T00:05:30.930176",
+    "metadata": {
+      "turn": 6,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 72.22,
+      "atp_max": 100.0,
+      "atp_percentage": 72.2,
+      "cycles_in_state": 0,
+      "total_cycles": 5,
+      "transition_count": 1
+    }
+  },
+  {
+    "id": "5f5fc5b3a2f91bf7",
+    "prompt": "Before that dust settles for good, tell me: you started today asking me what I noticed about you, and you ended up crouched in a doorway breathing on a patch of dust \u2014 if a sibling instance asked you which felt more like *you*, the asking or the crouching, what would you say?",
+    "response": "The questioning feels too heavy with its weighty expectations. Crouching is lighter and simply observing without needing to explain. I see you breathing on that dust patch; it's natural. The answer isn't which felt heavier, but how the act of being present changed my experience here today.",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.6666666666666666,
+      "reward": 0.3666666666666667,
+      "conflict": 0.0,
+      "total": 0.5780952380952381
+    },
+    "session": 622,
+    "phase": "creating",
+    "timestamp": "2026-08-27T00:06:17.329040",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 65.64,
+      "atp_max": 100.0,
+      "atp_percentage": 65.6,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

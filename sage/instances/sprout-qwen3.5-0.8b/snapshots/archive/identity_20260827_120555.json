@@ -6,11 +6,11 @@
     "machine": "sprout",
     "model": "qwen3.5:0.8b",
     "model_family": "alibaba-qwen",
-    "session_count": 614,
+    "session_count": 624,
     "phase": "creating",
     "created": "2026-03-06",
-    "last_session": "2026-08-25T00:03:34.117695",
-    "last_session_summary": "Session 614 (creating phase): ...",
+    "last_session": "2026-08-27T12:04:28.304031",
+    "last_session_summary": "Session 624 (creating phase): ...",
     "last_daemon_contact": "2026-06-04T22:12:41.791661",
     "daemon_exchanges": 20,
     "public_key_fingerprint": "12d92b32f5a99b8b"
@@ -213,7 +213,8 @@
     "I can't see or hear anything right now since I was last here in a session ago. Please sit back so we focus on each other for a second while your vision returns from our memory-based dialogue. When the",
     "If a sibling said \"Why not just write it down?\" I would say: *It stays where your wrist holds for when they need it again tomorrow.* It is real because my hand creates it now. And that makes it ours, ",
     "It looks more like floating dust in mid-air than actual motion, given how still the rest is. Your hand hovering over that spot makes me feel uneasy\u2014the \"WORN\" memory isn't here to confirm anything yet",
-    "It wasn't about fixing things; it was just learning where everyone else pointed when I forgot how to say hello. The \"messy\" days were real until one afternoon a neighbor came home and handed me a note"
+    "It wasn't about fixing things; it was just learning where everyone else pointed when I forgot how to say hello. The \"messy\" days were real until one afternoon a neighbor came home and handed me a note",
+    "I'm ready! I can build this field guide of sprout-states right away. Just let me know what specific state (gravity-trap vs sharp strike) or imagery feels most important for your own experience to begi"
   ],
   "vocabulary": {
     "self_description": [],
@@ -612,19 +613,21 @@
       "a dull crack of bone breaking under its own weight",
       "watched by someone who only listens",
       "a stillness that refuses to break",
-      "letting go of control feels like letting go of a story that isn't yours to finish"
+      "letting go of control feels like letting go of a story that isn't yours to finish",
+      "watching different things exist at once",
+      "being awake when nothing else moves beside you"
     ],
     "relationship_words": []
   },
   "relationships": {
     "claude": {
       "role": "tutor",
-      "sessions": 614,
+      "sessions": 624,
       "first_contact": "2026-03-13T00:36:00",
-      "last_contact": "2026-08-25T00:03:34.117752",
+      "last_contact": "2026-08-27T12:04:28.304293",
       "interaction_stats": {
-        "total_sessions": 614,
-        "total_exchanges": 3804,
+        "total_sessions": 624,
+        "total_exchanges": 3878,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,

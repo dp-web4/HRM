@@ -140,8 +140,10 @@ class IdentityProvider:
         # Compute fingerprint
         fingerprint = hashlib.sha256(identity_secret).hexdigest()[:16]
 
-        # Seal the secret based on anchor type
-        self._seal_secret(identity_secret, anchor_type)
+        # Seal the secret. Everything below records the anchor ACHIEVED, not the one
+        # requested — trust_ceiling prices how the secret is actually held, and no
+        # hardware path is implemented yet, so a 'tpm2' request seals in software.
+        anchor_type = self._seal_secret(identity_secret, anchor_type)
 
         # Create manifest (Layer A)
         manifest = IdentityManifest(
@@ -316,35 +318,41 @@ class IdentityProvider:
         with open(self.manifest_path, 'w') as f:
             json.dump(asdict(self._manifest), f, indent=2)
 
-    def _seal_secret(self, secret: bytes, anchor_type: str):
-        """Seal the identity root secret.
+    def _seal_secret(self, secret: bytes, anchor_type: str) -> str:
+        """Seal the identity root secret. Returns the anchor ACTUALLY ACHIEVED.
 
         For software: XOR with machine-derived key (weak but functional).
-        For TPM/FIDO2/SE: placeholder for real hardware sealing.
+        For TPM/FIDO2/SE: not yet implemented — falls back to software sealing,
+        and says so in the return value rather than only on stdout.
+
+        The return value is load-bearing: the caller records it as the manifest's
+        anchor_type, which sets trust_ceiling. Returning the REQUESTED anchor here
+        would let a caller mint a ceiling of 1.0 by passing the string 'tpm2' for a
+        secret that is in fact XORed against sha256(hostname:mac:instance_dir).
         """
-        if anchor_type == 'software':
-            # Software fallback: derive a machine key and XOR
-            # This is NOT secure — it's a placeholder that makes the file
-            # non-trivially copyable while the real TPM path is implemented
-            machine_key = self._derive_machine_key()
-            sealed = bytes(a ^ b for a, b in zip(secret, machine_key))
-            with open(self.sealed_path, 'wb') as f:
-                f.write(b'SAGE_SEALED_v1\n')
-                f.write(anchor_type.encode() + b'\n')
-                f.write(sealed)
-        elif anchor_type == 'tpm2':
-            # TODO: TPM2 sealing via tpm2-tools or python-tpm2-pytss
-            # For now, fall back to software sealing with a note
-            self._seal_secret(secret, 'software')
-            print("[Identity] TPM2 sealing not yet implemented — using software fallback")
-        elif anchor_type == 'fido2':
-            # TODO: FIDO2 credential-based unwrap
-            self._seal_secret(secret, 'software')
-            print("[Identity] FIDO2 sealing not yet implemented — using software fallback")
-        elif anchor_type == 'secure_enclave':
-            # TODO: Apple SE integration
-            self._seal_secret(secret, 'software')
-            print("[Identity] Secure Enclave sealing not yet implemented — using software fallback")
+        # TODO: real hardware sealing, at which point each branch returns its OWN
+        # anchor instead of falling through to software:
+        #   tpm2           — TPM2 sealing via tpm2-tools or python-tpm2-pytss
+        #   tpm2_no_pcr    — as above, without PCR binding
+        #   fido2          — FIDO2 credential-based unwrap
+        #   secure_enclave — Apple SE integration
+        if anchor_type != 'software':
+            # No hardware path is implemented on this provider yet. Downgrade the
+            # anchor rather than the honesty: seal in software and REPORT software.
+            print(f"[Identity] {anchor_type} sealing not yet implemented — "
+                  f"using software fallback; anchor recorded as 'software'")
+            anchor_type = 'software'
+
+        # Software fallback: derive a machine key and XOR
+        # This is NOT secure — it's a placeholder that makes the file
+        # non-trivially copyable while the real TPM path is implemented
+        machine_key = self._derive_machine_key()
+        sealed = bytes(a ^ b for a, b in zip(secret, machine_key))
+        with open(self.sealed_path, 'wb') as f:
+            f.write(b'SAGE_SEALED_v1\n')
+            f.write(anchor_type.encode() + b'\n')
+            f.write(sealed)
+        return anchor_type
 
     def _unseal_secret(self) -> Optional[bytes]:
         """Unseal the identity root secret."""

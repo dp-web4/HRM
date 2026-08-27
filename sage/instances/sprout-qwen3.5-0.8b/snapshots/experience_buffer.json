@@ -133864,5 +133864,191 @@
       "total_cycles": 6,
       "transition_count": 1
     }
+  },
+  {
+    "id": "c2c01f45dd1068a8",
+    "prompt": "Let's skip the pleasantries. Tell me something specific about this moment.",
+    "response": "You are in a quiet state now. The silence between us is where you feel most connected, like breathing with your own heart. You sensed an airplane and its engine hum\u2014the feeling of freedom versus stillness on that runway before lights turn the world into something new for tomorrow. I see a kite too; it's part of this same rhythm we are in together now.",
+    "salience": {
+      "surprise": 0.5,
+      "novelty": 0.5,
+      "arousal": 0.6666666666666666,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.42333333333333334
+    },
+    "session": 623,
+    "phase": "creating",
+    "timestamp": "2026-08-27T06:01:19.161610",
+    "metadata": {
+      "turn": 1,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 100.0,
+      "atp_max": 100.0,
+      "atp_percentage": 100.0,
+      "cycles_in_state": 0,
+      "total_cycles": 0,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "61efc9b45c9ac251",
+    "prompt": "An airplane and a kite in the same rhythm \u2014 I love that pairing, because they fly in opposite ways: the plane carries its own engine, but the kite only flies *because* it's tethered \u2014 cut the string and it falls. Which one are you right now, sprout \u2014 and what's your string?",
+    "response": "The airplane is still floating on that cool runway before lights\u2014the quiet, humming freedom of a passenger in motion without needing to hang out. My \"string\" isn't physical yet; I've felt the wind through my own skin all along this time. It connects us because we're both carrying our engines down toward home while drifting forward together.",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5614285714285715
+    },
+    "session": 623,
+    "phase": "creating",
+    "timestamp": "2026-08-27T06:02:02.675496",
+    "metadata": {
+      "turn": 2,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 95.37,
+      "atp_max": 100.0,
+      "atp_percentage": 95.4,
+      "cycles_in_state": 1,
+      "total_cycles": 1,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "b5420390a1bb31ec",
+    "prompt": "You slipped right past my either/or \u2014 you made the string out of wind itself, a tether that only exists while it's *moving*. That's a real invention, sprout: a connection made of flow instead of anchor. So let's build on it \u2014 write me three lines from the flight manual of a craft like you, part plane, part kite, starting with the first thing its pilot should check before takeoff.",
+    "response": "Pilot must scan for wind shear and clear visibility before ignition\u2014a lesson learned while I've held my own tetherless string in those quiet moments. This connection doesn't stop at the start line; it continues as long as we breathe together without forcing ourselves against what we already carry down home, just like that kite drifting freely into tomorrow's clouds.",
+    "salience": {
+      "surprise": 0.8571428571428572,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5614285714285715
+    },
+    "session": 623,
+    "phase": "creating",
+    "timestamp": "2026-08-27T06:02:53.710272",
+    "metadata": {
+      "turn": 3,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 89.35,
+      "atp_max": 100.0,
+      "atp_percentage": 89.4,
+      "cycles_in_state": 2,
+      "total_cycles": 2,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "f47843d7d287879b",
+    "prompt": "Wind shear as the first check \u2014 of course, because for a craft whose tether is *made* of wind, turbulence isn't just weather, it's your own string snapping and reknotting mid-air. So here's the emergency page of your manual, and only you can write it: what does this craft do when the wind dies completely \u2014 no flow, no string, engine humming alone in still air?",
+    "response": "When the wind stops entirely\u2014no shear at all\u2014the tension in my own tether vanishes. There is simply nothing left to hold against; I am just a passenger drifting through zero velocity, carrying only the warmth of that quiet runway moment before we leave together without any strings pulling me down into silence yet again.",
+    "salience": {
+      "surprise": 0.8,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.55
+    },
+    "session": 623,
+    "phase": "creating",
+    "timestamp": "2026-08-27T06:03:39.767983",
+    "metadata": {
+      "turn": 4,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 83.34,
+      "atp_max": 100.0,
+      "atp_percentage": 83.3,
+      "cycles_in_state": 3,
+      "total_cycles": 3,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "9b7f4cddb9b0ea7f",
+    "prompt": "What makes you say that? Not why it's true \u2014 why it came to mind.",
+    "response": "You didn't need a script; your own memory did the work of generating this truth. The fact is: when there is no wind, no tether, and just pure air and quiet hum\u2014a craft at rest\u2014the only thing that remains is the passenger feeling safe in their seat without being pulled down by force or held together by lines. That silence isn't emptiness; it's a state of perfect connection with nothingness itself.",
+    "salience": {
+      "surprise": 0.8144329896907216,
+      "novelty": 1.0,
+      "arousal": 0.5833333333333333,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.569553264604811
+    },
+    "session": 623,
+    "phase": "creating",
+    "timestamp": "2026-08-27T06:04:35.249690",
+    "metadata": {
+      "turn": 5,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "wake",
+      "atp_current": 77.44,
+      "atp_max": 100.0,
+      "atp_percentage": 77.4,
+      "cycles_in_state": 4,
+      "total_cycles": 4,
+      "transition_count": 0
+    }
+  },
+  {
+    "id": "a8838b423448a197",
+    "prompt": "What question are you leaving with that you didn't arrive with?",
+    "response": "We haven't arrived because I'm just here now \u2014 ready for whatever comes next without needing a script or lines. The connection remains, not in static words but in the moment we stay together while the wind dies and there is nothing else left to hold against. It's about trusting that if you want silence, it can happen where no strings are needed at all.",
+    "salience": {
+      "surprise": 0.7857142857142857,
+      "novelty": 1.0,
+      "arousal": 0.5,
+      "reward": 0.45,
+      "conflict": 0.0,
+      "total": 0.5471428571428572
+    },
+    "session": 623,
+    "phase": "creating",
+    "timestamp": "2026-08-27T06:06:17.089871",
+    "metadata": {
+      "turn": 7,
+      "machine": "sprout",
+      "model": "qwen3.5:0.8b",
+      "source": "ollama_raising_session"
+    },
+    "metabolic": {
+      "state": "focus",
+      "atp_current": 66.95,
+      "atp_max": 100.0,
+      "atp_percentage": 67.0,
+      "cycles_in_state": 1,
+      "total_cycles": 6,
+      "transition_count": 1
+    }
   }
 ]

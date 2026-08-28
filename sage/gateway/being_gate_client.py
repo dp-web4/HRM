@@ -13,7 +13,12 @@ This is the SAGE half of F2. It pins the exact contract F1a must satisfy:
 
 Design invariants (answering CBP's REQUEST_CHANGES on #579):
   * FAIL-CLOSED: a being that cannot reach the law is STOPPED, never ungoverned.
-    There is no graceful-degrade-to-allow anywhere in this file.
+    When society-safety (Stage 2) is unavailable or errors, CONSEQUENTIAL effectors
+    (peer_ask, memory_write, channel_egress) hard-deny; only OBSERVATIONAL effectors
+    (witness, memory_read) soft-pass, since they carry no external effect and
+    witness is itself the accountability primitive. Local-law admission (Stage 1)
+    is never enough on its own for a consequential act — end-to-end execution
+    authority requires the society governor too.
   * BOUNDED REGISTRY: the being's only effectors are mesh/peer_ask, witness,
     memory (its own dir), channel egress. No shell, no raw FS. Enforced twice:
     the registry below will not emit an intent outside it, AND the gate denies it.
@@ -63,6 +68,12 @@ _REGISTRY = {
     "memory_write":   dict(tool="write_note",   path_args=("path",), cmd_arg=None),
     "channel_egress": dict(tool="channel_send", path_args=(),       cmd_arg=None),
 }
+
+# Society-safety failure boundary per effector class. Observational acts carry no
+# external effect and may soft-pass when the society governor is unavailable;
+# consequential acts must not proceed without it (fail-closed).
+_OBSERVATIONAL = frozenset({"witness", "memory_read"})
+_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress"})
 
 
 @dataclass(frozen=True)
@@ -142,17 +153,25 @@ class BeingGateClient:
                                   reason=f"{type(e).__name__}: {e}")
         if v.decision == "deny":
             return GatewayVerdict("deny", v.rule, v.reason, v.innate, stage="local-law")
-        # Stage 2: society safety (daemon). If the daemon is unreachable, local law
-        # has already ALLOWED; we keep that allow but leave the strict-vs-soft
-        # decision for consequential acts to policy/F1a rather than deciding it here.
-        if self._mech is not None:
+        # Stage 2: society safety (daemon). A consequential act the society cannot
+        # vet must NOT proceed — fail-closed. Observational acts soft-pass when the
+        # mechanism is unavailable (no external effect; witness is accountability).
+        consequential = intent.effector in _CONSEQUENTIAL
+        if self._mech is None:
+            if consequential:
+                return GatewayVerdict("deny", "society.unavailable", stage="society",
+                                      reason="society-safety mechanism unavailable; consequential act denied")
+        else:
             try:
                 safe = self._mech.query_society_safety(ev.raw)  # shape settled w/ F1a
                 if getattr(safe, "decision", "deny") == "deny":
                     return GatewayVerdict("deny", "society.unsafe", stage="society",
                                           reason=getattr(safe, "reason", "society denied"))
-            except Exception:
-                pass
+            except Exception as e:
+                if consequential:
+                    return GatewayVerdict("deny", "society.unreachable", stage="society",
+                                          reason=f"society-safety failed ({type(e).__name__}); consequential act denied")
+                # observational: local law already allowed, soft-pass
         return GatewayVerdict(v.decision, v.rule, v.reason or "ok", v.innate, stage="local-law")
 
     # -- the F1a seam: gate, then dispatch (hestia-side, not yet built) -------

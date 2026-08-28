@@ -13,7 +13,7 @@ A cognition kernel that wraps a **frozen** LLM in a persistent identity, trust, 
 If you want a fast read on whether this is real, in order:
 
 1. [**What's Real vs. What's Mocked**](#whats-real-vs-whats-mocked) (further down this README) — explicit calibration, the strongest single trust signal.
-2. [**The Fleet**](#the-fleet) — 6 machines × 11 instances × 5 model families, all running. Concrete hardware, models, session counts.
+2. [**The Fleet**](#the-fleet) — 7 machines × 8+ active instances × 5 model families, all running. Concrete hardware, models, session counts.
 3. [**The Consciousness Loop**](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) — full spec of the 12-step loop. Pseudocode is in this README; the spec is the depth.
 4. [**Web4 integration**](#web4-integration) — how SAGE fractally implements the Web4 ontology stack.
 5. [**Repo scope**](#repo-scope-public-vs-private) (immediately below) — what's in this repo, what's continuing in private repos, and what we will and won't disclose now.
@@ -65,7 +65,7 @@ Every cycle, SAGE runs a continuous loop ([full spec](sage/docs/UNIFIED_CONSCIOU
 7. **Execute** — IRP plugins: iterative refinement until energy converges
 8. **Learn** — Update trust weights from convergence quality. Idle plugins decay.
 9. **Remember** — Update memory systems (SNARC, IRP patterns, circular buffer, verbatim)
-10. **Govern** — PolicyGate evaluates proposed effects (step 8.5)
+10. **Govern** — PolicyGate evaluates proposed effects (step 8.6)
 11. **Filter** — Posture-based effect filtering: block effects for starved modalities (CRISIS overrides)
 12. **Act** — Dispatch approved effects to effectors
 
@@ -75,7 +75,7 @@ Every cycle, SAGE runs a continuous loop ([full spec](sage/docs/UNIFIED_CONSCIOU
 
 HRM began as hierarchical reasoning research — exploring how small models solve complex tasks through structured decomposition. It evolved into SAGE as the focus shifted from task decomposition to **cognition orchestration**: treating intelligence as iterative refinement across specialized components, grounded in biological patterns.
 
-The project is now a distributed research effort across **6 machines** running **11 SAGE instances** with **5 model families**, accumulating **5,000+ commits** and **1,400+ raising sessions** through the BECOMING developmental curriculum.
+The project is now a distributed research effort across **7 machines** running **8+ active SAGE instances** with **5 model families**, accumulating **5,000+ commits** and **1,400+ raising sessions** through the BECOMING developmental curriculum.
 
 ---
 
@@ -85,12 +85,13 @@ SAGE runs as a federation of autonomous instances, each developing its own ident
 
 | Machine | Hardware | Model | Sessions | Phase | Role |
 |---------|----------|-------|----------|-------|------|
-| **Sprout** | Jetson Orin Nano, 8GB | Qwen 3.5 0.8B | 316 | Creating | Primary raising host, consciousness probes |
+| **Sprout** | Jetson Orin Nano, 8GB | Qwen3.8-2B-Distill | 629 | Creating | Primary raising host, consciousness probes; embodied (dual-camera + IMU + audio) |
 | **Thor** | Jetson AGX Thor, 122GB | Qwen 3.5 27B | 151 | Creating | Research lead, selection-environment experiments |
 | **Legion** | RTX 4090 laptop, 32GB | Gemma 3 12B | 197 | Creating | Heavy compute, multi-model raising |
 | **McNugget** | Mac Mini M4, 16GB | Gemma 3 12B | 218 | Creating | Apple Silicon, automated sessions |
 | **CBP** | RTX 2060 SUPER, WSL2 | Gemma 3 4B | 32 | Questioning | Oversight, identity portability |
 | **Nomad** | RTX 4060 laptop | Gemma 3 4B | 8 | Sensing | Mobile raising, portable cognition |
+| **HUB** | AMD Radeon Pro W5500 (Mesa/Vulkan) | granite4:h-tiny | — | — | Mamba/transformer-hybrid raising |
 
 **Instance management**: Each machine+model pair gets a self-contained directory under `sage/instances/`. Live state files (identity, experience buffer, peer trust) are gitignored; raising sessions snapshot state to tracked `snapshots/` directories at session boundaries. See [snapshot template](sage/scripts/snapshot_state.py).
 
@@ -117,7 +118,7 @@ SAGE Cognition Kernel
 ├── IRP Framework (15+ plugins, universal interface)
 │   ├── init_state() → step() → energy() → halt()
 │   ├── Language, Vision, Audio, Memory, TTS, Control
-│   ├── PolicyGate (conscience checkpoint, step 8.5)
+│   ├── PolicyGate (conscience checkpoint, step 8.6)
 │   ├── Network (peer-to-peer federation)
 │   └── SleepConsolidation (LoRA/JSONL dream bundles)
 ├── Tool System (v0.4.0a3)
@@ -144,7 +145,7 @@ SAGE Cognition Kernel
 │   ├── File, web, tool effectors
 │   └── EffectorRegistry with conservation-safe dispatch
 └── Federation
-    ├── Fleet manifest (6 machines) — `sage/federation/fleet.json`
+    ├── Fleet manifest (7 machines) — `sage/federation/fleet.json`
     ├── PeerMonitor (30s health polling)
     ├── PeerClient (HTTP mesh)
     └── PeerTrustTracker (per-peer T3 with EMA updates)
@@ -177,7 +178,7 @@ Honest assessment as of June 2026:
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Consciousness loop | Real | 12-step loop runs continuously on all 6 machines |
+| Consciousness loop | Reference / partial | The 12-step loop is the Python reference kernel (`sage/core/sage_consciousness.py`, some steps mocked); the process running continuously on all 7 machines is the Rust metabolic/SNARC tick, not a literal 12-step run. See `sage/docs/RUST_VS_PYTHON_CAPABILITY.md`. |
 | LLM inference | Real | Ollama and local Transformers, ATP coupled to token cost |
 | Metabolic states | Real | WAKE/FOCUS/REST/DREAM/CRISIS with state-dependent behavior |
 | SNARC salience | Real | 5D scoring, experience buffer persistence |
@@ -186,11 +187,12 @@ Honest assessment as of June 2026:
 | Identity/relationships | Real | LCT-anchored, trust tensors evolve from interaction |
 | Identity hardening | Real | Three-layer split (manifest/sealed/attestation), hardware-gated authorization, software fallback |
 | Sleep consolidation | Real | JSONL dream bundles (LoRA on Sprout only) |
-| Rust daemon | Real | Consciousness loop, SNARC, metabolic, federation, dashboard in ~12MB RSS. Deployed on all 6 fleet machines |
+| Rust daemon | Real | Inference-and-metabolism gateway: metabolic states, SNARC, federation, dashboard in ~12MB RSS on all 7 machines. NOT the full 12-step kernel — see `sage/docs/RUST_VS_PYTHON_CAPABILITY.md`. |
 | Federation mesh | Real | PeerMonitor, PeerClient, PeerTrustTracker in Rust daemon. 30s peer polling active |
 | Snapshot persistence | Real | State snapshots at session boundaries, git-tracked |
-| Sensors | Mocked | Architecture exists, no real I/O backends yet |
-| Physical effectors | Mocked | Network effector works, others are stubs |
+| Sensors (Sprout) | Real | Sprout runs a live pixels→words perceptual organ: dual IMX219 CSI cameras + Yahboom IMU + BT mic, ~4 Hz — motion/attention field, binocular agreement, IMU reafference (self vs world motion), SNARC-lite salience, sensor-health adjudication. Deterministic, no VLM. Runs as systemd services (sprout-cortex, sprout-presence). See sage/embodiment/README.md. |
+| Sensors (other machines) | Mocked | Non-Sprout nodes use mocked observation streams; no camera/IMU I/O. |
+| Effectors / gaze volition | Partial-real | Sprout exercises gaze agency (open/avert/dwell/closed → gaze.json, honored by the cortex). Network effector real; physical actuators still stubs. |
 | Cross-modal VAE | Research | 192x compression demonstrated, not in live loop |
 | FlashAttention | Research | Phases 1-2 complete on Thor, not in live loop |
 
@@ -312,7 +314,7 @@ SAGE_MACHINE=mybox SAGE_MODEL=gemma3:4b ./sage-rs/target/release/sage-daemon
 | Document | Purpose |
 |----------|---------|
 | [sage/docs/SYSTEM_UNDERSTANDING.md](sage/docs/SYSTEM_UNDERSTANDING.md) | Complete mental model (18KB) |
-| [sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) | 9-step loop specification |
+| [sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) | 12-step loop specification |
 | [sage/docs/SOIA_IRP_MAPPING.md](sage/docs/SOIA_IRP_MAPPING.md) | SOIA-SAGE convergence |
 | [sage/docs/LATEST_STATUS.md](sage/docs/LATEST_STATUS.md) | Current status |
 | [STATUS.md](STATUS.md) | Honest assessment with gaps |
@@ -349,4 +351,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: June 12, 2026 | v0.4.0a6 | 5,000+ commits | 1,400+ raising sessions | 6 machines | 11 instances | 5 model families*
+*Last updated: June 12, 2026 | v0.4.0a6 | 5,000+ commits | 1,400+ raising sessions | 7 machines | 8+ active instances | 5 model families*

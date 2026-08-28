@@ -2,14 +2,16 @@
 
 **Date**: November 19, 2025 (loop structure), February 27, 2026 (LLM wiring + component integration)
 **Status**: All major components config-gated into the loop via `SAGE.create()` flags.
-**Always wired**: 9-step loop, metabolic states, ATP budgeting (token-coupled), DREAM consolidation, NetworkEffector
+**Always wired**: 12-step loop, metabolic states, ATP budgeting (token-coupled), DREAM consolidation, NetworkEffector
+
+> This is the Python reference taxonomy (12 steps). The deployed Rust daemon (sage-rs/) runs a simplified metabolic/SNARC tick, not a literal 12-step sequence — see sage/docs/RUST_VS_PYTHON_CAPABILITY.md.
 **Config-gated** (off by default, enable via `use_real_*` flags):
 - `use_real_llm` — Real LLM inference (Ollama/Transformers)
 - `use_neural_snarc` — ConversationalSalienceScorer (post-LLM 5D text scoring)
 - `use_real_effectors` — FileSystemEffector, WebEffector, ToolUseEffector
 - `use_real_sleep` — SleepConsolidationBridge (LoRA training on DREAM entry)
 - `use_real_sensors` — MultiSensorTrustSystem (learned trust scores)
-- `use_policy_gate` — PolicyGate IRP (step 8.5)
+- `use_policy_gate` — PolicyGate IRP (step 8.6)
 
 ---
 

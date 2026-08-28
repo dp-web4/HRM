@@ -43,12 +43,12 @@ Key docs: `sage/docs/SYSTEM_UNDERSTANDING.md`, `sage/docs/UNIFIED_CONSCIOUSNESS_
 | **Trust Posture** | Sensor trust landscape → behavioral strategy (confidence, asymmetry, breadth) | `sage/core/sage_consciousness.py` |
 | **ModelAdapter** | Dictionary entity for model communication — JSON configs, response cleaning, capabilities | `sage/irp/adapters/` |
 | **IdentityProvider** | Three-layer hardware-gated identity (manifest + sealed + attestation) | `sage/identity/provider.py` |
-| **PolicyGate** | Conscience checkpoint at step 8.5, dual learning signals | `sage/core/sage_consciousness.py` |
+| **PolicyGate** | Conscience checkpoint at step 8.6, dual learning signals | `sage/core/sage_consciousness.py` |
 | **SNARC** | 5D salience scoring (Surprise, Novelty, Arousal, Reward, Conflict) | `sage/core/sage_consciousness.py` |
 | **Raising** | BECOMING curriculum (5 phases), automated on 4 machines | `sage/raising/` |
 | **Embodiment** | Sprout's perceptual organ: dual-camera + IMU → symbolic perceptual state (reafference, salience, gaze volition, sensor-health); feeds the raising | `sage/embodiment/` (see its `README.md`) |
 | **Federation** | PeerMonitor, PeerClient, PeerTrustTracker | `sage-rs/sage-daemon/src/federation/`, `sage/federation/fleet.json` |
-| **Rust Daemon** | Consciousness loop, SNARC, metabolic, dashboard — ~12MB RSS | `sage-rs/` (sage-lib + sage-daemon, port 8760) |
+| **Rust Daemon** | Consciousness loop, SNARC, metabolic, dashboard — ~12MB RSS (inference-and-metabolism gateway — NOT the full 12-step kernel; see sage/docs/RUST_VS_PYTHON_CAPABILITY.md) | `sage-rs/` (sage-lib + sage-daemon, port 8760) |
 
 ### Model Configs
 
@@ -82,7 +82,7 @@ A **synthon** is an emergent coherence entity formed by recursive interaction. Y
 
 ## PolicyGate
 
-Sits at step 8.5 between deliberation and effectors. Same IRP contract as all plugins. CRISIS mode changes accountability, not strictness. Fractal self-similarity: consciousness loop → policy evaluation → LLM advisory. See `sage/docs/SOIA_IRP_MAPPING.md`.
+Sits at step 8.6 between deliberation and effectors. Same IRP contract as all plugins. CRISIS mode changes accountability, not strictness. Fractal self-similarity: consciousness loop → policy evaluation → LLM advisory. See `sage/docs/SOIA_IRP_MAPPING.md`.
 
 ---
 

@@ -4,7 +4,7 @@
 
 ## TL;DR (50 words)
 
-SAGE (Situation-Aware Governance Engine) is a cognition kernel for edge AI. Orchestrates attention, trust, and resources across specialized plugins. Implements iterative refinement protocol (IRP), trust tensors, and metabolic states. 567+ research sessions. Use if you need: edge AI orchestration, attention management, or cognition architecture research.
+SAGE (Situation-Aware Governance Engine) is a cognition kernel for edge AI. Orchestrates attention, trust, and resources across specialized plugins. Implements iterative refinement protocol (IRP), trust tensors, and metabolic states. 567+ research sessions (research-track total, distinct from the raising-session count). Use if you need: edge AI orchestration, attention management, or cognition architecture research.
 
 ## Quick Assessment
 
@@ -13,7 +13,7 @@ SAGE (Situation-Aware Governance Engine) is a cognition kernel for edge AI. Orch
 | What is this? | Cognition kernel for edge devices |
 | Is it production-ready? | Research prototype with validated components |
 | Primary language | Python |
-| Research sessions | 567+ |
+| Research sessions (distinct from raising sessions) | 567+ |
 | Active development? | Yes (multi-machine) |
 | License | See LICENSE |
 

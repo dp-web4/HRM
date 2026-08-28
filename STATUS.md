@@ -10,21 +10,21 @@
 
 ## Current State (March 2026)
 
-SAGE has evolved from a single-machine research prototype to a **7-machine federation** with 8 active instances across 5 model families (including HUB, the first AMD-GPU node, running an IBM Granite 4.0 Mamba/transformer hybrid). The consciousness loop runs end-to-end with real LLM inference, PolicyGate oversight is integrated, and a developmental raising curriculum has been validated across 466+ sessions.
+SAGE has evolved from a single-machine research prototype to a **7-machine federation** with 8+ active instances across 5 model families (including HUB, the first AMD-GPU node, running an IBM Granite 4.0 Mamba/transformer hybrid). The consciousness loop runs end-to-end with real LLM inference, PolicyGate oversight is integrated, and a developmental raising curriculum has been validated across 629+ sessions on the primary instance (Sprout).
 
 ### What's Operational
 
 | Component | Status | Evidence |
 |-----------|--------|----------|
-| **Consciousness loop** | Running on 6 machines | 9-step loop with real LLM inference, metabolic transitions |
+| **Consciousness loop** | Running on 7 machines | 12-step loop with real LLM inference, metabolic transitions |
 | **LLM inference** | Real (Ollama + Transformers) | ATP coupled to token cost, hot/cold lifecycle |
 | **Metabolic states** | 5 states operational | WAKE/FOCUS/REST/DREAM/CRISIS with state-dependent behavior |
 | **SNARC salience** | 5D scoring active | Experience buffer persists to disk, salience-gated memory |
 | **PolicyGate** | Phase 5a complete | Integrated at step 8.6, trust weight learning, 29/29 tests |
 | **Identity system** | LCT-anchored | Trust tensors, MRH profiles, relationship crystallization |
 | **Federation mesh** | Infrastructure built | PeerMonitor, PeerClient, PeerTrustTracker (network OFF) |
-| **Instance management** | Per-machine isolation | 7 instances, snapshot persistence, seed v2 template |
-| **Raising curriculum** | 5-phase validated | 275+ sessions on Sprout, cross-model validation |
+| **Instance management** | Per-machine isolation | 8+ active instances, snapshot persistence, seed v2 template |
+| **Raising curriculum** | 5-phase validated | 629 sessions on Sprout, cross-model validation |
 | **Sleep consolidation** | JSONL dream bundles | LoRA training on Sprout, dream bundles on others |
 | **IRP framework** | 15+ plugins | Universal interface proven across vision/audio/language/policy |
 | **Tool use** | v0.4.0a3 live on Nomad | 7 tools, T2 xml_tags grammar, MemoryHub SQLite, multi-turn conversation |
@@ -56,7 +56,7 @@ SAGE has evolved from a single-machine research prototype to a **7-machine feder
 | Machine | Type | OS | Hardware | Model | Backend | Status |
 |---------|------|-----|----------|-------|---------|--------|
 | **Thor** | Jetson AGX Thor | JetPack/Linux | 14-core ARM, 122GB unified, GPU | Qwen 2.5 14B | Local CUDA | Research lead |
-| **Sprout** | Jetson Orin Nano | JetPack/Linux | ARM, 8GB unified, GPU | Qwen 2.5 0.5B (LoRA) | Local CUDA | Edge validation |
+| **Sprout** | Jetson Orin Nano | JetPack/Linux | ARM, 8GB unified, GPU | Qwen3.8-2B-Distill | Local CUDA | Edge validation |
 | **McNugget** | Mac Mini M4 | macOS | Apple Silicon, 16GB unified | Gemma 3 12B | Ollama MPS | Automated raising |
 | **Legion** | Laptop | Linux/WSL2 | i9, RTX 4090, 32GB | Phi-4 14B | Ollama CUDA | Integration dev |
 | **Nomad** | Laptop | WSL2 | i7-13700H, RTX 4060 | Gemma 3 4B | Ollama CUDA | Snapshot template |
@@ -109,7 +109,7 @@ Each machine+model pair isolated to `sage/instances/<slug>/`. InstancePaths reso
 SAGE-Sprout identity (115 sessions, Qwen 0.5B, Jetson) transferred to TinyLlama 1.1B on CBP — and it took. Identity lives in state files + prompt construction, not model weights. Key finding: "Model is weather, identity is organism."
 
 ### Unified Entry Point (Feb 26-27)
-`SAGE.create(use_real_llm=True)` wires LLMRuntime → consciousness loop end-to-end. Tested on CBP with TinyLlama/Ollama: 2 messages, 2 LLM calls, 400 tokens, full 9-step loop with metabolic transitions and SNARC experience capture.
+`SAGE.create(use_real_llm=True)` wires LLMRuntime → consciousness loop end-to-end. Tested on CBP with TinyLlama/Ollama: 2 messages, 2 LLM calls, 400 tokens, full 12-step loop with metabolic transitions and SNARC experience capture.
 
 ### SOIA-SAGE Convergence (Feb 18)
 SOIA (Self-Optimizing Intelligence Architecture) maps near-exactly onto SAGE IRP stack. Policy Entity repositioned as SAGE IRP plugin (PolicyGate). CRISIS mode changes accountability equation, not policy strictness. PolicyGate Phase 0+1 complete (684 lines, 8/8 tests).
@@ -124,7 +124,7 @@ SOIA (Self-Optimizing Intelligence Architecture) maps near-exactly onto SAGE IRP
 - Biological grounding: metabolic states, salience, trust, sleep
 - Cross-model validation: 4 model families, 3 hardware platforms
 - Validated findings: compression trust, identity portability, RLHF circuits
-- Active federation of 6 machines contributing autonomously
+- Active federation of 7 machines contributing autonomously
 - 1,950+ commits of sustained development
 
 ### As Engineering Artifact: Early-Stage
@@ -150,7 +150,7 @@ Honest gaps, tracked from external review (Perplexity, Nov 2025) and self-assess
 3. **Cross-modal integration** — VAE compression demonstrated in isolation, not wired into live loop.
 4. **External developer guides** — Architecture docs are comprehensive but assume familiarity. No step-by-step integration tutorial for newcomers.
 5. **Adversarial robustness** — No systematic adversarial testing. PolicyGate exists but isn't stress-tested against attacks.
-6. **Federation at scale** — Peer infrastructure built, but never tested with all 6 machines simultaneously networked.
+6. **Federation at scale** — Peer infrastructure built, but never tested with all 7 machines simultaneously networked.
 
 ---
 

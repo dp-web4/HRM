@@ -119,7 +119,7 @@ git commit -m "[Sprout-Raising] Session $SESSION_NUM ($PHASE) — $(date -u +'%Y
 
 Automated sprout raising session via OllamaIRP
 Machine: Sprout (Jetson Orin Nano 8GB)
-Model: Qwen 3.5 0.8B (alibaba-qwen family)
+Model: empero Qwen3.8-2B-Distill (alibaba-qwen family, reasoning+tools)
 Phase: $PHASE
 AI-Instance: OllamaIRP (automated)
 Human-Supervised: no"

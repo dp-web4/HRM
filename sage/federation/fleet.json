@@ -78,7 +78,7 @@
       "last_seen_at": null,
       "gateway_port": 8750,
       "federation_port": 50051,
-      "model_default": "qwen2.5-0.5b",
+      "model_default": "qwen3.8-distill:2b",
       "device": "cuda",
       "hardware": "Jetson Orin Nano 8GB"
     },

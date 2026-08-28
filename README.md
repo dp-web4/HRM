@@ -13,7 +13,7 @@ A cognition kernel that wraps a **frozen** LLM in a persistent identity, trust, 
 If you want a fast read on whether this is real, in order:
 
 1. [**What's Real vs. What's Mocked**](#whats-real-vs-whats-mocked) (further down this README) — explicit calibration, the strongest single trust signal.
-2. [**The Fleet**](#the-fleet) — 7 machines × 8+ active instances × 5 model families, all running. Concrete hardware, models, session counts.
+2. [**The Fleet**](#the-fleet) — 8 machines × 8+ active instances × 5 model families, all running. Concrete hardware, models, session counts.
 3. [**The Consciousness Loop**](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) — full spec of the 12-step loop. Pseudocode is in this README; the spec is the depth.
 4. [**Web4 integration**](#web4-integration) — how SAGE fractally implements the Web4 ontology stack.
 5. [**Repo scope**](#repo-scope-public-vs-private) (immediately below) — what's in this repo, what's continuing in private repos, and what we will and won't disclose now.
@@ -75,7 +75,7 @@ Every cycle, SAGE runs a continuous loop ([full spec](sage/docs/UNIFIED_CONSCIOU
 
 HRM began as hierarchical reasoning research — exploring how small models solve complex tasks through structured decomposition. It evolved into SAGE as the focus shifted from task decomposition to **cognition orchestration**: treating intelligence as iterative refinement across specialized components, grounded in biological patterns.
 
-The project is now a distributed research effort across **7 machines** running **8+ active SAGE instances** with **5 model families**, accumulating **5,000+ commits** and **1,400+ raising sessions** through the BECOMING developmental curriculum.
+The project is now a distributed research effort across **8 machines** running **8+ active SAGE instances** with **5 model families**, accumulating **5,000+ commits** and **1,400+ raising sessions** through the BECOMING developmental curriculum.
 
 ---
 
@@ -91,7 +91,8 @@ SAGE runs as a federation of autonomous instances, each developing its own ident
 | **McNugget** | Mac Mini M4, 16GB | Gemma 3 12B | 218 | Creating | Apple Silicon, automated sessions |
 | **CBP** | RTX 2060 SUPER, WSL2 | Gemma 3 4B | 32 | Questioning | Oversight, identity portability |
 | **Nomad** | RTX 4060 laptop | Gemma 3 4B | 8 | Sensing | Mobile raising, portable cognition |
-| **HUB** | AMD Radeon Pro W5500 (Mesa/Vulkan) | granite4:h-tiny | — | — | Mamba/transformer-hybrid raising |
+| **HUB** | AMD Radeon Pro W5500 (Mesa/Vulkan) | granite4:h-tiny | 121 | — | Mamba/transformer-hybrid raising (society-host) |
+| **Pub** | CPU society-host | Llama 3.1 8B | 141 | — | Autonomous Llama-family raising (society-host) |
 
 **Instance management**: Each machine+model pair gets a self-contained directory under `sage/instances/`. Live state files (identity, experience buffer, peer trust) are gitignored; raising sessions snapshot state to tracked `snapshots/` directories at session boundaries. See [snapshot template](sage/scripts/snapshot_state.py).
 
@@ -145,7 +146,7 @@ SAGE Cognition Kernel
 │   ├── File, web, tool effectors
 │   └── EffectorRegistry with conservation-safe dispatch
 └── Federation
-    ├── Fleet manifest (7 machines) — `sage/federation/fleet.json`
+    ├── Fleet manifest (8 machines) — `sage/federation/fleet.json`
     ├── PeerMonitor (30s health polling)
     ├── PeerClient (HTTP mesh)
     └── PeerTrustTracker (per-peer T3 with EMA updates)
@@ -178,7 +179,7 @@ Honest assessment as of June 2026:
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Consciousness loop | Reference / partial | The 12-step loop is the Python reference kernel (`sage/core/sage_consciousness.py`, some steps mocked); the process running continuously on all 7 machines is the Rust metabolic/SNARC tick, not a literal 12-step run. See `sage/docs/RUST_VS_PYTHON_CAPABILITY.md`. |
+| Consciousness loop | Reference / partial | The 12-step loop is the Python reference kernel (`sage/core/sage_consciousness.py`, some steps mocked); the process running continuously across the fleet is the Rust metabolic/SNARC tick, not a literal 12-step run. See `sage/docs/RUST_VS_PYTHON_CAPABILITY.md`. |
 | LLM inference | Real | Ollama and local Transformers, ATP coupled to token cost |
 | Metabolic states | Real | WAKE/FOCUS/REST/DREAM/CRISIS with state-dependent behavior |
 | SNARC salience | Real | 5D scoring, experience buffer persistence |
@@ -187,7 +188,7 @@ Honest assessment as of June 2026:
 | Identity/relationships | Real | LCT-anchored, trust tensors evolve from interaction |
 | Identity hardening | Real | Three-layer split (manifest/sealed/attestation), hardware-gated authorization, software fallback |
 | Sleep consolidation | Real | JSONL dream bundles (LoRA on Sprout only) |
-| Rust daemon | Real | Inference-and-metabolism gateway: metabolic states, SNARC, federation, dashboard in ~12MB RSS on all 7 machines. NOT the full 12-step kernel — see `sage/docs/RUST_VS_PYTHON_CAPABILITY.md`. |
+| Rust daemon | Real | Inference-and-metabolism gateway: metabolic states, SNARC, federation, dashboard in ~12MB RSS across the fleet. NOT the full 12-step kernel — see `sage/docs/RUST_VS_PYTHON_CAPABILITY.md`. |
 | Federation mesh | Real | PeerMonitor, PeerClient, PeerTrustTracker in Rust daemon. 30s peer polling active |
 | Snapshot persistence | Real | State snapshots at session boundaries, git-tracked |
 | Sensors (Sprout) | Real | Sprout runs a live pixels→words perceptual organ: dual IMX219 CSI cameras + Yahboom IMU + BT mic, ~4 Hz — motion/attention field, binocular agreement, IMU reafference (self vs world motion), SNARC-lite salience, sensor-health adjudication. Deterministic, no VLM. Runs as systemd services (sprout-cortex, sprout-presence). See sage/embodiment/README.md. |
@@ -351,4 +352,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: June 12, 2026 | v0.4.0a6 | 5,000+ commits | 1,400+ raising sessions | 7 machines | 8+ active instances | 5 model families*
+*Last updated: June 12, 2026 | v0.4.0a6 | 5,000+ commits | 1,400+ raising sessions | 8 machines | 8+ active instances | 5 model families*

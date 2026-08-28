@@ -12,7 +12,12 @@ Usage:
     from sage.identity import IdentityProvider
 
     provider = IdentityProvider(instance_dir)
-    provider.initialize(anchor_type='tpm2')  # First-time setup
+    manifest = provider.initialize(anchor_type='software')  # First-time setup
+
+    # No hardware anchor is implemented yet. Requesting one ('tpm2', 'fido2',
+    # 'secure_enclave') seals in software anyway and is RECORDED as 'software',
+    # so manifest.anchor_type / trust_ceiling describe how the secret is really
+    # held. Read them back rather than assuming the request was honoured.
 
     # On startup — requires hardware
     context = provider.authorize()

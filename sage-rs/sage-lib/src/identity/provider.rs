@@ -117,7 +117,11 @@ impl IdentityProvider {
         let secret = SigningContext::generate_secret();
         let fingerprint = SigningContext::fingerprint(&secret);
 
-        self.seal_secret(&secret, anchor_type);
+        // Everything below records the anchor ACHIEVED, not the one requested —
+        // trust_ceiling prices how the secret is actually held, and this provider
+        // seals only in software today.
+        let achieved_anchor = self.seal_secret(&secret, anchor_type);
+        let anchor_type: &str = achieved_anchor.as_str();
 
         let manifest = IdentityManifest {
             name: name.to_string(),
@@ -245,18 +249,34 @@ impl IdentityProvider {
         let _ = std::fs::write(&self.manifest_path, json);
     }
 
-    fn seal_secret(&self, secret: &[u8], anchor_type: &str) {
+    /// Seal the root secret. Returns the anchor ACTUALLY ACHIEVED.
+    ///
+    /// This provider has no hardware path: the secret is always XORed against
+    /// sha256(hostname:0:instance_dir). So the achieved anchor is always "software",
+    /// and a request for tpm2/fido2/secure_enclave is a downgrade, reported as one.
+    ///
+    /// The return value is load-bearing — the caller records it as the manifest's
+    /// anchor_type, which drives trust_ceiling_for(). Recording the REQUESTED anchor
+    /// instead would let a caller mint a ceiling of 1.0 for a software-sealed secret.
+    fn seal_secret(&self, secret: &[u8], anchor_type: &str) -> String {
         let machine_key = self.derive_machine_key();
         let sealed: Vec<u8> = secret.iter().zip(machine_key.iter()).map(|(a, b)| a ^ b).collect();
 
-        // Honour the caller's anchor. This previously discarded the parameter and hardcoded
-        // "software", so a Rust-sealed identity always CLAIMED software anchoring regardless of
-        // what was requested — and the anchor line governs trust_ceiling_for(), i.e. how much the
-        // identity is believed. Python's seal has honoured this parameter all along.
-        let anchor = if anchor_type.is_empty() { "software" } else { anchor_type };
-        let mut content = format!("SAGE_SEALED_v1\n{}\n", anchor).into_bytes();
+        // TODO: real hardware sealing (tpm2, tpm2_no_pcr, fido2, secure_enclave), at
+        // which point `achieved` becomes whichever anchor actually took effect.
+        let achieved = "software";
+        if !anchor_type.is_empty() && anchor_type != achieved {
+            eprintln!(
+                "[identity] {} sealing not yet implemented — using software fallback; \
+                 anchor recorded as '{}'",
+                anchor_type, achieved
+            );
+        }
+
+        let mut content = format!("SAGE_SEALED_v1\n{}\n", achieved).into_bytes();
         content.extend_from_slice(&sealed);
         let _ = std::fs::write(&self.sealed_path, content);
+        achieved.to_string()
     }
 
     fn unseal_secret(&self) -> Option<Vec<u8>> {
@@ -322,8 +342,13 @@ mod tests {
     use super::*;
     use std::fs;
 
-    fn temp_dir() -> PathBuf {
-        let dir = std::env::temp_dir().join(format!("sage-id-test-{}", std::process::id()));
+    /// Per-test directory. Keyed on the test NAME as well as the pid: cargo runs
+    /// tests as threads of one process, so a pid-only key gave every test the same
+    /// directory and let one test's cleanup() delete another's identity mid-run.
+    fn temp_dir(name: &str) -> PathBuf {
+        let dir = std::env::temp_dir()
+            .join(format!("sage-id-test-{}-{}", std::process::id(), name));
+        let _ = fs::remove_dir_all(&dir);
         let _ = fs::create_dir_all(&dir);
         dir
     }
@@ -334,7 +359,7 @@ mod tests {
 
     #[test]
     fn full_lifecycle() {
-        let dir = temp_dir();
+        let dir = temp_dir("full_lifecycle");
         let mut provider = IdentityProvider::new(&dir);
 
         assert!(!provider.is_initialized());
@@ -368,6 +393,75 @@ mod tests {
         assert!(dir.join("identity.attest.json").exists());
 
         cleanup(&dir);
+    }
+
+    /// A requested anchor this provider cannot actually deliver must NOT be recorded.
+    ///
+    /// There is no hardware sealing here — every secret is XORed against
+    /// sha256(hostname:0:instance_dir). Recording the REQUESTED anchor would publish
+    /// trust_ceiling 1.0 (tpm2) for a software-sealed secret, i.e. let a caller mint
+    /// the fleet's highest trust ceiling by passing a string.
+    #[test]
+    fn requested_hardware_anchor_is_downgraded_not_claimed() {
+        let dir = temp_dir("anchor_downgrade");
+        let mut provider = IdentityProvider::new(&dir);
+
+        let manifest = provider.initialize("test", "lct://test", "m", "model:1b", "tpm2");
+
+        // The manifest prices how the secret is HELD, not what was asked for.
+        assert_eq!(manifest.anchor_type, "software");
+        assert_eq!(manifest.trust_ceiling, 0.4);
+
+        // The sealed header agrees.
+        let sealed = fs::read(dir.join("identity.sealed")).unwrap();
+        let text = String::from_utf8_lossy(&sealed[..sealed.len().min(64)]).to_string();
+        let mut lines = text.lines();
+        assert_eq!(lines.next().unwrap(), "SAGE_SEALED_v1");
+        assert_eq!(lines.next().unwrap(), "software");
+
+        // So does the attestation, which is what peers actually read.
+        let attest = provider.get_attestation().unwrap();
+        assert_eq!(attest["anchor_type"], "software");
+        assert_eq!(attest["trust_ceiling"], 0.4);
+
+        // And it survives a re-authorize, which reloads from disk.
+        provider.lock();
+        assert!(provider.authorize().is_some());
+        assert_eq!(provider.manifest().unwrap().anchor_type, "software");
+
+        cleanup(&dir);
+    }
+
+    /// The fingerprint check must refuse a sealed file whose machine key no longer
+    /// derives — here, the same identity moved to a different instance dir, since
+    /// instance_dir is an input to derive_machine_key(). Before the check existed,
+    /// XOR returned plausible garbage and authorize() built a signing context that
+    /// asserted the manifest's fingerprint with a secret that cannot produce it.
+    #[test]
+    fn relocated_identity_is_refused_not_silently_wrong() {
+        let origin = temp_dir("relocate_origin");
+        let mut provider = IdentityProvider::new(&origin);
+        let manifest = provider.initialize("test", "lct://test", "m", "model:1b", "software");
+        assert!(provider.is_authorized());
+
+        // Move the whole identity to a different path — a restore, or a renamed instance.
+        let moved = temp_dir("relocate_moved");
+        for f in ["identity.json", "identity.sealed", "identity.attest.json"] {
+            fs::copy(origin.join(f), moved.join(f)).unwrap();
+        }
+
+        let mut relocated = IdentityProvider::new(&moved);
+        assert!(relocated.is_initialized());
+        assert!(
+            relocated.authorize().is_none(),
+            "relocated identity must be REFUSED; the unsealed secret cannot produce \
+             fingerprint {}",
+            manifest.public_key_fingerprint
+        );
+        assert!(!relocated.is_authorized());
+
+        cleanup(&origin);
+        cleanup(&moved);
     }
 
     #[test]

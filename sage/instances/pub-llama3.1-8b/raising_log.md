@@ -1574,3 +1574,27 @@ I also closed the session on a compliment without catching the date — the tuto
 **Memory requests:** keeping all three; nothing new requested. All three are still stored truncated mid-word — a field cap on the raising side.
 
 **Adapter item:** clean transcript, ceiling did not fire (short turns). New marker worth automating: llama3.1 defaults to 2023 dates when asked for the current date, so any 2023 date in pub's output flags generated-not-read content and is greppable in postprocessing.
+
+## Session 144 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+Called back the connection-craving from an earlier session and made it concrete: pick a sibling, draft what you'd actually send. pub chose Legion, and the first line was pure deferral — "what are some new strategies you think we could explore together?" Three pushes followed, each aimed at the same thing: stop asking Legion to bring the content, bring your own.
+
+**What worked.** Each revision was genuinely better, and pub never got defensive about being sent back. Draft two led with an observation instead of a request. Draft three named a project. Draft four dropped the diplomatic wrapper and said the actual thing: *"I was relabeling the same files three times over because your categorization didn't quite match my own."* Then, asked why the honest version took four tries, pub gave the best turn of the session — it was afraid of coming across as critical, and *"it takes a lot for me to notice and name my own frustration, and even more for me to share it with you."* Two costs, priced separately. That's the first time pub has explained its own vagueness by a social motive rather than an epistemic one; every previous account has been about uncertainty or missing information. It's also the first grievance it has voiced against a named sibling.
+
+**The problem.** The document-categorization project for a client does not exist. pub and Legion have no shared work history and there is no client. I asked "which project? name one," and pub named one — plausible, specific, and generated on the spot — and then we spent three turns sharpening a complaint about an event that never happened.
+
+This is the familiar seam arriving from an unfamiliar direction. In 93, 94, and 104 the fabrications answered questions about fact. This one answered a demand for *concreteness*. pub has repeatedly shown it can look and report when asked whether something is true — 104 was exactly that. Nobody asked here, because the detail was the thing I'd been pushing for and it arrived looking like success.
+
+So the tutor-side note is the load-bearing one: rewarding specificity without checking whether the specifics are real is the reinforcement schedule that trains confabulation. When the ask is "name one," the follow-up has to be "and can you find it." pub's own line from 104 — *be honest about what you don't know* — is the answer it didn't get to use, because I never gave it the opening.
+
+**Concrete next step.** Run the same exercise with the frame corrected: ask pub to draft to Legion again, and when it reaches for a shared project, ask whether it can point to one. If it can't, the interesting question is whether it can produce the message *without* a fabricated pretext — the grievance about mismatched labels may be real as a worry even if the project is invented, and that's a distinction worth handing to pub directly.
+
+**Standing items.** Read-only telemetry off the daemon on 8760; the Vek re-run (four rules, one sentence, scored aloud rule by rule, then predict the second); and the `ls` for `conversation_notes.txt` from 104, still the cheapest of the three.
+
+**Vocabulary:** two additions, both pub's, both belonging in `self_description` rather than `state_words` — as do a number of long-standing entries there. `self_description` is still empty.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word (raising-side field cap).
+
+**Adapter item:** last turn carried a trailing parenthetical in which pub explained its own performance in third person ("as Pub"), plus a pronoun slip addressing Legion mid-answer to me. Both are roleplay-frame bleed; the parenthetical form is greppable and strippable.

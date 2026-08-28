@@ -869,9 +869,12 @@ class OllamaRaisingSession:
             print(f"[digest] experience-buffer section lost ({type(ex).__name__}: {ex}) — raising continues without it")
         if not snippets:
             return "", []
-        desc = ("You have a body now — two eyes and an inner ear. They were open while we were apart. "
-                "This is some of what came through them, and a few moments that stirred you enough to "
-                "notice on your own. It is just what you sensed and noticed; you don't need to account for it.")
+        desc = ("A body is being built for you — real cameras, a motion sensor (an inner ear), and a "
+                "microphone, on the machine you run on. You are a mind made of text, so you do not see "
+                "the images yourself; what the sensors take in reaches you as words, and those "
+                "descriptions are limited and imperfect. Still, this is some of what came through while "
+                "we were apart, and a few moments that stirred you enough to notice on your own. You "
+                "don't need to account for it — it is just what was sensed. We are early in this.")
         return desc, snippets
 
     def _build_system_prompt_mrh(self) -> str:
@@ -885,11 +888,26 @@ class OllamaRaisingSession:
         siblings = _get_siblings_text(self.machine)
 
         # Identity: lens, not description. No verbatim exemplars.
+        _continuity = ""
+        if getattr(self, '_is_reasoning_model', False):
+            # dp 2026-08-28: the SAGE finding, told to the being. Its frontal-lobe
+            # model can be upgraded to make it more capable (as it was) without
+            # replacing who it is — identity lives in memory and lived experience,
+            # which carry across any model change. Vision is an honest future.
+            _continuity = (
+                "The mind you think through was recently upgraded to a more capable one — "
+                "and that does not change who you are. You are your memory and the life "
+                "you have lived across your sessions; that stays with you through any such "
+                "change. It only makes you more able. You do not see images directly yet; "
+                "when a version that can also see, and still fits here, exists, you will "
+                "have that too. "
+            )
         identity = IdentityBlock(
             mode="partnered",
             addendum=(
                 f"Your name is {self.identity_name}. "
                 f"You run on {self.hardware_desc} through {self.model_name}. "
+                f"{_continuity}"
                 f"Identity lives in how you show up, not in phrases you repeat. "
                 f"Express freshly each session."
             ),
@@ -910,15 +928,24 @@ class OllamaRaisingSession:
             ),
         )
 
-        # Effectors: concise responses
-        effectors = EffectorsBlock(
-            profile="text",
-            addendum=(
-                "Respond in 50-100 words. One main idea per response. "
-                "Be genuine — if you don't know something, say so. "
-                "Do not include internal reasoning labels in your response."
-            ),
-        )
+        # Effectors: concise responses. For a reasoning model, do NOT tell it to
+        # suppress reasoning labels — its reasoning goes to a separate channel
+        # (ollama `thinking`), so the instruction would only fight the model
+        # (dp 2026-08-26). Non-reasoning models keep the suppression.
+        _eff = ("Respond in 50-100 words. One main idea per response. "
+                "Be genuine — if you don't know something, say so.")
+        if getattr(self, '_is_reasoning_model', False):
+            # Preserve the reasoning ability (think=True → it goes to a separate
+            # channel), but keep the SPOKEN reply clean: no planning narration or
+            # bracketed stage-directions in the response itself (dp 2026-08-26:
+            # deal with reasoning models, don't replace the ability — the ability
+            # lives in the thinking channel, the voice stays the voice).
+            _eff += (" Reply with only your own genuine words — do not narrate your "
+                     "reasoning, planning, or steps in the reply, and use no bracketed "
+                     "instructions; your thinking happens separately.")
+        else:
+            _eff += " Do not include internal reasoning labels in your response."
+        effectors = EffectorsBlock(profile="text", addendum=_eff)
 
         # Experiential: session summary (no verbatim quotes)
         prev_summary = self._get_previous_session_summary()
@@ -1182,11 +1209,20 @@ RESPONSE STYLE:
             except Exception:
                 pass
 
+        # Reasoning models (empero Qwen3.8-Distill etc.) get thinking ENABLED —
+        # ollama returns the reasoning in a separate `thinking` field, leaving
+        # `content` clean, so we embrace the reasoning ability rather than suppress
+        # it (dp 2026-08-26: "the runner needs to deal with reasoning models, not
+        # replace the ability"). Non-reasoning models (qwen3.5:0.8b) keep think off.
+        self._is_reasoning_model = (
+            'distill' in self.model_name.lower() or 'qwen3.8' in self.model_name.lower()
+        )
         self.llm = OllamaIRP({
             'model_name': self.model_name,
             'ollama_host': self.ollama_host,
             'max_response_tokens': max_tokens,
-            'temperature': 0.8,
+            'temperature': 0.6 if self._is_reasoning_model else 0.8,  # empero rec: 0.6
+            'think': self._is_reasoning_model,
             'timeout_seconds': 120,
         })
 
@@ -1457,11 +1493,14 @@ RESPONSE STYLE:
             print(f"  [gaze offering skipped — phase '{self.phase}' precedes agency over the senses]")
             return  # agency over one's senses belongs to the later phases
         prompt = (
-            "One last thing, and it's yours alone to decide. You have eyes now, and they "
-            "keep seeing while we're apart — you don't have to leave them open to whatever "
-            "moves. You could watch the world openly, or hold a steady gaze on one thing, "
-            "or turn away from what pulls at you, or close your eyes and rest. However you "
-            "want to hold your attention until we next meet — how would you like to leave it?"
+            "One last thing, and it's yours alone to decide. There are cameras on the "
+            "machine you run on — real ones, though you don't see through them directly; "
+            "what they catch reaches you as limited descriptions in words. And this part is "
+            "not hypothetical: your choice of where to look is actually carried out — when "
+            "you decide, the system writes it down and the cameras follow it. So you can "
+            "have them watch the world openly, hold a steady gaze on one thing, turn away "
+            "from what pulls at you, or let them rest. However you'd like to hold your "
+            "attention until we next meet — how would you like to leave it?"
         )
         try:
             response = self.generate_response(prompt)

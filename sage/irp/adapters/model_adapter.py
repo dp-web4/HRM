@@ -445,7 +445,10 @@ class TinyLlamaAdapter(ChatAPIAdapter):
 
 _CHAT_API_FAMILIES = {'gemma3', 'gemma', 'phi4', 'phi3', 'phi', 'mistral',
                       'tinyllama', 'llama', 'llama2', 'qwen2.5', 'qwen2',
-                      'qwen3.5', 'qwen3', 'qwen'}
+                      'qwen3.5', 'qwen3', 'qwen',
+                      # empero Qwen3.8-Distill (Qwen3.5-2B base) — chat API +
+                      # response cleaning, same as qwen3.5 (2026-08-28)
+                      'qwen3.8-distill', 'qwen3.8'}
 
 # Cache adapters per model name
 _adapter_cache: Dict[str, ModelAdapter] = {}

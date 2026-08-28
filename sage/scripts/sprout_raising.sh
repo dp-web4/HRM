@@ -66,7 +66,7 @@ echo "[Sprout-Raising] Running raising session..."
 python3 -m sage.raising.scripts.ollama_raising_session --machine sprout -c 2>&1
 
 # --- Step 4: Snapshot state ---
-INSTANCE_DIR="sage/instances/sprout-qwen3.5-0.8b"
+INSTANCE_DIR="sage/instances/sprout-qwen3.8-distill-2b"
 
 echo "[Sprout-Raising] Snapshotting state..."
 python3 -m sage.scripts.snapshot_state --machine sprout 2>&1 || {

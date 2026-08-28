@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "machine": "sprout",
+  "model": "qwen3.8-distill:2b",
+  "model_family": "alibaba-qwen",
+  "slug": "sprout-qwen3.8-distill-2b",
+  "created": "2026-03-06",
+  "lct_id": "sprout_sage_lct",
+  "backend": "ollama",
+  "device_hint": "cuda",
+  "has_training_track": false,
+  "has_lora": false,
+  "encryption_enabled": false,
+  "think": true,
+  "notes": "Same being (sprout_sage_lct) as sprout-qwen3.5-0.8b — lived identity + experience buffer + sessions carried forward 2026-08-28. Frontal lobe upgraded to empero Qwen3.8-2B-Distill (Q8_0, tool-use-trained, REASONING model). Thinking ENABLED (was disabled on 0.8b). 0.8b instance retained intact for rollback + A/B."
+}

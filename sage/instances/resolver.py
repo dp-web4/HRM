@@ -63,7 +63,7 @@ def make_slug(machine: str, model: str) -> str:
 # Default models per machine (mirrors machine_config.py)
 _DEFAULT_MODELS = {
     'thor': 'qwen3.5:27b',
-    'sprout': 'qwen3.5:0.8b',
+    'sprout': 'qwen3.8-distill:2b',  # 2026-08-28: upgraded frontal lobe (empero Qwen3.8-2B-Distill, reasoning+tools). Same being — identity/memory carried from sprout-qwen3.5-0.8b (retained for rollback).
     'legion': 'gemma3:12b',
     'mcnugget': 'gemma3:12b',
     'nomad': 'gemma3:4b',

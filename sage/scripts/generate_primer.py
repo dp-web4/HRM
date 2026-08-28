@@ -80,7 +80,11 @@ def summarize_instance(instance_dir: Path) -> dict | None:
         result["session_count"] = ident.get("session_count", 0)
         result["phase"] = ident.get("phase", "grounding")
         result["last_session"] = ident.get("last_session")
-        result["last_summary"] = ident.get("last_session_summary", "")[:120]
+        # `.get(key, "")` returns the stored value when the key IS present — which
+        # can be None — so slicing must guard against None, not just a missing key.
+        # (This crash is why SESSION_FOCUS.md sat 4 months stale: the launcher runs
+        # generate_primer with `|| true`, silently swallowing the TypeError.)
+        result["last_summary"] = (ident.get("last_session_summary") or "")[:120]
 
         dev = identity.get("development", {})
         result["milestones"] = dev.get("milestones", [])

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sage-cognition"
-version = "0.4.0a5"
+version = "0.4.0a6"
 description = "SAGE: Situation-Aware Governance Engine — cognition kernel for edge AI"
 readme = "README.md"
 license = "AGPL-3.0-only"
@@ -25,7 +25,13 @@ dependencies = [
 gpu = ["torch>=2.0"]
 transformers = ["torch>=2.0", "transformers>=4.30", "accelerate>=0.20"]
 hub = ["huggingface_hub>=0.19"]
-dev = ["pytest>=7.4", "pytest-asyncio>=0.21"]
+# dev installs the test runner AND the libraries the tests import (70 test files
+# import torch, 41 import transformers) — otherwise `pip install -e .[dev] && pytest`
+# fails with ModuleNotFoundError. pytest-timeout kills hung model/hardware tests.
+dev = [
+    "pytest>=7.4", "pytest-asyncio>=0.21", "pytest-timeout>=2.1",
+    "torch>=2.0", "transformers>=4.30", "accelerate>=0.20",
+]
 
 [project.urls]
 Homepage = "https://dp-web4.github.io/SAGE-site/"
@@ -69,3 +75,7 @@ exclude = [
 [tool.pytest.ini_options]
 testpaths = ["sage/tests"]
 asyncio_mode = "auto"
+# Collection safety: many test_*.py under sage/ are manual scripts that load large
+# models and call sys.exit at import time. conftest.py collect_ignore lists keep a
+# default `pytest` run from importing them; these opts keep runs strict + clean.
+addopts = "-ra --strict-config -p no:cacheprovider"

@@ -201,10 +201,19 @@ def compare_with_q3omni():
     print()
     print(f"{'Metric':<25} {'Nemotron 4B':<20} {'Q3-Omni 30B':<20} {'Improvement':<15}")
     print("-" * 80)
+    # Pre-format cells to avoid nested-f-string quote conflicts (py<3.12).
+    q3_mem_s = f"{q3omni_baseline['memory_gb']:.2f} GB"
+    mem_less = f"{q3omni_baseline['memory_gb']/nemotron_mem:.1f}x less"
+    q3_spd_s = f"{q3omni_baseline['tokens_per_sec']:.2f}"
+    spd_fast = f"{avg_speed/q3omni_baseline['tokens_per_sec']:.1f}x faster"
+    q3_load_s = f"{q3omni_baseline['load_time']:.1f}s"
+    nem_mem_s = f"{nemotron_mem:.2f} GB"
+    nem_spd_s = f"{avg_speed:.2f}"
+    nem_load_s = f"{nemotron_results[0] if nemotron_results else 0:.1f}s"
     print(f"{'Model Size':<25} {'4B params':<20} {q3omni_baseline['model_size']:<20} {'7.5x smaller':<15}")
-    print(f"{'GPU Memory':<25} {f'{nemotron_mem:.2f} GB':<20} {f\"{q3omni_baseline['memory_gb']:.2f} GB\":<20} {f\"{q3omni_baseline['memory_gb']/nemotron_mem:.1f}x less\":<15}")
-    print(f"{'Tokens/sec':<25} {f'{avg_speed:.2f}':<20} {f\"{q3omni_baseline['tokens_per_sec']:.2f}\":<20} {f\"{avg_speed/q3omni_baseline['tokens_per_sec']:.1f}x faster\":<15}")
-    print(f"{'Load Time':<25} {f'{nemotron_results[0] if nemotron_results else 0:.1f}s':<20} {f\"{q3omni_baseline['load_time']:.1f}s\":<20} {'-':<15}")
+    print(f"{'GPU Memory':<25} {nem_mem_s:<20} {q3_mem_s:<20} {mem_less:<15}")
+    print(f"{'Tokens/sec':<25} {nem_spd_s:<20} {q3_spd_s:<20} {spd_fast:<15}")
+    print(f"{'Load Time':<25} {nem_load_s:<20} {q3_load_s:<20} {'-':<15}")
     print()
 
     print("✅ Advantages of Nemotron 4B:")

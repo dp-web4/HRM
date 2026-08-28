@@ -22,7 +22,7 @@ Stances:
 import json
 from pathlib import Path
 from typing import List, Dict
-from dataclasses import dataclass, as dict
+from dataclasses import dataclass
 from enum import Enum
 
 

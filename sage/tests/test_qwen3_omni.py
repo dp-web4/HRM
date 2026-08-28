@@ -89,3 +89,37 @@ User: Hello! I'm testing your omni-modal capabilities. Can you introduce yoursel
 Assistant: {response1}
 
 User: What makes you different from text-only models like the 14B version?
+
+Assistant:"""
+
+        inputs2 = tokenizer(prompt2, return_tensors="pt").to(model.device)
+
+        with torch.no_grad():
+            outputs2 = model.generate(
+                **inputs2,
+                max_new_tokens=200,
+                temperature=0.7,
+                do_sample=True,
+                top_p=0.9
+            )
+
+        response2 = tokenizer.decode(outputs2[0], skip_special_tokens=True)
+        response2 = response2.split("Assistant:")[-1].strip()
+        print(f"Qwen3-Omni: {response2}")
+        print()
+
+        print("=" * 70)
+        print("✅ Qwen3-Omni conversation test complete")
+        print("=" * 70)
+        return True
+
+    except Exception as e:
+        print(f"❌ Test failed: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+
+if __name__ == "__main__":
+    success = test_qwen3_omni()
+    sys.exit(0 if success else 1)

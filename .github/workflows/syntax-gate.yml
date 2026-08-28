@@ -1,0 +1,22 @@
+name: syntax-gate
+
+# P0 gate from the 2026-08-28 public-repo audit (#31): tracked Python must always
+# byte-compile. This is intentionally dependency-free — it catches syntax errors
+# (unterminated strings, bad f-strings, invalid imports) without installing torch
+# or any runtime deps, so it stays fast and cannot be knocked out by env drift.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  compileall:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Byte-compile all tracked Python under sage/
+        run: python -m compileall -q sage

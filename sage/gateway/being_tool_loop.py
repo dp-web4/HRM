@@ -70,3 +70,24 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
     out = generate(convo)
     return ToolTurnResult(reply=out.get("content") or "", trace=trace,
                           steps=max_steps, capped=True)
+
+
+def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
+                         max_steps: int = 2) -> ToolTurnResult:
+    """Run a gated tool turn using an OllamaIRP-like `llm` exposing
+    get_chat_response(messages, tools=...) -> {"content", "tool_calls"}.
+
+    Wraps the model + the bounded native-tool registry into the loop's generate()
+    contract, so callers (the raising runner) need only supply the seed messages.
+    """
+    from sage.gateway.being_gate_client import ollama_tools, parse_tool_calls
+    tools = ollama_tools()
+
+    def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
+        # Flatten the loop's convo (carries extra keys) to plain chat messages.
+        msgs = [{"role": m.get("role", "user"), "content": m.get("content", "")} for m in convo]
+        resp = llm.get_chat_response(msgs, tools=tools)
+        return {"content": resp.get("content", "") or "",
+                "intents": parse_tool_calls(resp.get("tool_calls", []))}
+
+    return run_tool_turn(client, generate, seed_messages, max_steps=max_steps)

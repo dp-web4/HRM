@@ -99,6 +99,26 @@ def test_pending_f1a_when_no_dispatcher():
     assert "not yet executed" in r.trace[0][1].to_tool_message()
 
 
+def test_run_ollama_tool_turn_with_fake_llm():
+    from sage.gateway.being_gate_client import ollama_tools
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    assert len(ollama_tools()) == 5  # exactly the bounded registry, nothing more
+
+    calls = {"n": 0}
+
+    class FakeLLM:
+        def get_chat_response(self, messages, tools=None):
+            calls["n"] += 1
+            if calls["n"] == 1:
+                return {"content": "checking",
+                        "tool_calls": [{"function": {"name": "witness", "arguments": {"event": "x"}}}]}
+            return {"content": "done", "tool_calls": []}
+
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}])
+    assert r.reply == "done"
+    assert r.trace and r.trace[0][0].effector == "witness" and r.trace[0][1].ok
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

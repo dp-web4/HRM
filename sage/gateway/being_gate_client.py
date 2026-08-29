@@ -75,6 +75,50 @@ _REGISTRY = {
 _OBSERVATIONAL = frozenset({"witness", "memory_read"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress"})
 
+# Native-tool schema for the bounded registry — what the being is offered.
+_TOOL_SCHEMAS = {
+    "peer_ask": ("Ask another being in the fleet a question through the hub.",
+                 {"to": "the being's name, e.g. 'legion'", "body": "your message"}, ["to", "body"]),
+    "witness": ("Record a witnessed note of something you did or noticed.",
+                {"event": "what to witness"}, ["event"]),
+    "memory_read": ("Read one of your own memory notes.",
+                    {"path": "path to your note"}, ["path"]),
+    "memory_write": ("Write a note into your own memory.",
+                     {"path": "path to your note", "content": "what to write"}, ["path", "content"]),
+    "channel_egress": ("Send a message out through a sealed channel.",
+                       {"to": "recipient", "body": "your message"}, ["to", "body"]),
+}
+
+
+def ollama_tools() -> List[dict]:
+    """Ollama native-tool specs for the bounded gateway-member registry (nothing else)."""
+    out = []
+    for name, (desc, props, required) in _TOOL_SCHEMAS.items():
+        out.append({"type": "function", "function": {
+            "name": name, "description": desc,
+            "parameters": {"type": "object",
+                           "properties": {k: {"type": "string", "description": v} for k, v in props.items()},
+                           "required": required}}})
+    return out
+
+
+def parse_tool_calls(tool_calls: list) -> List["BeingIntent"]:
+    """Map Ollama tool_calls into BeingIntents. Unknown names still become intents so the
+    gate can refuse them at the registry stage (never silently dropped)."""
+    intents = []
+    for c in tool_calls or []:
+        fn = c.get("function", {}) if isinstance(c, dict) else {}
+        name = fn.get("name") or "?"
+        args = fn.get("arguments") or {}
+        if isinstance(args, str):
+            try:
+                import json as _json
+                args = _json.loads(args)
+            except Exception:
+                args = {"_raw": args}
+        intents.append(BeingIntent(effector=name, args=args if isinstance(args, dict) else {}))
+    return intents
+
 
 @dataclass(frozen=True)
 class GatewayVerdict:

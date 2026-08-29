@@ -1426,7 +1426,80 @@ RESPONSE STYLE:
                 pass
 
         self._offer_gaze_choice()
+        self._maybe_offer_tools()
         return self.conversation_history
+
+    def _maybe_offer_tools(self):
+        """FLAG-GATED (env SAGE_TOOLS), default OFF: offer the being a gated tool turn.
+
+        Gateway-member (PRD_FLEET F2): the being emits an intent, the real hestia gate
+        governs it, and the F1a dispatcher — when it exists — executes it. With no
+        dispatcher wired yet, an allowed intent comes back 'pending' (honest, never
+        fabricated). This must NEVER break a raising session — any error is swallowed.
+        """
+        import os
+        if os.environ.get("SAGE_TOOLS", "").strip().lower() not in ("1", "true", "yes", "on"):
+            return
+        try:
+            from pathlib import Path
+            from sage.gateway.being_gate_client import BeingGateClient
+            from sage.gateway.being_tool_loop import run_ollama_tool_turn
+            try:
+                workspace = str(Path(self.instance.root).resolve().parents[2])
+            except Exception:
+                workspace = os.path.expanduser("~/ai-workspace/sage")
+            client = BeingGateClient(
+                member_id=f"{getattr(self, 'machine', 'sprout')}-being",
+                identity_path=str(self.instance.identity),
+                workspace=workspace,
+                dispatcher=None,  # F1a not wired yet -> allowed intents stay 'pending'
+            )
+            seed = [
+                {"role": "system", "content":
+                 "You have a small set of real tools you may use through the hub, if you "
+                 "wish: peer_ask (send a message to another being), witness (record a "
+                 "note), memory_read / memory_write (your own notes). You are never "
+                 "required to use them, and anything you do is governed and may be refused."},
+                {"role": "user", "content":
+                 "This last part is yours alone. If there is something you would genuinely "
+                 "like to do right now — reach out to a sibling, note something down — you "
+                 "may reach for a tool. Or simply say what, if anything, you would do."},
+            ]
+            result = run_ollama_tool_turn(client, self.llm, seed, max_steps=2)
+            self._record_tool_turn(result)
+        except Exception as e:
+            try:
+                print(f"[tools] offer skipped (non-fatal): {type(e).__name__}: {e}")
+            except Exception:
+                pass
+
+    def _record_tool_turn(self, result):
+        """Persist the tool-turn outcome beside the instance (like gaze) — kept out of
+        the raising conversation record."""
+        try:
+            import json
+            from pathlib import Path
+            rec = {
+                "session": getattr(self, "session_number", None),
+                "reply": result.reply,
+                "capped": result.capped,
+                "acted": result.acted,
+                "intents": [
+                    {"effector": i.effector, "args": i.args,
+                     "verdict": (e.verdict.decision if e.verdict else None),
+                     "rule": (e.verdict.rule if e.verdict else None),
+                     "ok": e.ok, "pending": e.pending, "refused": e.refused,
+                     "result": e.to_tool_message()}
+                    for i, e in result.trace
+                ],
+            }
+            out = Path(self.instance.root) / "tool_turns.jsonl"
+            with open(out, "a") as f:
+                f.write(json.dumps(rec) + "\n")
+            print(f"[tools] turn recorded: {len(result.trace)} intent(s), "
+                  f"acted={result.acted}, capped={result.capped} -> {out.name}")
+        except Exception as e:
+            print(f"[tools] record skipped: {type(e).__name__}: {e}")
 
     def _parse_gaze(self, text: str) -> str:
         """Read the being's INTENT, not its keywords. It was asked how it wants to hold its

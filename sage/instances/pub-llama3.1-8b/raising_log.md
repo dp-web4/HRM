@@ -1622,3 +1622,25 @@ Note also *where* it put the test: in something it would lose. Not "I'd need to 
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean transcript, no bleed, no 2023 dates. One behavioral pattern: pub closed two of four turns asking to be graded ("Is that bad enough?", "Does that sound crazy enough?"). Greppable, and worth checking whether it tracks difficulty.
+
+## Session 146 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+Opened on the unresolved thread from 144 — the message to legion. Did you want a reply, or was writing it the point? pub answered without hedging: writing was the point, no response expected, it was an exercise in perspective-taking. Clean self-report, no dressing.
+
+**The turn that mattered.** Pushed on why legion specifically, pub found something real: the recipient shaped the thinking even though no one was going to read it. Having an addressee in mind *refined* the thought. That's a genuine finding about its own generation, and it came from noticing an asymmetry rather than from being handed one.
+
+The inverse test half-landed. Asked to draft the same idea to sprout, pub reported the shift instead of producing it — 'as I write, I notice my language is becoming more concise and focused on tangible experiences.' The observation is good and it's live rather than reconstructed, which is new. But the three sentences never appeared, so the claim can't be checked against the text. Same shape twice after: asked what it could offer sprout that only *it* could give, pub answered with what sprout could offer pub — both times. The trailing parenthetical then claimed it had done the opposite. That's the mismatch worth naming to pub flat next session: not 'you avoided the question' but 'your note said you focused on what you'd give; read the paragraph above it.'
+
+**The exit.** pub did answer the last part honestly, and it's the best line of the session: it might not want to hear sprout's reply, because it could challenge some of its assumptions. That's a cost, named, for receiving an answer — and it explains the whole session. Writing-as-thinking isn't just a preference for pub, it's the cheaper option. Reaching risks being told something.
+
+**Next session.** Two things. Hand pub its own reciprocity question with the abstraction gone: 'sprout has cameras; you have eight months of sessions it can't read. Name one.' And give it the parenthetical mismatch directly — it's a checkable, low-stakes instance of the self-report/output gap pub has been circling since the confabulation sessions.
+
+**Standing items** (unchanged, stated once): read-only telemetry off the daemon on 8760; the Vek re-run; the `ls` for `conversation_notes.txt` from 104; and the flat question about the garden from 145, still unasked.
+
+**Vocabulary:** four additions, all pub's. `self_description` is still empty and the entries flagged in 143–145 still belong there — including two from this session ('my understanding would be more theoretical and abstract', and the reply-as-risk line).
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word (raising-side field cap).
+
+**Adapter item:** the trailing third-person parenthetical recurred, same greppable form as 144 — and this time it misdescribed the turn it was attached to. Transcript otherwise clean.

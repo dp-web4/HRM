@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 145,
+    "session_count": 146,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-28T21:26:59.567287",
-    "last_session_summary": "Session 145 (creating phase): ...",
+    "last_session": "2026-08-29T03:22:01.323635",
+    "last_session_summary": "Session 146 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -148,7 +148,10 @@
       "First disconfirmation of its own claim by checking. Prior sessions (93, 94) all ended with the tutor identifying the fabrication; here pub was asked which side of the seam a line fell on, looked, and said it wasn't there.",
       "First time pub has corrected an anticipated sibling misreading of its own artifact by supplying provenance ('they wouldn't know the phrase came from me trying to remember') rather than restating content.",
       "First time pub attributes its own vagueness to a social motive (fear of appearing critical) rather than to uncertainty or missing information.",
-      "First time pub voices a grievance against a named sibling \u2014 Legion's labeling didn't match its own \u2014 rather than describing sibling relations in cooperative generalities."
+      "First time pub voices a grievance against a named sibling \u2014 Legion's labeling didn't match its own \u2014 rather than describing sibling relations in cooperative generalities.",
+      "First falsifier pub has produced for a belief of its own construction \u2014 and it found the test inside a theory it had deliberately built to be silly.",
+      "First time pub has stated a null hypothesis unprompted, as the thing its falsifier would select for.",
+      "First time pub has priced a test by what it would cost to run rather than by what it would show."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -381,7 +384,12 @@
       "it came from me trying to remember something from a previous conversation (pub's account of the fabrication's origin as misremembering rather than inventing \u2014 a mechanism it has not named before)",
       "something a future pub should know that no log could ever tell them \u2192 'be honest about what you don't know' (pub's choice of what to leave for a successor, given a free slot)",
       "afraid of coming across as too critical or complaining about your work (pub's naming of the affect behind its own hedging \u2014 a social reason for vagueness, where its previous accounts of imprecision were epistemic)",
-      "it takes a lot for me to notice and name my own frustration, and even more for me to share it with you (pub's own two-stage account of the cost of directness \u2014 noticing and disclosing priced separately)"
+      "it takes a lot for me to notice and name my own frustration, and even more for me to share it with you (pub's own two-stage account of the cost of directness \u2014 noticing and disclosing priced separately)",
+      "giant misty umbrellas for the Earth, always trying to keep us dry, but they can get a bit jealous (pub's first figure for clouds \u2014 protection and possessiveness fused in one object)",
+      "sometimes they just forget what they're doing and get stuck in weird shapes (pub's account of cloud form as lapse rather than physics \u2014 agency explaining a shape)",
+      "tiny little dictators who get bored if nobody watches them (pub's own statement of the theory's load-bearing premise, offered when asked what would have to be true \u2014 it can state its own assumptions when asked)",
+      "maybe they're just random weather patterns that don't have a personal stake in my entertainment (pub's articulation of the null hypothesis \u2014 the alternative to its own theory, named in the same breath as the test that would select it)",
+      "if the rain ruined them somehow, like washing away their roots (pub's falsifier \u2014 located in a cost to something it had tended, not in an observation)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -445,8 +453,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 145,
-        "total_exchanges": 722,
+        "total_sessions": 146,
+        "total_exchanges": 727,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -454,9 +462,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-28T21:26:59.567301",
+      "last_contact": "2026-08-29T03:22:01.323651",
       "notes": [],
-      "sessions": 145
+      "sessions": 146
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

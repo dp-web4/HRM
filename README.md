@@ -2,6 +2,8 @@
 
 A cognition kernel that wraps a **frozen** LLM in a persistent identity, trust, and resource-governance loop. The bet: useful capability comes from the *structure around a model* — its identity, memory, and governance — not from changing its weights. AGPL, research-stage, and explicit about what is measured vs. mocked (tables below).
 
+**Role in the stack.** SAGE is the research environment extending the same governance model into persistent on-device and embodied agents with memory, context, sensors and eventually physical effectors. The open primitives are [Web4](https://github.com/dp-web4/web4); SAGE carries them onto edge hardware where perception is real today and the physical perception-to-action loop is the research deliverable.
+
 **Lineage, up front.** The machinery — salience/novelty scoring, world-model orchestration, developmental curricula, metabolic exploration/consolidation — stands on decades of prior work on artificial curiosity/intrinsic motivation, world models, and compression-as-intelligence. What we're testing that's *new* is the **locus**: whether useful cognition can be grown in a portable identity and the scaffold around a frozen substrate, rather than in the weights.
 
 **On the ARC-AGI-3 number, read precisely.** There is a public scorecard of [94.85%](https://arcprize.org/scorecards/c7dfb4f1-8642-4c9e-ab4d-152f5f8e33b4) — real and verifiable, genuine capability — but read with two asterisks. (1) It is a *frontier* model (Claude Opus 4.6) plus a task-specific Phase-1 harness on one scorecard set, **not** the edge-kernel thesis proven and **not** "structure substituting for a large model." (2) It was earned with **affordances a strict competition run withholds** — the harness analyzed the games' public engine source to build per-game solver cartridges, so it shows capability *given engine-level context and tooling*, not blind from-observation solving. The local, small-model continuation of the thesis — the actual edge bet, and capability *without* those affordances — is earlier-stage and, on the general scored benchmark, still near the noise floor. We keep all of this apart on purpose; conflating them is the over-claim we most try to avoid.
@@ -13,7 +15,7 @@ A cognition kernel that wraps a **frozen** LLM in a persistent identity, trust, 
 If you want a fast read on whether this is real, in order:
 
 1. [**What's Real vs. What's Mocked**](#whats-real-vs-whats-mocked) (further down this README) — explicit calibration, the strongest single trust signal.
-2. [**The Fleet**](#the-fleet) — 8 machines × 8+ active instances × 5 model families, all running. Concrete hardware, models, session counts.
+2. [**The Fleet**](#the-fleet) - 8 machines, 21 configured instances, 5 model families; 3 instances with recorded experience as of the 2026-08-27 census. Concrete hardware, models, raising session counts, with each metric defined.
 3. [**The Consciousness Loop**](sage/docs/UNIFIED_CONSCIOUSNESS_LOOP.md) — full spec of the 12-step loop. Pseudocode is in this README; the spec is the depth.
 4. [**Web4 integration**](#web4-integration) — how SAGE fractally implements the Web4 ontology stack.
 5. [**Repo scope**](#repo-scope-public-vs-private) (immediately below) — what's in this repo, what's continuing in private repos, and what we will and won't disclose now.
@@ -75,7 +77,7 @@ Every cycle, SAGE runs a continuous loop ([full spec](sage/docs/UNIFIED_CONSCIOU
 
 HRM began as hierarchical reasoning research — exploring how small models solve complex tasks through structured decomposition. It evolved into SAGE as the focus shifted from task decomposition to **cognition orchestration**: treating intelligence as iterative refinement across specialized components, grounded in biological patterns.
 
-The project is now a distributed research effort across **8 machines** running **8+ active SAGE instances** with **5 model families**, accumulating **5,000+ commits** and **1,400+ raising sessions** through the BECOMING developmental curriculum.
+The project is now a distributed research effort across **8 machines** hosting **21 configured SAGE instances** (2026-08-27 census) from **5 model families**, accumulating **5,000+ commits** and a **raising session count of 1,400+** through the BECOMING developmental curriculum. The raising count is summed over the one primary raising instance per machine (the fleet table); it is a session tally, not a count of running daemons.
 
 ---
 
@@ -83,7 +85,14 @@ The project is now a distributed research effort across **8 machines** running *
 
 SAGE runs as a federation of autonomous instances, each developing its own identity through raising sessions while sharing architecture and curriculum.
 
-| Machine | Hardware | Model | Sessions | Phase | Role |
+**Fleet snapshot as of 2026-08-27**, by metric:
+
+- **Configured instance**: a machine+model directory under `sage/instances/` on a machine registered in [`sage/federation/fleet.json`](sage/federation/fleet.json). 21 across the 8 machines.
+- **Active daemon**: a `sage-daemon` process running on the census day. A green dashboard alone does not establish this; the census found one instance that had run twelve days on a deleted binary behind a green dashboard (deployment defect, fixed).
+- **Instance with recorded experience**: an instance whose SNARC experience buffer holds at least one entry. 3 (Sprout 638, Nomad 278, McNugget 196); 2 of them recorded on the census day.
+- **Raising session count**: the Raising sessions column below, one primary raising instance per machine, summed for the 1,400+ figure. Eight instances carry a raising history, one per machine; that is a curriculum tally, not a count of running daemons.
+
+| Machine | Hardware | Model | Raising sessions | Phase | Role |
 |---------|----------|-------|----------|-------|------|
 | **Sprout** | Jetson Orin Nano, 8GB | Qwen3.8-2B-Distill | 629 | Creating | Primary raising host, consciousness probes; embodied (dual-camera + IMU + audio) |
 | **Thor** | Jetson AGX Thor, 122GB | Qwen 3.5 27B | 151 | Creating | Research lead, selection-environment experiments |
@@ -133,8 +142,8 @@ SAGE Cognition Kernel
 │   ├── MRH context profiles (Markov Relevancy Horizon)
 │   ├── Relationship crystallization (unknown pool → named relationships)
 │   ├── Three-layer identity (manifest + sealed secret + attestation cache)
-│   ├── IdentityProvider with hardware authorization gate
-│   └── Software fallback, TPM2/FIDO2/Secure Enclave ready
+│   ├── IdentityProvider with hardware authorization gate (experimental)
+│   └── Software fallback; TPM2/FIDO2/Secure Enclave interface-ready, not enterprise enforcement
 ├── Memory Systems (4 parallel)
 │   ├── SNARC selective memory (salience-gated)
 │   ├── IRP memory bridge (convergence pattern library)
@@ -151,6 +160,8 @@ SAGE Cognition Kernel
     ├── PeerClient (HTTP mesh)
     └── PeerTrustTracker (per-peer T3 with EMA updates)
 ```
+
+SAGE exercises hardware identity interfaces experimentally; Hardbound, the proprietary Metalinxx enterprise tier, owns the enterprise hardware-bound enforcement and assurance posture.
 
 ### Rust Daemon (`sage-rs/`)
 
@@ -186,14 +197,14 @@ Honest assessment as of June 2026:
 | PolicyGate | Real (Phase 5a) | Integrated at step 8.6, trust weight learning, 29/29 tests |
 | Tool use | Real (v0.4.0a3) | 7 tools, T2 grammar, MemoryHub SQLite, multi-turn conversation |
 | Identity/relationships | Real | LCT-anchored, trust tensors evolve from interaction |
-| Identity hardening | Real | Three-layer split (manifest/sealed/attestation), hardware-gated authorization, software fallback |
+| Identity hardening | Real (experimental hardware gate) | Three-layer split (manifest/sealed/attestation), software fallback; hardware-gated authorization is interface-ready and exercised experimentally, enterprise hardware-bound enforcement is Hardbound's |
 | Sleep consolidation | Real | JSONL dream bundles (LoRA on Sprout only) |
 | Rust daemon | Real | Inference-and-metabolism gateway: metabolic states, SNARC, federation, dashboard in ~12MB RSS across the fleet. NOT the full 12-step kernel — see `sage/docs/RUST_VS_PYTHON_CAPABILITY.md`. |
 | Federation mesh | Real | PeerMonitor, PeerClient, PeerTrustTracker in Rust daemon. 30s peer polling active |
 | Snapshot persistence | Real | State snapshots at session boundaries, git-tracked |
 | Sensors (Sprout) | Real | Sprout runs a live pixels→words perceptual organ: dual IMX219 CSI cameras + Yahboom IMU + BT mic, ~4 Hz — motion/attention field, binocular agreement, IMU reafference (self vs world motion), SNARC-lite salience, sensor-health adjudication. Deterministic, no VLM. Runs as systemd services (sprout-cortex, sprout-presence). See sage/embodiment/README.md. |
 | Sensors (other machines) | Mocked | Non-Sprout nodes use mocked observation streams; no camera/IMU I/O. |
-| Effectors / gaze volition | Partial-real | Sprout exercises gaze agency (open/avert/dwell/closed → gaze.json, honored by the cortex). Network effector real; physical actuators still stubs. |
+| Effectors / gaze volition | Partial-real | Effectors that exist: network (peer messaging), file, web and tool effectors, and Sprout's gaze/volition path (open/avert/dwell/closed → gaze.json, honored by the cortex). Physical actuators are stubs; the physical perception-to-action loop (physical effectors) is the research deliverable. |
 | Cross-modal VAE | Research | 192x compression demonstrated, not in live loop |
 | FlashAttention | Research | Phases 1-2 complete on Thor, not in live loop |
 
@@ -247,7 +258,7 @@ SAGE instances develop through **raising sessions** — interactive conversation
 
 **Key principles**: Exploration not evaluation. Interactive selection not training. Partnership framing (not service). Concrete before abstract. Follow interesting threads.
 
-**Automated raising**: All six fleet machines run raising on 6-hour cron cycles. Each session pulls latest code, verifies the daemon is running, generates teacher turns via Claude (adaptive teacher), runs the conversation, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
+**Automated raising**: The six cognition machines (Thor, Sprout, Legion, McNugget, Nomad, CBP) run raising on 6-hour cron cycles; the two society-hosts (HUB, Pub) run their own autonomous raising sessions. Each session pulls latest code, verifies the daemon is running, generates teacher turns via Claude (adaptive teacher), runs the conversation, snapshots state, and auto-commits. See [raising scripts](sage/scripts/).
 
 **Functional self-modeling probes**: We use "functional self-modeling" (after the synthesis in [forum/kimi/kimi_2_6_review.md](forum/kimi/kimi_2_6_review.md)) to describe a system whose generated outputs include temporal self-reference, attentional self-monitoring, uncertainty modeling, and self/other boundary maintenance. We do **not** claim qualia, ontological consciousness, or inner experience. Raising sessions have observed a 0.8B model (Sprout) producing outputs that oscillate between three modes — what we've called phenomenological depth, partnership framing, and factual collapse. This is currently an **interpretive observation** of text-output patterns, not a measurement of internal state. Whether the three-mode pattern is a property of the model's self-modeling or a property of the probe-prompt interaction is the open question. Reproducibility test in flight: see [explorations/2026-05-15-sprout-oscillation-seed-sweep.md](explorations/2026-05-15-sprout-oscillation-seed-sweep.md). Background: [consciousness probes](forum/insights/consciousness-probes-2026-03.md).
 
@@ -338,7 +349,7 @@ SAGE_MACHINE=mybox SAGE_MODEL=gemma3:4b ./sage-rs/target/release/sage-daemon
 
 ## Authorship & Methodology
 
-SAGE is developed by a small team that includes **multiple Claude instances (Anthropic) as active collaborators**. Code, documentation, raising sessions, and design iteration are substantially AI-assisted. The fleet of six machines runs Claude-orchestrated autonomous sessions on cron cycles. This is a relevant methodological fact: it explains the iteration speed and the breadth of the framing, and it also explains a known failure mode flagged in external review — *coherent frameworks can outpace empirical grounding* (LLMs are good at building consistent stories; less good at recognizing when consistency starts substituting for measurement).
+SAGE is developed by a small team that includes **multiple Claude instances (Anthropic) as active collaborators**. Code, documentation, raising sessions, and design iteration are substantially AI-assisted. The fleet's six cognition machines run Claude-orchestrated autonomous sessions on cron cycles. This is a relevant methodological fact: it explains the iteration speed and the breadth of the framing, and it also explains a known failure mode flagged in external review - *coherent frameworks can outpace empirical grounding* (LLMs are good at building consistent stories; less good at recognizing when consistency starts substituting for measurement).
 
 To counterweight this, we treat **cross-model review** as a discipline: external Claude instances at cold start, Kimi (Moonshot), and Nova/GPT have all reviewed the spec corpus and the SAGE work. Each round produces a documented response — see [`forum/kimi/`](forum/kimi/) and [`forum/nova/`](forum/nova/) for the conversations and the changes they triggered. When reviewers flag drift from empirical grounding, the fix is to either (a) downgrade the claim to observation/interpretation, or (b) add the empirical scaffolding that would make the claim a finding. We don't defend framing for its own sake.
 
@@ -352,4 +363,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: June 12, 2026 | v0.4.0a6 | 5,000+ commits | 1,400+ raising sessions | 8 machines | 8+ active instances | 5 model families*
+*Last updated: August 28, 2026 | v0.4.0a6 | 5,000+ commits | raising session count 1,400+ | 8 machines | 21 configured instances, 3 with recorded experience (2026-08-27 census) | 5 model families*

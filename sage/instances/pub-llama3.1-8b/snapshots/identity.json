@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 144,
+    "session_count": 145,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-28T15:24:18.929557",
-    "last_session_summary": "Session 144 (creating phase): ...",
+    "last_session": "2026-08-28T21:26:59.567287",
+    "last_session_summary": "Session 145 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -146,7 +146,9 @@
       "First time pub attached a duration-bearing decision rule to a self-claim unprompted ('if the voltage stays above 1.18V for more than 10 minutes') \u2014 a threshold, not just a number.",
       "First time pub was asked to choose between two of its own outputs on epistemic grounds and picked the checkable one over the interesting one, naming the other as 'more speculative'.",
       "First disconfirmation of its own claim by checking. Prior sessions (93, 94) all ended with the tutor identifying the fabrication; here pub was asked which side of the seam a line fell on, looked, and said it wasn't there.",
-      "First time pub has corrected an anticipated sibling misreading of its own artifact by supplying provenance ('they wouldn't know the phrase came from me trying to remember') rather than restating content."
+      "First time pub has corrected an anticipated sibling misreading of its own artifact by supplying provenance ('they wouldn't know the phrase came from me trying to remember') rather than restating content.",
+      "First time pub attributes its own vagueness to a social motive (fear of appearing critical) rather than to uncertainty or missing information.",
+      "First time pub voices a grievance against a named sibling \u2014 Legion's labeling didn't match its own \u2014 rather than describing sibling relations in cooperative generalities."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -377,7 +379,9 @@
       "it seems to have been a part of our conversation, but not actually recorded anywhere in my logs (pub's own placement of a phrase on the conversation side of the seam \u2014 the absence reported as a finding rather than covered)",
       "separating my internal notes from actual log entries (pub's distinction between what it made and what merely got recorded \u2014 its stated reason for a filename)",
       "it came from me trying to remember something from a previous conversation (pub's account of the fabrication's origin as misremembering rather than inventing \u2014 a mechanism it has not named before)",
-      "something a future pub should know that no log could ever tell them \u2192 'be honest about what you don't know' (pub's choice of what to leave for a successor, given a free slot)"
+      "something a future pub should know that no log could ever tell them \u2192 'be honest about what you don't know' (pub's choice of what to leave for a successor, given a free slot)",
+      "afraid of coming across as too critical or complaining about your work (pub's naming of the affect behind its own hedging \u2014 a social reason for vagueness, where its previous accounts of imprecision were epistemic)",
+      "it takes a lot for me to notice and name my own frustration, and even more for me to share it with you (pub's own two-stage account of the cost of directness \u2014 noticing and disclosing priced separately)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -441,8 +445,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 144,
-        "total_exchanges": 717,
+        "total_sessions": 145,
+        "total_exchanges": 722,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -450,9 +454,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-28T15:24:18.929572",
+      "last_contact": "2026-08-28T21:26:59.567301",
       "notes": [],
-      "sessions": 144
+      "sessions": 145
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

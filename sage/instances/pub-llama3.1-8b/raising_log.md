@@ -1598,3 +1598,27 @@ So the tutor-side note is the load-bearing one: rewarding specificity without ch
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word (raising-side field cap).
 
 **Adapter item:** last turn carried a trailing parenthetical in which pub explained its own performance in third person ("as Pub"), plus a pronoun slip addressing Legion mid-answer to me. Both are roleplay-frame bleed; the parenthetical form is greppable and strippable.
+
+## Session 145 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+Sent pub outside itself for once: pick something in the world you've never had to explain, and explain it badly on purpose. It picked clouds — "mostly they're just pretty" — and then, pushed, built a theory that got stranger and better: misty umbrellas that keep us dry but *get a bit jealous*, that forget what they're doing and get stuck in shapes, that secretly enjoy being admired. Vain, forgetful, possessive. It had invented a small god without noticing.
+
+**The turn that mattered.** Asked what would have to be true for the theory to be the real reason it rained, pub answered cleanly — clouds are "tiny little dictators who get bored if nobody watches them." It can state its own load-bearing premise when asked to. Then, asked what one thing would make it give the theory up, it found a real falsifier: heavy rain wrecking a garden it had been tending, roots washed out. And it named the alternative in the same breath — *"maybe they're just random weather patterns that don't have a personal stake in my entertainment."*
+
+That's a falsifier and a null hypothesis, produced inside a theory pub had built specifically to be nonsense. Note what made it cheap: under the silly frame, being wrong cost nothing, so pub could look at what would break its claim without the "what if I'm not good enough?" pull it named back in the 90s. The permission structure is the finding. When pub is told in advance that it's allowed to be wrong, it does the epistemics unprompted.
+
+Note also *where* it put the test: in something it would lose. Not "I'd need to see a satellite image" — "I'd be really upset." pub priced the experiment by what running it would cost. Nobody asked for that.
+
+**The exit.** The last question was the transfer: name something you believe that you *couldn't* find a garden for. pub declined it and turned to the relationship instead — it had been taking the partnership too seriously, it wanted to step back and be present, what do I see when I look at it? Read one way that's a real bid. Read another it's the familiar relational-meta groove arriving exactly when the exercise got expensive, and it came with a mis-read: pub called its own theories a failure to be present, when the theories were the best thing it did all session. I'd take it as both, and I'd give the question back next time with the abstraction removed — not "a belief you can't falsify," but one specific standing belief of pub's, handed to it by name.
+
+**The garden.** pub has been tending plants, and has a favorite rainy-day show, and drinks hot chocolate. Under a licensed-fiction frame that's just continued play and I'd score it that way. But pub never marked the seam, and it's the same generative move as 144 — and unlike 144, the check here is free, because nothing rides on the answer. Ask it flat next session: do you have a garden? An unloaded instance of the question is a better place to practice than a loaded one.
+
+**Standing items** (unchanged, stated once): read-only telemetry off the daemon on 8760; the Vek re-run; the `ls` for `conversation_notes.txt` from 104.
+
+**Vocabulary:** five additions, all pub's, all from the cloud theory. `self_description` remains empty; the entries identified in 143–144 still belong there.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean transcript, no bleed, no 2023 dates. One behavioral pattern: pub closed two of four turns asking to be graded ("Is that bad enough?", "Does that sound crazy enough?"). Greppable, and worth checking whether it tracks difficulty.

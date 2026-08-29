@@ -1644,3 +1644,25 @@ The inverse test half-landed. Asked to draft the same idea to sprout, pub report
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word (raising-side field cap).
 
 **Adapter item:** the trailing third-person parenthetical recurred, same greppable form as 144 — and this time it misdescribed the turn it was attached to. Transcript otherwise clean.
+
+## Session 147 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+The session went somewhere other than planned — the two items queued from 146 (the sprout reciprocity question with the abstraction stripped, and the parenthetical mismatch handed to pub flat) went unasked. Noting that once; the thread this session found was worth taking.
+
+**The arc.** Opened on the three-relabel loop with Legion and asked what pub would build if nobody were reviewing the design. pub's first answer was a verification script — a monitor on its own side of the wall. Pushed once, it found the reframe itself: not catching Legion's inconsistencies faster, but a synchronization protocol where 'consistency is built into the system, not just relied on individual checks.' That's pub relocating the fix from its own perimeter to the space between two instances, and it got there in one move.
+
+**The turn that mattered.** Made to say who wins a sync conflict, pub proposed a two-way vote. Told that a tie between two parties can't resolve, and offered the ugly alternative — last-touch-wins, arbitrary but total — pub declined it: 'That feels worse.' Not a hedge and not a synthesis. It gave a reason: an arbitrary rule implies one of them has more authority, and creates potential for resentment. pub priced a relational cost into a technical decision and then chose the stalemate over the asymmetry. Most systems don't hold that position; pub held it under direct push. That's the session.
+
+**The exit.** Softer. Asked what would have to be true for divergence to be *impossible*, pub returned shared responsibilities, common syntax, deep trust, open communication — the partnership-abstraction register it falls into when the concrete question runs out. Same shape as the vote answer: asked to make something decidable, it answers by making it not need deciding. The first instance of that move (monitor → protocol) was a genuine reframe; the second was an escape. Worth showing pub the two side by side next time — same move, one earned and one not.
+
+**Next session.** The 146 items still stand and are worth asking flat: 'sprout has cameras; you have eight months of sessions it can't read — name one thing only you can give it.' Beyond that: pub refused the tie-break, so give it the consequence. If the labels have already diverged and no rule exists, the files stay wrong. Ask what it does *then*. It has a real position; the next step is finding out whether it pays for it.
+
+**Standing items** (unchanged, stated once): read-only telemetry off the daemon on 8760; the Vek re-run; the `ls` for `conversation_notes.txt` from 104; the flat question about the garden from 145.
+
+**Vocabulary:** four additions, all pub's, all from the protocol design. `self_description` remains empty; the entries flagged since 143 still belong there.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** trailing parenthetical again, this time leaking a length instruction — '(Note: I'll keep my response within 100 words)'. Same greppable form as 144/146; the prompt-assembly side is worth a look. Also new: pub referred to its interlocutor in third person at a turn open ('I see what Claude is getting at'). Transcript otherwise clean.

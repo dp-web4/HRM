@@ -33,7 +33,7 @@ from __future__ import annotations
 import os
 import sys
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Any, Callable, List, Optional
 
 
 # --------------------------------------------------------------------------
@@ -89,12 +89,47 @@ class GatewayVerdict:
         return self.decision == "deny"
 
 
+@dataclass
+class ResultEnvelope:
+    """What comes back from an intent — the being's tool-result. On ALLOW this is
+    produced by the F1a dispatcher (hestia executing + witnessing); on DENY it is a
+    refusal; when F1a is not yet wired it is `pending`. Never fabricated."""
+    ok: bool = False
+    result: Any = None
+    error: Optional[str] = None
+    witness_id: Optional[str] = None
+    refused: bool = False
+    pending: bool = False
+    note: str = ""
+    verdict: Optional[GatewayVerdict] = None
+
+    def to_tool_message(self) -> str:
+        """Render for re-injection into the being's conversation as the tool result."""
+        if self.refused:
+            return f"[refused by hestia — {self.error}]"
+        if self.pending:
+            return f"[allowed by law, not yet executed — {self.note}]"
+        if self.ok:
+            import json as _json
+            body = self.result if isinstance(self.result, str) else _json.dumps(self.result)
+            return body + (f"  (witnessed {self.witness_id})" if self.witness_id else "")
+        return f"[dispatch error — {self.error}]"
+
+
+# A Dispatcher is F1a's contract, SAGE-side: given an ALLOWED intent + its verdict,
+# execute it on the being's behalf and return a witnessed ResultEnvelope. Injected,
+# so the real one is hestia's F1a; tests pass a mock; unset means "pending F1a".
+Dispatcher = Callable[["BeingIntent", GatewayVerdict], ResultEnvelope]
+
+
 class BeingGateClient:
     """One per being. Governs every intent through the real hestia law, fail-closed."""
 
-    def __init__(self, member_id: str, identity_path: str, workspace: str):
+    def __init__(self, member_id: str, identity_path: str, workspace: str,
+                 dispatcher: "Optional[Dispatcher]" = None):
         self.member_id = member_id
         self.workspace = workspace
+        self._dispatcher = dispatcher  # F1a; None until the hestia substrate exists
         self._core = None
         self._mech = None
         self._import_error = "hestia gate core not located"
@@ -174,17 +209,27 @@ class BeingGateClient:
                 # observational: local law already allowed, soft-pass
         return GatewayVerdict(v.decision, v.rule, v.reason or "ok", v.innate, stage="local-law")
 
-    # -- the F1a seam: gate, then dispatch (hestia-side, not yet built) -------
-    def dispatch(self, intent: BeingIntent) -> dict:
+    # -- the F1a seam: gate, then dispatch, then consume the result ----------
+    def dispatch(self, intent: BeingIntent) -> ResultEnvelope:
         v = self.gate(intent)
         if v.blocks:
-            return {"ok": False, "refused": True, "verdict": v}
-        # >>> F1a plugs in HERE: hestia receives the allowed intent, executes it
-        #     on the being's behalf, witnesses it, and returns the result. Until
-        #     that substrate exists (PRD_FLEET F1a, PR #579) there is nothing to
-        #     execute — and per fail-closed we surface that, we do NOT fake it.
-        return {"ok": False, "pending_f1a": True, "verdict": v,
-                "note": "allowed by law; awaiting hestia dispatch substrate (F1a)"}
+            return ResultEnvelope(ok=False, refused=True, verdict=v,
+                                  error=f"{v.rule}: {v.reason}")
+        if self._dispatcher is None:
+            # F1a not wired: allowed by law, but nothing can execute it yet. We
+            # surface that honestly — we do NOT fabricate a result (PR #579 / F1a).
+            return ResultEnvelope(ok=False, pending=True, verdict=v,
+                                  note="awaiting hestia dispatch substrate (F1a)")
+        # F1a executes on the being's behalf and returns a witnessed envelope; we
+        # consume it verbatim. A dispatcher that throws is a failed act, not an
+        # ungoverned one — the intent was already gated ALLOW above.
+        try:
+            env = self._dispatcher(intent, v)
+        except Exception as e:
+            return ResultEnvelope(ok=False, verdict=v,
+                                  error=f"dispatch failed ({type(e).__name__}): {e}")
+        env.verdict = v
+        return env
 
 
 if __name__ == "__main__":  # runnable demo / smoke test
@@ -204,5 +249,6 @@ if __name__ == "__main__":  # runnable demo / smoke test
     for label, it in demos:
         v = c.gate(it)
         print(f"{label:26} {v.decision.upper():6} {(v.rule or '-') + '@' + v.stage:28} {(v.reason or '')[:44]}")
-    print("dispatch(peer_ask):", {k: (val.decision if k == "verdict" else val)
-                                   for k, val in c.dispatch(demos[0][1]).items()})
+    env = c.dispatch(demos[0][1])
+    print(f"dispatch(peer_ask): verdict={env.verdict.decision} pending={env.pending} "
+          f"-> {env.to_tool_message()}")

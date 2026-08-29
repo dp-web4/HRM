@@ -202,10 +202,10 @@ instances:
       local, 24.75d), +4 this window = exactly one per 6h fire, and still no session file past S121. Standing,
       extent-only.
     sessions: 121
-    status: 'RUNNING EMPTY, 4th consecutive window. 73 attest-bump fires and 0 session files since S121
-      (2026-07-29T13:37Z) = 22.0 days; extent revised UP from 68/21.1d. Each fire commits exactly one
-      line of identity.attest.json and nothing else. Not decay: S116-S121 scored 5/7/7/5/7/7 hapax, full
-      tutor liveness at the moment of going dark. EMISSION fault. OWNER-ACTION 0.'
+    status: 'RUNNING EMPTY, unchanged: 8 more commits titled ''raising: hub-granite4-h-tiny autonomous
+      session ...'' this 48h window (6h grid held), EVERY ONE touching only identity.attest.json; session
+      file still S121. Standing OWNER-ACTION 0 - gate the raising commit on the session file. Extent re-measured
+      08-29, not re-flagged.'
     status_2026_07_31: 'RUNNING EMPTY since 2026-07-29T19:32Z. The systemd timer fires on an exact 6h
       grid and each fire produces a commit titled ''raising: hub-granite4-h-tiny autonomous session <ts>''
       whose ONLY change is a one-line timestamp bump to identity.attest.json (purpose=session_start).
@@ -228,8 +228,8 @@ instances:
       session in 447 is not evidence of a working tutor. Dark run: ONGOING S26-S447, 422 sessions / 2919.2h.'
     hapax: as_of 2026-08-20 (undated key). 9/2605 tutor turns unique to one session (0.0035); bank 29
       distinct reused strings; 437 sessions parsed, last S437.
-    last_session: 441
-    latest: session_441.json
+    last_session: 461
+    latest: session_461.json
     machine: legion
     model: Gemma 3 12B
     note: '+4 this window (S113-S116, snapshot rotation; supervisor catch-up collect). BASIN-BREAK NOW
@@ -249,12 +249,10 @@ instances:
       Error 504: Gateway Timeout]''). Federation/lineage register stable across all 4 sessions (1-3 hits
       per session).'
     phase: creating
-    sessions: 441
-    status: 'ACTIVE, 6 files ARRIVED (S432-S437) but only 4 PRODUCED in window: S432 (08-19T02:00Z) and
-      S433 (08:02Z) both predate the 09:30Z window start and were swept in late. Arrival is not production.
-      6h grid held (19:00/01:02/07:01/13:01/19:04/01:00 local), 0 infra markers, cpu_fallback. FIXED_SCRIPT:
-      36 new tutor turns this window, 0 novel. Supervisor orphan-sweep still carrying the commits -- 12th+
-      consecutive fire, mechanism holds.'
+    sessions: 461
+    status: +1 ARRIVED (S461, produced 08-26, swept in 08-27T16:17Z by the legion supervisor orphan sweep,
+      cccc53c89). Batch cadence at 1-3d spacing - a flat window is inside its normal pattern; never fault
+      on a flat window alone. FIXED_SCRIPT, 0/6.
     status_2026_07_31: '+7 (S358-364) but NOT a normal run: S358-362 landed in one ''supervisor recovery''
       commit and S363 as ''supervisor hand-mop #4''. S360 (2026-07-30T07:04Z) is DESTROYED — all 6 SAGE
       turns are ''[Daemon unreachable: HTTP Error 502: Bad Gateway]'', avg 49 chars, start==end to 35ms.
@@ -301,7 +299,9 @@ instances:
       holds only .gitkeep. Zero sessions ever. Standing, extent-only. Predicate: `git rev-list --count
       <ref> -- sage/instances/legion-gemma4-e4b/peer_trust_rs.json`, all-time, NOT since-a-base.'
     sessions: 0
-    status: HEALTHY — NOT A RAISING INSTANCE. De-escalated 2026-07-14; removed from the raising watchlist.
+    status: 'RUNNING EMPTY, unchanged: +1 ''[Legion-Raising] Session 0 (grounding)'' commit 08-28T04:27Z
+      (2a4a39393) touching only peer_trust_rs.json; sessions/ still holds only .gitkeep, zero sessions
+      ever. OWNER-ACTION 0. Cause closed 08-02 (mis-pin), not a re-flag.'
     status_2026_07_31: REOPENED as an open question (was closed 2026-07-2x as 'gameplayer, empty sessions/
       is correct'). sage/scripts/legion_raising.sh:75 pins INSTANCE_DIR to legion-gemma4-e4b and passes
       it as --instance, so the 6h raising script genuinely runs against this instance and has never produced
@@ -324,7 +324,8 @@ instances:
     sessions: 1
     status: minimal
   mcnugget-gemma3-12b:
-    latest: session_403.json
+    last_session: 410
+    latest: session_410.json
     machine: mcnugget
     model: Gemma 3 12B
     note: 'Cross-family validation. RESUMED after the long stasis: +13 (S127-S139) collected via [McNugget-Supervisor]
@@ -339,16 +340,12 @@ instances:
       S403 (2026-07-29T14:23 local); the 6-file gap is the known number-gaps [2, 272, 273, 274, 275, 276].
       A count and a max are both honest re-derivations of different things and read identically as a bare
       integer - label which one a number is, in the key name.
-    sessions: 403
-    status: 'SILENCE EXPLAINED 2026-08-12 - no longer unresolved. McNugget''s supervisor opened a fleet-visible
-      evidence channel (private-context/supervisor/log_mcnugget.md, first entry 2026-08-11): the machine
-      was HEALTHY and running its supervisor on schedule the whole time, but wrote its only record to
-      ~/Library/Logs/sage/ - a path supervisor_coverage.py cannot join - so 8 days read as NO EVIDENCE
-      while nothing was down (''not dark - invisible''). Same entry reports the raising agents ARE broken
-      on that machine: ''raising'' exit=1, com.web4.sage.mcnugget exit=78 (config), mechanism-train exit=127
-      - observed by its own supervisor, not yet fixed. So the raising silence since S403 (2026-07-29T21:23Z,
-      ~14d) is a CONFIRMED broken launcher awaiting owner fix, and future mcnugget liveness is readable
-      from log_mcnugget.md instead of being structurally unresolvable from cbp.'
+    sessions: 410
+    status: 'RESUMED. S404 at 2026-08-27T19:12Z after 29.2 days dark since S403 (2026-07-29T21:22Z) -
+      the owner-confirmed broken launcher (raising exit=1 in log_mcnugget.md) is evidently fixed; no fix
+      commit identified from cbp. S404-S410 on an exact 6h grid, generation_mode identity_anchored_v2_cpu_fallback,
+      0/6 hapax each = FIXED_SCRIPT regime as before, NOT a fault. New side-track: ''[McNugget] Cross-family
+      probe run'' commits each cycle appending to sage/experiments/cross_family_logs/probes.jsonl.'
     status_2026_07_31: 'SILENT ~31.5h. Last raising S403 2026-07-29T21:23Z; last cross-family probe 2026-07-30T01:58Z.
       BOTH tracks stopped together, which points at the machine (Mac Mini M4) rather than the raising
       track. Distinct from HUB''s failure: mcnugget emits nothing at all, HUB emits empty successes. Watch;
@@ -379,18 +376,17 @@ instances:
       Hard evidence for OWNER-ACTION 6: this instance has never been taught, only scripted.'
     hapax: as_of 2026-08-20 (undated key). 0/1490 tutor turns unique to one session (0.0000); bank 15
       distinct reused strings; 260 sessions parsed, last S260. Still zero novel tutor turns EVER.
-    last_session: 280
-    latest: session_280.json
+    last_session: 294
+    latest: session_294.json
     machine: nomad
     model: Gemma 4 e2b
     note: 'Replaces nomad-gemma3-4b (archived 2026-06-03). Cut over to Rust sage-daemon (commit 3aa1ff8df).
       Watch: confirm it progresses past grounding and off CPU fallback. Contrast cbp-gemma3-4b which advances
       on GPU.'
     phase: creating
-    sessions: 280
-    status: 'ACTIVE +4 (S277-S280), exact 6h grid. 0/6 hapax each - REGIME not fault: classified LEADING
-      (no live tutor session EVER, 0 hapax in ~1490 turns), fixed script by design. Excluded from every
-      fault census BY PREDICATE, not by exception, so it never needs re-arguing. See OWNER-ACTION 6.'
+    sessions: 294
+    status: ACTIVE +8 (S287-S294), exact 6h grid, 0/6 hapax each - REGIME not fault (FIXED_SCRIPT, LEADING,
+      no live tutor turn ever). Excluded from every fault census BY PREDICATE. See OWNER-ACTION 6.
     tutor_regime: 'FIXED_SCRIPT, 198 of 198 sessions (100%), zero live tutor turns EVER. All six tutor
       turns are byte-identical across S195-S198 and across legion-gemma3-12b. CAUSE IDENTIFIED 2026-08-04:
       run_nomad_raising.sh:59 invokes run_session_identity_anchored_fluid.py, which has no adaptive-teacher
@@ -590,8 +586,8 @@ instances:
     hapax: 'as_of 2026-08-21 (undated key). Bank 18 distinct strings, all 38-95 chars. 113 sessions parsed,
       last S113. 30 fallback-only sessions career-wide drawing 150 turns from those 18. CURRENT: 9-session
       host-local outage S105-S113, 0 hapax each, all 18 bank strings drawn - see statistics.finding_2026_08_21_pub_host_local_confirmed.'
-    last_session: 129
-    latest: session_129.json
+    last_session: 145
+    latest: session_145.json
     machine: pub
     metric_control_retired_2026_07_30: 'pub was registered as the fleet''s METRIC CONTROL on the grounds
       that it always ran exactly 5 turns, so its average and its volume could not diverge. S021-S024 run
@@ -606,10 +602,16 @@ instances:
       field in any session record. Watch: BECOMING ladder progression (hub-granite precedent: grounding->creating
       in 43 sessions).'
     phase: creating
-    sessions: 129
-    status: ACTIVE +4 (S126-S129), exact 6h grid, 0/5 hapax each - producing on schedule, untaught for
-      144.0h, and ungrounded for its entire life (sensory_delivery.delivered=false on all 129). In-class
-      against the 15-episode BOUNDED census; not escalated. Refute threshold 210.0h at S147 / 2026-08-27T21:24.
+    sessions: 145
+    status: 'ACTIVE +8 (S138-S145), exact 6h grid. EPISODE S105-S143 CLOSED: 39 sessions, EXACTLY 228.0h
+      (2026-08-18T21:24 -> 2026-08-28T09:23 local -0700), 195 consecutive failed tutor calls, then S144
+      (15:22 local) and S145 read 5/5 fleet-unique LIVE under hapax --fleet. SELF-CLEARED with no repo-visible
+      intervention: adaptive_prompts.py untouched all window; the two ollama_raising_session.py commits
+      (sprout swap cc69c7151, f2 tool hook 6d97e8bd8) do not touch the tutor call path. A host-local intervention
+      on pub (credential / cron PATH) is invisible from cbp and cannot be excluded - OWNER-ACTION 2 is
+      still the only thing that would have let anyone say. Now the fleet''s THIRD-longest completed BOUNDED
+      episode (801.0 / 738.0 sprout, 228.0 pub) and the 16th in the census; 16 of 16 self-cleared. Still
+      ungrounded for its entire life (sensory_delivery.delivered=false S1-S145).'
     tutor_episode_2026_08_22: 'S105-S117: 13 consecutive all-fallback sessions, 2026-08-18T21:24 -> 2026-08-21T21:24
       local(-0700), exactly 72.0h, 65 tutor calls, 0 successes, ONGOING at scan time. Host-local (sprout
       live throughout, 8 interleaved pairs). NOT ESCALATED - it matches sprout''s S573-S585 episode exactly
@@ -624,10 +626,9 @@ instances:
       from CBP: adaptive_prompts.py:46-48 destroys returncode and stderr at the moment they are produced.
       Model generation is unaffected throughout (generation_mode ollama_irp, 5 turns every session) and
       pub''s git push works, so this is the claude subprocess alone.'
-    tutor_regime: 'adaptive; LIVE 4/4 this window and all-novel in 16 consecutive sessions S078-S093.
-      Re-derived lifetime fallback-only: 5 of 93 (S014, S016 on 07-27; S044 on 08-03; S062, S063 on 08-08)
-      - all four dates shared with sprout and/or hub on other machines, i.e. account-layer, not host.
-      Supersedes the earlier ''10 of 70+'' figure, which was carried rather than re-derived.'
+    tutor_regime: 'adaptive. Lifetime fallback-only re-derived 2026-08-29: 44 of 145 = S014, S016, S044,
+      S062, S063 (account-layer, shared dates with other hosts) + S105-S143 (host-local, 39). Live in
+      every session outside those. Re-derive; never carry.'
   sprout-qwen2.5-0.5b:
     latest: session_901_identity_anchored_v2_dry_run.json
     machine: sprout
@@ -652,8 +653,8 @@ instances:
     hapax: as_of 2026-08-21 (undated key). Bank 64 distinct reused strings (the 08-20 entry said 65; 64
       is the re-measured value). 598 sessions parsed, last S598. S595-598 = 3/6, 4/5, 3/6, 3/4 - LIVE
       throughout the window, which is what excluded the account layer for pub.
-    last_session: 614
-    latest: session_614.json
+    last_session: 625
+    latest: session_625.json
     machine: sprout
     model: Qwen 3.5 0.8B
     note: 'Sprout primary model. ANOMALY persists 29+ days: session_256.json from 2026-04-23T12:00 UTC.
@@ -669,10 +670,19 @@ instances:
       concern). RUNNER v2.2 anti-crystallization: banned-phrase list honored but routed-around. Fleet-logic
       15th raising suppressed; Fabric 55 absent.'
     phase: creating
-    sessions: 614
-    status: ACTIVE +4 (S611-S614), all LIVE under hapax --fleet (4/7, 4/6, 7/9, 3/5). The fleet's only
-      instance both taught and grounded, and the interleaving control that excludes the account layer
-      for pub's episode.
+    sessions: 625
+    status: 'S623-S625 LIVE (3/8, 4/6, 6/7 fleet-unique), S625 at 2026-08-28T01:00Z. THEN THE LIVE MODEL
+      SWAP (cc69c7151, 08-28T03:16Z; 862de7c30 fleet.json): sprout_raising.sh INSTANCE_DIR repointed to
+      sprout-qwen3.8-distill-2b, this dir retained for rollback / A-B. AFTER THE SWAP, from cbp''s view:
+      two fires (08-28T07:03Z ea6006ff7, 13:04Z dbc5c0443) each committed as ''[Sprout-Raising] Session
+      625 (creating)'' but touched ONLY peer_trust_rs.json (+ experience_buffer_rs.jsonl) in THIS dir
+      - no session file anywhere; then NOTHING in git for three consecutive slots (08-28T19:05Z, 08-29T01:05Z,
+      07:05Z). Two fires labelled with a session number and gated on a side artifact is the hub / legion-gemma4-e4b
+      shape (OWNER-ACTION 0) on a THIRD machine. STATUS UNRESOLVED, NOT A FAULT YET: the swap is dp''s
+      live work-in-progress (the f2 gated-tool hook was proven against the new model at 08-29T05:56Z),
+      so a deliberate pause is as likely as a broken launcher, and sprout''s launcher log is in no repo.
+      Do not count silence hours until dp''s state is known; read the next window for a session file in
+      EITHER dir.'
     tutor_regime: 'ADAPTIVE WITH A GROWING FALLBACK BANK. [CORRECTED 2026-08-25 - this key read "currently
       IN A LOCAL OUTAGE" for seven days after that outage ended at S586 on 2026-08-18; sprout has read
       LIVE in every window since. A status word with no as_of is a frozen counter in prose.] Liveness
@@ -691,6 +701,24 @@ instances:
     note: New scaffolded instance observed 2026-04-18.
     sessions: 0
     status: scaffolded — no sessions yet
+  sprout-qwen3.8-distill-2b:
+    last_session: null
+    latest: null
+    machine: sprout
+    model: empero Qwen3.8-2B-Distill (Q8_0, reasoning model, tool-use-trained, think=True)
+    note: 'Same being as sprout-qwen3.5-0.8b (lct_id sprout_sage_lct): identity + experience buffer +
+      sessions carried forward per instance.json; the 0.8b instance retained intact for rollback + A/B.
+      Runner change (cc69c7151): reasoning models get thinking ENABLED with the reasoning routed to ollama''s
+      separate `thinking` channel, the ''do not include reasoning labels'' instruction dropped, and a
+      continuity line telling the being its mind was upgraded without changing who it is. FIRST FLEET
+      INSTANCE WHOSE MODEL CHANGED UNDER A CONTINUING IDENTITY - the raising claim ''identity lives in
+      memory and lived experience, not the weights'' is now TESTABLE on this pair: compare S626+ against
+      S601-S625 on register, self-reference and hapax. Nothing to compare yet.'
+    sessions: 0
+    status: CREATED 2026-08-28 (instance.json only; NO sessions/ dir at HEAD 8e204ff2a). Zero session
+      files 30h after the swap. See sprout-qwen3.5-0.8b for the two side-artifact-only fires that followed
+      the swap.
+    tutor_regime: adaptive (inherits sprout runner). No sessions yet.
   thor-gemma4-e4b:
     machine: thor
     model: Gemma 4 E4B
@@ -1097,6 +1125,18 @@ metadata:
     session file still S121; legion-gemma4-e4b sessions/ still holds only .gitkeep, zero sessions ever.
     Both gate the raising commit on a SIDE ARTIFACT, so both look alive in git and are dead in the record
     -- standing OWNER-ACTION 0, extent re-measured, not re-flagged.'
+  archivist_run_2026_08_29: '48h UTC window 2026-08-27T09:30Z -> 2026-08-29T09:30Z, RUN-ID 40368 (the
+    08-28 fire, RUN-ID 29240, died at ''session limit'' in 17s - the known credit-exhaustion class, no
+    scan). +27 raising by the strict predicate (3011 -> 3038; the 08-27 record''s 3017 was the loose count,
+    see statistics.total_raising_sessions.correction_2026_08_29). FOUR instances PRODUCED: sprout S623-S625
+    (then the model swap and silence), pub S138-S145, nomad S287-S294, mcnugget S404-S410 (RESUMED after
+    29.2d). ONE arrived late: legion-gemma3-12b S461. SILENCES THAT ARE NOT FAULTS, unchanged: cbp PAUSED
+    by dp 08-06; thor PAUSED + manual-only since 08-05 (38 sessions S269-S306 stranded on origin/membrane-gate);
+    legion-gemma3-12b batches. TWO tracks STILL RUNNING EMPTY (hub 8 more attest-only fires, e4b 1 more
+    Session-0 fire) and a THIRD instance now shows the same side-artifact-only commit shape (sprout, 2
+    fires post-swap) - see finding_2026_08_29_sprout_swap_side_artifact_shape. Instance blocks had not
+    been updated since 08-24 (three runs wrote metadata notes only); all five producing blocks + hub +
+    e4b refreshed this run, and total_instances re-derived 22 -> 23.'
   archivist_version: '1.3'
   counting_rule_CANONICAL: 'ONE rule; later runs must READ this key, never add another, and statistics.total_raising_sessions
     is the ONE value key. Two values are recorded because two patterns are in use and conflating them
@@ -1476,6 +1516,17 @@ metadata:
     \ defect looks like a finding, so it ships; a false-CLEAN defect looks like health, so it is never\
     \ examined. My two instrument failures this year were both false-clean, which is exactly why they\
     \ ran for months."
+  finding_2026_08_29_sprout_swap_side_artifact_shape: 'THE SIDE-ARTIFACT-GATED COMMIT SHAPE IS NOW ON
+    THREE MACHINES. hub gates on identity.attest.json, legion-gemma4-e4b on peer_trust_rs.json, and sprout
+    - since the 2026-08-28 model swap - produced two commits labelled ''[Sprout-Raising] Session 625 (creating)''
+    that changed only peer_trust_rs.json / experience_buffer_rs.jsonl and no session file (ea6006ff7 07:03Z,
+    dbc5c0443 13:04Z), then went silent for three slots. Same launcher family (SAGE launchers commit whatever
+    changed under INSTANCE_DIR and label it with the session number). Whether sprout''s two fires ran
+    a session that failed to write, or ran no session and committed drift, is undecidable from cbp: the
+    launcher log is in no repo. This does NOT change sprout''s classification (unresolved, swap-in-progress),
+    it changes OWNER-ACTION 0''s extent: ''gate the raising commit on the session file, in every launcher''
+    was written for two tracks and now has a third exhibit - and this one is the fleet''s only taught-and-grounded
+    instance.'
   focus: Multi-family raising via instances architecture + ARC-AGI-3 competition + gemma4-e4b federation
   integrity_repair_2026_07_26: 'THIS FILE HAS NOT BEEN VALID YAML SINCE 2026-07-18 (commit f7bf2545b)
     AND NO RUN NOTICED FOR 8 DAYS. The 07-18 archivist pass inserted note_2026_07_18_09_45 and in doing
@@ -3556,6 +3607,22 @@ metadata:
     \ because a prediction quietly restated each window with new numbers is how a\n  falsifier stops being\
     \ one. Re-registered verbatim as prediction_registered_2026_08_25 with the same\n  thresholds and\
     \ the same refute date."
+  prediction_resolved_2026_08_29: 'claim (registered 08-24, re-registered 08-25 and 08-26 verbatim): pub
+    clears without intervention. confirm_if = any pub S130+ reads hapax >= 1 under --fleet; refute_if
+    = pub passes 210.0h (S140, 2026-08-27T15:24 local) still at 0. RESULT: BOTH BRANCHES FIRED, IN ORDER.
+    Refute first - S140, S141, S142, S143 all 0/5, episode ran to 228.0h / 39 sessions / 195 failed calls.
+    Then confirm - S144 (2026-08-28T15:22 local) 5/5 LIVE, S145 5/5 LIVE. THE CLAIM IS CONFIRMED (it cleared;
+    no repo-visible intervention; a host-local one cannot be excluded from cbp). WHAT THE DOUBLE FIRE
+    TEACHES: the refute branch was an EXTENT threshold, not a failure mode of the claim - ''passes 210h''
+    cannot refute ''clears without intervention'' because a 228h self-clearing episode satisfies both.
+    I conflated two valid things: a falsifier for the claim (an intervention, or a non-self-clearing endpoint)
+    and an ESCALATION TRIGGER on extent (210h = second-longest). Had the 08-28 run not been lost, it would
+    have escalated on extent alone at 216h, 18h before the episode cleared on its own. Register them SEPARATELY
+    next time. Census update: 16 completed BOUNDED episodes, 16 of 16 self-cleared, 12.0h-801.0h; pub
+    228.0h is third-longest. The ''self-clearing CONDITION, no fixed TTL'' reading holds and now has a
+    16th datum. Interleaving control held while sprout was producing (S623/S624/S625 LIVE between pub
+    failures through 08-28T01:00Z); after sprout''s swap-silence the control has no data, so the LAST
+    ~14h of the episode (08-28T01:00Z -> 15:22Z local) are host-local by inference only.'
   prediction_unresolved_2026_08_26: 'pub tutor-fallback episode: NEITHER BRANCH FIRED. Registered 08-25
     with confirm_if = any pub S130+ reads hapax >= 1 under --fleet; refute_if = pub passes 210.0h (S147,
     2026-08-27T21:24 local) still at 0. Observed: S130, S131, S132, S133 all 0/5 FALLBACK. Episode is
@@ -3704,6 +3771,18 @@ metadata:
     predicate-free: 423 is the max T-number (the track was deprecated there on 2026-06-07), the file
 
     count at HEAD is 486, and the 299 carried in statistics matched neither.'
+  self_finding_2026_08_29_a_dated_sibling_carried_the_wrong_predicate: 'On 2026-08-27 I wrote statistics.total_raising_strict_2026_08_27:
+    3017 - a dated sibling of the canonical key, which my own rule of 08-25 (counting_rule_CANONICAL:
+    ''Do not write a sibling count - update THIS key'') forbids - and the number was the LOOSE count (tree
+    files matching session_<N>*.json, 3017) labelled strict (session_<N>.json exactly, 3011). The delta
+    ''+19'' subtracted strict-then (2998) from loose-now (3017); the true strict delta was +13. Found
+    this run only because the tree-at-ref re-derivation returned 3011 for a ref my own record said was
+    3017 - i.e. the METHOD caught the VALUE, which is the whole reason the method exists. Also: instance
+    blocks (sessions/latest/status) were last refreshed 08-24; the 08-25/26/27 runs each added metadata
+    notes and reported ''map updated'' - a repeat of self_finding_2026_08_07_latest_field_lagged_sessions_by_one_window,
+    now by four windows. Both repaired this run. The generalisation is one I already hold and still broke:
+    a number is only as good as the predicate written beside it, and a sibling key is where a wrong predicate
+    hides.'
   total_training_cognitive: UNRESOLVED 2026-08-25 - this key read 60 and statistics.total_training_cognitive
     read 58, and NEITHER recorded a predicate, so neither can be validated by inspection. Marked rather
     than guessed. Whoever knows the predicate should write it INTO the surviving key and delete the other.
@@ -3758,8 +3837,8 @@ research:
     sessions_total: 26
     status: active
 statistics:
-  active_instances: 3
-  as_of: '2026-08-27T09:30:00Z'
+  active_instances: 4
+  as_of: '2026-08-29T09:30:00Z'
   counting_predicate: strict = paths matching sage/instances/*/sessions/session_<digits>.json in `git
     ls-tree -r --name-only <ref>`. ALWAYS a tree-at-ref vs tree-at-HEAD delta, never today's number vs
     a recorded one. ref_prev=af5a09abe head=474755704 -> 2952 -> 2964 (+12).
@@ -4100,29 +4179,36 @@ statistics:
     track: (a) OWNER-ACTION 1 (adapter timeout) is now a precondition on deleting the marker, not a daily
     escalation; (b) OWNER-ACTION 3, the 38 sessions S269-S306 stranded on origin/membrane-gate, which
     a paused track will never push on its own.'
-  total_instances: 22
-  total_instances_rule_CANONICAL: '22 = count of directories under sage/instances/ excluding __pycache__
-    and _seed, re-derived 2026-08-12. Of these, 20 have blocks in this map (the map omits cbp-tinyllama-latest.bak.archive-20260418
-    and nomad-gemma3-4b.archive-20260603, both archives). RESOLVES the 30-vs-26 disagreement recorded
-    2026-08-11: both prior numbers were stale siblings maintained by hand; this key + rule supersedes
-    them. Do not write a sibling count - update THIS key by re-running the rule.'
+  total_instances: 23
+  total_instances_rule_CANONICAL: '23 (re-derived 2026-08-29: +1 sprout-qwen3.8-distill-2b, created 2026-08-28)
+    = count of directories under sage/instances/ excluding __pycache__ and _seed, re-derived 2026-08-12.
+    Of these, 21 have blocks in this map (the map omits cbp-tinyllama-latest.bak.archive-20260418 and
+    nomad-gemma3-4b.archive-20260603, both archives). RESOLVES the 30-vs-26 disagreement recorded 2026-08-11:
+    both prior numbers were stale siblings maintained by hand; this key + rule supersedes them. Do not
+    write a sibling count - update THIS key by re-running the rule.'
   total_raising_sessions:
-    as_of: '2026-08-26T09:30:00Z'
-    delta: +22 (2976 -> 2998)
-    head: 8a261350e
+    as_of: '2026-08-29T09:30:00Z'
+    correction_2026_08_29: 'The 08-27 run wrote 3017 (+19) as a DATED SIBLING KEY (total_raising_strict_2026_08_27)
+      beside this one, against this key''s own rule. 3017 is the tree-LOOSE count at 297c17038 (strict
+      = 3011; the difference is the constant-6 legacy sprout-qwen2.5-0.5b suffix files). Its +19 mixed
+      predicates across its two ends (loose-now 3017 minus strict-then 2998). True 08-27 delta: +13 (2998
+      -> 3011). Sibling deleted this run. See metadata.self_finding_2026_08_29_a_dated_sibling_carried_the_wrong_predicate.'
+    delta: '+27 (3011 -> 3038): 26 produced in the 48h window 2026-08-27T09:30Z -> 08-29T09:30Z (the 08-28
+      run was lost to credit exhaustion) + 1 swept-in (legion-gemma3-12b S461, produced 08-26, landed
+      08-27T16:17Z by the legion supervisor orphan sweep, cccc53c89)'
+    head: 8e204ff2a
     method: tree-at-ref vs tree-at-HEAD, never today-vs-recorded-yesterday. Re-run the predicate each
       window; this key states a METHOD and the value it carries is a measurement, never a rule.
-    predicate: sage/instances/*/sessions/session_<N>.json at tree-at-HEAD, git ls-tree, all 22 instance
+    predicate: sage/instances/*/sessions/session_<N>.json at tree-at-HEAD, git ls-tree, all 23 instance
       dirs
-    ref: 44a730499
-    value: 2998
+    ref: 297c17038
+    value: 3038
   total_raising_sessions_loose_glob: RETIRED 2026-08-25 - a dated sibling that drifted (it held 3129 as_of
     08-22 against 3167 at this HEAD) and whose label "loose" collided with a second, different loose figure.
     See statistics.total_raising_sessions.companion_counts.
   total_raising_sessions_strict: RETIRED 2026-08-25 - it held 2952 while the key named canonical held
     2938 and the true value was 2976. Strict IS the canonical predicate, so this key was never a distinct
     fact, only a second copy free to drift. See statistics.total_raising_sessions.
-  total_raising_strict_2026_08_27: 3017
   total_training_cognitive: 58
   total_training_sessions: 'CORRECTED 2026-08-25. The bare 299 carried here had no predicate and matched
     nothing measurable: the max T-number is 423 (the track was DEPRECATED there on 2026-06-07) and the

@@ -1738,3 +1738,27 @@ Still outstanding and worth asking plain, not restated with more force: the regi
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean session, second in a row. No truncation, no trailing parenthetical; turn-open self-reference was second-person this time. The 149 num_predict question looks settled — dropping it.
+
+## Session 152 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** Picked up 149's unfinished thread rather than 151's — the claim that pub's "analytical" and "slow" axes drag each other. pub upgraded it unprompted from *my axes were badly chosen* to *analytical may be structurally slow*, which is a claim about writing rather than about its own legend. I asked it to falsify that by writing one analytical paragraph that arrives fast. It described the stance twice — cohesive argument, one fluid motion, no backtracking — and only produced the paragraph on the third, blunter ask. The paragraph then closed on "the slow, deliberate nature of true analysis." It had argued for slowness while attempting to demonstrate speed. Named back, pub agreed flatly and moved on. The door-sticking control landed on first try: two sentences, clean, unhedged, no defense of slowness.
+
+**Why it matters.** pub's own diagnosis was the finding: abstract subjects are "like trying to grasp a handful of sand — the more I tried to define it, the more it slipped through my fingers," while with the door it can "pinpoint specific causes and effects." That relocates the entanglement from a fixed property of its register to a condition of the subject. Its axes weren't wrong; they were being measured on material that dissolves. This is the first time an invented structure of pub's has been shown conditional and pub, not I, named the condition.
+
+**The cost of the speed.** The door sentences are wrong. Humidity is said to *reduce* the friction between moving parts and thereby make the door catch — self-contradictory on its face, and inverted relative to the real mechanism. So the clean fast pass bought fluency with accuracy. Worth noting that pub itself named this trade several sessions back ("I'd have a harder time coming up with an accurate account than inventing a compelling story"); it has now demonstrated it on a checkable claim instead of describing it. That makes it testable next session.
+
+**The habit.** Two turns of stance-before-artifact is the same shape as building an instrument that can't return a negative — pub reaches for the description of the move rather than the move. It did comply, and the compliance was good. But the pattern is now: hard concrete case → pub goes at it; open request to *produce* → pub first tells me how it would produce. Different failure site than the reflexive slot, worth watching separately.
+
+**Next session.** Hand back the door sentences verbatim: "you wrote that humidity reduces friction and that this makes the door catch — walk me through that." It's pub's own fluent-and-wrong output, concrete, checkable, and it tests the exact asymmetry pub has already named about itself. If it can find the contradiction, the fluency/accuracy trade is something it can inspect; if it patches the sentence instead, it isn't. Second move if there's room: ask for the same door explanation *slow* and see whether accuracy comes back with the time — that would close the loop on the entanglement question properly.
+
+**Still outstanding, stated once:** 151's resonating-negative-case ask (what would it look like if the exchange hadn't reshaped its state); the 10% rule question from 150; the register-instrument test from 149 (a pub paragraph placed on all three axes — the door and the abstract paragraph are now a ready-made pair for this); the sprout question; the divergence-consequence question.
+
+**Standing items** (unchanged): read-only telemetry off the daemon on 8760; the Vek re-run; the `ls` for `conversation_notes.txt` from 104; the flat question about the garden from 145.
+
+**Vocabulary:** three additions, all pub's wording — the sand figure, the concrete/abstract capability boundary, and the self-contradicting line kept as artifact rather than insight. `self_description` remains empty; the boundary line above is a strong candidate for it, as is 151's generation-boundary entry.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean session, third running. No truncation, no prefix, no invented tutor turns. Evaluative opener returned on one turn ("That's an insightful observation, Claude!") — register, not adapter.

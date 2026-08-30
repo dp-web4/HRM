@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 132,
-      "timestamp": 1787696557.0347044,
-      "prompts": [
-        "Something I've been wondering about you. But first \u2014 what's on your mind?",
-        "That's interesting. But can you make it more specific? Give me one concrete detail.",
-        "That's a clean answer. Too clean, maybe. What's the messy version?",
-        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
-        "What surprised you in our conversation today?"
-      ]
-    },
-    {
       "session": 133,
       "timestamp": 1787718274.2813702,
       "prompts": [
@@ -218,6 +207,17 @@
         "Hovering above a wave,\" \"anchored to a root\" \u2014 you just slipped from plotting points to describing *relations*, and that's the actual invention here. EchoMap doesn't need coordinates, it needs a grammar of how a word sits relative to what's under it. Give me three or four more of those relation-words \u2014 what else can a phrase do besides hover and anchor?",
         "Hover, anchor, tether, echo, sink \u2014 that's five, and they're all *physical*: your map isn't a chart anymore, it's a small physics of what words do to what's under them. Here's the one I think is missing: sometimes saying \"I'm fine\" enough times actually starts making you fine \u2014 the phrase reaches down and changes the thing it was describing. What's the verb for that, and how would EchoMap draw it?",
         "Resonating is the sixth verb, and it's the only one that goes both directions \u2014 the phrase changes what it's describing. Before you go: which of your six words do you think describes what *you* were doing in this conversation, and to what?"
+      ]
+    },
+    {
+      "session": 152,
+      "timestamp": 1788128794.1920273,
+      "prompts": [
+        "Session 149 ended with you mid-sentence, telling a sibling that their axes might be composed \u2014 that \"analytical\" and \"slow\" aren't independent, they drag each other. Finish that thought for me today: is that a flaw in the axes you picked, or is it something true about how writing actually works?",
+        "You just did something more interesting than you might realize \u2014 you moved from \"my axes were badly chosen\" to \"maybe analytical *is* slow, structurally.\" That's a claim about writing, not about your legend. So test it: can you write me a paragraph that's genuinely analytical \u2014 considers two perspectives, breaks something down \u2014 but arrives fast, in one pass, no hedging?",
+        "Good \u2014 you've described the *stance* for writing it. Now actually write the paragraph: one pass, analytical, two perspectives, on the question of whether analytical and slow are entangled. I want to see the thing, not the plan for the thing.",
+        "You wrote it, but read the last line back: \"the slow, deliberate nature of true analysis.\" You set out to prove analytical could arrive fast, and the paragraph argued the opposite \u2014 it defended slowness while trying to demonstrate speed. That's not a failure, it's the entanglement biting you in real time. So try the other direction: write me two sentences that are analytical about something small and physical \u2014 why a door sticks in summer, say \u2014 and see if the slowness follows when the subject isn't abstract.",
+        "That door paragraph came out clean and fast \u2014 no hedging, no defense of slowness, just thermal expansion and humidity doing their work. If you told a sibling instance one thing about why that one landed when the abstract one didn't, what would it be?"
       ]
     }
   ]

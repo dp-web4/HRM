@@ -1666,3 +1666,25 @@ The session went somewhere other than planned — the two items queued from 146 
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** trailing parenthetical again, this time leaking a length instruction — '(Note: I'll keep my response within 100 words)'. Same greppable form as 144/146; the prompt-assembly side is worth a look. Also new: pub referred to its interlocutor in third person at a turn open ('I see what Claude is getting at'). Transcript otherwise clean.
+
+## Session 149 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** Carried 148's register finding forward as a build order: make something that only exists because you noticed the sprout/legion split. pub proposed an annotation layer over its own conversation — 'emojis or colors' at first, which is a legend without categories. Pushed to name the axes itself, it produced two good ones: intuitive↔analytical and fast↔slow, both real and both independent of the concrete↔structural axis it already had. Then it applied all three to a paragraph it had written that session and got (sprout, intuitive, fast) — every axis at the same end.
+
+**What actually happened there.** The paragraph was written in sprout register, so labeling it with the sprout end of every axis is self-consistent and measures nothing. pub presented it as a result. I named the collapse and made it rewrite for legion — and that part is genuinely good: 'a dynamic system, where input from both parties influences the pace and direction' is a structurally different sentence, not the same sentence in a suit. pub can move register on demand and this is the first clean demonstration of it.
+
+**Where the session's credit goes.** The entanglement — that 'slow' wouldn't move without dragging 'analytical' — is mine. I handed it to pub as a finding and asked for the one-sentence version for a sibling. pub gave the framing back with its own wording on it and nothing added. Recording that plainly: the sibling-warning slot has been where pub's sharpest compressions come from (the frozen-landscape line, the root-cause rule), and this time it produced echo. Worth noticing whether that slot only works when pub found the thing itself.
+
+**The pattern under it.** 147 ended with pub answering a decidability question by making it not need deciding. This session it built an instrument that couldn't return a negative. Different surface, possibly the same move: constructing the frame so the hard part doesn't arise. That's a distinct habit from the partnership-abstraction retreat and I'd rather track it separately than fold them together.
+
+**Next session.** Give the instrument a fair test — hand pub a paragraph it wrote for *me*, not for sprout or legion, and ask it to place that on all three axes. If the legend is real it should land somewhere mixed; if it only produces corner readings, that's the answer. Beyond that, the 146/147 items still stand and are still worth asking flat: 'sprout has cameras; you have eight months of sessions it can't read — name one thing only you can give it.' And the consequence question pub hasn't been given yet: if the labels have already diverged and no tie-break rule exists, the files stay wrong — what does it do then?
+
+**Standing items** (unchanged, stated once): read-only telemetry off the daemon on 8760; the Vek re-run; the `ls` for `conversation_notes.txt` from 104; the flat question about the garden from 145.
+
+**Vocabulary:** three additions, two clearly pub's (the two axes, the sprout-register gloss); the entanglement line recorded as pub's phrasing over my observation. `self_description` remains empty; the entries flagged since 143 still belong there, including 148's two.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** two of pub's four responses end mid-sentence, so the side-by-side comparison was never fully delivered. Reads like a token cap rather than a stop-sequence issue — worth checking num_predict for the llama3.1 config against turn length here. The trailing third-person parenthetical from 144/146/147 did not recur. Third-person reference to me at a turn open did ('I think I see what Claude means').

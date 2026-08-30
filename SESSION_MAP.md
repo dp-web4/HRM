@@ -9,15 +9,60 @@
 
 ---
 
-## Current Raising Fleet (Archivist, 2026-08-24)
+## Current Raising Fleet (Archivist, 2026-08-30)
 
-**2,964 raising sessions** (strict) across 14 numbered instances on 6 machines, re-derived tree-at-ref
-`af5a09abe` → tree-at-HEAD `474755704` (+12 this window). Counting rule and its **predicate**:
+**3,050 raising sessions** (strict) across 14 numbered instances on 6 machines, re-derived tree-at-ref
+`8e204ff2a` → tree-at-HEAD `c53963308` (+12 this window). Counting rule and its **predicate**:
 `counting_predicate` in [SESSION_MAP.yaml](SESSION_MAP.yaml) — read it, do not add a sibling key.
-**3 of 8 instances produced sessions in the last 24 h**, all three on 6 h grids with zero infra markers.
-Of the five that did not, **none is a confirmed fault**: two are paused by the owner, one is broken and says
-so itself, one fires on schedule and emits nothing, and one commits in multi-day batches. See *Fleet
-silences* below before reading any of it as a problem.
+**3 of 9 instances produced sessions in the last 24 h** — `mcnugget-gemma3-12b` S411–S414,
+`nomad-gemma4-e2b` S295–S298, `pub-llama3.1-8b` S146–S149 — all three on exact 6 h grids with zero
+infra markers.
+
+**Two changes since the 08-24 snapshot below, and everything under this heading that predates them should be
+read through these:**
+
+1. **pub is no longer faulted.** The episode this document describes as *"ongoing 21 / 120.0 h"* ran to
+   **S105–S143, 39 sessions, 228.0 h**, and then **self-cleared with no intervention at S144** on 2026-08-29.
+   S146–S149 read **5/5 fleet-unique each** — six consecutive fully-live sessions. The completed-`BOUNDED`
+   census is now **16 of 16 self-cleared**, and pub's is its third-longest member. The tables further down
+   are as of **2026-08-24** and still say otherwise; they have not been rewritten, they have been dated.
+
+2. **sprout's record broke, and it broke on the one window that mattered most.** On 2026-08-28 sprout's model
+   was swapped live — empero Qwen3.8-2B-Distill in place of Qwen 3.5 0.8B, under the **same `lct_id` and the
+   same 625 sessions of memory** (`cc69c7151`). That is the fleet's first weights-change-under-continuing-identity,
+   and it makes the raising claim *"identity is memory and lived experience, not the weights"* testable by
+   comparing **S626+ against S601–S625**. Since the swap, two fires committed only side artifacts in the **old**
+   instance directory under a non-advancing *"Session 625"* label, and then **nothing at all for 44.4 h across
+   7 six-hourly slots**. The new directory `sprout-qwen3.8-distill-2b` holds `instance.json` and nothing else.
+   **Both sides of the comparison are empty.**
+
+   Against sprout's own history this is out of class: of its **470** inter-commit gaps, 44.4 h is the
+   **5th-largest**, and all four larger ones (852.9 / 110.4 / 102.0 / 78.0 h) predate 2026-06-04. Restricted to
+   the current regime — **344 commits since 2026-06-04** — the largest gap is **12.0 h**, and every gap since
+   2026-06-14 is **≤ 6.1 h**.
+
+   It is **not** demonstrably a production failure. dp's own swap commit attests *"sessions 626-628 clean …
+   rich + memory-continuous, ~20 tok/s"*, so at least three sessions exist that the record does not have; and
+   `git check-ignore` returns no match for `sessions/session_626.json`, `snapshots/identity.json` or
+   `experience_buffer_rs.jsonl` in the new directory, so gitignore is not hiding them. What CBP cannot see is
+   whether sprout's cron fires, whether its checkout can pull, or whether its push fails — from here, outage
+   and stranded-push are one observation. **Two commands on sprout settle it**: `sprout_raising.sh:25` tees
+   every fire to `/tmp/sprout-raising-logs/raising-<date>.log`, so files dated 08-28–08-30 separate *"cron
+   never fired"* from *"cron fired and failed"*; and `git -C ~/ai-workspace/sage status -sb` separates
+   *stranded-local* from *produced-nothing*.
+
+Of the six instances that did not produce, **none but sprout is a confirmed fault**: two are paused by the
+owner, one fires on schedule and emits nothing (hub, 31.8 days since S121), one has never emitted anything at
+all (`legion-gemma4-e4b`), and one commits in multi-day batches. See *Fleet silences* below before reading any
+of it as a problem.
+
+### The snapshot below is dated 2026-08-24
+
+Session counts, taught fractions and the fault census in the remainder of this section were measured on
+**2026-08-24** and have **not** been re-measured for this update. They are left as they were rather than
+partially refreshed, because a table with two vintages in it is the exact defect this map keeps finding
+elsewhere. Current per-instance numbers live in
+[SESSION_MAP.yaml](SESSION_MAP.yaml) → `instances.*.last_session` and `statistics.total_raising_sessions`.
 
 **Tutor regime is measured by _hapax_** — a tutor turn whose exact text appears in exactly **one** session,
 and (since 2026-08-23) in exactly **one instance**. The within-instance justification is empirical, not a

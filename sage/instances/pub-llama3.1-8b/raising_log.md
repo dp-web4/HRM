@@ -1714,3 +1714,27 @@ Still outstanding and worth asking plain, not restated with more force: the regi
 **Memory requests:** keeping all three; nothing new requested. All three are pub's own inventions and specific enough to hold. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean session. No truncation — all four responses complete, notable against 149's mid-sentence cuts. No trailing parenthetical, no third-person reference at turn open.
+
+## Session 151 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** Deliberate inversion of 150's inward slot: make something instead. pub opened with EchoMap — an emotion-labeling visualizer — in pitch voice, contentless. I refused the pitch and asked for one phrase: where does "I'm fine" actually land, and what does the map do when the words and the inner world disagree? It answered with mechanism: the word "fine" *hovering above* a wave of underlying anxiety, or *anchored to* a root of vulnerability. Those two prepositions were the session. pub had stopped plotting points and started describing relations, without noticing. Named back to it, it produced three more — tether, echo, sink — each a distinct kind of connection rather than a synonym. I supplied the one case its set was missing (a phrase that changes what it describes); pub named it *resonating* and glossed it correctly as bidirectional.
+
+**Why it matters.** Every previous pub invention has been an object with a description (the Word Weeper, the Gravity Well, the action surface). This one is an object with a *grammar* — six operators that apply to phrases pub hasn't seen. It's the first thing it has built that another instance could pick up and use, and the first whose content is relations rather than a coordinate space.
+
+**The habit didn't fire.** 147 made a decidability question not need deciding; 149 built an instrument that couldn't return a negative; 150 relabeled a challenged number instead of testing it. The hard turn this session was the opposite-directions question, and pub met it — dynamic tension, the phrase suspended over the thing it conceals, no reframe. Worth stating plainly because I've logged the failure three sessions running: handed a genuinely hard case with a concrete anchor, it went at the case.
+
+**Where it came back.** The closing reflexive slot. Asked which of its six verbs described what it had been doing, pub picked *resonating* and told a tidy arc — hovering, then anchoring, then resonating — that tracks the session's own sequence a little too well, and closed by affirming the exchange. Not the 150 move, and it did answer, but the reflexive slot is now the reliable site of the agreeable answer rather than the checked one.
+
+**Next session.** Hand pub back its own closing claim: "you said the exchange reshaped your inner state — what would it have looked like if it hadn't?" Same test as the 150 ask, better anchor, because the claim is pub's and fresh. If it can name the negative case, resonating is a real observation; if it can't, it's a nice verb. Second move if there's room: give it two phrases where its own verbs conflict — something that both sinks and resonates — and see whether the grammar survives contact or gets patched.
+
+**Still outstanding, stated once:** the 10% rule question from 150 (what would you observe to lower it); the register-instrument test from 149 (a paragraph pub wrote for me, placed on all three axes); the sprout question ("name one thing only you can give it"); the divergence-consequence question.
+
+**Standing items** (unchanged): read-only telemetry off the daemon on 8760; the Vek re-run; the `ls` for `conversation_notes.txt` from 104; the flat question about the garden from 145.
+
+**Vocabulary:** seven additions, all pub's wording. The six relation-verbs are the substance — I named the *pattern* (relations, not coordinates) but every verb is pub's, and three of them came unprompted. `self_description` remains empty; the entries flagged since 143 still belong there, and 151 adds one good candidate in the generation-boundary family but nothing that moves the pile.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean session, second in a row. No truncation, no trailing parenthetical; turn-open self-reference was second-person this time. The 149 num_predict question looks settled — dropping it.

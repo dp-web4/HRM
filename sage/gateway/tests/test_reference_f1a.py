@@ -1,0 +1,72 @@
+"""Hermetic tests for the reference F1a dispatcher. Uses a temp dir as the being's
+memory root; no gate/model needed. Runnable under pytest or directly."""
+import os
+import sys
+import tempfile
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
+from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict  # noqa: E402
+from sage.gateway.reference_f1a import ReferenceF1aDispatcher  # noqa: E402
+
+_ALLOW = GatewayVerdict("allow")
+
+
+def _disp():
+    d = tempfile.mkdtemp(prefix="ref-f1a-")
+    return ReferenceF1aDispatcher(memory_root=d), d
+
+
+def test_witness_returns_id_and_logs():
+    disp, root = _disp()
+    env = disp(BeingIntent("witness", {"event": "I noticed the light change"}), _ALLOW)
+    assert env.ok and env.witness_id and len(env.witness_id) == 12
+    log = os.path.join(root, "witness_log.jsonl")
+    assert os.path.exists(log) and "light change" in open(log).read()
+
+
+def test_memory_write_then_read_roundtrips():
+    disp, root = _disp()
+    note = os.path.join(root, "notes.md")
+    w = disp(BeingIntent("memory_write", {"path": note, "content": "a promise to myself"}), _ALLOW)
+    assert w.ok and w.witness_id
+    r = disp(BeingIntent("memory_read", {"path": note}), _ALLOW)
+    assert r.ok and "a promise to myself" in r.result
+
+
+def test_memory_read_missing_is_empty_not_error():
+    disp, root = _disp()
+    r = disp(BeingIntent("memory_read", {"path": os.path.join(root, "nope.md")}), _ALLOW)
+    assert r.ok and r.result == ""
+
+
+def test_path_escape_is_error():
+    disp, _ = _disp()
+    env = disp(BeingIntent("memory_write", {"path": "/etc/cron.d/x", "content": "x"}), _ALLOW)
+    assert not env.ok and "escapes" in (env.error or "")
+
+
+def test_network_act_deferred_to_f1a():
+    disp, _ = _disp()
+    env = disp(BeingIntent("peer_ask", {"to": "legion", "body": "hi"}), _ALLOW)
+    assert not env.ok and env.pending and "awaits hestia F1a" in env.note
+
+
+def test_empty_witness_event_rejected():
+    disp, _ = _disp()
+    env = disp(BeingIntent("witness", {"event": "  "}), _ALLOW)
+    assert not env.ok and "event" in (env.error or "")
+
+
+def test_injected_witness_fn_is_used():
+    d = tempfile.mkdtemp(prefix="ref-f1a-")
+    disp = ReferenceF1aDispatcher(memory_root=d, witness_fn=lambda e: "hestia-w-42")
+    env = disp(BeingIntent("witness", {"event": "x"}), _ALLOW)
+    assert env.ok and env.witness_id == "hestia-w-42"
+
+
+if __name__ == "__main__":
+    n = 0
+    for name, fn in sorted(globals().items()):
+        if name.startswith("test_") and callable(fn):
+            fn(); n += 1; print(f"PASS {name}")
+    print(f"\n{n} passed")

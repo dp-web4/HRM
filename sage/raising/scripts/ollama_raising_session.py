@@ -1444,15 +1444,21 @@ RESPONSE STYLE:
             from pathlib import Path
             from sage.gateway.being_gate_client import BeingGateClient
             from sage.gateway.being_tool_loop import run_ollama_tool_turn
+            from sage.gateway.reference_f1a import ReferenceF1aDispatcher
             try:
                 workspace = str(Path(self.instance.root).resolve().parents[2])
             except Exception:
                 workspace = os.path.expanduser("~/ai-workspace/sage")
+            # Reference F1a: the being's own witness/memory acts execute (memory_* still
+            # needs its MRH grant to pass the gate); consequential network acts (peer_ask,
+            # channel_egress) await the real hestia F1a. Swap this for the hestia dispatcher
+            # once PR #579 lands.
+            dispatcher = ReferenceF1aDispatcher(memory_root=str(self.instance.root))
             client = BeingGateClient(
                 member_id=f"{getattr(self, 'machine', 'sprout')}-being",
                 identity_path=str(self.instance.identity),
                 workspace=workspace,
-                dispatcher=None,  # F1a not wired yet -> allowed intents stay 'pending'
+                dispatcher=dispatcher,
             )
             seed = [
                 {"role": "system", "content":

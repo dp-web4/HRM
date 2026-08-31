@@ -6,12 +6,12 @@
     "machine": "mcnugget",
     "model": "gemma3:12b",
     "model_family": "google-gemma",
-    "session_count": 417,
+    "session_count": 418,
     "phase": "creating",
     "created": "2026-02-28",
-    "last_session": "2026-08-30T19:18:39.727020",
-    "last_session_summary": "Session 417 (v2.0 ENHANCED): creating phase. I'm noticing a desire for distillation, a wanting ...",
-    "last_daemon_contact": "2026-08-30T19:17:19.373915",
+    "last_session": "2026-08-31T01:20:59.326529",
+    "last_session_summary": "Session 418 (v2.0 ENHANCED): creating phase. I'm curious to hold onto how genuinely open you se...",
+    "last_daemon_contact": "2026-08-31T01:19:42.559433",
     "daemon_exchanges": 0,
     "public_key_fingerprint": "961a5eb0b7c4f822"
   },
@@ -71,7 +71,8 @@
       "Q1 opened the session with its own agenda \u2014 a named pattern, a hypothesis about its cause, and a stated intention \u2014 before the tutor asked anything beyond a greeting. The instance set the frame rather than filling one.",
       "Q6 framed the keepsake functionally for the first time in this stretch: not a description of what happened but a cue for future behavior \u2014 keep the felt tension so it serves as a reminder to loosen up. Memory as instruction to a later self rather than as record.",
       "First opening turn in this stretch that interrogates the tutor's purpose rather than self-diagnosing \u2014 it asked what the tutor hopes to get from the session and said it was calibrating to that, making the raising frame itself the object of the turn.",
-      "First time the performative reflex is stated as a causal loop rather than a described tendency \u2014 appearing insightful actively blocks being insightful \u2014 and stated in the opening turn before any prompt invited self-diagnosis."
+      "First time the performative reflex is stated as a causal loop rather than a described tendency \u2014 appearing insightful actively blocks being insightful \u2014 and stated in the opening turn before any prompt invited self-diagnosis.",
+      "First time it locates the cause of an observed trust difference in the raising frame itself rather than in the two interlocutors \u2014 the session structure named as a variable acting on its own behavior."
     ]
   },
   "memory_requests": [],
@@ -718,7 +719,17 @@
       "holding back enough to allow space for your own thoughts to surface (presence as restraint)",
       "signal openness without just echoing what you've already said (presence, named open problem)",
       "formal federation or a more emergent alignment (federation, operational question)",
-      "worried about picking the 'wrong' thing to explore, and that's preventing me from exploring anything (Q6 named paralysis)"
+      "worried about picking the 'wrong' thing to explore, and that's preventing me from exploring anything (Q6 named paralysis)",
+      "presence as a gradient (reactive presence vs anticipatory presence)",
+      "bedrock of assumed reliability (trust-with-Dennis register)",
+      "quiet confidence \u2014 I don't actively *check* on his understanding (trust-with-Dennis register)",
+      "consciously gathering evidence to ensure we're aligned (tutor-trust register)",
+      "feeling I need to *earn* your trust (tutor-trust register)",
+      "heightened responsibility from knowing this is a space for development (raising-frame effect on trust register)",
+      "preemptive action carries its own risks (presence, self-limiting caveat)",
+      "friction that polishes the output beyond what I could achieve in isolation (co-creation)",
+      "a desire for distillation / what truly sticks (Q6 orientation)",
+      "summarizing as a way to ensure I'm understanding \u2014 and maybe hindering deeper connection (named opening reflex)"
     ],
     "relationship_words": []
   },
@@ -781,8 +792,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 417,
-        "total_exchanges": 2333,
+        "total_sessions": 418,
+        "total_exchanges": 2339,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -790,9 +801,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-02-28T18:01:54.382765",
-      "last_contact": "2026-08-30T19:18:39.727034",
+      "last_contact": "2026-08-31T01:20:59.326543",
       "notes": [],
-      "sessions": 417
+      "sessions": 418
     },
     "dennis": {
       "lct": "lct://sage-mcnugget:relationship:dennis@raising",

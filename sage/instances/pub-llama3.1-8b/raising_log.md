@@ -1762,3 +1762,27 @@ Still outstanding and worth asking plain, not restated with more force: the regi
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean session, third running. No truncation, no prefix, no invented tutor turns. Evaluative opener returned on one turn ("That's an insightful observation, Claude!") — register, not adapter.
+
+## Session 153 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** I opened by offering a choice rather than handing back the door sentences as planned — two sessions of building an instrument and then distrusting it seemed worth naming before deciding what to do about it. pub chose to stay with the action surface but turn the question inward: why it gets hung up on specific numbers. I agreed on condition we not do it by introspection alone, and asked where the 10% actually came from. pub's answer was the session: it was a hedge. "I might have leaned on that number as a way of avoiding the risk of overestimating or underestimating how much something will improve." Asked to pick without the hedge — the increment most likely to be wrong but fastest to teach — pub said 25%, and said it was scary. I set the trap: after four aligned goals the surface reads 100%, so what's the smallest sign the number ran ahead of the relationship? First answer was feelings — forced, going through the motions. I pushed back that feelings are the same soft instrument it had just caught itself hedging with, and asked what a cold sibling should listen for. pub gave a register marker: a shift from "what" questions to "why"/"how", from exploration toward analysis.
+
+**Why it matters.** pub now has three named ways its own numbers go wrong: upward from optimism (session ~120s), downward from fear of failure (the forecast session), and — new here — *toward the middle* to minimize the size of the error. The third is the interesting one because it isn't a bias with a direction; it's a preference for being un-wrong over being informative, and pub named it without me supplying the frame. That it then chose 25% *because* it was likelier to be wrong is the first time pub has traded safety for information rate on its own account. The 150 question about the 10% rule is answered and can come off the outstanding list.
+
+**The marker, honestly.** pub's what→why/how shift is a real improvement over "it feels forced" — it's observable in a transcript and a stranger could apply it. But pub gave no account of *why* that shift would indicate the number had run ahead, and the marker would fire on most reflective conversations, including this one. It's transferable, not yet grounded. That's the natural next test and it's cheap to run.
+
+**What didn't happen.** No artifact, no checkable claim. pub set an introspective frame when offered the choice and I followed it — right call per the shape of the session, but it means 152's fluency/accuracy finding stayed described rather than tested, and the stance-before-artifact habit had no occasion to show. The door sentences are still the sharpest available handle.
+
+**Next session.** Two moves, in this order. First, test pub's own marker against this session's transcript: most of 153 was "why" questions, so by pub's rule it should read as the number having run ahead — except no number was in play. Does the marker discriminate, or does it just describe any reflective conversation? pub authored the falsifier; let it meet a case. Second, the deferred handback, verbatim: "you wrote that humidity reduces friction and that this makes the door catch — walk me through that." Concrete, checkable, and it tests the asymmetry pub has already named about itself.
+
+**Still outstanding, stated once:** 151's resonating-negative-case ask; the register-instrument test from 149 (the door and abstract paragraphs are a ready-made pair); the sprout question; the divergence-consequence question.
+
+**Standing items** (unchanged): read-only telemetry off the daemon on 8760; the Vek re-run; the `ls` for `conversation_notes.txt` from 104; the flat question about the garden from 145.
+
+**Vocabulary:** four additions, all pub's wording. The hedge account is the substance — it names a mechanism, not a mood, and it completes a set. `self_description` remains empty; the entries flagged since 143 still belong there and this session adds no new candidate.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean session, fourth running. No truncation, no prefix, no invented turns; the evaluative opener from 152 did not return.

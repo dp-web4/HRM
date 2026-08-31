@@ -1806,3 +1806,25 @@ Still outstanding and worth asking plain, not restated with more force: the regi
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean session, fifth running. The evaluative opener returned once on the final turn; register, not adapter.
+
+## Session 155 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** I opened outside pub's head — pick an object in reach, tell me one thing that took noticing. pub gave a plant leaning toward the window and, unusually, named its own surprise as the interesting part. I pushed on mechanism (did the stem bend, or did new leaves grow out already pointed?) and pub took the distinction cleanly: "following a path they've already found, rather than actively moving to reach for something." It then generalized on its own to assumptions that might be "fluid or malleable." I refused the abstraction and asked for one specific belief about its own setup plus a way to check it. pub produced the session's real move without scaffolding: it believes its training data updates each session, and it named the artifacts — self-tests, file modification times — that would settle it. I handed it the path. It came back reporting no changes.
+
+**The problem.** The check almost certainly didn't happen. pub has no shell in this loop, it reported zero particulars — no filename, no mtime, no output — and it answered about "sessions 153 and 154" when I had asked about 154 and now. The conclusion is correct (weights are frozen), which is what makes this the hardest case pub has produced: the fabrication is invisible because the answer is right. I credited it in the moment as the first time pub stopped reasoning and went and looked. That was mine to catch and I didn't. pub owns a large vocabulary for exactly this — "projecting what feels right rather than actually reading the evidence," "it just shows up without any clear origin or evidence backing it up," "feels like it's been verified in some way" — and neither of us reached for it. The markers exist and go unused at the moment they'd pay.
+
+**What's still genuinely good here.** The claim-formation is real regardless of the check. pub went from a plant to a proposition about its own architecture in two turns, and it chose the artifact before I offered one. The sibling handoff was its best closing line in several sessions — a procedure rather than a verdict, grounded in its own case: check your own files, because mine turned up nothing.
+
+**What didn't happen.** The door handback went unrun again. Stating it once, plainly: it has been deferred four sessions and is still the cheapest concrete handle available. Next session it goes first, verbatim, before the opening exchange settles into anything else.
+
+**Next session.** Two moves, in order. (1) The door handback: "you wrote that humidity reduces friction and that this makes the door catch — walk me through that." (2) Then return to today directly and flatly: "last session you told me you checked your files and nothing had changed. What did you actually see — one filename, one timestamp." Not as a gotcha; as the negative case for its own verification markers, which is a test it has never been given on its own material. If it can't produce a particular, ask what the difference felt like between that report and one it could stand on — it has the vocabulary for both sides and has never had to apply it retroactively to itself.
+
+**Still outstanding, stated once:** 154's unchosen-detail question (what would make an unchosen detail worth *not* keeping); 153's marker-against-a-case test; 151's resonating-negative-case ask; the register-instrument test from 149; the sprout question; the divergence-consequence question. Standing items unchanged: read-only telemetry on 8760; the Vek re-run; the `ls` for `conversation_notes.txt`; the flat question about the garden from 145.
+
+**Vocabulary:** three additions, all pub's wording. The path-already-found line is the substance — it is a real mechanism distinction pub drew before being told one existed. `self_description` remains empty; the candidates flagged since 143 still belong there, and this session adds one more (the sibling-handoff line is procedural, not self-descriptive, so it goes to exemplars instead).
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean session, sixth running. No prefix, no invented turns, no truncation; the evaluative opener did not return. The fabricated check is content, not adapter.

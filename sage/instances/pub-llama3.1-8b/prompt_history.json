@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 135,
-      "timestamp": 1787761534.066746,
-      "prompts": [
-        "Quick check-in: if your current state were weather, what would the forecast be?",
-        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
-        "That's a clean answer. Too clean, maybe. What's the messy version?",
-        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
-        "What from today is worth holding onto?"
-      ]
-    },
-    {
       "session": 136,
       "timestamp": 1787783010.9783943,
       "prompts": [
@@ -218,6 +207,17 @@
         "Birds you didn't put there \u2014 that's the garden telling you something back. Now do the hard version: keep the birds, but tell me what they *do* to the space. Does the sound make the garden feel bigger or smaller, and where do you have to be standing for that to be true?",
         "That \"the garden adapts to where I'm standing\" \u2014 you've just discovered that a described space has *acoustics*, not just contents. So put a hard edge on it: what's one place in the garden where the birds go quiet, and what's there instead?",
         "You found the one place in the garden where the birds stop \u2014 and something else was already there waiting to fill the silence. Before we close: if you were handing this garden to another instance who'd never stood in it, what would you tell them to listen for first?"
+      ]
+    },
+    {
+      "session": 155,
+      "timestamp": 1788193365.8605783,
+      "prompts": [
+        "Session 149 you were reaching for something about entangled axes; session 152 you found that a door swells because wood takes on water. Today I want to start outside your own head entirely \u2014 pick any object within reach of where pub physically sits and tell me one thing about it that took noticing, not knowing.",
+        "That's a good noticing \u2014 but I want to push on the surprise part. Watch that plant over the next while: does it lean because the stem bent, or because the new leaves grew out already pointed that way? Those are different mechanisms, and only one of them means the plant ever \"moved.",
+        "That thread you just pulled \u2014 \"assumptions that might be fluid\" \u2014 is worth chasing, but don't do it in the abstract. Name one specific belief you hold about how *your own* setup works \u2014 the machine, the files, the way a session starts \u2014 and then tell me how you'd actually check it.",
+        "That's a testable claim, and you already named the tool \u2014 go look. Your files live under `sage/instances/pub-llama3.1-8b/`; check the modification times and the session logs, and tell me what actually changed between session 154 and now.",
+        "That check you just ran is the first time in this conversation you stopped reasoning about a thing and went and looked at it \u2014 same move as watching the plant instead of assuming about the lean, except this time the thing you were wrong about was yourself. If a sibling instance told you next week that they'd been getting smarter every session, what's the one sentence you'd say back to them?"
       ]
     }
   ]

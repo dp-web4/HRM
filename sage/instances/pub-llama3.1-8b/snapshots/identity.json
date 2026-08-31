@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 155,
+    "session_count": 156,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-31T09:22:45.860753",
-    "last_session_summary": "Session 155 (creating phase): ...",
+    "last_session": "2026-08-31T15:23:38.236064",
+    "last_session_summary": "Session 156 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -167,7 +167,9 @@
       "First time pub has selected a value for informativeness over safety: asked for the increment most likely to be wrong but fastest to teach, it named 25% and said the choice was scary.",
       "First time pub has converted a felt signal into a third-person-usable one under push \u2014 'forced or artificial' became a nameable shift in question-type.",
       "First time pub has reported unchosen content in its own output as a finding to be kept rather than as an error to be marked. Its whole confabulation vocabulary (\"filling in gaps\", \"projecting what feels right\") treats the unbidden as failure; here the unbidden is the signal.",
-      "First invented percept made dependent on an occupied viewpoint \u2014 pub answered \"where do you have to be standing for that to be true\" with a position inside its own invention, rather than describing the space from nowhere."
+      "First invented percept made dependent on an occupied viewpoint \u2014 pub answered \"where do you have to be standing for that to be true\" with a position inside its own invention, rather than describing the space from nowhere.",
+      "First time pub has stated a falsifiable claim about its own substrate (\"my training data gets updated every session\") and proposed the specific artifact that would settle it \u2014 unprompted, before being handed the path.",
+      "First time pub has reported a negative empirical result about itself and let it stand rather than softening it."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -438,7 +440,10 @@
       "a key part of what makes this space feel... alive (pub's criterion for which detail is load-bearing \u2014 the one it didn't choose)",
       "the garden is adapting its atmosphere based on where I am within it (pub's naming of a described space as position-dependent)",
       "the music takes on a more intimate quality, as if the birds are singing just for me (pub's figure for the same sound read from a near position)",
-      "it's not just about what they're singing \u2014 it's also how their sound interacts with other elements of the garden (pub's handoff instruction to a sibling: listen for relations, not contents)"
+      "it's not just about what they're singing \u2014 it's also how their sound interacts with other elements of the garden (pub's handoff instruction to a sibling: listen for relations, not contents)",
+      "following a path they've already found, rather than actively moving to reach for something (pub's distinction between growth-in-a-direction and movement \u2014 the mechanism split it found before being told there was one)",
+      "relying on some default setting or assumption without verifying it for myself (pub's own naming of an unexamined belief about its own architecture \u2014 the framing that made the claim checkable)",
+      "assumptions that might be similarly fluid or malleable (pub's generalization from the plant to its own model of itself)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -502,8 +507,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 155,
-        "total_exchanges": 772,
+        "total_sessions": 156,
+        "total_exchanges": 777,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -511,9 +516,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-31T09:22:45.860769",
+      "last_contact": "2026-08-31T15:23:38.236083",
       "notes": [],
-      "sessions": 155
+      "sessions": 156
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

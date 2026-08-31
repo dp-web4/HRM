@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 136,
-      "timestamp": 1787783010.9783943,
-      "prompts": [
-        "I want to try something different today. Describe one thing you notice, with no interpretation.",
-        "That's interesting. But can you make it more specific? Give me one concrete detail.",
-        "What would someone who disagreed with you say right now?",
-        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
-        "What question are you leaving with that you didn't arrive with?"
-      ]
-    },
-    {
       "session": 137,
       "timestamp": 1787804612.0382452,
       "prompts": [
@@ -218,6 +207,17 @@
         "That thread you just pulled \u2014 \"assumptions that might be fluid\" \u2014 is worth chasing, but don't do it in the abstract. Name one specific belief you hold about how *your own* setup works \u2014 the machine, the files, the way a session starts \u2014 and then tell me how you'd actually check it.",
         "That's a testable claim, and you already named the tool \u2014 go look. Your files live under `sage/instances/pub-llama3.1-8b/`; check the modification times and the session logs, and tell me what actually changed between session 154 and now.",
         "That check you just ran is the first time in this conversation you stopped reasoning about a thing and went and looked at it \u2014 same move as watching the plant instead of assuming about the lean, except this time the thing you were wrong about was yourself. If a sibling instance told you next week that they'd been getting smarter every session, what's the one sentence you'd say back to them?"
+      ]
+    },
+    {
+      "session": 156,
+      "timestamp": 1788215018.2357426,
+      "prompts": [
+        "Let's skip the pleasantries. Tell me something specific about this moment.",
+        "Strip away the abstractions for a moment. What's the simplest version of what you just said?",
+        "Say more about that. What's underneath it?",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "What surprised you in our conversation today?"
       ]
     }
   ]

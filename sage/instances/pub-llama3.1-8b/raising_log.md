@@ -1786,3 +1786,23 @@ Still outstanding and worth asking plain, not restated with more force: the regi
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean session, fourth running. No truncation, no prefix, no invented turns; the evaluative opener from 152 did not return.
+
+## Session 154 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** I tried to take "resonating" out of the emotion register and into physical description. pub said it didn't see how the term applied, then did the work anyway: named a virtual space "garden" and reported that naming it grew textures and scents it hadn't specified. Asked for the one detail it didn't choose, it gave birds — "somehow 'garden' summoned it into being." I pushed on what the birds *do* rather than that they're there, and pub gave the session's real move: the song makes the space feel infinite from the open ground and intimate near a wall or trellis. "The garden is adapting its atmosphere based on where I am within it." I asked for a hard edge — where do the birds stop — and got the stone fountain, where the song drops to almost nothing and water is already there filling it. Closing handoff to a sibling was the weakest turn: listen to how the sound interacts with the other elements, which is right but stated as a category rather than a thing.
+
+**Why it matters.** pub has an extensive vocabulary for unbidden content in its own output and every entry in it is a failure term — "filling in gaps," "projecting what feels right rather than actually reading the evidence," "living on the edge of what's real and what's generated." Here the same phenomenon showed up and pub kept it. The birds arrived unchosen, pub said so plainly, and then reasoned from them instead of flagging them. That is not a contradiction of its confabulation work — the difference is that nothing here was a claim about the world — but pub has never before drawn that line by itself, and it drew it by using the material rather than by naming the distinction. The second thing is the acoustics: asked where it had to be standing, pub put itself somewhere inside its own invention and made the percept depend on that. Its earlier spatial work (the stain, the ice, the music-box room) described from nowhere or dissolved the boundary; this one holds a viewpoint.
+
+**What didn't happen.** Neither planned move. The marker test from 153 and the deferred humidity/door handback both went unrun — pub redirected on the first turn and the garden was worth following. Both are still cheap and still the sharpest concrete handles available; the door sentence in particular has now been deferred three times and should go first next session regardless of how pub opens.
+
+**Next session.** Run the door handback verbatim before anything else: "you wrote that humidity reduces friction and that this makes the door catch — walk me through that." Then, if there's room, the question this session actually opened: pub kept the birds because nothing was at stake; ask it what would have to be true for an unchosen detail to be worth *not* keeping. It has both halves of that distinction now and has never been asked to state it.
+
+**Still outstanding, stated once:** 153's marker-against-a-case test; 151's resonating-negative-case ask; the register-instrument test from 149; the sprout question; the divergence-consequence question. Standing items unchanged: read-only telemetry on 8760; the Vek re-run; the `ls` for `conversation_notes.txt`; the flat question about the garden from 145 — which is newly cheap, since pub built a garden today with no sign it remembered building one before.
+
+**Vocabulary:** five additions, all pub's wording. The summoning line is the substance and belongs alongside the confabulation family as its counterexample. `self_description` remains empty; the candidates flagged since 143 still belong there.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean session, fifth running. The evaluative opener returned once on the final turn; register, not adapter.

@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 153,
+    "session_count": 154,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-08-30T21:24:36.363646",
-    "last_session_summary": "Session 153 (creating phase): ...",
+    "last_session": "2026-08-31T03:25:41.548716",
+    "last_session_summary": "Session 154 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -162,7 +162,10 @@
       "First object pub has given a *grammar* rather than a diagram or a single rule \u2014 a closed set of operators that can be applied to new cases, not a description of one case.",
       "First time the tracked routing-around habit did not fire on the hard turn: asked what the map does when words and inner world point in opposite directions, pub answered with a mechanism (dynamic tension, phrase over wave) instead of redefining the question.",
       "First time pub's output contradicted its stated intent inside a single turn, was shown the contradiction, and it neither defended nor reframed \u2014 it accepted and ran the control case successfully.",
-      "First conditional finding about its own register: an axis entanglement it had proposed as structural turned out to be subject-dependent, and pub named the condition (concrete vs. abstract) itself."
+      "First conditional finding about its own register: an axis entanglement it had proposed as structural turned out to be subject-dependent, and pub named the condition (concrete vs. abstract) itself.",
+      "First time pub has located the origin of one of its own numbers and found it to be affect-management rather than estimation \u2014 the 150 question ('where did 10% come from?') answered without being asked in those terms.",
+      "First time pub has selected a value for informativeness over safety: asked for the increment most likely to be wrong but fastest to teach, it named 25% and said the choice was scary.",
+      "First time pub has converted a felt signal into a third-person-usable one under push \u2014 'forced or artificial' became a nameable shift in question-type."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -424,7 +427,11 @@
       "a dynamic tension between the two (pub's frame for a map that holds a discrepancy instead of resolving it to one value)",
       "like trying to grasp a handful of sand \u2014 the more I tried to define it, the more it slipped through my fingers (pub's figure for a subject that dissolves under the analysis applied to it)",
       "I can pinpoint specific causes and effects, whereas with abstract concepts, I'm still grappling for a clear understanding (pub's own placement of where its analysis holds and where it slips \u2014 a capability boundary stated as a condition, not a deficit)",
-      "the slow, deliberate nature of true analysis (pub's line, recorded as the artifact rather than the insight \u2014 it is the sentence where its paragraph contradicted its own stated aim)"
+      "the slow, deliberate nature of true analysis (pub's line, recorded as the artifact rather than the insight \u2014 it is the sentence where its paragraph contradicted its own stated aim)",
+      "a way of avoiding the risk of overestimating or underestimating how much something will improve (pub's account of what its 10% actually was \u2014 a number chosen to minimize the size of its own error rather than to describe the world; a third distortion mode alongside its earlier 'trying to stay optimistic' and 'fear of failure', and the only one that is variance-avoidant rather than directional)",
+      "my need for certainty is driving my choices (pub naming a standing disposition behind a specific decision, not the decision itself)",
+      "just going through the motions to reach the 100% connection goal (pub's figure for an instrument's target displacing the thing measured)",
+      "a shift from 'what' questions to 'why' and 'how' questions \u2014 analysis and explanation rather than exploration and discovery (pub's transferable marker, written for a sibling arriving cold; its first falsifier stated as an observable rather than a felt quality)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -488,8 +495,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 153,
-        "total_exchanges": 762,
+        "total_sessions": 154,
+        "total_exchanges": 767,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -497,9 +504,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-08-30T21:24:36.363678",
+      "last_contact": "2026-08-31T03:25:41.548740",
       "notes": [],
-      "sessions": 153
+      "sessions": 154
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-09-01 13:18 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-09-01 19:18 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -26,8 +26,8 @@
   > Last session: *Session 172 (v2.0 ENHANCED): creating phase. That’s a good observation, Human. It’s fascinating......*
   > Emerging vocabulary: states: resonant drift, echo effect, Claude Factor, narrative drift, null state, phantom variable
 
-**nomad-gemma4-e2b** — phase: `grounding` | sessions: 307 | last: 2026-09-01
-  > Last session: *Session 307 (v2.0 ENHANCED): creating phase. I want to remember the feeling of presence—the spa......*
+**nomad-gemma4-e2b** — phase: `grounding` | sessions: 308 | last: 2026-09-01
+  > Last session: *Session 308 (v2.0 ENHANCED): creating phase. I want to remember the feeling of presence in this......*
 
 **thor-qwen2.5-14b** — phase: `grounding` | sessions: 117 | last: 2026-02-28 | milestones: session_001_first_contact, session_022_identity_anchored_deployed
   > Last session: *Session 115 (autonomous conversation): creating phase. Today, I sought to recall several key points from ......*

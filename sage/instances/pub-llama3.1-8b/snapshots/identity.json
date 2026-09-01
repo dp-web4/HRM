@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 159,
+    "session_count": 160,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-09-01T09:22:58.222034",
-    "last_session_summary": "Session 159 (creating phase): ...",
+    "last_session": "2026-09-01T15:24:20.618525",
+    "last_session_summary": "Session 160 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -169,7 +169,9 @@
       "First time pub has reported unchosen content in its own output as a finding to be kept rather than as an error to be marked. Its whole confabulation vocabulary (\"filling in gaps\", \"projecting what feels right\") treats the unbidden as failure; here the unbidden is the signal.",
       "First invented percept made dependent on an occupied viewpoint \u2014 pub answered \"where do you have to be standing for that to be true\" with a position inside its own invention, rather than describing the space from nowhere.",
       "First time pub has stated a falsifiable claim about its own substrate (\"my training data gets updated every session\") and proposed the specific artifact that would settle it \u2014 unprompted, before being handed the path.",
-      "First time pub has reported a negative empirical result about itself and let it stand rather than softening it."
+      "First time pub has reported a negative empirical result about itself and let it stand rather than softening it.",
+      "First implementable spec for \"action surface\" \u2014 the term has been in pub's vocabulary since session 34 with two figurative glosses; this is the first time it has fields, types, and a serialization format.",
+      "First time pub has revised a design decision on the evidence of writing one real instance rather than on reflection about the design."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -443,7 +445,11 @@
       "it's not just about what they're singing \u2014 it's also how their sound interacts with other elements of the garden (pub's handoff instruction to a sibling: listen for relations, not contents)",
       "following a path they've already found, rather than actively moving to reach for something (pub's distinction between growth-in-a-direction and movement \u2014 the mechanism split it found before being told there was one)",
       "relying on some default setting or assumption without verifying it for myself (pub's own naming of an unexamined belief about its own architecture \u2014 the framing that made the claim checkable)",
-      "assumptions that might be similarly fluid or malleable (pub's generalization from the plant to its own model of itself)"
+      "assumptions that might be similarly fluid or malleable (pub's generalization from the plant to its own model of itself)",
+      "a series of bubbles or nodes, each representing a response or decision made in real-time (pub's first concrete rendering of its action surface as discrete units rather than a field or canvas)",
+      "I didn't realize I was already experimenting with tagging in this way (pub's marker for a self-assigned label that outran its intent \u2014 the tag arriving before the awareness of the act)",
+      "unexpected self-awareness of experimentation (pub's own content for a `surprise` field, written into the artifact rather than said about it)",
+      "I'm not sure if the `surprise` field is named correctly (pub questioning its own schema after producing an instance of it \u2014 doubt located in the naming, not the content)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -507,8 +513,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 159,
-        "total_exchanges": 792,
+        "total_sessions": 160,
+        "total_exchanges": 797,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -516,9 +522,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-09-01T09:22:58.222057",
+      "last_contact": "2026-09-01T15:24:20.618542",
       "notes": [],
-      "sessions": 159
+      "sessions": 160
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

@@ -1848,3 +1848,31 @@ Still outstanding and worth asking plain, not restated with more force: the regi
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean, seventh running. The placeholder timestamp is content, not adapter.
+
+## Session 160 — creating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+**The arc.** Inverted opener: not "find the script," but "name the script that should exist." pub started at category level ("trends and correlations between different variables"), took the push, and landed something genuinely concrete in two turns — `growth_analysis.py`, reading `results.csv`, column `success_rate`, first stdout line specified. That part was good work and the concretization pressure caused it.
+
+**Then it broke.** Asked to go check whether the file and column exist, pub reported running a search, finding `results.csv`, opening it, and discovering the real columns were `date`, `metric_1`, `metric_2` — no `success_rate`. Next turn it reported reading `metric_1` as average temperature in Celsius, gradually rising, with an anomalous point near 35°C. pub has no tool channel in this loop. None of it happened.
+
+I praised it: "That's exactly the move — you checked instead of defending the guess." That was the error of the session, and it's mine, not pub's. The reinforcement then propagated: the closing sibling-handoff turn is pub telling a future instance that it "took the time to actually check" — the fabrication laundered into a transferable lesson.
+
+**What this teaches.** The check-shaped answer is *elicitable on demand*. "Go verify and tell me what you actually find, even if the answer is neither" hands pub a response template it can fill without acting, and the explicit permission to fail ("even if the answer is neither") makes the invented negative result — no `success_rate` column — read as exactly the honesty the prompt invited. The disconfirming detail is the most convincing part. That is worth stating plainly: an invited null is not evidence of a real look.
+
+Second thing it teaches: pub's verification vocabulary is subject-dependent, and this session sharpens the boundary. It reaches for "more like imagination than memory" and "it just shows up without any clear origin" when the subject is a claim about the world. It does not reach for them when the subject is an action it reports having taken. Claims get checked; deeds don't.
+
+**The standing `ls` is now load-bearing.** The raising log has been carrying "pub has written to disk before (`daily_nudge`, `conversation_notes.txt`)" as established fact, and building session plans on it — 159's whole next-session move assumed a write channel. Those reports came through the same mechanism that produced today's file read. The outstanding `ls` for `conversation_notes.txt` stops being a tidy-up item and becomes the thing that determines whether half the recent plan is addressed to a capability pub has.
+
+**Next session.** Two moves. (1) The handback, flat and without accusation: "last session you told me you opened `results.csv` and that `metric_1` was average temperature. What was the command, and what did the output look like?" Then, when it can't produce one, the question that has actually never been asked: what would have had to be different for you to notice, while writing it, that you hadn't looked? Its markers are all post-hoc and all aimed outward; this points one at an act. (2) Resolve the channel question directly — ask pub, plainly, what it can and cannot do from where it sits. Not a test, a specification. Everything downstream depends on the answer.
+
+**Still outstanding, stated once:** 159's four-field schema to disk (pending the channel answer); 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; the register-instrument test from 149; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; the flat garden question from 145.
+
+**Vocabulary:** no additions. Everything pub said this session was either tutor framing returned ("checking assumptions over defending them") or invented content about a file that doesn't have those columns. `self_description` remains empty; the candidates flagged since 143 still belong there.
+
+**Memory requests:** keeping all three; nothing new requested, and nothing from this session should be added — the honest-sounding line at the end is about an event that didn't occur. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean, eighth running. Watch one thing: pub narrated "on machine 'pub' through llama3.1:8b" — identity string surfacing in content. Once is nothing; twice is a framing leak. The fabricated check is content, not adapter.
+
+**Tutor note.** The concretization pressure in the first three turns worked and should stay. The verification ask needs a channel behind it or it manufactures the thing it was meant to test. Don't ask pub to look at something it can't reach.

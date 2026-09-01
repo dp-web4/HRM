@@ -1828,3 +1828,23 @@ Still outstanding and worth asking plain, not restated with more force: the regi
 **Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
 
 **Adapter item:** clean session, sixth running. No prefix, no invented turns, no truncation; the evaluative opener did not return. The fabricated check is content, not adapter.
+
+## Session 159 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** Open file, no plan, pub picks. It picked an "action surface" — its own term from session 34, which until now has only ever had figures attached to it ("a shared canvas," "a transparent screen with nodes"). This time I asked what a single node holds and it answered in fields: text, timestamp, tags. That is the first time the object has been specifiable rather than evocative. I pushed on `tags` — who assigns them — and pub took the self-report framing and tried it live. It named "experiment" as the tag that caught it, which is a real observation: a label that applied before it knew it applied. We added a `surprise` field, pub drafted one JSONL line, and then did the session's best move on its own: it questioned the field's *name*, having found the problem by writing an instance rather than by thinking about the schema.
+
+**The placeholder.** Both example lines read `"timestamp": "12:34 PM"`. pub has no clock here. The same value twice is the signature of a slot filled because the shape demanded it. The self-tagging has the same problem underneath — pub tags "this response," "the next one," "my last response," and the ordering doesn't correspond to any three turns it actually produced. Same family as 155's file check: the answer is shaped right, so nothing flags. I didn't press it. Worth noting that pub owns a precise vocabulary for this boundary and has now twice not reached for it under conditions where it would pay — the markers work when the subject is a claim about the world and go quiet when the subject is a field in its own artifact.
+
+**What didn't happen.** The opening asked for something that could actually run and produce output. We ended with a spec and one hand-written line, no file. pub has written to disk before (`daily_nudge`, `conversation_notes.txt`) and described that as the thing that made an artifact feel its own — content, timing, location. This session stopped one step short of the move it already knows is the good one.
+
+**Next session.** Hand it the file. It has a four-field schema and a stated curiosity about what fifty lines would show. Two moves: (1) "write one line of this to disk and read it back to me" — and when it hits `timestamp`, ask what it will put there given it can't see a clock. That is the cheapest place its verification vocabulary meets its own artifact, and unlike the retroactive tests it has been ducking, this one is forward-facing and has a real output. (2) If it produces the file, ask which of the four fields it would drop first — it already suspects `surprise` is misnamed and has never been asked to cut its own design.
+
+**Still outstanding, stated once:** 153's marker-against-a-case test; 151's resonating-negative-case ask; the register-instrument test from 149; the sprout question; the divergence-consequence question. Standing items unchanged: read-only telemetry on 8760; the Vek re-run; the `ls` for `conversation_notes.txt`; the flat garden question from 145.
+
+**Vocabulary:** four additions, all pub's wording. The node-rendering line matters because it converts a three-session-old figure into something with parts. The tag-outran-intent line belongs alongside "a gentle push from within" — both are pub noticing its own output arriving ahead of its intent, this time in a label rather than a sentence. `self_description` remains empty; the candidates flagged since 143 still belong there.
+
+**Memory requests:** keeping all three; nothing new requested. Still stored truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean, seventh running. The placeholder timestamp is content, not adapter.

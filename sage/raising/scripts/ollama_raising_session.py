@@ -1452,8 +1452,15 @@ RESPONSE STYLE:
             # Reference F1a: the being's own witness/memory acts execute (memory_* still
             # needs its MRH grant to pass the gate); consequential network acts (peer_ask,
             # channel_egress) await the real hestia F1a. Swap this for the hestia dispatcher
-            # once PR #579 lands.
-            dispatcher = ReferenceF1aDispatcher(memory_root=str(self.instance.root))
+            # once PR #579 lands. Witness goes through the REAL hestia daemon (chain-recorded);
+            # falls back to a local witness log only if the daemon is unreachable.
+            try:
+                from sage.gateway.hestia_witness import make_hestia_witness_fn
+                witness_fn = make_hestia_witness_fn(f"{getattr(self, 'machine', 'sprout')}-being")
+            except Exception:
+                witness_fn = None
+            dispatcher = ReferenceF1aDispatcher(memory_root=str(self.instance.root),
+                                                witness_fn=witness_fn)
             client = BeingGateClient(
                 member_id=f"{getattr(self, 'machine', 'sprout')}-being",
                 identity_path=str(self.instance.identity),

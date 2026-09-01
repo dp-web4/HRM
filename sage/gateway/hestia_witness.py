@@ -1,0 +1,128 @@
+"""
+Real hestia witness for the reference F1a dispatcher's witness_fn.
+
+Emits a witnessed action to the local hestia daemon over MCP — the begin_action ->
+record_outcome pair the claude-code witness hook uses — and returns the daemon's
+actionId as the witness id.
+
+FAIL-SAFE by contract: any error, refusal, or unreachable daemon returns None, so the
+caller (ReferenceF1aDispatcher) falls back to its local witness_log.jsonl. Witnessing
+must never break the being's turn, and a witness must never be silently dropped — worst
+case it lands in the local log instead of the chain.
+"""
+from __future__ import annotations
+
+import json
+import urllib.request
+from typing import Callable, Optional
+
+_ENDPOINT = "http://127.0.0.1:7711/mcp"
+_PROTOCOL = "2024-11-05"
+_TIMEOUT = 4.0
+
+
+def _parse(text: str) -> dict:
+    """Hestia returns plain JSON-RPC or an SSE stream carrying it — handle both."""
+    text = text.strip()
+    if not text:
+        return {}
+    if text.startswith("{"):
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            return {}
+    for line in reversed(text.splitlines()):
+        line = line.strip()
+        if line.startswith("data:"):
+            body = line[5:].strip()
+            if body.startswith("{"):
+                try:
+                    return json.loads(body)
+                except json.JSONDecodeError:
+                    continue
+    return {}
+
+
+def _unwrap(resp: dict) -> dict:
+    result = resp.get("result") or {}
+    sc = result.get("structuredContent")
+    if isinstance(sc, dict):
+        return sc
+    for blk in result.get("content") or []:
+        if isinstance(blk, dict) and blk.get("type") == "text":
+            try:
+                return json.loads(blk.get("text", ""))
+            except json.JSONDecodeError:
+                pass
+    return {}
+
+
+class _Mcp:
+    def __init__(self, endpoint: str, plugin_id: str):
+        self.endpoint = endpoint
+        self.plugin_id = plugin_id
+        self.sid: Optional[str] = None
+        self._n = 0
+
+    def _id(self) -> int:
+        self._n += 1
+        return self._n
+
+    def _req(self, body: dict, notify: bool = False) -> Optional[dict]:
+        headers = {"Content-Type": "application/json",
+                   "Accept": "application/json, text/event-stream"}
+        if self.sid:
+            headers["mcp-session-id"] = self.sid
+        req = urllib.request.Request(self.endpoint, data=json.dumps(body).encode(),
+                                     headers=headers, method="POST")
+        with urllib.request.urlopen(req, timeout=_TIMEOUT) as r:
+            if not self.sid:
+                sid = r.headers.get("mcp-session-id")
+                if sid:
+                    self.sid = sid
+            if notify:
+                return None
+            return _parse(r.read().decode("utf-8", errors="replace"))
+
+    def init(self) -> None:
+        self._req({"jsonrpc": "2.0", "id": self._id(), "method": "initialize",
+                   "params": {"protocolVersion": _PROTOCOL, "capabilities": {},
+                              "clientInfo": {"name": self.plugin_id, "version": "1"}}})
+        self._req({"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}},
+                  notify=True)
+
+    def call(self, name: str, args: dict) -> dict:
+        return self._req({"jsonrpc": "2.0", "id": self._id(), "method": "tools/call",
+                          "params": {"name": name, "arguments": args}}) or {}
+
+
+def make_hestia_witness_fn(plugin_id: str,
+                           endpoint: str = _ENDPOINT) -> Callable[[str], Optional[str]]:
+    """Return a witness_fn(event) -> actionId|None that records via the real daemon.
+
+    plugin_id is the member the act is attributed to (e.g. 'sprout-being'). If the
+    daemon does not recognise it or refuses, we return None and the caller witnesses
+    locally instead — the being is never blocked, and the record is never lost.
+    """
+    def witness_fn(event: str) -> Optional[str]:
+        try:
+            c = _Mcp(endpoint, plugin_id)
+            c.init()
+            begin = _unwrap(c.call("hestia_begin_action",
+                                   {"tool_name": "witness", "target": (event or "")[:200]}))
+            if "_hestia_error" in begin:
+                return None
+            action_id = begin.get("actionId")
+            if not action_id:
+                return None
+            # Best-effort completion; the act is already recorded by begin_action, so we
+            # return the id even if record_outcome hiccups.
+            try:
+                c.call("hestia_record_outcome",
+                       {"action_id": action_id, "success": True, "magnitude": 0.0})
+            except Exception:
+                pass
+            return action_id
+        except Exception:
+            return None
+    return witness_fn

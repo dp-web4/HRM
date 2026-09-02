@@ -1,0 +1,55 @@
+{
+ "lct_id": "lct:web4:mb32:bajud2pfskjapk4unwnyzvbbbxvdsao2okpubiix6ejn6aefm3xtq",
+ "document": {
+  "id": "50c7424e-e225-4fde-a5e3-f9efc4191a06",
+  "entity_type": "ai_software",
+  "status": "active",
+  "public_key": {
+   "key": "237dc0c2f4c401fdad9b9bf07c2de97b47c0d8d85be65ceb903207e7bb5a213b"
+  },
+  "created_at": "2026-07-15T21:32:26.155637559Z",
+  "created_by": null,
+  "hardware_binding": {
+   "level": 4,
+   "description": "Software-bound keys (development)",
+   "trust_ceiling": 0.85
+  },
+  "parent_id": null,
+  "lineage_depth": 0,
+  "binding_proof": {
+   "bytes": "e35c802728f5f626650c831690e7ea8b5c23759f2a3d3da201845077b3c7507ad9eea6571c15c9c58ed091b4b65a1e0a63a5b865330a4ec11850e66b1e9e2300"
+  },
+  "mrh": {
+   "bound": [
+    {
+     "lct_id": "lct:web4:mb32:bt4f3y7vkccvc4ibbqigrs2goephznuy7zqthkt7bh2yagjjqsn4a",
+     "edge_type": "parent",
+     "ts": "2026-07-15T21:32:26.155637559Z"
+    }
+   ],
+   "horizon_depth": 0
+  },
+  "legacy_alias": {
+   "legacy_id": "lct:web4:member:d7860ca24b7325605b3a1aee",
+   "derivation": {
+    "scheme": "hestia_member",
+    "plugin_id": "claude-code",
+    "sovereign": "lct:web4:hestia:sovereign:phase1-placeholder"
+   }
+  },
+  "operational_keys": [
+   {
+    "pubkey": {
+     "key": "b70380bae8121f223fd89ef032739689b514373e307c151fe443a90c263d74d8"
+    },
+    "purpose": "witnessing",
+    "proof": {
+     "bytes": "c63daa54588123a8dcc3e1e6e0199a40b59fee489ea30cb2724b2ed11d326b1639c9313b5431ac7eea8eda89fc8059cca3c9c32359061d40bb4ba06bcaa5140f"
+    }
+   }
+  ]
+ },
+ "published_by": "61525719-def6-475c-a030-917f24a9dbf2",
+ "provenance": "self_issued",
+ "published_at": "2026-09-02T18:08:16.858172356Z"
+}

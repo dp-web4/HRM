@@ -28,10 +28,15 @@ from sage.gateway.hestia_witness import _ENDPOINT, _Mcp, _unwrap
 HUB_NOTIFY = os.path.expanduser("~/ai-workspace/private-context/hub-mesh/hub-notify.sh")
 
 
-def _row_id(r: Dict[str, Any]) -> Optional[str]:
-    for k in ("id", "notice_id", "noticeId", "row_id"):
+def _row_id(r: Dict[str, Any]) -> Optional[int]:
+    """The daemon parses mark_forwarded/mark_failed with `as_u64()` — a string id is
+    silently ignored and the row re-forwards every drain (measured: row 2 sent twice)."""
+    for k in ("id", "queued_id", "notice_id", "noticeId", "row_id"):
         if r.get(k) is not None:
-            return str(r[k])
+            try:
+                return int(r[k])
+            except (TypeError, ValueError):
+                return None
     return None
 
 

@@ -1455,12 +1455,12 @@ RESPONSE STYLE:
             # honest-pending until hestia grows a send side. Falls back to the reference-only
             # dispatcher if the real one cannot be constructed — never breaks a session.
             try:
-                from sage.gateway.hestia_f1a import HestiaF1aDispatcher
+                from sage.gateway.hestia_dispatch import HestiaF1aDispatcher, make_forum_publisher
                 _ppd = os.path.expanduser("~/ai-workspace/shared-context/forum")
+                _pid = f"{getattr(self, 'machine', 'sprout')}-being"
                 dispatcher = HestiaF1aDispatcher(
-                    plugin_id=f"{getattr(self, 'machine', 'sprout')}-being",
-                    host_agent="sage-raising", memory_root=str(self.instance.root),
-                    peer_pointer_dir=_ppd if os.path.isdir(_ppd) else None)
+                    _pid, memory_root=str(self.instance.root),
+                    publish_fn=make_forum_publisher(_ppd, _pid) if os.path.isdir(_ppd) else None)
             except Exception as _e:
                 print(f"[tools] real F1a unavailable ({type(_e).__name__}); using reference dispatcher")
                 from sage.gateway.hestia_witness import make_hestia_witness_fn

@@ -145,3 +145,43 @@ def test_local_verbs_delegate_to_reference():
     assert w.ok and r.ok and "kept" in r.result
     wit = d(BeingIntent("witness", {"event": "x"}), _ALLOW)
     assert wit.ok and wit.witness_id
+
+
+# ---- ported from the folded hestia_f1a tests (2026-09-02) --------------------------------
+from sage.gateway.being_gate_client import BeingIntent as _BI, GatewayVerdict as _GV  # noqa: E402
+from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as _HD, make_forum_publisher  # noqa: E402
+_ALLOW_ = _GV("allow")
+
+
+def test_peer_ask_with_forum_publisher_posts_then_notifies():
+    root_dir = tempfile.mkdtemp(prefix="hd-forum-")
+    d, _ = _disp(publish_fn=make_forum_publisher(os.path.join(root_dir, "shared-context", "forum"), "sprout-being"))
+    env = d(_BI("peer_ask", {"to": "legion", "body": "Are you still you?"}), _ALLOW_)
+    assert env.ok, env
+    notify = [a for n, a in FakeMcp.calls if n == "hestia_member_notify"][-1]
+    assert notify["to_plugin_id"] == "legion/claude-code" and notify["kind"] == "coordination"
+    assert notify["pointer_uri"].startswith("shared-context/forum/sprout-being-asks-legion-")
+    posted = os.path.join(root_dir, notify["pointer_uri"])
+    assert os.path.exists(posted) and "still you" in open(posted).read()
+
+
+def test_mesh_witness_id_falls_back_to_queued_id():
+    class NoHash(FakeMcp):
+        def call(self, name, args):
+            r = super().call(name, args)
+            sc = r["result"]["structuredContent"]
+            if name == "hestia_member_notify":
+                sc.pop("witnessEntryHash", None)
+            return r
+    FakeMcp.calls = []
+    d = _HD("sprout-being", tempfile.mkdtemp(prefix="hd-"), mcp_factory=lambda ep, pid: NoHash(ep, pid))
+    env = d(_BI("mesh", {"to": "legion", "kind": "ack", "pointer_uri": "x.md"}), _ALLOW_)
+    assert env.ok and env.witness_id == "7", env
+
+
+if __name__ == "__main__":
+    n = 0
+    for name, fn in sorted(globals().items()):
+        if name.startswith("test_") and callable(fn):
+            fn(); n += 1; print(f"PASS {name}")
+    print(f"\n{n} passed")

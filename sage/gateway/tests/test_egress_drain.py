@@ -18,7 +18,7 @@ class FakeMcp:
             return _sc({"pending": self.pending, "total": len(self.pending), "drain_contract": {}})
         return _sc({})
 
-ROW = {"id": "n-1", "forward_on": "61525719-def6-475c-a030-917f24a9dbf2", "forward_on_is_lct": True,
+ROW = {"id": 7, "forward_on": "61525719-def6-475c-a030-917f24a9dbf2", "forward_on_is_lct": True,
        "kind": "coordination", "pointer_uri": "shared-context/forum/x.md", "attempts": 0}
 
 def test_forwards_and_marks_forwarded():
@@ -27,14 +27,14 @@ def test_forwards_and_marks_forwarded():
     assert r["forwarded"] == 1 and r["failed"] == 0 and not r["empty"]
     assert sent == [("61525719-def6-475c-a030-917f24a9dbf2", "coordination", "shared-context/forum/x.md")]
     marks = [a for n, a in m.calls if n == "hestia_egress_pending" and "mark_forwarded" in a]
-    assert marks and marks[0]["mark_forwarded"] == "n-1" and marks[0]["session_id"] == "s-9"
+    assert marks and marks[0]["mark_forwarded"] == 7 and isinstance(marks[0]["mark_forwarded"], int) and marks[0]["session_id"] == "s-9"
 
 def test_sender_failure_marks_failed_with_reason():
     m = FakeMcp(pending=[ROW])
     r = drain_once(mcp=m, sender=lambda to, kind, ptr: (False, "hub refused: kind gate"), log=lambda *_: None)
     assert r["failed"] == 1 and r["forwarded"] == 0
     marks = [a for n, a in m.calls if n == "hestia_egress_pending" and "mark_failed" in a]
-    assert marks and marks[0]["mark_failed"] == "n-1" and "kind gate" in marks[0]["reason"]
+    assert marks and marks[0]["mark_failed"] == 7 and "kind gate" in marks[0]["reason"]
 
 def test_empty_queue_is_empty_not_error():
     r = drain_once(mcp=FakeMcp(pending=[]), sender=lambda *a: (True, ""), log=lambda *_: None)

@@ -175,7 +175,8 @@ class HestiaF1aDispatcher:
             "egress_queued_to": out.get("egress_queued_to"),
             "recipient_liveness": out.get("recipient_liveness"),
         }
-        return ResultEnvelope(ok=True, result=result, witness_id=out.get("witnessEntryHash"))
+        return ResultEnvelope(ok=True, result=result,
+                              witness_id=out.get("witnessEntryHash") or (str(out["queued_id"]) if out.get("queued_id") is not None else None))
 
     # -- peer_ask: a compose, not a verb ------------------------------------
     def _do_peer_ask(self, intent: BeingIntent) -> ResultEnvelope:
@@ -255,3 +256,20 @@ if __name__ == "__main__":  # live smoke against the local daemon: mesh -> membe
     env = d(BeingIntent("mesh", {"to": to, "kind": kind, "pointer": ptr}), GatewayVerdict("allow"))
     print(json.dumps({"ok": env.ok, "result": env.result, "error": env.error,
                       "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))
+
+
+def make_forum_publisher(pointer_dir: str, plugin_id: str) -> PublishFn:
+    """Default publish_fn for peer_ask: the question lives AT a cross-seat-readable pointer
+    (a shared-context/forum file, repo-relative), never in the notice (KINDS.md). The file
+    must be pushed for the peer to read it; the notice only points."""
+    from datetime import datetime
+    from pathlib import Path
+
+    def publish(to: str, body: str) -> str:
+        d = Path(pointer_dir); d.mkdir(parents=True, exist_ok=True)
+        ts = datetime.now().strftime("%Y-%m-%d-%H%M%S")
+        p = d / f"{plugin_id}-asks-{to.replace('/', '-')}-{ts}.md"
+        p.write_text(f"---\nfrom: {plugin_id}\nto: {to}\nkind: coordination\ndate: {ts[:10]}\n---\n\n{body.strip()}\n")
+        sp = str(p); i = sp.find("shared-context/")
+        return sp[i:] if i >= 0 else sp
+    return publish

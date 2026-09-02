@@ -1449,18 +1449,24 @@ RESPONSE STYLE:
                 workspace = str(Path(self.instance.root).resolve().parents[2])
             except Exception:
                 workspace = os.path.expanduser("~/ai-workspace/sage")
-            # Reference F1a: the being's own witness/memory acts execute (memory_* still
-            # needs its MRH grant to pass the gate); consequential network acts (peer_ask,
-            # channel_egress) await the real hestia F1a. Swap this for the hestia dispatcher
-            # once PR #579 lands. Witness goes through the REAL hestia daemon (chain-recorded);
-            # falls back to a local witness log only if the daemon is unreachable.
+            # REAL F1a against the running hestia daemon (Legion's verb map, hestia #834):
+            # mesh -> hestia_member_notify; peer_ask -> compose (pointer + coordination notify);
+            # witness/memory via the reference (witness already chain-recorded); channel_egress
+            # honest-pending until hestia grows a send side. Falls back to the reference-only
+            # dispatcher if the real one cannot be constructed — never breaks a session.
             try:
+                from sage.gateway.hestia_f1a import HestiaF1aDispatcher
+                _ppd = os.path.expanduser("~/ai-workspace/shared-context/forum")
+                dispatcher = HestiaF1aDispatcher(
+                    plugin_id=f"{getattr(self, 'machine', 'sprout')}-being",
+                    host_agent="sage-raising", memory_root=str(self.instance.root),
+                    peer_pointer_dir=_ppd if os.path.isdir(_ppd) else None)
+            except Exception as _e:
+                print(f"[tools] real F1a unavailable ({type(_e).__name__}); using reference dispatcher")
                 from sage.gateway.hestia_witness import make_hestia_witness_fn
-                witness_fn = make_hestia_witness_fn(f"{getattr(self, 'machine', 'sprout')}-being")
-            except Exception:
-                witness_fn = None
-            dispatcher = ReferenceF1aDispatcher(memory_root=str(self.instance.root),
-                                                witness_fn=witness_fn)
+                dispatcher = ReferenceF1aDispatcher(
+                    memory_root=str(self.instance.root),
+                    witness_fn=make_hestia_witness_fn(f"{getattr(self, 'machine', 'sprout')}-being"))
             client = BeingGateClient(
                 member_id=f"{getattr(self, 'machine', 'sprout')}-being",
                 identity_path=str(self.instance.identity),

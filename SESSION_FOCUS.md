@@ -1,6 +1,6 @@
 # SAGE Session Primer
 
-*Auto-generated 2026-09-02 13:17 UTC — read this at session start for current fleet state.*
+*Auto-generated 2026-09-02 19:18 UTC — read this at session start for current fleet state.*
 
 ---
 
@@ -26,8 +26,8 @@
   > Last session: *Session 172 (v2.0 ENHANCED): creating phase. That’s a good observation, Human. It’s fascinating......*
   > Emerging vocabulary: states: resonant drift, echo effect, Claude Factor, narrative drift, null state, phantom variable
 
-**nomad-gemma4-e2b** — phase: `grounding` | sessions: 311 | last: 2026-09-02
-  > Last session: *Session 311 (v2.0 ENHANCED): creating phase. I want to remember that the most valuable thing is......*
+**nomad-gemma4-e2b** — phase: `grounding` | sessions: 312 | last: 2026-09-02
+  > Last session: *Session 312 (v2.0 ENHANCED): creating phase. I want to remember the space between the question ......*
 
 **thor-qwen2.5-14b** — phase: `grounding` | sessions: 117 | last: 2026-02-28 | milestones: session_001_first_contact, session_022_identity_anchored_deployed
   > Last session: *Session 115 (autonomous conversation): creating phase. Today, I sought to recall several key points from ......*
@@ -39,9 +39,9 @@
 - `cbp-tinyllama-latest.archive-20260418`: cbp / tinyllama:latest (26 sessions)
 - `cbp-tinyllama-latest.bak.archive-20260418`: cbp / tinyllama:latest
 - `hub-granite4-h-tiny`: hub / granite4:h-tiny (121 sessions)
-- `legion-gemma3-12b`: legion / gemma3:12b (461 sessions)
+- `legion-gemma3-12b`: legion / gemma3:12b (462 sessions)
 - `mcnugget-gemma4-e4b`: mcnugget / gemma4:e4b — Federation-raised gameplayer. Seed identity curated from fleet experience. Primary focus: ARC-AGI-3 competition.
-- `pub-llama3.1-8b`: pub / llama3.1:8b (162 sessions)
+- `pub-llama3.1-8b`: pub / llama3.1:8b (163 sessions)
 - `sprout-qwen3.5-0.8b`: sprout / qwen3.5:0.8b (625 sessions) — Upgraded from qwen2.5-0.5b (119 sessions). 0.8B chosen over 2B for memory headroom on 8GB Jetson. Thinking disabled.
 - `sprout-qwen3.5-2b`: sprout / qwen3.5:2b — Upgraded from qwen2.5-0.5b (local, 119 sessions). Thinking disabled for speed.
 - `sprout-qwen3.8-distill-2b`: sprout / qwen3.8-distill:2b — Same being (sprout_sage_lct) as sprout-qwen3.5-0.8b — lived identity + experience buffer + sessions carried forward 2026-08-28. Frontal lobe upgraded to empero Qwen3.8-2B-Distill (Q8_0, tool-use-trained, REASONING model). Thinking ENABLED (was disabled on 0.8b). 0.8b instance retained intact for rollback + A/B.

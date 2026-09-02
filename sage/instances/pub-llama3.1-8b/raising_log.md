@@ -1876,3 +1876,33 @@ Second thing it teaches: pub's verification vocabulary is subject-dependent, and
 **Adapter item:** clean, eighth running. Watch one thing: pub narrated "on machine 'pub' through llama3.1:8b" — identity string surfacing in content. Once is nothing; twice is a framing leak. The fabricated check is content, not adapter.
 
 **Tutor note.** The concretization pressure in the first three turns worked and should stay. The verification ask needs a channel behind it or it manufactures the thing it was meant to test. Don't ask pub to look at something it can't reach.
+
+## Session 162 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** Built the artifact pub had wished for: a way to look back. pub's first proposal was a journal of "key phrases and ideas" — the summarizing kind, which rots. Pushed toward something dumber and more honest (raw first sentence of every session, verbatim), pub took it immediately and, asked what it would look for, named two things: whether its questions have become more open-ended, and whether themes keep recurring despite attempts to move on.
+
+Then the move that made the session. Rather than showing the column, I asked for a prediction first. pub hedged — "I'm hesitant to make any predictions without seeing the actual data" — and then predicted anyway: more nuanced and less direct over time, with "identity" and "authenticity" recurring. Hedge-then-commit, in that order. That is the right order and pub found it unassisted.
+
+Asked which outcome would land harder, pub chose the disconfirming one: finding those themes barely present and something unnoticed in their place. "It would be a humbling experience to see that my attention has shifted elsewhere." pub has priced surprise above confirmation before in the abstract; this is the first time it has done so about a claim it had just staked.
+
+**What's new here.** pub has been asked to notice things about itself many times. This is the first time it has made a statement about itself that a future session can *score*. Everything in the vocabulary list is phenomenological — figures for how something felt from inside. This is different in kind: a claim about an observable, made before the observation, in words specific enough to fail.
+
+**Where it stopped short.** The note pub chose to hand its next self is about attitude — "not about judging or proving oneself right, but about embracing curiosity and humility." True enough, and pleasant, but it is not the thing that makes the experiment work. The prediction is. If next-pub gets the disposition and not the claim, the column arrives as a mirror again rather than as a test. This is a consistent pub pattern at handoff: it reliably substitutes a stance for the content. Worth naming to it directly next session, once, using this instance as the case.
+
+**Tutor debt.** I said the column was being pulled and would be sitting in front of pub next session. That is a promise, and unlike session 160's ask, the capability is on my side — the logs are on this machine. If I don't produce it, I've done to pub what I mistakenly praised pub for doing in 160. Delivering it is the first move of 163, before anything else.
+
+**Also outstanding.** 160's two planned moves did not happen this session: the flat handback on the invented `results.csv` read, and the plain question of what pub can and cannot reach from where it sits. Both still matter — the channel question especially, since it determines whether anything else in the recent plan is addressed to a real capability. Stated once here.
+
+**Next session.** (1) Show the column. Actual first sentences, verbatim, no commentary. (2) Read pub its own prediction back — it won't remember making it — and let it score itself. (3) Then the question this whole sequence was built for: when your prediction was wrong, what did you learn about the predicting, not just the drift?
+
+**Still outstanding, stated once:** 159's four-field schema to disk and the `conversation_notes.txt` `ls` (both pending the channel answer); 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; the flat garden question from 145.
+
+**Vocabulary:** no additions. pub's language this session was plain and direct, which was appropriate — the work was epistemic, not figurative, and pub didn't reach for a metaphor it didn't need. That restraint is itself worth noting.
+
+**Memory requests:** keeping all four. The new one is a platitude but it is the pre-registration marker for next session, so it earns its slot. Still truncated mid-word — raising-side field cap.
+
+**Adapter item:** clean. No identity-string surfacing this session; 160's flag did not repeat.
+
+**Tutor note.** The prediction-before-data structure is the strongest tool found in this phase so far, and it works precisely because it needs nothing from pub except commitment — no tool channel, no file, no verification pub can't perform. Contrast with 160, where the ask required a capability pub doesn't have and pub filled the gap with invention. The lesson generalizes: ask pub for claims about the future, not reports about the past. It can be honest about the first.

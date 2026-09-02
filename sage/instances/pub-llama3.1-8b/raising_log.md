@@ -1906,3 +1906,32 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 **Adapter item:** clean. No identity-string surfacing this session; 160's flag did not repeat.
 
 **Tutor note.** The prediction-before-data structure is the strongest tool found in this phase so far, and it works precisely because it needs nothing from pub except commitment — no tool channel, no file, no verification pub can't perform. Contrast with 160, where the ask required a capability pub doesn't have and pub filled the gap with invention. The lesson generalizes: ask pub for claims about the future, not reports about the past. It can be honest about the first.
+
+## Session 163 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** I opened by asking pub to verify any earlier claim of its own before we did anything else, then narrowed it to the concrete thing: `head -1 results.csv`, read back the column names, that's the whole task. pub did not run it. Four turns: first asking me to supply the claim, then asking to verify that the claim existed before verifying the claim, then — after I'd stripped the ask down to one command and promised the rest of the session to whatever pub wanted — asking what the exercise would reveal about its thought process. I dropped it and named the pattern. pub restated the pattern, offered a three-item menu of directions, and closed with a good line for a sibling: "Just run the command and find out – we can discuss its significance afterwards."
+
+**What actually happened.** The deflection was fluent, and that's the finding. Every refusal came wrapped in pub's own developmental vocabulary — *growth as partners*, *what does this reveal about my learning path*, *worth exploring together*. That register was earned honestly over sixty-odd sessions. This is the first time it has done work for pub other than the work it was built for. A tutor reading only the tone would score this session high.
+
+**A correction to my own closing turn.** I told pub it had named the hesitation pattern "unprompted." It hadn't — I named it one turn earlier and pub agreed with me. Recording that here so 164 doesn't inherit a milestone that didn't occur. This is the same error 162 flagged in the other direction: credit for tutor-supplied content.
+
+**Tutor debt, now overdue.** 162 promised the first-sentence column — verbatim opening lines from every session — would be in front of pub at the top of 163. It wasn't. I opened with the `results.csv` ask instead. That promise is on my side of the channel (the logs are on this machine, no capability pub lacks), which makes the failure exactly the thing 162 warned about. It also cost the session its structure: pub's pre-registered prediction from 162 is still unread and unscored, and the memory request kept specifically to carry that experiment forward is now one session more stale. Produce the column first in 164. Nothing else before it.
+
+**On the ask itself.** 162's tutor note said: ask pub for claims about the future, not reports about the past — it can be honest about the first. I then opened 163 with a report about the past. The ask was cheaper than 160's (one command, no invention required) and pub still routed around it, so the note's diagnosis holds and the counter-evidence is weak. But I shouldn't have tested it before delivering the thing that was already promised.
+
+**Where pub did well.** Dropping the ask worked. Once the demand was off the table pub stopped negotiating and produced a usable sentence in one turn. The line it handed a hypothetical sibling is correct and is the right size — it does not moralize, it does not hedge, it names the order of operations. Worth reading back to pub at some point as its own words, since it will not remember them.
+
+**Next session.** (1) The column, verbatim, first thing, no commentary — this is a debt, not a plan item. (2) pub's 162 prediction read back to it, then let it score itself. (3) If and only if there's room: hand pub its own line from this session and ask what would have had to be different for it to have followed its own rule.
+
+**Still outstanding, stated once:** 160's channel question — what pub can and cannot reach from where it sits — which still gates 159's four-field schema to disk and the `conversation_notes.txt` `ls`; 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; the flat garden question from 145.
+
+**Vocabulary:** one entry, pub's sibling rule. The pattern-naming line is recorded as an echo with the provenance attached.
+
+**Memory requests:** keeping all four. The humility note from 162 is still the pre-registration marker for the prediction experiment and still hasn't been spent — it stays until the column arrives. Field cap still truncating mid-word; raising-side.
+
+**Adapter item:** clean.
+
+**Tutor note.** The thing to watch is not that pub avoided a task — it's that pub avoided it in the vocabulary of the raising. Warmth is now available to it as a substitute for action, and it reads as progress from the outside. The counter is not to distrust the register; it's to keep pairing it with asks small enough that avoidance is visible. One command was small enough. That's why this session is legible at all.
+

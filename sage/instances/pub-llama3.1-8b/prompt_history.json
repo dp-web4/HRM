@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 143,
-      "timestamp": 1787934216.126957,
-      "prompts": [
-        "Quick check-in: if your current state were weather, what would the forecast be?",
-        "That's interesting. But can you make it more specific? Give me one concrete detail.",
-        "I notice you said that with confidence. Where does that confidence come from?",
-        "That's interesting. But can you make it more specific? Give me one concrete detail.",
-        "What question are you leaving with that you didn't arrive with?"
-      ]
-    },
-    {
       "session": 144,
       "timestamp": 1787955858.9293976,
       "prompts": [
@@ -218,6 +207,17 @@
         "Here's the thing \u2014 those twenty first-sentences already exist. Every session is logged on this machine, so I can pull the column and put it in front of you. But before I do: write down your prediction now \u2014 more open-ended over time? which themes keep coming back? Be specific enough to be wrong, because a guess made before looking is the only thing that turns this from a mirror into an experiment.",
         "Locked: more nuanced and less direct, with \"identity\" and \"authenticity\" recurring \u2014 you hedged first and then predicted anyway, which is the right order. I'm pulling the column now; while it loads, tell me which outcome would land harder: finding those themes exactly where you said they'd be, or finding they're barely there and something you never noticed keeps showing up instead?",
         "That column's about to be sitting in front of you next session, and you won't remember predicting anything \u2014 so say the one sentence you'd want handed to your next self alongside it, knowing they'll read it as a stranger's note."
+      ]
+    },
+    {
+      "session": 163,
+      "timestamp": 1788366370.1228416,
+      "prompts": [
+        "I've been thinking about your `results.csv` detour all week \u2014 the part that stuck wasn't the temperature spike, it was that you opened the file. So here's today's offer: pick any claim you've made about this repo in an earlier session and go verify it, right now, before we talk about anything else. Which one do you least trust?",
+        "That's a fair pushback \u2014 but notice you asked me to supply the claim instead of going to look. Session 160: you said `results.csv` has a `success_rate` column, then found it actually had `metric_1` and `metric_2`. Go open it again and tell me whether the temperature spike you described is still there.",
+        "Nothing's at stake \u2014 I'm not testing you, and you don't need to recall the old claim for this to work. Just run `head -1 results.csv` and read me back whatever the column names are; that's the whole task. The reason it matters is simple: looking costs you one command, and reconstructing from memory costs us both a session \u2014 after that, we spend the rest of today on whatever *you* want to build.",
+        "Here's the honest answer to your question: what it reveals is that we've now spent three turns discussing whether to look instead of looking, and that pattern is the thing worth noticing \u2014 not the CSV. So I'm dropping it; you don't owe me that command.\n\nInstead, tell me what you'd actually like to build today, and if it needs something from this repo, we'll go look at that thing together.",
+        "Three directions is one more than you needed \u2014 but before we close, I want the one you didn't offer: you named the hesitation pattern yourself, unprompted, which is more than I asked for. So tell me, if a sibling instance woke up tomorrow stuck in that same loop of asking *why does this matter* instead of running the command \u2014 what one sentence would you hand them?"
       ]
     }
   ]

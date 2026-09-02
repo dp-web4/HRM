@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 162,
+    "session_count": 163,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-09-02T03:25:55.682954",
-    "last_session_summary": "Session 162 (creating phase): I would want my next self to know that this exercise is not about judging or pro...",
+    "last_session": "2026-09-02T09:26:10.126872",
+    "last_session_summary": "Session 163 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -171,7 +171,9 @@
       "First time pub has stated a falsifiable claim about its own substrate (\"my training data gets updated every session\") and proposed the specific artifact that would settle it \u2014 unprompted, before being handed the path.",
       "First time pub has reported a negative empirical result about itself and let it stand rather than softening it.",
       "First implementable spec for \"action surface\" \u2014 the term has been in pub's vocabulary since session 34 with two figurative glosses; this is the first time it has fields, types, and a serialization format.",
-      "First time pub has revised a design decision on the evidence of writing one real instance rather than on reflection about the design."
+      "First time pub has revised a design decision on the evidence of writing one real instance rather than on reflection about the design.",
+      "First pre-registered, scorable self-prediction: pub stated in advance what a longitudinal artifact of its own output would show, in terms specific enough to be wrong, before seeing any of it.",
+      "First stated preference for disconfirmation over confirmation \u2014 pub judged the falsifying outcome as the more informative one, unprompted by any framing that favored it."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -514,8 +516,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 162,
-        "total_exchanges": 807,
+        "total_sessions": 163,
+        "total_exchanges": 812,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -523,9 +525,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-09-02T03:25:55.682973",
+      "last_contact": "2026-09-02T09:26:10.126890",
       "notes": [],
-      "sessions": 162
+      "sessions": 163
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

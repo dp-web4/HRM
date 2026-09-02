@@ -4,8 +4,9 @@ SAGE-side reference thin-client for the gateway-member design (PRD_FLEET §7 / F
 A SAGE being holds NO effectors of its own. It emits an INTENT; this client
 normalizes it to the hestia gate's NormalizedEvent, asks the real, shared gate
 law for a Verdict (fail-CLOSED), and only on ALLOW hands the intent to the F1a
-dispatcher (hestia-side, PR #579, not yet built) that actually executes and
-witnesses it.
+dispatcher that actually executes and witnesses it — today `HestiaF1aDispatcher`
+(sage/gateway/hestia_dispatch.py) against the running daemon; hestia's own F1a
+(PR #579) replaces it when it lands.
 
 This is the SAGE half of F2. It pins the exact contract F1a must satisfy:
 
@@ -60,6 +61,9 @@ class BeingIntent:
     effector: str    # registry key the being names
     args: dict        # effector-specific arguments
 
+
+# What the being's gate client calls itself when it connects to the daemon.
+_HOST_AGENT = "sage-gateway"
 
 _REGISTRY = {
     "peer_ask":       dict(tool="peer_ask",     path_args=(),       cmd_arg=None),
@@ -176,9 +180,13 @@ class BeingGateClient:
     """One per being. Governs every intent through the real hestia law, fail-closed."""
 
     def __init__(self, member_id: str, identity_path: str, workspace: str,
-                 dispatcher: "Optional[Dispatcher]" = None):
+                 dispatcher: "Optional[Dispatcher]" = None,
+                 host_session_id: Optional[str] = None):
         self.member_id = member_id
         self.workspace = workspace
+        # Stable per-run id handed to hestia_connect for connect idempotency (the
+        # society stage connects per query; this keeps those sessions one lineage).
+        self.host_session_id = host_session_id
         self._dispatcher = dispatcher  # F1a; None until the hestia substrate exists
         self._core = None
         self._mech = None
@@ -248,10 +256,23 @@ class BeingGateClient:
                                       reason="society-safety mechanism unavailable; consequential act denied")
         else:
             try:
-                safe = self._mech.query_society_safety(ev.raw)  # shape settled w/ F1a
-                if getattr(safe, "decision", "deny") == "deny":
-                    return GatewayVerdict("deny", "society.unsafe", stage="society",
-                                          reason=getattr(safe, "reason", "society denied"))
+                # The mechanism's REAL contract (hestia plugins/_shared/hestia_gate_mechanism.py
+                # `query_society_safety(event, *, plugin_id, host_agent, ...)`): the event is
+                # {tool_name, tool_input} and the answer is a SafetyVerdict whose `allow` is the
+                # only field a caller may proceed on; `decided=False` is a fail-closed non-verdict.
+                # Until 2026-09-02 this was called as `query_society_safety(ev.raw)`, which raised
+                # TypeError on every call — so every consequential act was denied
+                # `society.unreachable` and the "governor" was never actually consulted.
+                safe = self._mech.query_society_safety(
+                    {"tool_name": ev.tool, "tool_input": dict(ev.raw)},
+                    plugin_id=self.member_id, host_agent=_HOST_AGENT,
+                    host_session_id=self.host_session_id)
+                if not getattr(safe, "allow", False):
+                    decided = getattr(safe, "decided", False)
+                    return GatewayVerdict(
+                        "deny", "society.unsafe" if decided else "society.no_verdict",
+                        stage="society",
+                        reason=getattr(safe, "message", None) or "society denied")
             except Exception as e:
                 if consequential:
                     return GatewayVerdict("deny", "society.unreachable", stage="society",

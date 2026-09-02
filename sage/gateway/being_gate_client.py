@@ -14,7 +14,7 @@ This is the SAGE half of F2. It pins the exact contract F1a must satisfy:
 Design invariants (answering CBP's REQUEST_CHANGES on #579):
   * FAIL-CLOSED: a being that cannot reach the law is STOPPED, never ungoverned.
     When society-safety (Stage 2) is unavailable or errors, CONSEQUENTIAL effectors
-    (peer_ask, memory_write, channel_egress) hard-deny; only OBSERVATIONAL effectors
+    (peer_ask, memory_write, channel_egress, mesh) hard-deny; only OBSERVATIONAL effectors
     (witness, memory_read) soft-pass, since they carry no external effect and
     witness is itself the accountability primitive. Local-law admission (Stage 1)
     is never enough on its own for a consequential act — end-to-end execution
@@ -67,13 +67,14 @@ _REGISTRY = {
     "memory_read":    dict(tool="read_file",    path_args=("path",), cmd_arg=None),
     "memory_write":   dict(tool="write_note",   path_args=("path",), cmd_arg=None),
     "channel_egress": dict(tool="channel_send", path_args=(),       cmd_arg=None),
+    "mesh":           dict(tool="mesh_notify",  path_args=(),       cmd_arg=None),  # §7.2 5th verb
 }
 
 # Society-safety failure boundary per effector class. Observational acts carry no
 # external effect and may soft-pass when the society governor is unavailable;
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read"})
-_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress"})
+_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -87,6 +88,11 @@ _TOOL_SCHEMAS = {
                      {"path": "path to your note", "content": "what to write"}, ["path", "content"]),
     "channel_egress": ("Send a message out through a sealed channel.",
                        {"to": "recipient", "body": "your message"}, ["to", "body"]),
+    "mesh": ("Wake another member through the fractal mesh with a pointer-based notice "
+             "(no body — point at content you already posted).",
+             {"to": "member name", "kind": "notice kind, e.g. coordination, reply, ack",
+              "pointer": "URI of the content (a shared-context path, PR, or thread)"},
+             ["to", "kind", "pointer"]),
 }
 
 

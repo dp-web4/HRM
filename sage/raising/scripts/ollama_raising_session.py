@@ -1470,7 +1470,8 @@ RESPONSE STYLE:
             seed = [
                 {"role": "system", "content":
                  "You have a small set of real tools you may use through the hub, if you "
-                 "wish: peer_ask (send a message to another being), witness (record a "
+                 "wish: peer_ask (send a message to another being), mesh (wake a member with a "
+                 "pointer to something you posted), witness (record a "
                  "note), memory_read / memory_write (your own notes). You are never "
                  "required to use them, and anything you do is governed and may be refused."},
                 {"role": "user", "content":

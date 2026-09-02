@@ -102,7 +102,7 @@ def test_pending_f1a_when_no_dispatcher():
 def test_run_ollama_tool_turn_with_fake_llm():
     from sage.gateway.being_gate_client import ollama_tools
     from sage.gateway.being_tool_loop import run_ollama_tool_turn
-    assert len(ollama_tools()) == 5  # exactly the bounded registry, nothing more
+    assert len(ollama_tools()) == 6  # exactly the bounded registry (§7.2: 5 verbs + memory split r/w), nothing more
 
     calls = {"n": 0}
 

@@ -1,0 +1,35 @@
+{
+  "_sprout": {
+    "note": "seed generated and held on sprout; document only is relayed",
+    "public_key_hex": "6f777cd1afea259534f9b14dc8b2b382c9f8dd3f9575d33e83d906501f78e155",
+    "seed_path": "/home/dp/.web4/legion-being/channel_key.bin"
+  },
+  "action": "lct_publish",
+  "document": {
+    "binding_proof": {
+      "bytes": "5f17903f2d4d45041213ccaa5f7f325b3052e4cd1ad165670d6600f0a33c3d8d8b7a42abb94855cb5516185684e632f6c8e9c86d1a7277ff83c1e9711dc17d0a"
+    },
+    "created_at": "2026-09-02T18:06:44.536021678Z",
+    "created_by": null,
+    "entity_type": "ai_embodied",
+    "hardware_binding": {
+      "description": "Software-bound keys (development)",
+      "level": 4,
+      "trust_ceiling": 0.85
+    },
+    "id": "4a7f7eeb-c68c-49b8-bac8-92c2acd03f54",
+    "lineage_depth": 0,
+    "mrh": {
+      "horizon_depth": 0
+    },
+    "parent_id": null,
+    "public_key": {
+      "key": "6f777cd1afea259534f9b14dc8b2b382c9f8dd3f9575d33e83d906501f78e155"
+    },
+    "status": "active"
+  },
+  "lct_id": "lct:web4:mb32:bt7au42c424h3difrdztfnbjc2q6eofb3lacohcp2xf35ymawjldq",
+  "provenance": "self_issued",
+  "published_at": "<relayer: set at send time>",
+  "published_by": "<relayer: MUST equal the envelope signer's member uuid>"
+}

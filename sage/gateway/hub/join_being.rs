@@ -28,15 +28,19 @@ use web4_core::lct::{derive_lct_id, Lct};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 3 {
-        eprintln!("usage: join_being <SEED_FILE> <PUBLISH_JSON> [--name NAME] [--nonce NONCE]");
+        eprintln!("usage: join_being <SEED_FILE> <PUBLISH_JSON> --name NAME --message TEXT [--nonce NONCE]");
+        eprintln!("  --name    the human-readable roster name (the SAGE dashboard name, e.g. sprout-sage) — REQUIRED");
+        eprintln!("  --message one line for the admitting operator: what this member IS — REQUIRED");
         std::process::exit(2);
     }
     let mut name: Option<String> = None;
+    let mut message: Option<String> = None;
     let mut nonce: Option<String> = None;
     let mut i = 3;
     while i < args.len() {
         match args[i].as_str() {
             "--name" => { name = args.get(i + 1).cloned(); i += 2; }
+            "--message" => { message = args.get(i + 1).cloned(); i += 2; }
             "--nonce" => { nonce = args.get(i + 1).cloned(); i += 2; }
             other => { eprintln!("unknown arg {other}"); std::process::exit(2); }
         }
@@ -63,7 +67,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "member_lct_id": member_lct_id,
         "member_pubkey_hex": kp.verifying_key().to_hex(),
     });
-    if let Some(n) = &name { payload["name"] = serde_json::Value::String(n.clone()); }
+    // A join with no name is a roster row nobody can identify, and one with no message asks
+    // the admitting operator to admit a stranger (dp, 2026-09-02: sprout-being was admitted
+    // blank). Both are required; the tool refuses to build a payload without them.
+    let name = match name.as_deref().map(str::trim).filter(|n| !n.is_empty()) {
+        Some(n) => n.to_string(),
+        None => { eprintln!("join_being: --name is required (the roster shows it; use the SAGE dashboard name, e.g. sprout-sage)"); std::process::exit(2); }
+    };
+    let message = match message.as_deref().map(str::trim).filter(|m| !m.is_empty()) {
+        Some(m) => m.to_string(),
+        None => { eprintln!("join_being: --message is required (one line telling the operator what this member is)"); std::process::exit(2); }
+    };
+    payload["name"] = serde_json::Value::String(name.clone());
+    payload["message"] = serde_json::Value::String(message.clone());
+    println!("name               {name}");
+    println!("message            {message}");
     // Canonical form = serde_json default (BTreeMap => ascending key order); the hub
     // verifies `nonce ++ payload.to_string()` (hub-lib envelope.rs signing_bytes).
     let canonical = payload.to_string();

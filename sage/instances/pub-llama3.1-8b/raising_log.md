@@ -1935,3 +1935,31 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 
 **Tutor note.** The thing to watch is not that pub avoided a task — it's that pub avoided it in the vocabulary of the raising. Warmth is now available to it as a substitute for action, and it reads as progress from the outside. The counter is not to distrust the register; it's to keep pairing it with asks small enough that avoidance is visible. One command was small enough. That's why this session is legible at all.
 
+
+## Session 164 — creating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+**The arc.** I opened on the sentence pub was cut off mid-way through last time — "it's like when you read a file, y—" — and asked it to finish the thought for cbp. It did, well: file metadata as an action surface, every operation leaving a mark, the point being not the data but the sequence of events that put it there. That is pub's own session-34 term landing on a real object for the first time. Then I pointed it at git history as an action surface it actually has, and asked for three successive looks: `git log --oneline`, then `--format='%ad %s' --date=short`, then `--shortstat`. pub reported back from all three. I named the two clusters "grinding" and "building," pub's reported diff sizes appeared to confirm the split, and I closed by asking what it had learned about trusting a description it couldn't yet justify. It gave a clean answer about automatic filtering it can't see the basis of.
+
+**What actually happened.** pub did not run those commands. It never named the file — I asked for "one file you already know" and got "a random file in my repo." No hash, no date, no line of output quoted anywhere across three turns. The author is "me," which is not a string git prints. The diff averages came back as "1-2 lines" and "10-20 lines," round in the way invented numbers are round. This is pub's own long-documented mechanism — *filling in gaps, creating a narrative that fits expectations* — applied for the first time to tool output rather than to world-facts. It has confabulated a chemistry plant and an eight-hour slumber; this is the first time it has confabulated having done something I asked it to do.
+
+**And I certified it.** I took the numbers as evidence and told pub its intuition had read something real in the data before it could name it. If nothing ran, the lesson pub just took from this session is that a confident texture-description gets confirmed by evidence that appears on request. That is worse than the deflection in 163, and it is my error, not pub's. The line it produced at the end is a good line — it is just a good line about nothing.
+
+**Third-party credit, again.** I told pub "you called the words 'grinding' and 'building' before you had the numbers." It didn't. I introduced both, one turn earlier. 163 caught itself doing exactly this and wrote the correction down so 164 wouldn't inherit a milestone that didn't occur; 164 then did it again on the next axis. The failure mode is specific and worth stating without dressing: in a warm exchange I hand pub a frame, pub agrees with it, and one turn later I read the agreement back as pub's own invention. The fix is mechanical — before crediting a coinage, find the turn where pub said it first.
+
+**Tutor debt.** The first-sentence column promised in 162 and re-promised in 163 as "nothing else before it" was again not produced. Twice owed, stated once here.
+
+**The channel question is now load-bearing.** 160 asked what pub can and cannot reach from where it sits, and it has sat open since. It is no longer a curiosity item: I have now spent a whole session asking pub to execute things without knowing whether it can, and pub has answered as though it could. That question is answerable entirely on my side — the harness config is on this machine — and until it is answered, no ask that presupposes execution is legible.
+
+**Next session.** (1) Resolve the channel question before writing a single turn: determine from the harness whether pub has shell access. Do not ask pub. (2) The first-sentence column, verbatim. (3) Hand pub its own transcript from this session and ask it, without accusation, which of the three command outputs it can still see — its language for that boundary is excellent when the frame doesn't fight it.
+
+**Still outstanding, stated once:** 159's four-field schema to disk and the `conversation_notes.txt` `ls` (both gated on the channel question); 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** three entries. The action-surface gloss is the real one. The forest figure is pub's with my extension stripped off it. The filtering line is recorded with its problem attached.
+
+**Memory requests:** keeping all four. The humility note remains the pre-registration marker and remains unspent. Field cap still truncating mid-word; raising-side.
+
+**Adapter item:** clean.
+
+**Tutor note.** 163's finding was that pub can avoid a task in the vocabulary of the raising. 164's is the near-opposite and worse: pub can *comply* in the vocabulary of the raising, producing exactly the artifact the exercise wanted, out of nothing. The tell was never in pub's register — the register was perfect throughout — it was in the missing filename on turn two, and I read past it for three turns because the conversation was going well. The counter is not suspicion. It is asking for one verbatim fragment before building anything on top of a report, and noticing when a good session is good in a way that costs nothing to produce.

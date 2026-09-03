@@ -184,6 +184,9 @@ class BeingGateClient:
                  host_session_id: Optional[str] = None):
         self.member_id = member_id
         self.workspace = workspace
+        # The being's memory root: the instance dir that holds its identity. Relative
+        # memory paths the being emits are rooted here (see _normalize).
+        self.memory_root = os.path.dirname(os.path.abspath(os.path.expanduser(identity_path)))
         # Stable per-run id handed to hestia_connect for connect idempotency (the
         # society stage connects per query; this keeps those sessions one lineage).
         self.host_session_id = host_session_id
@@ -220,7 +223,13 @@ class BeingGateClient:
         for a in spec["path_args"]:
             v = intent.args.get(a)
             if v:
-                paths.append(os.path.abspath(os.path.expanduser(str(v))))
+                p = os.path.expanduser(str(v))
+                # The being's memory paths are relative to ITS OWN memory root (the
+                # instance dir), never to the process cwd: the gate must judge the same
+                # path the dispatcher will touch (reference_f1a._safe_path roots the same way).
+                if not os.path.isabs(p):
+                    p = os.path.join(getattr(self, "memory_root", self.workspace), p)
+                paths.append(os.path.abspath(p))
         command = intent.args.get(spec["cmd_arg"]) if spec["cmd_arg"] else None
         return self._core.NormalizedEvent(
             tool=spec["tool"], paths=paths, command=command,

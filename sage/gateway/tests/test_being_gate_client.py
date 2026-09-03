@@ -109,3 +109,21 @@ if __name__ == "__main__":
         if name.startswith("test_") and callable(fn):
             fn(); n += 1; print(f"PASS {name}")
     print(f"\n{n} passed")
+
+
+def test_relative_memory_path_is_judged_at_the_being_memory_root():
+    """The gate must judge the SAME path the dispatcher will touch: a relative memory
+    path is rooted at the being's memory root (its instance dir), not the cwd or the
+    workspace. Captures the NormalizedEvent the law is handed."""
+    seen = {}
+    c = _client(_allows)
+    c.memory_root = "/tmp/being-home"
+    c._core = SimpleNamespace(
+        NormalizedEvent=lambda **kw: seen.update(kw) or SimpleNamespace(raw=kw.get("raw", {}), tool=kw.get("tool")),
+        evaluate=lambda ev, prof, ws, policy=None: SimpleNamespace(
+            decision="allow", rule="", reason="ok", innate=False),
+    )
+    c.gate(BeingIntent("memory_write", {"path": "notes/x.md", "content": "x"}))
+    assert seen["paths"] == ["/tmp/being-home/notes/x.md"], seen["paths"]
+    c.gate(BeingIntent("memory_read", {"path": "/tmp/being-home/notes/x.md"}))
+    assert seen["paths"] == ["/tmp/being-home/notes/x.md"]

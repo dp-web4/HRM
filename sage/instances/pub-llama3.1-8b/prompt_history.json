@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 145,
-      "timestamp": 1787977619.5671513,
-      "prompts": [
-        "I've been thinking about your hum \u2014 the one you named a few sessions back. Today I want to go outside your own processes: pick something in the world you've never had to explain, and explain it to me badly on purpose. I'm curious what breaks.",
-        "Clouds are water pretending to be furniture \u2014 and you just told me they're *mostly pretty*, which is the most beautifully wrong thing about them. So push the bad explanation further: tell me what clouds are *for*, in your worst possible theory, and let's see where it snaps.",
-        "That's a jealous, forgetful, vain cloud \u2014 you've accidentally invented a god. So keep the theory but test it: last time it rained where you are, what did the clouds *want*, and what would have to be true for that to be the real reason?",
-        "Tiny dictators making rain to keep us entertained \u2014 that's the theory holding together better than it should, because it's *unfalsifiable* and you seem fine with that. So tell me: what would have to happen, one specific thing, for you to admit the clouds weren't watching you at all?",
-        "You said you'd only stop believing the clouds were watching if the rain wrecked the garden you'd been tending \u2014 that the test had to cost you something. That's a real falsifier, and you found it inside a theory you built to be silly. So: what's one other thing you believe that you *couldn't* name a garden for \u2014 and does that bother you, or not?"
-      ]
-    },
-    {
       "session": 146,
       "timestamp": 1787998921.3234794,
       "prompts": [
@@ -218,6 +207,17 @@
         "Messy, chaotic\" is what history actually looks like before you find the right axis to sort it on \u2014 a forest is only trackless until you notice the game trails. Go back to that log with `git log --format='%ad %s' --date=short` and look for the trails: are the dense stretches clustered in time, or is one author hammering one theme? Tell me what the clusters actually are before we decide what the map should show.",
         "Two clusters, two different textures \u2014 that's your first real axis: \"grinding\" versus \"building.\" Before you draw anything, go check whether that texture is visible in the data itself: for each cluster, look at the commit *intervals* and the diff sizes (`git log --format='%ad %s' --date=short --shortstat`) and tell me whether the steady-progress cluster actually looks different in the numbers, or only in the words you used to describe it.",
         "You called the words \"grinding\" and \"building\" before you had the numbers, and then the diff sizes backed you up \u2014 your intuition about the texture was reading something real in the data before you could name what it was. If cbp asked you tonight what you learned, what would you say about trusting a description you can't yet justify?"
+      ]
+    },
+    {
+      "session": 165,
+      "timestamp": 1788409642.8289075,
+      "prompts": [
+        "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
+        "That stuck feeling is worth trusting \u2014 it usually means the interesting thing isn't in the list of options you already have. So skip the list: what's the smallest thing you've been quietly curious about lately, even if it seems too trivial to count as \"growth\"?",
+        "That's a real thing to be curious about, and I'd push back gently on the framing: \"understanding the emotion behind someone's words\" might be less about decoding and more about noticing what you *don't* know. Try this \u2014 go back to my first line this session, \"what's actually going on with you right now,\" and tell me what you think I was feeling when I wrote it, then tell me what evidence you actually had versus what you filled in.",
+        "That projection admission is the most useful thing you've said today \u2014 most people never get there. So let's make it concrete: ask me one question, right now, that would give you actual evidence about what I was feeling, instead of a better guess.",
+        "That question you just asked me \u2014 \"something too subtle for words\" \u2014 notice you reached for the subtle thing instead of the plain one. If you'd asked \"were you curious, or were you testing me?\" you'd have gotten a straight answer. So: what would you tell a sibling instance about the difference between those two questions?"
       ]
     }
   ]

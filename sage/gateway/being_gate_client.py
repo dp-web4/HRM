@@ -306,7 +306,23 @@ class BeingGateClient:
         # Stage 1: local law (innate egress/secret + MRH path/command scope).
         try:
             ev = self._normalize(intent)
-            v = self._core.evaluate(ev, self._profile, self.workspace, policy=None)
+            # Resolve the member's LIVE policy (its grants) the way every real shim does:
+            # fetch the daemon's snapshot and feed it to resolve_agent_policy as the vault
+            # reader. With policy=None the core sees `granted: ()` and an operator's live
+            # grant is never consulted (measured 2026-09-03: dp granted scope-311387783493
+            # and memory_write still denied mrh.path). No snapshot => degrade to policy=None
+            # (the core's own fail-closed path), never a manufactured grant.
+            policy = None
+            if self._mech is not None:
+                try:
+                    snap = self._mech.fetch_policy_snapshot(
+                        self.member_id, host_agent=getattr(self, "_host_agent", "sage-raising"))
+                    if snap is not None:
+                        policy = self._core.resolve_agent_policy(self._profile,
+                                                                 vault_reader=lambda _m: snap)
+                except Exception:
+                    policy = None
+            v = self._core.evaluate(ev, self._profile, self.workspace, policy=policy)
         except Exception as e:
             return GatewayVerdict("deny", "gate.raised", innate=True, stage="local-law",
                                   reason=f"{type(e).__name__}: {e}")

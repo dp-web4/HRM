@@ -70,7 +70,13 @@ class ReferenceF1aDispatcher:
 
     # -- path confinement (defense in depth over the gate) -------------------
     def _safe_path(self, raw: str) -> Path:
-        p = Path(raw).expanduser().resolve()
+        # A being names its notes by a path inside its own memory ("notes/x.md"); a
+        # relative path is rooted at memory_root, never at the process cwd. Absolute
+        # paths are honoured only if they already lie inside the root (checked below).
+        p = Path(raw).expanduser()
+        if not p.is_absolute():
+            p = self.memory_root / p
+        p = p.resolve()
         if p != self.memory_root and self.memory_root not in p.parents:
             raise ValueError(f"path escapes the being's memory root: {p}")
         return p

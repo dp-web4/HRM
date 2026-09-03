@@ -16,7 +16,7 @@ step cap forces a close). "Respond" becomes an act, not a text turn.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from sage.gateway.being_gate_client import BeingGateClient, BeingIntent, ResultEnvelope
 
@@ -73,15 +73,16 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
 
 
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
-                         max_steps: int = 2) -> ToolTurnResult:
+                         max_steps: int = 2, tools: Optional[List[dict]] = None) -> ToolTurnResult:
     """Run a gated tool turn using an OllamaIRP-like `llm` exposing
     get_chat_response(messages, tools=...) -> {"content", "tool_calls"}.
 
     Wraps the model + the bounded native-tool registry into the loop's generate()
     contract, so callers (the raising runner) need only supply the seed messages.
+    `tools` narrows what is offered for this turn (default: the whole registry).
     """
     from sage.gateway.being_gate_client import ollama_tools, parse_tool_calls
-    tools = ollama_tools()
+    tools = tools if tools is not None else ollama_tools()
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
         # Flatten the loop's convo (carries extra keys) to plain chat messages.

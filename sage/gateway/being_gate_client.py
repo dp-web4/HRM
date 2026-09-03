@@ -65,6 +65,38 @@ class BeingIntent:
 # What the being's gate client calls itself when it connects to the daemon.
 _HOST_AGENT = "sage-gateway"
 
+def pr_review_command(args: dict) -> str:
+    """The shell command the seat runs for a pr_review intent, built from validated args.
+    Raises ValueError on anything the grammar cannot represent; never interpolates the body
+    (it travels by --body-file, so no review text can reach the shell)."""
+    import re
+    repo = str(args.get("repo", "")).strip()
+    number = str(args.get("number", "")).strip()
+    # fleet repos only: the seat's gh identity never posts outside dp-web4 on a being's behalf
+    if not re.fullmatch(r"dp-web4/[A-Za-z0-9._-]+", repo):
+        raise ValueError(f"pr_review 'repo' must be a dp-web4/<name> repo, got {repo!r}")
+    if not re.fullmatch(r"[0-9]{1,7}", number):
+        raise ValueError(f"pr_review 'number' must be a PR number, got {number!r}")
+    if not str(args.get("body", "")).strip():
+        raise ValueError("pr_review needs a non-empty 'body'")
+    return f"gh pr review {number} --repo {repo} --comment --body-file -"
+
+
+def pr_review_signature(member_id: str, action_id: Optional[str], being_lct: Optional[str]) -> str:
+    """The fixed trailer on every review a being posts: who, under what record, and that
+    it is advisory. The being cannot omit or alter it; the dispatcher appends it."""
+    lines = ["", "---",
+             f"Review by **{member_id}**, a SAGE being acting under hestia governance. "
+             "Advisory and non-binding: the being holds no reviewer role, so this comment "
+             "does not count toward merge. The seat's reviewers decide."]
+    if being_lct:
+        lines.append(f"LCT: `{being_lct}`")
+    if action_id:
+        lines.append(f"hestia witness action: `{action_id}`")
+    lines.append(f"— {member_id}")
+    return "\n".join(lines)
+
+
 _REGISTRY = {
     "peer_ask":       dict(tool="peer_ask",     path_args=(),       cmd_arg=None),
     "witness":        dict(tool="witness",      path_args=(),       cmd_arg=None),
@@ -72,13 +104,20 @@ _REGISTRY = {
     "memory_write":   dict(tool="write_note",   path_args=("path",), cmd_arg=None),
     "channel_egress": dict(tool="channel_send", path_args=(),       cmd_arg=None),
     "mesh":           dict(tool="mesh_notify",  path_args=(),       cmd_arg=None),  # §7.2 5th verb
+    # pr_review: the being reviews a pull request. The seat posts the comment; the gate
+    # judges the exact shell command the seat will run (see pr_review_command), so the
+    # law sees an outward `gh` act, not a friendly verb name. Advisory by construction:
+    # a being holds no reviewer role, so the comment never counts toward merge.
+    "pr_review":      dict(tool="pr_review",    path_args=(),       cmd_arg=None,
+                           compose=pr_review_command),
 }
+
 
 # Society-safety failure boundary per effector class. Observational acts carry no
 # external effect and may soft-pass when the society governor is unavailable;
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read"})
-_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh"})
+_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -97,13 +136,22 @@ _TOOL_SCHEMAS = {
              {"to": "member name", "kind": "notice kind, e.g. coordination, reply, ack",
               "pointer": "URI of the content (a shared-context path, PR, or thread)"},
              ["to", "kind", "pointer"]),
+    "pr_review": ("Post your review of a pull request as a comment. Advisory: it does not "
+                  "approve or block. Say what you checked, what you found, and what you "
+                  "would change, with file and line references where you can.",
+                  {"repo": "owner/name, e.g. dp-web4/SAGE", "number": "the PR number",
+                   "body": "your review, in markdown"}, ["repo", "number", "body"]),
 }
 
 
-def ollama_tools() -> List[dict]:
-    """Ollama native-tool specs for the bounded gateway-member registry (nothing else)."""
+def ollama_tools(only: Optional[List[str]] = None) -> List[dict]:
+    """Ollama native-tool specs for the bounded gateway-member registry (nothing else).
+    `only` narrows what the being is OFFERED for a task (e.g. a review turn offers
+    pr_review + witness); it never widens: a name outside the registry is ignored."""
     out = []
     for name, (desc, props, required) in _TOOL_SCHEMAS.items():
+        if only is not None and name not in only:
+            continue
         out.append({"type": "function", "function": {
             "name": name, "description": desc,
             "parameters": {"type": "object",
@@ -184,6 +232,9 @@ class BeingGateClient:
                  host_session_id: Optional[str] = None):
         self.member_id = member_id
         self.workspace = workspace
+        # The being's memory root: the instance dir that holds its identity. Relative
+        # memory paths the being emits are rooted here (see _normalize).
+        self.memory_root = os.path.dirname(os.path.abspath(os.path.expanduser(identity_path)))
         # Stable per-run id handed to hestia_connect for connect idempotency (the
         # society stage connects per query; this keeps those sessions one lineage).
         self.host_session_id = host_session_id
@@ -220,8 +271,23 @@ class BeingGateClient:
         for a in spec["path_args"]:
             v = intent.args.get(a)
             if v:
-                paths.append(os.path.abspath(os.path.expanduser(str(v))))
+                p = os.path.expanduser(str(v))
+                # The being's memory paths are relative to ITS OWN memory root (the
+                # instance dir), never to the process cwd: the gate must judge the same
+                # path the dispatcher will touch (reference_f1a._safe_path roots the same way).
+                if not os.path.isabs(p):
+                    p = os.path.join(self.memory_root, p)
+                # realpath, not abspath: the dispatcher resolves symlinks (_safe_path), so the
+                # judged path and the touched path must be the same real path
+                paths.append(os.path.realpath(p))
         command = intent.args.get(spec["cmd_arg"]) if spec["cmd_arg"] else None
+        compose = spec.get("compose")
+        if compose is not None:
+            # a COMPOSED verb: the seat builds the exact outward act (a shell line) from the
+            # being's args, and THAT is what the law judges. Bad args raise here and gate()
+            # turns that into a deny (gate.raised), never a silent pass. The being never
+            # fills a command; the registry never carries a cmd_arg for a composed verb.
+            command = compose(intent.args)
         return self._core.NormalizedEvent(
             tool=spec["tool"], paths=paths, command=command,
             cwd=self.workspace, raw={"effector": intent.effector, **intent.args},

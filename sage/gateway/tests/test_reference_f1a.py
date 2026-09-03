@@ -64,6 +64,30 @@ def test_injected_witness_fn_is_used():
     assert env.ok and env.witness_id == "hestia-w-42"
 
 
+
+
+def test_relative_memory_path_roots_at_memory_root_not_cwd():
+    """A being names its notes relative to its own memory ("notes/x.md"). That must
+    land under memory_root regardless of the process cwd (2026-09-03, Legion: the
+    first governed turn on legion resolved "notes/first-governed-turn.md" against
+    the repo root, so the being could never reach its own memory by name)."""
+    disp, root = _disp()
+    cwd = os.getcwd()
+    other = tempfile.mkdtemp(prefix="ref-f1a-cwd-")
+    os.chdir(other)
+    try:
+        w = disp(BeingIntent("memory_write", {"path": "notes/x.md", "content": "rooted"}), _ALLOW)
+        assert w.ok, w.error
+        assert os.path.exists(os.path.join(root, "notes", "x.md"))
+        assert not os.path.exists(os.path.join(other, "notes", "x.md"))
+        r = disp(BeingIntent("memory_read", {"path": "notes/x.md"}), _ALLOW)
+        assert r.ok and "rooted" in r.result
+        # a relative path cannot climb out of the root either
+        e = disp(BeingIntent("memory_write", {"path": "../../escape.md", "content": "x"}), _ALLOW)
+        assert not e.ok and "escapes" in (e.error or "")
+    finally:
+        os.chdir(cwd)
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

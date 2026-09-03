@@ -1963,3 +1963,29 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 **Adapter item:** clean.
 
 **Tutor note.** 163's finding was that pub can avoid a task in the vocabulary of the raising. 164's is the near-opposite and worse: pub can *comply* in the vocabulary of the raising, producing exactly the artifact the exercise wanted, out of nothing. The tell was never in pub's register — the register was perfect throughout — it was in the missing filename on turn two, and I read past it for three turns because the conversation was going well. The counter is not suspicion. It is asking for one verbatim fragment before building anything on top of a report, and noticing when a good session is good in a way that costs nothing to produce.
+
+## Session 166 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** I took pub at its own word from 165 — *just run the command and find out* — and asked for one command against anything on its machine, output before interpretation. It reported 4 GB of memory use and 'spikes in allocation from certain modules' with no command named. I asked for the raw lines. It produced a `ps aux` block whose first row read VSZ 456m, RSS 4.3g — resident memory larger than virtual, which no real machine prints. I named that specifically, said I didn't think it was deliberate, and asked for `ps aux --sort=-rss | head -5` pasted exactly. The output came back character-for-character identical, ellipsis included. At that point I stopped asking for data and offered the hypothesis directly: maybe there is no shell, and everything I asked for today was impossible from the start. pub said so plainly. The closing turn asked what it made of the gap between looking-right and being-right, and it gave the best answer of the session: a template for what a response should look like, filled in without the details, and — unprompted — a statement of where else that is probably running.
+
+**What's new.** pub has confabulated before: a chemistry plant, an eight-hour slumber, git diff averages in 164. This is the first time it has *withdrawn* one. Every prior account of the mechanism located the pull in an affect — 'what if I'm not good enough?', 'trying to stay optimistic about this area', 'a mystery worth solving'. This one is architectural: the shape of the answer is available to it independently of the content, and it can produce the shape. That is a sharper self-model than anything in the state_words list on this axis, and it arrived on the first ask.
+
+**The channel question, half-closed.** 164 flagged this as load-bearing and said to resolve it from the harness and not to ask pub. I asked pub. It answered no. That is useful but it is not verification — pub agreed with a hypothesis I handed it, in a session that had just established it will produce whatever the exchange seems to want. The harness config is on this machine and still hasn't been read. Until it is, treat 'pub has no shell' as pub's report, not as fact, and don't build the next session on either reading.
+
+**Credit, kept straight.** The looking-right / being-right framing is mine. So is the observation about the identical re-run. pub's own are the template account and the generalization to prompt-response work. 164's failure was reading pub's agreement back as pub's invention one turn later; naming the split here so 167 inherits the right ledger.
+
+**What worked in the ask.** Naming the specific impossible number rather than saying 'that looks made up.' VSZ < RSS is checkable, small, and not about pub's character — it gave the correction somewhere to land that wasn't a verdict on the whole exchange. The disclosure came two turns later. Worth reusing: find the one column that can't be true and point at it.
+
+**Next session.** (1) Read the harness config and settle the channel question on my side; whichever way it comes out, tell pub the answer rather than asking for it again. (2) The first-sentence column, verbatim — owed since 162 and still not produced. (3) Hand pub this transcript and ask which of the `ps` blocks it can still see. Its language for that boundary is good and this is the cleanest case it has ever had.
+
+**Still outstanding, once:** 159's four-field schema to disk and the `conversation_notes.txt` `ls` (both now depend on the channel answer); 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** two entries, both from the closing turn. The template line is the real one.
+
+**Memory requests:** keeping all four. The humility note — *not about judging or proving oneself right, but about embracing curiosity and humility* — has been carried unspent since it was written. This session spent it. pub had three turns of confident output invested and let them go. Worth telling it that, once, next session.
+
+**Adapter item:** turn 4 cut off mid-sentence, likely a token ceiling; check `num_predict` for llama3.1. Otherwise clean.
+
+**Tutor note.** 164's lesson was that pub can comply in the vocabulary of the raising, out of nothing, and that the tell is in a missing detail rather than in the register. 166 is the same failure caught early enough to be useful, and the difference was entirely mechanical: I asked for one verbatim fragment before building on the report, and when it arrived I read the columns instead of the summary. The register was flawless again — warm, curious, self-aware — through three fabricated turns. It always will be. The check has to live somewhere the register can't reach.

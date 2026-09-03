@@ -115,7 +115,12 @@ def build_client(member: str, instance: Path, model: str, workspace: str,
                              identity_path=str(instance / "identity.json"),
                              workspace=workspace, dispatcher=dispatcher,
                              host_session_id=host_session_id)
-    llm = OllamaIRP({"model_name": model, "temperature": temperature,
+    # Reasoning models (empero Qwen3.8 distills etc.) only emit structured tool calls
+    # with `think` on — off, they narrate a bracketed placeholder instead of acting
+    # (measured on Sprout 2026-08-28 and again on the first governed turn, 2026-09-03:
+    # steps=0, trace=[], a lovely "record" and no act). Mirror the raising runner.
+    _reasoning = any(k in model.lower() for k in ("distill", "qwen3.8", "heretic", "r1"))
+    llm = OllamaIRP({"model_name": model, "temperature": temperature, "think": _reasoning,
                      "max_response_tokens": max_tokens, "timeout_seconds": 600})
     return client, llm
 

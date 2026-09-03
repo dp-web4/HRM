@@ -1,0 +1,56 @@
+{
+    "lct_id": "lct:web4:mb32:b6t53vwxv47qqre2omkanu2uo5i42zvmwwc7zuthe54vc732ukwwq",
+    "document": {
+        "id": "88643021-a2bc-4587-bf43-18ecb11b0b6b",
+        "entity_type": "ai_software",
+        "status": "active",
+        "public_key": {
+            "key": "87dc1f196052a0211a3c39239047cb0d81cd4ab4e63bc000e3416f2e03ee6a06"
+        },
+        "created_at": "2026-07-23T23:01:56.029443463Z",
+        "created_by": null,
+        "hardware_binding": {
+            "level": 4,
+            "description": "Software-bound keys (development)",
+            "trust_ceiling": 0.85
+        },
+        "parent_id": null,
+        "lineage_depth": 0,
+        "binding_proof": {
+            "bytes": "bad67007b7924a57b723920113ae0321199e61acbff5516313fc28e32431a6187b5e3f1418093e18b27b41967bf91086cd13bfa41589283f340671e5f526c10c"
+        },
+        "mrh": {
+            "bound": [
+                {
+                    "lct_id": "lct:web4:mb32:bwwpruqeo323yefb7ordnzymxhj2vdcc475rmc7edkdhu2s7zg3sa",
+                    "edge_type": "parent",
+                    "ts": "2026-07-23T23:01:56.029443463Z"
+                }
+            ],
+            "horizon_depth": 0
+        },
+        "legacy_alias": {
+            "legacy_id": "lct:web4:member:d7860ca24b7325605b3a1aee",
+            "derivation": {
+                "scheme": "hestia_member",
+                "plugin_id": "claude-code",
+                "sovereign": "lct:web4:hestia:sovereign:phase1-placeholder"
+            }
+        },
+        "operational_keys": [
+            {
+                "pubkey": {
+                    "key": "26cad198cf69e587dbacfa4ba4cdea541eaa6cfffdb6f98392181b8928c66581"
+                },
+                "purpose": "witnessing",
+                "proof": {
+                    "bytes": "620b4c0aaf1049719504468d27cec68e195e027d26469dba3c1c68738866092fce1818a553f2d6c410569ccbfb5a3e0d7885e2b615294fdb2d83868d9e3bc20c"
+                }
+            }
+        ]
+    },
+    "provenance": "self_issued",
+    "published_by": "83810b44-2289-4c14-854f-ae5114f747cf",
+    "published_at": "2026-09-03T21:52:51.647067177Z",
+    "version": 1
+}

@@ -65,21 +65,6 @@ class BeingIntent:
 # What the being's gate client calls itself when it connects to the daemon.
 _HOST_AGENT = "sage-gateway"
 
-_REGISTRY = {
-    "peer_ask":       dict(tool="peer_ask",     path_args=(),       cmd_arg=None),
-    "witness":        dict(tool="witness",      path_args=(),       cmd_arg=None),
-    "memory_read":    dict(tool="read_file",    path_args=("path",), cmd_arg=None),
-    "memory_write":   dict(tool="write_note",   path_args=("path",), cmd_arg=None),
-    "channel_egress": dict(tool="channel_send", path_args=(),       cmd_arg=None),
-    "mesh":           dict(tool="mesh_notify",  path_args=(),       cmd_arg=None),  # §7.2 5th verb
-    # pr_review: the being reviews a pull request. The seat posts the comment; the gate
-    # judges the exact shell command the seat will run (see pr_review_command), so the
-    # law sees an outward `gh` act, not a friendly verb name. Advisory by construction:
-    # a being holds no reviewer role, so the comment never counts toward merge.
-    "pr_review":      dict(tool="pr_review",    path_args=(),       cmd_arg=None),
-}
-
-
 def pr_review_command(args: dict) -> str:
     """The shell command the seat runs for a pr_review intent, built from validated args.
     Raises ValueError on anything the grammar cannot represent; never interpolates the body
@@ -87,8 +72,9 @@ def pr_review_command(args: dict) -> str:
     import re
     repo = str(args.get("repo", "")).strip()
     number = str(args.get("number", "")).strip()
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
-        raise ValueError(f"pr_review 'repo' must be owner/name, got {repo!r}")
+    # fleet repos only: the seat's gh identity never posts outside dp-web4 on a being's behalf
+    if not re.fullmatch(r"dp-web4/[A-Za-z0-9._-]+", repo):
+        raise ValueError(f"pr_review 'repo' must be a dp-web4/<name> repo, got {repo!r}")
     if not re.fullmatch(r"[0-9]{1,7}", number):
         raise ValueError(f"pr_review 'number' must be a PR number, got {number!r}")
     if not str(args.get("body", "")).strip():
@@ -109,6 +95,23 @@ def pr_review_signature(member_id: str, action_id: Optional[str], being_lct: Opt
         lines.append(f"hestia witness action: `{action_id}`")
     lines.append(f"— {member_id}")
     return "\n".join(lines)
+
+
+_REGISTRY = {
+    "peer_ask":       dict(tool="peer_ask",     path_args=(),       cmd_arg=None),
+    "witness":        dict(tool="witness",      path_args=(),       cmd_arg=None),
+    "memory_read":    dict(tool="read_file",    path_args=("path",), cmd_arg=None),
+    "memory_write":   dict(tool="write_note",   path_args=("path",), cmd_arg=None),
+    "channel_egress": dict(tool="channel_send", path_args=(),       cmd_arg=None),
+    "mesh":           dict(tool="mesh_notify",  path_args=(),       cmd_arg=None),  # §7.2 5th verb
+    # pr_review: the being reviews a pull request. The seat posts the comment; the gate
+    # judges the exact shell command the seat will run (see pr_review_command), so the
+    # law sees an outward `gh` act, not a friendly verb name. Advisory by construction:
+    # a being holds no reviewer role, so the comment never counts toward merge.
+    "pr_review":      dict(tool="pr_review",    path_args=(),       cmd_arg=None,
+                           compose=pr_review_command),
+}
+
 
 # Society-safety failure boundary per effector class. Observational acts carry no
 # external effect and may soft-pass when the society governor is unavailable;
@@ -273,13 +276,18 @@ class BeingGateClient:
                 # instance dir), never to the process cwd: the gate must judge the same
                 # path the dispatcher will touch (reference_f1a._safe_path roots the same way).
                 if not os.path.isabs(p):
-                    p = os.path.join(getattr(self, "memory_root", self.workspace), p)
-                paths.append(os.path.abspath(p))
+                    p = os.path.join(self.memory_root, p)
+                # realpath, not abspath: the dispatcher resolves symlinks (_safe_path), so the
+                # judged path and the touched path must be the same real path
+                paths.append(os.path.realpath(p))
         command = intent.args.get(spec["cmd_arg"]) if spec["cmd_arg"] else None
-        if intent.effector == "pr_review":
-            # judged as the outward shell act the seat will actually run; bad args raise
-            # here and gate() turns that into a deny (gate.raised), never a silent pass
-            command = pr_review_command(intent.args)
+        compose = spec.get("compose")
+        if compose is not None:
+            # a COMPOSED verb: the seat builds the exact outward act (a shell line) from the
+            # being's args, and THAT is what the law judges. Bad args raise here and gate()
+            # turns that into a deny (gate.raised), never a silent pass. The being never
+            # fills a command; the registry never carries a cmd_arg for a composed verb.
+            command = compose(intent.args)
         return self._core.NormalizedEvent(
             tool=spec["tool"], paths=paths, command=command,
             cwd=self.workspace, raw={"effector": intent.effector, **intent.args},

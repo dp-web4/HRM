@@ -64,12 +64,6 @@ def test_injected_witness_fn_is_used():
     assert env.ok and env.witness_id == "hestia-w-42"
 
 
-if __name__ == "__main__":
-    n = 0
-    for name, fn in sorted(globals().items()):
-        if name.startswith("test_") and callable(fn):
-            fn(); n += 1; print(f"PASS {name}")
-    print(f"\n{n} passed")
 
 
 def test_relative_memory_path_roots_at_memory_root_not_cwd():
@@ -93,3 +87,10 @@ def test_relative_memory_path_roots_at_memory_root_not_cwd():
         assert not e.ok and "escapes" in (e.error or "")
     finally:
         os.chdir(cwd)
+
+if __name__ == "__main__":
+    n = 0
+    for name, fn in sorted(globals().items()):
+        if name.startswith("test_") and callable(fn):
+            fn(); n += 1; print(f"PASS {name}")
+    print(f"\n{n} passed")

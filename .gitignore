@@ -235,6 +235,7 @@ sage/instances/*/identity.json
 sage/instances/*/chat_history.jsonl
 sage/instances/*/llm_pool_state.json
 sage/instances/*/atp_shadow.jsonl
+sage/instances/*/tool_turns.jsonl
 sage/instances/*/memory.db-shm
 sage/instances/*/memory.db-wal
 # But keep the seed template tracked

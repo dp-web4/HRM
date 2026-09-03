@@ -17,6 +17,7 @@ def _client(mech):
     c = BeingGateClient.__new__(BeingGateClient)
     c.member_id = "test-being"
     c.workspace = "/tmp/ws"
+    c.memory_root = "/tmp/ws"
     c._import_error = ""
     c.host_session_id = None
     c._profile = object()
@@ -103,12 +104,6 @@ def test_no_core_fails_closed():
     assert v.blocks and v.rule == "gate.unreachable" and v.innate, v
 
 
-if __name__ == "__main__":
-    n = 0
-    for name, fn in sorted(globals().items()):
-        if name.startswith("test_") and callable(fn):
-            fn(); n += 1; print(f"PASS {name}")
-    print(f"\n{n} passed")
 
 
 def test_relative_memory_path_is_judged_at_the_being_memory_root():
@@ -148,7 +143,9 @@ def test_pr_review_is_judged_as_the_gh_command_the_seat_runs():
     assert v.decision == "deny" and v.rule == "gate.raised", v
     v = c.gate(BeingIntent("pr_review", {"repo": "dp-web4/SAGE", "number": "24 --approve", "body": "x"}))
     assert v.decision == "deny" and v.rule == "gate.raised", v
-    for bad in ({"repo": "SAGE", "number": "24", "body": "x"}, {"repo": "dp-web4/SAGE", "number": "24", "body": " "}):
+    for bad in ({"repo": "SAGE", "number": "24", "body": "x"},
+                {"repo": "octocat/SAGE", "number": "24", "body": "x"},   # not a fleet repo
+                {"repo": "dp-web4/SAGE", "number": "24", "body": " "}):
         try:
             pr_review_command(bad); assert False, bad
         except ValueError:
@@ -166,3 +163,10 @@ def test_tools_filter_never_widens_the_registry():
     from sage.gateway.being_gate_client import ollama_tools
     names = [t["function"]["name"] for t in ollama_tools(["pr_review", "witness", "shell"])]
     assert names == ["witness", "pr_review"], names
+
+if __name__ == "__main__":
+    n = 0
+    for name, fn in sorted(globals().items()):
+        if name.startswith("test_") and callable(fn):
+            fn(); n += 1; print(f"PASS {name}")
+    print(f"\n{n} passed")

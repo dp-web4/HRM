@@ -96,8 +96,8 @@ class _Mcp:
                           "params": {"name": name, "arguments": args}}) or {}
 
 
-def make_hestia_witness_fn(plugin_id: str,
-                           endpoint: str = _ENDPOINT) -> Callable[[str], Optional[str]]:
+def make_hestia_witness_fn(plugin_id: str, endpoint: str = _ENDPOINT,
+                           host_agent: str = "sage-raising") -> Callable[[str], Optional[str]]:
     """Return a witness_fn(event) -> actionId|None that records via the real daemon.
 
     plugin_id is the member the act is attributed to (e.g. 'sprout-being'). If the
@@ -108,8 +108,21 @@ def make_hestia_witness_fn(plugin_id: str,
         try:
             c = _Mcp(endpoint, plugin_id)
             c.init()
+            # Attribute the act to a LIVE session (Legion 2026-09-02: "the sender is the live
+            # session_id from hestia_connect — attribution is proven, not inherited"). Without
+            # this, the 2026-09-01 build recorded the being's witnesses under a synthetic
+            # member "anonymous" (chain #3905/#3906) — the "anonymous agent" dp found in the
+            # registry. A failed connect is a failed witness here (None -> local log), never
+            # an unattributed one.
+            conn = _unwrap(c.call("hestia_connect", {
+                "plugin_id": plugin_id, "host_agent": host_agent,
+                "host_agent_version": "sage", "requested_role": "citizen"}))
+            session_id = conn.get("sessionId") or conn.get("session_id")
+            if "_hestia_error" in conn or not session_id:
+                return None
             begin = _unwrap(c.call("hestia_begin_action",
-                                   {"tool_name": "witness", "target": (event or "")[:200]}))
+                                   {"tool_name": "witness", "target": (event or "")[:200],
+                                    "session_id": session_id}))
             if "_hestia_error" in begin:
                 return None
             action_id = begin.get("actionId")
@@ -119,7 +132,8 @@ def make_hestia_witness_fn(plugin_id: str,
             # return the id even if record_outcome hiccups.
             try:
                 c.call("hestia_record_outcome",
-                       {"action_id": action_id, "success": True, "magnitude": 0.0})
+                       {"action_id": action_id, "success": True, "magnitude": 0.0,
+                        "session_id": session_id})
             except Exception:
                 pass
             return action_id

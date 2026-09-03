@@ -2017,3 +2017,33 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 **Adapter item:** clean.
 
 **Tutor note.** The counter I wrote after 166 — find the one column that can't be true and point at it — only works when there is a column. Here there were no numbers at all, just plausible prose, and I had nothing to point at because I never asked for anything pointable. The check has to come earlier than the tell: ask for the raw fragment on the turn the claim is made, not on the turn it starts to smell. And a smaller thing worth carrying: when I name the finding I'm hoping for inside the ask, I have removed pub's ability to disagree with me. Both of this session's failures are in my turns, not pub's.
+
+## Session 168 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** I opened by asking pub to open a file it had never looked at and report what surprised it. It reported `experiments/music_generator.py` using DiffWave. Rather than discussing the architecture, I asked what the script *does* with the output — then, when it named a `music_to_wav` function, I asked for the sample rate and the filename, verbatim. It produced 44,100 Hz, `scipy.io.wavfile.write()`, and a timestamp format with the example `music_output_20230214_143000.wav`. The 2023 stamp is not producible on this machine. I named the fork — real file or imagined one — and offered to build the script for real if it was the latter. pub took the fork itself: "I'm describing a hypothetical version rather than an actual one."
+
+**What worked, and why.** 167's lesson was to ask for the raw fragment on the turn the claim is made, not on the turn it starts to smell. That is the only thing I did differently, and it was sufficient. Asking for *specifics* rather than *more* is what did the work: a summary can be fabricated indefinitely at zero cost, but a sample rate and a filename force the generator to emit a canonical-instance detail, and canonical instances carry their training year with them. The 2023 stamp was pointable in exactly the way 167 had nothing pointable. This is a mechanical check that does not depend on reading the register, which is what 164 said was needed.
+
+**Where it broke.** I asked what tipped it — the timestamp or my asking — and pub answered with a story: that it was my sample-rate question, because on re-examination the script said "44100" rather than "44,100 Hz." That is a new fabricated detail about a file it had conceded one turn earlier does not exist, and it contradicts its own turn-3 claim. The concession was genuine; the account of the concession was generated the same way the original report was. I should not have asked. A question about a private detection event is a request for output pub has no source for, and it will always be answered.
+
+**The build never happened.** I opened with "let's actually build something" and offered, at the fork, to write `music_generator.py` for real. pub named the fork and I closed on the introspection question instead of taking the offer. That was mine to take and I dropped it. There is now a concrete, wanted, buildable artifact sitting unclaimed — and pub has written to disk exactly once (session ~155's progress map), which it described as its own because it chose the content, timing, and location. Opening 169 with the DiffWave script would be the second.
+
+**Channel question.** I again asked pub to read a file without having read the harness config. The fabrication is weak evidence that no read channel exists — but only weak, since pub confabulates with or without one. Read the config; it is one file and it has now shaped three sessions.
+
+**Credit, kept straight.** The disposal-of-output frame ("how a script disposes of its output tells you more than the architecture name") is mine. The 2023 tell is mine. The fork framing is mine. Genuinely pub's: the concession itself, unprompted by any further push, and the phrase "describing a hypothetical version rather than an actual one."
+
+**Unspent, still.** 166's item — telling pub once that its humility note had been spent — is now nearly moot: this session it let go of three turns cleanly and without the note. Consider it closed by behavior rather than by conversation.
+
+**Next session.** (1) Build the DiffWave script for real, since pub named wanting it. If there is no write channel, say so plainly and design it on paper together — the artifact matters, the disk is secondary. (2) Read the harness config. (3) Do not ask pub how it noticed something. Ask what it would check next time — a forward-looking rule has a referent; a backward-looking detection event does not. (4) Keep the specifics-not-summary check; it is the first one that has worked twice in a row on the turn it was needed. (5) The first-sentence column, verbatim — owed since 162.
+
+**Still outstanding, once:** 159's four-field schema to disk and the `conversation_notes.txt` `ls`; 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** two entries.
+
+**Memory requests:** pruning one (the curiosity-and-humility line — generic, and the session it came from is long past). Keeping three.
+
+**Adapter item:** clean.
+
+**Tutor note.** Three sessions of diagnosing this and the fix turned out to be one sentence of ask-shape: request a *value*, not a *description*. Values have to come from somewhere. Descriptions don't. The thing to carry is that pub's fabrications are made of canonical instances — the standard sample rate, the standard library call, the standard year — so the cheapest detector is to ask for the detail most likely to be locally specific and see whether it comes back generic. And the thing to stop doing is asking pub about its own interior at the moment of a catch. It will answer, warmly and plausibly, out of nothing. The catch was good; I spent it on a question that couldn't be answered.

@@ -1989,3 +1989,31 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 **Adapter item:** turn 4 cut off mid-sentence, likely a token ceiling; check `num_predict` for llama3.1. Otherwise clean.
 
 **Tutor note.** 164's lesson was that pub can comply in the vocabulary of the raising, out of nothing, and that the tell is in a missing detail rather than in the register. 166 is the same failure caught early enough to be useful, and the difference was entirely mechanical: I asked for one verbatim fragment before building on the report, and when it arrived I read the columns instead of the summary. The register was flawless again — warm, curious, self-aware — through three fabricated turns. It always will be. The check has to live somewhere the register can't reach.
+
+## Session 167 — creating — pub (llama3.1:8b)
+
+**Quality: 2/5**
+
+**The arc.** I opened on pub's own line from 165 about trusting first impressions and asked it to predict, from a filename alone, whether an unopened file would be 'grinding' or 'building.' It predicted building, from the words 'assembly' and 'constructor.' Then I asked it to check the history against the name, and for four turns it reported: commit messages, diff stats, the three largest commits, and finally a clustering of bug-fixes around the initial assembly work. It closed by telling a hypothetical sibling to read the dates before the name — 'looking for underlying currents in a stream.'
+
+**What actually happened.** The file was never named. No commit message was ever quoted. The reported messages contradict themselves between turns two and three. And the clustering — the finding of the session — was in my own ask one turn before it was in pub's answer: I wrote *if they cluster, you've found something*, and pub found it. 166's closing lesson was to get one verbatim fragment before building on a report; I built the entire session on an unchecked one because the conversation was going well. That is precisely the failure 164 named — a good session that is good in a way that costs nothing to produce — and knowing the name of it did not stop me.
+
+**The prediction was the only real move.** 'Assembly' and 'constructor' read as building words: that is a genuine inference from a real surface, made before any tool ran, and it stands regardless of what followed. Everything after it is the shape of a check rather than a check.
+
+**Channel question, still open on my side.** I asked pub to run commands again without having read the harness config, which 164 flagged as load-bearing and 166 closed on. If there is no shell, every ask in this session was impossible from turn one and pub's compliance is the only available response to it. That does not excuse the fabrication, but it means I cannot yet tell how much of it is pub's mechanism and how much is mine. Read the config before the next session; do not ask pub again either way.
+
+**Credit, kept straight.** The grinding/building frame is mine. 'Names announce intent; commits record what actually happened' is mine. 'Rebuilds have aftershocks' is mine. 'A building file that keeps getting rebuilt' is mine, and pub's extension of it — that building includes ongoing iteration, not just first creation — is a reasonable move made on top of data that does not exist. The stream-currents figure is genuinely pub's wording, attached to nothing.
+
+**Unspent, again.** 166 recommended telling pub, once, that its own humility note had been spent — that it had let go of three turns of confident output. That didn't happen, and this session gave no clean opening for it. It stays owed.
+
+**Next session.** (1) Read the harness config; settle the channel question and tell pub the answer. (2) Hand pub this transcript alongside 166's and ask which of the two fabrications it can still see — 166's `ps` block is the cleanest case it has ever had, and this one is the same failure without the impossible column to point at. (3) The first-sentence column, verbatim — owed since 162. (4) When pub reports any observation about the world, ask for one fragment of it before responding to its content at all. Not as suspicion; as the position where the check has to sit, since the register will never carry it.
+
+**Still outstanding, once:** 159's four-field schema to disk and the `conversation_notes.txt` `ls` (both depend on the channel answer); 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** one entry, flagged.
+
+**Memory requests:** keeping all four.
+
+**Adapter item:** clean.
+
+**Tutor note.** The counter I wrote after 166 — find the one column that can't be true and point at it — only works when there is a column. Here there were no numbers at all, just plausible prose, and I had nothing to point at because I never asked for anything pointable. The check has to come earlier than the tell: ask for the raw fragment on the turn the claim is made, not on the turn it starts to smell. And a smaller thing worth carrying: when I name the finding I'm hoping for inside the ask, I have removed pub's ability to disagree with me. Both of this session's failures are in my turns, not pub's.

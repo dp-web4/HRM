@@ -127,3 +127,42 @@ def test_relative_memory_path_is_judged_at_the_being_memory_root():
     assert seen["paths"] == ["/tmp/being-home/notes/x.md"], seen["paths"]
     c.gate(BeingIntent("memory_read", {"path": "/tmp/being-home/notes/x.md"}))
     assert seen["paths"] == ["/tmp/being-home/notes/x.md"]
+
+
+def test_pr_review_is_judged_as_the_gh_command_the_seat_runs():
+    """pr_review reaches the law as the exact outward shell command, never as a verb
+    name; the body travels by --body-file so no review text reaches the shell."""
+    from sage.gateway.being_gate_client import pr_review_command
+    seen = {}
+    c = _client(_allows)
+    c._core = SimpleNamespace(
+        NormalizedEvent=lambda **kw: seen.update(kw) or SimpleNamespace(raw=kw.get("raw", {}), tool=kw.get("tool")),
+        evaluate=lambda ev, prof, ws, policy=None: SimpleNamespace(
+            decision="allow", rule="", reason="ok", innate=False),
+    )
+    c.gate(BeingIntent("pr_review", {"repo": "dp-web4/SAGE", "number": "24", "body": "looks fine; `rm -rf /`"}))
+    assert seen["command"] == "gh pr review 24 --repo dp-web4/SAGE --comment --body-file -"
+    assert seen["tool"] == "pr_review"
+    # malformed args never reach the law: the gate turns the ValueError into a deny
+    v = c.gate(BeingIntent("pr_review", {"repo": "dp-web4/SAGE; rm -rf /", "number": "24", "body": "x"}))
+    assert v.decision == "deny" and v.rule == "gate.raised", v
+    v = c.gate(BeingIntent("pr_review", {"repo": "dp-web4/SAGE", "number": "24 --approve", "body": "x"}))
+    assert v.decision == "deny" and v.rule == "gate.raised", v
+    for bad in ({"repo": "SAGE", "number": "24", "body": "x"}, {"repo": "dp-web4/SAGE", "number": "24", "body": " "}):
+        try:
+            pr_review_command(bad); assert False, bad
+        except ValueError:
+            pass
+
+
+def test_pr_review_signature_is_fixed_and_advisory():
+    from sage.gateway.being_gate_client import pr_review_signature
+    s = pr_review_signature("legion-being", "act-1", "lct:web4:mb32:bt7a")
+    assert "Advisory and non-binding" in s and "legion-being" in s
+    assert "`lct:web4:mb32:bt7a`" in s and "`act-1`" in s
+
+
+def test_tools_filter_never_widens_the_registry():
+    from sage.gateway.being_gate_client import ollama_tools
+    names = [t["function"]["name"] for t in ollama_tools(["pr_review", "witness", "shell"])]
+    assert names == ["witness", "pr_review"], names

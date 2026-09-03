@@ -78,8 +78,11 @@ class HestiaF1aDispatcher:
                  remote_member_default: str = "claude-code",
                  local_members: Optional[set] = None,
                  host_session_id: Optional[str] = None,
-                 mcp_factory: Optional[McpFactory] = None):
+                 mcp_factory: Optional[McpFactory] = None,
+                 being_lct: Optional[str] = None):
         self.plugin_id = plugin_id
+        # the being's registry LCT id, named in every outward act it signs (pr_review)
+        self.being_lct = being_lct
         self.endpoint = endpoint
         self._publish = publish_fn
         self.remote_member_default = remote_member_default
@@ -209,6 +212,46 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=True, result={"notices": out.get("notices", []),
                                                "total": out.get("total", 0),
                                                "evicted": out.get("evicted", 0)})
+
+    # -- pr_review: the seat posts the being's review, as the gated command -------
+    def _do_pr_review(self, intent: BeingIntent) -> ResultEnvelope:
+        """Only ever reached on an intent the gate ALLOWED as the exact `gh pr review`
+        command below. Order: begin_action (chain) -> post -> record_outcome. The
+        signature trailer is appended here, so the being cannot post without it."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import pr_review_command, pr_review_signature
+        try:
+            cmd = pr_review_command(intent.args)
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        repo, number = str(intent.args["repo"]).strip(), str(intent.args["number"]).strip()
+        target = f"{repo}#{number}"
+        begin = self._call("hestia_begin_action", {"tool_name": "pr_review", "target": target})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+        body = str(intent.args["body"]).rstrip() + "\n" + \
+            pr_review_signature(self.plugin_id, action_id, self.being_lct) + "\n"
+        try:
+            proc = subprocess.run(shlex.split(cmd), input=body, text=True,
+                                  capture_output=True, timeout=60)
+            ok = proc.returncode == 0
+            detail = (proc.stdout if ok else proc.stderr).strip()
+        except Exception as e:  # gh missing, timeout: a failed act, recorded as such
+            ok, detail = False, f"{type(e).__name__}: {e}"
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": ok, "magnitude": 0.0,
+                        **({} if ok else {"error": detail[:300]})})
+        except Exception:
+            pass  # begin_action already chained the act; the outcome is in the envelope
+        if not ok:
+            return ResultEnvelope(ok=False, error=f"pr_review failed: {detail[:400]}",
+                                  witness_id=action_id)
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"posted": target, "gh": detail[:200], "action_id": action_id})
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:

@@ -102,7 +102,10 @@ def test_pending_f1a_when_no_dispatcher():
 def test_run_ollama_tool_turn_with_fake_llm():
     from sage.gateway.being_gate_client import ollama_tools
     from sage.gateway.being_tool_loop import run_ollama_tool_turn
-    assert len(ollama_tools()) == 6  # exactly the bounded registry (§7.2: 5 verbs + memory split r/w), nothing more
+    # exactly the bounded registry, nothing more: §7.2's 5 verbs + memory split r/w (6),
+    # + pr_review (2026-09-03, Legion: the being reviews a PR; the seat posts, gated as
+    # the `gh` command it runs). Widening this number is a registry decision, not a typo.
+    assert len(ollama_tools()) == 7
 
     calls = {"n": 0}
 

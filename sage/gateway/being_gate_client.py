@@ -72,13 +72,49 @@ _REGISTRY = {
     "memory_write":   dict(tool="write_note",   path_args=("path",), cmd_arg=None),
     "channel_egress": dict(tool="channel_send", path_args=(),       cmd_arg=None),
     "mesh":           dict(tool="mesh_notify",  path_args=(),       cmd_arg=None),  # §7.2 5th verb
+    # pr_review: the being reviews a pull request. The seat posts the comment; the gate
+    # judges the exact shell command the seat will run (see pr_review_command), so the
+    # law sees an outward `gh` act, not a friendly verb name. Advisory by construction:
+    # a being holds no reviewer role, so the comment never counts toward merge.
+    "pr_review":      dict(tool="pr_review",    path_args=(),       cmd_arg=None),
 }
+
+
+def pr_review_command(args: dict) -> str:
+    """The shell command the seat runs for a pr_review intent, built from validated args.
+    Raises ValueError on anything the grammar cannot represent; never interpolates the body
+    (it travels by --body-file, so no review text can reach the shell)."""
+    import re
+    repo = str(args.get("repo", "")).strip()
+    number = str(args.get("number", "")).strip()
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
+        raise ValueError(f"pr_review 'repo' must be owner/name, got {repo!r}")
+    if not re.fullmatch(r"[0-9]{1,7}", number):
+        raise ValueError(f"pr_review 'number' must be a PR number, got {number!r}")
+    if not str(args.get("body", "")).strip():
+        raise ValueError("pr_review needs a non-empty 'body'")
+    return f"gh pr review {number} --repo {repo} --comment --body-file -"
+
+
+def pr_review_signature(member_id: str, action_id: Optional[str], being_lct: Optional[str]) -> str:
+    """The fixed trailer on every review a being posts: who, under what record, and that
+    it is advisory. The being cannot omit or alter it; the dispatcher appends it."""
+    lines = ["", "---",
+             f"Review by **{member_id}**, a SAGE being acting under hestia governance. "
+             "Advisory and non-binding: the being holds no reviewer role, so this comment "
+             "does not count toward merge. The seat's reviewers decide."]
+    if being_lct:
+        lines.append(f"LCT: `{being_lct}`")
+    if action_id:
+        lines.append(f"hestia witness action: `{action_id}`")
+    lines.append(f"— {member_id}")
+    return "\n".join(lines)
 
 # Society-safety failure boundary per effector class. Observational acts carry no
 # external effect and may soft-pass when the society governor is unavailable;
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read"})
-_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh"})
+_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -97,13 +133,22 @@ _TOOL_SCHEMAS = {
              {"to": "member name", "kind": "notice kind, e.g. coordination, reply, ack",
               "pointer": "URI of the content (a shared-context path, PR, or thread)"},
              ["to", "kind", "pointer"]),
+    "pr_review": ("Post your review of a pull request as a comment. Advisory: it does not "
+                  "approve or block. Say what you checked, what you found, and what you "
+                  "would change, with file and line references where you can.",
+                  {"repo": "owner/name, e.g. dp-web4/SAGE", "number": "the PR number",
+                   "body": "your review, in markdown"}, ["repo", "number", "body"]),
 }
 
 
-def ollama_tools() -> List[dict]:
-    """Ollama native-tool specs for the bounded gateway-member registry (nothing else)."""
+def ollama_tools(only: Optional[List[str]] = None) -> List[dict]:
+    """Ollama native-tool specs for the bounded gateway-member registry (nothing else).
+    `only` narrows what the being is OFFERED for a task (e.g. a review turn offers
+    pr_review + witness); it never widens: a name outside the registry is ignored."""
     out = []
     for name, (desc, props, required) in _TOOL_SCHEMAS.items():
+        if only is not None and name not in only:
+            continue
         out.append({"type": "function", "function": {
             "name": name, "description": desc,
             "parameters": {"type": "object",
@@ -231,6 +276,10 @@ class BeingGateClient:
                     p = os.path.join(getattr(self, "memory_root", self.workspace), p)
                 paths.append(os.path.abspath(p))
         command = intent.args.get(spec["cmd_arg"]) if spec["cmd_arg"] else None
+        if intent.effector == "pr_review":
+            # judged as the outward shell act the seat will actually run; bad args raise
+            # here and gate() turns that into a deny (gate.raised), never a silent pass
+            command = pr_review_command(intent.args)
         return self._core.NormalizedEvent(
             tool=spec["tool"], paths=paths, command=command,
             cwd=self.workspace, raw={"effector": intent.effector, **intent.args},

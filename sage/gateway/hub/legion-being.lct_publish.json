@@ -9,6 +9,13 @@
     "binding_proof": {
       "bytes": "5f17903f2d4d45041213ccaa5f7f325b3052e4cd1ad165670d6600f0a33c3d8d8b7a42abb94855cb5516185684e632f6c8e9c86d1a7277ff83c1e9711dc17d0a"
     },
+    "citizenships": [
+      {
+        "entry_hash": "56d3c592fc2730857f961c057589d3c9e5439c13a370dab91dad49a918da28a2",
+        "entry_id": "113093",
+        "issuing_society": "lct:web4:mb32:bt4f3y7vkccvc4ibbqigrs2goephznuy7zqthkt7bh2yagjjqsn4a"
+      }
+    ],
     "created_at": "2026-09-02T18:06:44.536021678Z",
     "created_by": null,
     "entity_type": "ai_embodied",
@@ -20,7 +27,14 @@
     "id": "4a7f7eeb-c68c-49b8-bac8-92c2acd03f54",
     "lineage_depth": 0,
     "mrh": {
-      "horizon_depth": 0
+      "horizon_depth": 0,
+      "paired": [
+        {
+          "edge_type": "birth_certificate",
+          "lct_id": "lct:web4:role:citizen",
+          "ts": "2026-09-03T23:22:15Z"
+        }
+      ]
     },
     "parent_id": null,
     "public_key": {

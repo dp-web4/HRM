@@ -2,10 +2,13 @@
 # Copy to ~/.config/systemd/user/membot-being.service; on Legion the unit is named
 # membot-legion.service and listens on 8010 (HestiaF1aDispatcher's default endpoint).
 # Setup once:  cd ~/ai-workspace/membot && python3 -m venv .venv && .venv/bin/pip install fastmcp numpy
-# Embeddings: MEMBOT_EMBED_BACKEND=auto picks ollama when `ollama list` shows nomic-embed-text
-# (the probe reads /api/tags for that name, so an ollama-API shim with no embed model falls
-# through) and otherwise sentence-transformers in the venv (same nomic-embed-text-v1.5, 768 dims,
-# local; needs `pip install sentence-transformers`). Set =st to force local on a seat with no
+# Embeddings: MEMBOT_EMBED_BACKEND=auto picks ollama when GET $OLLAMA_HOST/api/tags (default
+# http://localhost:11434; this unit sets no OLLAMA_HOST) lists nomic-embed-text by name, and
+# otherwise sentence-transformers in the venv (same nomic-embed-text-v1.5, 768 dims, local;
+# needs `pip install sentence-transformers`). The probe is the HTTP tag list, not the ollama
+# CLI: on HUB that port is sage-shim (tags: granite4 only) so auto resolves to st, measured
+# 2026-09-04. Trap: a tag name is not evidence /api/embed works; add nomic-embed-text to a
+# shim's tag list without an embed endpoint and auto flips to ollama with no fallback. Set =st to force local on a seat with no
 # ollama daemon (HUB, measured 2026-09-04). =ollama is unconditional: no fallback, every
 # remember/recall fails at the embedder if the model is not served.
 # Isolation from the seat sessions' membot is two separate things:

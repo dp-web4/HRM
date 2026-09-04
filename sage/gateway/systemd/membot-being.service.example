@@ -2,16 +2,26 @@
 # Copy to ~/.config/systemd/user/membot-being.service; on Legion the unit is named
 # membot-legion.service and listens on 8010 (HestiaF1aDispatcher's default endpoint).
 # Setup once:  cd ~/ai-workspace/membot && python3 -m venv .venv && .venv/bin/pip install fastmcp numpy
-# Embeddings come from ollama (nomic-embed-text); pull it if `ollama list` lacks it.
-# Port 8000 is the seat sessions' membot (their conversation hooks store there): do not reuse it.
+# Embeddings: MEMBOT_EMBED_BACKEND=auto picks ollama when `ollama list` shows nomic-embed-text
+# (the probe reads /api/tags for that name, so an ollama-API shim with no embed model falls
+# through) and otherwise sentence-transformers in the venv (same nomic-embed-text-v1.5, 768 dims,
+# local; needs `pip install sentence-transformers`). Set =st to force local on a seat with no
+# ollama daemon (HUB, measured 2026-09-04). =ollama is unconditional: no fallback, every
+# remember/recall fails at the embedder if the model is not served.
+# Isolation from the seat sessions' membot is two separate things:
+#   - the port (8010, not 8000) separates PROCESSES, and only matters on a seat whose membot is
+#     HTTP; a stdio seat membot (HUB) has no port to collide with;
+#   - `--mount <machine>-being` separates MEMORIES: every membot process, any transport, reads
+#     and writes membot/cartridges, so without its own mount the being recalls the seat's
+#     memories as its own (four did on Legion 2026-09-03). The mount is the one that matters.
 [Unit]
-Description=Membot brain-cartridge server for <machine>-being (HTTP MCP, ollama embeddings)
+Description=Membot brain-cartridge server for <machine>-being (HTTP MCP, own cartridge mount)
 After=network.target
 
 [Service]
 Type=simple
 WorkingDirectory=/home/dp/ai-workspace/membot
-Environment=MEMBOT_EMBED_BACKEND=ollama
+Environment=MEMBOT_EMBED_BACKEND=auto
 Environment=PYTHONUNBUFFERED=1
 ExecStart=/home/dp/ai-workspace/membot/.venv/bin/python membot_server.py --transport http --port 8010 --writable --mount <machine>-being
 Restart=on-failure

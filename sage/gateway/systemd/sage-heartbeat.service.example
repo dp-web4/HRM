@@ -2,6 +2,12 @@
 # Install: copy to ~/.config/systemd/user/sage-heartbeat.service, replace <machine>,
 # <model>, <instance-dir> and the python path, then
 #   systemctl --user daemon-reload && systemctl --user enable --now sage-heartbeat.timer
+# From a cron/mesh-fired session that line fails ("Failed to connect to user scope bus"):
+# export XDG_RUNTIME_DIR=/run/user/$(id -u) DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+# first, or install from an interactive seat (measured on HUB 2026-09-04).
+# --model is what the client asks for, not proof of what answered: behind an ollama-API shim
+# onto a single-GGUF llama-server (HUB) any name routes to the same weights. When a beat
+# comes back empty, read the server's /v1/models (or `ollama ps`), not this file.
 # Needs: the hestia daemon (member id <machine>-being connects to it), an ollama model,
 # and the being's own membot on its OWN port (see membot-being.service.example): never
 # share the seat sessions' membot, their conversation hooks write into whatever cartridge

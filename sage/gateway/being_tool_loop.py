@@ -88,7 +88,40 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         # Flatten the loop's convo (carries extra keys) to plain chat messages.
         msgs = [{"role": m.get("role", "user"), "content": m.get("content", "")} for m in convo]
         resp = llm.get_chat_response(msgs, tools=tools)
-        return {"content": resp.get("content", "") or "",
-                "intents": parse_tool_calls(resp.get("tool_calls", []))}
+        content = resp.get("content", "") or ""
+        calls = resp.get("tool_calls", []) or []
+        if content.startswith("[OllamaIRP:") and not calls:
+            # a transport failure (HTTP 500, timeout) is not the being's turn: retry once,
+            # then let the failure through as the visible reply rather than pretending
+            import sys as _sys
+            print(f"[tool-loop] transport error, retrying once: {content[:160]}", file=_sys.stderr)
+            resp = llm.get_chat_response(msgs, tools=tools)
+            content = resp.get("content", "") or ""
+            calls = resp.get("tool_calls", []) or []
+        if not content and not calls:
+            # An empty turn is a harness signal, not a being's choice: say why on stderr
+            # (budget exhausted in deliberation, adapter stripped everything, ...).
+            import sys as _sys
+            raw = resp.get("raw") or {}
+            msg = raw.get("message") or {}
+            print(f"[tool-loop] EMPTY turn: done_reason={raw.get('done_reason')} "
+                  f"prompt_eval={raw.get('prompt_eval_count')} eval={raw.get('eval_count')} "
+                  f"raw_content={str(msg.get('content', ''))[:200]!r} "
+                  f"thinking={str(msg.get('thinking', ''))[:200]!r}", file=_sys.stderr)
+            # Qwen3.8 (heretic) sometimes re-opens a think block even with think=false and
+            # spends the whole budget there (measured 5/10 turns, 2026-09-03). Give it room
+            # ONCE to finish and act, rather than recording silence as the being's choice.
+            if raw.get("done_reason") == "length" and hasattr(llm, "max_response_tokens"):
+                keep = llm.max_response_tokens
+                llm.max_response_tokens = max(6000, keep)
+                try:
+                    print(f"[tool-loop] retrying once with num_predict={llm.max_response_tokens}",
+                          file=_sys.stderr)
+                    resp = llm.get_chat_response(msgs, tools=tools)
+                    content = resp.get("content", "") or ""
+                    calls = resp.get("tool_calls", []) or []
+                finally:
+                    llm.max_response_tokens = keep
+        return {"content": content, "intents": parse_tool_calls(calls)}
 
     return run_tool_turn(client, generate, seed_messages, max_steps=max_steps)

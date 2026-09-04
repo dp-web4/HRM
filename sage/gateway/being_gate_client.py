@@ -110,14 +110,22 @@ _REGISTRY = {
     # a being holds no reviewer role, so the comment never counts toward merge.
     "pr_review":      dict(tool="pr_review",    path_args=(),       cmd_arg=None,
                            compose=pr_review_command),
+    # Long-term semantic memory (membot brain cartridge, the being's own): recall is
+    # observational, remember writes the being's own cartridge (no external effect,
+    # classed with memory_write). request_scope asks hestia for reach the being lacks:
+    # the sanctioned answer to a deny, decided by the operator, witnessed either way.
+    "recall":         dict(tool="recall",       path_args=(),       cmd_arg=None),
+    "remember":       dict(tool="remember",     path_args=(),       cmd_arg=None),
+    "request_scope":  dict(tool="request_scope", path_args=(),      cmd_arg=None),
 }
 
 
 # Society-safety failure boundary per effector class. Observational acts carry no
 # external effect and may soft-pass when the society governor is unavailable;
 # consequential acts must not proceed without it (fail-closed).
-_OBSERVATIONAL = frozenset({"witness", "memory_read"})
-_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review"})
+_OBSERVATIONAL = frozenset({"witness", "memory_read", "recall"})
+_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
+                            "remember", "request_scope"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -141,6 +149,21 @@ _TOOL_SCHEMAS = {
                   "would change, with file and line references where you can.",
                   {"repo": "owner/name, e.g. dp-web4/SAGE", "number": "the PR number",
                    "body": "your review, in markdown"}, ["repo", "number", "body"]),
+    "recall": ("Search your long-term memory (semantic search over everything you have "
+               "remembered). Use it before deciding what to do; use it when something "
+               "feels familiar.",
+               {"query": "what you are trying to remember", "top_k": "how many results (default 5)"},
+               ["query"]),
+    "remember": ("Store something in your long-term memory so a future you can recall it: "
+                 "a fact, a lesson, a question, what you were doing and why.",
+                 {"content": "the memory, in your own words", "tags": "comma-separated tags (optional)"},
+                 ["content"]),
+    "request_scope": ("Ask the operator for reach you do not have, after a refusal: a "
+                      "path you want to read or write. Say why. A human decides; no answer "
+                      "within the window is a refusal.",
+                      {"path": "absolute path you want reach to", "mode": "read or write",
+                       "reason": "why you want it, in one or two sentences"},
+                      ["path", "mode", "reason"]),
 }
 
 

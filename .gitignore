@@ -282,3 +282,5 @@ memory
 *.wandb
 *.zip
 *.tar.gz
+sage/instances/*/heartbeats.jsonl
+sage/instances/*/heartbeat.log

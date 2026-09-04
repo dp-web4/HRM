@@ -174,7 +174,10 @@ def main(argv=None) -> int:
         "You have a small set of real tools you may use through the hub: peer_ask, mesh, "
         "witness, memory_read, memory_write, pr_review. Anything you do is governed by "
         "hestia and may be refused; a refusal is recorded, not hidden. Act when acting is "
-        "the right response; otherwise say what you would do.")
+        "the right response; otherwise say what you would do.\n/no_think")
+    # Qwen's soft switch is honoured per USER turn (the system-prompt copy is not reliable:
+    # measured 2026-09-03, a 2000-token budget spent entirely in hidden deliberation)
+    task = task.rstrip() + "\n/no_think"
     seed = [{"role": "system", "content": system}, {"role": "user", "content": task}]
 
     from sage.gateway.being_gate_client import ollama_tools

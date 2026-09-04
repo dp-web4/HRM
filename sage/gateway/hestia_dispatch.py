@@ -79,10 +79,19 @@ class HestiaF1aDispatcher:
                  local_members: Optional[set] = None,
                  host_session_id: Optional[str] = None,
                  mcp_factory: Optional[McpFactory] = None,
-                 being_lct: Optional[str] = None):
+                 being_lct: Optional[str] = None,
+                 # the BEING's membot, on its own port: :8000 is the seat sessions' membot and
+                 # their conversation hooks write into whatever cartridge is mounted there
+                 # (measured 2026-09-03: 4 seat memories landed in legion-being's cartridge)
+                 membot_endpoint: str = "http://127.0.0.1:8010/mcp",
+                 membot_cartridge: Optional[str] = None):
         self.plugin_id = plugin_id
         # the being's registry LCT id, named in every outward act it signs (pr_review)
         self.being_lct = being_lct
+        # the being's long-term memory: a membot cartridge named after the member
+        self.membot_endpoint = membot_endpoint
+        self.membot_cartridge = membot_cartridge or plugin_id
+        self._mb = None
         self.endpoint = endpoint
         self._publish = publish_fn
         self.remote_member_default = remote_member_default
@@ -252,6 +261,74 @@ class HestiaF1aDispatcher:
                                   witness_id=action_id)
         return ResultEnvelope(ok=True, witness_id=action_id,
                               result={"posted": target, "gh": detail[:200], "action_id": action_id})
+
+    # -- long-term memory: the being's own membot cartridge ----------------------
+    def _membot(self):
+        """One MCP session to the membot server (fastmcp streamable HTTP). Lazy; a
+        server that is down surfaces as an error envelope on the act, never a crash."""
+        if getattr(self, "_mb", None) is None:
+            c = self._mcp_factory(self.membot_endpoint, self.plugin_id)
+            c.init()
+            self._mb = c
+        return self._mb
+
+    def _membot_call(self, name: str, args: dict) -> str:
+        out = self._membot().call(name, args)
+        res = out.get("result", {}) if isinstance(out, dict) else {}
+        sc = res.get("structuredContent")
+        if isinstance(sc, dict) and "result" in sc:
+            return str(sc["result"])
+        return "".join(b.get("text", "") for b in res.get("content", []) if isinstance(b, dict))
+
+    def _do_recall(self, intent: BeingIntent) -> ResultEnvelope:
+        q = str(intent.args.get("query", "")).strip()
+        if not q:
+            return ResultEnvelope(ok=False, error="recall needs a 'query'")
+        try:
+            k = int(intent.args.get("top_k") or 5)
+        except (TypeError, ValueError):
+            k = 5
+        try:
+            text = self._membot_call("memory_search", {"query": q, "top_k": max(1, min(k, 20))})
+        except Exception as e:
+            return ResultEnvelope(ok=False, error=f"membot unreachable ({type(e).__name__}): {e}")
+        return ResultEnvelope(ok=True, result=text,
+                              witness_id=self._local._witness(f"recall {q[:80]}"))
+
+    def _do_remember(self, intent: BeingIntent) -> ResultEnvelope:
+        content = str(intent.args.get("content", "")).strip()
+        if not content:
+            return ResultEnvelope(ok=False, error="remember needs 'content'")
+        tags = str(intent.args.get("tags", "") or "")
+        try:
+            stored = self._membot_call("memory_store", {"content": content, "tags": tags})
+            saved = self._membot_call("save_cartridge", {"name": self.membot_cartridge})
+        except Exception as e:
+            return ResultEnvelope(ok=False, error=f"membot unreachable ({type(e).__name__}): {e}")
+        return ResultEnvelope(ok=True, result=f"{stored}; {saved}",
+                              witness_id=self._local._witness(f"remember {content[:80]}"))
+
+    # -- request_scope: the sanctioned answer to a deny --------------------------
+    def _do_request_scope(self, intent: BeingIntent) -> ResultEnvelope:
+        path = str(intent.args.get("path", "")).strip()
+        mode = str(intent.args.get("mode", "read")).strip().lower()
+        reason = str(intent.args.get("reason", "")).strip()
+        if not path.startswith("/"):
+            return ResultEnvelope(ok=False, error="request_scope 'path' must be absolute")
+        if not reason:
+            return ResultEnvelope(ok=False, error="request_scope needs a 'reason' (a human reads it)")
+        args: Dict[str, Any] = {"plugin_id": self.plugin_id, "path": path,
+                                "reason": f"[{self.plugin_id}, {mode}] {reason}"}
+        if mode == "read":
+            args["permits_read"] = True
+        out = self._call("hestia_request_scope", args)
+        err = _hestia_error(out)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        return ResultEnvelope(ok=True, witness_id=out.get("witnessEntryHash"),
+                              result={"request_id": out.get("request_id"), "status": out.get("status"),
+                                      "path": path, "mode": mode,
+                                      "next": out.get("next"), "on_timeout": out.get("on_timeout")})
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:

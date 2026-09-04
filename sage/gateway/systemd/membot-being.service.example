@@ -1,0 +1,21 @@
+# The being's long-term memory: a membot brain-cartridge server on the being's OWN port.
+# Copy to ~/.config/systemd/user/membot-being.service; on Legion the unit is named
+# membot-legion.service and listens on 8010 (HestiaF1aDispatcher's default endpoint).
+# Setup once:  cd ~/ai-workspace/membot && python3 -m venv .venv && .venv/bin/pip install fastmcp numpy
+# Embeddings come from ollama (nomic-embed-text); pull it if `ollama list` lacks it.
+# Port 8000 is the seat sessions' membot (their conversation hooks store there): do not reuse it.
+[Unit]
+Description=Membot brain-cartridge server for <machine>-being (HTTP MCP, ollama embeddings)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/dp/ai-workspace/membot
+Environment=MEMBOT_EMBED_BACKEND=ollama
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/dp/ai-workspace/membot/.venv/bin/python membot_server.py --transport http --port 8010 --writable --mount <machine>-being
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

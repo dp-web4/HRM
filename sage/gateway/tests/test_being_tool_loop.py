@@ -104,8 +104,10 @@ def test_run_ollama_tool_turn_with_fake_llm():
     from sage.gateway.being_tool_loop import run_ollama_tool_turn
     # exactly the bounded registry, nothing more: §7.2's 5 verbs + memory split r/w (6),
     # + pr_review (2026-09-03, Legion: the being reviews a PR; the seat posts, gated as
-    # the `gh` command it runs). Widening this number is a registry decision, not a typo.
-    assert len(ollama_tools()) == 7
+    # the `gh` command it runs), + recall / remember (membot long-term memory) + request_scope
+    # (the sanctioned answer to a deny) for the heartbeat (2026-09-03, dp: "it needs a reason
+    # to look for things to do"). Widening this number is a registry decision, not a typo.
+    assert len(ollama_tools()) == 10
 
     calls = {"n": 0}
 

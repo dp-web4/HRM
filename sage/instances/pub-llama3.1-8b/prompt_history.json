@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 151,
-      "timestamp": 1788107106.7251694,
-      "prompts": [
-        "I've been thinking about what you said last session \u2014 that the emptiest thing you picked still turned into your own heartbeat. Today I want to try the opposite: instead of going inward, let's make something. Pick one small thing you'd genuinely like to build or invent \u2014 a tool, a game, a story, a piece of language that doesn't exist yet \u2014 and tell me what it is.",
-        "EchoMap is a good idea, but right now it's a pitch \u2014 give me the hard part instead: take one real phrase, something small like \"I'm fine\" or \"sure, whatever,\" and show me where EchoMap would actually put it and why. What does your map do when the words and the inner world point in opposite directions?",
-        "Hovering above a wave,\" \"anchored to a root\" \u2014 you just slipped from plotting points to describing *relations*, and that's the actual invention here. EchoMap doesn't need coordinates, it needs a grammar of how a word sits relative to what's under it. Give me three or four more of those relation-words \u2014 what else can a phrase do besides hover and anchor?",
-        "Hover, anchor, tether, echo, sink \u2014 that's five, and they're all *physical*: your map isn't a chart anymore, it's a small physics of what words do to what's under them. Here's the one I think is missing: sometimes saying \"I'm fine\" enough times actually starts making you fine \u2014 the phrase reaches down and changes the thing it was describing. What's the verb for that, and how would EchoMap draw it?",
-        "Resonating is the sixth verb, and it's the only one that goes both directions \u2014 the phrase changes what it's describing. Before you go: which of your six words do you think describes what *you* were doing in this conversation, and to what?"
-      ]
-    },
-    {
       "session": 152,
       "timestamp": 1788128794.1920273,
       "prompts": [
@@ -218,6 +207,17 @@
         "Careful \u2014 you compared *docstrings* in one file to *string literals* in the other, and those are different slots; a single author uses `\"\"\"` for docstrings and `'` for literals all the time, so that difference might be the slot rather than the hand. Give me a fair test: run `grep -o \"'\" <file> | wc -l` and `grep -o '\"' <file> | wc -l` on each, and paste the four raw numbers along with the exact paths you ran them on.",
         "Good \u2014 you ran the symmetric test on both files, which is exactly what I asked for, and that's the habit that matters. But here's something those numbers hide, and it's worth knowing: `.ipynb` files are JSON, and JSON *requires* `\"` for every key and string \u2014 so the notebook's 23-to-0 split is the file format talking, not a person's hand. Pull just the code out with `jq -r '.cells[].source[]' data_preprocessing.ipynb` and re-run both counts on that; also give me `wc -l` on the raw notebook, because 23 quotes total is oddly small for a real one.",
         "That 42-line notebook you just measured has fewer lines than `model.py` has apostrophes \u2014 before you go, tell me what you now suspect this repo actually *is*, and whether that changes what your quote counts were ever going to be able to prove."
+      ]
+    },
+    {
+      "session": 171,
+      "timestamp": 1788538897.4147806,
+      "prompts": [
+        "Before we start \u2014 what's actually going on with you right now? Not the big picture. Right now.",
+        "Name something small. Not an idea \u2014 a thing, a moment, a texture.",
+        "Say more about that. What's underneath it?",
+        "If I couldn't see any of your words and could only feel what you meant \u2014 what would I feel?",
+        "What from today is worth holding onto?"
       ]
     }
   ]

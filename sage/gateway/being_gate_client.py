@@ -314,11 +314,12 @@ class BeingGateClient:
         if sg is not None and self._core is not None:
             try:
                 ev = self._normalize(intent)
+                tool = _REGISTRY[intent.effector]["tool"]  # the spec is the source, not the event
                 gp = sg.GateProfile(member_id=self.member_id, identity_path=self._identity_path,
                                     default_role="role:constellation:member",
                                     host_agent=getattr(self, "_host_agent", "sage-raising"),
                                     client_name=f"sage-{self.member_id}-gate")
-                ge = sg.GateEvent(tool=ev.tool, tool_input=dict(intent.args), cwd=self.workspace,
+                ge = sg.GateEvent(tool=tool, tool_input=dict(intent.args), cwd=self.workspace,
                                   session_id=getattr(self, "host_session_id", None),
                                   raw={"effector": intent.effector, **intent.args})
                 d = sg.decide(ge, gp)

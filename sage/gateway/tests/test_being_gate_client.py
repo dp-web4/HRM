@@ -183,6 +183,7 @@ def _sg_client(decision="allow", rule="", available=True, raise_=False):
     c = _client(_allows)
     c._single_gate = SimpleNamespace(GateProfile=GateProfile, GateEvent=GateEvent, decide=decide)
     c._identity_path = "/tmp/id.json"
+    c._host_agent = "test-harness"
     return c, calls
 
 

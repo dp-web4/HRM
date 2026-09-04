@@ -164,6 +164,52 @@ def test_tools_filter_never_widens_the_registry():
     names = [t["function"]["name"] for t in ollama_tools(["pr_review", "witness", "shell"])]
     assert names == ["witness", "pr_review"], names
 
+
+
+# ---- single gate (hestia #934) shim contract ---------------------------------------------
+def _sg_client(decision="allow", rule="", available=True, raise_=False):
+    """Client with a fake hestia_single_gate injected: decide() must be THE law path."""
+    calls = []
+    class GateProfile:
+        def __init__(self, **kw): self.kw = kw
+    class GateEvent:
+        def __init__(self, **kw): self.kw = kw
+    class D:
+        def __init__(self): self.decision, self.rule, self.reason = decision, rule, "single-gate said so"; self.verdict_available = available
+    def decide(ev, prof):
+        calls.append((ev.kw, prof.kw))
+        if raise_: raise RuntimeError("boom")
+        return D()
+    c = _client(_allows)
+    c._single_gate = SimpleNamespace(GateProfile=GateProfile, GateEvent=GateEvent, decide=decide)
+    c._identity_path = "/tmp/id.json"
+    return c, calls
+
+
+def test_single_gate_decides_and_client_does_not_resequence():
+    c, calls = _sg_client("allow")
+    v = c.gate(PEER)
+    assert v.decision == "allow" and v.stage == "single-gate", v
+    assert len(calls) == 1
+    ev, prof = calls[0]
+    assert ev["tool"] == "peer_ask" and ev["tool_input"] == PEER.args and ev["raw"]["effector"] == "peer_ask"
+    assert prof["member_id"] == "test-being" and prof["host_agent"] == "test-harness"
+
+
+def test_single_gate_deny_and_no_verdict_map_fail_closed():
+    assert _sg_client("deny", "mrh.path")[0].gate(WRITE).rule == "mrh.path"
+    v = _sg_client("allow", available=False)[0].gate(WRITE)
+    assert v.blocks and v.rule == "gate.no_verdict"
+    v = _sg_client(raise_=True)[0].gate(WRITE)
+    assert v.blocks and v.rule == "gate.raised" and v.innate
+
+
+def test_registry_refusal_precedes_the_single_gate():
+    c, calls = _sg_client("allow")
+    v = c.gate(BeingIntent("shell", {"command": "rm -rf /"}))
+    assert v.rule == "registry.unbounded" and not calls  # harness syntax, never reaches the law
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

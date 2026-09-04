@@ -246,6 +246,15 @@ class BeingGateClient:
         shared = _resolve_hestia_shared()
         if shared and shared not in sys.path:
             sys.path.insert(0, shared)
+        self._identity_path = identity_path
+        # Single gate (hestia #934): when installed, ONE law-bearing sequence decides and this
+        # client is a shim — profile data + syntax translation, no policy sequencing of its
+        # own. Absent (pre-#934 engine), the per-primitive path below stays as the fallback.
+        try:
+            import hestia_single_gate as _sg  # type: ignore
+            self._single_gate = _sg
+        except Exception:
+            self._single_gate = None
         # Import the ONE shared law. A broken/missing core is fail-closed (gate()).
         try:
             import hestia_gate_core as _core  # type: ignore
@@ -299,6 +308,28 @@ class BeingGateClient:
         if intent.effector not in _REGISTRY:
             return GatewayVerdict("deny", "registry.unbounded", stage="registry",
                                   reason=f"'{intent.effector}' is not a gateway-member effector")
+        # --- Single gate (#934): the shim contract. The registry stage above is harness
+        # syntax (which verbs exist); everything law-bearing happens in decide(). ---
+        sg = getattr(self, "_single_gate", None)
+        if sg is not None and self._core is not None:
+            try:
+                ev = self._normalize(intent)
+                gp = sg.GateProfile(member_id=self.member_id, identity_path=self._identity_path,
+                                    default_role="role:constellation:member",
+                                    host_agent=getattr(self, "_host_agent", "sage-raising"),
+                                    client_name=f"sage-{self.member_id}-gate")
+                ge = sg.GateEvent(tool=ev.tool, tool_input=dict(intent.args), cwd=self.workspace,
+                                  session_id=getattr(self, "host_session_id", None),
+                                  raw={"effector": intent.effector, **intent.args})
+                d = sg.decide(ge, gp)
+                available = getattr(d, "verdict_available", True)
+                dec = d.decision if (available and d.decision in ("allow", "warn", "deny")) else "deny"
+                rule = d.rule or ("" if available else "gate.no_verdict")
+                return GatewayVerdict(dec, rule, getattr(d, "reason", "") or ("ok" if dec != "deny" else ""),
+                                      innate=False, stage="single-gate")
+            except Exception as e:  # a gate that raises is a refused act, never an ungoverned one
+                return GatewayVerdict("deny", "gate.raised", innate=True, stage="single-gate",
+                                      reason=f"{type(e).__name__}: {e}")
         # Fail-closed: no law core -> stopped, not ungoverned.
         if self._core is None:
             return GatewayVerdict("deny", "gate.unreachable", innate=True, stage="local-law",

@@ -85,17 +85,35 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     tools = tools if tools is not None else ollama_tools()
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
-        # Flatten the loop's convo (carries extra keys) to plain chat messages.
-        msgs = [{"role": m.get("role", "user"), "content": m.get("content", "")} for m in convo]
+        # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
+        # turn that emitted intents MUST keep them as tool_calls: Qwen's chat template
+        # raises on a tool message that follows an assistant message without tool_calls,
+        # and Ollama surfaces that as HTTP 500 (measured: every post-tool turn 500'd).
+        msgs = []
+        for m in convo:
+            out = {"role": m.get("role", "user"), "content": m.get("content", "")}
+            if m.get("role") == "assistant" and m.get("intents"):
+                out["tool_calls"] = [{"function": {"name": i.effector, "arguments": dict(i.args or {})}}
+                                     for i in m["intents"]]
+            msgs.append(out)
         resp = llm.get_chat_response(msgs, tools=tools)
         content = resp.get("content", "") or ""
         calls = resp.get("tool_calls", []) or []
         if content.startswith("[OllamaIRP:") and not calls:
-            # a transport failure (HTTP 500, timeout) is not the being's turn: retry once,
-            # then let the failure through as the visible reply rather than pretending
+            # a transport failure is not the being's turn: retry once with a bigger budget,
+            # then let the failure through as the visible reply rather than pretending.
+            # The common 500 here is "invalid tool call arguments ... unexpected end of JSON
+            # input": a long memory_write body cut off by num_predict (measured 2026-09-04).
             import sys as _sys
-            print(f"[tool-loop] transport error, retrying once: {content[:160]}", file=_sys.stderr)
-            resp = llm.get_chat_response(msgs, tools=tools)
+            print(f"[tool-loop] transport error, retrying once: {content[:200]}", file=_sys.stderr)
+            keep = getattr(llm, "max_response_tokens", None)
+            if keep is not None:
+                llm.max_response_tokens = max(6000, keep)
+            try:
+                resp = llm.get_chat_response(msgs, tools=tools)
+            finally:
+                if keep is not None:
+                    llm.max_response_tokens = keep
             content = resp.get("content", "") or ""
             calls = resp.get("tool_calls", []) or []
         if not content and not calls:

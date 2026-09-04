@@ -137,7 +137,8 @@ def main(argv=None) -> int:
     ap.add_argument("--forum-dir", default=os.path.expanduser("~/ai-workspace/shared-context/forum"))
     ap.add_argument("--repos", default="SAGE,hestia,web4")
     ap.add_argument("--temperature", type=float, default=0.4)
-    ap.add_argument("--max-tokens", type=int, default=2000)
+    ap.add_argument("--max-tokens", type=int, default=3000,
+                    help="a journal entry as a tool call needs room; too small = truncated JSON = Ollama 500")
     ap.add_argument("--gate-only", action="store_true")
     args = ap.parse_args(argv)
 

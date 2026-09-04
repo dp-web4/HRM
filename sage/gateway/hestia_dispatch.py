@@ -269,6 +269,10 @@ class HestiaF1aDispatcher:
         if getattr(self, "_mb", None) is None:
             c = self._mcp_factory(self.membot_endpoint, self.plugin_id)
             c.init()
+            # Mounts are per MCP session: without this, memory_store answers "No cartridge
+            # mounted" and save_cartridge writes an EMPTY cartridge over the real one
+            # (measured 2026-09-04: one memory lost). Mount first, always.
+            c.call("mount_cartridge", {"name": self.membot_cartridge})
             self._mb = c
         return self._mb
 

@@ -15,6 +15,19 @@ def test_step_status_is_closed_set():
     except AssertionError:
         pass
 
+def test_client_names_its_gate_path_and_single_gate_marker(tmp_path=None):
+    # The report's gate_path column comes from the client, never assumed. Whatever the engine
+    # here, the path is one of two names and the marker says present or absent-with-reason.
+    import tempfile
+    from sage.gateway.being_gate_client import BeingGateClient
+    d = tempfile.mkdtemp()
+    cl = BeingGateClient("shape-test", os.path.join(d, "identity.json"), d)
+    assert cl.gate_path in ("single-gate", "local-law")
+    st = cl.single_gate_status
+    assert (cl.gate_path == "single-gate") == (st == "present")
+    if cl.gate_path == "local-law":
+        assert st.startswith("absent: ")
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

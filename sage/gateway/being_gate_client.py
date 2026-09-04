@@ -253,8 +253,10 @@ class BeingGateClient:
         try:
             import hestia_single_gate as _sg  # type: ignore
             self._single_gate = _sg
-        except Exception:
+            self._single_gate_error = None
+        except Exception as e:
             self._single_gate = None
+            self._single_gate_error = repr(e)
         # Import the ONE shared law. A broken/missing core is fail-closed (gate()).
         try:
             import hestia_gate_core as _core  # type: ignore
@@ -272,6 +274,22 @@ class BeingGateClient:
             self._mech = _mech
         except Exception:
             self._mech = None
+
+    # -- which law-bearing path this client will take (measured, not asserted) --------
+    @property
+    def gate_path(self) -> str:
+        """'single-gate' when hestia_single_gate (#934) imported, else 'local-law' (the
+        pre-#934 per-primitive fallback). A conformance report must print this: a green
+        run on 'local-law' says nothing about the shim."""
+        return "single-gate" if getattr(self, "_single_gate", None) is not None else "local-law"
+
+    @property
+    def single_gate_status(self) -> str:
+        """'present' or 'absent: <import error>' — the marker Legion asked for, so a 5/0/3
+        cannot be read as 'the single-gate shim passed' when the module was never there."""
+        if getattr(self, "_single_gate", None) is not None:
+            return "present"
+        return f"absent: {getattr(self, '_single_gate_error', None) or 'not imported'}"
 
     # -- normalize a being intent into the gate's NormalizedEvent -------------
     def _normalize(self, intent: BeingIntent):

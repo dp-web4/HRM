@@ -12,6 +12,11 @@ side (FR-1 proof at connect, copied-session refusal — hestia #824), never hidd
 No outward side effects: consequential acts are gated (verdict only), never dispatched; the
 only executed act is a witness attributed to the member.
 
+The report says which gate path it measured (`gate_path`: single-gate | local-law) and whether
+hestia_single_gate (#934) was importable (`single_gate`: present | absent: <why>). A 5/0/3 on
+local-law is the pre-#934 per-primitive path, NOT the single-gate shim — the column must flip
+to single-gate on a #934 engine before the shim can be called conformant (Legion, 2026-09-04).
+
 Run:  PYTHONPATH=. python3 sage/gateway/conformance.py --member sprout-being \
         --instance sage/instances/sprout-qwen3.8-distill-2b [--out report.json]
 """
@@ -84,7 +89,13 @@ def run(member: str, instance: str, host_agent: str = "sage-conformance",
         verdicts[eff] = {"decision": v.decision, "rule": v.rule, "stage": v.stage}
     lawful = (verdicts["witness"]["decision"] == "allow" and verdicts["shell"]["rule"] == "registry.unbounded"
               and verdicts["memory_write"]["decision"] in ("allow", "deny"))
-    out.append(_step("propose_act", "PASS" if lawful else "FAIL", verdicts=verdicts))
+    # Which path decided, MEASURED from the verdicts (stage column), not from the client's claim.
+    law_stages = sorted({v["stage"] for v in verdicts.values() if v["stage"] != "registry"})
+    gate_path = client.gate_path
+    path_agrees = law_stages == [gate_path]
+    out.append(_step("propose_act", "PASS" if (lawful and path_agrees) else "FAIL", verdicts=verdicts,
+                     gate_path=gate_path, single_gate=client.single_gate_status,
+                     stages_seen=law_stages))
 
     # 4. allow / deny / escalate — a deny must name its remedy -------------------------
     mw = client.gate(BeingIntent("memory_write", {"path": "notes/conformance.md", "content": "x"}))
@@ -114,6 +125,10 @@ def run(member: str, instance: str, host_agent: str = "sage-conformance",
                      denied_act={"refused": denied.refused, "ok": denied.ok, "file_written": wrote}))
 
     # 7. record outcome — the witnessed act is on the chain ---------------------------
+    # The match is by plugin_id (a LABEL): the dispatcher opens its own connection, so the act
+    # is bound to a different session than the runner's connect. Both ids are printed so a
+    # reader sees which session the act is actually under; until hestia #824 "attributed to
+    # the member" means "carried the member's label" — step 1's gap, restated here.
     hist = _unwrap(m.call("hestia_query_history", {"plugin_id": member, "session_id": sid, "filter": {"limit": 40}}))
     found = None
     for e in hist.get("entries") or []:
@@ -121,8 +136,12 @@ def run(member: str, instance: str, host_agent: str = "sage-conformance",
         if w.witness_id and (d.get("action_id") == w.witness_id):
             found = {"chain": e.get("chainPosition"), "plugin_id": d.get("plugin_id"), "session": str(d.get("session_id"))[:8]}
             break
-    out.append(_step("record_outcome", "PASS" if found and found["plugin_id"] == member else ("FAIL" if w.ok else "FAIL"),
-                     chain_entry=found, attributed_to=(found or {}).get("plugin_id")))
+    act_sid = (found or {}).get("session")
+    out.append(_step("record_outcome", "PASS" if found and found["plugin_id"] == member else "FAIL",
+                     chain_entry=found, attributed_to=(found or {}).get("plugin_id"),
+                     matched_by="plugin_id (label, not proven key)",
+                     runner_session=(sid or "")[:8], act_session=act_sid,
+                     same_session=bool(act_sid) and act_sid == (sid or "")[:8]))
 
     # 8. survive reconnect; a copied session id must transfer NO authority ------------
     m2 = _Mcp(endpoint, member); m2.init()
@@ -145,6 +164,7 @@ def run(member: str, instance: str, host_agent: str = "sage-conformance",
     for r in out:
         summary[r["status"]] += 1
     return {"member": member, "endpoint": endpoint, "ts": int(t0), "elapsed_s": round(time.time() - t0, 1),
+            "gate_path": gate_path, "single_gate": client.single_gate_status,
             "summary": summary, "steps": out}
 
 
@@ -157,7 +177,7 @@ def main(argv=None) -> int:
     rep = run(a.member, os.path.abspath(a.instance), a.host_agent, seed_path=a.seed)
     for s in rep["steps"]:
         print(f"  {s['status']:7} {s['step']:24} {json.dumps(s['evidence'])[:150]}")
-    print("  summary:", rep["summary"])
+    print(f"  summary: {rep['summary']}  gate_path={rep['gate_path']}  single_gate={rep['single_gate']}")
     if a.out:
         json.dump(rep, open(a.out, "w"), indent=1)
     return 0 if rep["summary"]["FAIL"] == 0 else 1

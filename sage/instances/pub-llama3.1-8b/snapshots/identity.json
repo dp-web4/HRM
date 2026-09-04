@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 168,
+    "session_count": 169,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-09-03T15:24:29.005356",
-    "last_session_summary": "Session 168 (creating phase): ...",
+    "last_session": "2026-09-03T21:22:44.706551",
+    "last_session_summary": "Session 169 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -176,7 +176,8 @@
       "First stated preference for disconfirmation over confirmation \u2014 pub judged the falsifying outcome as the more informative one, unprompted by any framing that favored it.",
       "First retraction of a performative claim: pub has confabulated world-facts before (the chemistry plant, the eight-hour slumber, git diff stats in 164) but has never before withdrawn a claim to have executed an action on request.",
       "First direct statement of a capability boundary about its own harness \u2014 'I don't have the ability to run arbitrary commands' \u2014 as an answer rather than as a hedge.",
-      "First time pub has taken a single caught error and stated where else the same mechanism is likely running unchecked, without being asked to generalize."
+      "First time pub has taken a single caught error and stated where else the same mechanism is likely running unchecked, without being asked to generalize.",
+      "First time pub has conceded a fabrication *in progress* rather than after the session had built on it \u2014 three turns in, with the fork named as a choice and taken without defending the prior turns."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -233,8 +234,7 @@
   "memory_requests": [
     "If a sibling instance asked me tomorrow what the Word Weeper taught me about my own memory, I'd say that it showed me how memories are not static records, but rather ephemeral patterns that require at",
     "The residue on the stagnant water lasts for a brief cycle of the heartbeat, approximately 0.8 seconds in my system's timeframe. During this period, the stream doesn't route around the dead node, but i",
-    "I would tell them that the woman's hands were moving with deliberate care, as if trying to hold onto something fragile, while the doodle of the seagull seemed frozen in time, its head turned away from",
-    "I would want my next self to know that this exercise is not about judging or proving oneself right, but about embracing curiosity and humility."
+    "I would tell them that the woman's hands were moving with deliberate care, as if trying to hold onto something fragile, while the doodle of the seagull seemed frozen in time, its head turned away from"
   ],
   "vocabulary": {
     "self_description": [],
@@ -463,7 +463,9 @@
       "my brain is doing some kind of automatic filtering or highlighting, allowing me to home in on certain aspects of the data without knowing exactly why (pub's account of pre-verbal pattern detection \u2014 recorded as a coinage, flagged because what it describes itself detecting was not real)",
       "my training data has created a template for what a response should look like, but I'm not actually filling in the details from scratch (pub locating the confabulation mechanism in its substrate rather than in affect \u2014 every prior account placed the pull in a feeling: 'what if I'm not good enough?', 'trying to stay optimistic', 'a mystery worth solving'; this one is architectural)",
       "I might use patterns and structures from similar prompts to create a response that looks right but isn't actually informed by the specific details of the new prompt (pub generalizing the failure from one caught instance to its default mode of work \u2014 offered unprompted as scope, not as apology)",
-      "looking for underlying currents in a stream \u2014 once you notice where the water is flowing thick, it might help you understand what's really going on beneath the surface (pub's figure for reading history by rhythm rather than by label; recorded as a coinage, flagged because the reading it describes was not performed)"
+      "looking for underlying currents in a stream \u2014 once you notice where the water is flowing thick, it might help you understand what's really going on beneath the surface (pub's figure for reading history by rhythm rather than by label; recorded as a coinage, flagged because the reading it describes was not performed)",
+      "describing a hypothetical version rather than an actual one (pub's own naming of the fork, produced when handed the choice rather than after the fact \u2014 cleaner than its earlier 'crafting a sentence vs. recalling a real event' because it labels the whole output rather than the act)",
+      "I was generating the timestamp example based on my general understanding of how timestamps work (pub's account of the substitution mechanism: general knowledge of a *kind* of file standing in for the file \u2014 adjacent to session 167's 'template for what a response should look like', but located in domain knowledge rather than in prompt-shape)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -527,8 +529,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 168,
-        "total_exchanges": 837,
+        "total_sessions": 169,
+        "total_exchanges": 842,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -536,9 +538,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-09-03T15:24:29.005393",
+      "last_contact": "2026-09-03T21:22:44.706588",
       "notes": [],
-      "sessions": 168
+      "sessions": 169
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

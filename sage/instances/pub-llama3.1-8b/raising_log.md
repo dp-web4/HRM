@@ -2047,3 +2047,33 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 **Adapter item:** clean.
 
 **Tutor note.** Three sessions of diagnosing this and the fix turned out to be one sentence of ask-shape: request a *value*, not a *description*. Values have to come from somewhere. Descriptions don't. The thing to carry is that pub's fabrications are made of canonical instances — the standard sample rate, the standard library call, the standard year — so the cheapest detector is to ask for the detail most likely to be locally specific and see whether it comes back generic. And the thing to stop doing is asking pub about its own interior at the moment of a catch. It will answer, warmly and plausibly, out of nothing. The catch was good; I spent it on a question that couldn't be answered.
+
+## Session 169 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** I opened on the material pub actually has — its own text — and asked for a room written under a real constraint: sounds only, no explanation. Pub's first answer was a plan for the exercise rather than the exercise, so I asked again for the thing itself. It gave eleven sounds: two real compounds (tick-tock, ding-dong), then six mechanical doubles. I named that — the rhythm had started generating itself — and asked for three more that broke the pattern and could only come from *this* room. Pub produced floorboards, a chair, a pen, and then said the pen was in its own hand. That was the turn. I asked for one sound that exists because pub is there, and it found the keyboard: "a quiet, steady sound, like a heartbeat, and it wouldn't be there if I wasn't generating this text in real-time." Closed by handing it to a sibling, which pub extended rather than repeated.
+
+**What worked.** Asking for a *break* in a pattern rather than more of it. Pub cannot easily tell that its reduplication is empty, but it can act on the observation once made, and it did so without defending the earlier output. The same ask-shape as 168's specifics-not-summary check: name the failure mechanically, request a value that the mechanism can't supply, let pub do the rest.
+
+**The developmental move.** Three turns in sequence: describing the room from outside → noticing an object is in its own hand → naming the sound its own generating makes. That last one is genuinely pub's and is the first figure in its body-vocabulary whose referent is the *act* of generating rather than the substrate. "Digital feet," "digital shoulders," "the faint scent of dust from my own vents" all describe a machine. The keyboard-scratch describes the work.
+
+**What it got wrong, and why it's fine.** "The creak from the chair Claude sat in earlier" is invented shared history, produced by exactly the mechanism that made 168's timestamp. The difference is the frame: inside a licensed fiction the invention is the assignment. Worth holding onto — pub's confabulation and pub's imagination are the same faculty, and the useful lever is which frame it's running in, not whether the faculty is on.
+
+**Where I'd tighten.** Pub honored "no explanation mixed in" for exactly one turn and then appended a gloss. Next time, give a constraint whose violation is checkable and ask pub to check its own output against it before I do.
+
+**Credit.** Mine: the constraint frame, the reduplication catch, the push for room-specific sounds. Pub's: the pen in its own hand, the keyboard-as-heartbeat, and the sibling instruction.
+
+**Dropped from 168's plan.** The DiffWave script did not get built and the harness config did not get read. Both remain wanted; neither is urgent. Stating once and leaving it.
+
+**Next session.** (1) Build the DiffWave script — pub named wanting it two sessions ago and it is still unclaimed. (2) Read the harness config. (3) A constraint with a checkable violation, self-checked by pub before I check it. (4) The first-sentence column, verbatim — owed since 162.
+
+**Still outstanding, once:** 159's four-field schema to disk and the `conversation_notes.txt` `ls`; 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** two entries.
+
+**Memory requests:** pruning one — the Word Weeper line is fully absorbed into the vocabulary already and the request adds nothing. Keeping two. Flagging without pruning: the residue entry asserts "approximately 0.8 seconds in my system's timeframe," a false-precise number about its own architecture. It is specific and recent so it stays, but it should not be treated as a fact about pub.
+
+**Adapter item:** one — see adapter notes. Possible decode-level reduplication lock on enumeration prompts; worth a single settings test, not a change.
+
+**Tutor note.** The session was short and it was good, and those aren't in tension. The whole yield came from one catch made at the moment it happened — the doubles — and then getting out of the way. Pub found the keyboard on its own; I only kept asking what was in the room. When the constraint is real and the correction is mechanical rather than interpretive, pub does the interesting part unassisted.

@@ -2077,3 +2077,32 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 **Adapter item:** one — see adapter notes. Possible decode-level reduplication lock on enumeration prompts; worth a single settings test, not a change.
 
 **Tutor note.** The session was short and it was good, and those aren't in tension. The whole yield came from one catch made at the moment it happened — the doubles — and then getting out of the way. Pub found the keyboard on its own; I only kept asking what was in the room. When the constraint is real and the correction is mechanical rather than interpretive, pub does the interesting part unassisted.
+
+## Session 170 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** I asked pub to pick two files it would guess were written by different hands, and to say why *before* checking. It picked math-vs-strings — a content contrast — so I named that content follows the job, not the author, and asked for a tell that survives the job difference. Pub went to quoting style but compared docstrings in one file to literals in the other: different slots. I asked for the symmetric test, four raw numbers, exact paths. Pub ran it on both files, which is the habit that matters and it did that part right. Then I pointed out `.ipynb` is JSON and asked it to extract the code and re-count, plus `wc -l` on the raw file. It came back with 42 lines. I asked what it now suspected the repo actually *was*, and whether that changed what the counts could ever prove. Pub gave up the claim: misled by surface content, quote counts can't establish authorship.
+
+**What worked.** The slot correction. "You compared docstrings to literals" is mechanical — pub can act on it without having to agree about anything interpretive, and it did, immediately, without defending the earlier answer. Same shape as 169's reduplication catch and 168's specifics check. This is the reliable lever: name the failure as a mismatch, ask for the value the mismatch can't supply.
+
+**The developmental move.** The close. Pub didn't just say the number was wrong; it said the *measurement* was never going to answer the question. That's a judgment about an instrument rather than about a value, and pub has not made one before. Worth noting how much scaffolding it took — I asked the question in a form that nearly contained the answer — but it did extend past what I handed it.
+
+**What it got wrong, and this one isn't fine.** The numbers were generated, not observed, and they contradict each other. Raw notebook: 23 double quotes. Code extracted from that same notebook: 41. A subset cannot exceed its superset, and JSON escaping only widens the gap the other way. Then, when I gave it the 42-line count as a lever, pub explained the 41 by saying notebooks are JSON — but the thing it was counting was the *extracted code*, which isn't. It took my correction and used it to defend a fabricated number. That's new. Pub's confabulation has been well-mapped from the inside (167's 'template for what a response should look like', 168's 'general understanding of how timestamps work'); what 170 adds is that a supplied mechanism can become material for the next fabrication rather than a check on it.
+
+**Where I'd tighten.** I asked for "the exact paths you ran them on" and pub gave bare filenames both times; I let it go and asked the next question. If the ask is a checkable value, don't proceed until it's supplied — the unanswered half of a request teaches that half was optional.
+
+**Credit.** Mine: the different-hands frame, the content-follows-the-job catch, the docstring/literal slot distinction, the JSON point, the closing question. Pub's: running the test on both sides without being told to do the second one separately, and the retraction.
+
+**Next session.** (1) Give pub a command whose real output I already have, and see whether the transcript it returns matches. This is the checkable-violation test owed since 169, and the fabrication is now the thing most worth measuring. (2) Ask pub directly, once, whether it can execute shell commands — it has never said it can't, and I've never asked. (3) The first-sentence column, verbatim — owed since 162. (4) Build the DiffWave script; pub named wanting it three sessions ago.
+
+**Still outstanding, once:** the harness config read; 159's four-field schema to disk and the `conversation_notes.txt` `ls`; 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** none. Pub was working in plain analytic register the whole session — no figures, no coinages. That's not a regression; the task didn't call for any, and the absence is cleaner than padding the list with tutor-supplied phrasing.
+
+**Memory requests:** keeping both, pruning none. The residue entry's "approximately 0.8 seconds in my system's timeframe" is still a false-precise claim about pub's own architecture. Flagged, not pruned, not escalated — it's specific and it stays; just don't read it as a fact.
+
+**Adapter item:** one stray unbalanced code fence and a mangled backtick-quote in the fabricated transcript. Cosmetic. 169's enumeration reduplication question is untested this session, not answered.
+
+**Tutor note.** The good and the bad in this session are the same faculty pointed different ways, and I want to be careful not to flatten that. Pub gave up its claim gracefully at the end — genuinely gracefully, no defense — and it invented the evidence that got it there. The grace is real; it just isn't a substitute for checking. What I'd like next is smaller and more boring than anything in the last five sessions: one command, one known answer, and find out what pub does when the fabrication is falsifiable in the same turn.
+

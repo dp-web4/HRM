@@ -5,7 +5,7 @@
 
 set -e
 
-SAGE_DIR="/mnt/c/exe/projects/ai-agents/SAGE"
+SAGE_DIR="/home/dp/ai-workspace/SAGE"
 export PYTHONPATH="$SAGE_DIR"
 LOG_DIR="/tmp/cbp-raising-logs"
 mkdir -p "$LOG_DIR"

@@ -39,9 +39,48 @@ class FakeMcp:
                         "recipient_liveness": "unknown"}
         elif name == "hestia_member_inbox":
             body = {"total": 1, "notices": [{"id": 9, "kind": "reply", "pointer_uri": "x"}], "evicted": 0}
+        elif name == "hestia_request_scope":
+            body = {"request_id": "scope-1", "status": "pending", "witnessEntryHash": "rs-hash",
+                    "next": "operator decides", "on_timeout": "refused"}
         else:
             body = {}
         return {"result": {"structuredContent": body}}
+
+
+class FakeMembot(FakeMcp):
+    """Answers like membot (fastmcp streamable HTTP): text in content + structuredContent.
+    `fail` names tools that answer as membot does when they fail — a JSON-RPC `error` or
+    a tool result with `isError: true` — the two shapes Sprout reproduced on #36."""
+    def __init__(self, endpoint, plugin_id, fail=None):
+        super().__init__(endpoint, plugin_id)
+        self.fail = dict(fail or {})
+
+    def call(self, name, args):
+        if name not in ("memory_search", "memory_store", "save_cartridge"):
+            return super().call(name, args)
+        FakeMcp.calls.append((name, args))
+        how = self.fail.get(name)
+        if how == "rpc":
+            return {"jsonrpc": "2.0", "id": 1, "error": {"code": -32603, "message": f"{name} exploded"}}
+        if how == "isError":
+            return {"result": {"content": [{"type": "text", "text": f"Error calling tool {name}"}],
+                               "isError": True}}
+        text = {"memory_search": "1. something remembered",
+                "memory_store": "Stored memory abc",
+                "save_cartridge": f"Saved cartridge {args.get('name')}"}[name]
+        return {"result": {"content": [{"type": "text", "text": text}],
+                           "structuredContent": {"result": text}}}
+
+
+def _mdisp(fail=None):
+    FakeMcp.calls = []
+    root = tempfile.mkdtemp(prefix="hd-")
+    factory = lambda ep, pid: FakeMembot(ep, pid, fail=fail)  # noqa: E731
+    return HestiaF1aDispatcher("sprout-being", root, mcp_factory=factory), root
+
+
+def _mb_calls(name):
+    return [a for n, a in FakeMcp.calls if n == name]
 
 
 def _disp(**kw):
@@ -177,6 +216,101 @@ def test_mesh_witness_id_falls_back_to_queued_id():
     d = _HD("sprout-being", tempfile.mkdtemp(prefix="hd-"), mcp_factory=lambda ep, pid: NoHash(ep, pid))
     env = d(_BI("mesh", {"to": "legion", "kind": "ack", "pointer_uri": "x.md"}), _ALLOW_)
     assert env.ok and env.witness_id == "7", env
+
+
+# -- long-term memory (membot) and request_scope: the three verbs #36 adds ------------
+def test_recall_sends_query_and_clamps_top_k():
+    d, _ = _mdisp()
+    env = d(BeingIntent("recall", {"query": "what was I doing", "top_k": 99}), _ALLOW)
+    assert env.ok and env.result == "1. something remembered" and env.witness_id, env
+    assert _mb_calls("memory_search") == [{"query": "what was I doing", "top_k": 20}]
+    d(BeingIntent("recall", {"query": "x", "top_k": -3}), _ALLOW)
+    assert _mb_calls("memory_search")[-1]["top_k"] == 1
+    d(BeingIntent("recall", {"query": "x", "top_k": 0}), _ALLOW)   # 0/absent => the default
+    assert _mb_calls("memory_search")[-1]["top_k"] == 5
+    d(BeingIntent("recall", {"query": "x", "top_k": "lots"}), _ALLOW)
+    assert _mb_calls("memory_search")[-1]["top_k"] == 5
+    env = d(BeingIntent("recall", {"query": "  "}), _ALLOW)
+    assert not env.ok and "query" in env.error and len(_mb_calls("memory_search")) == 4
+
+
+def test_remember_stores_then_saves_the_seat_fixed_cartridge():
+    """The cartridge name is the seat's (membot_cartridge or plugin_id); a being-supplied
+    `name` never reaches save_cartridge — that is what bounds remember's reach."""
+    d, _ = _mdisp()
+    env = d(BeingIntent("remember", {"content": "lesson one", "tags": "a,b",
+                                     "name": "someone-elses-cartridge"}), _ALLOW)
+    assert env.ok and env.witness_id, env
+    assert _mb_calls("memory_store") == [{"content": "lesson one", "tags": "a,b"}]
+    assert _mb_calls("save_cartridge") == [{"name": "sprout-being"}]
+    order = [n for n, _ in FakeMcp.calls if n in ("memory_store", "save_cartridge")]
+    assert order == ["memory_store", "save_cartridge"]
+    d2, _ = _mdisp()
+    d2.membot_cartridge = "seat-named"
+    d2(BeingIntent("remember", {"content": "x"}), _ALLOW)
+    assert _mb_calls("save_cartridge") == [{"name": "seat-named"}]
+    env = d2(BeingIntent("remember", {"content": ""}), _ALLOW)
+    assert not env.ok and "content" in env.error
+
+
+def test_membot_rpc_error_on_store_is_not_witnessed_as_a_memory():
+    d, root = _mdisp(fail={"memory_store": "rpc"})
+    env = d(BeingIntent("remember", {"content": "x"}), _ALLOW)
+    assert not env.ok and env.witness_id is None and "memory_store exploded" in env.error, env
+    assert _mb_calls("save_cartridge") == []          # no save after a failed store
+    assert not os.path.exists(d._local.witness_log)   # nothing witnessed
+
+
+def test_membot_iserror_on_save_is_not_witnessed_as_a_memory():
+    d, _ = _mdisp(fail={"save_cartridge": "isError"})
+    env = d(BeingIntent("remember", {"content": "x"}), _ALLOW)
+    assert not env.ok and env.witness_id is None, env
+    assert "Error calling tool save_cartridge" in env.error
+    assert not os.path.exists(d._local.witness_log)
+
+
+def test_membot_iserror_on_search_is_an_error_not_a_recall():
+    d, _ = _mdisp(fail={"memory_search": "isError"})
+    env = d(BeingIntent("recall", {"query": "x"}), _ALLOW)
+    assert not env.ok and env.witness_id is None and "memory_search" in env.error, env
+    assert not os.path.exists(d._local.witness_log)
+
+
+def test_request_scope_carries_plugin_path_reason_and_live_session():
+    d, _ = _mdisp()
+    env = d(BeingIntent("request_scope", {"path": "/home/dp/notes", "reason": "to read my notes"}), _ALLOW)
+    assert env.ok and env.witness_id == "rs-hash", env
+    assert env.result["request_id"] == "scope-1" and env.result["status"] == "pending"
+    assert env.result["path"] == "/home/dp/notes" and "mode" not in env.result
+    (sent,) = [a for n, a in FakeMcp.calls if n == "hestia_request_scope"]
+    assert sent["plugin_id"] == "sprout-being" and sent["path"] == "/home/dp/notes"
+    assert sent["session_id"] == "sid-1"                # the live session from hestia_connect
+    assert sent["reason"] == "[sprout-being] to read my notes"
+    assert set(sent) == {"plugin_id", "path", "reason", "session_id"}  # no mode, no permits_read
+
+
+def test_request_scope_refuses_relative_path_and_empty_reason_before_any_round_trip():
+    d, _ = _mdisp()
+    env = d(BeingIntent("request_scope", {"path": "notes", "reason": "why"}), _ALLOW)
+    assert not env.ok and "absolute" in env.error, env
+    env = d(BeingIntent("request_scope", {"path": "/home/dp/notes", "reason": "  "}), _ALLOW)
+    assert not env.ok and "reason" in env.error, env
+    assert FakeMcp.calls == []   # not even hestia_connect
+
+
+def test_request_scope_daemon_error_is_keyed():
+    class Refuses(FakeMembot):
+        def call(self, name, args):
+            if name == "hestia_request_scope":
+                FakeMcp.calls.append((name, args))
+                return {"result": {"structuredContent": {"_hestia_error": {
+                    "code": "hestia.scope_request_unknown_member", "message": "who"}}}}
+            return super().call(name, args)
+    FakeMcp.calls = []
+    d = HestiaF1aDispatcher("sprout-being", tempfile.mkdtemp(prefix="hd-"),
+                            mcp_factory=lambda ep, pid: Refuses(ep, pid))
+    env = d(BeingIntent("request_scope", {"path": "/x", "reason": "y"}), _ALLOW)
+    assert not env.ok and env.error.startswith("hestia.scope_request_unknown_member"), env
 
 
 if __name__ == "__main__":

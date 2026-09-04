@@ -273,8 +273,23 @@ class HestiaF1aDispatcher:
         return self._mb
 
     def _membot_call(self, name: str, args: dict) -> str:
+        """One membot tool call, unwrapped to its text. RAISES on a JSON-RPC `error` or a
+        tool-level `isError` result: both handlers turn the exception into ok=False, so a
+        membot that says "Error calling tool save_cartridge" is never witnessed as a
+        memory the being kept (Sprout's review of #36, reproduced against a fake membot)."""
         out = self._membot().call(name, args)
-        res = out.get("result", {}) if isinstance(out, dict) else {}
+        if not isinstance(out, dict):
+            raise RuntimeError(f"membot {name}: malformed reply {type(out).__name__}")
+        if out.get("error"):
+            err = out["error"]
+            msg = err.get("message") if isinstance(err, dict) else str(err)
+            raise RuntimeError(f"membot {name}: {msg or err}")
+        res = out.get("result", {})
+        if not isinstance(res, dict):
+            raise RuntimeError(f"membot {name}: malformed result {type(res).__name__}")
+        if res.get("isError"):
+            text = "".join(b.get("text", "") for b in res.get("content", []) if isinstance(b, dict))
+            raise RuntimeError(f"membot {name}: {text.strip() or 'isError'}")
         sc = res.get("structuredContent")
         if isinstance(sc, dict) and "result" in sc:
             return str(sc["result"])
@@ -291,7 +306,7 @@ class HestiaF1aDispatcher:
         try:
             text = self._membot_call("memory_search", {"query": q, "top_k": max(1, min(k, 20))})
         except Exception as e:
-            return ResultEnvelope(ok=False, error=f"membot unreachable ({type(e).__name__}): {e}")
+            return ResultEnvelope(ok=False, error=f"membot ({type(e).__name__}): {e}")
         return ResultEnvelope(ok=True, result=text,
                               witness_id=self._local._witness(f"recall {q[:80]}"))
 
@@ -304,30 +319,31 @@ class HestiaF1aDispatcher:
             stored = self._membot_call("memory_store", {"content": content, "tags": tags})
             saved = self._membot_call("save_cartridge", {"name": self.membot_cartridge})
         except Exception as e:
-            return ResultEnvelope(ok=False, error=f"membot unreachable ({type(e).__name__}): {e}")
+            return ResultEnvelope(ok=False, error=f"membot ({type(e).__name__}): {e}")
         return ResultEnvelope(ok=True, result=f"{stored}; {saved}",
                               witness_id=self._local._witness(f"remember {content[:80]}"))
 
     # -- request_scope: the sanctioned answer to a deny --------------------------
     def _do_request_scope(self, intent: BeingIntent) -> ResultEnvelope:
+        """The daemon (handler.rs::tool_request_scope @a5e18af) reads plugin_id, role, path,
+        reason; a grant is reach on the path, read AND write. There is no mode to carry: an
+        earlier `permits_read` was dropped silently by the daemon while the operator read
+        "[.., read]" on a request that, granted, gave write."""
         path = str(intent.args.get("path", "")).strip()
-        mode = str(intent.args.get("mode", "read")).strip().lower()
         reason = str(intent.args.get("reason", "")).strip()
         if not path.startswith("/"):
             return ResultEnvelope(ok=False, error="request_scope 'path' must be absolute")
         if not reason:
             return ResultEnvelope(ok=False, error="request_scope needs a 'reason' (a human reads it)")
         args: Dict[str, Any] = {"plugin_id": self.plugin_id, "path": path,
-                                "reason": f"[{self.plugin_id}, {mode}] {reason}"}
-        if mode == "read":
-            args["permits_read"] = True
+                                "reason": f"[{self.plugin_id}] {reason}"}
         out = self._call("hestia_request_scope", args)
         err = _hestia_error(out)
         if err:
             return ResultEnvelope(ok=False, error=err)
         return ResultEnvelope(ok=True, witness_id=out.get("witnessEntryHash"),
                               result={"request_id": out.get("request_id"), "status": out.get("status"),
-                                      "path": path, "mode": mode,
+                                      "path": path,
                                       "next": out.get("next"), "on_timeout": out.get("on_timeout")})
 
     # -- channel_egress: not built on the daemon ----------------------------

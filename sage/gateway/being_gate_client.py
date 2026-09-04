@@ -15,13 +15,16 @@ This is the SAGE half of F2. It pins the exact contract F1a must satisfy:
 Design invariants (answering CBP's REQUEST_CHANGES on #579):
   * FAIL-CLOSED: a being that cannot reach the law is STOPPED, never ungoverned.
     When society-safety (Stage 2) is unavailable or errors, CONSEQUENTIAL effectors
-    (peer_ask, memory_write, channel_egress, mesh) hard-deny; only OBSERVATIONAL effectors
-    (witness, memory_read) soft-pass, since they carry no external effect and
-    witness is itself the accountability primitive. Local-law admission (Stage 1)
+    (peer_ask, memory_write, channel_egress, mesh, pr_review, remember, request_scope)
+    hard-deny; only OBSERVATIONAL effectors (witness, memory_read, recall) soft-pass,
+    since they carry no external effect and witness is itself the accountability
+    primitive. Local-law admission (Stage 1)
     is never enough on its own for a consequential act — end-to-end execution
     authority requires the society governor too.
   * BOUNDED REGISTRY: the being's only effectors are mesh/peer_ask, witness,
-    memory (its own dir), channel egress. No shell, no raw FS. Enforced twice:
+    memory (its own dir), long-term memory (recall/remember, its own membot
+    cartridge), request_scope, pr_review (advisory), channel egress. No shell, no
+    raw FS. Enforced twice:
     the registry below will not emit an intent outside it, AND the gate denies it.
   * A2-by-construction: the being never holds the tool; dispatch is hestia's.
 
@@ -111,9 +114,16 @@ _REGISTRY = {
     "pr_review":      dict(tool="pr_review",    path_args=(),       cmd_arg=None,
                            compose=pr_review_command),
     # Long-term semantic memory (membot brain cartridge, the being's own): recall is
-    # observational, remember writes the being's own cartridge (no external effect,
-    # classed with memory_write). request_scope asks hestia for reach the being lacks:
-    # the sanctioned answer to a deny, decided by the operator, witnessed either way.
+    # observational; remember is consequential but passes local law under ANY grant
+    # (paths=()), and that is not because it is "classed with memory_write" (which the
+    # law judges by mrh.path): its reach is bounded by construction. The cartridge it
+    # writes is `membot_cartridge or plugin_id`, fixed by the seat, unreachable from the
+    # being's args.
+    # request_scope asks hestia for reach the being lacks: the sanctioned answer to a
+    # deny, decided by the operator, witnessed either way. path_args=() is CORRECT here
+    # and must stay so: the requested path is, by definition, outside the grant, so a
+    # request judged under mrh.path at stage 1 would die before it ever reached the
+    # daemon (pinned by test_request_scope_path_is_not_judged_under_mrh_path).
     "recall":         dict(tool="recall",       path_args=(),       cmd_arg=None),
     "remember":       dict(tool="remember",     path_args=(),       cmd_arg=None),
     "request_scope":  dict(tool="request_scope", path_args=(),      cmd_arg=None),
@@ -158,12 +168,17 @@ _TOOL_SCHEMAS = {
                  "a fact, a lesson, a question, what you were doing and why.",
                  {"content": "the memory, in your own words", "tags": "comma-separated tags (optional)"},
                  ["content"]),
-    "request_scope": ("Ask the operator for reach you do not have, after a refusal: a "
-                      "path you want to read or write. Say why. A human decides; no answer "
-                      "within the window is a refusal.",
-                      {"path": "absolute path you want reach to", "mode": "read or write",
+    # No read/write mode: measured against hestia a5e18af (handler.rs::tool_request_scope)
+    # the daemon reads plugin_id/role/path/reason only, and a grant is a `path:<p>` entry
+    # in in_scope that rules mrh.path for reads and writes alike. Offering a mode would be
+    # a choice the law cannot honour.
+    "request_scope": ("Ask the operator for reach you do not have, after a refusal. A grant "
+                      "is reach on that path, read and write alike. Say why. A human decides; "
+                      "no answer within the window is a refusal. A live grant dies with the "
+                      "daemon; only a standing grant persists.",
+                      {"path": "absolute path you want reach to",
                        "reason": "why you want it, in one or two sentences"},
-                      ["path", "mode", "reason"]),
+                      ["path", "reason"]),
 }
 
 

@@ -154,6 +154,63 @@ def test_generate_stats_record_the_window_wall_and_the_retry():
     assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1}]
 
 
+def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
+    """The once-retry must be MORE room than the first attempt, not the same budget again:
+    with thinking on OllamaIRP already sends num_predict_think first, and its resolver
+    ignores max_response_tokens, so raising that was a re-roll (Legion 18:43Z 2026-09-05).
+    The retry sends num_ctx - prompt_eval_count - margin as num_predict_override, and
+    puts the override back afterwards so the next generate is a normal first attempt."""
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn, RETRY_MARGIN
+    seen = []
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 16384
+        num_predict_override = None
+
+        def get_chat_response(self, messages, tools=None):
+            seen.append(self.num_predict_override)
+            if len(seen) == 1:   # the heretic's real prompt: 6721 in, the whole 6000 gone thinking, nothing said
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 6721, "eval_count": 6000,
+                                "message": {"thinking": "Let me think about this beat carefully."}}}
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "message": {}}}
+
+    llm = FakeLLM()
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), llm, [{"role": "user", "content": "hi"}])
+    assert r.reply == "done"
+    assert seen == [None, 16384 - 6721 - RETRY_MARGIN]      # first attempt: config budget; retry: the window's room
+    assert llm.num_predict_override is None                  # restored
+    assert llm.max_response_tokens == 3000                   # untouched: it is not the lever
+    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1}]
+
+
+def test_length_retry_without_a_window_falls_back_to_the_think_budget():
+    """An llm that declares no num_ctx (or no prompt count in the reply) gets the model's
+    think budget, never less; and an llm without the override attribute still gets its
+    max_response_tokens raised, as before."""
+    from sage.gateway.being_tool_loop import _retry_budget, run_ollama_tool_turn
+    assert _retry_budget(SimpleNamespace(), {"prompt_eval_count": 6721}) == 6000
+    assert _retry_budget(SimpleNamespace(num_ctx=16384), {}) == 6000
+    assert _retry_budget(SimpleNamespace(num_ctx=8192), {"prompt_eval_count": 7602}) == 6000   # room 462 < floor
+    seen = []
+
+    class OldLLM:                       # no num_predict_override attribute
+        max_response_tokens = 1024
+
+        def get_chat_response(self, messages, tools=None):
+            seen.append(self.max_response_tokens)
+            if len(seen) == 1:
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 500, "eval_count": 1024, "message": {}}}
+            return {"content": "ok", "tool_calls": [], "raw": {"done_reason": "stop", "message": {}}}
+
+    llm = OldLLM()
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), llm, [{"role": "user", "content": "hi"}])
+    assert r.reply == "ok" and seen == [1024, 6000] and llm.max_response_tokens == 1024
+
+
 def test_salvage_lifts_well_formed_calls_from_the_text_channel_only_for_offered_names():
     from sage.gateway.being_gate_client import ollama_tools
     from sage.gateway.being_tool_loop import salvage_tool_calls

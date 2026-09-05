@@ -199,14 +199,65 @@ def salvage_tool_calls(content: str, tools: Iterable[dict]) -> List[dict]:
 
 
 def _think_budget(llm, floor: int = 6000) -> int:
-    """The retry budget for an empty/truncated turn: the model config's think-on
-    num_predict (variants[size].num_predict_think) when declared, else 6000, the
-    value that recovered such turns on Sprout and Legion (2026-09-03/04)."""
+    """The model config's think-on num_predict (variants[size].num_predict_think) when
+    declared, else 6000, the value that recovered empty turns on Sprout and Legion
+    (2026-09-03/04). With thinking on this is also the FIRST attempt's budget (OllamaIRP
+    resolves it from the same config), so it is the retry's floor, not its value."""
     try:
         b = llm._adapter.capabilities.resolve_num_predict(llm.model_name, True, None)
         return max(int(b or 0), floor)
     except Exception:
         return floor
+
+
+RETRY_MARGIN = 128   # tokens kept back from the window on a retry (template, tool-call framing)
+
+
+def _retry_budget(llm, raw: Optional[dict] = None) -> int:
+    """The once-retry budget for a length-stopped or truncated turn: everything the
+    window has left after this prompt, never less than the think budget.
+
+    Why not max(think_budget, max_response_tokens), which this was: with thinking on
+    OllamaIRP already sends num_predict_think on the first attempt, and its
+    resolve_num_predict ignores max_response_tokens whenever the variant declares a
+    value. So the old retry re-sent the same 6000 and was a re-roll at temperature,
+    not room to finish (Legion 18:33Z 2026-09-05: first explore turn eval 6000 empty,
+    retry at 6000 stood by chance). num_ctx - prompt_eval_count is the most the model
+    can be given; past that Ollama stops at the wall regardless (beat 46)."""
+    floor = _think_budget(llm)
+    try:
+        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
+        prompt = int((raw or {}).get("prompt_eval_count") or 0)
+    except (TypeError, ValueError):
+        return floor
+    if num_ctx <= 0 or prompt <= 0:
+        return floor
+    return max(floor, num_ctx - prompt - RETRY_MARGIN)
+
+
+class _retry_room:
+    """Set llm.num_predict_override for one retry, restore it after. Falls back to
+    max_response_tokens for llm objects without the override (older adapters)."""
+    def __init__(self, llm, budget: int):
+        self.llm, self.budget = llm, budget
+
+    def __enter__(self):
+        llm = self.llm
+        if hasattr(llm, "num_predict_override"):
+            self.keep = ("override", llm.num_predict_override)
+            llm.num_predict_override = self.budget
+        else:
+            self.keep = ("max", getattr(llm, "max_response_tokens", None))
+            llm.max_response_tokens = max(self.budget, self.keep[1] or 0)
+        return self.budget
+
+    def __exit__(self, *exc):
+        kind, val = self.keep
+        if kind == "override":
+            self.llm.num_predict_override = val
+        elif val is not None:
+            self.llm.max_response_tokens = val
+        return False
 
 
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
@@ -249,15 +300,11 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             # input": a long memory_write body cut off by num_predict (measured 2026-09-04).
             import sys as _sys
             print(f"[tool-loop] transport error, retrying once: {content[:200]}", file=_sys.stderr)
-            keep = getattr(llm, "max_response_tokens", None)
-            if keep is not None:
-                llm.max_response_tokens = max(_think_budget(llm), keep)
-            try:
+            # no raw reply here, so no prompt_eval_count: the retry gets the think budget
+            # (for a no-think model that is still more than its variant num_predict)
+            with _retry_room(llm, _retry_budget(llm, None)):
                 resp = llm.get_chat_response(msgs, tools=tools)
                 retried += 1
-            finally:
-                if keep is not None:
-                    llm.max_response_tokens = keep
             content = resp.get("content", "") or ""
             calls = resp.get("tool_calls", []) or []
         if not content and not calls:
@@ -273,18 +320,18 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             # Qwen3.8 (heretic) sometimes re-opens a think block even with think=false and
             # spends the whole budget there (measured 5/10 turns, 2026-09-03). Give it room
             # ONCE to finish and act, rather than recording silence as the being's choice.
-            if raw.get("done_reason") == "length" and hasattr(llm, "max_response_tokens"):
-                keep = llm.max_response_tokens
-                llm.max_response_tokens = max(_think_budget(llm), keep)
-                try:
-                    print(f"[tool-loop] retrying once with num_predict={llm.max_response_tokens}",
+            # Room = what the window has left after this prompt (_retry_budget), sent as an
+            # override so the config's first-attempt budget cannot silently re-apply.
+            if raw.get("done_reason") == "length" and (hasattr(llm, "max_response_tokens")
+                                                       or hasattr(llm, "num_predict_override")):
+                with _retry_room(llm, _retry_budget(llm, raw)) as budget:
+                    print(f"[tool-loop] retrying once with num_predict={budget} "
+                          f"(num_ctx={getattr(llm, 'num_ctx', None)} prompt_eval={raw.get('prompt_eval_count')})",
                           file=_sys.stderr)
                     resp = llm.get_chat_response(msgs, tools=tools)
                     retried += 1
                     content = resp.get("content", "") or ""
                     calls = resp.get("tool_calls", []) or []
-                finally:
-                    llm.max_response_tokens = keep
         thoughts.append(str(((resp.get("raw") or {}).get("message") or {}).get("thinking") or ""))
         # What the window did this generate, from the reply that stood (after any retry):
         # prompt_eval_count + eval_count == num_ctx with done_reason "length" is the wall

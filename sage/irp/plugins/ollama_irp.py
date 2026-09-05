@@ -50,6 +50,12 @@ class OllamaIRP(IRPPlugin):
         self.model_name = config.get('model_name', 'gemma3:12b')
         self.ollama_host = config.get('ollama_host', 'http://localhost:11434')
         self.max_response_tokens = config.get('max_response_tokens', 250)
+        # A per-request num_predict that wins over the model config. None = resolve from
+        # the config as usual. Exists for the tool loop's once-retry of a length-stopped
+        # turn: the config's num_predict_think is the FIRST attempt's budget, so a retry
+        # that only raises max_response_tokens re-sends the same number (measured: every
+        # think-on retry 2026-09-03..05 was a re-roll at 6000, not more room).
+        self.num_predict_override = None
         self.temperature = config.get('temperature', 0.8)
         self.timeout_seconds = config.get('timeout_seconds', 120)
         self._think_cfg = config.get('think')  # None = resolve from the model's config (below)
@@ -86,6 +92,19 @@ class OllamaIRP(IRPPlugin):
 
         # Verify Ollama is reachable
         self._ollama_available = self._check_ollama()
+
+    def resolve_num_predict(self) -> int:
+        """The num_predict this request will send: the override when set, else the
+        model config's per-(size, think) value, else the caller's max_response_tokens.
+        Callers that record the budget should record this, not max_response_tokens:
+        with thinking on the config's num_predict_think replaces the caller value."""
+        if self.num_predict_override is not None:
+            return int(self.num_predict_override)
+        num_predict = self._adapter.capabilities.resolve_num_predict(
+            self.model_name, self.think, self.max_response_tokens)
+        if num_predict is None:
+            num_predict = self.max_response_tokens
+        return num_predict
 
     def _check_ollama(self) -> bool:
         """Check if Ollama is reachable."""
@@ -132,10 +151,7 @@ class OllamaIRP(IRPPlugin):
         # Resolve num_predict per (family, size, think). The 27B needs the full
         # think+response envelope even with think disabled; the 0.8B/2B need a
         # tight response budget. Per-size resolution keeps these independent.
-        num_predict = self._adapter.capabilities.resolve_num_predict(
-            self.model_name, self.think, self.max_response_tokens)
-        if num_predict is None:
-            num_predict = self.max_response_tokens
+        num_predict = self.resolve_num_predict()
 
         base_options = {
             'num_predict': num_predict,
@@ -203,10 +219,7 @@ class OllamaIRP(IRPPlugin):
             if not self._ollama_available:
                 return {'content': '[OllamaIRP: Ollama not reachable]', 'tool_calls': [], 'role': 'assistant', 'raw': {}}
 
-        num_predict = self._adapter.capabilities.resolve_num_predict(
-            self.model_name, self.think, self.max_response_tokens)
-        if num_predict is None:
-            num_predict = self.max_response_tokens
+        num_predict = self.resolve_num_predict()
 
         payload: Dict[str, Any] = {
             'model': self.model_name,

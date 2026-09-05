@@ -467,7 +467,12 @@ def main(argv=None) -> int:
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
         # the window and budget actually sent, so a beat is verifiable from this file alone
         # (beat 46's 8192 wall was reconstructed from stderr; Sprout's review of SAGE #40)
-        "num_ctx": getattr(llm, "num_ctx", None), "num_predict": getattr(llm, "max_response_tokens", None),
+        # num_predict is what OllamaIRP resolves and sends (the config's num_predict_think
+        # with thinking on), not the caller's --max-tokens: Sprout's 18:51Z beat recorded
+        # 3000 while 6000 went over the wire.
+        "num_ctx": getattr(llm, "num_ctx", None),
+        "num_predict": (llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
+                        else getattr(llm, "max_response_tokens", None)),
         "think": getattr(llm, "think", None),
         "scope": scope_record,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)

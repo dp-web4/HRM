@@ -35,6 +35,7 @@ class ToolTurnResult:
     capped: bool = False                                   # hit max_steps still wanting tools
     thinking: List[str] = field(default_factory=list)      # the model's think block per generate, if any
     salvaged: List[dict] = field(default_factory=list)     # calls lifted from the text channel: {step, effector, form}
+    generates: List[dict] = field(default_factory=list)    # per generate, from Ollama's reply: {done_reason, prompt_eval_count, eval_count, retried}
 
     @property
     def acted(self) -> bool:
@@ -223,6 +224,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     # whether it decided not to call or failed to format the call is only visible here.
     thoughts: List[str] = []
     salvaged: List[dict] = []
+    generates: List[dict] = []
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
@@ -236,6 +238,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 out["tool_calls"] = [{"function": {"name": i.effector, "arguments": dict(i.args or {})}}
                                      for i in m["intents"]]
             msgs.append(out)
+        retried = 0
         resp = llm.get_chat_response(msgs, tools=tools)
         content = resp.get("content", "") or ""
         calls = resp.get("tool_calls", []) or []
@@ -251,6 +254,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 llm.max_response_tokens = max(_think_budget(llm), keep)
             try:
                 resp = llm.get_chat_response(msgs, tools=tools)
+                retried += 1
             finally:
                 if keep is not None:
                     llm.max_response_tokens = keep
@@ -276,11 +280,18 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                     print(f"[tool-loop] retrying once with num_predict={llm.max_response_tokens}",
                           file=_sys.stderr)
                     resp = llm.get_chat_response(msgs, tools=tools)
+                    retried += 1
                     content = resp.get("content", "") or ""
                     calls = resp.get("tool_calls", []) or []
                 finally:
                     llm.max_response_tokens = keep
         thoughts.append(str(((resp.get("raw") or {}).get("message") or {}).get("thinking") or ""))
+        # What the window did this generate, from the reply that stood (after any retry):
+        # prompt_eval_count + eval_count == num_ctx with done_reason "length" is the wall
+        # beat 46 hit; it was only on stderr then and had to be reconstructed by hand.
+        raw = resp.get("raw") or {}
+        generates.append({"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
+                          "eval_count": raw.get("eval_count"), "retried": retried})
         if not calls and content:
             # the call in the wrong channel: lift it, gate it as normal, record that it was lifted
             calls = salvage_tool_calls(content, tools)
@@ -291,4 +302,5 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     result = run_tool_turn(client, generate, seed_messages, max_steps=max_steps)
     result.thinking = thoughts
     result.salvaged = salvaged
+    result.generates = generates
     return result

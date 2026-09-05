@@ -374,11 +374,15 @@ def main(argv=None) -> int:
     def _turn(res):
         return None if res is None else {"reply": res.reply, "steps": res.steps, "capped": res.capped,
                                          "trace": _trace(res), "thinking": [t[:4000] for t in res.thinking],
-                                         "salvaged": list(res.salvaged)}
+                                         "salvaged": list(res.salvaged), "generates": list(res.generates)}
     record = {
         "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "t0": t0, "elapsed_s": round(time.time() - t0, 1),
         "member": args.member, "model": args.model, "window_h": round(hours, 2),
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
+        # the window and budget actually sent, so a beat is verifiable from this file alone
+        # (beat 46's 8192 wall was reconstructed from stderr; Sprout's review of SAGE #40)
+        "num_ctx": getattr(llm, "num_ctx", None), "num_predict": getattr(llm, "max_response_tokens", None),
+        "think": getattr(llm, "think", None),
         "scope": scope_record,
         "explore": _turn(explore),
         # act-first only: the posture+digest turn, after the short one; None otherwise

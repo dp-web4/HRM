@@ -114,7 +114,12 @@ def resolve_num_ctx(model: str, floor: int) -> int:
     try:
         from sage.irp.adapters.model_capabilities import load_capabilities
         return load_capabilities(model).resolve_num_ctx(model, floor)
-    except Exception:
+    except Exception as e:
+        # load_capabilities already falls back to default.json, so what lands here is an
+        # import or JSON failure. Say so: a silent floor for a model that declared a larger
+        # window is beat 46 again (Legion, 09-05) with nothing in the record saying why.
+        print(f"[governed-turn] num_ctx: config unreadable for {model!r}, using floor {floor}: "
+              f"{type(e).__name__}: {e}", file=sys.stderr)
         return floor
 
 

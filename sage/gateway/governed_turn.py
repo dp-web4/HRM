@@ -98,7 +98,7 @@ def review_task(view: dict, diff: str) -> str:
 
 def build_client(member: str, instance: Path, model: str, workspace: str,
                  forum_dir: str | None, host_session_id: str, temperature: float,
-                 max_tokens: int, gate_only: bool = False):
+                 max_tokens: int, gate_only: bool = False, num_ctx: int = 8192):
     from sage.gateway.being_gate_client import BeingGateClient
     from sage.gateway.hestia_dispatch import HestiaF1aDispatcher, make_forum_publisher
     from sage.irp.plugins.ollama_irp import OllamaIRP
@@ -120,8 +120,11 @@ def build_client(member: str, instance: Path, model: str, workspace: str,
     # (measured on Sprout 2026-08-28 and again on the first governed turn, 2026-09-03:
     # steps=0, trace=[], a lovely "record" and no act). Mirror the raising runner.
     _reasoning = any(k in model.lower() for k in ("distill", "qwen3.8", "heretic", "r1"))
+    # num_ctx: a governed turn's prompt (posture, own state, digest, 8 tool schemas) is
+    # over Ollama's 4096 default; the first Sprout heartbeat 400'd at 4324 tokens.
     llm = OllamaIRP({"model_name": model, "temperature": temperature, "think": _reasoning,
-                     "max_response_tokens": max_tokens, "timeout_seconds": 600})
+                     "max_response_tokens": max_tokens, "timeout_seconds": 600,
+                     "num_ctx": num_ctx})
     return client, llm
 
 

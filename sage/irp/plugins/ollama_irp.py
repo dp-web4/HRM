@@ -53,6 +53,11 @@ class OllamaIRP(IRPPlugin):
         self.temperature = config.get('temperature', 0.8)
         self.timeout_seconds = config.get('timeout_seconds', 120)
         self.think = config.get('think', False)  # Disable thinking by default (Qwen 3.5)
+        # Context window sent as options.num_ctx. Ollama's per-request default is 4096
+        # regardless of what the model supports: a heartbeat prompt (posture + own state +
+        # fleet digest + tool schemas) measured 4324 tokens on Sprout 2026-09-05 and 400'd.
+        # None = leave Ollama's default.
+        self.num_ctx = config.get('num_ctx')
 
         # Conversation memory (last N turns)
         self.conversation_memory: List[Dict[str, str]] = []
@@ -129,6 +134,8 @@ class OllamaIRP(IRPPlugin):
             'num_predict': num_predict,
             'temperature': self.temperature,
         }
+        if self.num_ctx:
+            base_options['num_ctx'] = int(self.num_ctx)
 
         endpoint, payload = self._adapter.format_payload(prompt, base_options, self.ollama_host)
         payload['model'] = self.model_name
@@ -203,6 +210,7 @@ class OllamaIRP(IRPPlugin):
             'options': {
                 'num_predict': num_predict,
                 'temperature': self.temperature,
+                **({'num_ctx': int(self.num_ctx)} if self.num_ctx else {}),
             },
         }
 

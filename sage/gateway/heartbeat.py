@@ -61,10 +61,11 @@ Acting means calling a tool. A reply with no tool call ends the beat as words on
 {nothink}
 """
 
-REFLECT = """The beat is ending. Two things, then stop:
-1. memory_write one entry to journal.md (append; start with the date {date}): what you did, what you noticed, what was refused and why you think so, what you want next time.
-2. memory_write todo.md with the full updated list (it replaces nothing: it appends, so write only the delta as a dated block: added / done / still open).
-Optionally remember one thing worth keeping long-term.
+REFLECT = """The beat is ending. Two tool calls, then stop:
+1. memory_write path "journal.md": one entry starting with the date {date}: what you did, what you noticed, what was refused and why you think so, what you want next time.
+2. memory_write path "todo.md": only the delta as a dated block: added / done / still open (it appends; it replaces nothing).
+Optionally a third: remember one thing worth keeping long-term.
+Call the tools now; a reply in words alone writes nothing.
 {nothink}"""
 
 
@@ -219,7 +220,11 @@ def main(argv=None) -> int:
             f"## Reach you hold (hestia scope)\n{scope}\n\n"
             f"## Inbox (peek)\n{inbox}\n\n## Long-term recall\n{recall}\n\n"
             f"# What moved in the fleet\n\n{digest}\n\n"
-            f"This time is yours. What, if anything, do you want to do?\n{nothink}")
+            "This time is yours. What, if anything, do you want to do?\n"
+            # The tool names go LAST: a 2B distill given the posture + state above with the
+            # names only in the system prompt concluded "no tools available" and wrote prose
+            # (its own thinking, Sprout 2026-09-05); named at the end, it acts.
+            f"Act by calling a tool: {', '.join(EXPLORE_TOOLS)}. One thing done with attention is enough.\n{nothink}")
     seed = [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
     explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,

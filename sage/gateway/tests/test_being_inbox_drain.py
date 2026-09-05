@@ -63,6 +63,15 @@ def test_pointer_is_workspace_relative_when_inside_the_workspace():
     assert sent and sent[0].startswith("sage/sage/instances/x/notes/inbox/")
 
 
+def test_env_file_expands_shell_variables_and_tilde():
+    from sage.gateway.being_inbox_drain import _env_from_file
+    p = Path(tempfile.mkdtemp(prefix="env-")) / "hub.env"
+    p.write_text('# comment\nHUB_URL="http://hub:8770"\nMY_LCT=abc   # trailing comment\nCHANNEL_CLIENT=$HOME/bin/cc\nMY_KEYPAIR=~/.web4/k.bin\n')
+    e = _env_from_file(str(p))
+    assert e["HUB_URL"] == "http://hub:8770" and e["MY_LCT"] == "abc"
+    assert e["CHANNEL_CLIENT"] == os.path.expanduser("~/bin/cc") and e["MY_KEYPAIR"] == os.path.expanduser("~/.web4/k.bin")
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

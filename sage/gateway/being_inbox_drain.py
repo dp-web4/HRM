@@ -44,7 +44,9 @@ def _env_from_file(path: str) -> Dict[str, str]:
             continue
         k, v = line.split("=", 1)
         v = v.split("#", 1)[0].strip() if not v.strip().startswith(('"', "'")) else v.strip()
-        out[k.strip()] = v.strip().strip('"').strip("'")
+        # hub-mesh env files are shell-sourced by hub-notify, so `$HOME`, `${X}` and `~`
+        # appear in values (measured: CHANNEL_CLIENT=$HOME/... on Sprout, 2026-09-05)
+        out[k.strip()] = os.path.expanduser(os.path.expandvars(v.strip().strip('"').strip("'")))
     return out
 
 

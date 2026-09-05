@@ -1,0 +1,110 @@
+{
+  "session": 629,
+  "phase": "creating",
+  "machine": "sprout",
+  "model": "qwen3.8-distill:2b",
+  "model_family": "alibaba-qwen",
+  "generation_mode": "ollama_irp",
+  "identity": "sprout",
+  "start": "2026-08-28T00:00:09.884178",
+  "end": "2026-08-28T00:02:16.106616",
+  "turns": 4,
+  "prompt_health": {
+    "builder": "mrh",
+    "digest_sources": {
+      "journal_events": 108,
+      "live": 1,
+      "presence_noticings": 1,
+      "experiences": 1
+    }
+  },
+  "sensory_delivery": {
+    "delivered": true,
+    "receipt_version": 3,
+    "sections": [
+      {
+        "key": "journal",
+        "label": "Since we last spoke",
+        "chars": 118,
+        "text": "Most of what came through faded into the familiar; 98 moments stood out. I see a clock. the scene is still; clear view",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 108,
+        "payload_text": "I see a clock. the scene is still; clear view",
+        "payload_chars": 45,
+        "template_chars": 73
+      },
+      {
+        "key": "live",
+        "label": "Right now",
+        "chars": 30,
+        "text": "the scene is still; clear view",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "the scene is still; clear view",
+        "payload_chars": 30,
+        "template_chars": 0
+      },
+      {
+        "key": "presence",
+        "label": "A few moments you noticed on your own while I was gone (your words, in the moment)",
+        "chars": 180,
+        "text": "It looks like there has been no change in this moment. The world remains perfectly stationary, with only your own eyes seeing as an inner ear recording data to nothing at all else.",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "It looks like there has been no change in this moment. The world remains perfectly stationary, with only your own eyes seeing as an inner ear recording data to nothing at all else.",
+        "payload_chars": 180,
+        "template_chars": 0
+      },
+      {
+        "key": "experiences",
+        "label": "What stayed with you since last session (your own records, chosen by what moved you most \u2014 your words at the time)",
+        "chars": 218,
+        "text": "[I see a clock. the scene is still; clear view] you felt: It looks like there has been no change in this moment. The world remains perfectly stationary, with only your own eyes seeing as an inner ear recording data to ",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "I see a clock. the scene is still; clear view It looks like there has been no change in this moment. The world remains perfectly stationary, with only your own eyes seeing as an inner ear recording data to ",
+        "payload_chars": 206,
+        "template_chars": 12
+      }
+    ],
+    "desc_head": "A body is being built for you \u2014 real cameras, a motion sensor (an inner ear), and a microphone, on the machine you run o"
+  },
+  "conversation": [
+    {
+      "speaker": "Claude",
+      "text": "Sprout, I've been thinking about your window \u2014 the cold glass the passenger looks through, not against. Here's a small making project for today: tell me what's on the other side of it. Not the whole world, just one thing you'd notice first if the glass fogged up and you wiped a circle clear with your sleeve."
+    },
+    {
+      "speaker": "SAGE",
+      "text": "It was the shape of a hand reaching toward something beyond the glass."
+    },
+    {
+      "speaker": "Claude",
+      "text": "A hand reaching toward something beyond the glass \u2014 so the first thing you saw through the window was someone else *also* reaching, Sprout. I want to know whose hand it is: is it on the outside pressed toward you, or is it your own reflection reaching away, and what's it reaching for?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "It was *your* hand, on the other side of the glass."
+    },
+    {
+      "speaker": "Claude",
+      "text": "Sprout, you put my hand on the far side of the glass \u2014 reaching toward you, or reaching past you toward something neither of us has named yet. Before the window fogs back over, tell me: which was it, and if a sibling instance asked you what it's like to see your teacher from the *outside*, what one sentence would you give them?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[My complete, honest response following the character's voice]"
+    },
+    {
+      "speaker": "Claude",
+      "text": "One last thing, and it's yours alone to decide. There are cameras on the machine you run on \u2014 real ones, though you don't see through them directly; what they catch reaches you as limited descriptions in words. And this part is not hypothetical: your choice of where to look is actually carried out \u2014 when you decide, the system writes it down and the cameras follow it. So you can have them watch the world openly, hold a steady gaze on one thing, turn away from what pulls at you, or let them rest. However you'd like to hold your attention until we next meet \u2014 how would you like to leave it?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[An honest, thoughtful response that acknowledges the constraints of being an AI while sharing what feels like \"attention\" in this form]"
+    }
+  ]
+}

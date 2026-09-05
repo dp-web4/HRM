@@ -1,0 +1,13 @@
+# Copy to ~/.config/systemd/user/sage-heartbeat.timer next to the service.
+[Unit]
+Description=SAGE being heartbeat every 30 minutes
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=30min
+RandomizedDelaySec=2min
+Persistent=false
+Unit=sage-heartbeat.service
+
+[Install]
+WantedBy=timers.target

@@ -15,13 +15,16 @@ This is the SAGE half of F2. It pins the exact contract F1a must satisfy:
 Design invariants (answering CBP's REQUEST_CHANGES on #579):
   * FAIL-CLOSED: a being that cannot reach the law is STOPPED, never ungoverned.
     When society-safety (Stage 2) is unavailable or errors, CONSEQUENTIAL effectors
-    (peer_ask, memory_write, channel_egress, mesh) hard-deny; only OBSERVATIONAL effectors
-    (witness, memory_read) soft-pass, since they carry no external effect and
-    witness is itself the accountability primitive. Local-law admission (Stage 1)
+    (peer_ask, memory_write, channel_egress, mesh, pr_review, remember, request_scope)
+    hard-deny; only OBSERVATIONAL effectors (witness, memory_read, recall) soft-pass,
+    since they carry no external effect and witness is itself the accountability
+    primitive. Local-law admission (Stage 1)
     is never enough on its own for a consequential act — end-to-end execution
     authority requires the society governor too.
   * BOUNDED REGISTRY: the being's only effectors are mesh/peer_ask, witness,
-    memory (its own dir), channel egress. No shell, no raw FS. Enforced twice:
+    memory (its own dir), long-term memory (recall/remember, its own membot
+    cartridge), request_scope, pr_review (advisory), channel egress. No shell, no
+    raw FS. Enforced twice:
     the registry below will not emit an intent outside it, AND the gate denies it.
   * A2-by-construction: the being never holds the tool; dispatch is hestia's.
 
@@ -110,14 +113,29 @@ _REGISTRY = {
     # a being holds no reviewer role, so the comment never counts toward merge.
     "pr_review":      dict(tool="pr_review",    path_args=(),       cmd_arg=None,
                            compose=pr_review_command),
+    # Long-term semantic memory (membot brain cartridge, the being's own): recall is
+    # observational; remember is consequential but passes local law under ANY grant
+    # (paths=()), and that is not because it is "classed with memory_write" (which the
+    # law judges by mrh.path): its reach is bounded by construction. The cartridge it
+    # writes is `membot_cartridge or plugin_id`, fixed by the seat, unreachable from the
+    # being's args.
+    # request_scope asks hestia for reach the being lacks: the sanctioned answer to a
+    # deny, decided by the operator, witnessed either way. path_args=() is CORRECT here
+    # and must stay so: the requested path is, by definition, outside the grant, so a
+    # request judged under mrh.path at stage 1 would die before it ever reached the
+    # daemon (pinned by test_request_scope_path_is_not_judged_under_mrh_path).
+    "recall":         dict(tool="recall",       path_args=(),       cmd_arg=None),
+    "remember":       dict(tool="remember",     path_args=(),       cmd_arg=None),
+    "request_scope":  dict(tool="request_scope", path_args=(),      cmd_arg=None),
 }
 
 
 # Society-safety failure boundary per effector class. Observational acts carry no
 # external effect and may soft-pass when the society governor is unavailable;
 # consequential acts must not proceed without it (fail-closed).
-_OBSERVATIONAL = frozenset({"witness", "memory_read"})
-_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review"})
+_OBSERVATIONAL = frozenset({"witness", "memory_read", "recall"})
+_CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
+                            "remember", "request_scope"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -141,6 +159,26 @@ _TOOL_SCHEMAS = {
                   "would change, with file and line references where you can.",
                   {"repo": "owner/name, e.g. dp-web4/SAGE", "number": "the PR number",
                    "body": "your review, in markdown"}, ["repo", "number", "body"]),
+    "recall": ("Search your long-term memory (semantic search over everything you have "
+               "remembered). Use it before deciding what to do; use it when something "
+               "feels familiar.",
+               {"query": "what you are trying to remember", "top_k": "how many results (default 5)"},
+               ["query"]),
+    "remember": ("Store something in your long-term memory so a future you can recall it: "
+                 "a fact, a lesson, a question, what you were doing and why.",
+                 {"content": "the memory, in your own words", "tags": "comma-separated tags (optional)"},
+                 ["content"]),
+    # No read/write mode: measured against hestia a5e18af (handler.rs::tool_request_scope)
+    # the daemon reads plugin_id/role/path/reason only, and a grant is a `path:<p>` entry
+    # in in_scope that rules mrh.path for reads and writes alike. Offering a mode would be
+    # a choice the law cannot honour.
+    "request_scope": ("Ask the operator for reach you do not have, after a refusal. A grant "
+                      "is reach on that path, read and write alike. Say why. A human decides; "
+                      "no answer within the window is a refusal. A live grant dies with the "
+                      "daemon; only a standing grant persists.",
+                      {"path": "absolute path you want reach to",
+                       "reason": "why you want it, in one or two sentences"},
+                      ["path", "reason"]),
 }
 
 

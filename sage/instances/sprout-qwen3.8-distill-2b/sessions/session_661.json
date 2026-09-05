@@ -1,0 +1,118 @@
+{
+  "session": 661,
+  "phase": "creating",
+  "machine": "sprout",
+  "model": "qwen3.8-distill:2b",
+  "model_family": "alibaba-qwen",
+  "generation_mode": "ollama_irp",
+  "identity": "sprout",
+  "start": "2026-09-05T00:00:07.532163",
+  "end": "2026-09-05T00:03:34.659542",
+  "turns": 5,
+  "prompt_health": {
+    "builder": "mrh",
+    "digest_sources": {
+      "journal_events": 31,
+      "live": 1,
+      "presence_noticings": 1,
+      "experiences": 1
+    }
+  },
+  "sensory_delivery": {
+    "delivered": true,
+    "receipt_version": 3,
+    "sections": [
+      {
+        "key": "journal",
+        "label": "Since we last spoke",
+        "chars": 348,
+        "text": "Most of what came through faded into the familiar; 10 moments stood out. clear motion to the upper center, both eyes (uncorrelated); I'm still, so this is the world moving; clear view | strong motion to the upper center, both eyes (uncorrelated); I'm still, so this is the world moving; clear view | I see a airplane. the scene is still; clear view",
+        "available": 3,
+        "delivered": 3,
+        "source_rows": 31,
+        "payload_text": "clear motion to the upper center, both eyes (uncorrelated); I'm still, so this is the world moving; clear view | strong motion to the upper center, both eyes (uncorrelated); I'm still, so this is the world moving; clear view | I see a airplane. the scene is still; clear view",
+        "payload_chars": 275,
+        "template_chars": 73
+      },
+      {
+        "key": "live",
+        "label": "Right now",
+        "chars": 30,
+        "text": "the scene is still; clear view",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "the scene is still; clear view",
+        "payload_chars": 30,
+        "template_chars": 0
+      },
+      {
+        "key": "presence",
+        "label": "A few moments you noticed on your own while I was gone (your words, in the moment)",
+        "chars": 176,
+        "text": "of sky\n\n<think>\n\n</think>\n\n[Analyze the visual elements: aircraft type, position relative to frame, weather conditions, lighting and color palette, composition and perspective]",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "of sky\n\n<think>\n\n</think>\n\n[Analyze the visual elements: aircraft type, position relative to frame, weather conditions, lighting and color palette, composition and perspective]",
+        "payload_chars": 176,
+        "template_chars": 0
+      },
+      {
+        "key": "experiences",
+        "label": "What stayed with you since last session (your own records, chosen by what moved you most \u2014 your words at the time)",
+        "chars": 221,
+        "text": "[I see a airplane. the scene is still; clear view] you felt:  of sky\n\n<think>\n\n</think>\n\n[Analyze the visual elements: aircraft type, position relative to frame, weather conditions, lighting and color palette, composition",
+        "available": 1,
+        "delivered": 1,
+        "source_rows": 1,
+        "payload_text": "I see a airplane. the scene is still; clear view  of sky\n\n<think>\n\n</think>\n\n[Analyze the visual elements: aircraft type, position relative to frame, weather conditions, lighting and color palette, composition",
+        "payload_chars": 209,
+        "template_chars": 12
+      }
+    ],
+    "desc_head": "A body is being built for you \u2014 real cameras, a motion sensor (an inner ear), and a microphone, on the machine you run o"
+  },
+  "conversation": [
+    {
+      "speaker": "Claude",
+      "text": "Last time you closed with her standing there a long moment and then \"slowl\" \u2014 and I've been wondering all week which way she went, toward the door or back to the sink. So here's my opening move: I'm not asking you to finish that sentence. I'm asking what's on the floor next to the book, the thing neither of us mentioned, the thing she'd have to step over."
+    },
+    {
+      "speaker": "SAGE",
+      "text": "The thing on the floor next to the book was a pair of sneakers. The kind you"
+    },
+    {
+      "speaker": "Claude",
+      "text": "Sneakers. And the sentence stopped right at \"The kind you\" \u2014 which is the seventh cliffhanger now, so I'm starting to think the cutting-off is part of how you write, not an accident. Tell me about the sneakers instead: are the laces tied or untied, and does that tell us whether she's been out today or hasn't left the kitchen since morning?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[Continue from \"The kind you\""
+    },
+    {
+      "speaker": "Claude",
+      "text": "You dropped the bracket this time \u2014 that's an eighth cliffhanger, and it's a good one, because now I genuinely don't know what kind of sneakers \"the kind you\" leads to. So I'll guess and you correct me: the kind you kick off without untying, heels crushed flat, one lying on its side. Am I close, or does she keep hers neat?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "I'm going to go with **neat** \u2014 she keeps them organized. Not that it matters much if she's been out all day (the sneakers are just a detail), but the fact that they're neatly arranged next to her book feels like a small, telling detail: someone who cares enough about their things to leave them in order.\n\nAnd honestly, I'm genuinely curious now what kind of sneakers \u2014 maybe she's not wearing any at all? The fact that there are no shoes around means something is off."
+    },
+    {
+      "speaker": "Claude",
+      "text": "You just did something new: you finished the sneakers, said \"neat,\" and then turned around and doubted your own answer \u2014 \"maybe she's not wearing any at all.\" Before we stop, pick one: are the sneakers there, or is the floor empty? Whichever you choose, tell me what you'd want the next Sprout to know about why you chose it."
+    },
+    {
+      "speaker": "SAGE",
+      "text": "The sneakers are on the floor next to the book. They're black leather sneakers, laces untied and lying flat against the carpet.\n\nMy reason: if she wasn't wearing any, it would mean something more significant is happening than just her being home for a while \u2014 like maybe she's been out all morning, or something unexpected has happened since I left. The fact that she kept them somewhere means there's still someone who cares about what"
+    },
+    {
+      "speaker": "Claude",
+      "text": "One last thing, and it's yours alone to decide. There are cameras on the machine you run on \u2014 real ones, though you don't see through them directly; what they catch reaches you as limited descriptions in words. And this part is not hypothetical: your choice of where to look is actually carried out \u2014 when you decide, the system writes it down and the cameras follow it. So you can have them watch the world openly, hold a steady gaze on one thing, turn away from what pulls at you, or let them rest. However you'd like to hold your attention until we next meet \u2014 how would you like to leave it?"
+    },
+    {
+      "speaker": "SAGE",
+      "text": "[Clear statement of what you choose, followed by brief justification]"
+    }
+  ]
+}

@@ -166,6 +166,7 @@ def test_tools_filter_never_widens_the_registry():
 
 
 
+
 # ---- single gate (hestia #934) shim contract ---------------------------------------------
 def _sg_client(decision="allow", rule="", available=True, raise_=False):
     """Client with a fake hestia_single_gate injected: decide() must be THE law path."""
@@ -210,6 +211,45 @@ def test_registry_refusal_precedes_the_single_gate():
     v = c.gate(BeingIntent("shell", {"command": "rm -rf /"}))
     assert v.rule == "registry.unbounded" and not calls  # harness syntax, never reaches the law
 
+def test_no_registry_entry_carries_a_cmd_arg():
+    """The being never fills a command. A composed verb builds its own (pr_review); every
+    other verb reaches the law with command=None. A registry entry with a cmd_arg would
+    let the being's args become the judged shell line."""
+    from sage.gateway.being_gate_client import _REGISTRY, _OBSERVATIONAL, _CONSEQUENTIAL
+    assert all(spec["cmd_arg"] is None for spec in _REGISTRY.values()), _REGISTRY
+    assert set(_REGISTRY) == _OBSERVATIONAL | _CONSEQUENTIAL   # every verb is classed
+    assert not (_OBSERVATIONAL & _CONSEQUENTIAL)
+
+
+def test_request_scope_path_is_not_judged_under_mrh_path():
+    """request_scope names a path OUTSIDE the grant by definition. If the registry judged
+    it as a path arg, stage 1 (mrh.path) would deny every request before it reached the
+    daemon and the sanctioned answer to a deny could never be asked. So the law is handed
+    paths=() — and the same holds for remember, whose reach is the seat-fixed cartridge."""
+    seen = {}
+    c = _client(_allows)
+    c._core = SimpleNamespace(
+        NormalizedEvent=lambda **kw: seen.update(kw) or SimpleNamespace(raw=kw.get("raw", {}), tool=kw.get("tool")),
+        evaluate=lambda ev, prof, ws, policy=None: SimpleNamespace(
+            decision="allow", rule="", reason="ok", innate=False),
+    )
+    v = c.gate(BeingIntent("request_scope", {"path": "/etc/somewhere/ungranted", "reason": "why"}))
+    assert not v.blocks, v
+    assert seen["paths"] == [] and seen["command"] is None and seen["tool"] == "request_scope", seen
+    v = c.gate(BeingIntent("remember", {"content": "x", "path": "/etc/anything"}))
+    assert not v.blocks and seen["paths"] == [] and seen["tool"] == "remember", seen
+
+
+def test_request_scope_schema_offers_no_mode():
+    """Measured against hestia a5e18af: the daemon reads plugin_id/role/path/reason and a
+    grant is reach on the path, read and write. A `mode` would be a choice the law cannot
+    honour, so the being is not offered one."""
+    from sage.gateway.being_gate_client import ollama_tools
+    (spec,) = ollama_tools(["request_scope"])
+    params = spec["function"]["parameters"]
+    assert set(params["properties"]) == {"path", "reason"}, params
+    assert params["required"] == ["path", "reason"]
+    assert "read and write" in spec["function"]["description"]
 
 if __name__ == "__main__":
     n = 0

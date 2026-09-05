@@ -233,7 +233,15 @@ class OllamaIRP(IRPPlugin):
 
         except urllib.error.URLError as e:
             self._ollama_available = False
-            return {'content': f'[OllamaIRP: Connection error: {e}]', 'tool_calls': [], 'role': 'assistant', 'raw': {}}
+            # an HTTP error carries Ollama's own reason in the body (template raise,
+            # tool-call parse failure, ...): surface it, the status code alone hides the cause
+            detail = ''
+            try:
+                detail = e.read().decode('utf-8', errors='replace')[:300] if hasattr(e, 'read') else ''
+            except Exception:
+                detail = ''
+            return {'content': f'[OllamaIRP: Connection error: {e}{" — " + detail if detail else ""}]',
+                    'tool_calls': [], 'role': 'assistant', 'raw': {}}
         except Exception as e:
             return {'content': f'[OllamaIRP: Error: {e}]', 'tool_calls': [], 'role': 'assistant', 'raw': {}}
 

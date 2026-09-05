@@ -1,0 +1,30 @@
+{
+  "last_shutdown": 1780636361.7834148,
+  "machine": "sprout",
+  "instance": "sprout-qwen3.5-0.8b",
+  "uptime_seconds": 36276.064353227615,
+  "cycles_completed": 346503,
+  "metabolic_state": "rest",
+  "atp_level": 38.03132003300677,
+  "message_stats": {
+    "messages_submitted": 20,
+    "messages_resolved": 20,
+    "messages_timed_out": 0,
+    "pending": 0,
+    "waiting": 0
+  },
+  "trust_weights": {
+    "language": 0.095,
+    "control": 0.0,
+    "memory": 0.0,
+    "tts": 0.0,
+    "vision": 0.0
+  },
+  "sensor_trust": {
+    "vision": 0.0,
+    "audio": 0.0,
+    "proprioception": 0.0,
+    "time": 1.0,
+    "message": 1.0
+  }
+}

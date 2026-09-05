@@ -284,6 +284,7 @@ memory
 *.tar.gz
 sage/instances/*/heartbeats.jsonl
 sage/instances/*/heartbeat.log
+sage/instances/*/consolidation.log
 
 # Consolidation grafts (sage/memory/consolidation.py): the graft, index and log are committed as
 # evidence; the per-line own-word index sidecar is named in the graft by path + sha256 + count and

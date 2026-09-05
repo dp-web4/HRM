@@ -1,0 +1,16 @@
+# Copy to ~/.config/systemd/user/sage-consolidation.timer next to the service.
+# Once a day, after the night's beats. Persistent=true: a missed day runs at the next boot;
+# F1 (idempotence) makes a day with nothing new a logged no-op, so catching up costs one log line.
+# Do not put this on the heartbeat's cadence: a graft per beat is a version per half hour with
+# nothing between them but one record, and older versions are never deleted.
+[Unit]
+Description=SAGE consolidation daily (<machine>-being)
+
+[Timer]
+OnCalendar=*-*-* 04:30:00
+RandomizedDelaySec=15min
+Persistent=true
+Unit=sage-consolidation.service
+
+[Install]
+WantedBy=timers.target

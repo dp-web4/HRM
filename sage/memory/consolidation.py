@@ -22,8 +22,11 @@ scheduled process that does, in the shape dev-sage's consolidation loop settled 
 
   3. WRITE, WITH PROVENANCE. `consolidate()` is the cycle:
        - hash the named source set; if the latest graft for this member already names that
-         hash, the cycle is a NO-OP and the no-op is LOGGED (a scheduled process that leaves
-         no record of having run is indistinguishable from one that did not run);
+         hash AND was written by this same instrument, the cycle is a NO-OP and the no-op is
+         LOGGED (a scheduled process that leaves no record of having run is indistinguishable
+         from one that did not run). A changed instrument over unchanged sources is a new
+         version (`reason: instrument_changed`): the graft is a function of sources AND
+         instrument, so a fixed reading re-lands (Sprout's #42 review, finding 2);
        - otherwise distill and write `self-account-<member>.vN.json`, N monotonic,
          `supersedes` pointing at vN-1, older versions NEVER deleted or rewritten;
        - the graft names its training data structurally: every source's path, sha256,
@@ -33,8 +36,16 @@ GRAFTS SHIP DARK. Nothing live reads a graft; `read_graft()` returns None unless
 SAGE_GRAFT_SELF_ACCOUNT=on. A consumer (the heartbeat digest, the raising prompt) opts in by
 explicit switch, and the PRD's JOIN/ACCOUNT instruments say whether it changed anything.
 
+READ ONCE. The bytes that are hashed into `training_data` are the bytes that are distilled
+(`_read_sources()` returns both). A beat appended between naming and distilling cannot make
+the graft name a sha the table does not reflect (#42 finding 1). Paths in the graft are
+instance-relative (or cwd-/home-relative for the cartridge) so a graft is portable across
+checkout roots (#42 finding 4). `error` counts NON-refusal errors only: a refusal carries an
+error string too, and counting it twice made 135 refusals read as 136 errors (#42 finding 3).
+
 PRE-REGISTERED PROPERTIES (checked by sage/memory/tests/test_consolidation.py):
-  F1 idempotence: an unchanged source set consolidates to a logged no-op, never a new version.
+  F1 idempotence: an unchanged source set under an unchanged instrument consolidates to a
+     logged no-op, never a new version; a changed instrument yields vN+1 over the same sources.
   F2 determinism: the same instance consolidated into a fresh grafts dir yields a
      byte-identical table and training-data list.
   F3 ground truth: a toy instance with known contents distills to the known counts, and an
@@ -59,7 +70,7 @@ from typing import Any
 
 SCHEMA_GRAFT = "self-account/v1"
 SCHEMA_INDEX = "graft-index/v1"
-VERSION = "consolidation/v1"
+VERSION = "consolidation/v1.1"
 ENV_SWITCH = "SAGE_GRAFT_SELF_ACCOUNT"
 
 # The being's own words leave the harness through these effectors (heartbeat.py trace).
@@ -97,19 +108,26 @@ def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _portable(p: Path, instance: Path | None = None) -> str:
+    """A path as the graft records it: instance-relative when under the instance, else relative
+    to the cwd (the checkout) or to $HOME as `~/...`, else absolute. Machine-specific roots
+    stay out of the graft so F2 survives a different checkout root."""
+    p = Path(p)
+    for root, prefix in ((instance, ""), (Path.cwd(), ""), (Path.home(), "~/")):
+        if root is None:
+            continue
+        try:
+            rel = p.resolve().relative_to(Path(root).resolve())
+        except ValueError:
+            continue
+        return prefix + rel.as_posix() if str(rel) != "." else (prefix.rstrip("/") or ".")
+    return str(p)
+
+
 # ----------------------------------------------------------------------------- sources
 
 def _jsonl(p: Path) -> list:
-    rows = []
-    for line in p.read_text(encoding="utf-8", errors="replace").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            rows.append(json.loads(line))
-        except json.JSONDecodeError:
-            rows.append({"_unparsed": line})
-    return rows
+    return _jsonl_bytes(p.read_bytes())
 
 
 def _journal_entries(text: str) -> list[str]:
@@ -127,38 +145,60 @@ def _journal_entries(text: str) -> list[str]:
     return [e for e in entries if e.strip()]
 
 
-def name_sources(instance: Path, cartridge_manifest: Path | None = None) -> list[dict]:
-    """Name every source exactly. Absent sources are listed with present=False, count 0.
-    Order is fixed so the source-set hash is stable."""
+def _jsonl_bytes(b: bytes) -> list:
+    rows = []
+    for line in b.decode("utf-8", errors="replace").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            rows.append({"_unparsed": line})
+    return rows
+
+
+def _read_sources(instance: Path, cartridge_manifest: Path | None = None) -> tuple[list[dict], dict]:
+    """Name every source exactly AND return the very bytes that were named, parsed, so
+    distill() reads what training_data hashes and nothing later. Absent sources are listed
+    with present=False, count 0. Order is fixed so the source-set hash is stable."""
     instance = Path(instance)
     out: list[dict] = []
+    contents: dict[str, Any] = {"beats": [], "journal": "", "todo": "", "experience": [], "sessions": []}
 
-    def one(name: str, p: Path, count: int | None, kind: str):
+    def one(name: str, p: Path, kind: str) -> bytes | None:
         if p.exists() and p.is_file():
-            out.append({"source": name, "kind": kind, "path": str(p), "present": True,
-                        "sha256": _sha_file(p), "bytes": p.stat().st_size,
-                        "count": count if count is not None else 0})
-        else:
-            out.append({"source": name, "kind": kind, "path": str(p), "present": False,
-                        "sha256": None, "bytes": 0, "count": 0})
+            b = p.read_bytes()
+            out.append({"source": name, "kind": kind, "path": _portable(p, instance), "present": True,
+                        "sha256": _sha_bytes(b), "bytes": len(b), "count": 0})
+            return b
+        out.append({"source": name, "kind": kind, "path": _portable(p, instance), "present": False,
+                    "sha256": None, "bytes": 0, "count": 0})
+        return None
 
-    hb = instance / "heartbeats.jsonl"
-    one("beats", hb, len(_jsonl(hb)) if hb.exists() else None, "jsonl")
-    jn = instance / "journal.md"
-    one("journal", jn, len(_journal_entries(jn.read_text(encoding="utf-8", errors="replace"))) if jn.exists() else None, "markdown")
-    td = instance / "todo.md"
-    one("todo", td, len([l for l in td.read_text(encoding="utf-8", errors="replace").splitlines() if l.strip()]) if td.exists() else None, "markdown")
-    ac = instance / "account.json"
-    one("account", ac, 1 if ac.exists() else None, "json")
-    eb = instance / "experience_buffer.json"
-    if eb.exists():
+    b = one("beats", instance / "heartbeats.jsonl", "jsonl")
+    if b is not None:
+        contents["beats"] = _jsonl_bytes(b)
+        out[-1]["count"] = len(contents["beats"])
+    b = one("journal", instance / "journal.md", "markdown")
+    if b is not None:
+        contents["journal"] = b.decode("utf-8", errors="replace")
+        out[-1]["count"] = len(_journal_entries(contents["journal"]))
+    b = one("todo", instance / "todo.md", "markdown")
+    if b is not None:
+        contents["todo"] = b.decode("utf-8", errors="replace")
+        out[-1]["count"] = len([l for l in contents["todo"].splitlines() if l.strip()])
+    b = one("account", instance / "account.json", "json")
+    if b is not None:
+        out[-1]["count"] = 1
+    b = one("experience", instance / "experience_buffer.json", "json")
+    if b is not None:
         try:
-            n = len(json.loads(eb.read_text(encoding="utf-8")))
-        except (json.JSONDecodeError, TypeError):
-            n = 0
-        one("experience", eb, n, "json")
-    else:
-        one("experience", eb, None, "json")
+            buf = json.loads(b.decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            buf = []
+        contents["experience"] = buf if isinstance(buf, list) else []
+        out[-1]["count"] = len(buf) if isinstance(buf, (list, dict)) else 0
 
     sess_dir = instance / "sessions"
     files = sorted(p for p in sess_dir.glob("session_*.json")) if sess_dir.is_dir() else []
@@ -166,12 +206,19 @@ def name_sources(instance: Path, cartridge_manifest: Path | None = None) -> list
         h = hashlib.sha256()
         total = 0
         for p in files:
-            h.update(p.name.encode()); h.update(_sha_file(p).encode())
-            total += p.stat().st_size
-        out.append({"source": "sessions", "kind": "json-dir", "path": str(sess_dir), "present": True,
+            fb = p.read_bytes()
+            h.update(p.name.encode()); h.update(_sha_bytes(fb).encode())
+            total += len(fb)
+            try:
+                d = json.loads(fb.decode("utf-8"))
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                continue
+            if isinstance(d, dict):
+                contents["sessions"].append((p, d))
+        out.append({"source": "sessions", "kind": "json-dir", "path": _portable(sess_dir, instance), "present": True,
                     "sha256": h.hexdigest(), "bytes": total, "count": len(files)})
     else:
-        out.append({"source": "sessions", "kind": "json-dir", "path": str(sess_dir), "present": False,
+        out.append({"source": "sessions", "kind": "json-dir", "path": _portable(sess_dir, instance), "present": False,
                     "sha256": None, "bytes": 0, "count": 0})
 
     # The long-term memory cartridge is named by its manifest (count, fingerprint) and the
@@ -185,16 +232,21 @@ def name_sources(instance: Path, cartridge_manifest: Path | None = None) -> list
             except json.JSONDecodeError:
                 m = {}
             store = cm.with_name(cm.name.replace("_manifest.json", ".npz"))
-            out.append({"source": "cartridge", "kind": "membot-cartridge", "path": str(cm), "present": True,
+            out.append({"source": "cartridge", "kind": "membot-cartridge", "path": _portable(cm), "present": True,
                         "sha256": _sha_file(cm), "bytes": cm.stat().st_size,
                         "count": int(m.get("count", 0) or 0),
                         "fingerprint": m.get("fingerprint"), "manifest_timestamp": m.get("timestamp"),
-                        "store_path": str(store) if store.exists() else None,
+                        "store_path": _portable(store) if store.exists() else None,
                         "store_sha256": _sha_file(store) if store.exists() else None})
         else:
-            out.append({"source": "cartridge", "kind": "membot-cartridge", "path": str(cm), "present": False,
+            out.append({"source": "cartridge", "kind": "membot-cartridge", "path": _portable(cm), "present": False,
                         "sha256": None, "bytes": 0, "count": 0})
-    return out
+    return out, contents
+
+
+def name_sources(instance: Path, cartridge_manifest: Path | None = None) -> list[dict]:
+    """Name every source exactly (the training_data list). A view over _read_sources()."""
+    return _read_sources(instance, cartridge_manifest)[0]
 
 
 def source_set_sha(sources: list[dict]) -> str:
@@ -210,15 +262,11 @@ def _own_line(text: str, source: str, ref: str, ts: str | None) -> dict:
 TUTOR_SPEAKERS = frozenset({"Claude", "Human", "User", "Teacher", "dp", "Dennis", "system", "System"})
 
 
-def _being_speaker(files: list[Path]) -> tuple[str | None, dict[str, int]]:
+def _being_speaker(sessions: list[tuple[Path, dict]]) -> tuple[str | None, dict[str, int]]:
     """The being is the speaker in the transcripts that is not the tutor. identity.json's name is
     not it (legion-gemma3-12b: identity says "legion", every session says "SAGE"; measured 09-05)."""
     speakers: dict[str, int] = {}
-    for p in files:
-        try:
-            d = json.loads(p.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, UnicodeDecodeError):
-            continue
+    for _p, d in sessions:
         for turn in (d.get("conversation") or []) if isinstance(d, dict) else []:
             if isinstance(turn, dict) and turn.get("speaker"):
                 sp = str(turn["speaker"]); speakers[sp] = speakers.get(sp, 0) + 1
@@ -233,17 +281,21 @@ def _turn_trace(turn: dict | None) -> list[dict]:
     return [e for e in tr if isinstance(e, dict)]
 
 
-def distill(instance: Path, sources: list[dict], carry: int = 12) -> dict:
+def distill(instance: Path, sources: list[dict], carry: int = 12, contents: dict | None = None) -> dict:
     """Mechanical. Counts, histograms, spans, and the content-addressed table of the being's
-    own words. Every text kept verbatim (`carry`) names the source it is a substring of."""
+    own words. Every text kept verbatim (`carry`) names the source it is a substring of.
+    `contents` is what _read_sources() parsed from the bytes it hashed; without it the sources
+    are re-read here, which is the name-then-reread race this argument exists to close."""
     instance = Path(instance)
+    if contents is None:
+        sources, contents = _read_sources(instance)
     by = {s["source"]: s for s in sources}
     table: dict[str, Any] = {"schema": SCHEMA_GRAFT}
     own: list[dict] = []          # every own-word line: sha + pointer, never the text
     carried: list[dict] = []      # the last `carry` lines from beats/journal, verbatim
 
     # --- beats -------------------------------------------------------------------------
-    beats = _jsonl(instance / "heartbeats.jsonl") if by["beats"]["present"] else []
+    beats = contents["beats"] if by["beats"]["present"] else []
     eff: dict[str, dict[str, int]] = {}
     rules: dict[str, int] = {}
     models: dict[str, int] = {}
@@ -318,7 +370,7 @@ def distill(instance: Path, sources: list[dict], carry: int = 12) -> dict:
                     rules[rule] = rules.get(rule, 0) + 1
                 if e.get("pending"):
                     d["pending"] += 1
-                if e.get("error"):
+                if e.get("error") and not e.get("refused"):   # a refusal carries an error string too
                     d["error"] += 1
                 if name in OWN_WORD_EFFECTORS:
                     args = e.get("args") or {}
@@ -346,7 +398,7 @@ def distill(instance: Path, sources: list[dict], carry: int = 12) -> dict:
     }
 
     # --- journal / todo -------------------------------------------------------------------
-    entries = _journal_entries((instance / "journal.md").read_text(encoding="utf-8", errors="replace")) if by["journal"]["present"] else []
+    entries = _journal_entries(contents["journal"]) if by["journal"]["present"] else []
     for k, e in enumerate(entries):
         own.append(_own_line(e, "journal", f"entry:{k}", None))
     for k, e in enumerate(entries[-carry:]):
@@ -355,20 +407,13 @@ def distill(instance: Path, sources: list[dict], carry: int = 12) -> dict:
     table["todo"] = {"present": by["todo"]["present"], "lines": by["todo"]["count"]}
 
     # --- sessions ----------------------------------------------------------------------
-    sess_dir = instance / "sessions"
-    files = sorted(sess_dir.glob("session_*.json")) if by["sessions"]["present"] else []
-    being, speakers = _being_speaker(files)
+    sessions = contents["sessions"] if by["sessions"]["present"] else []
+    being, speakers = _being_speaker(sessions)
     phases: dict[str, int] = {}
     smodels: dict[str, int] = {}
     being_turns = 0
     starts: list[str] = []
-    for p in files:
-        try:
-            d = json.loads(p.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, UnicodeDecodeError):
-            continue
-        if not isinstance(d, dict):
-            continue
+    for p, d in sessions:
         phases[str(d.get("phase"))] = phases.get(str(d.get("phase")), 0) + 1
         smodels[str(d.get("model"))] = smodels.get(str(d.get("model")), 0) + 1
         if d.get("start"):
@@ -378,7 +423,9 @@ def distill(instance: Path, sources: list[dict], carry: int = 12) -> dict:
             if isinstance(turn, dict) and turn.get("speaker") == being and isinstance(turn.get("text"), str) and turn["text"].strip():
                 being_turns += 1
                 own.append(_own_line(turn["text"], "sessions", f"session:{n}/turn:{j}", d.get("start")))
-    table["sessions"] = {"n": len(files), "being": being, "speakers": speakers, "being_turns": being_turns,
+    table["sessions"] = {"n": by["sessions"]["count"], "being": being, "speakers": speakers, "being_turns": being_turns,
+                         # what the derivation left out, so a reader sees the assumption, not the code
+                         "tutor_speakers": sorted(TUTOR_SPEAKERS),
                          "span": [min(starts), max(starts)] if starts else None,
                          "phases": dict(sorted(phases.items())), "models": dict(sorted(smodels.items()))}
 
@@ -386,10 +433,7 @@ def distill(instance: Path, sources: list[dict], carry: int = 12) -> dict:
     exp_n = 0
     prompts: dict[str, int] = {}
     if by["experience"]["present"]:
-        try:
-            buf = json.loads((instance / "experience_buffer.json").read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, UnicodeDecodeError):
-            buf = []
+        buf = contents["experience"]
         if isinstance(buf, list):
             for x in buf:
                 if not isinstance(x, dict):
@@ -439,6 +483,14 @@ def _load_index(grafts_dir: Path) -> dict:
     return {"schema": SCHEMA_INDEX, "members": {}}
 
 
+def _latest_instrument_sha(grafts_dir: Path, fname: str) -> str | None:
+    """Index entries written by consolidation/v1 carry no instrument sha; the graft file does."""
+    try:
+        return json.loads((grafts_dir / fname).read_text(encoding="utf-8")).get("instrument", {}).get("sha256")
+    except (OSError, json.JSONDecodeError, AttributeError):
+        return None
+
+
 def _member_id(instance: Path, member: str | None) -> str:
     if member:
         return member
@@ -458,16 +510,22 @@ def consolidate(instance: Path, grafts_dir: Path | None = None, *, seat: str = "
     instance = Path(instance)
     grafts_dir = Path(grafts_dir) if grafts_dir else instance / "grafts"
     mid = _member_id(instance, member)
-    sources = name_sources(instance, cartridge_manifest)
+    sources, contents = _read_sources(instance, cartridge_manifest)
     sset = source_set_sha(sources)
+    self_sha = _self_sha()
     index = _load_index(grafts_dir)
     entry = index["members"].setdefault(mid, {"latest": None, "versions": []})
-    if entry["versions"] and entry["versions"][-1]["source_set_sha256"] == sset:
-        ev = {"event": "noop", "member": mid, "source_set_sha256": sset,
-              "latest": entry["latest"], "seat": seat, "instrument_sha256": _self_sha()}
-        _log(grafts_dir, ev)
-        return ev
-    table = distill(instance, sources, carry=carry)
+    reason = "first"
+    if entry["versions"]:
+        last = entry["versions"][-1]
+        last_instr = last.get("instrument_sha256") or _latest_instrument_sha(grafts_dir, last["file"])
+        if last["source_set_sha256"] == sset and last_instr == self_sha:
+            ev = {"event": "noop", "member": mid, "source_set_sha256": sset,
+                  "latest": entry["latest"], "seat": seat, "instrument_sha256": self_sha}
+            _log(grafts_dir, ev)
+            return ev
+        reason = "sources_changed" if last["source_set_sha256"] != sset else "instrument_changed"
+    table = distill(instance, sources, carry=carry, contents=contents)
     version = len(entry["versions"]) + 1
     supersedes = entry["versions"][-1]["file"] if entry["versions"] else None
     fname = f"self-account-{mid}.v{version}.json"
@@ -477,9 +535,9 @@ def consolidate(instance: Path, grafts_dir: Path | None = None, *, seat: str = "
     table["own_account"]["index"] = {"file": iname, "sha256": _sha_bytes(ibytes), "lines": len(own_index)}
     graft = {
         "schema": SCHEMA_GRAFT, "instrument": {"version": VERSION, "file": os.path.basename(__file__),
-                                              "sha256": _self_sha()},
-        "member": mid, "instance": str(instance), "version": version, "supersedes": supersedes,
-        "written_at": _now(), "seat": seat,
+                                              "sha256": self_sha},
+        "member": mid, "instance": _portable(instance), "version": version, "supersedes": supersedes,
+        "reason": reason, "written_at": _now(), "seat": seat,
         "source_set_sha256": sset, "training_data": sources,
         "table": table,
     }
@@ -490,11 +548,12 @@ def consolidate(instance: Path, grafts_dir: Path | None = None, *, seat: str = "
     (grafts_dir / iname).write_bytes(ibytes)
     target.write_text(json.dumps(graft, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
     entry["versions"].append({"version": version, "file": fname, "source_set_sha256": sset,
+                              "instrument_sha256": self_sha, "reason": reason,
                               "written_at": graft["written_at"], "supersedes": supersedes})
     entry["latest"] = fname
     (grafts_dir / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
     ev = {"event": "graft", "member": mid, "version": version, "file": fname, "supersedes": supersedes,
-          "source_set_sha256": sset, "seat": seat, "instrument_sha256": graft["instrument"]["sha256"],
+          "reason": reason, "source_set_sha256": sset, "seat": seat, "instrument_sha256": graft["instrument"]["sha256"],
           "own_lines": table["own_account"]["lines"], "beats": table["beats"]["n"],
           "sessions": table["sessions"]["n"], "journal_entries": table["journal"]["entries"]}
     _log(grafts_dir, ev)

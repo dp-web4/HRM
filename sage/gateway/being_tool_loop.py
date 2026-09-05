@@ -80,7 +80,14 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
 _FENCE = re.compile(r"```[A-Za-z0-9_+-]*[ \t]*\n(.*?)```", re.S)
 
 
-def _json_calls(text: str, names: set) -> List[dict]:
+_NAME_KEYS = ("name", "tool", "action", "function", "tool_name")
+_ARGS_KEYS = ("arguments", "parameters", "args", "input", "params")
+
+
+def _json_calls(text: str, names) -> List[dict]:
+    """`names`: the offered tool names (set) or {name: [param, ...]} (dict) for flat-form
+    argument filtering."""
+    known = names if isinstance(names, dict) else {n: [] for n in names}
     out, dec, i = [], json.JSONDecoder(), 0
     while True:
         starts = [k for k in (text.find("{", i), text.find("[", i)) if k >= 0]
@@ -93,10 +100,23 @@ def _json_calls(text: str, names: set) -> List[dict]:
             i = j + 1
             continue
         for o in (obj if isinstance(obj, list) else [obj]):
-            if isinstance(o, dict) and o.get("name") in names:
-                args = o.get("arguments", o.get("parameters", {}))
-                if isinstance(args, dict):
-                    out.append({"function": {"name": o["name"], "arguments": dict(args)}, "_salvaged": "json"})
+            if not isinstance(o, dict):
+                continue
+            # The name key varies by beat: {"name"}, {"tool"}, {"action"}, {"function"}
+            # (Sprout beat 29, 2026-09-05: "action": "peer_ask" and a list of {"tool":
+            # "memory_write", "path": ..., "content": ...} — 3 of 3 turns, 0 lifted).
+            name = next((o[k] for k in _NAME_KEYS if isinstance(o.get(k), str)), None)
+            if name not in known:
+                continue
+            args = next((o[k] for k in _ARGS_KEYS if isinstance(o.get(k), dict)), None)
+            if args is None:
+                # flat form: the arguments sit beside the name key; keep only schema params
+                # when the schema is known, so stray keys ("timestamp", "status") never
+                # become arguments of a call.
+                allowed = known.get(name) or []
+                args = {k: v for k, v in o.items()
+                        if k not in _NAME_KEYS and k not in _ARGS_KEYS and (not allowed or k in allowed)}
+            out.append({"function": {"name": name, "arguments": dict(args)}, "_salvaged": "json"})
         i = max(end, j + 1)
 
 
@@ -163,10 +183,10 @@ def salvage_tool_calls(content: str, tools: Iterable[dict]) -> List[dict]:
     blocks = _FENCE.findall(content)
     found: List[dict] = []
     for text in (blocks or [content]):
-        found.extend(_json_calls(text, set(params)))
+        found.extend(_json_calls(text, params))
         found.extend(_python_calls(text, params))
     if blocks and not found:                    # fenced prose, bare call outside the fence
-        found.extend(_json_calls(content, set(params)))
+        found.extend(_json_calls(content, params))
     return found
 
 

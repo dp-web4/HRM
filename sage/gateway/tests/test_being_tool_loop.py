@@ -182,6 +182,24 @@ def test_run_ollama_tool_turn_gates_a_salvaged_call_and_records_it():
     assert r.reply == "done" and r.steps == 1
 
 
+def test_salvage_accepts_the_other_name_keys_and_flat_arguments():
+    """Beat 29 on Sprout (2026-09-05): three turns, three shapes, none lifted."""
+    from sage.gateway.being_gate_client import ollama_tools
+    from sage.gateway.being_tool_loop import salvage_tool_calls
+    names = ollama_tools(["peer_ask", "memory_write", "recall"])
+    r = salvage_tool_calls('```json\n{"action": "peer_ask", "to": "legion", "body": "a question"}\n```', names)
+    assert [(c["function"]["name"], c["function"]["arguments"]) for c in r] == [("peer_ask", {"to": "legion", "body": "a question"})]
+    r = salvage_tool_calls('```json\n[{"tool": "memory_write", "path": "journal.md", "content": "x"},'
+                           ' {"tool": "memory_write", "path": "todo.md", "content": "y"}]\n```', names)
+    assert [c["function"]["arguments"]["path"] for c in r] == ["journal.md", "todo.md"]
+    # stray keys beside a flat call are not arguments; an unknown action is not a call
+    r = salvage_tool_calls('{"action": "recall", "query": "q", "timestamp": "now", "status": "final"}', names)
+    assert r and r[0]["function"]["arguments"] == {"query": "q"}
+    assert salvage_tool_calls('{"action": "complete_beat", "timestamp": "t", "status": "final"}', names) == []
+    r = salvage_tool_calls('{"function": "recall", "args": {"query": "q"}}', names)
+    assert r and r[0]["function"]["arguments"] == {"query": "q"}
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

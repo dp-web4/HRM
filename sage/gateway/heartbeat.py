@@ -140,6 +140,8 @@ def main(argv=None) -> int:
     ap.add_argument("--max-tokens", type=int, default=3000,
                     help="a journal entry as a tool call needs room; too small = truncated JSON = Ollama 500")
     ap.add_argument("--gate-only", action="store_true")
+    ap.add_argument("--no-escalate", action="store_true",
+                    help="do not route refusals to the seat's auto session (default: route, as governed_turn does)")
     args = ap.parse_args(argv)
 
     instance = Path(args.instance).resolve()
@@ -228,6 +230,40 @@ def main(argv=None) -> int:
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
                                    tools=ollama_tools(REFLECT_TOOLS))
 
+    # Route refusals AI-to-AI (dp 2026-09-04), the same as governed_turn: a scope-class deny
+    # files the being's own scope request + a note and wakes the seat's auto session; a
+    # governance escalation wakes it to arbitrate. The beat is where refusals actually
+    # happen (Legion: nine consecutive beats of home-scope write refusals, and the being's
+    # requests had died with a daemon restart), so the heartbeat must route, not just log.
+    # One wake per refusal kind per beat: several refused writes to the same home are one ask.
+    escalations = []
+    if not args.no_escalate and not args.gate_only:
+        try:
+            from sage.gateway import escalate as _esc
+            woken = set()
+            for it, env in list(explore.trace) + list(reflect.trace):
+                if not env.refused:
+                    continue
+                kind = _esc.classify(env)
+                r = _esc.escalate(args.member, it, env, str(instance), wake=kind not in woken)
+                if r.get("escalated") and r.get("wake", {}).get("notified"):
+                    woken.add(kind)
+                escalations.append(r)
+        except Exception as _e:
+            escalations.append({"escalated": False, "error": f"{type(_e).__name__}: {_e}"})
+    # Drain the being's own egress every beat. A mesh/peer_ask the being addresses to a peer is
+    # PARKED by the daemon until an attributed drain forwards it; on Legion nothing else drains
+    # legion-being (measured 2026-09-05: eight rows from 09-04 sat queued until the first
+    # escalation's drain flushed them, and the being had logged "hub's reply still has not
+    # landed after >4h"). The sender's own beat is the natural drain.
+    egress = None
+    if not args.gate_only:
+        try:
+            from sage.gateway import egress_drain
+            egress = egress_drain.drain_once(plugin_id=args.member, log=lambda *_: None)
+        except Exception as _e:
+            egress = {"error": f"{type(_e).__name__}: {_e}"}
+
     def _trace(res):
         return [{"effector": i.effector, "args": dict(i.args or {}), "ok": e.ok, "refused": e.refused,
                  "pending": e.pending, "error": e.error, "witness_id": e.witness_id,
@@ -240,6 +276,7 @@ def main(argv=None) -> int:
         "host_session_id": host_session_id, "gate_only": args.gate_only,
         "explore": {"reply": explore.reply, "steps": explore.steps, "capped": explore.capped, "trace": _trace(explore)},
         "reflect": {"reply": reflect.reply, "steps": reflect.steps, "capped": reflect.capped, "trace": _trace(reflect)},
+        "escalations": escalations, "egress": egress,
     }
     with open(log, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")

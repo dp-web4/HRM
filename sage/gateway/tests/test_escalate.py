@@ -28,6 +28,24 @@ def test_note_carries_verdict_and_arbiter_protocol(monkeypatch=None):
     t = open(p).read()
     assert "mrh.path" in t and "scope-1" in t and "Arbiter protocol" in t and "STANDING" in t
 
+def test_seat_is_the_beings_own_machine_not_sprout():
+    # identity.json names the machine -> that seat; no file -> the member prefix
+    d = tempfile.mkdtemp()
+    assert e.seat_for("legion-being", d) == "legion"
+    assert e.seat_for("sprout-being", d) == "sprout"
+    assert e.seat_for("cbp-being") == "cbp"
+    import json
+    open(os.path.join(d, "identity.json"), "w").write(json.dumps({"identity": {"machine": "Thor"}}))
+    assert e.seat_for("legion-being", d) == "thor"
+    # the gate workspace is this checkout, whatever its name (Legion: ~/ai-workspace/SAGE)
+    assert os.path.isdir(os.path.join(e.WORKSPACE, "sage", "gateway"))
+
+def test_heartbeat_routes_refusals_by_default():
+    import sage.gateway.heartbeat as hb, inspect
+    src = inspect.getsource(hb.main)
+    assert "--no-escalate" in src and "_esc.escalate(" in src
+    assert "egress_drain.drain_once(" in src   # the being's parked mesh acts leave every beat
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

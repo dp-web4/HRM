@@ -53,6 +53,29 @@ def sign_nonce(seed: bytes, nonce, domain: Optional[str] = None) -> str:
     return SigningKey(seed).sign(_preimage(nonce, domain)).signature.hex()
 
 
+def sign_message(seed: bytes, message: bytes) -> str:
+    """Ed25519 signature (hex) over exact message bytes: hestia #907's connect proof signs
+    the daemon's `messageHex` verbatim ("web4:hestia:connect:v1\n<lct_id>\n<nonce>")."""
+    return SigningKey(seed).sign(bytes(message)).signature.hex()
+
+
+def connect_proof(challenge: dict, seed_path: str = DEFAULT_SEED) -> dict:
+    """The `proof` object for hestia_connect (#907) from a hestia_connect_challenge reply:
+    {lct_id, public_key, challenge_nonce, signature}. Signs `messageHex` when present,
+    else rebuilds the message from domain, lct_id and nonce. Raises on a malformed challenge."""
+    lct_id = challenge.get("lctId") or challenge.get("lct_id")
+    nonce = challenge.get("challengeNonce") or challenge.get("challenge_nonce") or challenge.get("nonce")
+    if not lct_id or not nonce:
+        raise ValueError("challenge lacks lctId/challengeNonce")
+    if challenge.get("messageHex"):
+        msg = bytes.fromhex(challenge["messageHex"])
+    else:
+        msg = f"{challenge.get('domain') or 'web4:hestia:connect:v1'}\n{lct_id}\n{nonce}".encode()
+    seed = load_seed(seed_path)
+    return {"lct_id": lct_id, "public_key": pubkey_hex(seed), "challenge_nonce": nonce,
+            "signature": sign_message(seed, msg)}
+
+
 def verify_nonce(pub_hex: str, nonce, sig_hex: str, domain: Optional[str] = None) -> bool:
     try:
         VerifyKey(bytes.fromhex(pub_hex)).verify(_preimage(nonce, domain), bytes.fromhex(sig_hex))

@@ -84,8 +84,13 @@ class HestiaF1aDispatcher:
                  # their conversation hooks write into whatever cartridge is mounted there
                  # (measured 2026-09-03: 4 seat memories landed in legion-being's cartridge)
                  membot_endpoint: str = "http://127.0.0.1:8010/mcp",
-                 membot_cartridge: Optional[str] = None):
+                 membot_cartridge: Optional[str] = None,
+                 seed_path: Optional[str] = None):
         self.plugin_id = plugin_id
+        # the being's own key (FR-1 proof at connect); default = the hub channel key
+        from sage.gateway.being_presence import DEFAULT_SEED
+        self.seed_path = seed_path or DEFAULT_SEED
+        self.identity_basis = "unconnected"
         # the being's registry LCT id, named in every outward act it signs (pr_review)
         self.being_lct = being_lct
         # the being's long-term memory: a membot cartridge named after the member
@@ -125,6 +130,24 @@ class HestiaF1aDispatcher:
         args = {"plugin_id": self.plugin_id, "host_agent": "sage-gateway", "plugin_version": "f2"}
         if self.host_session_id:
             args["host_session_id"] = self.host_session_id
+        # FR-1 (PRD_FLEET §4.2 class 2; hestia #907): prove possession of the being's own
+        # key at connect when the daemon offers the challenge. The being's registry LCT is
+        # sha256(pubkey) under mb32 (verified equal on Sprout 2026-09-05), so the proof binds
+        # the session to the key, not to a typed label. A daemon without the verb (pre-#907)
+        # answers unknown_tool and the connect proceeds unproven, recorded as such; a daemon
+        # WITH it that refuses the proof refuses the connect: no silent fallback to a label.
+        self.identity_basis = "label"
+        if self.being_lct:
+            ch = _unwrap(c.call("hestia_connect_challenge", {"lct_id": self.being_lct}))
+            cherr = _hestia_error(ch)
+            if cherr and "unknown_tool" in str(cherr):
+                self.identity_basis = "label (daemon pre-#907: no challenge verb)"
+            elif cherr:
+                raise RuntimeError(f"connect challenge refused: {cherr}")
+            else:
+                from sage.gateway.being_presence import connect_proof
+                args["proof"] = connect_proof(ch, self.seed_path)
+                self.identity_basis = "proof-of-possession"
         conn = _unwrap(c.call("hestia_connect", args))
         err = _hestia_error(conn)
         if err:

@@ -26,7 +26,13 @@ class FakeMcp:
     def call(self, name, args):
         FakeMcp.calls.append((name, args))
         if name == "hestia_connect":
-            body = {"sessionId": "sid-1", "softLct": "lct:web4:session:x"}
+            body = {"sessionId": "sid-1", "softLct": "lct:web4:session:x",
+                    "identityBasis": "proof" if args.get("proof") else "label"}
+        elif name == "hestia_connect_challenge":
+            if getattr(self, "challenge", None) is None:
+                body = {"_hestia_error": {"code": "hestia.unknown_tool", "message": "Unknown tool: hestia_connect_challenge"}}
+            else:
+                body = dict(self.challenge)
         elif name == "hestia_member_notify":
             if not args.get("pointer_uri"):
                 body = {"_hestia_error": {"code": "hestia.member_notify_missing_pointer", "message": "no pointer"}}
@@ -404,6 +410,50 @@ def test_appeal_needs_hash_and_reason_then_files_and_relays_the_daemon_refusal()
     assert FakeMcp.calls[-1][1]["reason"].startswith("[sprout-being] ")
     env = d(BeingIntent("appeal", {"deny_hash": "not-a-deny", "reason": "this should be refused"}), ok)
     assert not env.ok and "appeal_not_a_deny" in env.error
+
+
+def test_connect_proves_possession_when_the_daemon_offers_a_challenge():
+    """FR-1 / hestia #907: with a being LCT and a challenge verb, hestia_connect carries a
+    proof whose signature verifies over the daemon's messageHex under the being's key and
+    whose lct_id is the being's; without the verb (pre-#907) the connect proceeds unproven
+    and says so; a refused challenge refuses the connect."""
+    import os, tempfile
+    from nacl.signing import SigningKey
+    from sage.gateway.being_presence import verify_nonce
+    seed = bytes(range(32)); sp = os.path.join(tempfile.mkdtemp(prefix="seed-"), "k.bin"); open(sp, "wb").write(seed)
+    pub = SigningKey(seed).verify_key.encode().hex()
+    lct = "lct:web4:mb32:test"
+    nonce = "ab" * 16
+    msg = f"web4:hestia:connect:v1\n{lct}\n{nonce}".encode()
+
+    class WithChallenge(FakeMcp):
+        challenge = {"lctId": lct, "challengeNonce": nonce, "domain": "web4:hestia:connect:v1", "messageHex": msg.hex()}
+
+    FakeMcp.calls.clear()
+    d = HestiaF1aDispatcher("sprout-being", tempfile.mkdtemp(prefix="hd-"), mcp_factory=lambda ep, pid: WithChallenge(ep, pid),
+                            being_lct=lct, seed_path=sp)
+    assert d._connect() == "sid-1" and d.identity_basis == "proof-of-possession"
+    proof = [a for n, a in FakeMcp.calls if n == "hestia_connect"][0]["proof"]
+    assert proof["lct_id"] == lct and proof["public_key"] == pub and proof["challenge_nonce"] == nonce
+    assert verify_nonce(pub, msg.hex(), proof["signature"])          # signature over the exact message bytes
+    # pre-#907 daemon: unknown tool -> connect without proof, basis says so
+    FakeMcp.calls.clear()
+    d2 = HestiaF1aDispatcher("sprout-being", tempfile.mkdtemp(prefix="hd-"), mcp_factory=lambda ep, pid: FakeMcp(ep, pid),
+                             being_lct=lct, seed_path=sp)
+    assert d2._connect() == "sid-1" and d2.identity_basis.startswith("label") and "proof" not in [a for n, a in FakeMcp.calls if n == "hestia_connect"][0]
+    # no being LCT known: no challenge asked at all
+    d3 = HestiaF1aDispatcher("sprout-being", tempfile.mkdtemp(prefix="hd-"), mcp_factory=lambda ep, pid: WithChallenge(ep, pid))
+    FakeMcp.calls.clear(); d3._connect()
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_connect_challenge"] and d3.identity_basis == "label"
+    # a refused challenge refuses the connect (never a silent label fallback)
+    class Refusing(FakeMcp):
+        challenge = {"_hestia_error": {"code": "hestia.connect_pop_challenge_invalid", "message": "no"}}
+    d4 = HestiaF1aDispatcher("sprout-being", tempfile.mkdtemp(prefix="hd-"), mcp_factory=lambda ep, pid: Refusing(ep, pid),
+                             being_lct=lct, seed_path=sp)
+    try:
+        d4._connect(); assert False, "should refuse"
+    except RuntimeError as e:
+        assert "connect challenge refused" in str(e)
 
 
 if __name__ == "__main__":

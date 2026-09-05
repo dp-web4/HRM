@@ -456,6 +456,20 @@ def test_connect_proves_possession_when_the_daemon_offers_a_challenge():
         assert "connect challenge refused" in str(e)
 
 
+def test_request_scope_inside_existing_reach_is_answered_locally_and_files_nothing():
+    from sage.gateway.being_gate_client import GatewayVerdict
+    d, root = _disp()
+    FakeMcp.calls.clear()
+    env = d(BeingIntent("request_scope", {"path": root + "/config.json", "reason": "to review my configuration"}),
+            GatewayVerdict("allow", granted=(root,)))
+    assert env.ok and env.result["status"] == "already_granted" and env.result["within"]
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
+    # outside reach: filed as before
+    env = d(BeingIntent("request_scope", {"path": "/srv/elsewhere/x", "reason": "to read a peer's note"}),
+            GatewayVerdict("allow", granted=(root,)))
+    assert env.ok and env.result["request_id"] == "scope-1"
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

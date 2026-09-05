@@ -114,6 +114,7 @@ class HestiaF1aDispatcher:
         handler = getattr(self, f"_do_{intent.effector}", None)
         if handler is None:
             return self._local(intent, verdict)   # witness / memory_read / memory_write
+        self._verdict = verdict                   # what the law just consulted (granted roots)
         try:
             return handler(intent)
         except Exception as e:
@@ -408,6 +409,16 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error="request_scope 'path' must be absolute")
         if not reason:
             return ResultEnvelope(ok=False, error="request_scope needs a 'reason' (a human reads it)")
+        # Already inside the being's reach: answer locally, file nothing. The operator's
+        # attention is for real asks (2026-09-05: sprout-being asked dp for its own
+        # <home>/config.json, inside the standing home grant, and dp granted it again).
+        import os as _os
+        rp = _os.path.realpath(_os.path.expanduser(path))
+        for root in (getattr(getattr(self, "_verdict", None), "granted", ()) or ()):
+            r = _os.path.realpath(str(root))
+            if rp == r or rp.startswith(r + "/"):
+                return ResultEnvelope(ok=True, result={"status": "already_granted", "path": path, "within": r,
+                                                       "next": "you already hold reach here; read or write it directly"})
         args: Dict[str, Any] = {"plugin_id": self.plugin_id, "path": path,
                                 "reason": f"[{self.plugin_id}] {reason}"}
         out = self._call("hestia_request_scope", args)

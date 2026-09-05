@@ -57,6 +57,38 @@ def test_num_ctx_fallback_to_the_floor_is_loud():
     assert resolve_num_ctx("qwen38-heretic:q3km", 8192) == 16384   # restored
 
 
+def test_heretic_first_attempt_budget_is_the_room_the_window_has():
+    """q3km: 16384 window, a real heartbeat prompt of ~6700 tokens, 8000 to think in
+    (Sprout as policy owner, c77f0d58d). The 2B is per-size independent and unchanged."""
+    c = load_capabilities("qwen38-heretic:q3km")
+    assert c.resolve_num_predict("qwen38-heretic:q3km", True, 3000) == 8000
+    assert c.resolve_num_predict("qwen38-heretic:q3km", False, 3000) == 1024
+    assert load_capabilities("qwen3.8-distill:2b").resolve_num_predict("qwen3.8-distill:2b", True, 3000) == 6000
+
+
+def test_ollama_irp_sends_the_config_budget_unless_overridden():
+    """With thinking on the caller's max_response_tokens is NOT what goes over the wire:
+    the config's num_predict_think is. So (a) a retry that only raises max_response_tokens
+    changes nothing, and (b) a record of max_response_tokens misreports the budget
+    (Sprout 18:51Z 2026-09-05: recorded 3000, sent 6000). The override is the one caller
+    value that wins, for the once-retry."""
+    from sage.irp.plugins.ollama_irp import OllamaIRP
+    keep = OllamaIRP._check_ollama
+    OllamaIRP._check_ollama = lambda self: False      # hermetic: no server
+    try:
+        llm = OllamaIRP({"model_name": "qwen38-heretic:q3km", "think": True,
+                         "max_response_tokens": 3000, "num_ctx": 16384})
+    finally:
+        OllamaIRP._check_ollama = keep
+    assert llm.resolve_num_predict() == 8000
+    llm.max_response_tokens = 12000
+    assert llm.resolve_num_predict() == 8000           # the caller value is ignored: the old retry was a re-roll
+    llm.num_predict_override = 9535
+    assert llm.resolve_num_predict() == 9535           # the override is the retry's lever
+    llm.num_predict_override = None
+    assert llm.resolve_num_predict() == 8000
+
+
 def test_governed_harness_defers_to_the_config():
     assert is_reasoning_model("qwen3.8-distill:2b") and is_reasoning_model("qwen38-heretic:q3km")
     assert not is_reasoning_model("qwen3.5:0.8b")

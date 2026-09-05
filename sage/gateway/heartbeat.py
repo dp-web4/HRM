@@ -345,6 +345,13 @@ def main(argv=None) -> int:
     sess_text, sess_meta = session_block(instance)
     if sess_text:
         digest = "# From your last raising session\n\n" + sess_text + "\n\n" + digest
+    # S3 join, presence -> beat: what the senses broke through with since the last beat
+    from sage.gateway.being_join import presence_block, consume_wake_marker
+    since = float(last.get("t0") or (time.time() - hours * 3600))
+    pres_text, pres_meta = presence_block(since)
+    if pres_text:
+        digest = "# What you sensed since your last beat\n\n" + pres_text + "\n\n" + digest
+    woke = consume_wake_marker()
     # `/no_think` is the fix for qwen3.8-heretic re-opening think blocks (Legion, 09-04);
     # on a reasoning distill it is the opposite failure: thinking off = no tool calls,
     # the being narrates (Sprout, 09-05). Per model, via the same detector build_client uses.
@@ -390,6 +397,16 @@ def main(argv=None) -> int:
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
                                    tools=ollama_tools(REFLECT_TOOLS))
 
+    interventions = []
+    if act_first:
+        interventions.append({"kind": "act_first", "suppressed": "posture-first presentation (the model narrates under it)"})
+    if nothink:
+        interventions.append({"kind": "think_suffix", "suppressed": "thinking (model resolves think off)"})
+    for ph, res in (("explore", explore), ("posture", after), ("reflect", reflect)):
+        for sv in (getattr(res, "salvaged", None) or []):
+            interventions.append({"kind": "salvage", "phase": ph, "effector": sv.get("effector"), "form": sv.get("form"),
+                                  "suppressed": "text-channel narration in place of a native tool call"})
+
     def _trace(res):
         return [{"effector": i.effector, "args": dict(i.args or {}), "ok": e.ok, "refused": e.refused,
                  "pending": e.pending, "error": e.error, "witness_id": e.witness_id,
@@ -406,7 +423,12 @@ def main(argv=None) -> int:
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
         "scope": scope_record,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
-        "join": {"session": sess_meta},
+        "join": {"session": sess_meta, "presence": pres_meta},
+        "wake": woke,
+        # every harness intervention, with the prior it suppressed (dev-sage 804f1849, by
+        # principle): a guard that silences without saying what it silenced trades a
+        # confident wrong for a confident silence.
+        "interventions": interventions,
         "account": account,
         "explore": _turn(explore),
         # act-first only: the posture+digest turn, after the short one; None otherwise

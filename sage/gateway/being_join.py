@@ -35,6 +35,8 @@ from pathlib import Path
 from typing import Dict, Optional, Tuple
 
 ACCOUNT_FILE = "account.json"
+PRESENCE_LOG = "~/.sprout/presence_log.jsonl"
+BEAT_WAKE_MARKER = "~/.sprout/beat_wake.json"
 _VAGUE = re.compile(r"^\s*(unclear|unknown|none|n/?a|nothing|no visible change|i don'?t know)\W*$", re.I)
 
 ACCOUNT_ASK = (
@@ -231,3 +233,68 @@ def carried_account(instance: Path, current_session: int) -> str:
     if not crossed and rec.get("want"):
         lines.append(f"WANT: {rec['want']}")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# presence -> beats (sprint S3)
+def _clean_noticing(text: str) -> str:
+    """The being's in-the-moment words, minus think residue and stage directions."""
+    t = re.sub(r"<think>.*?</think>", "", text or "", flags=re.S)
+    t = re.sub(r"<think>.*$", "", t, flags=re.S).strip()
+    return "" if _placeholder(t) else t
+
+
+def presence_block(since_ts: float, log_path: str = PRESENCE_LOG, keep: int = 4) -> Tuple[str, Dict]:
+    """What the being noticed on its own since `since_ts` (presence feeder wakes), for the
+    beat's digest, attributed `presence:<n>`. ('' , meta) when nothing or no log."""
+    import os
+    path = Path(os.path.expanduser(log_path))
+    evs = []
+    try:
+        for line in path.read_text(errors="replace").splitlines():
+            try:
+                e = json.loads(line)
+            except Exception:
+                continue
+            if e.get("kind") == "noticed" and float(e.get("ts", 0)) >= since_ts:
+                evs.append(e)
+    except Exception:
+        return "", {"count": 0, "kept": 0, "chars": 0}
+    if not evs:
+        return "", {"count": 0, "kept": 0, "chars": 0}
+    kept = evs[-keep:]
+    lines = []
+    for e in kept:
+        when = time.strftime("%H:%M UTC", time.gmtime(float(e.get("ts", 0))))
+        desc = str(e.get("descriptor", "")).strip()
+        said = _clean_noticing(str(e.get("noticing", "")))[:220]
+        line = f"- {when}: {desc}" + (f" — you said: {said}" if said else "")
+        lines.append(line)
+    text = (f"[presence:{len(evs)}] Since your last beat your senses broke through {len(evs)} time(s) "
+            f"and the presence feeder woke you for each; the last {len(kept)}, in your own words at the time:\n"
+            + "\n".join(lines))
+    return text, {"count": len(evs), "kept": len(kept), "chars": len(text)}
+
+
+def consume_wake_marker(path: str = BEAT_WAKE_MARKER, max_age_s: float = 45 * 60) -> Dict:
+    """Who woke this beat. The presence feeder writes a marker when it starts a beat on a
+    strong moment; the beat reads and removes it. Returns {"by": "presence", ...} or
+    {"by": "timer"}. A stale marker is discarded, not honoured."""
+    import os
+    p = Path(os.path.expanduser(path))
+    try:
+        rec = json.loads(p.read_text())
+        p.unlink(missing_ok=True)
+        if time.time() - float(rec.get("ts", 0)) <= max_age_s:
+            rec["by"] = "presence"
+            return rec
+        return {"by": "timer", "stale_marker": True}
+    except Exception:
+        return {"by": "timer"}
+
+
+def write_wake_marker(descriptor: str, salience, path: str = BEAT_WAKE_MARKER) -> None:
+    import os
+    p = Path(os.path.expanduser(path))
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"ts": round(time.time(), 2), "descriptor": descriptor, "salience": salience}))

@@ -89,6 +89,35 @@ def test_account_is_verbatim_within_a_boundary_and_broadened_across_one():
     assert carried_account(_inst(), 9) == ""
 
 
+def test_presence_block_is_attributed_and_cleans_think_residue():
+    from sage.gateway.being_join import presence_block
+    log = Path(tempfile.mkdtemp(prefix="pres-")) / "presence_log.jsonl"
+    log.write_text("\n".join(json.dumps(e) for e in [
+        {"ts": 100.0, "kind": "noticed", "descriptor": "old", "noticing": "old words that are long enough"},
+        {"ts": 200.0, "kind": "noticed", "descriptor": "I see a clock. the scene is still", "noticing": "<think>\n\n</think>, and it reads 9:42 am. I notice the hour."},
+        {"ts": 201.0, "kind": "beat_wake", "descriptor": "x"},
+        {"ts": 300.0, "kind": "noticed", "descriptor": "I see a person", "noticing": "[Your response as sprout]"}]) + "\n")
+    t, m = presence_block(150.0, log_path=str(log))
+    assert t.startswith("[presence:2]") and m["count"] == 2 and m["kept"] == 2
+    assert "reads 9:42 am" in t and "<think>" not in t and "old" not in t
+    assert "I see a person" in t and "Your response" not in t
+    assert presence_block(1000.0, log_path=str(log)) == ("", {"count": 0, "kept": 0, "chars": 0})
+    assert presence_block(0.0, log_path=str(log / "nope"))[0] == ""
+
+
+def test_wake_marker_is_consumed_once_and_stale_is_not_honoured():
+    from sage.gateway.being_join import write_wake_marker, consume_wake_marker
+    import time as _t
+    p = Path(tempfile.mkdtemp(prefix="wake-")) / "beat_wake.json"
+    assert consume_wake_marker(str(p)) == {"by": "timer"}
+    write_wake_marker("I see a clock", 0.7, path=str(p))
+    w = consume_wake_marker(str(p))
+    assert w["by"] == "presence" and w["descriptor"] == "I see a clock" and w["salience"] == 0.7
+    assert not p.exists() and consume_wake_marker(str(p)) == {"by": "timer"}
+    p.write_text(json.dumps({"ts": _t.time() - 3 * 3600, "descriptor": "old"}))
+    assert consume_wake_marker(str(p)) == {"by": "timer", "stale_marker": True} and not p.exists()
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

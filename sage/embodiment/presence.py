@@ -33,6 +33,12 @@ WAKE_TH = 0.45        # salience bar to wake when engaged (eyes open); the corte
 WAKE_TH_REST = 0.70   # much higher when resting — only something strong stirs a sleeper
 COOLDOWN_S = 300      # min seconds between wakes (a sustained moment wakes once)
 HOURLY_CAP = 6        # never more than this many wakes in a rolling hour
+# A STRONG moment also wakes a heartbeat (PRD_ONE_BEING_ONE_EXPERIENCE S3): the being gets
+# a whole governed beat, not just a one-line noticing, when its senses break through
+# hard. Rate-limited apart from the timer's own 30 min; attributed via a marker the
+# beat consumes (heartbeats.jsonl "wake": {"by": "presence", ...}).
+BEAT_TH = 0.6         # salience bar for a beat (above WAKE_TH: most noticings stay noticings)
+BEAT_MIN_GAP_S = 20 * 60
 LOG_MAX = 2000
 
 SYS_ENGAGED = (
@@ -64,6 +70,7 @@ def _wake(descriptor: str, resting: bool, salience: float | None = None,
 class Presence:
     def __init__(self):
         self.last_wake = 0.0
+        self.last_beat_wake = 0.0
         self.wake_times: list[float] = []   # recent wake timestamps (rolling hourly cap)
         self.last_desc = ""
         self._since_trim = 0
@@ -102,6 +109,23 @@ class Presence:
         if descriptor[:40] == self.last_desc[:40]:   # same moment persisting → notice once
             return False, resting
         return True, resting
+
+    def _maybe_wake_beat(self, descriptor: str, salience, now: float):
+        """A strong moment starts a governed beat (sage-heartbeat.service, oneshot), at most
+        one per BEAT_MIN_GAP_S, and leaves a marker so the beat records who woke it."""
+        try:
+            if salience is None or float(salience) < BEAT_TH or now - self.last_beat_wake < BEAT_MIN_GAP_S:
+                return
+            from sage.gateway.being_join import write_wake_marker
+            write_wake_marker(descriptor, salience)
+            r = subprocess.run(["systemctl", "--user", "start", "--no-block", "sage-heartbeat.service"],
+                               capture_output=True, text=True, timeout=10)
+            self.last_beat_wake = now
+            self._log({"ts": round(now, 2), "kind": "beat_wake", "descriptor": descriptor,
+                       "salience": salience, "started": r.returncode == 0, "err": (r.stderr or "")[:120]})
+            print(f"[presence] strong moment (sal={salience}) -> beat {'started' if r.returncode == 0 else 'NOT started: ' + (r.stderr or '')[:80]}", flush=True)
+        except Exception as ex:
+            print(f"[presence] beat wake failed ({type(ex).__name__}: {ex})", flush=True)
 
     def _log(self, ev: dict):
         os.makedirs(os.path.dirname(PRESENCE_LOG), exist_ok=True)
@@ -143,6 +167,7 @@ class Presence:
                         })
                         print(f"[presence] noticed ({'rest' if resting else 'awake'}, "
                               f"sal={sal.get('salience')}): {noticing[:90]}", flush=True)
+                        self._maybe_wake_beat(descriptor, sal.get("salience"), now)
             except Exception:
                 pass
             time.sleep(POLL_S)

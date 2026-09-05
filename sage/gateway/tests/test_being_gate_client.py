@@ -251,6 +251,36 @@ def test_request_scope_schema_offers_no_mode():
     assert params["required"] == ["path", "reason"]
     assert "read and write" in spec["function"]["description"]
 
+def test_registry_offers_appeal_as_an_observational_effector():
+    from sage.gateway.being_gate_client import _REGISTRY, _OBSERVATIONAL, ollama_tools
+    assert _REGISTRY["appeal"]["tool"] == "appeal" and "appeal" in _OBSERVATIONAL
+    spec = ollama_tools(["appeal"])[0]["function"]
+    assert set(spec["parameters"]["required"]) == {"deny_hash", "reason"}
+
+
+def test_a_refusal_is_witnessed_and_names_its_appeal_handle():
+    """dispatch(): a deny is handed to the dispatcher's witness_deny; the hash rides the
+    envelope and the refusal text, so the being can appeal. No dispatcher method: the
+    refusal says it could not be witnessed."""
+    from sage.gateway.being_gate_client import BeingGateClient, GatewayVerdict, BeingIntent
+
+    class Disp:
+        def __init__(self): self.seen = []
+        def witness_deny(self, intent, verdict): self.seen.append((intent.effector, verdict.rule)); return "dh-77"
+        def __call__(self, intent, verdict): raise AssertionError("a refused intent must never be dispatched")
+
+    c = BeingGateClient.__new__(BeingGateClient)
+    c._dispatcher = Disp()
+    c.gate = lambda intent: GatewayVerdict("deny", "mrh.path", "outside your grant", stage="local-law")
+    env = c.dispatch(BeingIntent("memory_write", {"path": "/etc/x", "content": "c"}))
+    assert env.refused and env.witness_id == "dh-77" and env.verdict.witness_id == "dh-77"
+    assert "deny_hash=dh-77" in env.error and "deny_hash=dh-77" in env.to_tool_message()
+    assert c._dispatcher.seen == [("memory_write", "mrh.path")]
+    c._dispatcher = None
+    env = c.dispatch(BeingIntent("memory_write", {"path": "/etc/x", "content": "c"}))
+    assert env.refused and env.witness_id is None and "cannot be appealed yet" in env.error
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

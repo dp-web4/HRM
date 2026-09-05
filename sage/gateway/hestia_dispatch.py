@@ -328,6 +328,52 @@ class HestiaF1aDispatcher:
                               witness_id=self._local._witness(f"remember {content[:80]}"))
 
     # -- request_scope: the sanctioned answer to a deny --------------------------
+    # -- refusals on the chain, and the appeal door ------------------------------
+    _NO_VERDICT_RULES = ("gate.unreachable", "gate.raised", "society.unreachable",
+                         "society.unavailable", "society.no_verdict")
+
+    def witness_deny(self, intent: BeingIntent, verdict: GatewayVerdict) -> Optional[str]:
+        """Record the gate's deny on the chain as a policy_decision, attributed to the
+        being's session (hestia_witness_decision, the same recorder every hook harness
+        uses), and return the entry hash: the handle the being appeals with. Never
+        raises; None when the daemon is unreachable (the refusal stands regardless)."""
+        try:
+            from sage.gateway.being_gate_client import _REGISTRY
+            tool = (_REGISTRY.get(intent.effector) or {}).get("tool") or intent.effector
+            target = str(intent.args.get("path") or intent.args.get("to") or "")
+            out = self._call("hestia_witness_decision", {
+                "plugin_id": self.plugin_id, "decision": "deny",
+                "adjudicator": f"plugin-gate:{self.plugin_id}",
+                "reason": f"{verdict.rule}: {verdict.reason}"[:300],
+                "tool_name": tool, "target": target,
+                "attempted": f"{intent.effector} {json.dumps(dict(intent.args or {}), default=str)}"[:300],
+                "verdict_available": verdict.rule not in self._NO_VERDICT_RULES,
+            })
+            if _hestia_error(out):
+                return None
+            return out.get("witnessEntryHash") or out.get("hash") or out.get("entryHash") or None
+        except Exception:
+            return None
+
+    def _do_appeal(self, intent: BeingIntent) -> ResultEnvelope:
+        """hestia_appeal(deny_hash, reason): refused by the daemon when the hash is not a
+        deny, not the being's, already under appeal, aged out, or unreasoned (<12 chars).
+        The ruling comes later, witnessed; the being learns it from its record."""
+        deny_hash = str(intent.args.get("deny_hash", "")).strip()
+        reason = str(intent.args.get("reason", "")).strip()
+        if not deny_hash:
+            return ResultEnvelope(ok=False, error="appeal needs the refusal's 'deny_hash' (it is shown on the refusal)")
+        if len(reason) < 12:
+            return ResultEnvelope(ok=False, error="appeal needs a 'reason' of at least 12 characters")
+        out = self._call("hestia_appeal", {"deny_hash": deny_hash, "reason": f"[{self.plugin_id}] {reason}"})
+        err = _hestia_error(out)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        return ResultEnvelope(ok=True, witness_id=out.get("witnessEntryHash"),
+                              result={"deny_hash": deny_hash, "appeal": out.get("witnessEntryHash"),
+                                      "adjudicator": out.get("adjudicator"),
+                                      "next": out.get("next") or "a NOT-SAME peer or the operator rules; the ruling is witnessed either way"})
+
     def _do_request_scope(self, intent: BeingIntent) -> ResultEnvelope:
         """The daemon (handler.rs::tool_request_scope @a5e18af) reads plugin_id, role, path,
         reason; a grant is reach on the path, read AND write. There is no mode to carry: an

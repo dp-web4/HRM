@@ -127,13 +127,19 @@ _REGISTRY = {
     "recall":         dict(tool="recall",       path_args=(),       cmd_arg=None),
     "remember":       dict(tool="remember",     path_args=(),       cmd_arg=None),
     "request_scope":  dict(tool="request_scope", path_args=(),      cmd_arg=None),
+    # appeal: the being contests a refusal it believes was wrong (PRD_FLEET §7.3, the
+    # deny -> appeal -> temperament loop). The refusal's chain hash is the handle: the
+    # gate witnesses every deny as a policy_decision (Dispatcher.witness_deny) so there
+    # is something to appeal, and hestia_appeal refuses anything that is not a deny,
+    # not yours, already under appeal, or unreasoned. No external effect: chain only.
+    "appeal":         dict(tool="appeal",        path_args=(),      cmd_arg=None),
 }
 
 
 # Society-safety failure boundary per effector class. Observational acts carry no
 # external effect and may soft-pass when the society governor is unavailable;
 # consequential acts must not proceed without it (fail-closed).
-_OBSERVATIONAL = frozenset({"witness", "memory_read", "recall"})
+_OBSERVATIONAL = frozenset({"witness", "memory_read", "recall", "appeal"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
                             "remember", "request_scope"})
 
@@ -179,6 +185,13 @@ _TOOL_SCHEMAS = {
                       {"path": "absolute path you want reach to",
                        "reason": "why you want it, in one or two sentences"},
                       ["path", "reason"]),
+    "appeal": ("Appeal a refusal you believe was wrong. Give the deny hash shown on the "
+               "refusal and a reason of at least 12 characters. A peer or the operator "
+               "rules, asynchronously; the ruling is witnessed either way. Not for a "
+               "refusal you agree with.",
+               {"deny_hash": "the witness hash shown on the refusal (deny_hash=...)",
+                "reason": "why the refusal was wrong, one or two sentences"},
+               ["deny_hash", "reason"]),
 }
 
 
@@ -223,6 +236,7 @@ class GatewayVerdict:
     reason: str = ""
     innate: bool = False
     stage: str = ""        # which stage decided: registry | local-law | society
+    witness_id: Optional[str] = None   # the deny's chain hash once witnessed (appeal handle)
 
     @property
     def blocks(self) -> bool:
@@ -454,8 +468,23 @@ class BeingGateClient:
     def dispatch(self, intent: BeingIntent) -> ResultEnvelope:
         v = self.gate(intent)
         if v.blocks:
-            return ResultEnvelope(ok=False, refused=True, verdict=v,
-                                  error=f"{v.rule}: {v.reason}")
+            # A refusal is witnessed on the chain as a policy_decision, so the being holds
+            # a hash it can appeal (hestia_appeal needs one; a client-side deny that never
+            # reached the chain was unappealable, measured 2026-09-05). Unwitnessed when the
+            # daemon is unreachable: the refusal stands either way, and says so.
+            wid = None
+            wd = getattr(self._dispatcher, "witness_deny", None)
+            if wd is not None:
+                try:
+                    wid = wd(intent, v)
+                except Exception:
+                    wid = None
+            import dataclasses as _dc
+            v = _dc.replace(v, witness_id=wid)      # GatewayVerdict is frozen
+            err = f"{v.rule}: {v.reason}"
+            err += (f" (deny witnessed {wid}; if you think this is wrong, appeal with deny_hash={wid})"
+                    if wid else " (deny not witnessed: daemon unreachable, so it cannot be appealed yet)")
+            return ResultEnvelope(ok=False, refused=True, verdict=v, error=err, witness_id=wid)
         if self._dispatcher is None:
             # F1a not wired: allowed by law, but nothing can execute it yet. We
             # surface that honestly — we do NOT fabricate a result (PR #579 / F1a).

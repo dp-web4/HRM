@@ -42,6 +42,13 @@ class FakeMcp:
         elif name == "hestia_request_scope":
             body = {"request_id": "scope-1", "status": "pending", "witnessEntryHash": "rs-hash",
                     "next": "operator decides", "on_timeout": "refused"}
+        elif name == "hestia_witness_decision":
+            body = {"witnessEntryHash": "deny-hash-1", "decision": args.get("decision")}
+        elif name == "hestia_appeal":
+            if args.get("deny_hash") == "not-a-deny":
+                body = {"_hestia_error": {"code": "hestia.appeal_not_a_deny", "message": "entry is a 'witness'"}}
+            else:
+                body = {"witnessEntryHash": "appeal-hash-1", "adjudicator": "hub", "next": "peer rules"}
         else:
             body = {}
         return {"result": {"structuredContent": body}}
@@ -368,6 +375,35 @@ def test_request_scope_daemon_error_is_keyed():
                             mcp_factory=lambda ep, pid: Refuses(ep, pid))
     env = d(BeingIntent("request_scope", {"path": "/x", "reason": "y"}), _ALLOW)
     assert not env.ok and env.error.startswith("hestia.scope_request_unknown_member"), env
+
+
+def test_witness_deny_records_a_policy_decision_and_returns_its_hash():
+    from sage.gateway.being_gate_client import GatewayVerdict
+    d, _ = _disp()
+    FakeMcp.calls.clear()
+    h = d.witness_deny(BeingIntent("memory_write", {"path": "/etc/x", "content": "c"}),
+                       GatewayVerdict("deny", "mrh.path", "outside your grant", stage="local-law"))
+    assert h == "deny-hash-1"
+    name, args = [c for c in FakeMcp.calls if c[0] == "hestia_witness_decision"][0]
+    assert args["decision"] == "deny" and args["adjudicator"] == "plugin-gate:sprout-being"
+    assert args["tool_name"] == "write_note" and args["target"] == "/etc/x" and args["verdict_available"] is True
+    assert args["session_id"] == "sid-1"     # attributed to the being's own session
+    # an infra non-verdict is recorded as such, never as conduct
+    d.witness_deny(BeingIntent("mesh", {"to": "x"}), GatewayVerdict("deny", "society.unreachable", "x", stage="society"))
+    assert FakeMcp.calls[-1][1]["verdict_available"] is False
+
+
+def test_appeal_needs_hash_and_reason_then_files_and_relays_the_daemon_refusal():
+    from sage.gateway.being_gate_client import GatewayVerdict
+    d, _ = _disp()
+    ok = GatewayVerdict("allow")
+    assert not d(BeingIntent("appeal", {"reason": "long enough reason"}), ok).ok
+    assert not d(BeingIntent("appeal", {"deny_hash": "h", "reason": "short"}), ok).ok
+    env = d(BeingIntent("appeal", {"deny_hash": "deny-hash-1", "reason": "the path is inside my own home"}), ok)
+    assert env.ok and env.witness_id == "appeal-hash-1" and env.result["adjudicator"] == "hub"
+    assert FakeMcp.calls[-1][1]["reason"].startswith("[sprout-being] ")
+    env = d(BeingIntent("appeal", {"deny_hash": "not-a-deny", "reason": "this should be refused"}), ok)
+    assert not env.ok and "appeal_not_a_deny" in env.error
 
 
 if __name__ == "__main__":

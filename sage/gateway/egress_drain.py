@@ -40,8 +40,21 @@ def _row_id(r: Dict[str, Any]) -> Optional[int]:
     return None
 
 
-def _forward(row: Dict[str, Any], sender=None) -> tuple[bool, str]:
-    """Hand one row to the fleet mesh. Returns (accepted, detail)."""
+def hub_env_for(plugin_id: str) -> tuple[Optional[str], str]:
+    """Which hub identity signs this member's rows. The being's own env file
+    (~/.config/hub-mesh-<plugin_id>.env: same hub and client, the being's LCT and keypair)
+    when it exists, else the seat's default and a loud 'seat' label. dp 2026-09-05: the
+    being's channel is the being's; Legion measured that at the hub every being notice
+    had been a seat send because hub-notify signs with the seat's key."""
+    p = os.path.expanduser(f"~/.config/hub-mesh-{plugin_id}.env")
+    if os.path.isfile(p):
+        return p, "being"
+    return None, "seat"
+
+
+def _forward(row: Dict[str, Any], sender=None, plugin_id: str = "sprout-being") -> tuple[bool, str]:
+    """Hand one row to the fleet mesh, signed as the member whose row it is when that
+    member holds a hub identity here. Returns (accepted, detail)."""
     to = row.get("forward_on") or row.get("dest_peer_lct") or row.get("peer")
     kind = row.get("kind") or "coordination"
     ptr = row.get("pointer_uri") or row.get("pointer") or ""
@@ -51,9 +64,13 @@ def _forward(row: Dict[str, Any], sender=None) -> tuple[bool, str]:
         return sender(str(to), str(kind), str(ptr))
     if not os.access(HUB_NOTIFY, os.X_OK):
         return False, f"hub-notify sender not available at {HUB_NOTIFY}"
-    p = subprocess.run([HUB_NOTIFY, str(to), str(kind), str(ptr)], capture_output=True, text=True, timeout=60)
+    env_file, signed_as = hub_env_for(plugin_id)
+    env = dict(os.environ)
+    if env_file:
+        env["HUB_MESH_ENV"] = env_file
+    p = subprocess.run([HUB_NOTIFY, str(to), str(kind), str(ptr)], capture_output=True, text=True, timeout=60, env=env)
     out = (p.stdout + p.stderr).strip()
-    return (p.returncode == 0 and "ledger=" in out), out[-300:]
+    return (p.returncode == 0 and "ledger=" in out), f"signed_as={signed_as} " + out[-300:]
 
 
 def drain_once(plugin_id: str = "sprout-being", host_agent: str = "sage-egress-drain",
@@ -76,7 +93,7 @@ def drain_once(plugin_id: str = "sprout-being", host_agent: str = "sage-egress-d
     fwd = failed = 0
     for row in rows:
         rid = _row_id(row)
-        ok, detail = _forward(row, sender)
+        ok, detail = _forward(row, sender, plugin_id=plugin_id)
         if ok:
             c.call("hestia_egress_pending", {"session_id": sid, "mark_forwarded": rid})
             fwd += 1; log(f"[egress] forwarded {rid} -> {row.get('forward_on')} ({detail[-80:]})")

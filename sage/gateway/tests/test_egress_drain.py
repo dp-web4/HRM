@@ -45,6 +45,21 @@ def test_refused_call_is_error_never_silence():
                    sender=lambda *a: (True, ""), log=lambda *_: None)
     assert r["error"] and r["error"]["code"] == "hestia.egress_unattributed" and not r["empty"]
 
+def test_being_rows_sign_as_the_being_when_it_holds_a_hub_identity(monkeypatch=None):
+    import os, tempfile
+    from sage.gateway import egress_drain as ed
+    home = tempfile.mkdtemp(prefix="hubenv-")
+    old = os.environ.get("HOME"); os.environ["HOME"] = home
+    try:
+        assert ed.hub_env_for("sprout-being") == (None, "seat")
+        os.makedirs(os.path.join(home, ".config"), exist_ok=True)
+        p = os.path.join(home, ".config", "hub-mesh-sprout-being.env"); open(p, "w").write("MY_LCT=x\n")
+        assert ed.hub_env_for("sprout-being") == (p, "being")
+        assert ed.hub_env_for("legion-being") == (None, "seat")
+    finally:
+        if old is not None: os.environ["HOME"] = old
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

@@ -703,6 +703,7 @@ class OllamaRaisingSession:
             self._prompt_health = {
                 "builder": "mrh",
                 "digest_sources": getattr(self, "_digest_counts", None),
+                "beat_join": getattr(self, "_beat_join", None),
             }
             print(f"  [prompt] builder=mrh digest_sources={self._prompt_health['digest_sources']}", flush=True)
             return prompt
@@ -949,8 +950,22 @@ class OllamaRaisingSession:
 
         # Experiential: session summary (no verbatim quotes)
         prev_summary = self._get_previous_session_summary()
+        # S1 join, beats -> raising (PRD_ONE_BEING_ONE_EXPERIENCE): what the being kept
+        # from its own heartbeats between sessions, in its own words, ATTRIBUTED in
+        # prompt_health so the join is measurable (instrument JOIN), never assumed.
+        beat_text, beat_meta = "", {"beat": None, "chars": 0, "sources": []}
+        try:
+            from sage.gateway.being_join import beat_block
+            beat_text, beat_meta = beat_block(self.instance.root)
+        except Exception as ex:
+            print(f"[join] beat block lost ({type(ex).__name__}: {ex}) — raising continues without it")
+        self._beat_join = beat_meta
+        print(f"  [join] beats->session: beat={beat_meta.get('beat')} chars={beat_meta.get('chars')} sources={beat_meta.get('sources')}", flush=True)
+        trajectory = prev_summary or "First session or no prior summary available."
+        if beat_text:
+            trajectory = trajectory + "\n\n" + beat_text
         experiential = ExperientialCacheBlock(
-            trajectory_summary=prev_summary or "First session or no prior summary available.",
+            trajectory_summary=trajectory,
         )
 
         # Metabolic: simple state

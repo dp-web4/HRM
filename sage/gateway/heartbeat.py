@@ -176,7 +176,11 @@ def note_resolutions(esc_dir: Path, decisions, stamp: str, seen_by: str) -> list
 
 
 def own_state(instance: Path) -> str:
+    from sage.gateway.being_join import carried_account, last_session_number
     parts = []
+    acc = carried_account(instance, last_session_number(instance))
+    if acc:
+        parts.append("## Your own account\n" + acc)
     todo = _read(instance / "todo.md", 3000)
     parts.append("## todo.md\n" + (todo.strip() or "(empty: you have no todo list yet)"))
     journal = _read(instance / "journal.md", 2500)
@@ -336,6 +340,11 @@ def main(argv=None) -> int:
     now = datetime.now(timezone.utc)
     t0 = time.time()
     digest = fleet_digest(hours, Path(args.forum_dir), [r.strip() for r in args.repos.split(",") if r.strip()])
+    # S1 join, raising -> beat: the last session's closing words + buffer tail, attributed
+    from sage.gateway.being_join import session_block, ACCOUNT_ASK, parse_account, save_account
+    sess_text, sess_meta = session_block(instance)
+    if sess_text:
+        digest = "# From your last raising session\n\n" + sess_text + "\n\n" + digest
     # `/no_think` is the fix for qwen3.8-heretic re-opening think blocks (Legion, 09-04);
     # on a reasoning distill it is the opposite failure: thinking off = no tool calls,
     # the being narrates (Sprout, 09-05). Per model, via the same detector build_client uses.
@@ -361,6 +370,22 @@ def main(argv=None) -> int:
         after = run_ollama_tool_turn(client, llm, convo, max_steps=args.max_steps,
                                      tools=ollama_tools(EXPLORE_TOOLS))
         convo = _carry(convo, after)
+    # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
+    account = {"present": False, "sha256": None, "reply": ""}
+    try:
+        ask_msgs = [{"role": m["role"], "content": m["content"]} for m in convo] + \
+                   [{"role": "user", "content": ACCOUNT_ASK + nothink}]
+        aresp = llm.get_chat_response(ask_msgs)
+        areply = (aresp.get("content") or "").strip()
+        parsed = parse_account(areply)
+        account["reply"] = areply[:1200]
+        if parsed:
+            rec = save_account(instance, parsed, host_session_id)
+            account.update({"present": True, "sha256": rec["sha256"], "session_at_write": rec["session_at_write"]})
+        convo.append({"role": "user", "content": ACCOUNT_ASK})
+        convo.append({"role": "assistant", "content": areply or "(no answer)"})
+    except Exception as e:
+        account["error"] = f"{type(e).__name__}: {e}"
     convo.append({"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)})
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
                                    tools=ollama_tools(REFLECT_TOOLS))
@@ -380,6 +405,9 @@ def main(argv=None) -> int:
         "member": args.member, "model": args.model, "window_h": round(hours, 2),
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
         "scope": scope_record,
+        # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
+        "join": {"session": sess_meta},
+        "account": account,
         "explore": _turn(explore),
         # act-first only: the posture+digest turn, after the short one; None otherwise
         "posture": _turn(after),

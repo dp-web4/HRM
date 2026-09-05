@@ -85,8 +85,16 @@ class HestiaF1aDispatcher:
                  # (measured 2026-09-03: 4 seat memories landed in legion-being's cartridge)
                  membot_endpoint: str = "http://127.0.0.1:8010/mcp",
                  membot_cartridge: Optional[str] = None,
-                 seed_path: Optional[str] = None):
+                 seed_path: Optional[str] = None,
+                 peer_aliases: Optional[Dict[str, str]] = None):
         self.plugin_id = plugin_id
+        # the being's names for peers -> hub roster names (e.g. legion-being -> legion-sage,
+        # the name legion-being joined under on 2026-09-05); env SAGE_PEER_ALIASES="a=b,c=d"
+        self.peer_aliases = dict(peer_aliases or {})
+        for pair in (os.environ.get("SAGE_PEER_ALIASES") or "").split(","):
+            if "=" in pair:
+                a, b = pair.split("=", 1)
+                self.peer_aliases.setdefault(a.strip(), b.strip())
         # the being's own key (FR-1 proof at connect); default = the hub channel key
         from sage.gateway.being_presence import DEFAULT_SEED
         self.seed_path = seed_path or DEFAULT_SEED
@@ -175,6 +183,7 @@ class HestiaF1aDispatcher:
         """`peer/member` routes via the forwarding plane; a bare id stays on this local mesh.
         The being names a member ('legion'); the seat says whether that is local or remote."""
         to = (to or "").strip()
+        to = self.peer_aliases.get(to, to)
         if "/" in to or to in self.local_members:
             return to
         return f"{to}/{self.remote_member_default}"

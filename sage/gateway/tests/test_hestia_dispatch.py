@@ -470,6 +470,19 @@ def test_request_scope_inside_existing_reach_is_answered_locally_and_files_nothi
     assert env.ok and env.result["request_id"] == "scope-1"
 
 
+def test_peer_aliases_map_the_beings_name_to_the_hub_roster_name():
+    d, _ = _disp(peer_aliases={"legion-being": "legion-sage"})
+    assert d._address("legion-being") == "legion-sage/claude-code"
+    assert d._address("legion") == "legion/claude-code" and d._address("x/y") == "x/y"
+    import os
+    os.environ["SAGE_PEER_ALIASES"] = "cbp-being=cbp-sage, bad"
+    try:
+        d2, _ = _disp()
+        assert d2._address("cbp-being") == "cbp-sage/claude-code"
+    finally:
+        del os.environ["SAGE_PEER_ALIASES"]
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

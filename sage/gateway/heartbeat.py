@@ -260,6 +260,8 @@ def main(argv=None) -> int:
                     help="a journal entry as a tool call needs room; too small = truncated JSON = Ollama 500")
     ap.add_argument("--gate-only", action="store_true",
                     help="gate probe only: no LLM turn, so no refusal routing and no egress drain either")
+    ap.add_argument("--no-hub-drain", action="store_true",
+                    help="do not drain the being's hub mailbox into its home before the beat")
     ap.add_argument("--no-escalate", action="store_true",
                     help="do not route refusals to the seat's auto session (default: route, as governed_turn does)")
     args = ap.parse_args(argv)
@@ -303,6 +305,16 @@ def main(argv=None) -> int:
                                host_session_id, args.temperature, args.max_tokens,
                                gate_only=args.gate_only)
 
+    # S4 inbound: notices addressed to the being's own hub identity, persisted into its
+    # home and pointed at from its hestia inbox by the seat (courier), before the peek.
+    hub_inbox = {"skipped_reason": "no being hub env"}
+    being_env = os.path.expanduser(f"~/.config/hub-mesh-{args.member}.env")
+    if not args.no_hub_drain and not args.gate_only and os.path.isfile(being_env):
+        try:
+            from sage.gateway.being_inbox_drain import drain_once as _hub_drain
+            hub_inbox = _hub_drain(instance, being_env, workspace=workspace)
+        except Exception as _e:
+            hub_inbox = {"error": f"{type(_e).__name__}: {_e}"}
     # inbox (peek) and long-term recall, seat-side, so the being starts oriented
     inbox = "(inbox unavailable)"
     disp = getattr(client, "_dispatcher", None)
@@ -497,6 +509,7 @@ def main(argv=None) -> int:
         "scope": scope_record,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
         "join": {"session": sess_meta, "presence": pres_meta},
+        "hub_inbox": hub_inbox,
         "wake": woke,
         # every harness intervention, with the prior it suppressed (dev-sage 804f1849, by
         # principle): a guard that silences without saying what it silenced trades a

@@ -192,16 +192,73 @@ from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as _HD, make_forum_
 _ALLOW_ = _GV("allow")
 
 
-def test_peer_ask_with_forum_publisher_posts_then_notifies():
-    root_dir = tempfile.mkdtemp(prefix="hd-forum-")
-    d, _ = _disp(publish_fn=make_forum_publisher(os.path.join(root_dir, "shared-context", "forum"), "sprout-being"))
+def _forum_repo():
+    """A shared-context clone with a bare origin, like the seat's checkout: the publisher must
+    land the doc on ORIGIN, not merely write it — that gap is the beat-12 defect (2026-09-05)."""
+    import subprocess
+    base = tempfile.mkdtemp(prefix="hd-forum-")
+    bare = os.path.join(base, "origin.git")
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", bare], check=True)
+    root = os.path.join(base, "shared-context")
+    subprocess.run(["git", "clone", "-q", bare, root], check=True)
+    g = lambda *a: subprocess.run(["git", "-C", root, *a], check=True, capture_output=True, text=True).stdout  # noqa: E731
+    g("config", "user.name", "t"); g("config", "user.email", "t@t")
+    g("commit", "-q", "--allow-empty", "-m", "root"); g("push", "-q", "-u", "origin", "main")
+    return base, root, bare
+
+
+def _on_origin(bare, rel):
+    import subprocess
+    return subprocess.run(["git", "-C", bare, "cat-file", "-e", f"main:{rel}"], capture_output=True).returncode == 0
+
+
+def test_peer_ask_with_forum_publisher_lands_on_origin_then_notifies():
+    base, root, bare = _forum_repo()
+    d, _ = _disp(publish_fn=make_forum_publisher(os.path.join(root, "forum"), "sprout-being"))
     env = d(_BI("peer_ask", {"to": "legion", "body": "Are you still you?"}), _ALLOW_)
     assert env.ok, env
     notify = [a for n, a in FakeMcp.calls if n == "hestia_member_notify"][-1]
     assert notify["to_plugin_id"] == "legion/claude-code" and notify["kind"] == "coordination"
     assert notify["pointer_uri"].startswith("shared-context/forum/sprout-being-asks-legion-")
-    posted = os.path.join(root_dir, notify["pointer_uri"])
+    posted = os.path.join(base, notify["pointer_uri"])
     assert os.path.exists(posted) and "still you" in open(posted).read()
+    rel = notify["pointer_uri"][len("shared-context/"):]
+    assert _on_origin(bare, rel), "the pointer doc must be on origin before the notice fires"
+
+
+def test_peer_ask_publisher_rebases_over_a_concurrent_push():
+    """Origin moved after the clone (a sibling seat pushed): the publisher rebases and lands,
+    instead of a rejected push that leaves the doc local."""
+    import subprocess
+    base, root, bare = _forum_repo()
+    other = os.path.join(base, "other")
+    subprocess.run(["git", "clone", "-q", bare, other], check=True)
+    subprocess.run(["git", "-C", other, "-c", "user.name=o", "-c", "user.email=o@o",
+                    "commit", "-q", "--allow-empty", "-m", "sibling"], check=True)
+    subprocess.run(["git", "-C", other, "push", "-q", "origin", "main"], check=True)
+    d, _ = _disp(publish_fn=make_forum_publisher(os.path.join(root, "forum"), "sprout-being"))
+    env = d(_BI("peer_ask", {"to": "legion", "body": "still there?"}), _ALLOW_)
+    assert env.ok, env
+    rel = _notify_args()["pointer_uri"][len("shared-context/"):]
+    assert _on_origin(bare, rel)
+
+
+def test_peer_ask_publisher_outside_a_repo_is_an_error_envelope_and_no_notice():
+    """A doc that cannot land is refused BEFORE any notice: the peer is never fired on a
+    pointer it cannot read."""
+    root_dir = tempfile.mkdtemp(prefix="hd-norepo-")
+    d, _ = _disp(publish_fn=make_forum_publisher(os.path.join(root_dir, "shared-context", "forum"), "sprout-being"))
+    env = d(_BI("peer_ask", {"to": "legion", "body": "anyone?"}), _ALLOW_)
+    assert not env.ok and "git" in (env.error or ""), env
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_member_notify"]
+
+
+def test_peer_ask_publisher_push_false_only_writes():
+    root_dir = tempfile.mkdtemp(prefix="hd-nopush-")
+    d, _ = _disp(publish_fn=make_forum_publisher(os.path.join(root_dir, "shared-context", "forum"), "sprout-being", push=False))
+    env = d(_BI("peer_ask", {"to": "legion", "body": "local only"}), _ALLOW_)
+    assert env.ok, env
+    assert os.path.exists(os.path.join(root_dir, _notify_args()["pointer_uri"]))
 
 
 def test_mesh_witness_id_falls_back_to_queued_id():

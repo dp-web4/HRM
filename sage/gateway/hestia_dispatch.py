@@ -398,10 +398,46 @@ if __name__ == "__main__":  # live smoke against the local daemon: mesh -> membe
                       "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))
 
 
-def make_forum_publisher(pointer_dir: str, plugin_id: str) -> PublishFn:
+def _git_land(path: str, message: str) -> None:
+    """Commit ONE file and push it to the checkout's upstream (rebase-on-upstream first).
+    Raises on every failure: no repo, identity missing, rebase blocked by a sibling's dirty
+    tree, push rejected. A raise here becomes the being's error envelope (dispatcher
+    __call__), which is the contract — a pointer that never landed must not be notified."""
+    import subprocess
+    d = os.path.dirname(path)
+
+    def git(*args: str) -> str:
+        r = subprocess.run(["git", "-C", d, *args], capture_output=True, text=True)
+        if r.returncode != 0:
+            raise RuntimeError(f"git {args[0]} failed (rc={r.returncode}): "
+                               f"{(r.stderr or r.stdout).strip()[:400]}")
+        return r.stdout.strip()
+
+    git("rev-parse", "--show-toplevel")          # not a work tree -> raise before writing anything else
+    # The pathspec form commits THIS file only: a sibling's staged work in a shared checkout
+    # is neither swept into the being's commit nor disturbed.
+    git("add", "--", path)
+    git("commit", "-q", "-m", message, "--", path)
+    try:
+        upstream = git("rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}")
+    except RuntimeError:
+        upstream = "origin/main"
+    remote, _, branch = upstream.partition("/")
+    git("fetch", "-q", remote)
+    git("rebase", "-q", upstream)                # no autostash: a dirty sibling tree fails loud, not silently stashed
+    git("push", "-q", remote, f"HEAD:{branch}")
+
+
+def make_forum_publisher(pointer_dir: str, plugin_id: str, push: bool = True) -> PublishFn:
     """Default publish_fn for peer_ask: the question lives AT a cross-seat-readable pointer
     (a shared-context/forum file, repo-relative), never in the notice (KINDS.md). The file
-    must be pushed for the peer to read it; the notice only points."""
+    must be pushed for the peer to read it; the notice only points — so this commits and
+    pushes, and raises on any git failure so the caller gets an error envelope instead of a
+    notice pointing at content that never landed. Until 2026-09-05 this wrote the file and
+    returned: on Legion 19 being docs sat unpushed across three hand-landings, and beat 12
+    (23:17 PDT) fired HUB on a pointer that existed nowhere HUB could read — a full session
+    burned to resolve nothing, invisible from the sending side because the doc "was written".
+    `push=False` is for callers that own the git step themselves; it is not a fallback."""
     from datetime import datetime
     from pathlib import Path
 
@@ -410,6 +446,8 @@ def make_forum_publisher(pointer_dir: str, plugin_id: str) -> PublishFn:
         ts = datetime.now().strftime("%Y-%m-%d-%H%M%S")
         p = d / f"{plugin_id}-asks-{to.replace('/', '-')}-{ts}.md"
         p.write_text(f"---\nfrom: {plugin_id}\nto: {to}\nkind: coordination\ndate: {ts[:10]}\n---\n\n{body.strip()}\n")
+        if push:
+            _git_land(str(p), f"being({plugin_id}): peer_ask -> {to}")
         sp = str(p); i = sp.find("shared-context/")
         return sp[i:] if i >= 0 else sp
     return publish

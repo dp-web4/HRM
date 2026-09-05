@@ -458,6 +458,10 @@ def main(argv=None) -> int:
                                          "trace": _trace(res), "thinking": [t[:4000] for t in res.thinking],
                                          "salvaged": list(res.salvaged), "generates": list(res.generates)}
     record = {
+        # schema: what fields a reader may expect (Legion's amendment 4, 2026-09-05: the
+        # consolidation organ counts how many records carry join/account/wake/interventions;
+        # a version says so instead of making it infer from key presence).
+        "schema": "heartbeat/v2",
         "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "t0": t0, "elapsed_s": round(time.time() - t0, 1),
         "member": args.member, "model": args.model, "window_h": round(hours, 2),
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,

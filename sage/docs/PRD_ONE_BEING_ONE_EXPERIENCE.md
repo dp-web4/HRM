@@ -46,7 +46,7 @@ Rules: a milestone is met only when the snapshot in §8 quotes the instrument ou
 | sprint | milestone | owner | deliverable | done when |
 |---|---|---|---|---|
 | **S1** join + account | M0, M1 | Sprout | raising runner reads journal/todo tail + one cartridge recall (attributed); heartbeat reads last session + experience buffer tail (attributed); open-ask own-account carry in the heartbeat with `broaden()` at the session boundary | JOIN > 0 both ways; ACCOUNT present; snapshot 1 |
-| **S2** consolidation organ | M2 | **Legion** (Sprout reviews) | `sage/memory/consolidation.py` in the dev-sage shape (capture → distill → write, provenance, no-op logged, never delete, dark by default) over heartbeats.jsonl + journal + sessions; selftest gates F1 idempotence, F2 determinism, F4 hygiene | one graft + one logged no-op; snapshot 2 |
+| **S2** consolidation organ | M2 | **Legion** (Sprout reviews) | `sage/memory/consolidation.py` in the dev-sage shape (capture → distill → write, provenance, no-op logged, never delete, dark by default) over heartbeats.jsonl + journal + todo + account.json + experience_buffer + sessions + the cartridge by manifest (Legion's amendment 1); mechanical, no model in the loop (amendment 2); selftest gates F1 idempotence, F2 determinism, F3 ground truth, F4 hygiene, F5 verbatim | one graft + one logged no-op; snapshot 2 |
 | **S3** presence → beats; guards ledger | M3 | Sprout | salient wake fires a beat with a "what I sensed" digest section; every intervention writes `suppressed:<prior>` to the record | a beat attributed to a sensed event; snapshot 3 |
 | **S4** F2 acceptance | M4 | both | real appeal; being-chosen peer act between the two beings; #824 upstream PR or blocker | chain evidence; snapshot 4 |
 | **S5** rung 6 + D3; lesson store | M5 | both | pre-registered UPTAKE on the new channel; D3 decided; lesson store (provenance told / experienced) adopted only if S1/S2 evidence warrants | ledger lines in both PRDs; snapshot 5 |
@@ -64,6 +64,8 @@ Order is dependency order: S2 and S3 can run in parallel with S1's second half; 
 dev-sage is cited by principle name and commit hash only (consolidation loop `36a36172`, lesson store `tools/sequence_corpus/lesson_store.py`, own-account carry `1ee1479c`, guards ledger `804f1849`). No game ids, results, effect tables, or harness code cross into this repo.
 
 ## 7. Risks and honest unknowns
+
+- **Prior art that already overwrites** (Legion's amendment 3): `sage/raising/scripts/dream_consolidation.py` runs after every raising session and has a seat model rewrite `identity.json` in place. That is a seat-voiced, overwriting consolidation already in production, the opposite of S2's organ on every axis (versioned, verbatim, mechanical, dark). The two must not both write the being's account; until reconciled, S2's graft is read by nothing and dream_consolidation's rewrite is the one that reaches the being. Reconciling them is an S5 item and a snapshot line, not a quiet default.
 
 - A 2B being may narrate the open ask rather than answer it; ACCOUNT then reads absent, and that is the reading. Presentation is per model (`acts_under_posture`); the ask is not.
 - Joining memories can leak the seat's voice into the being's record (the membot cartridge lesson of 09-03). Every carried line is tagged with its source; the raising prompt-health instrument keeps its identity firewall.

@@ -17,7 +17,8 @@ A refused act is classified by its gate rule and routed:
                guardrails below.
 
 The wake-up is the fleet's own mechanism: a routed mesh notice to the seat's hub mailbox
-(sprout/claude-code) with kind=coordination and a pointer to the note; hub-watch drains it
+(<seat>/claude-code; the seat is the being's own machine, read from its identity.json, else the
+member's prefix — legion-being wakes legion) with kind=coordination and a pointer to the note; hub-watch drains it
 and fires a headless session with the note as the task. The note carries the ARBITER PROTOCOL
 so any fired session can act without new skills:
 
@@ -39,6 +40,24 @@ from sage.gateway.being_gate_client import BeingGateClient, BeingIntent, ResultE
 from sage.gateway.hestia_witness import _ENDPOINT, _Mcp, _unwrap
 
 NOTE_DIR = os.path.expanduser("~/ai-workspace/shared-context/escalations")
+# the gate workspace: this checkout (governed_turn/heartbeat use the same root). Not a
+# hard-coded ~/ai-workspace/sage — Legion's checkout is ~/ai-workspace/SAGE (case matters).
+WORKSPACE = str(Path(__file__).resolve().parents[2])
+
+
+def seat_for(member: str, memory_root: Optional[str] = None) -> str:
+    """The seat that arbitrates this being: its own machine. identity.json `identity.machine`
+    when the instance carries one, else the member prefix (`legion-being` -> `legion`).
+    Sprout's first cut defaulted to 'sprout' for every seat; that wakes the wrong mailbox."""
+    if memory_root:
+        try:
+            ident = json.loads(Path(memory_root, "identity.json").read_text()).get("identity", {})
+            m = str(ident.get("machine") or "").strip().lower()
+            if m:
+                return m
+        except Exception:
+            pass
+    return (member or "").split("-")[0].strip().lower() or "unknown"
 _ESC_ID = re.compile(r"\b(esc-[0-9a-f]{6,}|escalation[-_ ]id[:= ]+([A-Za-z0-9-]+))")
 
 
@@ -90,7 +109,12 @@ def _file_scope_request(member: str, path: str, why: str, endpoint: str) -> Dict
 def write_note(member: str, intent: BeingIntent, env: ResultEnvelope, kind: str, extra: Dict[str, Any]) -> str:
     Path(NOTE_DIR).mkdir(parents=True, exist_ok=True)
     ts = time.strftime("%Y-%m-%d-%H%M%S")
-    p = Path(NOTE_DIR) / f"{member}-{kind}-{intent.effector}-{ts}.md"
+    stem = f"{member}-{kind}-{intent.effector}-{ts}"
+    p = Path(NOTE_DIR) / f"{stem}.md"
+    n = 1
+    while p.exists():   # two refusals in one second must not overwrite each other (Sprout, #38 review)
+        n += 1
+        p = Path(NOTE_DIR) / f"{stem}-{n}.md"
     v = env.verdict
     protocol = (
         "## Arbiter protocol (for the seat's auto session)\n"
@@ -115,13 +139,14 @@ def write_note(member: str, intent: BeingIntent, env: ResultEnvelope, kind: str,
     return str(p)
 
 
-def wake_seat(member: str, note_path: str, memory_root: str, seat: str = "sprout",
+def wake_seat(member: str, note_path: str, memory_root: str, seat: Optional[str] = None,
               endpoint: str = _ENDPOINT) -> Dict[str, Any]:
     """Routed mesh notice to the seat's own hub mailbox; hub-watch drains it and fires a session."""
+    seat = seat or seat_for(member, memory_root)
     from sage.gateway.hestia_dispatch import HestiaF1aDispatcher
     from sage.gateway import egress_drain
     inst_identity = os.path.join(memory_root, "identity.json")
-    client = BeingGateClient(member, inst_identity, os.path.expanduser("~/ai-workspace/sage"),
+    client = BeingGateClient(member, inst_identity, WORKSPACE,
                              dispatcher=HestiaF1aDispatcher(member, memory_root=memory_root, endpoint=endpoint))
     ptr = note_path
     i = ptr.find("shared-context/")
@@ -129,12 +154,14 @@ def wake_seat(member: str, note_path: str, memory_root: str, seat: str = "sprout
         ptr = ptr[i:]
     env = client.dispatch(BeingIntent("mesh", {"to": seat, "kind": "coordination", "pointer_uri": ptr}))
     drained = egress_drain.drain_once(plugin_id=member, endpoint=endpoint, log=lambda *_: None) if env.ok else None
-    return {"notified": env.ok, "witness_id": env.witness_id, "error": env.error, "drain": drained, "pointer": ptr}
+    return {"notified": env.ok, "seat": seat, "witness_id": env.witness_id, "error": env.error, "drain": drained, "pointer": ptr}
 
 
 def escalate(member: str, intent: BeingIntent, env: ResultEnvelope, memory_root: str,
-             seat: str = "sprout", endpoint: str = _ENDPOINT, wake: bool = True) -> Dict[str, Any]:
-    """Route one refusal. Returns what was filed/notified; never raises into the being's turn."""
+             seat: Optional[str] = None, endpoint: str = _ENDPOINT, wake: bool = True) -> Dict[str, Any]:
+    """Route one refusal. Returns what was filed/notified; never raises into the being's turn.
+    wake=False files the scope request only: no note, no mesh notice (the heartbeat's second and
+    later refusals of a kind in one beat)."""
     kind = classify(env)
     out: Dict[str, Any] = {"kind": kind, "effector": intent.effector}
     if kind in ("registry", "other"):
@@ -147,9 +174,12 @@ def escalate(member: str, intent: BeingIntent, env: ResultEnvelope, memory_root:
             why = (f"{member} was refused {intent.effector} at {path} ({env.verdict.rule if env.verdict else ''}). "
                    f"Its seat's auto session will pre-review; please rule as STANDING if it is the being's own memory.")
             out["scope_request"] = _file_scope_request(member, path, why, endpoint)
-        note = write_note(member, intent, env, kind, out)
-        out["note"] = note
+        # The note exists to be pointed at by the wake. Without a wake there is no reader, and a
+        # beat with nine refused home writes would leave nine near-identical notes (Sprout, #38
+        # review); the scope request above is still filed (the daemon dedups it on the path).
         if wake:
+            note = write_note(member, intent, env, kind, out)
+            out["note"] = note
             out["wake"] = wake_seat(member, note, memory_root, seat=seat, endpoint=endpoint)
         out["escalated"] = True
     except Exception as e:

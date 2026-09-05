@@ -36,6 +36,27 @@ def test_num_ctx_is_a_floor_the_config_can_raise_not_lower():
     assert resolve_num_ctx("no-such-model:1b", 8192) == 8192
 
 
+def test_num_ctx_fallback_to_the_floor_is_loud():
+    """A config failure must not be a silent 8192: that is beat 46 with no record of why."""
+    import io
+    import contextlib
+    import sage.irp.adapters.model_capabilities as mc
+    from sage.gateway.governed_turn import resolve_num_ctx
+    keep = mc.load_capabilities
+
+    def broken(model):
+        raise ValueError("bad json")
+    mc.load_capabilities = broken
+    try:
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            assert resolve_num_ctx("qwen38-heretic:q3km", 8192) == 8192
+    finally:
+        mc.load_capabilities = keep
+    assert "num_ctx" in err.getvalue() and "8192" in err.getvalue() and "bad json" in err.getvalue()
+    assert resolve_num_ctx("qwen38-heretic:q3km", 8192) == 16384   # restored
+
+
 def test_governed_harness_defers_to_the_config():
     assert is_reasoning_model("qwen3.8-distill:2b") and is_reasoning_model("qwen38-heretic:q3km")
     assert not is_reasoning_model("qwen3.5:0.8b")

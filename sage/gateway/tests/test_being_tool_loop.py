@@ -125,6 +125,33 @@ def test_run_ollama_tool_turn_with_fake_llm():
     assert r.trace and r.trace[0][0].effector == "witness" and r.trace[0][1].ok
     # the think block rides along, one entry per generate (empty when the model had none)
     assert r.thinking == ["I should witness this.", ""]
+    # so do Ollama's counters, one entry per generate, None when the fake had none
+    assert len(r.generates) == 2 and r.generates[0]["retried"] == 0
+    assert r.generates[0]["done_reason"] is None and r.generates[0]["prompt_eval_count"] is None
+
+
+def test_generate_stats_record_the_window_wall_and_the_retry():
+    """Beat 46 on Legion (2026-09-05): every empty turn had prompt_eval + eval == 8192 and
+    done_reason length; that lived only on stderr. Now it is on the result, per generate."""
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    calls = {"n": 0}
+
+    class FakeLLM:
+        max_response_tokens = 1024
+
+        def get_chat_response(self, messages, tools=None):
+            calls["n"] += 1
+            if calls["n"] == 1:   # the wall: nothing said, budget gone in the think block
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 5000, "eval_count": 3192,
+                                "message": {"thinking": "Let me consider"}}}
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "message": {}}}
+
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}])
+    # one generate as the loop sees it: the empty turn was retried once and the retry stood
+    assert r.reply == "done" and calls["n"] == 2
+    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1}]
 
 
 def test_salvage_lifts_well_formed_calls_from_the_text_channel_only_for_offered_names():

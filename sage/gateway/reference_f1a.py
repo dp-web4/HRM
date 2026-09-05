@@ -50,6 +50,11 @@ class ReferenceF1aDispatcher:
             return ResultEnvelope(ok=False, pending=True,
                                   note=f"'{intent.effector}' awaits hestia F1a (reference runs only witness/memory)")
         try:
+            # memory_read is the one handler whose confinement depends on the verdict the
+            # gate already reached (see _safe_path): a granted path outside home is readable,
+            # everything else is not. The other handlers take no verdict by design.
+            if intent.effector == "memory_read":
+                return handler(intent, verdict)
             return handler(intent)
         except Exception as e:
             return ResultEnvelope(ok=False, error=f"{type(e).__name__}: {e}")
@@ -69,16 +74,31 @@ class ReferenceF1aDispatcher:
         return wid
 
     # -- path confinement (defense in depth over the gate) -------------------
-    def _safe_path(self, raw: str) -> Path:
-        # A being names its notes by a path inside its own memory ("notes/x.md"); a
-        # relative path is rooted at memory_root, never at the process cwd. Absolute
-        # paths are honoured only if they already lie inside the root (checked below).
+    def _safe_path(self, raw: str, gate_allowed_read: bool = False) -> Path:
+        """Resolve a being's memory path, confined to its own home.
+
+        A being names its notes by a path inside its own memory ("notes/x.md"); a relative
+        path is rooted at memory_root, never at the process cwd.
+
+        `gate_allowed_read` relaxes the confinement for READS ONLY, and only for a path the
+        real gate has already ALLOWED on this same intent. Measured 2026-09-05 on Legion: the
+        being held a standing grant on `shared-context/forum`, the gate allowed the read, and
+        this guard refused it anyway — because it runs after the verdict and never consults
+        `in_scope`, so no grant could ever widen it. The being diagnosed that itself
+        ("REFUSED by the dispatch guard, not hestia") and it was right: an operator-granted
+        reach that no verb can reach is not a grant, it is a record of one.
+
+        Writes stay home-confined unconditionally, gate verdict or not. Defence in depth is
+        worth keeping where it costs nothing, and a being writing outside its own home is a
+        different act from reading — it is the one that can damage something.
+        """
         p = Path(raw).expanduser()
         if not p.is_absolute():
             p = self.memory_root / p
         p = p.resolve()
         if p != self.memory_root and self.memory_root not in p.parents:
-            raise ValueError(f"path escapes the being's memory root: {p}")
+            if not gate_allowed_read:
+                raise ValueError(f"path escapes the being's memory root: {p}")
         return p
 
     # -- effectors -----------------------------------------------------------
@@ -88,8 +108,12 @@ class ReferenceF1aDispatcher:
             return ResultEnvelope(ok=False, error="witness needs an 'event'")
         return ResultEnvelope(ok=True, result="witnessed", witness_id=self._witness(event))
 
-    def _do_memory_read(self, intent: BeingIntent) -> ResultEnvelope:
-        p = self._safe_path(intent.args["path"])
+    def _do_memory_read(self, intent: BeingIntent,
+                        verdict: Optional[GatewayVerdict] = None) -> ResultEnvelope:
+        # Only a real ALLOW from the law widens the read; anything else (no verdict, a
+        # warn, a client-side stub) keeps the being inside its own home, fail-closed.
+        allowed = bool(verdict is not None and getattr(verdict, "decision", None) == "allow")
+        p = self._safe_path(intent.args["path"], gate_allowed_read=allowed)
         if not p.exists():
             return ResultEnvelope(ok=True, result="", witness_id=self._witness(f"memory_read {p.name} (empty)"))
         content = p.read_text(errors="replace")[: self.max_read_chars]

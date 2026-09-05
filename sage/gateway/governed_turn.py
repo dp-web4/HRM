@@ -108,6 +108,16 @@ def is_reasoning_model(model: str) -> bool:
         return any(k in model.lower() for k in ("distill", "qwen3.8", "heretic", "r1"))
 
 
+def resolve_num_ctx(model: str, floor: int) -> int:
+    """The context window to send: the model config's per-size num_ctx when it is larger
+    than the caller's floor (see ModelCapabilities.resolve_num_ctx); the floor otherwise."""
+    try:
+        from sage.irp.adapters.model_capabilities import load_capabilities
+        return load_capabilities(model).resolve_num_ctx(model, floor)
+    except Exception:
+        return floor
+
+
 def needs_think_to_act(model: str) -> bool:
     """Narrower than is_reasoning_model: models for which a `/no_think` suffix removes
     tool calls entirely. The heretic runs think off + /no_think and acts (Legion,
@@ -153,7 +163,11 @@ def build_client(member: str, instance: Path, model: str, workspace: str,
     # steps=0, trace=[], a lovely "record" and no act). Mirror the raising runner.
     _reasoning = is_reasoning_model(model)
     # num_ctx: a governed turn's prompt (posture, own state, digest, 8 tool schemas) is
-    # over Ollama's 4096 default; the first Sprout heartbeat 400'd at 4324 tokens.
+    # over Ollama's 4096 default; the first Sprout heartbeat 400'd at 4324 tokens. The
+    # 8192 floor is a floor: a model whose config declares a larger window per size
+    # (variants[size].num_ctx) gets it, else this caller value silently overrides its
+    # Modelfile and a thinking model spends the whole window deliberating (Legion, 09-05).
+    num_ctx = resolve_num_ctx(model, num_ctx)
     llm = OllamaIRP({"model_name": model, "temperature": temperature, "think": _reasoning,
                      "max_response_tokens": max_tokens, "timeout_seconds": 600,
                      "num_ctx": num_ctx})

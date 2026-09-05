@@ -52,7 +52,7 @@ class OllamaIRP(IRPPlugin):
         self.max_response_tokens = config.get('max_response_tokens', 250)
         self.temperature = config.get('temperature', 0.8)
         self.timeout_seconds = config.get('timeout_seconds', 120)
-        self.think = config.get('think', False)  # Disable thinking by default (Qwen 3.5)
+        self._think_cfg = config.get('think')  # None = resolve from the model's config (below)
         # Context window sent as options.num_ctx. Ollama's per-request default is 4096
         # regardless of what the model supports: a heartbeat prompt (posture + own state +
         # fleet digest + tool schemas) measured 4324 tokens on Sprout 2026-09-05 and 400'd.
@@ -67,6 +67,13 @@ class OllamaIRP(IRPPlugin):
         from sage.irp.adapters.model_adapter import get_adapter
         self._adapter = get_adapter(self.model_name)
         print(f"  [OllamaIRP] Adapter: {type(self._adapter).__name__} for '{self.model_name}'")
+        # Thinking: the caller's explicit choice wins; otherwise the model config decides
+        # (ModelCapabilities.resolve_think: per size). Was a hard False since 2026-03.
+        if self._think_cfg is None:
+            self.think = self._adapter.capabilities.resolve_think(self.model_name)
+            print(f"  [OllamaIRP] think={self.think} (from model config)")
+        else:
+            self.think = bool(self._think_cfg)
 
         # Capabilities-declared timeout_seconds overrides caller default when larger.
         # Thinking models with large num_predict (qwen3.5:27b: 16384) need more

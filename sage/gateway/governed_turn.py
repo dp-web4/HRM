@@ -101,7 +101,11 @@ def is_reasoning_model(model: str) -> bool:
     distills, R1-style). For these, a `/no_think` suffix in the prompt is fatal to
     acting: measured on Sprout 2026-09-05, first two heartbeats narrated a summary
     with steps=0 under Legion's `/no_think` (which is the right fix for heretic)."""
-    return any(k in model.lower() for k in ("distill", "qwen3.8", "heretic", "r1"))
+    try:
+        from sage.irp.adapters.model_capabilities import load_capabilities
+        return load_capabilities(model).resolve_think(model)
+    except Exception:
+        return any(k in model.lower() for k in ("distill", "qwen3.8", "heretic", "r1"))
 
 
 def needs_think_to_act(model: str) -> bool:

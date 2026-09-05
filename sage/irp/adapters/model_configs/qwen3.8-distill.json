@@ -1,0 +1,61 @@
+{
+    "family": "qwen3.8-distill",
+    "aliases": [
+        "qwen3.8",
+        "qwen38",
+        "qwen38-heretic",
+        "qwen3.8-heretic",
+        "hf.co/empero-ai/qwen3.8-2b-distill-gguf"
+    ],
+    "api_mode": "chat",
+    "bilateral_prone": false,
+    "supports_tool_calls": true,
+    "max_context_tokens": 8192,
+    "max_context_turns": 6,
+    "thinking_supported": true,
+    "think_default": true,
+    "tier": "T2",
+    "stop_sequences": [],
+    "echo_prefixes": [
+        "[{self_name}]:",
+        "{self_name}:",
+        "[SAGE]:",
+        "SAGE:"
+    ],
+    "bilateral_speakers": [
+        "Claude",
+        "System",
+        "User",
+        "Human"
+    ],
+    "strip_think_tags": true,
+    "variants": {
+        "2b": {
+            "num_predict": 1024,
+            "num_predict_think": 6000,
+            "think_default": true
+        },
+        "q3km": {
+            "num_predict": 1024,
+            "num_predict_think": 6000,
+            "think_default": true
+        },
+        "q8_0": {
+            "num_predict": 1024,
+            "num_predict_think": 6000,
+            "think_default": true
+        },
+        "q6_k": {
+            "num_predict": 1024,
+            "num_predict_think": 6000,
+            "think_default": true
+        },
+        "q4_k_m": {
+            "num_predict": 1024,
+            "num_predict_think": 6000,
+            "think_default": true
+        }
+    },
+    "timeout_seconds": 300,
+    "notes": "empero Qwen3.8 distills (2B, Sprout) and the 3.8B heretic (q3km, Legion). REASONING models: with thinking off they emit no structured tool calls and narrate a bracketed placeholder (Sprout 2026-08-28, 09-03, 09-05). think_default true for both sizes. num_predict_think 6000 = the retry budget that recovered empty turns (done_reason=length) on both machines 2026-09-03/04; this makes it the first budget, not the retry. The heretic previously ran think:false + a /no_think prompt suffix because it re-opened think blocks anyway (5/10 turns, Legion 09-04); with thinking on and budgeted that fight is moot. To roll the heretic back: set variants.q3km.think_default false and the heartbeat re-adds the suffix."
+}

@@ -151,6 +151,30 @@ def fleet_digest(hours: float, forum_dir: Path, repos: list[str]) -> str:
     return "\n\n".join(out) if out else "(nothing new in the window)"
 
 
+def note_resolutions(esc_dir: Path, decisions, stamp: str, seen_by: str) -> list:
+    """Append the operator's decision to each escalation note that filed the request
+    (the note carries the request_id in its routing line). Idempotent: a note already
+    resolved is left alone. Returns the note names written."""
+    written = []
+    if not decisions or not esc_dir.is_dir():
+        return written
+    for req_id, path, decision in decisions:
+        if not req_id:
+            continue
+        for p in sorted(esc_dir.glob("*.md")):
+            try:
+                body = p.read_text(errors="replace")
+            except Exception:
+                continue
+            if req_id not in body or "## Resolved" in body:
+                continue
+            with open(p, "a", encoding="utf-8") as f:
+                f.write(f"\n## Resolved\n{stamp}: `{req_id}` on `{path}` -> **{decision}** by the operator "
+                        f"(read from hestia scope status by the seat, beat {seen_by}).\n")
+            written.append(p.name)
+    return written
+
+
 def own_state(instance: Path) -> str:
     parts = []
     todo = _read(instance / "todo.md", 3000)
@@ -234,13 +258,18 @@ def main(argv=None) -> int:
 
     # window since last beat
     hours = args.since_hours
+    last = {}
+    try:
+        last = json.loads(_read(log, 200000).strip().splitlines()[-1])
+    except Exception:
+        pass
     if hours is None:
         hours = 24.0
         try:
-            last = json.loads(_read(log, 200000).strip().splitlines()[-1])
             hours = max(1.0, min(48.0, (time.time() - last["t0"]) / 3600 + 0.25))
         except Exception:
             pass
+    scope_record = {}
 
     ident = {}
     try:
@@ -274,9 +303,27 @@ def main(argv=None) -> int:
                      [g.get("path") for g in (st.get("standing_grants") or [])]
             reqs = [(r.get("request_id"), r.get("path"), r.get("decision") or r.get("status"))
                     for r in (st.get("requests") or [])]
+            # Close the loop the operator cannot see closed: a request decided since the
+            # last beat is written back into the escalation note that filed it, and told
+            # to the being. (dp 2026-09-05: "i just approved being's escalation - did you
+            # see it also?" No: hestia records the decision on the chain and nobody
+            # subscribes. The seat reads it here, at beat time.)
+            seen = set()
+            try:
+                seen = set(tuple(x) for x in last.get("scope", {}).get("decided", []))
+            except Exception:
+                pass
+            decided = [(i, p_, d) for i, p_, d in reqs if d in ("granted", "denied")]
+            new_decisions = [x for x in decided if tuple(x) not in seen]
+            esc_dir = Path(args.forum_dir).parent / "escalations"
+            noted = note_resolutions(esc_dir, new_decisions, f"{datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC",
+                                     host_session_id)
+            scope_record = {"grants": grants, "decided": [list(x) for x in decided], "noted": noted}
             scope = ("granted paths: " + (", ".join(map(str, grants)) or "none") + "\n"
                      "requests: " + ("; ".join(f"{i} {p} -> {d}" for i, p, d in reqs) or "none") + "\n"
-                     "(live grants die when the daemon restarts; only standing grants persist)")
+                     + ("decided since your last beat: " + "; ".join(f"{i} {p_} -> {d}" for i, p_, d in new_decisions) + "\n"
+                        if new_decisions else "")
+                     + "(live grants die when the daemon restarts; only standing grants persist)")
         except Exception as e:
             scope = f"(scope status unavailable: {type(e).__name__})"
     recall = "(no long-term memory yet)"
@@ -292,8 +339,10 @@ def main(argv=None) -> int:
     # `/no_think` is the fix for qwen3.8-heretic re-opening think blocks (Legion, 09-04);
     # on a reasoning distill it is the opposite failure: thinking off = no tool calls,
     # the being narrates (Sprout, 09-05). Per model, via the same detector build_client uses.
-    from sage.gateway.governed_turn import needs_think_to_act, acts_under_posture
-    nothink = "" if needs_think_to_act(args.model) else "/no_think"
+    from sage.gateway.governed_turn import is_reasoning_model, acts_under_posture
+    # Thinking on (model config, governed_turn.is_reasoning_model) => no suffix. The suffix
+    # exists only for a model that must NOT think here; it is never sent to one that does.
+    nothink = "" if is_reasoning_model(args.model) else "/no_think"
     act_first = not acts_under_posture(args.model)
     seed, posture_turn = compose(
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
@@ -330,6 +379,7 @@ def main(argv=None) -> int:
         "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "t0": t0, "elapsed_s": round(time.time() - t0, 1),
         "member": args.member, "model": args.model, "window_h": round(hours, 2),
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
+        "scope": scope_record,
         "explore": _turn(explore),
         # act-first only: the posture+digest turn, after the short one; None otherwise
         "posture": _turn(after),

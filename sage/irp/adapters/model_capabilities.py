@@ -21,6 +21,11 @@ class ModelCapabilities:
     max_context_tokens: int = 4096            # Approximate context window
     max_context_turns: int = 6               # Recommended history turns
     thinking_supported: bool = False          # Qwen 3.5 /think mode?
+    # Policy, not capability: should a caller that does not say run this model with
+    # thinking on? None = fall back to thinking_supported. Per-size override via
+    # variants[size]['think_default'] (qwen3.5:0.8b on a Jetson: supported, off by
+    # default since 2026-03; the empero distills: on, they act only when thinking).
+    think_default: Optional[bool] = None
     tier: str = 'T3'                          # T1/T2/T3 tool capability
     stop_sequences: List[str] = field(default_factory=list)
     echo_prefixes: List[str] = field(default_factory=lambda: [
@@ -65,6 +70,19 @@ class ModelCapabilities:
         if self.num_predict is not None:
             return self.num_predict
         return caller_budget
+
+    def resolve_think(self, model_name: str) -> bool:
+        """Whether this model runs with thinking on when the caller does not say.
+        variants[size].think_default, then the family think_default, then
+        thinking_supported. dp, 2026-09-05: "generally we want the beings to think";
+        the exceptions are declared here per size, not hard-coded in callers."""
+        size = model_name.split(':', 1)[1].lower().strip() if ':' in model_name else ''
+        variant = self.variants.get(size) or {}
+        if variant.get('think_default') is not None:
+            return bool(variant['think_default'])
+        if self.think_default is not None:
+            return bool(self.think_default)
+        return bool(self.thinking_supported)
 
 
 # Config directory

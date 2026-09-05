@@ -170,6 +170,17 @@ def salvage_tool_calls(content: str, tools: Iterable[dict]) -> List[dict]:
     return found
 
 
+def _think_budget(llm, floor: int = 6000) -> int:
+    """The retry budget for an empty/truncated turn: the model config's think-on
+    num_predict (variants[size].num_predict_think) when declared, else 6000, the
+    value that recovered such turns on Sprout and Legion (2026-09-03/04)."""
+    try:
+        b = llm._adapter.capabilities.resolve_num_predict(llm.model_name, True, None)
+        return max(int(b or 0), floor)
+    except Exception:
+        return floor
+
+
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
                          max_steps: int = 2, tools: Optional[List[dict]] = None) -> ToolTurnResult:
     """Run a gated tool turn using an OllamaIRP-like `llm` exposing
@@ -210,7 +221,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             print(f"[tool-loop] transport error, retrying once: {content[:200]}", file=_sys.stderr)
             keep = getattr(llm, "max_response_tokens", None)
             if keep is not None:
-                llm.max_response_tokens = max(6000, keep)
+                llm.max_response_tokens = max(_think_budget(llm), keep)
             try:
                 resp = llm.get_chat_response(msgs, tools=tools)
             finally:
@@ -233,7 +244,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             # ONCE to finish and act, rather than recording silence as the being's choice.
             if raw.get("done_reason") == "length" and hasattr(llm, "max_response_tokens"):
                 keep = llm.max_response_tokens
-                llm.max_response_tokens = max(6000, keep)
+                llm.max_response_tokens = max(_think_budget(llm), keep)
                 try:
                     print(f"[tool-loop] retrying once with num_predict={llm.max_response_tokens}",
                           file=_sys.stderr)

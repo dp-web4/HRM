@@ -1214,9 +1214,13 @@ RESPONSE STYLE:
         # `content` clean, so we embrace the reasoning ability rather than suppress
         # it (dp 2026-08-26: "the runner needs to deal with reasoning models, not
         # replace the ability"). Non-reasoning models (qwen3.5:0.8b) keep think off.
-        self._is_reasoning_model = (
-            'distill' in self.model_name.lower() or 'qwen3.8' in self.model_name.lower()
-        )
+        try:  # one source of truth: the model config's think policy (2026-09-05)
+            from sage.irp.adapters.model_capabilities import load_capabilities
+            self._is_reasoning_model = load_capabilities(self.model_name).resolve_think(self.model_name)
+        except Exception:
+            self._is_reasoning_model = (
+                'distill' in self.model_name.lower() or 'qwen3.8' in self.model_name.lower()
+            )
         self.llm = OllamaIRP({
             'model_name': self.model_name,
             'ollama_host': self.ollama_host,

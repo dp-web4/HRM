@@ -111,6 +111,19 @@ def needs_think_to_act(model: str) -> bool:
     return any(k in model.lower() for k in ("distill", "r1"))
 
 
+def acts_under_posture(model: str) -> bool:
+    """Whether the model still reaches for tools when the full fleet posture arrives in
+    the system prompt ahead of the ask. Per model, NOT per parameter count: under the
+    same merged full-beat prompt (2026-09-05) qwen3.5:0.8b acts, qwen2.5:1.5b narrates,
+    qwen3.8-distill:2b narrates, qwen2.5:3b acts, the 3.8B heretic acts (Legion, Sprout).
+    False = the heartbeat presents the SAME posture act-first: a short state+tools turn,
+    then the posture and the digest as a second tool turn, then reflect. The words are
+    BEING_POSTURE.md verbatim either way; only the order of presentation is per model.
+    qwen2.5:1.5b is deliberately not here: under a short prompt it emits the tool call as
+    text, so a different order would not move it (a parser question, Legion 09-05)."""
+    return not any(k in model.lower() for k in ("distill",))
+
+
 def build_client(member: str, instance: Path, model: str, workspace: str,
                  forum_dir: str | None, host_session_id: str, temperature: float,
                  max_tokens: int, gate_only: bool = False, num_ctx: int = 8192):

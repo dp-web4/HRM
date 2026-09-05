@@ -116,12 +116,70 @@ def test_run_ollama_tool_turn_with_fake_llm():
             calls["n"] += 1
             if calls["n"] == 1:
                 return {"content": "checking",
-                        "tool_calls": [{"function": {"name": "witness", "arguments": {"event": "x"}}}]}
+                        "tool_calls": [{"function": {"name": "witness", "arguments": {"event": "x"}}}],
+                        "raw": {"message": {"thinking": "I should witness this."}}}
             return {"content": "done", "tool_calls": []}
 
     r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}])
     assert r.reply == "done"
     assert r.trace and r.trace[0][0].effector == "witness" and r.trace[0][1].ok
+    # the think block rides along, one entry per generate (empty when the model had none)
+    assert r.thinking == ["I should witness this.", ""]
+
+
+def test_salvage_lifts_well_formed_calls_from_the_text_channel_only_for_offered_names():
+    from sage.gateway.being_gate_client import ollama_tools
+    from sage.gateway.being_tool_loop import salvage_tool_calls
+    names = ollama_tools(["recall", "memory_write", "witness"])
+    # qwen3.8-distill:2b, Sprout beat 6 explore: fenced JSON object, then prose
+    r = salvage_tool_calls('```json\n{"name": "recall", "arguments": {"query": "q", "top_k": 3}}\n```\n\nBrief written response.', names)
+    assert [(c["function"]["name"], c["_salvaged"]) for c in r] == [("recall", "json")]
+    assert r[0]["function"]["arguments"] == {"query": "q", "top_k": 3}
+    # beat 6 reflect: fenced JSON array
+    r = salvage_tool_calls('```json\n[{"name": "memory_write", "arguments": {"path": "journal.md", "content": "x"}},'
+                           ' {"name": "memory_write", "arguments": {"path": "todo.md", "content": "y"}}]\n```', names)
+    assert [c["function"]["arguments"]["path"] for c in r] == ["journal.md", "todo.md"]
+    # qwen2.5:1.5b, Legion condition C: bare JSON after a line of prose
+    r = salvage_tool_calls('recalling my recent activity\n\n{"name": "recall", "arguments": {"query": "recent actions"}}', names)
+    assert len(r) == 1 and r[0]["function"]["name"] == "recall"
+    # beat 7: fenced Python with literal kwargs, imported name
+    r = salvage_tool_calls('```python\nfrom tools import recall\n\nresult = recall(query="what does it mean to be awake", top_k=3)\nprint(result)\n```', names)
+    assert [(c["function"]["name"], c["_salvaged"]) for c in r] == [("recall", "python")]
+    assert r[0]["function"]["arguments"] == {"query": "what does it mean to be awake", "top_k": 3}
+    # beat 5 reflect: Python with the body assigned to a variable first
+    r = salvage_tool_calls('```python\njournal_entry = """[date] what I did"""\n\nmemory_write(path="journal.md", content=journal_entry)\n```', names)
+    assert r and r[0]["function"]["arguments"] == {"path": "journal.md", "content": "[date] what I did"}
+    # beat 7 reflect: positional arguments, mapped in schema order (path, content)
+    r = salvage_tool_calls('```python\nj = """entry"""\nmemory_write("journal.md", j)\nmemory_write("todo.md", "delta")\n```', names)
+    assert [c["function"]["arguments"] for c in r] == [{"path": "journal.md", "content": "entry"},
+                                                       {"path": "todo.md", "content": "delta"}]
+    # not offered this turn, too many positionals, a computed argument, a stub definition
+    # (beat 8: `def recall(...)` with a call on an f-string), prose that names a tool
+    assert salvage_tool_calls('{"name": "peer_ask", "arguments": {"to": "x"}}', names) == []
+    assert salvage_tool_calls('```python\nrecall("q", 3, "x")\n```', names) == []
+    assert salvage_tool_calls('```python\nrecall(query=f"{x}")\n```', names) == []
+    assert salvage_tool_calls('```python\ndef recall(query, top_k=5):\n    return []\nrecall(query=input())\n```', names) == []
+    assert salvage_tool_calls("I could call recall or memory_write here, but I will not.", names) == []
+    assert salvage_tool_calls("", names) == []
+
+
+def test_run_ollama_tool_turn_gates_a_salvaged_call_and_records_it():
+    from sage.gateway.being_gate_client import ollama_tools
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    calls = {"n": 0}
+
+    class FakeLLM:
+        def get_chat_response(self, messages, tools=None):
+            calls["n"] += 1
+            if calls["n"] == 1:
+                return {"content": '```json\n{"name": "witness", "arguments": {"event": "x"}}\n```', "tool_calls": []}
+            return {"content": "done", "tool_calls": []}
+
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}],
+                             tools=ollama_tools(["witness", "recall"]))
+    assert r.trace and r.trace[0][0].effector == "witness" and r.trace[0][1].ok and r.acted
+    assert r.salvaged == [{"step": 0, "effector": "witness", "form": "json"}]
+    assert r.reply == "done" and r.steps == 1
 
 
 if __name__ == "__main__":

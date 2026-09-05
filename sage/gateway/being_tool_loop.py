@@ -15,8 +15,11 @@ step cap forces a close). "Respond" becomes an act, not a text turn.
 """
 from __future__ import annotations
 
+import ast
+import json
+import re
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
 from sage.gateway.being_gate_client import BeingGateClient, BeingIntent, ResultEnvelope
 
@@ -30,6 +33,8 @@ class ToolTurnResult:
     trace: List[Tuple[BeingIntent, ResultEnvelope]] = field(default_factory=list)
     steps: int = 0                                         # tool rounds taken
     capped: bool = False                                   # hit max_steps still wanting tools
+    thinking: List[str] = field(default_factory=list)      # the model's think block per generate, if any
+    salvaged: List[dict] = field(default_factory=list)     # calls lifted from the text channel: {step, effector, form}
 
     @property
     def acted(self) -> bool:
@@ -72,6 +77,99 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
                           steps=max_steps, capped=True)
 
 
+_FENCE = re.compile(r"```[A-Za-z0-9_+-]*[ \t]*\n(.*?)```", re.S)
+
+
+def _json_calls(text: str, names: set) -> List[dict]:
+    out, dec, i = [], json.JSONDecoder(), 0
+    while True:
+        starts = [k for k in (text.find("{", i), text.find("[", i)) if k >= 0]
+        if not starts:
+            return out
+        j = min(starts)
+        try:
+            obj, end = dec.raw_decode(text, j)
+        except ValueError:
+            i = j + 1
+            continue
+        for o in (obj if isinstance(obj, list) else [obj]):
+            if isinstance(o, dict) and o.get("name") in names:
+                args = o.get("arguments", o.get("parameters", {}))
+                if isinstance(args, dict):
+                    out.append({"function": {"name": o["name"], "arguments": dict(args)}, "_salvaged": "json"})
+        i = max(end, j + 1)
+
+
+def _python_calls(text: str, names: Dict[str, List[str]]) -> List[dict]:
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return []
+    consts: Dict[str, Any] = {}
+    for node in ast.walk(tree):
+        if (isinstance(node, ast.Assign) and len(node.targets) == 1
+                and isinstance(node.targets[0], ast.Name) and isinstance(node.value, ast.Constant)):
+            consts[node.targets[0].id] = node.value.value
+    out = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        fn = node.func
+        name = fn.id if isinstance(fn, ast.Name) else (fn.attr if isinstance(fn, ast.Attribute) else None)
+        if name not in names or len(node.args) > len(names[name]):
+            continue
+        args, ok = {}, True
+        # positional arguments map onto the tool's parameters in schema order:
+        # memory_write("journal.md", journal_entry) is (path, content) (beat 7, Sprout)
+        for param, v in zip(names[name], node.args):
+            if isinstance(v, ast.Constant):
+                args[param] = v.value
+            elif isinstance(v, ast.Name) and v.id in consts:
+                args[param] = consts[v.id]
+            else:
+                ok = False
+                break
+        for kw in (node.keywords if ok else []):
+            v = kw.value
+            if kw.arg and isinstance(v, ast.Constant):
+                args[kw.arg] = v.value
+            elif kw.arg and isinstance(v, ast.Name) and v.id in consts:
+                args[kw.arg] = consts[v.id]
+            else:
+                ok = False
+                break
+        if ok:
+            out.append({"function": {"name": name, "arguments": args}, "_salvaged": "python"})
+    return out
+
+
+def salvage_tool_calls(content: str, tools: Iterable[dict]) -> List[dict]:
+    """Lift well-formed tool calls that a model put in the TEXT channel, in Ollama's
+    tool_calls shape (plus `_salvaged`: "json" | "python"). Accepted: a JSON object or
+    array of {"name", "arguments"} (fenced or bare), or fenced Python `name(k="v", ...)`
+    with literal or locally-assigned arguments, positional ones mapped in schema order.
+    `tools` is what was offered this turn (Ollama tool specs); only those names count,
+    so prose that mentions a tool is never a call.
+
+    Measured 2026-09-05, same full-beat prompt: qwen2.5:1.5b emits bare JSON (Legion);
+    qwen3.8-distill:2b emits fenced JSON in one beat and fenced Python in the next
+    (Sprout, beats 5 to 7) while its think block says it decided to act. A salvaged call
+    is gated like a native one and recorded as salvaged, so the record still shows which
+    channel the being used."""
+    params = {t["function"]["name"]: list((t["function"].get("parameters") or {}).get("properties") or {})
+              for t in tools}
+    if not content or not params:
+        return []
+    blocks = _FENCE.findall(content)
+    found: List[dict] = []
+    for text in (blocks or [content]):
+        found.extend(_json_calls(text, set(params)))
+        found.extend(_python_calls(text, params))
+    if blocks and not found:                    # fenced prose, bare call outside the fence
+        found.extend(_json_calls(content, set(params)))
+    return found
+
+
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
                          max_steps: int = 2, tools: Optional[List[dict]] = None) -> ToolTurnResult:
     """Run a gated tool turn using an OllamaIRP-like `llm` exposing
@@ -83,6 +181,10 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     """
     from sage.gateway.being_gate_client import ollama_tools, parse_tool_calls
     tools = tools if tools is not None else ollama_tools()
+    # Keep the think block per generate: when a small model narrates instead of acting,
+    # whether it decided not to call or failed to format the call is only visible here.
+    thoughts: List[str] = []
+    salvaged: List[dict] = []
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
@@ -140,6 +242,15 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                     calls = resp.get("tool_calls", []) or []
                 finally:
                     llm.max_response_tokens = keep
+        thoughts.append(str(((resp.get("raw") or {}).get("message") or {}).get("thinking") or ""))
+        if not calls and content:
+            # the call in the wrong channel: lift it, gate it as normal, record that it was lifted
+            calls = salvage_tool_calls(content, tools)
+            salvaged.extend({"step": len(thoughts) - 1, "effector": c["function"]["name"],
+                             "form": c["_salvaged"]} for c in calls)
         return {"content": content, "intents": parse_tool_calls(calls)}
 
-    return run_tool_turn(client, generate, seed_messages, max_steps=max_steps)
+    result = run_tool_turn(client, generate, seed_messages, max_steps=max_steps)
+    result.thinking = thoughts
+    result.salvaged = salvaged
+    return result

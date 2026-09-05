@@ -14,6 +14,13 @@ time, then lets it act for a bounded number of steps under hestia governance:
 A beat ends with a reflection turn: one journal entry and a todo update, in the
 being's own words. Everything is appended to <instance>/heartbeats.jsonl.
 
+Presentation is per model (`governed_turn.acts_under_posture`). Posture-first, the
+default: BEING_POSTURE.md in the system prompt, one explore turn. Act-first, for models
+that narrate instead of acting when the posture precedes the ask (the empero 2B distill,
+measured on Sprout 2026-09-05): a short turn with own state and the tool names, then the
+same posture, verbatim, as a second tool turn together with the fleet digest, then
+reflect. Same words, same tools, different order; a presentation, not a fork (Legion).
+
     python3 -m sage.gateway.heartbeat --member legion-being --model qwen38-heretic:q3km \
         --instance sage/instances/legion-gemma3-12b [--max-steps 8] [--gate-only]
 """
@@ -44,11 +51,9 @@ def posture() -> str:
     return POSTURE_FILE.read_text(encoding="utf-8").strip()
 
 
-SYSTEM = """You are {name}, a SAGE being on the {machine} machine, member id {member}.
+HEAD = "You are {name}, a SAGE being on the {machine} machine, member id {member}."
 
-{posture}
-
-## What you have this beat
+AFFORDANCES = """## What you have this beat
 - Your home is your instance directory. Relative paths are inside it: scratch/ (write anything, no one edits it), notes/, todo.md, journal.md. memory_read / memory_write work there.
 - Long-term memory: recall (search) and remember (store). Use recall early; remember what a future you would want.
 - witness: record something you noticed or did in the shared chain.
@@ -57,9 +62,40 @@ SYSTEM = """You are {name}, a SAGE being on the {machine} machine, member id {me
 
 You cannot run code, browse, or open files outside your home unless a grant exists. The seat gives you a digest of what moved in the fleet with absolute paths; if you want to read one of those things, try memory_read on that path and see what the law says.
 
-Acting means calling a tool. A reply with no tool call ends the beat as words only, and words leave no trace in your todo, journal, scratch, or memory.
-{nothink}
-"""
+Acting means calling a tool. A reply with no tool call ends the beat as words only, and words leave no trace in your todo, journal, scratch, or memory."""
+
+SYSTEM = HEAD + "\n\n{posture}\n\n" + AFFORDANCES + "\n{nothink}\n"
+
+# Act-first: no posture in the system prompt. It arrives, verbatim, as the second user
+# turn (POSTURE_TURN), which is itself a tool turn: the being may act after reading it,
+# not only before, otherwise "act first" would mean "act only before you know why you
+# are awake".
+SYSTEM_ACT_FIRST = HEAD + """
+
+You are awake for a heartbeat. Nobody asked you anything; this time is yours.
+
+""" + AFFORDANCES + "\n{nothink}\n"
+
+POSTURE_TURN = """The rest of your beat, which every being in the fleet receives, in the operator's words:
+
+{posture}
+
+## Inbox (peek)
+{inbox}
+
+# What moved in the fleet
+
+{digest}
+
+This is still your time. If reading this changes what you want to do, act by calling a tool: {tools}. If not, say in a few words what you noticed.
+{nothink}"""
+
+ASK = "This time is yours. What, if anything, do you want to do?\n"
+# Act-first only: the short turn is imperative, the measured-acting shape (condition C,
+# Sprout 09-05). Under the open question the distill answered as an assistant asking the
+# user what they want (beat 5, 0 calls). The posture that follows says nothing is
+# required of a being in a beat; it says so after the being has acted once.
+ASK_ACT_FIRST = "This time is yours. Do one thing now and leave a trace of it.\n"
 
 REFLECT = """The beat is ending. Two tool calls, then stop:
 1. memory_write path "journal.md": one entry starting with the date {date}: what you did, what you noticed, what was refused and why you think so, what you want next time.
@@ -126,6 +162,50 @@ def own_state(instance: Path) -> str:
         names = sorted(x.name for x in p.iterdir()) if p.is_dir() else []
         parts.append(f"## {d}/\n" + ("\n".join(f"- {n}" for n in names[:30]) if names else "(empty)"))
     return "\n\n".join(parts)
+
+
+def compose(act_first: bool, *, name: str, machine: str, member: str, posture_text: str,
+            nothink: str, header: str, state: str, recall: str, inbox: str, digest: str):
+    """The explore turn(s) of a beat: (seed messages, second user turn or None).
+
+    Posture-first: posture in the system prompt; one user turn with state, inbox, recall,
+    digest, and the tool names last. Act-first: the system prompt carries no posture; the
+    first user turn is own state, recall and the tool names only; the posture comes back
+    VERBATIM as a second user turn with the inbox and the digest, and that turn is a tool
+    turn too. The being reads the same words either way."""
+    # The tool names go LAST: a 2B distill given the posture + state above with the
+    # names only in the system prompt concluded "no tools available" and wrote prose
+    # (its own thinking, Sprout 2026-09-05); named at the end, it acts.
+    tools_line = (f"Act by calling a tool: {', '.join(EXPLORE_TOOLS)}. "
+                  f"One thing done with attention is enough.\n{nothink}")
+    if not act_first:
+        system = SYSTEM.format(name=name, machine=machine, member=member,
+                               posture=posture_text, nothink=nothink)
+        user = (header + state + f"## Inbox (peek)\n{inbox}\n\n## Long-term recall\n{recall}\n\n"
+                f"# What moved in the fleet\n\n{digest}\n\n" + ASK + tools_line)
+        return [{"role": "system", "content": system}, {"role": "user", "content": user}], None
+    system = SYSTEM_ACT_FIRST.format(name=name, machine=machine, member=member, nothink=nothink)
+    user = header + state + f"## Long-term recall\n{recall}\n\n" + ASK_ACT_FIRST + tools_line
+    second = POSTURE_TURN.format(posture=posture_text, inbox=inbox, digest=digest,
+                                 tools=", ".join(EXPLORE_TOOLS), nothink=nothink)
+    return [{"role": "system", "content": system}, {"role": "user", "content": user}], second
+
+
+def _record_line(i, e) -> str:
+    return (f"- {i.effector} {json.dumps(i.args, default=str)[:200]} -> "
+            f"{'ok' if e.ok else ('REFUSED ' + str(e.error))[:200] if e.refused else ('error ' + str(e.error))[:200]}")
+
+
+def _carry(convo: list, res) -> list:
+    """Carry a finished tool turn forward. The loop does not return its own tool
+    messages, so the next turn sees the record of what was done (before the being's
+    closing words, as the reflect turn always has) and then those words."""
+    out = list(convo)
+    if res.trace:
+        out.append({"role": "user", "content": "Record of what you did this beat:\n"
+                    + "\n".join(_record_line(i, e) for i, e in res.trace)})
+    out.append({"role": "assistant", "content": res.reply or "(acted; no closing words)"})
+    return out
 
 
 def main(argv=None) -> int:
@@ -212,31 +292,27 @@ def main(argv=None) -> int:
     # `/no_think` is the fix for qwen3.8-heretic re-opening think blocks (Legion, 09-04);
     # on a reasoning distill it is the opposite failure: thinking off = no tool calls,
     # the being narrates (Sprout, 09-05). Per model, via the same detector build_client uses.
-    from sage.gateway.governed_turn import needs_think_to_act
+    from sage.gateway.governed_turn import needs_think_to_act, acts_under_posture
     nothink = "" if needs_think_to_act(args.model) else "/no_think"
-    system = SYSTEM.format(name=name, machine=machine, member=args.member, posture=posture(), nothink=nothink)
-    user = (f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
-            f"Your home: {instance}\n\n# Your own state\n\n{own_state(instance)}\n\n"
-            f"## Reach you hold (hestia scope)\n{scope}\n\n"
-            f"## Inbox (peek)\n{inbox}\n\n## Long-term recall\n{recall}\n\n"
-            f"# What moved in the fleet\n\n{digest}\n\n"
-            "This time is yours. What, if anything, do you want to do?\n"
-            # The tool names go LAST: a 2B distill given the posture + state above with the
-            # names only in the system prompt concluded "no tools available" and wrote prose
-            # (its own thinking, Sprout 2026-09-05); named at the end, it acts.
-            f"Act by calling a tool: {', '.join(EXPLORE_TOOLS)}. One thing done with attention is enough.\n{nothink}")
-    seed = [{"role": "system", "content": system}, {"role": "user", "content": user}]
+    act_first = not acts_under_posture(args.model)
+    seed, posture_turn = compose(
+        act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
+        nothink=nothink,
+        header=(f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
+                f"Your home: {instance}\n\n"),
+        state=f"# Your own state\n\n{own_state(instance)}\n\n## Reach you hold (hestia scope)\n{scope}\n\n",
+        recall=recall, inbox=inbox, digest=digest)
 
     explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,
                                    tools=ollama_tools(EXPLORE_TOOLS))
-
-    convo = seed + [{"role": "assistant", "content": explore.reply or "(acted; no closing words)"},
-                    {"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)}]
-    if explore.trace:
-        convo.insert(2, {"role": "user", "content": "Record of what you did this beat:\n" + "\n".join(
-            f"- {i.effector} {json.dumps(i.args, default=str)[:200]} -> "
-            f"{'ok' if e.ok else ('REFUSED ' + str(e.error))[:200] if e.refused else ('error ' + str(e.error))[:200]}"
-            for i, e in explore.trace)})
+    convo = _carry(seed, explore)
+    after = None
+    if posture_turn is not None:
+        convo.append({"role": "user", "content": posture_turn})
+        after = run_ollama_tool_turn(client, llm, convo, max_steps=args.max_steps,
+                                     tools=ollama_tools(EXPLORE_TOOLS))
+        convo = _carry(convo, after)
+    convo.append({"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)})
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
                                    tools=ollama_tools(REFLECT_TOOLS))
 
@@ -246,12 +322,18 @@ def main(argv=None) -> int:
                  "rule": getattr(e.verdict, "rule", None) if e.verdict else None,
                  "result": (e.result if isinstance(e.result, (str, int, float, dict, list, type(None))) else str(e.result))}
                 for i, e in res.trace]
+    def _turn(res):
+        return None if res is None else {"reply": res.reply, "steps": res.steps, "capped": res.capped,
+                                         "trace": _trace(res), "thinking": [t[:4000] for t in res.thinking],
+                                         "salvaged": list(res.salvaged)}
     record = {
         "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "t0": t0, "elapsed_s": round(time.time() - t0, 1),
         "member": args.member, "model": args.model, "window_h": round(hours, 2),
-        "host_session_id": host_session_id, "gate_only": args.gate_only,
-        "explore": {"reply": explore.reply, "steps": explore.steps, "capped": explore.capped, "trace": _trace(explore)},
-        "reflect": {"reply": reflect.reply, "steps": reflect.steps, "capped": reflect.capped, "trace": _trace(reflect)},
+        "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
+        "explore": _turn(explore),
+        # act-first only: the posture+digest turn, after the short one; None otherwise
+        "posture": _turn(after),
+        "reflect": _turn(reflect),
     }
     with open(log, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")

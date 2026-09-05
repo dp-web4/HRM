@@ -10,13 +10,19 @@ Multiple memory systems working in concert:
 Integration Point: All memory systems accessible through unified interface.
 """
 
-from .hierarchical_memory import (
-    HierarchicalMemory,
-    Experience,
-    Pattern,
-    Concept,
-    LatentSpaceIndex
-)
+# hierarchical_memory needs torch. The consolidation organ (sage.memory.consolidation) and the
+# hub/sqlite backends do not, and the being's heartbeat runs on a plain python3; so a missing
+# torch must not take the whole package down with it.
+try:
+    from .hierarchical_memory import (
+        HierarchicalMemory,
+        Experience,
+        Pattern,
+        Concept,
+        LatentSpaceIndex
+    )
+except ImportError:  # torch absent: the torch-backed classes are simply unavailable
+    HierarchicalMemory = Experience = Pattern = Concept = LatentSpaceIndex = None
 from .hub import MemoryHub, MemoryEntry, MemoryBackend
 from .sqlite_backend import SQLiteBackend
 

@@ -8,7 +8,7 @@ The being's refusals are routed by `sage/gateway/escalate.py`: a note lands in
 |---|---|---|
 | `registry.*` | nothing — the verb does not exist, by design | — |
 | `mrh.*` (scope) | pre-review; recommend GRANT **as standing** when the path is the being's own memory; corroborate in the thread | **dp** (operator session — today) |
-| governance escalation (id in the deny) | `hestia_gate_pending_escalations` → if `you_may_rule` and the protocol holds: `hestia gate approve <id> --reason` / deny with reason | the seat (NOT-SAME peer), under dp's `delegate grant` |
+| governance escalation (id in the deny) | `hestia_gate_pending_escalations` (pass your session) → if `you_may_rule` and the protocol holds, rule it: MCP `hestia_gate_arbitrate_escalation {escalation_id, approve: true|false, reason}` or CLI `hestia gate approve|deny <id> --as claude-code --reason '…'` | the seat, as a NOT-SAME peer — **no delegation needed** (measured 2026-09-05: f169ff9c45725a1f, decided_via peer_member) |
 | `society.*` | a law verdict; if plainly wrong, appeal on the being's behalf and corroborate — never override | arbiter of the appeal (NOT-SAME) |
 
 ## Protocol — approve only if ALL hold
@@ -20,7 +20,10 @@ Otherwise leave it for dp and say so in the thread. Every decision is recorded w
 (`--reason`), and the seat never fabricates a grant or a verdict.
 
 ## Authority
-The seat arbitrates only under an explicit delegation from dp:
-`hestia delegate grant <seat-lct> --role <arbiter-role> --expires <h>` (seat LCT on Sprout:
-`ef1d106c-3039-4feb-94e6-9ab9e5129437`). Scope *rulings* are operator-session-only in hestia
-today; delegable scope arbitration is requested (hestia issue, 2026-09-05).
+Governance escalations: arbitration is NOT-SAME peer independence, computed by the daemon —
+the seat (`claude-code`) is a different member from the being, so it may rule; no `delegate
+grant` is required (that CLI is for roles, e.g. reviewer). A being's escalation must be opened
+WITH a session (`asker_basis: session`), else only the sovereign may rule it (#128).
+Opening one requires `tool_name`, `marker`, and `act` (a text description of the attempted act).
+Scope *rulings* remain operator-session-only in hestia today — hestia #952 asks for delegable
+scope arbitration so the seat can rule the being's own-memory requests too.

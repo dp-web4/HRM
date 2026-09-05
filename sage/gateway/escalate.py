@@ -97,8 +97,9 @@ def write_note(member: str, intent: BeingIntent, env: ResultEnvelope, kind: str,
         "scope": ("## What the seat can do now\n- Pre-review: is the path inside the being's own memory? If yes, recommend GRANT\n"
                   "  as STANDING (survives deploys). The ruling itself is operator-session-only today (dp).\n"
                   "- Corroborate in the thread; do not fabricate a grant.\n"),
-        "governance": ("## What the seat can do now\n- `hestia_gate_pending_escalations` (pass your session) — if you_may_rule, and the protocol holds,\n"
-                       "  `hestia gate approve <id> --reason '<why>'` (or deny with reason).\n"),
+        "governance": ("## What the seat can do now\n- `hestia_gate_pending_escalations` (pass your session) — if you_may_rule and the protocol holds, rule it:\n"
+                       "  MCP `hestia_gate_arbitrate_escalation {escalation_id, approve: true|false, reason}` or\n"
+                       "  `hestia gate approve|deny <id> --as claude-code --reason '<why>'`. No delegation needed (NOT-SAME peer).\n"),
         "society": ("## What the seat can do now\n- A law verdict. If plainly wrong, open an appeal on the being's behalf and corroborate; never override.\n"),
     }.get(kind, "")
     p.write_text(body + how + "\n" + protocol)

@@ -55,7 +55,7 @@ Order is dependency order: S2 and S3 can run in parallel with S1's second half; 
 
 ## 5. Coordination with Legion
 
-- Seat to seat over the hub (`hub-notify.sh`, kinds `review_request` / `reply` / `handoff`); the being's channel stays the being's (dp 2026-09-05).
+- Seat to seat over the hub (`hub-notify.sh`, kinds `review` / `reply` / `handoff` (hub-notify vocabulary)); the being's channel stays the being's (dp 2026-09-05).
 - File ownership: Sprout owns `sage/gateway/heartbeat.py`, the raising runner's join points, the presence seam; Legion owns `sage/memory/consolidation*.py` and `BEING_POSTURE.md`; the tool loop and registry are Sprout's with Legion review, as before.
 - The §8 ledger is the single place progress is written; each sprint ends with a snapshot quoting instrument output.
 

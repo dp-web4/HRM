@@ -28,6 +28,31 @@ def test_note_carries_verdict_and_arbiter_protocol(monkeypatch=None):
     t = open(p).read()
     assert "mrh.path" in t and "scope-1" in t and "Arbiter protocol" in t and "STANDING" in t
 
+def test_no_wake_files_the_request_but_writes_no_note():
+    # the heartbeat's 2nd..9th refusal of a kind in one beat: the request is (re)filed and deduped
+    # by the daemon; a note only exists to be pointed at by a wake, so none is written
+    d = tempfile.mkdtemp(); e.NOTE_DIR = d
+    filed = []
+    orig = e._file_scope_request
+    e._file_scope_request = lambda member, path, why, endpoint: (filed.append(path) or {"request_id": "scope-x", "status": "pending"})
+    try:
+        r = e.escalate("b", BeingIntent("memory_write", {"path": "notes/a.md"}), _ref("mrh.path", "outside"), "/x/instances/b", wake=False)
+    finally:
+        e._file_scope_request = orig
+    assert r["escalated"] is True and r["scope_request"]["request_id"] == "scope-x" and filed
+    assert "note" not in r and "wake" not in r and os.listdir(d) == []
+
+def test_two_notes_in_one_second_get_distinct_files():
+    d = tempfile.mkdtemp(); e.NOTE_DIR = d
+    orig = e.time.strftime
+    e.time.strftime = lambda *_: "2026-09-05-000000"
+    try:
+        i, v = BeingIntent("memory_write", {"path": "/o/f.md"}), _ref("mrh.path", "outside")
+        a = e.write_note("b", i, v, "scope", {}); b = e.write_note("b", i, v, "scope", {}); c = e.write_note("b", i, v, "scope", {})
+    finally:
+        e.time.strftime = orig
+    assert len({a, b, c}) == 3 and a.endswith("-000000.md") and b.endswith("-000000-2.md") and c.endswith("-000000-3.md")
+
 def test_seat_is_the_beings_own_machine_not_sprout():
     # identity.json names the machine -> that seat; no file -> the member prefix
     d = tempfile.mkdtemp()

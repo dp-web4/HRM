@@ -139,7 +139,8 @@ def main(argv=None) -> int:
     ap.add_argument("--temperature", type=float, default=0.4)
     ap.add_argument("--max-tokens", type=int, default=3000,
                     help="a journal entry as a tool call needs room; too small = truncated JSON = Ollama 500")
-    ap.add_argument("--gate-only", action="store_true")
+    ap.add_argument("--gate-only", action="store_true",
+                    help="gate probe only: no LLM turn, so no refusal routing and no egress drain either")
     ap.add_argument("--no-escalate", action="store_true",
                     help="do not route refusals to the seat's auto session (default: route, as governed_turn does)")
     args = ap.parse_args(argv)
@@ -235,7 +236,9 @@ def main(argv=None) -> int:
     # governance escalation wakes it to arbitrate. The beat is where refusals actually
     # happen (Legion: nine consecutive beats of home-scope write refusals, and the being's
     # requests had died with a daemon restart), so the heartbeat must route, not just log.
-    # One wake per refusal kind per beat: several refused writes to the same home are one ask.
+    # One wake ATTEMPT per refusal kind per beat: several refused writes to the same home are one
+    # ask, and one note. A failed wake is recorded in `escalations` and the next beat retries;
+    # retrying within the beat would write a note per refusal again.
     escalations = []
     if not args.no_escalate and not args.gate_only:
         try:
@@ -245,8 +248,9 @@ def main(argv=None) -> int:
                 if not env.refused:
                     continue
                 kind = _esc.classify(env)
-                r = _esc.escalate(args.member, it, env, str(instance), wake=kind not in woken)
-                if r.get("escalated") and r.get("wake", {}).get("notified"):
+                wake = kind not in woken
+                r = _esc.escalate(args.member, it, env, str(instance), wake=wake)
+                if wake and kind not in ("registry", "other"):
                     woken.add(kind)
                 escalations.append(r)
         except Exception as _e:

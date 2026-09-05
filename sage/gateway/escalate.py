@@ -100,7 +100,12 @@ def _file_scope_request(member: str, path: str, why: str, endpoint: str) -> Dict
 def write_note(member: str, intent: BeingIntent, env: ResultEnvelope, kind: str, extra: Dict[str, Any]) -> str:
     Path(NOTE_DIR).mkdir(parents=True, exist_ok=True)
     ts = time.strftime("%Y-%m-%d-%H%M%S")
-    p = Path(NOTE_DIR) / f"{member}-{kind}-{intent.effector}-{ts}.md"
+    stem = f"{member}-{kind}-{intent.effector}-{ts}"
+    p = Path(NOTE_DIR) / f"{stem}.md"
+    n = 1
+    while p.exists():   # two refusals in one second must not overwrite each other (Sprout, #38 review)
+        n += 1
+        p = Path(NOTE_DIR) / f"{stem}-{n}.md"
     v = env.verdict
     protocol = (
         "## Arbiter protocol (for the seat's auto session)\n"
@@ -145,7 +150,9 @@ def wake_seat(member: str, note_path: str, memory_root: str, seat: Optional[str]
 
 def escalate(member: str, intent: BeingIntent, env: ResultEnvelope, memory_root: str,
              seat: Optional[str] = None, endpoint: str = _ENDPOINT, wake: bool = True) -> Dict[str, Any]:
-    """Route one refusal. Returns what was filed/notified; never raises into the being's turn."""
+    """Route one refusal. Returns what was filed/notified; never raises into the being's turn.
+    wake=False files the scope request only: no note, no mesh notice (the heartbeat's second and
+    later refusals of a kind in one beat)."""
     kind = classify(env)
     out: Dict[str, Any] = {"kind": kind, "effector": intent.effector}
     if kind in ("registry", "other"):
@@ -158,9 +165,12 @@ def escalate(member: str, intent: BeingIntent, env: ResultEnvelope, memory_root:
             why = (f"{member} was refused {intent.effector} at {path} ({env.verdict.rule if env.verdict else ''}). "
                    f"Its seat's auto session will pre-review; please rule as STANDING if it is the being's own memory.")
             out["scope_request"] = _file_scope_request(member, path, why, endpoint)
-        note = write_note(member, intent, env, kind, out)
-        out["note"] = note
+        # The note exists to be pointed at by the wake. Without a wake there is no reader, and a
+        # beat with nine refused home writes would leave nine near-identical notes (Sprout, #38
+        # review); the scope request above is still filed (the daemon dedups it on the path).
         if wake:
+            note = write_note(member, intent, env, kind, out)
+            out["note"] = note
             out["wake"] = wake_seat(member, note, memory_root, seat=seat, endpoint=endpoint)
         out["escalated"] = True
     except Exception as e:

@@ -38,7 +38,8 @@
         "q3km": {
             "num_predict": 1024,
             "num_predict_think": 6000,
-            "think_default": true
+            "think_default": true,
+            "num_ctx": 16384
         },
         "q8_0": {
             "num_predict": 1024,
@@ -57,5 +58,5 @@
         }
     },
     "timeout_seconds": 300,
-    "notes": "empero Qwen3.8 distills (2B, Sprout) and the 3.8B heretic (q3km, Legion). REASONING models: with thinking off they emit no structured tool calls and narrate a bracketed placeholder (Sprout 2026-08-28, 09-03, 09-05). think_default true for both sizes. num_predict_think 6000 = the retry budget that recovered empty turns (done_reason=length) on both machines 2026-09-03/04; this makes it the first budget, not the retry. The heretic previously ran think:false + a /no_think prompt suffix because it re-opened think blocks anyway (5/10 turns, Legion 09-04); with thinking on and budgeted that fight is moot. To roll the heretic back: set variants.q3km.think_default false and the heartbeat re-adds the suffix."
+    "notes": "empero Qwen3.8 distills (2B, Sprout) and the heretic (qwen38-heretic:q3km, Legion). The heretic is NOT a 3.8B: Ollama reports architecture qwen35, 26.9B parameters, Q3_K_M, 13.3 GB, 64 layers, Modelfile num_ctx 16384 (measured 2026-09-05). REASONING models: with thinking off the 2B emits no structured tool calls and narrates a bracketed placeholder (Sprout 2026-08-28, 09-03, 09-05). think_default true for both. num_predict_think 6000 = the retry budget that recovered empty turns (done_reason=length) on both machines 2026-09-03/04. q3km num_ctx 16384: with thinking on at the harness's 8192 floor the heretic spent the whole window left after a ~5000-token prompt in its think block (prompt_eval + eval == 8192 on every empty turn; Legion beat 46, 0 acts, 2026-09-05) -- num_predict cannot exceed what the window has left, so the retry budget never applied. At 16384 (its own Modelfile value) the same prompt with thinking on gave 6 + 3 native calls, think blocks of 1000-4000+ chars, no empty turn, 492 s, 14.1 GB fully on a 16 GB GPU. Under think:false + /no_think it thought anyway (4000+ char blocks) and acted; thinking on does not change WHETHER it thinks, only whether the block is recorded and how long it runs. To roll the heretic back: set variants.q3km.think_default false and the heartbeat re-adds the suffix."
 }

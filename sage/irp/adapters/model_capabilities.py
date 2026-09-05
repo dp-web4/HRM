@@ -84,6 +84,25 @@ class ModelCapabilities:
             return bool(self.think_default)
         return bool(self.thinking_supported)
 
+    def resolve_num_ctx(self, model_name: str, caller_floor: int) -> int:
+        """The context window a caller should send as options.num_ctx: the larger of the
+        caller's floor and variants[size].num_ctx when declared. Never lowers the floor.
+
+        Why per size: the governed harness sends 8192 because Ollama's default (4096)
+        was too small for a heartbeat prompt (Sprout, 2B). But 8192 also OVERRIDES the
+        Modelfile of a model that declared more: qwen38-heretic:q3km (27B, Modelfile
+        num_ctx 16384) at 8192 with thinking on spent every token of room left after a
+        ~5000-token prompt in its think block (prompt_eval + eval == 8192 on every empty
+        turn, Legion beat 46, 2026-09-05) and never acted; at 16384 the same prompt
+        gave 6 + 3 native calls and no empty turn. The retry budget cannot fix this:
+        num_predict is capped by what the window has left."""
+        size = model_name.split(':', 1)[1].lower().strip() if ':' in model_name else ''
+        variant = self.variants.get(size) or {}
+        declared = variant.get('num_ctx')
+        if declared is None:
+            return caller_floor
+        return max(int(caller_floor), int(declared))
+
 
 # Config directory
 _CONFIG_DIR = Path(__file__).parent / 'model_configs'

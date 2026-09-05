@@ -26,6 +26,16 @@ def test_think_budget_declared_for_reasoning_models():
     assert c.resolve_num_predict("qwen3.8-distill:2b", False, 3000) == 1024
 
 
+def test_num_ctx_is_a_floor_the_config_can_raise_not_lower():
+    from sage.gateway.governed_turn import resolve_num_ctx
+    c = load_capabilities("qwen38-heretic:q3km")
+    assert c.resolve_num_ctx("qwen38-heretic:q3km", 8192) == 16384      # Modelfile value, declared per size
+    assert c.resolve_num_ctx("qwen38-heretic:q3km", 32768) == 32768     # a caller asking for more keeps it
+    assert c.resolve_num_ctx("qwen3.8-distill:2b", 8192) == 8192        # 2B declares nothing: floor unchanged
+    assert resolve_num_ctx("qwen38-heretic:q3km", 8192) == 16384
+    assert resolve_num_ctx("no-such-model:1b", 8192) == 8192
+
+
 def test_governed_harness_defers_to_the_config():
     assert is_reasoning_model("qwen3.8-distill:2b") and is_reasoning_model("qwen38-heretic:q3km")
     assert not is_reasoning_model("qwen3.5:0.8b")

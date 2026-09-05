@@ -1,7 +1,7 @@
 {
  "members": {
   "sprout-being": {
-   "latest": "self-account-sprout-being.v1.json",
+   "latest": "self-account-sprout-being.v2.json",
    "versions": [
     {
      "file": "self-account-sprout-being.v1.json",
@@ -9,6 +9,15 @@
      "supersedes": null,
      "version": 1,
      "written_at": "2026-09-05T18:29:51Z"
+    },
+    {
+     "file": "self-account-sprout-being.v2.json",
+     "instrument_sha256": "b6b610269db869eb7f65177f9f21b3b266e6c88b3be58d5a9dee5574d462dfe3",
+     "reason": "sources_changed",
+     "source_set_sha256": "f8182f6f90396da97f36c048952fadd7039831c6101680cc4d7a9da55eddaabf",
+     "supersedes": "self-account-sprout-being.v1.json",
+     "version": 2,
+     "written_at": "2026-09-05T18:55:19Z"
     }
    ]
   }

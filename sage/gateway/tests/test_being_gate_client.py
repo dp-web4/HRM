@@ -281,6 +281,17 @@ def test_a_refusal_is_witnessed_and_names_its_appeal_handle():
     assert env.refused and env.witness_id is None and "cannot be appealed yet" in env.error
 
 
+def test_granted_roots_come_from_the_policy_scope():
+    from sage.gateway.being_gate_client import _granted_roots, GatewayVerdict
+    class Pol: scope = ("path:/tmp/being-home", "repo:sage", "path:~/nope-not-real")
+    class Core:
+        @staticmethod
+        def _scope_parts(scopes, ws): return ((), tuple(s[5:] for s in scopes if s.startswith("path:")))
+    assert _granted_roots(Core, Pol, "/ws") == ("/tmp/being-home", "~/nope-not-real")
+    assert _granted_roots(object(), Pol, "/ws")[0].endswith("/tmp/being-home")   # fallback parser
+    assert _granted_roots(Core, None, "/ws") == () and GatewayVerdict("allow").granted == ()
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

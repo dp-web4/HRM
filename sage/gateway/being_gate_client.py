@@ -229,6 +229,25 @@ def parse_tool_calls(tool_calls: list) -> List["BeingIntent"]:
     return intents
 
 
+def _granted_roots(core, policy, workspace: str) -> tuple:
+    """The absolute path roots a resolved policy grants ("path:<abs>" scopes), via the
+    core's own resolver when it has one. () when there is no policy or no path scope."""
+    if policy is None:
+        return ()
+    try:
+        scopes = list(getattr(policy, "scope", ()) or ())
+        parts = getattr(core, "_scope_parts", None)
+        if parts is not None:
+            return tuple(parts(scopes, workspace)[1])
+        roots = []
+        for sc in scopes:
+            if isinstance(sc, str) and sc.startswith("path:"):
+                roots.append(os.path.realpath(os.path.expanduser(sc[5:])))
+        return tuple(roots)
+    except Exception:
+        return ()
+
+
 @dataclass(frozen=True)
 class GatewayVerdict:
     decision: str          # "allow" | "warn" | "deny"
@@ -237,6 +256,11 @@ class GatewayVerdict:
     innate: bool = False
     stage: str = ""        # which stage decided: registry | local-law | society
     witness_id: Optional[str] = None   # the deny's chain hash once witnessed (appeal handle)
+    # The path roots the law consulted for this verdict (the member's grants, resolved):
+    # the dispatcher's own confinement follows THESE, not only the home. Legion measured
+    # 2026-09-05 that a shared-context read grant "cannot be used at all" because the local
+    # dispatcher confined memory_read to the instance dir before hestia's gate was consulted.
+    granted: tuple = ()
 
     @property
     def blocks(self) -> bool:
@@ -425,6 +449,7 @@ class BeingGateClient:
                 except Exception:
                     policy = None
             v = self._core.evaluate(ev, self._profile, self.workspace, policy=policy)
+            granted = _granted_roots(self._core, policy, self.workspace)
         except Exception as e:
             return GatewayVerdict("deny", "gate.raised", innate=True, stage="local-law",
                                   reason=f"{type(e).__name__}: {e}")
@@ -462,7 +487,8 @@ class BeingGateClient:
                     return GatewayVerdict("deny", "society.unreachable", stage="society",
                                           reason=f"society-safety failed ({type(e).__name__}); consequential act denied")
                 # observational: local law already allowed, soft-pass
-        return GatewayVerdict(v.decision, v.rule, v.reason or "ok", v.innate, stage="local-law")
+        return GatewayVerdict(v.decision, v.rule, v.reason or "ok", v.innate, stage="local-law",
+                              granted=granted)
 
     # -- the F1a seam: gate, then dispatch, then consume the result ----------
     def dispatch(self, intent: BeingIntent) -> ResultEnvelope:

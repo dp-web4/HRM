@@ -14,8 +14,9 @@ routes them. Asking this reference to run one returns a clear "awaits F1a" envel
 
 Invariants:
   * Only ever invoked on an intent the gate already ALLOWED (BeingGateClient.dispatch).
-  * memory_* is confined to `memory_root` on top of the gate's own scoping — defense in
-    depth; a path that escapes is an error, never a silent write elsewhere.
+  * memory_* is confined to `memory_root` PLUS the roots the gate's verdict names as
+    granted (`GatewayVerdict.granted`) — defense in depth that follows the law instead of
+    overriding it; a path outside both is an error, never a silent write elsewhere.
   * Every executed act is witnessed (id returned), so nothing the being does is unrecorded.
 This is a stand-in, clearly labelled; the real F1a (hestia-side) replaces it wholesale.
 """
@@ -44,6 +45,8 @@ class ReferenceF1aDispatcher:
 
     # -- the Dispatcher contract ---------------------------------------------
     def __call__(self, intent: BeingIntent, verdict: GatewayVerdict) -> ResultEnvelope:
+        # confinement = the home + whatever the law just consulted as granted for THIS verdict
+        self._extra_roots = tuple(Path(r).resolve() for r in (getattr(verdict, "granted", ()) or ()))
         handler = getattr(self, f"_do_{intent.effector}", None)
         if handler is None:
             # a consequential network act the reference won't run — real F1a's job
@@ -77,8 +80,9 @@ class ReferenceF1aDispatcher:
         if not p.is_absolute():
             p = self.memory_root / p
         p = p.resolve()
-        if p != self.memory_root and self.memory_root not in p.parents:
-            raise ValueError(f"path escapes the being's memory root: {p}")
+        roots = (self.memory_root,) + tuple(getattr(self, "_extra_roots", ()) or ())
+        if not any(p == r or r in p.parents for r in roots):
+            raise ValueError(f"path escapes the being's memory root and its grants: {p}")
         return p
 
     # -- effectors -----------------------------------------------------------

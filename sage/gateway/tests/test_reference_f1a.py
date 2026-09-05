@@ -88,6 +88,24 @@ def test_relative_memory_path_roots_at_memory_root_not_cwd():
     finally:
         os.chdir(cwd)
 
+def test_confinement_follows_the_verdicts_granted_roots():
+    """A path outside the home is reachable when the verdict names its root as granted
+    (Legion 2026-09-05: a forum read grant 'cannot be used at all' when the dispatcher
+    confines to the home before the law is consulted); without that root it still escapes."""
+    disp, root = _disp()
+    other = tempfile.mkdtemp(prefix="ref-f1a-granted-")
+    target = os.path.join(other, "forum", "note.md")
+    os.makedirs(os.path.dirname(target)); open(target, "w").write("a note from a peer")
+    r = disp(BeingIntent("memory_read", {"path": target}), GatewayVerdict("allow", granted=(other,)))
+    assert r.ok and "a note from a peer" in r.result
+    r = disp(BeingIntent("memory_read", {"path": target}), _ALLOW)
+    assert not r.ok and "escapes" in (r.error or "")
+    # a granted root never widens to its parent or a sibling
+    r = disp(BeingIntent("memory_read", {"path": os.path.join(os.path.dirname(other), "x.md")}),
+             GatewayVerdict("allow", granted=(other,)))
+    assert not r.ok and "escapes" in (r.error or "")
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

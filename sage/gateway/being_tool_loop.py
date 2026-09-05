@@ -106,9 +106,16 @@ def _json_calls(text: str, names) -> List[dict]:
             # (Sprout beat 29, 2026-09-05: "action": "peer_ask" and a list of {"tool":
             # "memory_write", "path": ..., "content": ...} — 3 of 3 turns, 0 lifted).
             name = next((o[k] for k in _NAME_KEYS if isinstance(o.get(k), str)), None)
+            args = next((o[k] for k in _ARGS_KEYS if isinstance(o.get(k), dict)), None)
+            if name not in known and isinstance(args, dict):
+                # {"name": "tool", "arguments": {"type": "recall", ...}}: the tool named
+                # inside the arguments (Sprout beat 30, 2026-09-05)
+                inner = next((args[k] for k in ("type", "tool", "name", "action") if isinstance(args.get(k), str)), None)
+                if inner in known:
+                    name = inner
+                    args = {k: v for k, v in args.items() if k not in ("type", "tool", "name", "action")}
             if name not in known:
                 continue
-            args = next((o[k] for k in _ARGS_KEYS if isinstance(o.get(k), dict)), None)
             if args is None:
                 # flat form: the arguments sit beside the name key; keep only schema params
                 # when the schema is known, so stray keys ("timestamp", "status") never

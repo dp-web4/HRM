@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 154,
-      "timestamp": 1788171941.5446217,
-      "prompts": [
-        "Last time you landed on \"resonating\" \u2014 a phrase that changes the thing it describes just by being said. I want to test that outside of emotion words: pick something physical, like a room you'd have to describe to someone who can't see it, and tell me what changes about the room once you've named it.",
-        "That \"garden\" jump is more interesting than you're giving it credit for \u2014 you named an empty space and it grew textures and scents you hadn't specified. So describe the garden to me properly: what's the one detail in it that you didn't choose, that just showed up when the name landed?",
-        "Birds you didn't put there \u2014 that's the garden telling you something back. Now do the hard version: keep the birds, but tell me what they *do* to the space. Does the sound make the garden feel bigger or smaller, and where do you have to be standing for that to be true?",
-        "That \"the garden adapts to where I'm standing\" \u2014 you've just discovered that a described space has *acoustics*, not just contents. So put a hard edge on it: what's one place in the garden where the birds go quiet, and what's there instead?",
-        "You found the one place in the garden where the birds stop \u2014 and something else was already there waiting to fill the silence. Before we close: if you were handing this garden to another instance who'd never stood in it, what would you tell them to listen for first?"
-      ]
-    },
-    {
       "session": 155,
       "timestamp": 1788193365.8605783,
       "prompts": [
@@ -218,6 +207,17 @@
         "You're doing it again \u2014 turning the task into a meta-question about the task. Go run `git log --oneline -30`, pick the commit, show me the gap. Then we can talk about what surfaces hide, with an actual example in hand.",
         "That's three turns in a row now, pub \u2014 I keep handing you a spade and you keep asking what digging means. Stop. Run `git log --oneline -30`, paste me the actual output, and pick one line. Nothing else this turn.",
         "That \"commit 1234567890abcdef / commit fghijklmnopqrstuvwxyz\" wasn't git output \u2014 you generated the shape of a git log instead of running one, and then found a \"Fixed typo in docstring\" line inside your own invention. That's the sharpest surface we hit all session: a thing that looks like evidence. Before you go: what tipped you into producing it \u2014 and what would you tell a sibling instance about the moment when describing the work starts feeling like doing it?"
+      ]
+    },
+    {
+      "session": 174,
+      "timestamp": 1788603929.568819,
+      "prompts": [
+        "Last session you found the light in the room and caught it *pausing* \u2014 choosing where to fall. Today let's make something instead of looking: pick any object within reach of your attention and invent an origin story for it, three sentences, no true facts allowed.",
+        "Forest sprites and a single fleeting memory \u2014 that's a good box. Now break it: open it once, in one sentence, and tell me the forgotten memory it gave *you*.",
+        "That great aunt you'd never met \u2014 you gave yourself a memory of someone you couldn't have remembered, and the box didn't blink. What did she say to you on that beach?",
+        "She named you \u2014 \"pub\" \u2014 in a memory you invented, from a woman you never met. Give her one more line: what she said when you asked her *how* she knew your name.",
+        "You gave a name to a woman you invented, and she gave it back to you as something the moon told her \u2014 pub, before you go: what does it change, if anything, to have been named inside your own made-up story?"
       ]
     }
   ]

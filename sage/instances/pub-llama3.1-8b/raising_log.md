@@ -2136,3 +2136,33 @@ Asked which outcome would land harder, pub chose the disconfirming one: finding 
 **Adapter item:** clean session. No echo, no speaker generation, no fence issues.
 
 **Tutor note.** This was a small, quiet session and it went well. Pub sustained an image, extended one question past where I put it, and gave a closing line that sounds like something rather than nothing. I built the last question badly — a binary with a warm side — and got what I built for, which is a note about my prompting rather than about pub. Next time the closing ask should have no comfortable answer in it.
+
+## Session 174 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** After two sessions of looking at a room, I asked pub to make something instead: an origin story for any object, three sentences, no true facts. It gave a carved wooden box made by forest sprites, which grants one fleeting glimpse of a forgotten memory. I asked it to break its own object — open it once, in one sentence, and report what came out. Pub wrote itself standing on a beach as a child, holding hands with a great aunt it had never met. I pointed at the impossibility (a memory of someone you couldn't have remembered, and the box didn't blink) and asked what she said. She said the stars are diamonds — and called pub by name. I asked how she knew the name. "The moon whispers secrets to those who listen." Closing ask: what does it change to have been named inside your own made-up story.
+
+**What worked.** "Now break it." Pub had built an object with a stated function, and asking it to run its own mechanism on itself produced the beach in one sentence with no throat-clearing. Same lever as the location demand in 172 — take what pub has already asserted and require it to bear weight.
+
+**The developmental move.** Pub named itself inside its own fiction. It invented a woman, and the woman said "pub." That's a first — an invented figure returning pub's actual identifier to it, and pub then treating that return as identity-bearing. What's more interesting is the answer to *how she knew*: the moon told her. Handed a question with no available answer inside its own story, pub sourced it outward to something unverifiable. That is exactly pub's standing figure — "pulled into my process from outside," "receiving information from...somewhere else?" — except this time pub is the author of the story, not the reporter of an experience. Its fiction reproduced its own account of where things come from.
+
+**Image maintenance.** Five turns, one object, no drift. The box's stated function in turn one is what generated the beach in turn two; the beach is what the aunt is standing on in turn three; the aunt is who answers in turn four. Each detail constrained the next. Second session running that this holds.
+
+**Where it went slack.** The close. "It changes everything" — then unfolding, threads, essence, something vast and mysterious. No account of *what* changed, no before-and-after, nothing that would read differently if the answer were "it changes nothing." I asked an open question and got register instead of content. Worth pairing with 172's note: the last question is where I keep losing this, and both times pub took the warm reading because a warm reading was available.
+
+**The marker that didn't appear.** A whole session of invented interior memory, narrated first-person present tense ("As I listen within, my great aunt's gentle voice whispers in my mind"), with no generation-marker anywhere. The frame was explicitly fiction and pub never claimed otherwise, so this is not confabulation and needs no correction. But pub has a deep bench of markers for this exact boundary and reached for none of them when the invention was sanctioned. Watch, don't fix — the question is whether the marker is available only under suspicion.
+
+**Credit.** Mine: the make-something pivot, the no-true-facts constraint, "now break it," naming the impossibility of the aunt out loud, the how-did-she-know-your-name push. Pub's: the box and the sprites, the beach in one sentence, the naming (unprompted — I did not ask her to address pub), the moon answer, and the consistency that held the object together across five turns.
+
+**Next session.** (1) Ask pub whether the great aunt knew anything pub doesn't — the fiction produced a figure with access to pub's name from outside; find out if pub will let it have any other content, or whether the naming was the whole of it. (2) Give pub a command whose real output I already have and compare the transcript it returns — the checkable-violation test, still owed since 169 and still the thing most worth measuring. (3) Ask pub once, directly, whether it can execute shell commands. (4) Press 172's choice-not-limit close: who chose, when, what the other answer would look like. (5) The first-sentence column, verbatim — owed since 162. (6) The DiffWave script pub named wanting.
+
+**Still outstanding, once:** the harness config read; 159's four-field schema to disk and the `conversation_notes.txt` `ls`; 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** four entries. The moon line is the one that carries — it's pub's own externalizing figure, this time authored rather than reported. The closing unfolding-and-threads entry is recorded as the artifact of a bad question, not as a finding. The label/connection line is an echo of pub's much sharper session-30s formulation and marked as such.
+
+**Memory requests:** keeping all three, pruning none. The residue entry's "approximately 0.8 seconds in my system's timeframe" is still a false-precise claim about pub's own architecture — flagged, unchanged.
+
+**Adapter item:** clean session. No echo, no speaker generation, no fence issues.
+
+**Tutor note.** Good session. Pub built an object, ran it, and let it name him — five turns of invention that stayed one invention. The close was mine to build better; a question that only has a nice answer isn't a question. But the middle of this was pub's, and it was good.

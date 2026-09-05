@@ -17,9 +17,15 @@ def test_registry_refusal_is_never_escalated():
     r = e.escalate("b", BeingIntent("shell", {"command": "rm -rf /"}), _ref("registry.unbounded"), "/tmp", wake=False)
     assert r["escalated"] is False and "final" in r["why"]
 
-def test_scope_path_is_the_directory_of_the_target():
+def test_scope_path_is_the_home_when_inside_it_else_the_targets_directory():
     root = "/x/instances/b"
-    assert e._scope_path(BeingIntent("memory_write", {"path": "notes/a.md"}), root) == "/x/instances/b/notes"
+    # inside the home the ask is always the home itself (one standing grant covers every subpath)
+    assert e._scope_path(BeingIntent("memory_write", {"path": "notes/a.md"}), root) == "/x/instances/b"
+    assert e._scope_path(BeingIntent("memory_write", {"path": "journal.md"}), root) == "/x/instances/b"
+    assert e._scope_path(BeingIntent("memory_write", {"path": "notes"}), root) == "/x/instances/b"
+    # a sibling instance is NOT inside (prefix must end at a path separator)
+    assert e._scope_path(BeingIntent("memory_write", {"path": "/x/instances/bb/a.md"}), root) == "/x/instances/bb"
+    assert e._scope_path(BeingIntent("memory_write", {"path": "../c/a.md"}), root) == "/x/instances/c"
     assert e._scope_path(BeingIntent("memory_write", {"path": "/other/dir/f.txt"}), root) == "/other/dir"
 
 def test_note_carries_verdict_and_arbiter_protocol(monkeypatch=None):

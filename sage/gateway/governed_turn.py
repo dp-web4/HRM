@@ -143,6 +143,18 @@ def acts_under_posture(model: str) -> bool:
     return not any(k in model.lower() for k in ("distill",))
 
 
+def instance_config(instance: Path) -> dict:
+    """The seat's per-instance config (`instance.json`: machine, model, slug ...). Also the
+    home of `peer_aliases` — the being's names for peers -> hub roster names / member ids
+    (sprout-being's hub member is still unnamed, so Legion aliases it to its id). A file
+    beside the being rather than env on a launcher, because Legion's beats have no unit
+    to carry SAGE_PEER_ALIASES (2026-09-05); env still applies on top."""
+    try:
+        return json.loads((Path(instance) / "instance.json").read_text())
+    except Exception:
+        return {}
+
+
 def build_client(member: str, instance: Path, model: str, workspace: str,
                  forum_dir: str | None, host_session_id: str, temperature: float,
                  max_tokens: int, gate_only: bool = False, num_ctx: int = 8192):
@@ -157,7 +169,8 @@ def build_client(member: str, instance: Path, model: str, workspace: str,
     # `pending` instead of executing. For seeing verdicts before anything leaves.
     dispatcher = None if gate_only else HestiaF1aDispatcher(
         member, memory_root=str(instance), publish_fn=publish_fn,
-        host_session_id=host_session_id, being_lct=being_lct_for(member, workspace))
+        host_session_id=host_session_id, being_lct=being_lct_for(member, workspace),
+        peer_aliases=instance_config(instance).get("peer_aliases") or None)
     client = BeingGateClient(member_id=member,
                              identity_path=str(instance / "identity.json"),
                              workspace=workspace, dispatcher=dispatcher,

@@ -294,7 +294,8 @@ def main(argv=None) -> int:
     except Exception:
         pass
     name = ident.get("name") or args.member.split("-")[0]
-    machine = ident.get("machine") or "legion"
+    from sage.gateway.governed_turn import instance_config
+    machine = ident.get("machine") or instance_config(instance).get("machine") or "legion"
 
     from sage.gateway.governed_turn import build_client
     from sage.gateway.being_gate_client import ollama_tools
@@ -312,7 +313,9 @@ def main(argv=None) -> int:
     if not args.no_hub_drain and not args.gate_only and os.path.isfile(being_env):
         try:
             from sage.gateway.being_inbox_drain import drain_once as _hub_drain
-            hub_inbox = _hub_drain(instance, being_env, workspace=workspace)
+            # the notify goes to THIS being (args.member), labelled as this machine's seat
+            hub_inbox = _hub_drain(instance, being_env, workspace=workspace, member=args.member,
+                                   relayed_by=f"{machine}-claude")
         except Exception as _e:
             hub_inbox = {"error": f"{type(_e).__name__}: {_e}"}
     # inbox (peek) and long-term recall, seat-side, so the being starts oriented

@@ -284,3 +284,12 @@ memory
 *.tar.gz
 sage/instances/*/heartbeats.jsonl
 sage/instances/*/heartbeat.log
+
+# Consolidation grafts (sage/memory/consolidation.py): the graft, index and log are committed as
+# evidence; the per-line own-word index sidecar is named in the graft by path + sha256 + count and
+# re-derivable from the sources, so it stays local (650 KB per version on legion-being, 09-05).
+sage/instances/*/grafts/*.own-index.jsonl
+
+# `memory` above (line ~280) ignores ANY path component named memory, which silently swallowed new
+# files under sage/memory/ (found adding sage/memory/consolidation.py, 2026-09-05). Re-include it.
+!sage/memory/

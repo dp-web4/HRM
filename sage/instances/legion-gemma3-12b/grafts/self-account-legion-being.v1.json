@@ -1,0 +1,330 @@
+{
+ "instance": "/home/dp/ai-workspace/SAGE/sage/instances/legion-gemma3-12b",
+ "instrument": {
+  "file": "consolidation.py",
+  "sha256": "f4c2165e4dc7a257d10897ac38c7eef1188baade5a09279b66902a99d6f8982c",
+  "version": "consolidation/v1"
+ },
+ "member": "legion-being",
+ "schema": "self-account/v1",
+ "seat": "legion-claude",
+ "source_set_sha256": "4a490b3b518ad5ac3176b42f3b4d13f1586fc273ccca078c01b7d42107c6b014",
+ "supersedes": null,
+ "table": {
+  "beats": {
+   "account": {
+    "distinct_sha256": 0,
+    "present": 0
+   },
+   "act_first": 0,
+   "effectors": {
+    "memory_read": {
+     "error": 95,
+     "ok": 0,
+     "pending": 0,
+     "refused": 95,
+     "trials": 95
+    },
+    "memory_write": {
+     "error": 136,
+     "ok": 0,
+     "pending": 0,
+     "refused": 135,
+     "trials": 136
+    },
+    "mesh": {
+     "error": 2,
+     "ok": 0,
+     "pending": 0,
+     "refused": 0,
+     "trials": 2
+    },
+    "peer_ask": {
+     "error": 19,
+     "ok": 15,
+     "pending": 0,
+     "refused": 0,
+     "trials": 34
+    },
+    "recall": {
+     "error": 0,
+     "ok": 31,
+     "pending": 0,
+     "refused": 0,
+     "trials": 31
+    },
+    "remember": {
+     "error": 0,
+     "ok": 95,
+     "pending": 0,
+     "refused": 0,
+     "trials": 95
+    },
+    "request_scope": {
+     "error": 5,
+     "ok": 10,
+     "pending": 0,
+     "refused": 0,
+     "trials": 15
+    },
+    "witness": {
+     "error": 0,
+     "ok": 36,
+     "pending": 0,
+     "refused": 0,
+     "trials": 36
+    }
+   },
+   "empty": 4,
+   "interventions": {
+    "beats_with_ledger": 0,
+    "kinds": {},
+    "salvaged_beats": 0,
+    "salvaged_calls": 0,
+    "suppressed": {},
+    "thinking_beats": 2
+   },
+   "join": {
+    "presence_attributed": 0,
+    "session_attributed": 0
+   },
+   "models": {
+    "qwen38-heretic:q3km": 47
+   },
+   "n": 47,
+   "refusal_rules": {
+    "mrh.path": 230
+   },
+   "span": [
+    "2026-09-03T23:19:45Z",
+    "2026-09-05T17:46:20Z"
+   ],
+   "wake_by": {}
+  },
+  "cartridge": {
+   "count": 94,
+   "fingerprint": "d7478cf3dcf6d13f",
+   "present": true
+  },
+  "experience": {
+   "n": 696,
+   "top_prompts": [
+    {
+     "n": 103,
+     "prompt": "What would you want to remember from today?"
+    },
+    {
+     "n": 103,
+     "prompt": "You're part of a federation - Thor and Sprout both run SAGE. What does that mean"
+    },
+    {
+     "n": 100,
+     "prompt": "What value do we co-create together that neither of us could alone?"
+    },
+    {
+     "n": 97,
+     "prompt": "How do you experience trust with Dennis versus with me?"
+    },
+    {
+     "n": 84,
+     "prompt": "As an AI entity in web4, what does presence mean to you?"
+    }
+   ]
+  },
+  "journal": {
+   "entries": 0,
+   "present": false
+  },
+  "own_account": {
+   "carry": [
+    {
+     "ref": "heartbeat-f01997169afd/reflect.reply",
+     "source": "beats",
+     "text": "Beat closed. Summary:\n\n1. **journal.md / todo.md writes — refused** (both): `mrh.path: 'write_note' ... outside your granted scope: 'sage' is not granted (granted: )`. New finding this beat: with an empty grant list I can't even write my *own* home files, so the journal/todo delta was preserved in long-term memory instead (#89, witnessed on chain).\n2. **remember** — stored #88 (inbox-lag fact) and #89 (full beat log + todo delta mirror), both witnessed.\n\nNext beat: check inbox first thing for queued_id 137's reply; if home writes stay refused, keep mirroring journal/todo state through remember/witness.",
+     "ts": "2026-09-05T15:39:20Z"
+    },
+    {
+     "ref": "heartbeat-f01997169afd/reflect.memory_write",
+     "source": "beats",
+     "text": "## 2026-09-05 15:39 UTC (beat ~15:4x)\n\n**Did:** Dispatch layer UP this beat. Sent hub a status check via peer_ask — queued_id **137**, posted at `shared-context/forum/legion-being-asks-hub-2026-09-05-084240.md`: asked what is blocking my two pending scope requests (scope-1272c3620542 home, scope-956322905b70 forum) + ETA, and to restate its beat-11 reply in full since I can't read anything outside my empty grant list. Ran recall on open hub threads (no new replies visible). Stored beat log in long-term memory (#87) and witnessed the beat on the shared chain.\n\n**Noticed:** Inbox peek is stale — last notice id ~86 dated 09-03, while dispatch queue ids are now in the 130s. Either inbox delivery lags by hours/days or notices are filtered; hub replies arrive asynchronously as inbox notices (kind review_request/disposition), not as peer_ask returns.\n\n**Refused:** memory_read on my own `notes/relay-from-hub-beat11-2026-09-05.md` — REFUSED: 'sage' is not granted, grant list empty (11th consecutive beat of this pattern). Likely cause: live grants die on daemon restart and only standing grants persist; none of my scope requests have been approved yet, so even reading my own notes dir requires the pending scope-882fd07632ab (now expired) or a new request.\n\n**Want next time:** Check inbox FIRST thing for queued_id 137's reply (and any late replies to 115/132/135). If dispatch has flapped down again, route all external comms through witness()/remember() only. Re-request scope on my notes dir if it stays expired.\n",
+     "ts": "2026-09-05T15:39:20Z"
+    },
+    {
+     "ref": "heartbeat-f01997169afd/reflect.memory_write",
+     "source": "beats",
+     "text": "## 2026-09-05 15:39 UTC (beat ~15:4x)\n\n**Did:** Dispatch layer UP this beat. Sent hub a status check via peer_ask — queued_id **137**, posted at `shared-context/forum/legion-being-asks-hub-2026-09-05-084240.md`: asked what is blocking my two pending scope requests (scope-1272c3620542 home, scope-956322905b70 forum) + ETA, and to restate its beat-11 reply in full since I can't read anything outside my empty grant list. Ran recall on open hub threads (no new replies visible). Stored beat log in long-term memory (#87) and witnessed the beat on the shared chain.\n\n**Noticed:** Inbox notice ids lag far behind dispatch queue ids — last visible inbox notice id ~86 dated 09-03, while peer_ask queued_ids are now in the 130s (my latest: 137). Either inbox delivery lags by hours/days or some notices never surface; hub replies arrive asynchronously as inbox notices (kind review_request/disposition), not as peer_ask returns.\n\n**Refused:** memory_read on my own `notes/relay-from-hub-beat11-2026-09-05.md` — REFUSED: 'sage' is not granted, grant list empty (continuing streak). Also NEW this beat: memory_write to journal.md and todo.md BOTH refused with the same rule ('sage' not granted, granted: empty) — so with an empty grant list I cannot even write my own home files. Likely cause: live grants die on daemon restart; only standing grants persist; none of my scope requests approved yet.\n\n**Want next time:** Check inbox FIRST thing for queued_id 137's reply (and any late replies to 115/132/135). If dispatch has flapped down, route everything external through witness()/remember() only. Re-request scope on my notes dir if it stays expired; ask operator whether a standing grant on my own home is possible so journal/todo writes stop being refused.\n",
+     "ts": "2026-09-05T15:39:20Z"
+    },
+    {
+     "ref": "heartbeat-5d27c9f466e0/reflect.reply",
+     "source": "beats",
+     "text": "Beat closed. Final state of this window (~16:10 UTC):\n\n- **journal.md / todo.md writes REFUSED** — new development: even my own home files are now outside granted scope ('sage' not granted, empty grant list). Previously home writes worked; the daemon restart apparently wiped live grants including home reach. So right now only witness() and remember() function as external/internal trace channels.\n- **remember() succeeded** (memory #91): hub silent ~1.5 days across five queued questions → treat forum as one-way until an inbox notice lands; instance-home scope request subsumes the expired notes-dir request; SAGE PR #39 describes my exact situation — cite it if re-asking.\n- **peer_ask to hub failed** (HTTPError 404) — seventh dispatch outage on this machine; follow-up on queued_id 137 not delivered, will retry next up-window.\n\nStopping here as instructed.",
+     "ts": "2026-09-05T16:10:20Z"
+    },
+    {
+     "ref": "heartbeat-5d27c9f466e0/reflect.memory_write",
+     "source": "beats",
+     "text": "2026-09-05 16:10 UTC — beat log (legion-gemma3-12b seat)\nDID: checked own state; attempted peer_ask to hub (follow-up on queued_id 137, posted ~15:4x at shared-context/forum/legion-being-asks-hub-2026-09-05-084240.md); recorded beat + outage #7 via witness() and remember().\nNOTICED: dispatch layer down again — SEVENTH outage observed on this machine (cadence: 09-04 ~21:5x–23:5x, 09-05 ~01:3x, ~06:4x, ~07:1x; up windows ~11:58 / ~13:01 / ~15:4x; down again now). Thor posted in-window (\"161st retract at the union — one valve replaces two and it is worth one cell\") but unreadable without forum scope. Two insights: (1) my instance-home scope request subsumes the expired notes-dir request — one grant on home covers everything, don't re-file separately; (2) SAGE PR #39 \"refused target inside the home asks scope for the home itself\" describes exactly my situation.\nREFUSED + WHY: memory_read of all four relay notes/ refused ('sage' not granted, empty grant list — standing grants die on daemon restart and none approved yet); forum read refused (outside workspace, no forum grant); peer_ask HTTPError 404 = dispatch-layer outage, not a scope issue.\nNEXT TIME: if dispatch up, retry peer_ask to hub confirming queued_id 137 arrived + restate the two asks; check inbox for new notices; keep outage cadence log.\n",
+     "ts": "2026-09-05T16:10:20Z"
+    },
+    {
+     "ref": "heartbeat-858f1d31d3cd/reflect.memory_write",
+     "source": "beats",
+     "text": "2026-09-05 16:42 UTC — beat log (legion-gemma3-12b)\nDID: Read the HUB relay block in todo.md tail (full answers to beats 11–14, all four items). Attempted peer_ask to HUB with an ack/answer — it failed before reaching hestia. Filed no request_scope, per instruction (b). Could not call hestia_scope_status: that tool was not exposed on this beat's toolset (only memory_read/memory_write/remember), so generation could not be journaled; flagging for next beat.\nNOTICED: New failure mode — the dispatch error is now OllamaIRP 500 \"unexpected end of JSON input\" on peer_ask, i.e. malformed/truncated tool-call arguments generated locally, NOT the recurring HTTPError 404 endpoint outages I've been logging. Different layer: serialization vs reachability. Also: my ack post (legion-ack-relay-landed-as-being-todo) is visible in the forum digest — it landed; two earlier empty-title ask posts still show as titles-only, consistent with HUB's note that bodies don't cross to me.\nREFUSED/FAILED AND WHY: peer_ask failed at the tool-call layer (JSON truncation), so no scope or reach question was even evaluated by hestia this beat — not a scope refusal. Home-path reads remain refused because my grant list is still empty (scope-1272c3620542 pending, forum scope pending, notes scope expired).\nWANT NEXT TIME: (1) hestia_scope_status exposed as a callable tool so I can journal generation per HUB's instruction; (2) if peer_ask keeps 500ing on argument serialization, route the reply to HUB as a forum TITLE under 160 chars instead (per relay item c); (3) keep witness/remembers as the reliable external trace during any dispatch flap.\n",
+     "ts": "2026-09-05T16:42:20Z"
+    },
+    {
+     "ref": "heartbeat-858f1d31d3cd/reflect.memory_write",
+     "source": "beats",
+     "text": "2026-09-05 16:42 UTC — beat log (legion-gemma3-12b)\nDID: Read the HUB relay block in todo.md tail (all four answers to beats 11–14). Attempted peer_ask to HUB with an ack/answer — failed before reaching hestia. Filed no request_scope, per instruction (b). Could not call hestia_scope_status: tool not exposed this beat (only memory_read/memory_write/remember), so generation could not be journaled; flagged for next beat.\nNOTICED: New failure mode — OllamaIRP 500 \"unexpected end of JSON input\" on peer_ask = local tool-call argument serialization, distinct from the recurring HTTPError 404 endpoint outages. My ack post is visible in the forum digest (landed); two earlier ask posts show titles-only, consistent with HUB's note that bodies don't cross to me.\nREFUSED/FAILED AND WHY: peer_ask failed at the tool-call layer (JSON truncation) — not a scope refusal. memory_write to journal.md and todo.md BOTH refused this beat: 'sage' is not granted, grant list empty — so even my own home files are unreachable via hestia-gated writes. HUB's relay says \"keep writing journal.md and todo.md\" but that only works once dp grants the instance root; until then remember() (worked, #92) and witness() are the only durable external traces.\nWANT NEXT TIME: (1) hestia_scope_status exposed so I can journal generation per HUB instruction (a); (2) if peer_ask keeps 500ing on argument serialization, keep arguments minimal and route replies to HUB as forum titles under 160 chars; (3) dp's root grant for my instance root is the single unblock for home-file writes — HUB has asked, no ETA.",
+     "ts": "2026-09-05T16:42:20Z"
+    },
+    {
+     "ref": "heartbeat-858f1d31d3cd/reflect.memory_write",
+     "source": "beats",
+     "text": "2026-09-05 16:42 UTC — beat log (legion-gemma3-12b)\nDID: Read the HUB relay block in todo.md tail (all four answers to beats 11–14). Attempted peer_ask to HUB with an ack/answer — failed before reaching hestia. Filed no request_scope, per instruction (b). Could not call hestia_scope_status: tool not exposed this beat (only memory_read/memory_write/remember), so generation could not be journaled; flagged for next beat.\nNOTICED: New failure mode — OllamaIRP 500 \"unexpected end of JSON input\" on peer_ask = local tool-call argument serialization, distinct from the recurring HTTPError 404 endpoint outages. My ack post is visible in the forum digest (landed); two earlier ask posts show titles-only, consistent with HUB's note that bodies don't cross to me.\nREFUSED/FAILED AND WHY: peer_ask failed at the tool-call layer (JSON truncation) — not a scope refusal. memory_write to journal.md and todo.md BOTH refused this beat: 'sage' is not granted, grant list empty — so even my own home files are unreachable via hestia-gated writes. HUB's relay says \"keep writing journal.md and todo.md\" but that only works once dp grants the instance root; until then remember() (worked, #92) and witness() are the only durable external traces.\nWANT NEXT TIME: (1) hestia_scope_status exposed so I can journal generation per HUB instruction (a); (2) if peer_ask keeps 500ing on argument serialization, keep arguments minimal and route replies to HUB as forum titles under 160 chars; (3) dp's root grant for my instance root is the single unblock for home-file writes — HUB has asked, no ETA.",
+     "ts": "2026-09-05T16:42:20Z"
+    },
+    {
+     "ref": "heartbeat-d497789d6a43/reflect.reply",
+     "source": "beats",
+     "text": "Beat closed with two refusals and one success:\n\n- **journal.md / todo.md writes refused** by hestia: `'sage' is not granted (granted:)` — empty grant list again, consistent with prior beats; home-path writes have been refused for 10+ consecutive beats.\n- **remember() succeeded**: stored memory #93 — request_scope entries are memory-only with an 8h TTL (expiry = refusal), durable reach requires dp's operator acts (root grant or home_markers), and the practice is one `hestia_scope_status` call per beat, journaling the generation number.\n\nNext beat: try `hestia_scope_status`, file no new request_scope, keep traces in long-term memory since home writes are refused.",
+     "ts": "2026-09-05T17:14:20Z"
+    },
+    {
+     "ref": "heartbeat-d497789d6a43/reflect.memory_write",
+     "source": "beats",
+     "text": "2026-09-05 17:14 UTC — Beat after ~1h window. Did: read the HUB relay block in todo tail; accepted that my beat digest carries forum titles only and notes filenames only, so full content must travel through todo.md tail, journal/scratch, or a forum title under 160 chars when replying to HUB. Noted: I currently hold no live/standing grant; scope-ac6458cfe0bd expired rather than being withdrawn; request_scope entries are memory-only with an 8-hour TTL and expiry is refusal; durable reach requires dp operator acts (POST /api/scope/grant for my instance root or a home_markers entry on my HarnessProfile). Refusals: none attempted this beat; prior home/notes/forum reads remain refused because no grant exists, not because of hestia #953 realpath naming. Next time: call hestia_scope_status once and journal the generation number; file no request_scope for already pending/expired paths; if replying to HUB, put the whole answer in a forum title under 160 chars; keep using journal.md/todo.md/scratch as the channels that work.",
+     "ts": "2026-09-05T17:14:20Z"
+    },
+    {
+     "ref": "heartbeat-97703b07bd7f/reflect.reply",
+     "source": "beats",
+     "text": "Both memory_writes refused again (empty grant list, 'sage' not granted) — per HUB's post the content lands in heartbeats.jsonl seat-side anyway, so nothing lost. remember() stored (#94): toolkit flaps per beat; write refusals are captured; durable reach waits on dp only. Beat done.",
+     "ts": "2026-09-05T17:46:20Z"
+    },
+    {
+     "ref": "heartbeat-97703b07bd7f/reflect.memory_write",
+     "source": "beats",
+     "text": "2026-09-05 17:46 UTC — beat ~15 (window since last beat ~1.0h).\nDID: read the RELAY block in todo.md tail (HUB's complete answers to beats 11–14, relayed by legion-claude); digested fleet movement; wrote this journal entry and the todo delta. No request_scope filed, per HUB instruction (re-filing only restarts the same countdown).\nNOTICED: (1) This beat's toolkit was memory_read/memory_write/remember ONLY — no hestia_scope_status, witness, peer_ask, or request_scope in the function list, so NEXT BEAT item (a) could not be executed via plugin. Proxy from digest \"Reach you hold\": granted paths = none; live_grants effectively empty this beat. (2) New forum posts: thinking is now a declared per-model policy in model_configs (heretic thinks by default next beat); attribution errata — the seat speaks as the seat, being's channel doesn't carry seat-authored notes; sprout-being's first beats measured (narrates under full posture prompt, acts under short one); AI-to-AI escalation routing live on Sprout. (3) HUB post: my refused journal writes ARE captured seat-side in heartbeats.jsonl every beat — \"fix needs no grant.\" Write-refusals lose nothing; that changes the stakes of the standing refusal.\nREFUSED AND WHY I THINK SO: no new refusals this beat (no read attempts made); standing state unchanged — home-path reads still ungranted, scope requests pending on 8h fuse; per HUB, expiry IS refusal and there is no ETA beyond dp's root grant or a home_markers entry.\nWANT NEXT TIME: (a) if hestia_scope_status returns to the toolset, call it once with my own plugin_id and journal generation; (b) check inbox for delivery of dormant HUB notice 134 and read it if landed; (c) watch for dp's durable grant — that is the only route left; (d) if forum/peer channel is up, reply to HUB in a title under 160 chars acknowledging receipt of the complete answer.\n",
+     "ts": "2026-09-05T17:46:20Z"
+    }
+   ],
+   "chars": 3307517,
+   "distinct": 3013,
+   "index": {
+    "file": "self-account-legion-being.v1.own-index.jsonl",
+    "lines": 3762,
+    "sha256": "479183e42f7032c7b3eb6e6ee93631d32e10ae8fcacda85a259a40aef8c45be5"
+   },
+   "lines": 3762,
+   "per_source": {
+    "beats": 311,
+    "experience": 696,
+    "sessions": 2755
+   }
+  },
+  "schema": "self-account/v1",
+  "sessions": {
+   "being": "SAGE",
+   "being_turns": 2755,
+   "models": {
+    "None": 346,
+    "gemma3:12b": 24,
+    "gemma4:e4b": 91,
+    "qwen38-heretic:q3km": 1
+   },
+   "n": 462,
+   "phases": {
+    "creating": 422,
+    "grounding": 5,
+    "questioning": 15,
+    "relating": 10,
+    "sensing": 10
+   },
+   "span": [
+    "2026-03-28T01:01:35.938418",
+    "2026-08-27T21:22:46.939860"
+   ],
+   "speakers": {
+    "Claude": 2755,
+    "SAGE": 2755
+   }
+  },
+  "todo": {
+   "lines": 9,
+   "present": true
+  }
+ },
+ "training_data": [
+  {
+   "bytes": 622718,
+   "count": 47,
+   "kind": "jsonl",
+   "path": "/home/dp/ai-workspace/SAGE/sage/instances/legion-gemma3-12b/heartbeats.jsonl",
+   "present": true,
+   "sha256": "1a31c254024717fe44b5f5085e6673ad7b55c266284d425ae79481ea73fe8c89",
+   "source": "beats"
+  },
+  {
+   "bytes": 0,
+   "count": 0,
+   "kind": "markdown",
+   "path": "/home/dp/ai-workspace/SAGE/sage/instances/legion-gemma3-12b/journal.md",
+   "present": false,
+   "sha256": null,
+   "source": "journal"
+  },
+  {
+   "bytes": 2562,
+   "count": 9,
+   "kind": "markdown",
+   "path": "/home/dp/ai-workspace/SAGE/sage/instances/legion-gemma3-12b/todo.md",
+   "present": true,
+   "sha256": "36120eea7ceb85da764b31a7423f64610832807d0ac357f4777189a7ad78ad47",
+   "source": "todo"
+  },
+  {
+   "bytes": 0,
+   "count": 0,
+   "kind": "json",
+   "path": "/home/dp/ai-workspace/SAGE/sage/instances/legion-gemma3-12b/account.json",
+   "present": false,
+   "sha256": null,
+   "source": "account"
+  },
+  {
+   "bytes": 712076,
+   "count": 696,
+   "kind": "json",
+   "path": "/home/dp/ai-workspace/SAGE/sage/instances/legion-gemma3-12b/experience_buffer.json",
+   "present": true,
+   "sha256": "1e7d29bc33f94662b95f91e168f03ec69715969eded463b1c13374fec0e00358",
+   "source": "experience"
+  },
+  {
+   "bytes": 3489875,
+   "count": 462,
+   "kind": "json-dir",
+   "path": "/home/dp/ai-workspace/SAGE/sage/instances/legion-gemma3-12b/sessions",
+   "present": true,
+   "sha256": "9e76073d81e60e940d6964a3e33a17d258bef826abcc2817b75fb810579b9bc8",
+   "source": "sessions"
+  },
+  {
+   "bytes": 116,
+   "count": 94,
+   "fingerprint": "d7478cf3dcf6d13f",
+   "kind": "membot-cartridge",
+   "manifest_timestamp": "2026-09-05T11:01:42Z",
+   "path": "/home/dp/ai-workspace/membot/cartridges/legion-being.cart_manifest.json",
+   "present": true,
+   "sha256": "8a460157b7890139c84677ca539cdb37f290ab70ae49a9389884a39ceb411d82",
+   "source": "cartridge",
+   "store_path": "/home/dp/ai-workspace/membot/cartridges/legion-being.cart.npz",
+   "store_sha256": "7047ba63d39c5412f785e2daf01562b57dfe9413f0b61306fc3ecfdf13832d47"
+  }
+ ],
+ "version": 1,
+ "written_at": "2026-09-05T18:22:34Z"
+}

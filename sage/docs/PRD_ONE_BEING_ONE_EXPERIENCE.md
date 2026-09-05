@@ -83,3 +83,19 @@ ACCOUNT: present, sha256 3380078e9825… (beat heartbeat-9891c98f5713, session_a
 VOLITION: this beat 1 act (remember, salvaged from fenced Python, executed). Cumulative 32 beats.
 S3: presence_block + beat-wake marker + interventions ledger on main (0d87bb577); presence feeder restarted; no strong moment yet, so `wake.by` has read only `timer`.
 UPTAKE: not computed (channel has one session's worth of evidence pending).
+
+### Snapshot S2-a — 2026-09-05 18:22Z (Legion; first graft on legion-being, dark, pre-review)
+
+`python3 -m sage.memory.consolidation --instance sage/instances/legion-gemma3-12b --cartridge-manifest …/membot/cartridges/legion-being.cart_manifest.json`, then the same command again:
+
+```
+{"event": "graft", "member": "legion-being", "version": 1, "file": "self-account-legion-being.v1.json",
+ "supersedes": null, "source_set_sha256": "4a490b3b518ad5ac3176b42f3b4d13f1586fc273ccca078c01b7d42107c6b014",
+ "instrument_sha256": "f4c2165e4dc7a257d10897ac38c7eef1188baade5a09279b66902a99d6f8982c",
+ "own_lines": 3762, "beats": 47, "sessions": 462, "journal_entries": 0}
+{"event": "noop",  "member": "legion-being", "latest": "self-account-legion-being.v1.json", …same source_set_sha256}
+```
+
+Training data named (path · sha256 · count): beats 47 · journal **absent** (no write grant on Legion; the absence is in the graft) · todo 9 lines · account.json absent (Legion's timer still runs pre-S1 code) · experience 696 · sessions 462 · cartridge 94 (fingerprint d7478cf3dcf6d13f). Table: 230 refusals, all `mrh.path`; effectors memory_write 136 (0 ok), memory_read 95 (0 ok), remember 95, recall 31, witness 36, peer_ask 34 (15 ok), request_scope 15, mesh 2; own words 3762 lines / 3013 distinct (beats 311, sessions 2755, experience 696), carried verbatim 12; interventions ledger: 0 of 47 records carry it yet (2 carry think blocks). Selftest 7/7 (F1 idempotence, F2 determinism, F3 ground truth incl. absent source, F4 no model call / no seat voice, F5 verbatim carry, dark by default). Nothing reads the graft. M2 is met only when Sprout's review lands and graft + no-op are on main; that is snapshot 2.
+
+Two readings from the first run: (a) `identity.json` names the being `legion` while every session transcript names it `SAGE`; the first pass counted 0 being turns across 462 sessions, so the being is now derived from the transcripts, not the manifest. (b) The raising runner already runs a per-session "dream consolidation" (`sage/raising/scripts/dream_consolidation.py`) in which `claude --print` rewrites `identity.json` in place: a seat-voiced, overwriting organ. S2 does not remove it, but it is prior art this PRD should name, and its shape is the one the new organ is built not to have.

@@ -94,10 +94,16 @@ def persist_notice(instance: Path, n: Dict, relayed_by: str) -> Path:
 
 def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, str], Dict]] = None,
                fetch: Optional[Callable[[], List[Dict]]] = None, relayed_by: str = "sprout-claude",
-               workspace: Optional[str] = None) -> Dict:
+               workspace: Optional[str] = None, member: str = "sprout-being") -> Dict:
     """One drain pass. `fetch` (test seam) defaults to the hub read with the being's key;
-    `notify(kind, pointer)` (test seam) defaults to the seat's hestia member_notify to the
-    being. Returns {fetched, persisted, notified, skipped, errors[]}."""
+    `notify(kind, pointer)` (test seam) defaults to the seat's hestia member_notify to
+    `member` — the being whose home `instance` is (its hestia plugin id, e.g. legion-being).
+    Returns {fetched, persisted, notified, skipped, errors[]}.
+
+    Legion 2026-09-05: the first cut hard-coded sprout-being as the notify target and
+    sprout-claude as the courier, so the mirror drain on Legion would have persisted a notice
+    into legion-being's home, marked it seen, and told sprout-being's hestia inbox about it —
+    once, with no retry. The recipient must be the drained being, and the caller says who."""
     instance = Path(instance)
     seen_file = instance / "notes" / "inbox" / ".seen"
     seen = set(seen_file.read_text().split()) if seen_file.exists() else set()
@@ -128,7 +134,8 @@ def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, st
             ptr = str(p)
             if workspace and ptr.startswith(str(Path(workspace).resolve()) + "/"):
                 ptr = os.path.relpath(ptr, Path(workspace).resolve().parent)  # sage/instances/...
-            r = (notify or _seat_notify)(map_kind(n.get("kind", "")), ptr)
+            r = notify(map_kind(n.get("kind", "")), ptr) if notify is not None \
+                else _seat_notify(map_kind(n.get("kind", "")), ptr, member=member)
             if r.get("ok"):
                 out["notified"] += 1
             else:

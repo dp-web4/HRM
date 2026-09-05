@@ -10,5 +10,8 @@
   "device_hint": "cpu",
   "has_training_track": false,
   "has_lora": false,
-  "encryption_enabled": false
+  "encryption_enabled": false,
+  "peer_aliases": {
+    "sprout-being": "2e175714-4b01-4063-a997-27a6dade7044"
+  }
 }

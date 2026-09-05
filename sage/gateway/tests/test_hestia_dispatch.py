@@ -489,3 +489,16 @@ if __name__ == "__main__":
         if name.startswith("test_") and callable(fn):
             fn(); n += 1; print(f"PASS {name}")
     print(f"\n{n} passed")
+
+
+def test_instance_config_peer_aliases_reach_the_dispatcher(tmp_path=None):
+    import json, tempfile
+    from pathlib import Path
+    from sage.gateway.governed_turn import instance_config
+    inst = Path(tempfile.mkdtemp(prefix="inst-"))
+    (inst / "instance.json").write_text(json.dumps({"machine": "legion", "peer_aliases": {"sprout-being": "2e175714-id"}}))
+    cfg = instance_config(inst)
+    assert cfg["machine"] == "legion" and cfg["peer_aliases"] == {"sprout-being": "2e175714-id"}
+    assert instance_config(inst / "missing") == {}
+    d = HestiaF1aDispatcher("legion-being", memory_root=str(inst), peer_aliases=cfg["peer_aliases"])
+    assert d.peer_aliases["sprout-being"] == "2e175714-id"

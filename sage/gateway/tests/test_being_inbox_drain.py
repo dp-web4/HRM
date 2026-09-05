@@ -72,6 +72,24 @@ def test_env_file_expands_shell_variables_and_tilde():
     assert e["CHANNEL_CLIENT"] == os.path.expanduser("~/bin/cc") and e["MY_KEYPAIR"] == os.path.expanduser("~/.web4/k.bin")
 
 
+def test_default_notify_targets_the_drained_being_not_sprout(monkeypatch=None):
+    """Legion 2026-09-05: the mirror drain must tell legion-being's hestia inbox, labelled
+    legion-claude — not sprout-being / sprout-claude, which the first cut hard-coded."""
+    import sage.gateway.being_inbox_drain as m
+    inst = _inst()
+    calls = []
+    orig = m._seat_notify
+    m._seat_notify = lambda kind, pointer, member="sprout-being": (calls.append((kind, pointer, member)) or {"ok": True})
+    try:
+        r = m.drain_once(inst, env_file="unused", fetch=lambda: [{"kind": "reply", "pointer_uri": "p", "from": "2e175714-sprout-being", "pair_id": "n-7"}],
+                         member="legion-being", relayed_by="legion-claude")
+    finally:
+        m._seat_notify = orig
+    assert r["notified"] == 1 and calls == [("reply", calls[0][1], "legion-being")]
+    body = next((inst / "notes" / "inbox").glob("*.md")).read_text()
+    assert "relayed_by: legion-claude" in body and "sprout-claude" not in body
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

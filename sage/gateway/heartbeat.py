@@ -328,7 +328,12 @@ def main(argv=None) -> int:
                 seen = set(tuple(x) for x in last.get("scope", {}).get("decided", []))
             except Exception:
                 pass
-            decided = [(i, p_, d) for i, p_, d in reqs if d in ("granted", "denied")]
+            # hestia's ScopeRequest::status emits granted|refused|pending|expired — never "denied".
+            # This filter said ("granted", "denied") and so silently dropped every operator
+            # REFUSAL: the being was never told it had been told no (mesh session on #952,
+            # 2026-09-05). "denied" is kept only so a daemon that ever spells it that way
+            # is not dropped the same way.
+            decided = [(i, p_, d) for i, p_, d in reqs if d in ("granted", "refused", "denied")]
             new_decisions = [x for x in decided if tuple(x) not in seen]
             esc_dir = Path(args.forum_dir).parent / "escalations"
             noted = note_resolutions(esc_dir, new_decisions, f"{datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC",

@@ -15,7 +15,7 @@ The north star is unchanged: raising an embodied mind (Sensation → Presence �
 |---|---|---|---|
 | raising (6 h cron, 663 sessions) | sessions, experience buffer, identity | previous session summary, identity | nothing from beats or presence |
 | heartbeat (30 min, 30 beats) | journal.md, todo.md, scratch/, cartridge, heartbeats.jsonl | its own journal/todo/cartridge, forum digest | nothing from sessions or presence |
-| presence (resident feeder) | salient moments, wakes the daemon | senses | nothing reaches a beat or a session as "what I sensed" |
+| presence (resident feeder) | salient moments, wakes the daemon, presence_log | senses | reaches the raising session already (the runner's presence and journal digest sections, 2026-07); reaches no beat |
 
 Objective: **the three loops feed one record, and the join is attributed and measurable.** A beat line reaching a session, a session reaching a beat, a sensed moment reaching either: each a rung with a flow count, never an impression. Then the rung-6 question ("does experience change anything") is re-read on the new channel under the pinned rule, and D3 is decided on evidence.
 
@@ -37,7 +37,7 @@ Rules: a milestone is met only when the snapshot in §8 quotes the instrument ou
 - **M0 — the join exists, both directions, attributed.** Evidence: JOIN > 0 both ways in a snapshot, with the attribution tags visible in a session prompt and a beat digest.
 - **M1 — the being's own account carries.** Evidence: ACCOUNT present across a beat boundary and, broadened, across a session boundary; the ask is open (no menu), verbatim kept, particulars dropped at the boundary.
 - **M2 — a consolidated self-account exists with provenance.** Evidence: one versioned graft over beats + journal + sessions, `supersedes` chained, training data named by path + sha256 + count; a logged no-op cycle. Ships dark; a consumer reads it only by explicit switch.
-- **M3 — sensing reaches the record.** Evidence: a beat attributed to a presence wake carrying "what I sensed"; the presence→beat rung reads live on the panel.
+- **M3 — sensing reaches the beats.** (Presence already reaches the raising session, attributed in its delivery receipt; the beat is the missing consumer.) Evidence: a beat attributed to a presence wake carrying "what I sensed"; the presence→beat rung reads live on the panel.
 - **M4 — F2 acceptance closed on the SAGE side.** Evidence on the chain: one real `hestia_appeal` filed by the being; one peer act the being chose (sprout-being → legion-being or the reverse); #824 key proof landed upstream or its blocker named.
 - **M5 — rung 6 re-read; D3 decided.** Evidence: a pre-registered UPTAKE computation on the new channel and a decision line in `PRD_MAIN_TRACK_MEASUREMENT.md`'s ledger.
 

@@ -151,7 +151,9 @@ def test_generate_stats_record_the_window_wall_and_the_retry():
     r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}])
     # one generate as the loop sees it: the empty turn was retried once and the retry stood
     assert r.reply == "done" and calls["n"] == 2
-    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1}]
+    # num_predict: the retry's budget (no window declared -> the 6000 floor), not the first 1024
+    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1,
+                            "num_predict": 6000}]
 
 
 def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
@@ -183,7 +185,8 @@ def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
     assert seen == [None, 16384 - 6721 - RETRY_MARGIN]      # first attempt: config budget; retry: the window's room
     assert llm.num_predict_override is None                  # restored
     assert llm.max_response_tokens == 3000                   # untouched: it is not the lever
-    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1}]
+    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1,
+                            "num_predict": 16384 - 6721 - RETRY_MARGIN}]
 
 
 def test_length_retry_without_a_window_falls_back_to_the_think_budget():
@@ -209,6 +212,64 @@ def test_length_retry_without_a_window_falls_back_to_the_think_budget():
     llm = OldLLM()
     r = run_ollama_tool_turn(_client(OK_DISPATCH), llm, [{"role": "user", "content": "hi"}])
     assert r.reply == "ok" and seen == [1024, 6000] and llm.max_response_tokens == 1024
+
+
+def test_generates_carry_the_budget_sent_and_on_generate_sees_each_entry_as_it_lands():
+    """Sprout's #45 sends the window's room on the retry; the record has to SAY what each
+    reply's budget was, or "did the retry have more room" is back on stderr. And a caller
+    gets each entry as it lands, so a killed beat still leaves its trace."""
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn, RETRY_MARGIN
+    n = {"i": 0}
+
+    class FakeLLM:                      # OllamaIRP-shaped: resolves 8000 from the config
+        max_response_tokens = 3000
+        num_ctx = 16384
+        num_predict_override = None
+
+        def resolve_num_predict(self):
+            return self.num_predict_override if self.num_predict_override is not None else 8000
+
+        def get_chat_response(self, messages, tools=None):
+            n["i"] += 1
+            if n["i"] == 1:
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 6767, "eval_count": 8000, "message": {}}}
+            if n["i"] == 2:
+                return {"content": "", "tool_calls": [{"function": {"name": "witness", "arguments": {"event": "x"}}}],
+                        "raw": {"done_reason": "stop", "prompt_eval_count": 6767, "eval_count": 900, "message": {}}}
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 7700, "eval_count": 300, "message": {}}}
+
+    landed = []
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}],
+                             on_generate=landed.append)
+    assert r.reply == "done"
+    assert [g["num_predict"] for g in r.generates] == [16384 - 6767 - RETRY_MARGIN, 8000]
+    assert [g["retried"] for g in r.generates] == [1, 0]
+    assert landed == r.generates and landed[0] is not r.generates[0]   # same content, own copy
+
+
+def test_on_generate_failure_does_not_take_the_turn_down(capsys):
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+
+    class FakeLLM:
+        def get_chat_response(self, messages, tools=None):
+            return {"content": "ok", "tool_calls": [], "raw": {"done_reason": "stop", "message": {}}}
+
+    def boom(entry):
+        raise OSError("disk full")
+
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}], on_generate=boom)
+    assert r.reply == "ok" and r.generates[0]["num_predict"] is None
+    assert "on_generate failed: OSError" in capsys.readouterr().err
+
+
+def test_retry_room_leaves_no_attribute_behind_on_an_llm_that_had_none():
+    from sage.gateway.being_tool_loop import _retry_room
+    llm = SimpleNamespace()
+    with _retry_room(llm, 6000) as b:
+        assert b == 6000 and llm.max_response_tokens == 6000
+    assert not hasattr(llm, "max_response_tokens")
 
 
 def test_salvage_lifts_well_formed_calls_from_the_text_channel_only_for_offered_names():

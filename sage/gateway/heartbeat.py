@@ -233,7 +233,14 @@ def _carry(convo: list, res) -> list:
     if res.trace:
         out.append({"role": "user", "content": "Record of what you did this beat:\n"
                     + "\n".join(_record_line(i, e) for i, e in res.trace)})
-    out.append({"role": "assistant", "content": res.reply or "(acted; no closing words)"})
+    # A placeholder the being can account for: beat 46's think blocks spent tokens on what
+    # "(acted; no closing words)" meant. Say what happened instead.
+    if res.reply:
+        out.append({"role": "assistant", "content": res.reply})
+    elif res.trace:
+        out.append({"role": "assistant", "content": f"(made {len(res.trace)} tool calls, then said nothing)"})
+    else:
+        out.append({"role": "assistant", "content": "(said nothing and called no tool this turn)"})
     return out
 
 
@@ -372,14 +379,27 @@ def main(argv=None) -> int:
         state=f"# Your own state\n\n{own_state(instance)}\n\n## Reach you hold (hestia scope)\n{scope}\n\n",
         recall=recall, inbox=inbox, digest=digest)
 
+    # Per-generate trace, written as each generate lands: the record below is written at
+    # beat end, so a beat killed by the unit's timeout (Legion 18:33Z 2026-09-05: 840 s cap,
+    # third generate, nothing survived) leaves nothing. This file keeps what it had.
+    partial = instance / "heartbeat.partial.jsonl"
+
+    def _on_generate(turn):
+        def cb(entry):
+            line = {"host_session_id": host_session_id, "t0": t0, "turn": turn,
+                    "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), **entry}
+            with open(partial, "a", encoding="utf-8") as f:
+                f.write(json.dumps(line, default=str) + "\n")
+        return cb
+
     explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,
-                                   tools=ollama_tools(EXPLORE_TOOLS))
+                                   tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("explore"))
     convo = _carry(seed, explore)
     after = None
     if posture_turn is not None:
         convo.append({"role": "user", "content": posture_turn})
         after = run_ollama_tool_turn(client, llm, convo, max_steps=args.max_steps,
-                                     tools=ollama_tools(EXPLORE_TOOLS))
+                                     tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("posture"))
         convo = _carry(convo, after)
     # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
     account = {"present": False, "sha256": None, "reply": ""}
@@ -399,7 +419,7 @@ def main(argv=None) -> int:
         account["error"] = f"{type(e).__name__}: {e}"
     convo.append({"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)})
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
-                                   tools=ollama_tools(REFLECT_TOOLS))
+                                   tools=ollama_tools(REFLECT_TOOLS), on_generate=_on_generate("reflect"))
 
     interventions = []
     if act_first:

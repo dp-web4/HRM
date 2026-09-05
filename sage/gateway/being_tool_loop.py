@@ -247,27 +247,46 @@ class _retry_room:
             self.keep = ("override", llm.num_predict_override)
             llm.num_predict_override = self.budget
         else:
-            self.keep = ("max", getattr(llm, "max_response_tokens", None))
+            # remember absence too: an llm with neither attribute must not leave the
+            # retry's budget behind as a new max_response_tokens for every later turn
+            self.keep = ("max", getattr(llm, "max_response_tokens", None), hasattr(llm, "max_response_tokens"))
             llm.max_response_tokens = max(self.budget, self.keep[1] or 0)
         return self.budget
 
     def __exit__(self, *exc):
-        kind, val = self.keep
+        kind, val = self.keep[0], self.keep[1]
         if kind == "override":
             self.llm.num_predict_override = val
-        elif val is not None:
+        elif not self.keep[2]:
+            del self.llm.max_response_tokens
+        else:
             self.llm.max_response_tokens = val
         return False
 
 
+def _sent_budget(llm) -> Optional[int]:
+    """The num_predict a first attempt sends: what the adapter resolves (config wins over
+    the caller's max_response_tokens with thinking on), else the caller value."""
+    try:
+        if hasattr(llm, "resolve_num_predict"):
+            return int(llm.resolve_num_predict())
+    except Exception:
+        pass
+    v = getattr(llm, "max_response_tokens", None)
+    return int(v) if v is not None else None
+
+
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
-                         max_steps: int = 2, tools: Optional[List[dict]] = None) -> ToolTurnResult:
+                         max_steps: int = 2, tools: Optional[List[dict]] = None,
+                         on_generate: Optional[Callable[[dict], None]] = None) -> ToolTurnResult:
     """Run a gated tool turn using an OllamaIRP-like `llm` exposing
     get_chat_response(messages, tools=...) -> {"content", "tool_calls"}.
 
     Wraps the model + the bounded native-tool registry into the loop's generate()
     contract, so callers (the raising runner) need only supply the seed messages.
     `tools` narrows what is offered for this turn (default: the whole registry).
+    `on_generate` sees each generates[] entry as it lands, so a caller can write a trace
+    a killed beat still leaves (the record itself is written at beat end).
     """
     from sage.gateway.being_gate_client import ollama_tools, parse_tool_calls
     tools = tools if tools is not None else ollama_tools()
@@ -290,6 +309,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                                      for i in m["intents"]]
             msgs.append(out)
         retried = 0
+        sent = _sent_budget(llm)          # the num_predict of the reply that stands
         resp = llm.get_chat_response(msgs, tools=tools)
         content = resp.get("content", "") or ""
         calls = resp.get("tool_calls", []) or []
@@ -302,9 +322,10 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             print(f"[tool-loop] transport error, retrying once: {content[:200]}", file=_sys.stderr)
             # no raw reply here, so no prompt_eval_count: the retry gets the think budget
             # (for a no-think model that is still more than its variant num_predict)
-            with _retry_room(llm, _retry_budget(llm, None)):
+            with _retry_room(llm, _retry_budget(llm, None)) as budget:
                 resp = llm.get_chat_response(msgs, tools=tools)
                 retried += 1
+                sent = budget
             content = resp.get("content", "") or ""
             calls = resp.get("tool_calls", []) or []
         if not content and not calls:
@@ -330,15 +351,26 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                           file=_sys.stderr)
                     resp = llm.get_chat_response(msgs, tools=tools)
                     retried += 1
+                    sent = budget
                     content = resp.get("content", "") or ""
                     calls = resp.get("tool_calls", []) or []
         thoughts.append(str(((resp.get("raw") or {}).get("message") or {}).get("thinking") or ""))
         # What the window did this generate, from the reply that stood (after any retry):
         # prompt_eval_count + eval_count == num_ctx with done_reason "length" is the wall
         # beat 46 hit; it was only on stderr then and had to be reconstructed by hand.
+        # num_predict is the budget of THIS reply (the retry's room when it retried), so
+        # "did the retry have more room than the first attempt" reads from the file, not
+        # from stderr (SAGE #45 sends the room; this says what it was).
         raw = resp.get("raw") or {}
-        generates.append({"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
-                          "eval_count": raw.get("eval_count"), "retried": retried})
+        entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
+                 "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent}
+        generates.append(entry)
+        if on_generate is not None:
+            try:
+                on_generate(dict(entry))
+            except Exception as _e:
+                import sys as _sys
+                print(f"[tool-loop] on_generate failed: {type(_e).__name__}: {_e}", file=_sys.stderr)
         if not calls and content:
             # the call in the wrong channel: lift it, gate it as normal, record that it was lifted
             calls = salvage_tool_calls(content, tools)

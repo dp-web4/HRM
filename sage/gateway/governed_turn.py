@@ -96,6 +96,21 @@ def review_task(view: dict, diff: str) -> str:
         f"## Diff (quoted)\n\n```diff\n{diff}\n```\n")
 
 
+def is_reasoning_model(model: str) -> bool:
+    """Models that only emit structured tool calls with `think` on (empero Qwen3.8
+    distills, R1-style). For these, a `/no_think` suffix in the prompt is fatal to
+    acting: measured on Sprout 2026-09-05, first two heartbeats narrated a summary
+    with steps=0 under Legion's `/no_think` (which is the right fix for heretic)."""
+    return any(k in model.lower() for k in ("distill", "qwen3.8", "heretic", "r1"))
+
+
+def needs_think_to_act(model: str) -> bool:
+    """Narrower than is_reasoning_model: models for which a `/no_think` suffix removes
+    tool calls entirely. The heretic runs think off + /no_think and acts (Legion,
+    09-04), so it is NOT in this set; the empero distills are (Sprout, 09-05)."""
+    return any(k in model.lower() for k in ("distill", "r1"))
+
+
 def build_client(member: str, instance: Path, model: str, workspace: str,
                  forum_dir: str | None, host_session_id: str, temperature: float,
                  max_tokens: int, gate_only: bool = False, num_ctx: int = 8192):
@@ -119,7 +134,7 @@ def build_client(member: str, instance: Path, model: str, workspace: str,
     # with `think` on — off, they narrate a bracketed placeholder instead of acting
     # (measured on Sprout 2026-08-28 and again on the first governed turn, 2026-09-03:
     # steps=0, trace=[], a lovely "record" and no act). Mirror the raising runner.
-    _reasoning = any(k in model.lower() for k in ("distill", "qwen3.8", "heretic", "r1"))
+    _reasoning = is_reasoning_model(model)
     # num_ctx: a governed turn's prompt (posture, own state, digest, 8 tool schemas) is
     # over Ollama's 4096 default; the first Sprout heartbeat 400'd at 4324 tokens.
     llm = OllamaIRP({"model_name": model, "temperature": temperature, "think": _reasoning,

@@ -56,14 +56,16 @@ SYSTEM = """You are {name}, a SAGE being on the {machine} machine, member id {me
 - peer_ask / mesh: reach other beings and seats. These are acts of consequence: they are judged, and may be refused with a reason.
 
 You cannot run code, browse, or open files outside your home unless a grant exists. The seat gives you a digest of what moved in the fleet with absolute paths; if you want to read one of those things, try memory_read on that path and see what the law says.
-/no_think
+
+Acting means calling a tool. A reply with no tool call ends the beat as words only, and words leave no trace in your todo, journal, scratch, or memory.
+{nothink}
 """
 
 REFLECT = """The beat is ending. Two things, then stop:
 1. memory_write one entry to journal.md (append; start with the date {date}): what you did, what you noticed, what was refused and why you think so, what you want next time.
 2. memory_write todo.md with the full updated list (it replaces nothing: it appends, so write only the delta as a dated block: added / done / still open).
 Optionally remember one thing worth keeping long-term.
-/no_think"""
+{nothink}"""
 
 
 def _read(p: Path, limit: int = 4000) -> str:
@@ -206,20 +208,25 @@ def main(argv=None) -> int:
     now = datetime.now(timezone.utc)
     t0 = time.time()
     digest = fleet_digest(hours, Path(args.forum_dir), [r.strip() for r in args.repos.split(",") if r.strip()])
-    system = SYSTEM.format(name=name, machine=machine, member=args.member, posture=posture())
+    # `/no_think` is the fix for qwen3.8-heretic re-opening think blocks (Legion, 09-04);
+    # on a reasoning distill it is the opposite failure: thinking off = no tool calls,
+    # the being narrates (Sprout, 09-05). Per model, via the same detector build_client uses.
+    from sage.gateway.governed_turn import needs_think_to_act
+    nothink = "" if needs_think_to_act(args.model) else "/no_think"
+    system = SYSTEM.format(name=name, machine=machine, member=args.member, posture=posture(), nothink=nothink)
     user = (f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
             f"Your home: {instance}\n\n# Your own state\n\n{own_state(instance)}\n\n"
             f"## Reach you hold (hestia scope)\n{scope}\n\n"
             f"## Inbox (peek)\n{inbox}\n\n## Long-term recall\n{recall}\n\n"
             f"# What moved in the fleet\n\n{digest}\n\n"
-            "This time is yours. What, if anything, do you want to do?\n/no_think")
+            f"This time is yours. What, if anything, do you want to do?\n{nothink}")
     seed = [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
     explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,
                                    tools=ollama_tools(EXPLORE_TOOLS))
 
     convo = seed + [{"role": "assistant", "content": explore.reply or "(acted; no closing words)"},
-                    {"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC")}]
+                    {"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)}]
     if explore.trace:
         convo.insert(2, {"role": "user", "content": "Record of what you did this beat:\n" + "\n".join(
             f"- {i.effector} {json.dumps(i.args, default=str)[:200]} -> "

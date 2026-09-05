@@ -1,0 +1,33 @@
+# SAGE consolidation: one self-account cycle per fire (any machine), the process behind the
+# heartbeat (PRD_ONE_BEING_ONE_EXPERIENCE.md S2; sage/memory/consolidation.py).
+# Install: copy to ~/.config/systemd/user/sage-consolidation.service, replace <machine> and
+# <instance-dir> (and the cartridge line, or drop it), then
+#   systemctl --user daemon-reload && systemctl --user enable --now sage-consolidation.timer
+# From a cron/mesh-fired session that line fails ("Failed to connect to user scope bus"):
+# export XDG_RUNTIME_DIR=/run/user/$(id -u) DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+# first, or install from an interactive seat (measured on HUB 2026-09-04).
+# What one fire does: name every source under the instance dir (present or absent), hash the
+# set; if the latest graft names that hash under this same instrument, log a no-op and exit 0;
+# otherwise distill mechanically (no model, no seat voice) and write self-account-<member>.vN.json
+# beside index.json and consolidation_log.jsonl under <instance-dir>/grafts/. Grafts are dark:
+# nothing reads one unless SAGE_GRAFT_SELF_ACCOUNT=on, and this unit does not set it.
+# A quiet day is a logged no-op, not silence: the log line is the evidence the timer ran.
+# The graft, index and log are tracked in git; the per-line own-index sidecar is gitignored and
+# named in the graft by sha. Committing the new version is a seat's act, not this unit's.
+# --member is the being's id (what the heartbeat writes as `member`); --seat names who ran it.
+# The cartridge manifest is the being's OWN membot mount (membot-being.service.example); naming
+# the seat sessions' cartridge here would put the seat's memories in the being's account.
+[Unit]
+Description=SAGE consolidation (<machine>-being): replay the record into one self-account graft
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/dp/ai-workspace/SAGE
+Environment=HOME=/home/dp
+Environment="PATH=/home/dp/.local/bin:/usr/local/bin:/usr/bin:/bin"
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 -m sage.memory.consolidation --instance sage/instances/<instance-dir> --member <machine>-being --seat <machine>-timer --cartridge-manifest /home/dp/ai-workspace/membot/cartridges/<machine>-being.cart_manifest.json
+TimeoutStartSec=600
+StandardOutput=append:/home/dp/ai-workspace/SAGE/sage/instances/<instance-dir>/consolidation.log
+StandardError=inherit

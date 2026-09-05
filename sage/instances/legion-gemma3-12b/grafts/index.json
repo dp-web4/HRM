@@ -1,7 +1,7 @@
 {
  "members": {
   "legion-being": {
-   "latest": "self-account-legion-being.v1.json",
+   "latest": "self-account-legion-being.v2.json",
    "versions": [
     {
      "file": "self-account-legion-being.v1.json",
@@ -9,6 +9,15 @@
      "supersedes": null,
      "version": 1,
      "written_at": "2026-09-05T18:22:34Z"
+    },
+    {
+     "file": "self-account-legion-being.v2.json",
+     "instrument_sha256": "b6b610269db869eb7f65177f9f21b3b266e6c88b3be58d5a9dee5574d462dfe3",
+     "reason": "sources_changed",
+     "source_set_sha256": "eff304b4cc9227d18ac30c9c2743c79fdb4b3539cbb9a6492c6baab049829924",
+     "supersedes": "self-account-legion-being.v1.json",
+     "version": 2,
+     "written_at": "2026-09-05T18:40:10Z"
     }
    ]
   }

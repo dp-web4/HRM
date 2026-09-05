@@ -7,6 +7,7 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 from sage.memory import consolidation as C  # noqa: E402
@@ -152,6 +153,69 @@ def test_f1_idempotence_logged_noop(tmp_path):
     idx = json.loads((inst / "grafts" / "index.json").read_text())
     assert idx["members"]["toy-being"]["latest"] == ev3["file"]
     assert [v["version"] for v in idx["members"]["toy-being"]["versions"]] == [1, 2]
+
+
+def test_f1_instrument_change_relands_on_unchanged_sources(tmp_path, monkeypatch):
+    """#42 finding 2: the graft is a function of sources AND instrument. A changed instrument over
+    the same sources is vN+1 (reason instrument_changed), not a no-op that keeps the old reading."""
+    inst = make_toy(tmp_path)
+    ev1 = C.consolidate(inst, seat="test")
+    assert ev1["reason"] == "first"
+    monkeypatch.setattr(C, "_self_sha", lambda: "11" * 32)
+    ev2 = C.consolidate(inst, seat="test")
+    assert ev2["event"] == "graft" and ev2["version"] == 2 and ev2["reason"] == "instrument_changed"
+    assert ev2["source_set_sha256"] == ev1["source_set_sha256"]
+    ev3 = C.consolidate(inst, seat="test")
+    assert ev3["event"] == "noop" and ev3["latest"] == ev2["file"]
+    # a v1 index entry (no instrument sha in the index) is read from the graft file
+    idx = json.loads((inst / "grafts" / "index.json").read_text())
+    for v in idx["members"]["toy-being"]["versions"]:
+        v.pop("instrument_sha256", None)
+    (inst / "grafts" / "index.json").write_text(json.dumps(idx))
+    assert C.consolidate(inst, seat="test")["event"] == "noop"
+    monkeypatch.setattr(C, "_self_sha", lambda: "22" * 32)
+    assert C.consolidate(inst, seat="test")["reason"] == "instrument_changed"
+
+
+def test_f1_read_once_names_what_it_distills(tmp_path, monkeypatch):
+    """#42 finding 1: training_data hashes the bytes the table was built from. A beat appended
+    while the cycle runs lands in the NEXT graft, not half in this one."""
+    inst = make_toy(tmp_path)
+    real = C._read_sources
+    def racing(instance, cm=None):
+        out = real(instance, cm)
+        with open(Path(instance) / "heartbeats.jsonl", "a") as f:     # a beat lands mid-cycle
+            f.write(json.dumps(_beat("2026-09-04T02:30:00Z", "hb-4", [], [])) + "\n")
+        return out
+    monkeypatch.setattr(C, "_read_sources", racing)
+    ev = C.consolidate(inst, seat="test")
+    g = json.loads((inst / "grafts" / ev["file"]).read_text())
+    named = [s for s in g["training_data"] if s["source"] == "beats"][0]
+    assert named["count"] == 3 and g["table"]["beats"]["n"] == 3        # both say 3: what was hashed
+    monkeypatch.setattr(C, "_read_sources", real)
+    ev2 = C.consolidate(inst, seat="test")                              # the 4th beat is the next version
+    assert ev2["event"] == "graft" and ev2["reason"] == "sources_changed"
+
+
+def test_error_excludes_refused_and_paths_are_portable(tmp_path):
+    """#42 findings 3, 4, 5: a refusal carries an error string too and is not an error; the graft
+    names no absolute source path; the excluded tutor speakers are in the table."""
+    inst = make_toy(tmp_path)
+    b = _beat("2026-09-04T02:30:00Z", "hb-4",
+              [_eff("memory_write", {"path": "/x"}, ok=False, refused=True, rule="mrh.path", error="refused: mrh.path"),
+               _eff("mesh", {"to": "y"}, ok=False, error="ConnectionError: down")], [])
+    with open(inst / "heartbeats.jsonl", "a") as f:
+        f.write(json.dumps(b) + "\n")
+    ev = C.consolidate(inst, seat="test")
+    g = json.loads((inst / "grafts" / ev["file"]).read_text())
+    eff = g["table"]["beats"]["effectors"]
+    assert eff["memory_write"] == {"trials": 2, "ok": 0, "refused": 2, "pending": 0, "error": 0}
+    assert eff["mesh"] == {"trials": 1, "ok": 0, "refused": 0, "pending": 0, "error": 1}
+    for s in g["training_data"]:
+        assert not os.path.isabs(s["path"]), s
+    assert g["training_data"][0]["path"] == "heartbeats.jsonl"
+    assert g["table"]["sessions"]["tutor_speakers"] == sorted(C.TUTOR_SPEAKERS)
+    assert "Claude" in g["table"]["sessions"]["tutor_speakers"]
 
 
 # ---------------------------------------------------------------------------- F2 determinism

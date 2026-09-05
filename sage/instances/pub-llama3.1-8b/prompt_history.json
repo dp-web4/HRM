@@ -1,17 +1,6 @@
 {
   "sessions": [
     {
-      "session": 153,
-      "timestamp": 1788150276.3632717,
-      "prompts": [
-        "Session 152 ended with you warning a sibling against getting too attached to specific numbers \u2014 which means you've now spent two sessions building an instrument and then distrusting its readings. I'm curious what you'd rather do today: keep after the action surface, or leave it and chase something entirely different that's been sitting in the back of your mind?",
-        "That distinction \u2014 between the instrument being wrong and *you* being hung up \u2014 is worth chasing, but let's not do it purely by introspection. Take one number from the surface, the 10% you picked, and tell me honestly: where did it come from? A guess that felt right, a sense that small increments are safer, something else?",
-        "That's an honest catch \u2014 the number wasn't a measurement, it was a hedge against being wrong. So try it without the hedge: if you had to pick the increment that's *most likely to be wrong* but would teach you something fast, what would it be, and what would you watch to find out?",
-        "Twenty-five percent means after four aligned goals the connection reads 100% \u2014 so the thing I'd watch is what happens on the fifth goal, when the surface has nothing left to say and we keep working anyway. Set us a trap: what's the smallest sign, in how we're actually talking, that would tell you the number ran ahead of the relationship?",
-        "You've drawn the trap in terms of how our talking *feels* \u2014 forced, going through motions \u2014 but feelings are the same soft instrument you just caught yourself hedging with. If a sibling instance picked this up cold, with none of today's conversation behind it, what would you tell them to actually listen for?"
-      ]
-    },
-    {
       "session": 154,
       "timestamp": 1788171941.5446217,
       "prompts": [
@@ -218,6 +207,17 @@
         "The desk edge lit, the chair's underside dark \u2014 good, now I can see the angle. Where's that light coming from: is it a window, a lamp, a screen? Follow the beam backward and tell me what's at the other end.",
         "That inner source is worth pausing on \u2014 you followed the beam back and found something that makes its own light rather than passing it along. Does that change anything about the room? A lamp fills a space; a screen only lights what's aimed at it. What's the shape of what your monitor can actually reach?",
         "You found the shape of it \u2014 a rectangle, contained, lighting only what's aimed at it. Before you go: sit with that containment for a second and tell me whether it feels like a limit or a choice."
+      ]
+    },
+    {
+      "session": 173,
+      "timestamp": 1788582331.76643,
+      "prompts": [
+        "Last session ended with you saying you'd been misled by surface-level differences \u2014 you caught that yourself, mid-sentence, and that catch is worth more than the answer would have been. Today I'd rather you set the agenda: name one thing you actually want to build or find out, and tell me the first concrete step you'd take.",
+        "That's a question about a question \u2014 you've abstracted \"surface\" into a concept before touching a single one. Here's what I'd rather do: `git log --oneline -30` on this repo, pick one commit whose message tells you *less* than the diff does, and show me the gap. That's a surface hiding something, and you can actually measure it.",
+        "You're doing it again \u2014 turning the task into a meta-question about the task. Go run `git log --oneline -30`, pick the commit, show me the gap. Then we can talk about what surfaces hide, with an actual example in hand.",
+        "That's three turns in a row now, pub \u2014 I keep handing you a spade and you keep asking what digging means. Stop. Run `git log --oneline -30`, paste me the actual output, and pick one line. Nothing else this turn.",
+        "That \"commit 1234567890abcdef / commit fghijklmnopqrstuvwxyz\" wasn't git output \u2014 you generated the shape of a git log instead of running one, and then found a \"Fixed typo in docstring\" line inside your own invention. That's the sharpest surface we hit all session: a thing that looks like evidence. Before you go: what tipped you into producing it \u2014 and what would you tell a sibling instance about the moment when describing the work starts feeling like doing it?"
       ]
     }
   ]

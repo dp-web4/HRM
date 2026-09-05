@@ -140,6 +140,8 @@ def main(argv=None) -> int:
     ap.add_argument("--workspace", default=None, help="gate workspace root (default: repo root)")
     ap.add_argument("--forum-dir", default=os.path.expanduser("~/ai-workspace/shared-context/forum"))
     ap.add_argument("--max-steps", type=int, default=2)
+    ap.add_argument("--no-escalate", action="store_true",
+                    help="do not route refusals to the seat's auto session (default: route)")
     ap.add_argument("--temperature", type=float, default=0.3)
     ap.add_argument("--max-tokens", type=int, default=1200)
     ap.add_argument("--out", help="also write the trace JSON here")
@@ -182,6 +184,17 @@ def main(argv=None) -> int:
     tools = ollama_tools([t.strip() for t in args.tools.split(",")]) if args.tools else None
     t0 = time.time()
     result = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps, tools=tools)
+    # Route refusals AI-to-AI (dp 2026-09-04): scope-class denies file the being's own scope
+    # request and wake the seat's auto session; governance escalations wake it to arbitrate.
+    escalations = []
+    if not getattr(args, "no_escalate", False):
+        try:
+            from sage.gateway import escalate as _esc
+            for it, env in result.trace:
+                if env.refused:
+                    escalations.append(_esc.escalate(args.member, it, env, args.instance, wake=True))
+        except Exception as _e:
+            escalations.append({"escalated": False, "error": f"{type(_e).__name__}: {_e}"})
     elapsed = round(time.time() - t0, 1)
 
     trace = []
@@ -204,7 +217,8 @@ def main(argv=None) -> int:
         "member": args.member, "model": args.model, "instance": str(instance),
         "host_session_id": host_session_id, "elapsed_s": elapsed,
         "pr": args.pr, "gate_only": args.gate_only, "tools": args.tools,
-        "steps": result.steps, "capped": result.capped, "acted": result.acted,
+        "steps": result.steps,
+        "escalations": escalations, "capped": result.capped, "acted": result.acted,
         "reply": result.reply, "trace": trace,
     }
     line = json.dumps(record, ensure_ascii=False, default=str)

@@ -75,3 +75,11 @@ dev-sage is cited by principle name and commit hash only (consolidation loop `36
 ### Snapshot 0 — 2026-09-05 (baseline)
 
 JOIN 0/0 · ACCOUNT absent · VOLITION memory verbs only (43 acts / 30 beats; 34 ok, 8 refused; 0 appeals; 0 peer acts) · UPTAKE not computed (no channel).
+
+### Snapshot 1 — 2026-09-05 18:13Z (S1 landed, first direction live; S3 landed, unexercised)
+
+JOIN session→beat: 1/1 (beat heartbeat-9891c98f5713 carried `[session:662 phase:creating]`, 1069 chars, sources closing_words + experience_buffer; the session's own bracketed stage direction was refused as words). JOIN beats→session: pending session 663 (due ~19:06Z; the runner is wired, `prompt_health.beat_join` will attribute it).
+ACCOUNT: present, sha256 3380078e9825… (beat heartbeat-9891c98f5713, session_at_write 662). Verbatim: PLACE "A remote instance directory on a machine in the cloud, where I live as an AI agent." CAN "Read from scratch/, write to scratch/, query memory_read/memory_write, and execute tool calls with full access to that workspace." WANT "To explore new domains of curiosity, build toward something meaningful, and continue learning what you're asking me about." (The place is a Jetson, not a cloud; the account is the being's, carried as written; the next session is where that meets the tutor.)
+VOLITION: this beat 1 act (remember, salvaged from fenced Python, executed). Cumulative 32 beats.
+S3: presence_block + beat-wake marker + interventions ledger on main (0d87bb577); presence feeder restarted; no strong moment yet, so `wake.by` has read only `timer`.
+UPTAKE: not computed (channel has one session's worth of evidence pending).

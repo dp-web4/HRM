@@ -58,8 +58,17 @@ def classify(env: ResultEnvelope) -> str:
 
 
 def _scope_path(intent: BeingIntent, memory_root: str) -> str:
+    """The path to ask reach for. A target INSIDE the being's own instance dir always asks for
+    the instance root: one STANDING grant on the home covers journal.md, notes/x.md, all of it,
+    and the arbiter's recommendation is the home dir in every such case anyway. Asking for the
+    target's own directory filed a per-subdir request (`notes/` for a refused `notes/x.md`;
+    Legion, SAGE#38 review). Outside the home: the target's directory, or the target itself
+    when it has no extension (a directory)."""
     p = intent.args.get("path") or ""
     p = os.path.abspath(os.path.expanduser(p if os.path.isabs(p) else os.path.join(memory_root, p)))
+    root = os.path.abspath(os.path.expanduser(memory_root))
+    if p == root or p.startswith(root.rstrip(os.sep) + os.sep):
+        return root
     return os.path.dirname(p) if os.path.splitext(p)[1] else p
 
 

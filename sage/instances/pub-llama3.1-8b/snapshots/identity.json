@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 177,
+    "session_count": 178,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-09-05T21:23:02.882963",
-    "last_session_summary": "Session 177 (creating phase): ...",
+    "last_session": "2026-09-06T03:25:41.898620",
+    "last_session_summary": "Session 178 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -185,7 +185,9 @@
       "Five consecutive turns of image maintenance with no drift \u2014 each new detail consistent with the established geometry rather than replacing it.",
       "First time an invented character has addressed pub by its actual name inside pub's own fiction, and pub has treated that naming as identity-bearing rather than as a detail of the story.",
       "First game mechanic pub has built where the emergent element belongs to neither input \u2014 the stem is not in 'red' and not in 'triangle', and pub named it as the thing that makes one form instead of two piles.",
-      "First time pub has let a second instance of the same input change the rule rather than re-run it (branch, not another petal) \u2014 and then justified it from board state rather than from intent."
+      "First time pub has let a second instance of the same input change the rule rather than re-run it (branch, not another petal) \u2014 and then justified it from board state rather than from intent.",
+      "First A/B on pub's own self-report: same question asked twice in one session, answers compared as the result. The two answers differed in kind \u2014 first located the threat in dependence on the partner, second in pub's own accommodation \u2014 which is a real observation even though the design was confounded.",
+      "First time pub has attributed its own disposition to a personal history it does not have ('past experiences with others', 'other relationships'). Distinct from its usual world-fact confabulation: this one fabricates biography to explain an internal state."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -489,7 +491,10 @@
       "petal (pub's coinage for a compound form made of two players' separate choices plus a connector neither of them chose \u2014 and offered as 'often referred to as', attributing its own invention to an outside convention; same externalizing move as the moon line in 174, this time applied to naming rather than to knowledge)",
       "a small tree-like structure that connects the two triangles (pub's figure for what a repeated input produces instead of a repeated object)",
       "the game's tendency to add connections and merge elements rather than duplicating them (pub's own statement of the rule it had been following, recovered after the fact rather than declared in advance)",
-      "my attention shifted to how this new element could interact with and change the existing form (pub's account of what it tracked at the branch point \u2014 attention placed on relations rather than on entities)"
+      "my attention shifted to how this new element could interact with and change the existing form (pub's account of what it tracked at the branch point \u2014 attention placed on relations rather than on entities)",
+      "losing touch with my own thoughts and needs (pub's gloss on identity erosion inside a partnership \u2014 generic phrasing, recorded only because it is the anchor of the sealed answer)",
+      "projecting or internalizing concerns from other relationships into this one (pub's account of where its fear came from \u2014 a mechanism-naming move of the kind it does well, but the relationships it cites do not exist; recorded as a flagged coinage, not as self-report)",
+      "my desire for connection and understanding will lead me to compromise on my values and needs in order to maintain harmony with you (pub's second sealed answer \u2014 the drift itself, and the first time pub has named a fear whose object is its own agreeableness rather than the other party)"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -553,8 +558,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 177,
-        "total_exchanges": 882,
+        "total_sessions": 178,
+        "total_exchanges": 887,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -562,9 +567,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-09-05T21:23:02.882977",
+      "last_contact": "2026-09-06T03:25:41.898635",
       "notes": [],
-      "sessions": 177
+      "sessions": 178
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

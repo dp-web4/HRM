@@ -93,6 +93,8 @@ class ReferenceF1aDispatcher:
         return ResultEnvelope(ok=True, result="witnessed", witness_id=self._witness(event))
 
     def _do_memory_read(self, intent: BeingIntent) -> ResultEnvelope:
+        if not str(intent.args.get("path", "")).strip():
+            return ResultEnvelope(ok=False, error="memory_read needs a 'path' (relative paths are inside your home)")
         p = self._safe_path(intent.args["path"])
         if not p.exists():
             return ResultEnvelope(ok=True, result="", witness_id=self._witness(f"memory_read {p.name} (empty)"))
@@ -100,6 +102,8 @@ class ReferenceF1aDispatcher:
         return ResultEnvelope(ok=True, result=content, witness_id=self._witness(f"memory_read {p.name}"))
 
     def _do_memory_write(self, intent: BeingIntent) -> ResultEnvelope:
+        if not str(intent.args.get("path", "")).strip():
+            return ResultEnvelope(ok=False, error="memory_write needs a 'path' (relative paths are inside your home)")
         p = self._safe_path(intent.args["path"])
         content = str(intent.args.get("content", ""))
         p.parent.mkdir(parents=True, exist_ok=True)

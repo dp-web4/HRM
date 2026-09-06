@@ -77,6 +77,22 @@ def test_heartbeat_routes_refusals_by_default():
     assert "--no-escalate" in src and "_esc.escalate(" in src
     assert "egress_drain.drain_once(" in src   # the being's parked mesh acts leave every beat
 
+def test_home_file_mis_rooted_gets_a_hint_not_an_operator_request():
+    import os, tempfile
+    from sage.gateway.escalate import escalate, home_hint
+    from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEnvelope
+    root = tempfile.mkdtemp(prefix="home-")
+    deny = ResultEnvelope(ok=False, refused=True, verdict=GatewayVerdict("deny", "mrh.path", "outside"),
+                          error="mrh.path: outside your granted scope")
+    i = BeingIntent("memory_write", {"path": "/repo/sage/journal.md", "content": "x"})
+    assert home_hint(i, root) == os.path.join(os.path.realpath(root), "journal.md")
+    r = escalate("sprout-being", i, deny, root, wake=False)
+    assert r["escalated"] is False and "no grant needed" in r["hint"] and "scope_request" not in r
+    # the home file itself, and a path that is not a home file, are real asks
+    assert home_hint(BeingIntent("memory_write", {"path": os.path.join(root, "journal.md")}), root) is None
+    assert home_hint(BeingIntent("memory_read", {"path": "/repo/shared/notes.txt"}), root) is None
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

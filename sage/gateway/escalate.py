@@ -34,7 +34,7 @@ import os
 import re
 import time
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Optional
 
 from sage.gateway.being_gate_client import BeingGateClient, BeingIntent, ResultEnvelope, _REGISTRY
 from sage.gateway.hestia_witness import _ENDPOINT, _Mcp, _unwrap
@@ -136,6 +136,17 @@ def write_note(member: str, intent: BeingIntent, env: ResultEnvelope, kind: str,
         "society": ("## What the seat can do now\n- A law verdict. If plainly wrong, open an appeal on the being's behalf and corroborate; never override.\n"),
     }.get(kind, "")
     p.write_text(body + how + "\n" + protocol)
+    # Land it. An UNCOMMITTED note in a shared checkout is not just untidy: the same name
+    # arriving from upstream makes every later `git rebase` in that repo fail add/add, and
+    # the being's own peer_ask publisher rebases (measured 2026-09-06: two peer_ask acts to
+    # legion died on "git rebase failed", the untracked notes were the blocker).
+    try:
+        from sage.gateway.hestia_dispatch import _git_land
+        _git_land(str(p), f"escalation({member}): {kind} {intent.effector}")
+    except Exception as e:                      # never take the being's turn down over git
+        import sys as _sys
+        print(f"[escalate] note written but NOT landed ({type(e).__name__}: {e}) — "
+              f"commit {p} by hand; an untracked note blocks rebases in this checkout", file=_sys.stderr)
     return str(p)
 
 
@@ -157,6 +168,28 @@ def wake_seat(member: str, note_path: str, memory_root: str, seat: Optional[str]
     return {"notified": env.ok, "seat": seat, "witness_id": env.witness_id, "error": env.error, "drain": drained, "pointer": ptr}
 
 
+HOME_FILENAMES = ("journal.md", "todo.md", "account.json", "notes", "scratch")
+
+
+def home_hint(intent: BeingIntent, memory_root: str) -> Optional[str]:
+    """A refusal whose target is one of the being's OWN home files, mis-rooted elsewhere,
+    needs no grant at all — it needs the right path. Measured 2026-09-05/06: sprout-being
+    was refused `<repo>/sage/journal.md` and `<repo>/shared_notes/journal.md`, and the
+    routing asked dp for reach on the SAGE package source instead of saying "your journal
+    is here". Returns the correct absolute path, or None when this is a real ask."""
+    import os
+    raw = str((intent.args or {}).get("path", "")).strip()
+    if not raw:
+        return None
+    name = os.path.basename(raw.rstrip("/"))
+    if name not in HOME_FILENAMES:
+        return None
+    correct = os.path.join(os.path.realpath(memory_root), name)
+    if os.path.realpath(raw) == correct:
+        return None                                   # already the home file; a real refusal
+    return correct
+
+
 def escalate(member: str, intent: BeingIntent, env: ResultEnvelope, memory_root: str,
              seat: Optional[str] = None, endpoint: str = _ENDPOINT, wake: bool = True) -> Dict[str, Any]:
     """Route one refusal. Returns what was filed/notified; never raises into the being's turn.
@@ -164,6 +197,12 @@ def escalate(member: str, intent: BeingIntent, env: ResultEnvelope, memory_root:
     later refusals of a kind in one beat)."""
     kind = classify(env)
     out: Dict[str, Any] = {"kind": kind, "effector": intent.effector}
+    if kind == "scope":
+        hint = home_hint(intent, memory_root)
+        if hint:
+            out.update({"escalated": False, "why": "the target is one of your own home files, mis-rooted",
+                        "hint": f"no grant needed: your '{__import__('os').path.basename(hint)}' is at {hint}"})
+            return out
     if kind in ("registry", "other"):
         out["escalated"] = False
         out["why"] = "bounded-registry refusal is final by design" if kind == "registry" else "no remedy named"

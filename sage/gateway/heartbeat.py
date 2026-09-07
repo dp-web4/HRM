@@ -772,7 +772,11 @@ def main(argv=None) -> int:
         # generic posture alone. Without this field a later reading of the log cannot tell
         # entrusted engineering work from spontaneous exploration, and every developmental
         # claim spanning that boundary is confounded (PRD r3 §4).
-        "drive_source": "entrusted" if entrusted else "curiosity",
+        # entrusted | event | curiosity. dp, 2026-09-07: "beat is default idle state.
+        # world inputs require engagement" — so a beat woken BY something is a different
+        # kind of beat from one the timer produced, and the record must not flatten them.
+        "drive_source": ("event" if (woke or {}).get("by") == "presence"
+                         else ("entrusted" if entrusted else "curiosity")),
         # Whether the beat ran with what the seat intended. Beat 2026-09-06 18:03Z was empty
         # and was read as model failure; it was a seat error — the unit pointed at a tag
         # whose config resolved a 4096 window while the tree offered a verb the model was

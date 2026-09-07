@@ -45,7 +45,7 @@ import html
 import json
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -118,6 +118,56 @@ def latest_beat() -> dict:
             "reply": ((rec.get("reflect") or {}).get("reply") or "")[:600]}
 
 
+def beat_clock() -> dict:
+    """When the being next wakes, and how long it is likely to take.
+
+    dp asked "how frequent are the beats?" straight after posting a turn, which is the
+    right question and one the page should not have made necessary: a conversation whose
+    other party wakes on a timer needs the timer on screen, or every message feels like
+    silence for reasons that have nothing to do with the being."""
+    import re
+    import subprocess
+
+    def _run(*a):
+        try:
+            return subprocess.run(a, text=True, capture_output=True, timeout=10).stdout
+        except Exception:
+            return ""
+
+    # The machine-readable form, not `list-timers`: its NEXT column contains spaces, so
+    # column-splitting it produced "—" for the one number dp actually wanted.
+    # `list-timers --output=json` gives raw microseconds. The two `show -p ... --value`
+    # forms both failed here and failed DIFFERENTLY, which is why this is worth a comment:
+    # NextElapseUSecRealtime is EMPTY for an OnUnitActiveSec timer (it is scheduled on
+    # CLOCK_MONOTONIC), and NextElapseUSecMonotonic --value renders a human string
+    # ("1month 6d 2h 22min"), so int() on it raises. Both rendered "—" exactly where dp
+    # wanted a number.
+    nxt, left = "—", "—"
+    try:
+        rows = json.loads(_run("systemctl", "--user", "list-timers",
+                               "sage-heartbeat.timer", "--output=json") or "[]")
+        usec = int(rows[0]["next"])
+        when = datetime.fromtimestamp(usec / 1_000_000, timezone.utc)
+        secs = int((when - datetime.now(timezone.utc)).total_seconds())
+        nxt = when.strftime("%H:%M:%SZ")
+        left = "now" if secs <= 0 else (f"in {secs // 60} min" if secs >= 60 else f"in {secs}s")
+    except (ValueError, KeyError, IndexError, TypeError):
+        pass
+    running = _run("systemctl", "--user", "is-active", "sage-heartbeat.service").strip()
+
+    import json as _j
+    import statistics as _stat
+    el = []
+    try:
+        rows = [_j.loads(l) for l in
+                (INSTANCE / "heartbeats.jsonl").read_text(errors="replace").splitlines() if l.strip()]
+        el = [r["elapsed_s"] for r in rows[-30:] if r.get("elapsed_s")]
+    except Exception:
+        pass
+    return {"next": nxt, "left": left, "running": running in ("active", "activating"),
+            "median_min": round(_stat.median(el) / 60, 1) if el else None}
+
+
 def journal_tail(n: int = 2600) -> str:
     try:
         t = (INSTANCE / "journal.md").read_text(errors="replace")
@@ -152,6 +202,14 @@ def append_note(text: str) -> Path:
     with open(p, "a", encoding="utf-8") as f:
         f.write(f"\n---\n\n## {_now()}\n\n{text}\n")
     return p
+
+
+def _clock_line() -> str:
+    bc = beat_clock()
+    if bc["running"]:
+        return "<b>Beat running now</b> — it will read anything already posted."
+    return (f"<b>Next beat {html.escape(bc['left'])}</b> · every 30 min ±2 · "
+            f"~{bc['median_min'] or '?'} min per beat · a reply lands at the end of one")
 
 
 def _kind(speaker: str) -> str:
@@ -246,7 +304,7 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8">
  .acts{{font:12px ui-monospace,monospace;color:var(--mu)}}
 </style></head><body><div class="wrap">
 <h1>dp console — {being}</h1>
-<div class="sub"><a href="/conversations"><b>Conversations →</b></a> &nbsp;·&nbsp; Your words go to the being verbatim. Nothing here is relayed, summarised, or passed through a model.
+<div class="sub">{clock}<br><a href="/conversations"><b>Conversations →</b></a> &nbsp;·&nbsp; Your words go to the being verbatim. Nothing here is relayed, summarised, or passed through a model.
  &nbsp;·&nbsp; <a href="/">refresh</a></div>
 {flash}
 <h2>Where it is right now</h2>
@@ -323,7 +381,13 @@ def render(flash: str = "") -> str:
             cls="done" if answered else "wait",
             state="you answered last" if answered else "waiting on you",
             body=html.escape(t["body"])))
+    bc = beat_clock()
+    clock = (("<b>Beat running now</b> — it will read anything you have posted." if bc["running"]
+              else f"<b>Next beat {html.escape(bc['left'])}</b> (at {html.escape(bc['next'])})")
+             + f" &nbsp;·&nbsp; every 30 min ±2 · a beat takes ~{bc['median_min'] or '?'} min"
+               " · your turn is read at the START of a beat, its reply lands at the end")
     return PAGE.format(
+        clock=clock,
         being=html.escape(BEING),
         flash=f'<div class="card" style="border-color:var(--gn)">{html.escape(flash)}</div>' if flash else "",
         beat_ts=b.get("ts") or "—", beat_drive=b.get("drive") or "—",
@@ -353,7 +417,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, CONV_SHELL.format(
                 title=f"SAGE conversations — {html.escape(BEING)}",
                 heading=f"Conversations with {html.escape(BEING)}",
-                sub=('Both directions, in one ordered record, kept forever. '
+                sub=(_clock_line() + '<br>Both directions, in one ordered record, kept forever. '
                      'You speak in your own; the seat\'s is read-only for you. '
                      '<a href="/">beat + threads</a>'),
                 flash="", body=render_conv_list()))
@@ -367,7 +431,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, CONV_SHELL.format(
                 title=html.escape(m["title"]),
                 heading=html.escape(m["title"]),
-                sub=(f'participants: {html.escape(", ".join(m["participants"]))} · '
+                sub=(_clock_line() + f'<br>participants: {html.escape(", ".join(m["participants"]))} · '
                      f'<a href="/conversations">all conversations</a> · <a href="/">beat + threads</a>'),
                 flash="", body=body))
         return self._send(404, "not found", "text/plain")
@@ -384,6 +448,11 @@ class Handler(BaseHTTPRequestHandler):
             elif self.path == "/say":
                 cid = (form.get("to") or [""])[0]
                 turn = conv.append(INSTANCE, cid, speaker=DP, text=text)
+                # A world input, not a filing. dp: "beat is default idle state. world
+                # inputs require engagement." The policy lives in arousal, not here.
+                from sage.gateway import arousal
+                woke = arousal.respond(INSTANCE, "dp_turn",
+                                       descriptor=f"dp spoke in conversation '{cid}'")
                 m = conv.get_meta(INSTANCE, cid)
                 body = render_conv(cid)
                 return self._send(200, CONV_SHELL.format(
@@ -391,7 +460,11 @@ class Handler(BaseHTTPRequestHandler):
                     sub=f'participants: {html.escape(", ".join(m["participants"]))} · '
                         f'<a href="/conversations">all conversations</a>',
                     flash=f'<div class="card" style="border-color:var(--gn)">Sent as turn '
-                          f'#{turn["seq"]}. {html.escape(BEING)} sees it at its next beat.</div>',
+                          f'#{turn["seq"]}. '
+                          + (f'<b>Waking {html.escape(BEING)} now</b> — a beat is starting for this.'
+                             if woke.get("engage")
+                             else f'It will be read at the next beat: {html.escape(woke["reason"])}.')
+                          + '</div>',
                     body=body))
             elif self.path == "/reply":
                 p = append_reply((form.get("thread") or [""])[0], text)

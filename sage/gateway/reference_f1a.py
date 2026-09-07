@@ -31,6 +31,15 @@ from typing import Callable, Optional
 from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEnvelope
 
 
+# Files inside the being's own home that the SEAT owns and the being may not write.
+# One entry, and it earns its place: `entrustment.md` is what the being was GIVEN. Its own
+# reading of it goes in notes/plan.md. If a being could append to the entrustment, the two
+# provenances would merge in the record and no later reader could tell what was extended to
+# it from what it decided for itself — which is the whole reason the file exists (PRD r3
+# §4). Refusing is not distrust: the being may disagree with it loudly anywhere else.
+SEAT_OWNED = ("entrustment.md",)
+
+
 class ReferenceF1aDispatcher:
     """A Dispatcher (see being_gate_client.Dispatcher) for the being's own safe acts."""
 
@@ -100,6 +109,12 @@ class ReferenceF1aDispatcher:
         roots = (self.memory_root,)
         if not writing:
             roots = roots + tuple(getattr(self, "_extra_roots", ()) or ())
+        if writing and p.parent == self.memory_root and p.name in SEAT_OWNED:
+            raise ValueError(
+                f"{p.name} is yours to read and not to edit: it is what you were entrusted "
+                "with, and it has to stay separable from what you decide. Your own reading "
+                "of it belongs in notes/plan.md, which is entirely yours. Disagree with it "
+                "there, in your journal, or in an appeal — that record is wanted")
         if not any(p == r or r in p.parents for r in roots):
             if writing and any(p == r or r in p.parents
                                for r in (getattr(self, "_extra_roots", ()) or ())):

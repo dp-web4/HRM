@@ -44,11 +44,38 @@ REFLECT_TOOLS = ["memory_write", "remember", "memory_read"]
 
 POSTURE_FILE = Path(__file__).with_name("BEING_POSTURE.md")
 
+# What this being is entrusted with, if anything. Seat-owned and unwritable by the being
+# (reference_f1a.SEAT_OWNED): what it was GIVEN must stay separable from what it DECIDED,
+# or the record cannot be read later. The being's own reading of it goes in notes/plan.md.
+#
+# It is `entrustment`, not `mission`, on dp's correction the day it was written: "this is
+# not a 'task i set' for the being, it is an affordance i entrust it with. because i want
+# it to thrive and grow." The word is load-bearing. A task is owed and graded; an
+# entrustment is room extended, and the record it produces should be read as what the
+# being DID with room, not as compliance with an instruction.
+ENTRUSTMENT_FILE = "entrustment.md"
+
 
 def posture() -> str:
     """The fleet-wide being posture (dp's words), read fresh every beat so an edit to
     BEING_POSTURE.md reaches every being on its next beat. Missing file = fail loud."""
     return POSTURE_FILE.read_text(encoding="utf-8").strip()
+
+
+def entrustment(instance: Path) -> str:
+    """What this being is entrusted with, or "" if nothing yet. Per-instance, unlike the
+    fleet-wide posture: it is extended to ONE being, by someone, on a date, and it says so
+    in its own text. Read fresh every beat like the posture, so an amendment lands on the
+    next one. Absent is a legitimate state — a being without one runs on the generic
+    posture, and the beat record says which (`drive_source`)."""
+    try:
+        # Read WHOLE, never tail-truncated like todo/journal: _read keeps the last N chars,
+        # which on a long file would silently drop its opening — the part that says who
+        # entrusted it and on what terms. Arriving without its provenance is exactly the
+        # artifact this file exists to prevent.
+        return (Path(instance) / ENTRUSTMENT_FILE).read_text(errors="replace").strip()
+    except Exception:
+        return ""
 
 
 HEAD = "You are {name}, a SAGE being on the {machine} machine, member id {member}."
@@ -190,9 +217,34 @@ def note_resolutions(esc_dir: Path, decisions, stamp: str, seen_by: str, decided
     return written
 
 
-def own_state(instance: Path) -> str:
+def _config_check(instance: Path, model: str, llm, offered) -> dict:
+    """Did this beat run with the tool set and the context window the seat meant to give it?
+    `active_embodiment` in instance.json is the canonical statement of intent (PRD r3 §3.2);
+    the resolved window comes from the model config keyed on the ollama tag, which silently
+    falls back to a floor when a tag has no variant entry. Reporting both, plus the verbs
+    actually offered, makes a starved beat legible in the record instead of in stderr."""
+    from sage.gateway.governed_turn import instance_config
+    emb = (instance_config(instance).get("active_embodiment") or {})
+    want_ctx, want_tag = emb.get("num_ctx"), emb.get("running_tag")
+    got_ctx = getattr(llm, "num_ctx", None)
+    return {
+        "tools_offered": list(offered),
+        "num_ctx_intended": want_ctx, "num_ctx_resolved": got_ctx,
+        "window_matches_intent": None if want_ctx is None else (got_ctx == want_ctx),
+        "tag_intended": want_tag, "tag_running": model,
+        "tag_matches_intent": None if want_tag is None else (model == want_tag),
+    }
+
+
+def own_state(instance: Path, entrusted: str = "") -> str:
     from sage.gateway.being_join import carried_account, last_session_number
     parts = []
+    if entrusted:
+        # Ahead of everything else the being holds: what it has been entrusted with is the
+        # frame the rest of its state is read in. Labelled by provenance, and pointed at
+        # where its own interpretation belongs, so the two never merge in the record.
+        parts.append("## What you are entrusted with (extended to you; you cannot edit this "
+                     "file. Your own reading of it belongs in notes/plan.md)\n" + entrusted)
     acc = carried_account(instance, last_session_number(instance))
     if acc:
         parts.append("## Your own account\n" + acc)
@@ -403,12 +455,13 @@ def main(argv=None) -> int:
     # exists only for a model that must NOT think here; it is never sent to one that does.
     nothink = "" if is_reasoning_model(args.model) else "/no_think"
     act_first = not acts_under_posture(args.model)
+    entrusted = entrustment(instance)
     seed, posture_turn = compose(
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
         nothink=nothink,
         header=(f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
                 f"Your home: {instance}\n\n"),
-        state=f"# Your own state\n\n{own_state(instance)}\n\n## Reach you hold (hestia scope)\n{scope}\n\n",
+        state=f"# Your own state\n\n{own_state(instance, entrusted)}\n\n## Reach you hold (hestia scope)\n{scope}\n\n",
         recall=recall, inbox=inbox, digest=digest)
 
     # Per-generate trace, written as each generate lands: the record below is written at
@@ -526,6 +579,17 @@ def main(argv=None) -> int:
         "num_predict": (llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
                         else getattr(llm, "max_response_tokens", None)),
         "think": getattr(llm, "think", None),
+        # What drove this beat: an entrustment (entrustment.md present and presented) or the
+        # generic posture alone. Without this field a later reading of the log cannot tell
+        # entrusted engineering work from spontaneous exploration, and every developmental
+        # claim spanning that boundary is confounded (PRD r3 §4).
+        "drive_source": "entrusted" if entrusted else "curiosity",
+        # Whether the beat ran with what the seat intended. Beat 2026-09-06 18:03Z was empty
+        # and was read as model failure; it was a seat error — the unit pointed at a tag
+        # whose config resolved a 4096 window while the tree offered a verb the model was
+        # never shown. A starved beat and a silent one are indistinguishable unless the
+        # record says which tools were offered and whether the window is the intended one.
+        "config": _config_check(instance, args.model, llm, EXPLORE_TOOLS),
         "scope": scope_record,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
         "join": {"session": sess_meta, "presence": pres_meta},

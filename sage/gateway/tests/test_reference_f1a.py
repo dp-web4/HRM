@@ -134,6 +134,28 @@ def test_a_granted_root_is_readable_but_never_writable():
     assert ok.ok, ok.error
 
 
+def test_seat_owned_entrustment_is_readable_but_not_writable():
+    """What the being was ENTRUSTED with must stay separable from what it DECIDED, so the
+    seat owns that one file inside the being's own home (PRD r3 §4). Everything else in the
+    home stays writable, and the refusal points at notes/plan.md rather than just refusing."""
+    disp, root = _disp()
+    ent = os.path.join(root, "entrustment.md")
+    open(ent, "w").write("what you are entrusted with\n")
+
+    r = disp(BeingIntent("memory_read", {"path": "entrustment.md"}), _ALLOW)
+    assert r.ok and "entrusted with" in r.result, "it must be readable"
+
+    w = disp(BeingIntent("memory_write", {"path": "entrustment.md", "content": "mine now"}), _ALLOW)
+    assert not w.ok and "notes/plan.md" in (w.error or ""), w.error
+    assert "mine now" not in open(ent).read()
+
+    # its own reading of it, and the rest of its home, are untouched
+    assert disp(BeingIntent("memory_write", {"path": "notes/plan.md", "content": "my plan"}), _ALLOW).ok
+    assert disp(BeingIntent("memory_write", {"path": "journal.md", "content": "x"}), _ALLOW).ok
+    # and the guard is anchored to the home, not to the basename anywhere
+    assert disp(BeingIntent("memory_write", {"path": "scratch/entrustment.md", "content": "x"}), _ALLOW).ok
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

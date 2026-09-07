@@ -46,7 +46,7 @@ class ReferenceF1aDispatcher:
     def __init__(self, memory_root: str,
                  witness_log: Optional[str] = None,
                  witness_fn: Optional[Callable[[str], str]] = None,
-                 max_read_chars: int = 4000):
+                 max_read_chars: int = 12000):
         self.memory_root = Path(memory_root).resolve()
         self.witness_log = Path(witness_log) if witness_log else self.memory_root / "witness_log.jsonl"
         self._witness_fn = witness_fn  # optional real hestia witness: (event) -> witness_id
@@ -138,8 +138,21 @@ class ReferenceF1aDispatcher:
         p = self._safe_path(intent.args["path"])
         if not p.exists():
             return ResultEnvelope(ok=True, result="", witness_id=self._witness(f"memory_read {p.name} (empty)"))
-        content = p.read_text(errors="replace")[: self.max_read_chars]
-        return ResultEnvelope(ok=True, result=content, witness_id=self._witness(f"memory_read {p.name}"))
+        whole = p.read_text(errors="replace")
+        content = whole[: self.max_read_chars]
+        if len(whole) > self.max_read_chars:
+            # A SILENT TRUNCATION IS A LIE THE LENGTH OF A FILE. Measured 2026-09-07: the
+            # being read reference_f1a.py to settle a claim about _safe_path, got the first
+            # 4000 characters, and had to INFER the cut from the fact that the function it
+            # came for was missing. It handled that well — it wrote "so I have the docstring
+            # and __call__ but NOT the _safe_path body itself" and refused to assert. But a
+            # reader that trusted the result would have concluded the function was gone.
+            # An instrument must report its own limits, or it manufactures false absences.
+            content += (f"\n\n[… truncated: you were given the first {self.max_read_chars} "
+                        f"of {len(whole)} characters. What you did NOT see is the REST of the "
+                        f"file, so absence here is not evidence of absence in the file …]")
+        return ResultEnvelope(ok=True, result=content,
+                              witness_id=self._witness(f"memory_read {p.name}"))
 
     def _do_memory_write(self, intent: BeingIntent) -> ResultEnvelope:
         if not str(intent.args.get("path", "")).strip():

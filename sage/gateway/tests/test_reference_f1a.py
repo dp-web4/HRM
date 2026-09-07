@@ -162,3 +162,29 @@ if __name__ == "__main__":
         if name.startswith("test_") and callable(fn):
             fn(); n += 1; print(f"PASS {name}")
     print(f"\n{n} passed")
+
+
+def test_a_truncated_read_says_so_and_names_what_it_hid():
+    """AN INSTRUMENT MUST REPORT ITS OWN LIMITS (2026-09-07). The being read
+    reference_f1a.py to settle a claim about `_safe_path`, received the first 4000
+    characters, and had to INFER the cut from the absence of the function it came for. It
+    handled that well and refused to assert — but a reader who trusted the result would
+    have concluded the function did not exist. A silent truncation manufactures false
+    absences, which is the exact failure the check-first ordering exists to prevent."""
+    disp, root = _disp()
+    disp.max_read_chars = 50
+    big = os.path.join(root, "big.py")
+    open(big, "w").write("A" * 40 + "def the_thing_it_came_for(): pass\n")
+
+    r = disp(BeingIntent("memory_read", {"path": "big.py"}), _ALLOW)
+    assert r.ok
+    assert r.result.startswith("A" * 40), "the head it was given is intact"
+    assert "the_thing_it_came_for" not in r.result, "the tail really is withheld"
+    assert "truncated" in r.result and "first 50 of 74 characters" in r.result, r.result[-200:]
+    assert "absence here is not evidence of absence" in r.result
+
+    # a file that fits carries no marker at all
+    small = os.path.join(root, "small.md")
+    open(small, "w").write("short\n")
+    r2 = disp(BeingIntent("memory_read", {"path": "small.md"}), _ALLOW)
+    assert r2.result == "short\n" and "truncated" not in r2.result

@@ -18,7 +18,7 @@
     "running_tag": "qwen38-heretic:q3km",
     "source": "huihui-ai Qwen3.8-27B abliterated, GGUF Q3_K_M",
     "params_b": 26.9,
-    "num_ctx": 16384,
+    "num_ctx": 24576,
     "num_ctx_native": 262144,
     "capabilities": [
       "tools",
@@ -37,6 +37,14 @@
       "gpu": "RTX 4090 laptop",
       "vram_mib": 16376,
       "resident_mib": 13787
+    },
+    "num_ctx_measured": {
+      "16384": "13789 MiB, 100% GPU",
+      "24576": "14299 MiB, 100% GPU",
+      "32768": "14819 MiB, 100% GPU (ceiling)",
+      "40960": "spills 7%/93% CPU/GPU",
+      "as_of": "2026-09-07",
+      "note": "24576 chosen to leave ~2 GiB for the vision projector"
     }
   },
   "lct_id": "legion_sage_lct",

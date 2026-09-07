@@ -497,7 +497,37 @@ class HestiaF1aDispatcher:
                               result={"target": target, "passed": passed,
                                       "verdict": "PASS" if passed else "FAIL",
                                       "output": detail, "worktree": self.worktree,
+                                      "tree": self._worktree_revision(),
                                       "action_id": action_id})
+
+    def _worktree_revision(self) -> dict:
+        """WHICH TREE THE ANSWER IS ABOUT. A check result without this is not evidence: the
+        being reasons about the harness it LIVES in, and the worktree is a separate checkout
+        that drifts. Measured 2026-09-07, before the being had ever called `check` — its
+        worktree sat on an unrelated raising commit from another machine, three tests behind
+        the running code and missing the very fix it would most want to verify. It would
+        have gotten a true answer about a tree that is not the one constituting it, with
+        nothing in the envelope to say so.
+
+        `dirty` matters as much as the SHA: uncommitted edits mean the SHA names something
+        other than what ran. PRD r3 §6 requires this on every check result."""
+        import subprocess
+
+        def _git(*args):
+            try:
+                r = subprocess.run(("git", *args), cwd=self.worktree, text=True,
+                                   capture_output=True, timeout=15)
+                return r.stdout.strip() if r.returncode == 0 else None
+            except Exception:
+                return None
+
+        head = _git("rev-parse", "HEAD")
+        status = _git("status", "--porcelain")
+        return {"head": head, "short": (head or "")[:9] or None,
+                "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
+                "subject": _git("log", "-1", "--format=%s"),
+                "committed": _git("log", "-1", "--format=%cI"),
+                "dirty": None if status is None else bool(status.strip())}
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:

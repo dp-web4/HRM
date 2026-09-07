@@ -55,6 +55,14 @@ POSTURE_FILE = Path(__file__).with_name("BEING_POSTURE.md")
 # being DID with room, not as compliance with an instruction.
 ENTRUSTMENT_FILE = "entrustment.md"
 
+# Where a seat writes TO the being. It used to write into todo.md, which is a defect with a
+# measurable size: own_state shows the LAST 3000 chars of todo.md, so a 4.5k seat note
+# displaced 100% of the being's own open items from its own view (measured 2026-09-07 —
+# the being would have opened its next beat unable to see anything it had written itself).
+# The being's list stays the being's; relays get their own block, and both are labelled so
+# it always knows which voice it is reading.
+SEAT_RELAY = "notes/from-the-seat.md"
+
 
 def posture() -> str:
     """The fleet-wide being posture (dp's words), read fresh every beat so an edit to
@@ -233,7 +241,40 @@ def _config_check(instance: Path, model: str, llm, offered) -> dict:
         "window_matches_intent": None if want_ctx is None else (got_ctx == want_ctx),
         "tag_intended": want_tag, "tag_running": model,
         "tag_matches_intent": None if want_tag is None else (model == want_tag),
+        # Headroom, because the window is the thing that silently starves a beat and the
+        # 09-06 empty beat is the proof. A generate needs prompt + num_predict to fit inside
+        # num_ctx; when it does not, ollama shifts context and drops the OLDEST tokens —
+        # the system prompt and the posture — with no error anywhere. Recorded here so the
+        # squeeze is visible in the log before it is visible in the behaviour. The largest
+        # observed prompt of the beat is filled in at beat end from the per-generate trace.
+        "num_predict": (llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
+                        else getattr(llm, "max_response_tokens", None)),
+        "prompt_tokens_max": None,   # filled at beat end
+        "headroom_tokens": None,     # num_ctx - (largest prompt + num_predict)
+        "context_overcommitted": None,
     }
+
+
+def _fill_headroom(cfg: dict, partial: Path) -> dict:
+    """Beat end: the largest prompt actually sent this beat, and whether it plus num_predict
+    ever exceeded the window. Read from the per-generate trace rather than re-derived, so it
+    reports what the model was really handed."""
+    best = None
+    try:
+        for line in partial.read_text(errors="replace").splitlines():
+            import json as _j
+            e = _j.loads(line)
+            n = e.get("prompt_eval_count")
+            if isinstance(n, int) and (best is None or n > best):
+                best = n
+    except Exception:
+        pass
+    ctx, pred = cfg.get("num_ctx_resolved"), cfg.get("num_predict")
+    cfg["prompt_tokens_max"] = best
+    if isinstance(ctx, int) and isinstance(pred, int) and isinstance(best, int):
+        cfg["headroom_tokens"] = ctx - (best + pred)
+        cfg["context_overcommitted"] = cfg["headroom_tokens"] < 0
+    return cfg
 
 
 def own_state(instance: Path, entrusted: str = "") -> str:
@@ -245,6 +286,10 @@ def own_state(instance: Path, entrusted: str = "") -> str:
         # where its own interpretation belongs, so the two never merge in the record.
         parts.append("## What you are entrusted with (extended to you; you cannot edit this "
                      "file. Your own reading of it belongs in notes/plan.md)\n" + entrusted)
+    relay = _read(instance / SEAT_RELAY, 4000)
+    if relay.strip():
+        parts.append("## From the seat (notes/from-the-seat.md — messages to you, not your own list)\n"
+                     + relay.strip())
     acc = carried_account(instance, last_session_number(instance))
     if acc:
         parts.append("## Your own account\n" + acc)
@@ -257,6 +302,72 @@ def own_state(instance: Path, entrusted: str = "") -> str:
         names = sorted(x.name for x in p.iterdir()) if p.is_dir() else []
         parts.append(f"## {d}/\n" + ("\n".join(f"- {n}" for n in names[:30]) if names else "(empty)"))
     return "\n\n".join(parts)
+
+
+def fit_to_window(*, num_ctx, num_predict, fixed_chars: int, blocks: dict, slack: int = 512):
+    """Trim the seat-supplied blocks until prompt + num_predict fits inside num_ctx.
+
+    WHY THIS EXISTS. A generate needs prompt + num_predict to fit in the window; when it
+    does not, ollama shifts context and silently drops the OLDEST tokens — the system
+    prompt and the posture — with no error at any layer. Measured on this being's own
+    trace, 2026-09-07: two beats were handed prompts of 16,380 and 16,323 tokens against a
+    16,384 window and produced 4 and 61 tokens with done_reason "length". One of them is
+    the 09-06/09-07 "empty beat" I had already diagnosed as a stale unit and a wrong
+    context floor. That diagnosis was wrong in its mechanism: the beat starved on PROMPT
+    SIZE. The instrument found it the same hour it was added, which is the argument for
+    instrumenting configuration at all.
+
+    WHAT GETS TRIMMED, AND IN WHAT ORDER. Only seat-supplied context, never the being's own
+    frame. The digest first (fleet movement, regenerated every beat, largest and least
+    load-bearing), then long-term recall (the being can `recall` again itself). The
+    entrustment, the todo, the journal, the posture and the affordances are NOT trimmable:
+    they are what the beat is, and cutting them to make room for a fleet digest would be
+    the wrong trade.
+
+    WHAT IT REPORTS. Every trim is returned as an intervention with the prior it suppressed,
+    per the house rule that a guard which silences without saying what it silenced trades a
+    confident wrong for a confident silence. A beat whose digest was cut says so in its own
+    record, so a thin beat is never mistaken for a quiet fleet.
+    """
+    if not isinstance(num_ctx, int) or not isinstance(num_predict, int):
+        return blocks, []
+    # Reserve room for the ANSWER, not for num_predict. num_predict is a ceiling the model
+    # rarely approaches; the window is the wall it actually hits. Over 506 generates on this
+    # being: every single `done_reason: "length"` — 27 of them, 5.3% — satisfies
+    # prompt + eval == num_ctx EXACTLY (11971+4413, 16380+4, 16323+61, 14410+1974 ...). The
+    # generation was cut by the window mid-answer, which is also where the truncated-JSON
+    # tool calls and the Ollama 500s come from. Explore generations: median 1,282 tokens,
+    # p90 3,909, p99 5,741, max 7,253. Reserving 6,144 covers p99 with headroom while
+    # leaving the digest something to say; reserving the full num_predict would floor the
+    # digest every beat to buy room the model has never used.
+    reserve = min(num_predict, 6144)
+    # Conservative chars-per-token for mixed English + paths + JSON; under-estimating the
+    # token count here would defeat the whole guard, so estimate high (fewer chars/token).
+    CPT = 3.4
+    budget_chars = int(max(0, (num_ctx - reserve - slack)) * CPT)
+    order = ("digest", "recall")
+    floors = {"digest": 1200, "recall": 400}
+    out, interventions = dict(blocks), []
+    total = lambda: fixed_chars + sum(len(v or "") for v in out.values())
+    for key in order:
+        if total() <= budget_chars:
+            break
+        text = out.get(key) or ""
+        if not text:
+            continue
+        over = total() - budget_chars
+        keep = max(floors[key], len(text) - over)
+        if keep >= len(text):
+            continue
+        # keep the HEAD of the digest (newest-first there) and the TAIL of recall/journal
+        out[key] = (text[:keep] + "\n[…trimmed to fit the context window…]") if key == "digest" \
+            else ("[…trimmed to fit the context window…]\n" + text[-keep:])
+        interventions.append({"kind": "context_fit", "block": key,
+                              "suppressed": f"{len(text) - keep} chars of {key}",
+                              "reason": f"prompt + a p99 answer ({reserve} tok) would not fit "
+                                        f"num_ctx ({num_ctx}); the generation would be cut "
+                                        f"mid-answer (27/506 generates already were)"})
+    return out, interventions
 
 
 def compose(act_first: bool, *, name: str, machine: str, member: str, posture_text: str,
@@ -456,13 +567,25 @@ def main(argv=None) -> int:
     nothink = "" if is_reasoning_model(args.model) else "/no_think"
     act_first = not acts_under_posture(args.model)
     entrusted = entrustment(instance)
+    # Fit before composing: prompt + num_predict must sit inside num_ctx, or ollama drops
+    # the oldest tokens (system prompt, posture) with no error anywhere. Measured on this
+    # being: two beats at 16,380 / 16,323 prompt tokens against a 16,384 window returned 4
+    # and 61 tokens, done_reason "length".
+    state_block = (f"# Your own state\n\n{own_state(instance, entrusted)}\n\n"
+                   f"## Reach you hold (hestia scope)\n{scope}\n\n")
+    _fixed = len(posture()) + len(state_block) + len(inbox) + 4000  # + affordances/ask/tools
+    blocks, fit_interventions = fit_to_window(
+        num_ctx=getattr(llm, "num_ctx", None),
+        num_predict=(llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
+                     else getattr(llm, "max_response_tokens", None)),
+        fixed_chars=_fixed, blocks={"digest": digest, "recall": recall})
     seed, posture_turn = compose(
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
         nothink=nothink,
         header=(f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
                 f"Your home: {instance}\n\n"),
-        state=f"# Your own state\n\n{own_state(instance, entrusted)}\n\n## Reach you hold (hestia scope)\n{scope}\n\n",
-        recall=recall, inbox=inbox, digest=digest)
+        state=state_block,
+        recall=blocks["recall"], inbox=inbox, digest=blocks["digest"])
 
     # Per-generate trace, written as each generate lands: the record below is written at
     # beat end, so a beat killed by the unit's timeout (Legion 18:33Z 2026-09-05: 840 s cap,
@@ -506,7 +629,7 @@ def main(argv=None) -> int:
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
                                    tools=ollama_tools(REFLECT_TOOLS), on_generate=_on_generate("reflect"))
 
-    interventions = []
+    interventions = list(fit_interventions)
     if act_first:
         interventions.append({"kind": "act_first", "suppressed": "posture-first presentation (the model narrates under it)"})
     if nothink:
@@ -589,7 +712,7 @@ def main(argv=None) -> int:
         # whose config resolved a 4096 window while the tree offered a verb the model was
         # never shown. A starved beat and a silent one are indistinguishable unless the
         # record says which tools were offered and whether the window is the intended one.
-        "config": _config_check(instance, args.model, llm, EXPLORE_TOOLS),
+        "config": _fill_headroom(_config_check(instance, args.model, llm, EXPLORE_TOOLS), partial),
         "scope": scope_record,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
         "join": {"session": sess_meta, "presence": pres_meta},

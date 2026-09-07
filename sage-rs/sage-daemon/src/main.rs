@@ -418,7 +418,13 @@ async fn peers(State(state): State<Arc<AppState>>) -> Json<PeersResponse> {
 
                     PeerInfo {
                         name: name.to_string(),
-                        gateway_url: format!("http://{}:{}", info.gateway_host, info.gateway_port),
+                        // Through the registry, not re-derived here. Formatting the URL a
+                        // second time at this call site is how `pub` (gateway_host null)
+                        // kept being advertised as "http://:8750" after gateway_url() had
+                        // already learned to say "unreachable" — one fact, two producers,
+                        // and only one of them fixed.
+                        gateway_url: fleet.gateway_url(name)
+                            .unwrap_or_else(|| "(unreachable: no host in the fleet registry)".to_string()),
                         pool: info.pool.clone(),
                         model: info.model_default.clone(),
                         device: info.device.clone(),
@@ -588,12 +594,21 @@ async fn main() {
         tr_path.display()
     );
 
-    let fleet = FleetRegistry::load(&machine, &fleet_path).ok();
-    if let Some(ref f) = fleet {
-        info!("fleet loaded: {} machines, v{}", f.fleet_size(), f.version());
-    } else {
-        info!("fleet registry unavailable (file missing or unreadable): {}", fleet_path.display());
-    }
+    // Print WHY, not a guess. FleetRegistry::load already distinguishes "failed to read"
+    // from "failed to parse <serde detail>"; this call site discarded that with .ok() and
+    // reported "missing or unreadable" for both. On Legion 2026-09-07 the file was present,
+    // readable and valid JSON — it failed to DESERIALIZE on one null field — and the log
+    // sent anyone looking to check the path and permissions instead.
+    let fleet = match FleetRegistry::load(&machine, &fleet_path) {
+        Ok(f) => {
+            info!("fleet loaded: {} machines, v{}", f.fleet_size(), f.version());
+            Some(f)
+        }
+        Err(e) => {
+            info!("fleet registry unavailable: {} ({})", e, fleet_path.display());
+            None
+        }
+    };
 
     let (shutdown_tx, shutdown_rx) = tokio::sync::watch::channel(false);
 

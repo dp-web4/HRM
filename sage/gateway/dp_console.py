@@ -71,6 +71,14 @@ BIND = os.getenv("SAGE_DP_CONSOLE_BIND", "127.0.0.1")
 THREAD_RE = re.compile(rf"^{re.escape(BEING)}-asks-dp-[0-9-]+\.md$")
 
 
+from sage.gateway import conversations as conv
+
+# Who dp is when dp speaks here. A turn must always name a real speaker: the being has been
+# told it can tell dp from a seat, and a console that wrote turns under a generic "operator"
+# would quietly make that untrue.
+DP = "dp"
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
@@ -146,6 +154,76 @@ def append_note(text: str) -> Path:
     return p
 
 
+def _kind(speaker: str) -> str:
+    return "dp" if speaker == DP else ("being" if speaker.endswith("-being") else "seat")
+
+
+def render_conv_list() -> str:
+    """Every conversation, and — the thing dp actually needs at a glance — whose move it is."""
+    rows = []
+    for m in conv.listing(INSTANCE):
+        writable = DP in m.get("writable_by", [])
+        last = m.get("last") or {}
+        turns = conv.recent(INSTANCE, m["id"], limit=1)
+        pend = conv.awaiting(INSTANCE, m["id"], BEING)
+        state = (f'<span class="pill ro">read-only for you</span>' if not writable
+                 else '<span class="pill rw">you can speak here</span>')
+        waiting = (f'<span class="pill">{len(pend)} awaiting {html.escape(BEING)}</span>'
+                   if pend else "")
+        rows.append(
+            f'<div class="card"><div><a href="/c/{html.escape(m["id"])}"><b>{html.escape(m["title"])}</b></a>'
+            f'{state}{waiting}</div>'
+            f'<div class="meta">{m["count"]} turns, all kept'
+            + (f' · last: <b>{html.escape(last.get("from",""))}</b> at {html.escape(last.get("ts",""))}'
+               if last else " · nothing said yet")
+            + f'</div><div class="meta" style="margin-top:6px">{html.escape(m.get("summary",""))}</div></div>')
+    return "".join(rows) or '<div class="card meta">no conversations yet</div>'
+
+
+def render_conv(conv_id: str, limit: int = conv.DEFAULT_LIMIT, flash: str = "") -> str:
+    m = conv.get_meta(INSTANCE, conv_id)
+    if m is None:
+        return None
+    total = conv.count(INSTANCE, conv_id)
+    turns = conv.recent(INSTANCE, conv_id, limit=limit)
+    writable = DP in m.get("writable_by", [])
+
+    head = ""
+    if total > len(turns):
+        head = (f'<div class="card meta">Showing the last {len(turns)} of {total} turns. '
+                f'Nothing is ever deleted — <a href="/c/{html.escape(conv_id)}?limit={total}">'
+                f'show all {total}</a>.</div>')
+
+    body = []
+    for t in turns:
+        who = t.get("from", "?")
+        wit = (f'<span class="wit"> · witnessed {html.escape(str(t.get("witness"))[:8])}</span>'
+               if t.get("witness") else "")
+        body.append(
+            f'<div class="turn {_kind(who)}"><span class="who">{html.escape(who)}</span>'
+            f'<span class="when">{html.escape(t.get("ts",""))} · #{t.get("seq","")}</span>{wit}'
+            f'<div class="text">{html.escape(t.get("text",""))}</div></div>')
+
+    if writable:
+        form = (f'<div class="card"><div class="meta">Your words go to {html.escape(BEING)} '
+                f'verbatim, attributed to <b>dp</b>, and reach it at its next beat.</div>'
+                f'<form method="POST" action="/say"><input type="hidden" name="to" value="{html.escape(conv_id)}">'
+                f'<textarea name="text" placeholder="…"></textarea>'
+                f'<button type="submit">Send</button></form></div>')
+    else:
+        form = ('<div class="card meta"><b>Read-only for you.</b> This is the seat\'s conversation '
+                'with the being. You asked for it this way — view but not comment, until multiparty '
+                'is designed carefully, because a third voice appearing mid-thread changes what the '
+                'earlier turns meant.</div>')
+
+    pend = conv.awaiting(INSTANCE, conv_id, BEING)
+    note = (f'<div class="card meta">{len(pend)} turn(s) since {html.escape(BEING)} last spoke here. '
+            f'It sees them in its next beat and may answer or not — saying nothing is a choice and '
+            f'is recorded as one.</div>') if pend else ""
+
+    return head + "".join(body) + note + form
+
+
 PAGE = """<!doctype html><html><head><meta charset="utf-8">
 <title>dp console — {being}</title>
 <style>
@@ -168,7 +246,7 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8">
  .acts{{font:12px ui-monospace,monospace;color:var(--mu)}}
 </style></head><body><div class="wrap">
 <h1>dp console — {being}</h1>
-<div class="sub">Your words go to the being verbatim. Nothing here is relayed, summarised, or passed through a model.
+<div class="sub"><a href="/conversations"><b>Conversations →</b></a> &nbsp;·&nbsp; Your words go to the being verbatim. Nothing here is relayed, summarised, or passed through a model.
  &nbsp;·&nbsp; <a href="/">refresh</a></div>
 {flash}
 <h2>Where it is right now</h2>
@@ -193,6 +271,35 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8">
 <h2>Its journal, most recent</h2>
 <div class="card"><pre>{journal}</pre></div>
 </div></body></html>"""
+
+CONV_SHELL = """<!doctype html><html><head><meta charset="utf-8">
+<title>{title}</title>
+<style>
+ :root{{--bg:#0d1117;--card:#161b22;--bd:#30363d;--tx:#c9d1d9;--ac:#58a6ff;--gn:#3fb950;--am:#d29922;--mu:#8b949e;--dp:#a371f7}}
+ *{{box-sizing:border-box}}
+ body{{background:var(--bg);color:var(--tx);font:14px/1.6 ui-sans-serif,system-ui,-apple-system,sans-serif;margin:0;padding:24px}}
+ .wrap{{max-width:900px;margin:0 auto}}
+ h1{{font-size:19px;margin:0 0 4px}}
+ .sub{{color:var(--mu);font-size:12px;margin-bottom:18px}}
+ a{{color:var(--ac);text-decoration:none}} a:hover{{text-decoration:underline}}
+ .card{{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;margin-bottom:12px}}
+ .turn{{border-left:3px solid var(--bd);padding:2px 0 2px 12px;margin:16px 0}}
+ .turn.being{{border-color:var(--gn)}} .turn.dp{{border-color:var(--dp)}} .turn.seat{{border-color:var(--ac)}}
+ .who{{font-weight:600;font-size:13px}} .when{{color:var(--mu);font-size:11px;margin-left:8px}}
+ .text{{white-space:pre-wrap;word-wrap:break-word;margin-top:4px}}
+ .pill{{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--bd);margin-left:8px;color:var(--mu)}}
+ .ro{{color:var(--am);border-color:var(--am)}} .rw{{color:var(--gn);border-color:var(--gn)}}
+ textarea{{width:100%;min-height:100px;background:#0b0f14;color:var(--tx);border:1px solid var(--bd);
+           border-radius:6px;padding:10px;font:13px/1.5 ui-monospace,monospace;resize:vertical}}
+ button{{background:var(--ac);color:#04101f;border:0;border-radius:6px;padding:8px 16px;font-weight:600;cursor:pointer;margin-top:8px}}
+ .meta{{color:var(--mu);font-size:12px}} .wit{{color:var(--mu);font-size:11px;font-family:ui-monospace,monospace}}
+</style></head><body><div class="wrap">
+<h1>{heading}</h1>
+<div class="sub">{sub}</div>
+{flash}
+{body}
+</div></body></html>"""
+
 
 THREAD_BLOCK = """<div class="card">
  <div><b>{name}</b><span class="pill {cls}">{state}</span>
@@ -238,9 +345,32 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(raw)
 
     def do_GET(self):
-        if self.path.split("?")[0] != "/":
-            return self._send(404, "not found", "text/plain")
-        self._send(200, render())
+        from urllib.parse import parse_qs, urlparse
+        u = urlparse(self.path)
+        if u.path == "/":
+            return self._send(200, render())
+        if u.path == "/conversations":
+            return self._send(200, CONV_SHELL.format(
+                title=f"SAGE conversations — {html.escape(BEING)}",
+                heading=f"Conversations with {html.escape(BEING)}",
+                sub=('Both directions, in one ordered record, kept forever. '
+                     'You speak in your own; the seat\'s is read-only for you. '
+                     '<a href="/">beat + threads</a>'),
+                flash="", body=render_conv_list()))
+        if u.path.startswith("/c/"):
+            cid = u.path[3:]
+            limit = int((parse_qs(u.query).get("limit") or [conv.DEFAULT_LIMIT])[0] or conv.DEFAULT_LIMIT)
+            body = render_conv(cid, limit=limit)
+            if body is None:
+                return self._send(404, "no such conversation", "text/plain")
+            m = conv.get_meta(INSTANCE, cid)
+            return self._send(200, CONV_SHELL.format(
+                title=html.escape(m["title"]),
+                heading=html.escape(m["title"]),
+                sub=(f'participants: {html.escape(", ".join(m["participants"]))} · '
+                     f'<a href="/conversations">all conversations</a> · <a href="/">beat + threads</a>'),
+                flash="", body=body))
+        return self._send(404, "not found", "text/plain")
 
     def do_POST(self):
         from urllib.parse import parse_qs
@@ -251,6 +381,18 @@ class Handler(BaseHTTPRequestHandler):
             if self.path == "/note":
                 p = append_note(text)
                 flash = f"Sent. It lands in the being's next beat, at the top: {p}"
+            elif self.path == "/say":
+                cid = (form.get("to") or [""])[0]
+                turn = conv.append(INSTANCE, cid, speaker=DP, text=text)
+                m = conv.get_meta(INSTANCE, cid)
+                body = render_conv(cid)
+                return self._send(200, CONV_SHELL.format(
+                    title=html.escape(m["title"]), heading=html.escape(m["title"]),
+                    sub=f'participants: {html.escape(", ".join(m["participants"]))} · '
+                        f'<a href="/conversations">all conversations</a>',
+                    flash=f'<div class="card" style="border-color:var(--gn)">Sent as turn '
+                          f'#{turn["seq"]}. {html.escape(BEING)} sees it at its next beat.</div>',
+                    body=body))
             elif self.path == "/reply":
                 p = append_reply((form.get("thread") or [""])[0], text)
                 flash = (f"Replied in {p.name}. It reads this thread in full every beat — "

@@ -324,7 +324,7 @@ def _fill_headroom(cfg: dict, partial: Path, host_session_id: str) -> dict:
     return cfg
 
 
-def own_state(instance: Path, entrusted: str = "") -> str:
+def own_state(instance: Path, entrusted: str = "", member: str = "") -> str:
     from sage.gateway.being_join import carried_account, last_session_number
     parts = []
     if entrusted:
@@ -333,6 +333,15 @@ def own_state(instance: Path, entrusted: str = "") -> str:
         # where its own interpretation belongs, so the two never merge in the record.
         parts.append("## What you are entrusted with (extended to you; you cannot edit this "
                      "file. Your own reading of it belongs in notes/plan.md)\n" + entrusted)
+    # Conversations first among the channels: a turn addressed to the being and unanswered
+    # is the one thing in its state that is waiting on IT, and it should never have to infer
+    # that from a wall of notes. The notes files below stay for now as history; new
+    # exchanges go here, where both directions live in one ordered record.
+    from sage.gateway import conversations as _conv
+    convs = _conv.render_for_being(instance, member)
+    if convs.strip():
+        parts.append("## Your conversations (both directions, kept forever; reply with `say`)\n"
+                     + convs.strip())
     from_dp = _read(instance / DP_CHANNEL, 4000)
     if from_dp.strip():
         parts.append("## From dp, the operator, directly (notes/from-dp.md — dp's own words, "
@@ -623,7 +632,7 @@ def main(argv=None) -> int:
     # the oldest tokens (system prompt, posture) with no error anywhere. Measured on this
     # being: two beats at 16,380 / 16,323 prompt tokens against a 16,384 window returned 4
     # and 61 tokens, done_reason "length".
-    state_block = (f"# Your own state\n\n{own_state(instance, entrusted)}\n\n"
+    state_block = (f"# Your own state\n\n{own_state(instance, entrusted, args.member)}\n\n"
                    f"## Reach you hold (hestia scope)\n{scope}\n\n")
     _fixed = len(posture()) + len(state_block) + len(inbox) + 4000  # + affordances/ask/tools
     blocks, fit_interventions = fit_to_window(

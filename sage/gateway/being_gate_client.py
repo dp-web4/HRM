@@ -295,6 +295,13 @@ _REGISTRY = {
     # the being never holds a flag. See git_read_command for what it composes with.
     "git_read":       dict(tool="git_read",    path_args=(),       cmd_arg=None,
                            compose=git_read_command),
+    # say: add a turn to a conversation the being is IN. Bounded by construction, like
+    # remember: the being names a conversation id, and the dispatcher refuses any id whose
+    # meta does not list it as a participant AND as writable. It cannot create a
+    # conversation, cannot speak in one it is not in, and cannot edit a turn once spoken —
+    # its own included. path_args=() is correct: the target is a conversation, not a path,
+    # and the reach is fixed by the meta file the seat owns rather than by the being's args.
+    "say":            dict(tool="say",         path_args=(),       cmd_arg=None),
     # Long-term semantic memory (membot brain cartridge, the being's own): recall is
     # observational; remember is consequential but passes local law under ANY grant
     # (paths=()), and that is not because it is "classed with memory_write" (which the
@@ -323,7 +330,7 @@ _REGISTRY = {
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read", "recall", "appeal"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
-                            "remember", "request_scope", "check", "git_read"})
+                            "remember", "request_scope", "check", "git_read", "say"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -364,6 +371,13 @@ _TOOL_SCHEMAS = {
                   "path": "optional: a path inside your worktree to narrow the answer to",
                   "n": "optional, for op='log': how many commits (1-50, default 20)"},
                  ["op"]),
+    "say": ("Add a turn to a conversation you are in — this is how you ANSWER someone, "
+            "rather than writing about them in your journal. The turn is attributed to you "
+            "and kept forever; nobody can edit it afterwards, including you. Saying nothing "
+            "is also a choice and is recorded as one.",
+            {"to": "the conversation id, shown beside each conversation in your state",
+             "text": "what you want to say"},
+            ["to", "text"]),
     "recall": ("Search your long-term memory (semantic search over everything you have "
                "remembered). Use it before deciding what to do; use it when something "
                "feels familiar.",

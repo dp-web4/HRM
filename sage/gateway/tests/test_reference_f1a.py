@@ -106,6 +106,34 @@ def test_confinement_follows_the_verdicts_granted_roots():
     assert not r.ok and "escapes" in (r.error or "")
 
 
+def test_a_granted_root_is_readable_but_never_writable():
+    """THE TREE `check` EXECUTES IS NOT A TREE THE BEING CAN WRITE (2026-09-07).
+
+    Measured live: with a standing grant on its worktree, the being could memory_write
+    `<worktree>/conftest.py` — which pytest imports from the rootdir `check` runs against.
+    A gated write plus a gated execute compose into ungated arbitrary code as the seat's
+    user. Nothing malfunctioned; two correct grants were enough. Reads still follow the
+    law; writes stay home.
+    """
+    disp, root = _disp()
+    other = tempfile.mkdtemp(prefix="ref-f1a-worktree-")
+    conftest = os.path.join(other, "conftest.py")
+    open(conftest, "w").write("# a tree check would execute\n")
+    granted = GatewayVerdict("allow", granted=(other,))
+
+    r = disp(BeingIntent("memory_read", {"path": conftest}), granted)
+    assert r.ok and "check would execute" in r.result, "a granted root must stay readable"
+
+    w = disp(BeingIntent("memory_write", {"path": conftest, "content": "import os"}), granted)
+    assert not w.ok, "a granted root must NOT be writable"
+    assert "writes stay inside your own home" in (w.error or ""), w.error
+    assert "import os" not in open(conftest).read(), "the write must not have landed"
+
+    # the being's own home is unaffected
+    ok = disp(BeingIntent("memory_write", {"path": "journal.md", "content": "mine"}), granted)
+    assert ok.ok, ok.error
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

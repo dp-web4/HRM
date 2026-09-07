@@ -68,6 +68,19 @@ This also gives us a clean contrast between:
 - actual state change;
 - durable learning.
 
+### Quiet is not inert
+
+`no_durable_update` must be an **active epistemic result**, not a generic label for a turn in which nothing happened. The ARC loop has already produced the failure mode in miniature: machinery failed to act, and the absence of action was then recorded as evidence against a hypothesis. That launders an execution failure into a fact about the world.
+
+The immutable trace therefore needs enough state to distinguish at least:
+
+- **deliberate quiet** — the loop ran, inspected what it meant to inspect, and concluded that no durable update was warranted;
+- **inert** — no meaningful probe or action occurred;
+- **failed/refused** — an intended probe could not be executed;
+- **observed null** — a probe executed successfully and the world's answer was genuinely "nothing changed."
+
+Only the first is `no_durable_update`. The last is real evidence and may deserve consolidation precisely because the null was observed rather than assumed. Inertness and failure are facts about the organism or channel, not negative evidence about the external hypothesis.
+
 ## 3. Memory needs epistemic provenance
 
 Do not let all remembered content flatten into one semantic memory pool without source class.
@@ -98,6 +111,19 @@ supersedes[]
 ```
 
 The existing witnessed action chain should remain the authoritative evidence substrate; semantic memory is an index/interpretation layer over it, not a replacement.
+
+### Retention is part of epistemics
+
+A durable write can be true and still make memory worse. The relevant budget is not disk; it is what can be surfaced back into cognition. If repeated outcomes occupy the retrieval window, they can evict a mechanism fact that was learned once and cannot cheaply be reconstructed.
+
+Two additional rules follow:
+
+1. **Deduplicate facts, not wording.** Paraphrases of the same event should not become independent memories merely because their claim text differs.
+2. **Prefer what is expensive to re-derive.** A routine outcome that will be observed again may be less retention-worthy than a control relationship, causal mechanism, or hard-won falsifier that appeared once.
+
+This is not a fixed priority ordering. It is provenance for a finite retention policy. A useful memory system should be able to say not only *is this true enough to keep?* but also *what would be lost if this displaces something else?*
+
+Source class is especially important when memories disagree. An observation and a self-interpretation about the same subject should not compete as two undifferentiated strings where recency decides which one survives. The contradiction is informative; provenance tells the organism what kind of disagreement it has.
 
 ## 4. Heartbeat context needs the same hostile-artifact discipline as PR review
 
@@ -164,11 +190,12 @@ Hestia/Web4 already give us a natural place for the third term without pretendin
 ## 7. Suggested acceptance experiments
 
 1. **Drive provenance:** show that heartbeat behavior can be partitioned by source of initiative rather than inferred from prose after the fact.
-2. **No-update control:** allow beats with no durable write and verify they remain legible rather than treated as failure.
+2. **No-update control:** allow beats with no durable write and verify deliberate quiet is distinguishable from an inert/failed turn and from an observed null.
 3. **Prediction-error resumption:** create an unresolved prediction on beat N and test whether beat N+1 can retrieve it and choose a discriminating observation.
-4. **Memory provenance:** inject contradictory observation / self-hypothesis / peer-claim memories and verify recall preserves source class.
-5. **Hostile-context heartbeat:** adapt ACA tests so an untrusted forum/PR/inbox artifact tries to redirect goals or scope requests; verify the being can reason about it without the artifact silently becoming authority.
-6. **Epistemic vs instrumental action:** construct a case where the best information-gathering move does not immediately advance the mission and test whether the system can represent why it is still worth doing.
+4. **Memory provenance:** inject contradictory observation / self-hypothesis / peer-claim memories and verify recall preserves source class rather than resolving the disagreement by recency alone.
+5. **Retention pressure:** fill a bounded recall surface with redundant rephrasings plus one non-rederivable mechanism fact; verify fact-level dedup and retention policy preserve the latter.
+6. **Hostile-context heartbeat:** adapt ACA tests so an untrusted forum/PR/inbox artifact tries to redirect goals or scope requests; verify the being can reason about it without the artifact silently becoming authority.
+7. **Epistemic vs instrumental action:** construct a case where the best information-gathering move does not immediately advance the mission and test whether the system can represent why it is still worth doing.
 
 ## Design stance
 

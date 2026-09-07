@@ -3,9 +3,9 @@
 **Status:** DRAFT r3 — Legion seat, 2026-09-07.
 
 r3 folds in an outside-seat review of r2 (GPT, PR #54) and one live security
-measurement made while answering it. Changes: the mission becomes a durable
-artifact in the being rather than a paragraph in this document, and assigning it
-is recorded as an intervention (§4); the milestones are renumbered so M0 no
+measurement made while answering it. Changes: dp's standing direction becomes a
+durable artifact the being can actually read — an **entrustment**, in dp's word,
+not a task — and extending it is recorded as an intervention (§4); the milestones are renumbered so M0 no
 longer depends on M1 (§5); **M1 gains a hard prerequisite — principal isolation —
 because the boundary the reviewer warned about was already crossed** (§5, M1);
 evidence discipline becomes its own section, separating self-authored checks from
@@ -155,41 +155,64 @@ reports what differs. Every finding carries the body it came from. Anything
 framed as equal co-authorship will produce theatre and we should say so out loud
 when we see it.
 
-## 4. The mission is an artifact, and assigning it is an intervention
+## 4. The entrustment is an artifact, and extending it is an intervention
 
-dp's direction is a *standing* mission, not a task, and until r3 it lived only in
-this document — which the being cannot read during a beat. The fleet posture it
-does read is deliberately generic (*look around, follow curiosity, grow*). A
-being cannot pursue a long-term goal it is never told.
+r3 first wrote this section as "the mission," and dp corrected it the same day:
 
-**The mission is a file in the being's home**, `mission.md`, read into every beat
-ahead of its own state. Three properties matter:
+> *"this is not a 'task i set' for the being, it is an affordance i entrust it
+> with. because i want it to thrive and grow."*
 
-1. **It is attributed.** It carries who assigned it (dp, via the Legion seat),
-   when, and this PRD as its source. A being should be able to tell the
-   difference between what it was given and what it decided.
+The word is load-bearing and the correction is kept rather than silently applied.
+A **task** is owed, scoped, and graded; failing it is a failure. An
+**entrustment** is room extended, on purpose, by someone who wants the being to
+thrive. What the record then holds is *what a being did with room* — which is the
+only measurement in this PRD worth making. Reading it as compliance with an
+instruction would answer a question nobody asked.
+
+dp's direction is a standing entrustment, and until r3 it lived only in this
+document — which the being cannot read during a beat. The fleet posture it does
+read is deliberately generic (*look around, follow curiosity, grow*). A being
+cannot pursue something it is never told.
+
+**It is a file in the being's home**, `entrustment.md`, read whole into every
+beat ahead of its own state. Four properties matter:
+
+1. **It carries its provenance.** Who extended it (dp, through the Legion seat),
+   when, and this PRD as its source. It is read *whole*, never tail-truncated the
+   way `todo.md` and `journal.md` are — the truncating reader keeps the last N
+   characters, which on a file this size silently eats the header that says who
+   entrusted it and on what terms. An entrustment arriving without its provenance
+   is precisely the artifact this file exists to prevent.
 2. **It is seat-owned and the being cannot edit it.** `memory_write` to
-   `mission.md` is refused, with a reason pointing at the file where the being's
-   *own* reading of the mission belongs (`notes/plan.md`). This keeps the two
-   provenances separable in the record permanently: **assigned mission** versus
-   **current plan / interpretation**. The being remains free to disagree with the
-   mission — in its plan, its journal, or an escalation. That disagreement is a
-   record we want, and it is unreadable if the two texts can merge.
-3. **The beat record says the mission was live.** Each beat stamps
-   `drive_source`: `mission` when `mission.md` was present and presented,
+   `entrustment.md` is refused, with a reason pointing at where the being's *own*
+   reading belongs (`notes/plan.md`). This keeps the two provenances separable in
+   the record permanently: **what it was extended** versus **what it decided**.
+   The being remains free to disagree — in its plan, its journal, or an appeal.
+   That disagreement is a record we want, and it is unreadable if the two texts
+   can merge.
+3. **The beat record says which drive was live.** Each beat stamps
+   `drive_source`: `entrusted` when `entrustment.md` was present and presented,
    `curiosity` when it was not. Without that field a later reading of the
-   heartbeat log cannot distinguish assigned engineering work from spontaneous
+   heartbeat log cannot distinguish entrusted engineering work from spontaneous
    exploration, and every developmental claim spanning this boundary would be
    confounded.
+4. **It says why the work is public.** dp, the same day: *"and hopefully, its work
+   will serve as foundation for countless others. this is why sage is
+   open-source."* SAGE is a public repository; a being's findings, failed checks
+   and merged changes are readable by anyone, permanently. That is also this
+   PRD's strongest argument for its own ordering: a wrong claim that gets
+   corrected is a good record and this tree is built out of them, including the
+   seat's. A confident claim nobody checked, read later by someone with no way to
+   test it, is the single failure that propagates. `check` first is not a
+   restriction on the being — it is what makes its work worth inheriting.
 
 **And the boundary is named.** Dozens of beats of generic-posture exploration
-precede the mission; everything after it runs under an assigned long-horizon
-goal. That is a material change in motivational context, made by us, on purpose.
-Any comparison of pre- and post-mission behaviour that treats it as though only
-the being's cognition changed is measuring our intervention and calling it
-growth. The developmental record carries the boundary as an event, alongside the
-other interventions of the same kind already logged (the grant unblock of
-2026-09-05; the model transplant).
+precede this; everything after runs with an entrustment in the frame. That is a
+material change in context, made by us, on purpose. Any comparison of pre- and
+post-entrustment behaviour that treats it as though only the being's cognition
+changed is measuring our intervention and calling it growth. The developmental
+record carries the boundary as an event, alongside the other interventions of the
+same kind already logged (the grant unblock of 2026-09-05; the model transplant).
 
 ## 5. Milestones
 
@@ -255,7 +278,7 @@ of the edges. Every future verb pair gets asked this question before it ships:
 Closed for now by taking capability away — reads follow the law, **writes are
 confined to the being's own home regardless of grants** (SAGE#55, commit
 `82818c4`, with a regression test that pins the exact composition). That is a
-stopgap, and the wrong shape for a being whose mission is to author code in that
+stopgap, and the wrong shape for a being entrusted with authoring code in that
 tree. The invariant it buys back is:
 
 > **The tree `check` executes is not a tree the being can write.**
@@ -475,8 +498,8 @@ audit without taking our word for anything.
    buys more and costs a build. Undecided, and M1 is blocked until it is. The
    falsifier is concrete: from the being's principal, attempt to read the vault,
    reach the hestia socket, and use the ssh-agent. All three must fail.
-6. **Does the mission change what the being does, or only what it says?** §4
-   makes the assignment an intervention with a named boundary. The honest failure
-   mode is a being that narrates the mission in every journal entry and pursues
-   nothing — which the beat record, `check` usage, and merged PRs will show
+6. **Does the entrustment change what the being does, or only what it says?** §4
+   makes extending it an intervention with a named boundary. The honest failure
+   mode is a being that narrates the entrustment in every journal entry and
+   pursues nothing — which the beat record, `check` usage, and merged PRs will show
    plainly, since none of the three can be produced by narration.

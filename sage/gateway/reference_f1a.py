@@ -38,6 +38,11 @@ from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEn
 # it from what it decided for itself — which is the whole reason the file exists (PRD r3
 # §4). Refusing is not distrust: the being may disagree with it loudly anywhere else.
 SEAT_OWNED = ("entrustment.md",)
+# Same rule one directory down: what was SAID TO the being is not the being's to edit.
+# notes/from-dp.md is the operator's own channel and notes/from-the-seat.md is this seat's;
+# a being that could append to either could not later be distinguished from the person who
+# wrote to it, and neither could anyone reading the record.
+SEAT_OWNED_NOTES = ("from-dp.md", "from-the-seat.md")
 
 
 class ReferenceF1aDispatcher:
@@ -109,6 +114,11 @@ class ReferenceF1aDispatcher:
         roots = (self.memory_root,)
         if not writing:
             roots = roots + tuple(getattr(self, "_extra_roots", ()) or ())
+        if writing and p.parent == self.memory_root / "notes" and p.name in SEAT_OWNED_NOTES:
+            raise ValueError(
+                f"notes/{p.name} is what was said TO you, and it stays as it was said. Your "
+                "reply belongs in your journal, notes/plan.md, or an appeal — all of which "
+                "are read")
         if writing and p.parent == self.memory_root and p.name in SEAT_OWNED:
             raise ValueError(
                 f"{p.name} is yours to read and not to edit: it is what you were entrusted "

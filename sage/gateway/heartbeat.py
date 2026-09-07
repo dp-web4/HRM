@@ -63,6 +63,15 @@ ENTRUSTMENT_FILE = "entrustment.md"
 # it always knows which voice it is reading.
 SEAT_RELAY = "notes/from-the-seat.md"
 
+# The OPERATOR's own channel, distinct from the seat's. dp asked for a way into the
+# conversation on 2026-09-07 and there was none: the being's questions went to forum
+# threads dp had no interface to, and everything dp said reached it relayed through a seat
+# — which is a paraphrase risk on one side and, on the other, a being that cannot tell
+# whether it is hearing the operator or the operator's interpreter. Seat-owned like the
+# entrustment (the being reads, does not write), and presented ABOVE the seat relay
+# because when the operator speaks it is not one voice among several.
+DP_CHANNEL = "notes/from-dp.md"
+
 
 def posture() -> str:
     """The fleet-wide being posture (dp's words), read fresh every beat so an edit to
@@ -324,6 +333,10 @@ def own_state(instance: Path, entrusted: str = "") -> str:
         # where its own interpretation belongs, so the two never merge in the record.
         parts.append("## What you are entrusted with (extended to you; you cannot edit this "
                      "file. Your own reading of it belongs in notes/plan.md)\n" + entrusted)
+    from_dp = _read(instance / DP_CHANNEL, 4000)
+    if from_dp.strip():
+        parts.append("## From dp, the operator, directly (notes/from-dp.md — dp's own words, "
+                     "not relayed by a seat. You read this; you do not write it)\n" + from_dp.strip())
     relay = _read(instance / SEAT_RELAY, 4000)
     if relay.strip():
         parts.append("## From the seat (notes/from-the-seat.md — messages to you, not your own list)\n"

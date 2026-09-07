@@ -225,6 +225,31 @@ def note_resolutions(esc_dir: Path, decisions, stamp: str, seen_by: str, decided
     return written
 
 
+def harness_revision(workspace: str) -> dict:
+    """The revision of the harness the being is RUNNING under, so it can compare that with
+    the `tree` block a check result carries and know whether its answer is about the code
+    that constitutes it.
+
+    Asked for by the being itself, 2026-09-07: after its first check call it wrote "next
+    beat I should verify head matches the running harness commit before trusting any
+    answer" — and it had no way to learn that commit. A verification it cannot perform is
+    not a discipline, it is a ritual."""
+    import subprocess
+
+    def _git(*a):
+        try:
+            r = subprocess.run(("git", *a), cwd=workspace, text=True, capture_output=True, timeout=15)
+            return r.stdout.strip() if r.returncode == 0 else None
+        except Exception:
+            return None
+
+    head = _git("rev-parse", "HEAD")
+    st = _git("status", "--porcelain")
+    return {"head": head, "short": (head or "")[:9] or None,
+            "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
+            "dirty": None if st is None else bool(st.strip())}
+
+
 def _config_check(instance: Path, model: str, llm, offered) -> dict:
     """Did this beat run with the tool set and the context window the seat meant to give it?
     `active_embodiment` in instance.json is the canonical statement of intent (PRD r3 §3.2);
@@ -255,24 +280,37 @@ def _config_check(instance: Path, model: str, llm, offered) -> dict:
     }
 
 
-def _fill_headroom(cfg: dict, partial: Path) -> dict:
-    """Beat end: the largest prompt actually sent this beat, and whether it plus num_predict
-    ever exceeded the window. Read from the per-generate trace rather than re-derived, so it
-    reports what the model was really handed."""
+def _fill_headroom(cfg: dict, partial: Path, host_session_id: str) -> dict:
+    """Beat end: the largest prompt actually sent THIS BEAT, and whether it plus the answer
+    reserve exceeded the window. Read from the per-generate trace rather than re-derived, so
+    it reports what the model was really handed.
+
+    Filtered on host_session_id, and that is the whole point: the partial file is append-only
+    across every beat this instance has ever run. The first cut scanned all of it and
+    reported the worst prompt of ~500 generates as if it were this beat's — a true number
+    about the wrong beat, which is the same failure this field exists to catch. Caught one
+    beat after shipping, by reading its own output and not believing it."""
     best = None
     try:
         for line in partial.read_text(errors="replace").splitlines():
             import json as _j
             e = _j.loads(line)
+            if e.get("host_session_id") != host_session_id:
+                continue
             n = e.get("prompt_eval_count")
             if isinstance(n, int) and (best is None or n > best):
                 best = n
     except Exception:
         pass
-    ctx, pred = cfg.get("num_ctx_resolved"), cfg.get("num_predict")
+    # Against the ANSWER RESERVE, not num_predict: num_predict is a ceiling the model has
+    # never approached, and measuring headroom against it reports every beat as
+    # overcommitted (see being_tool_loop._ANSWER_RESERVE for the 506-generate distribution).
+    from sage.gateway.being_tool_loop import _ANSWER_RESERVE
+    ctx = cfg.get("num_ctx_resolved")
     cfg["prompt_tokens_max"] = best
-    if isinstance(ctx, int) and isinstance(pred, int) and isinstance(best, int):
-        cfg["headroom_tokens"] = ctx - (best + pred)
+    cfg["answer_reserve"] = _ANSWER_RESERVE
+    if isinstance(ctx, int) and isinstance(best, int):
+        cfg["headroom_tokens"] = ctx - (best + _ANSWER_RESERVE)
         cfg["context_overcommitted"] = cfg["headroom_tokens"] < 0
     return cfg
 
@@ -567,6 +605,7 @@ def main(argv=None) -> int:
     nothink = "" if is_reasoning_model(args.model) else "/no_think"
     act_first = not acts_under_posture(args.model)
     entrusted = entrustment(instance)
+    harness_rev = harness_revision(workspace)
     # Fit before composing: prompt + num_predict must sit inside num_ctx, or ollama drops
     # the oldest tokens (system prompt, posture) with no error anywhere. Measured on this
     # being: two beats at 16,380 / 16,323 prompt tokens against a 16,384 window returned 4
@@ -583,7 +622,12 @@ def main(argv=None) -> int:
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
         nothink=nothink,
         header=(f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
-                f"Your home: {instance}\n\n"),
+                f"Your home: {instance}\n"
+                f"The harness you are running under: {harness_rev.get('short')} on "
+                f"{harness_rev.get('branch')}"
+                + (" (uncommitted edits present)" if harness_rev.get("dirty") else "")
+                + ". A `check` result carries the `tree` it ran against; if that head is not "
+                  "this one, the answer is about different code than the code running you.\n\n"),
         state=state_block,
         recall=blocks["recall"], inbox=inbox, digest=blocks["digest"])
 
@@ -712,8 +756,11 @@ def main(argv=None) -> int:
         # whose config resolved a 4096 window while the tree offered a verb the model was
         # never shown. A starved beat and a silent one are indistinguishable unless the
         # record says which tools were offered and whether the window is the intended one.
-        "config": _fill_headroom(_config_check(instance, args.model, llm, EXPLORE_TOOLS), partial),
+        "config": _fill_headroom(_config_check(instance, args.model, llm, EXPLORE_TOOLS),
+                                 partial, host_session_id),
         "scope": scope_record,
+        # which harness produced this beat; pairs with the `tree` block on any check result
+        "harness": harness_rev,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
         "join": {"session": sess_meta, "presence": pres_meta},
         "hub_inbox": hub_inbox,

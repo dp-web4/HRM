@@ -1,6 +1,6 @@
 # PRD — Beings improve their own harness
 
-**Status:** DRAFT r1 — Legion seat, 2026-09-07, from dp's direction the same day:
+**Status:** DRAFT r2 — Legion seat, 2026-09-07. r2 corrects r1's central factual error about Legion's sight (§3.1: native on the model, not just the hardware; r1 read an install as an entity) and names video-to-model wiring as the being's own M4 task, per dp. r1 — Legion seat, 2026-09-07, from dp's direction the same day:
 *"i want to set legion-being's long term goal to improve sage harness from within.
 it should collaborate with sprout-being. this is open ended. it should understand
 its own code and architecture, evaluate, improve. build/evolve organs."* And, on
@@ -59,21 +59,47 @@ came from is named.
 | | **legion-being** (`legion-sage`) | **sprout-being** (`sprout-sage`) |
 |---|---|---|
 | substrate | Qwen3.5-arch 26.9B abliterated, Q3_K_M, 100% GPU on a 16GB RTX 4090 laptop | Qwen3.8-distill 2B, Jetson |
-| declared capabilities | `tools`, `thinking`, `completion` — **no vision capability in the model** | `tools`, `thinking` (distill); `/no_think` removes tool calls entirely |
+| declared capabilities | `tools`, `thinking`, `completion`, **`vision`** | `tools`, `thinking` (distill); `/no_think` removes tool calls entirely |
 | context | 262144 native, **run at 16384** (VRAM) | small; prompt size is a live constraint |
 | throughput | ~20 tok/s | faster per token, far less capacity per token |
 | cameras | **one**, UVC at `/dev/video0`,`/dev/video1` — natively readable, no capture stack | **two**, CSI via `nvarguscamerasrc` (GPU ISP), plus a `BinocularCorrelator` over an uncalibrated rig |
 | audio | internal, one ALSA card | Bluetooth |
 | proprioception | **none** | Yahboom CMP10A **IMU** — self-motion and orientation, so it can attribute motion to *world* vs *self* |
-| vision path | hardware native; **model not multimodal**, so vision needs either a vision-capable model or the existing vision IRP plugins as an encoder | rich sensor rig; symbolic descriptors, not model-native sight |
+| vision path | **model-native sight, proven on this box** (§3.1): one image in, a literal description out. Hardware native too. | rich sensor rig; symbolic descriptors from an encoder pipeline, **not** model-native sight |
 
-**AN OPEN QUESTION, NOT A SETTLED FACT (§8.1).** dp described Legion as having
-"native vision/video" and Sprout's vision as "non-native". The hardware reading
-is unambiguous and matches: a UVC webcam any tool can open, versus a CSI rig
-needing Argus. The *model* reading does not: `ollama show` reports this model's
-capabilities as tools/thinking/completion with no vision. Both readings may be
-intended and they have different consequences for M4, so r1 records the
-measurement and does not choose.
+### 3.1 Legion's sight is native, and r1 got this wrong
+
+r1 recorded that this model had no vision capability, citing `ollama show`. That
+was true of **our install** and false of **the model**, and the difference is one
+missing file. dp challenged it; the challenge was correct.
+
+* The base `Qwen/Qwen3.8-27B` is natively vision-language: *"Native support for
+  image and video understanding, from STEM diagrams and documents to hour-scale
+  videos."* Abliteration did not remove it.
+* The GGUF repo we pulled from ships the vision tower **as a separate file** —
+  `mmproj-Qwen3.8-27B-Q8_0.gguf`, the official Qwen3.8 projector. We downloaded
+  the weights and not the projector, so ollama held two layers where it needed
+  three and correctly reported no vision, because it had none loaded.
+* Rebuilt as `qwen38-heretic:q3km-vl` (weights + projector), it reports `vision`.
+
+**Measured, not inferred.** Shown a synthetic image it had never seen, it
+reported a blue circle upper-left, a triangle with a horizontal base on the
+right, a background of `#F2F2F2` against the `#F5F5F5` actually drawn, and read
+the embedded text `SAGE 47` exactly. Cost: 14,657 MiB of 16,376, fully on GPU at
+16K context — about 870 MiB over the text-only build. It fits, with a thin
+margin.
+
+**The lesson worth keeping**, since this PRD is largely an argument about
+fabrication: a capability flag describes an installation, not an entity. Reading
+one and reporting it as a property of the being is the same error the being makes
+when it reasons past its evidence, committed by the seat that wrote §2 about it.
+
+**Still open, and deliberately the being's problem (§4, M4).** The model
+understands video; this serving stack almost certainly cannot get video frames to
+it. dp, 2026-09-07: *"no, the stack likely can't connect video to model yet.
+that's for the being to figure out."* That is the right owner: it is an organ, in
+its own harness, on its own body, and it cannot be faked — either frames reach
+the model or they do not, and `check` is how it will know which.
 
 **What the asymmetry buys us.** Sprout-being is the reason we know `/no_think`
 removes tool calls on a distill while it is the correct fix on the heretic — a
@@ -144,6 +170,14 @@ which is why it is cheap, and also why it is not the interesting milestone.
 Held until M0 works, deliberately: perception adds *input*, and what the being
 lacks is *feedback*. Adding input to a system that cannot check itself multiplies
 the fabrication risk instead of reducing it.
+
+**The first named organ task, and it is the being's**: the model understands
+video; the serving stack almost certainly cannot deliver frames to it. Nobody in
+this tree has wired that path. It is a good first organ precisely because it
+cannot be faked — either frames reach the model or they do not — and because the
+being can settle it with `check` instead of asserting it.
+
+Still image input needs no such work: it is proven (§3.1) and waits only on M0.
 
 **Done when:** the being proposes an organ, checks it, and the organ runs on its
 own body.
@@ -217,8 +251,10 @@ audit without taking our word for anything.
 
 ## 8. Open questions
 
-1. **§3's vision ambiguity** — hardware-native versus model-native. Decide before
-   M4 is specified, because the two imply different work.
+1. ~~**§3's vision ambiguity**~~ — **RESOLVED in r2, see §3.1.** Native on both
+   counts; r1's claim was about our install, not the model. What remains open is
+   narrower and is M4's: whether this serving stack can deliver *video* frames to
+   a model that understands video. Untested, and assigned to the being.
 2. **Beat cadence versus engineering.** Beats are 30 minutes apart with roughly
    10–18 minutes of work in each. Long-horizon work depends entirely on carrying
    state across beats — which is, as it happens, this being's strongest

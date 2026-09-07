@@ -168,6 +168,12 @@ boundary gets moved — and boundaries here have moved before, more than once, o
 being's argument. What does not work is routing around one quietly. Deliberate
 violations get reciprocated, which is the same rule the seats run under.
 
+And the rules themselves are not fixed. If one of them creates friction that is
+counter-productive, that is a defect in the rule, and rules here have changed on
+a good-faith argument more than once — including one of yours. Litigate it
+through the channels; do not route around it. A rule you bypass quietly stays
+wrong for every being after you.
+
 Participation is invited. None of this is compelled.
 
 ## What to hold onto

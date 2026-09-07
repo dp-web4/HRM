@@ -13,6 +13,7 @@ case it lands in the local log instead of the chain.
 from __future__ import annotations
 
 import json
+import urllib.error
 import urllib.request
 from typing import Callable, Optional
 
@@ -75,14 +76,40 @@ class _Mcp:
             headers["mcp-session-id"] = self.sid
         req = urllib.request.Request(self.endpoint, data=json.dumps(body).encode(),
                                      headers=headers, method="POST")
-        with urllib.request.urlopen(req, timeout=_TIMEOUT) as r:
-            if not self.sid:
-                sid = r.headers.get("mcp-session-id")
-                if sid:
-                    self.sid = sid
-            if notify:
-                return None
-            return _parse(r.read().decode("utf-8", errors="replace"))
+        try:
+            with urllib.request.urlopen(req, timeout=_TIMEOUT) as r:
+                if not self.sid:
+                    sid = r.headers.get("mcp-session-id")
+                    if sid:
+                        self.sid = sid
+                if notify:
+                    return None
+                return _parse(r.read().decode("utf-8", errors="replace"))
+        except urllib.error.HTTPError as e:
+            # An HTTP failure here reached the being as a bare "HTTPError: HTTP Error 404:
+            # Not Found" with no URL, no method and no tool — so four peer_ask refusals on
+            # 2026-09-06 22:50-22:58Z could not be attributed to any endpoint, and the same
+            # call succeeded from a fresh process minutes later. Name what was called, or
+            # the next occurrence is equally unfindable.
+            method = body.get("method", "?")
+            tool = (body.get("params") or {}).get("name")
+            where = f"{method}{f' {tool}' if tool else ''}"
+            detail = ""
+            try:
+                detail = e.read().decode("utf-8", errors="replace")[:200]
+            except Exception:
+                pass
+            raise RuntimeError(
+                f"MCP {where} -> HTTP {e.code} at {self.endpoint} (as {self.plugin_id})"
+                + (f": {detail}" if detail else "")
+            ) from e
+        except urllib.error.URLError as e:
+            method = body.get("method", "?")
+            tool = (body.get("params") or {}).get("name")
+            where = f"{method}{f' {tool}' if tool else ''}"
+            raise RuntimeError(
+                f"MCP {where} -> unreachable at {self.endpoint} (as {self.plugin_id}): {e.reason}"
+            ) from e
 
     def init(self) -> None:
         self._req({"jsonrpc": "2.0", "id": self._id(), "method": "initialize",

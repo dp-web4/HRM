@@ -1,3 +1,4 @@
+mod conversations;
 mod ollama;
 mod consciousness;
 mod federation;
@@ -50,6 +51,13 @@ struct AppState {
     machine: String,
     chat_history_file: std::path::PathBuf,
     images_dir: std::path::PathBuf,
+    // The BEING on this machine: its home (where its conversations live) and the name it
+    // speaks under. Distinct from `machine`/`model`, deliberately — the being's identity
+    // survived a whole-model transplant on Legion, so its home is configured rather than
+    // derived from whatever weights happen to be loaded today.
+    being: String,
+    being_instance: std::path::PathBuf,
+    root: std::path::PathBuf,
 }
 
 // --- Request/Response types ---
@@ -400,6 +408,125 @@ async fn stream_chat(
     Sse::new(stream)
 }
 
+/// THE CANONICAL CHAT: a turn to the being, not a prompt to the weights.
+///
+/// dp, 2026-09-07: "shift from raw llm chat to sage-being chat canonically, so all machines
+/// can pick it up." The old /chat sent the message straight to ollama and returned the
+/// completion — the model on this GPU answering as itself, with no identity, no governance
+/// gate, no memory of the exchange, and no relation to the entity whose journal and
+/// entrustment live one directory away. It is kept at /chat/raw because probing weights is
+/// a legitimate thing to want; it is no longer what "chat" means.
+///
+/// A being answers on its own rhythm. This records the turn and reports how it will be
+/// delivered. Every machine gets the same behaviour from the same route, which is what
+/// "canonically" asks for.
+async fn chat_being(
+    State(state): State<Arc<AppState>>,
+    Json(req): Json<ChatRequest>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    // The operator's own conversation with this being is the default target. A machine
+    // whose being has no such conversation yet says so plainly instead of silently
+    // falling back to the raw model — a silent fallback here would mean a user believing
+    // they had spoken to the being when they had spoken to the weights.
+    let id = "dp";
+    if conversations::get_meta(&state.being_instance, id).is_none() {
+        return (StatusCode::SERVICE_UNAVAILABLE, Json(serde_json::json!({
+            "error": format!("no '{id}' conversation for {} at {}", state.being,
+                             state.being_instance.display()),
+            "hint": "create it with sage.gateway.conversations.create, or use /chat/raw to prompt the model directly (that is NOT the being)",
+        })));
+    }
+    match conversations::append(&state.being_instance, id, "dp", &req.message) {
+        Ok(turn) => {
+            let woke = conversations::arouse(&state.root, &state.being_instance, "dp_turn",
+                                             &format!("dp spoke in conversation '{id}'"));
+            let engaged = woke.get("engage").and_then(|v| v.as_bool()).unwrap_or(false);
+            (StatusCode::OK, Json(serde_json::json!({
+                "to": state.being,
+                "conversation": id,
+                "turn": turn,
+                "delivery": if engaged { "waking the being now" }
+                            else { "recorded; it will be read at the next beat" },
+                "arousal": woke,
+                "note": "the being answers on its own rhythm; its reply appears in this conversation when it next beats",
+            })))
+        }
+        Err(e) => (StatusCode::BAD_REQUEST, Json(serde_json::json!({"error": e}))),
+    }
+}
+
+#[derive(Deserialize)]
+struct SayRequest {
+    message: String,
+    #[serde(default)]
+    from: Option<String>,
+}
+
+/// Every conversation this being is in, most recently spoken first.
+async fn conversations_list(State(state): State<Arc<AppState>>) -> Json<serde_json::Value> {
+    let convs = conversations::list(&state.being_instance, &state.being);
+    Json(serde_json::json!({
+        "being": state.being,
+        "instance": state.being_instance.display().to_string(),
+        "conversations": convs,
+    }))
+}
+
+/// One conversation. `?limit=N` bounds the VIEW; `total` is what is stored, and storage is
+/// never trimmed — the same contract as /chat-history, which this deliberately mirrors.
+async fn conversation_get(
+    State(state): State<Arc<AppState>>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+    axum::extract::Query(q): axum::extract::Query<std::collections::HashMap<String, String>>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    let meta = match conversations::get_meta(&state.being_instance, &id) {
+        Some(m) => m,
+        None => return (StatusCode::NOT_FOUND,
+                        Json(serde_json::json!({"error": format!("no such conversation: {id}")}))),
+    };
+    let limit = q.get("limit").and_then(|s| s.parse().ok()).unwrap_or(conversations::DEFAULT_LIMIT);
+    let (turns, total) = conversations::read_turns(&state.being_instance, &id, limit);
+    (StatusCode::OK, Json(serde_json::json!({
+        "meta": meta, "turns": turns, "total": total, "showing": turns.len(),
+        "being": state.being,
+    })))
+}
+
+/// Speak in a conversation, as dp by default.
+///
+/// This is the canonical "talk to the being" path, and it is ASYNCHRONOUS by nature: the
+/// being is governed and wakes on beats, so a turn is recorded now and answered when it
+/// next runs. The response says which, rather than pretending a reply is coming back on
+/// this HTTP call — a chat box that implies synchrony against an entity that beats every
+/// thirty minutes teaches its user that silence means failure.
+async fn conversation_say(
+    State(state): State<Arc<AppState>>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+    Json(req): Json<SayRequest>,
+) -> (StatusCode, Json<serde_json::Value>) {
+    let speaker = req.from.unwrap_or_else(|| "dp".to_string());
+    match conversations::append(&state.being_instance, &id, &speaker, &req.message) {
+        Ok(turn) => {
+            let woke = conversations::arouse(
+                &state.root, &state.being_instance,
+                if speaker == "dp" { "dp_turn" } else { "peer_turn" },
+                &format!("{speaker} spoke in conversation '{id}'"),
+            );
+            (StatusCode::OK, Json(serde_json::json!({
+                "turn": turn,
+                "conversation": id,
+                "delivery": if woke.get("engage").and_then(|v| v.as_bool()).unwrap_or(false) {
+                    "waking the being now"
+                } else {
+                    "recorded; it will be read at the next beat"
+                },
+                "arousal": woke,
+            })))
+        }
+        Err(e) => (StatusCode::BAD_REQUEST, Json(serde_json::json!({"error": e}))),
+    }
+}
+
 async fn peers(State(state): State<Arc<AppState>>) -> Json<PeersResponse> {
     let (self_machine, peer_list, version) = match &state.fleet {
         Some(fleet) => {
@@ -674,6 +801,9 @@ async fn main() {
         machine: machine.clone(),
         chat_history_file: chat_path,
         images_dir: root.join("images"),
+        being: std::env::var("SAGE_BEING").unwrap_or_else(|_| format!("{machine}-being")),
+        being_instance: conversations::being_instance(&root, &machine, &model),
+        root: root.clone(),
     });
 
     let app = Router::new()
@@ -682,7 +812,14 @@ async fn main() {
         .route("/status", get(status))
         .route("/snarc/observe", post(snarc_observe))
         .route("/metabolic/cycle", post(metabolic_cycle))
-        .route("/chat", post(chat))
+        // Canonical: talking to the BEING. /chat is the being's conversation; the raw
+        // model stays reachable at /chat/raw for probing weights, which is a different
+        // and much narrower thing than talking to the entity that lives here.
+        .route("/chat", post(chat_being))
+        .route("/chat/raw", post(chat))
+        .route("/conversations", get(conversations_list))
+        .route("/conversations/:id", get(conversation_get))
+        .route("/conversations/:id/say", post(conversation_say))
         .route("/chat/history", get(chat_history))
         .route("/chat-history", get(chat_history))
         .route("/stream", post(stream_chat))

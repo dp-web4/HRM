@@ -39,8 +39,14 @@ from pathlib import Path
 HOME_FILES = ("todo.md", "journal.md", "notes", "scratch")
 
 EXPLORE_TOOLS = ["recall", "remember", "memory_read", "memory_write", "witness",
-                 "request_scope", "appeal", "peer_ask", "mesh", "check", "git_read"]
-REFLECT_TOOLS = ["memory_write", "remember", "memory_read"]
+                 "request_scope", "appeal", "peer_ask", "mesh", "check", "git_read", "say"]
+# `say` is offered at REFLECTION too, and that is not redundancy. Measured 2026-09-07: the
+# being was shown dp's first turn, its state marked it unanswered, and it spent all fourteen
+# explore steps reading its own source — then closed the beat. Adding a verb to the registry
+# and not to the offered set means the being CANNOT do the thing its state is asking it to
+# do, and from outside that is indistinguishable from choosing not to. Reflection is where a
+# beat accounts for itself, and answering someone belongs there as much as the journal does.
+REFLECT_TOOLS = ["memory_write", "remember", "memory_read", "say"]
 
 POSTURE_FILE = Path(__file__).with_name("BEING_POSTURE.md")
 
@@ -148,7 +154,9 @@ REFLECT = """The beat is ending. Two tool calls, then stop:
 2. memory_write path "todo.md": only the delta as a dated block: added / done / still open (it appends; it replaces nothing).
 Optionally a third: remember one thing worth keeping long-term.
 Call the tools now; a reply in words alone writes nothing.
-{nothink}"""
+{nothink}
+3. If someone has spoken to you in a conversation and you have not answered, and you have something to say: say to="<id>". Answering is not required — saying nothing is a choice and is recorded as one — but it should be a choice, not something the beat ran out of room for.
+"""
 
 
 def _read(p: Path, limit: int = 4000) -> str:

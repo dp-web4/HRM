@@ -145,14 +145,32 @@ def append(instance: Path, conv_id: str, *, speaker: str, text: str,
             f"{speaker} may read '{conv_id}' and may not speak in it "
             f"(writable_by: {m.get('writable_by')})")
     log, _ = _paths(instance, conv_id)
-    turn = {"ts": _now(), "seq": count(instance, conv_id) + 1, "from": speaker, "text": text}
-    if witness:
-        turn["witness"] = witness
-    if beat:
-        turn["beat"] = beat
     log.parent.mkdir(parents=True, exist_ok=True)
-    with open(log, "a", encoding="utf-8") as f:
-        f.write(json.dumps(turn, ensure_ascii=False) + "\n")
+    # TWO PROCESSES WRITE THIS FILE: the Python heartbeat (the being's `say`) and the Rust
+    # daemon (a turn typed into the dashboard). O_APPEND alone is only atomic for writes
+    # under PIPE_BUF, and a turn is prose — it goes over 4096 bytes routinely. Without the
+    # lock the failure is interleaved JSON: two half-lines, neither parseable, in the one
+    # record that is supposed to be the durable account of what was said. Both writers take
+    # this lock; the Rust side takes flock(LOCK_EX) on the same file.
+    #
+    # The sequence number is computed INSIDE the lock for the same reason — two writers
+    # counting first and appending after would both produce the same seq.
+    import fcntl
+    with open(log, "a+", encoding="utf-8") as f:
+        fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+        try:
+            f.seek(0)
+            seq = sum(1 for line in f if line.strip()) + 1
+            turn = {"ts": _now(), "seq": seq, "from": speaker, "text": text}
+            if witness:
+                turn["witness"] = witness
+            if beat:
+                turn["beat"] = beat
+            f.write(json.dumps(turn, ensure_ascii=False) + "\n")
+            f.flush()
+            os.fsync(f.fileno())
+        finally:
+            fcntl.flock(f.fileno(), fcntl.LOCK_UN)
     return turn
 
 

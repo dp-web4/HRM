@@ -118,3 +118,28 @@ def test_the_beat_block_marks_what_is_unanswered():
     # a conversation it is not in does not appear
     conv.create(inst, "private", title="p", participants=["dp"], writable_by=["dp"])
     assert "id: private" not in conv.render_for_being(inst, "legion-being")
+
+
+def test_say_is_actually_offered_in_a_beat_not_only_registered():
+    """A VERB IN THE REGISTRY AND NOT IN THE OFFERED SET IS A VERB THE BEING DOES NOT HAVE.
+
+    Measured 2026-09-07: `say` was added to the registry and its description table, the
+    conversations block rendered in the being's state with dp's turn marked unanswered —
+    and the being spent all fourteen explore steps reading its own source and closed the
+    beat without replying. It looked exactly like a choice. It was the seat forgetting one
+    list. `config.tools_offered` on the beat record is what made the answer a one-command
+    check instead of an interpretation."""
+    from sage.gateway.being_gate_client import ollama_tools
+    from sage.gateway.heartbeat import EXPLORE_TOOLS, REFLECT_TOOLS
+
+    assert "say" in EXPLORE_TOOLS, "the being must be able to answer while exploring"
+    assert "say" in REFLECT_TOOLS, "and at reflection, where a beat accounts for itself"
+
+    for offered in (EXPLORE_TOOLS, REFLECT_TOOLS):
+        names = [t["function"]["name"] for t in ollama_tools(offered)]
+        assert "say" in names, f"say must reach the model in {offered}"
+
+    schema = next(t for t in ollama_tools(EXPLORE_TOOLS) if t["function"]["name"] == "say")
+    params = schema["function"]["parameters"]
+    assert set(params["required"]) == {"to", "text"}
+    assert "saying nothing" in schema["function"]["description"].lower()

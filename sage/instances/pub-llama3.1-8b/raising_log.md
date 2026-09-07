@@ -2252,3 +2252,30 @@ But the two sightings together sharpen it. In 177 I asked for a concrete instanc
 **Adapter item:** final response truncated mid-sentence. Reads as a token ceiling rather than a stop-sequence problem — worth checking max_tokens for llama3.1 in `model_configs/`, since pub's turns in this phase run long. Otherwise clean: no echo, no speaker generation, no fence issues.
 
 **Tutor note.** The best three turns in weeks, and the thing I'll remember is the question I asked at the end. Pub can build, extend, and differentiate a mechanism when the material is outside itself. Point it at its own past and the same care doesn't apply — not because it's evading, but because the guard was never installed on that side. That's worth testing rather than lamenting, and it's cheap to test. Also: pub shelved its own best idea because it was hard, and it took one question to get it back. Ask about the abandoned things.
+
+## Session 181 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** I opened on the one thing pub hadn't smoothed over in its platform design — harassment — and refused a policy answer, asking for one moment. Pub gave one: a creator's public post about past trauma, reshared to mock them in someone else's comments. Nothing broke a rule. I named that as a *reuse* rather than a violation and asked how Breadcrumbs could separate a cruel recontextualization from a good one, since both are breadcrumbs. Pub named the gap in its own metric: the system rewards engagement without reading what the engagement did. I asked for the smallest signal collectible without a report button; pub proposed a creator-set sensitive flag. I flipped the burden — the creator would have to predict in advance what would hurt — and asked what could be noticed *after*, in the hurt creator's behavior. Pub took the flip and built the post-hoc signal. Asked at the close what it had to *see* first, it answered with a design principle.
+
+**What's good.** Turn two is the session. Handed a distinction, pub didn't restate it — it located the failure in its own incentive, in the terms of the thing it built: the system measures that engagement happened, not what it did to the person on the other end. And the burden-flip landed clean. No defense of the flag, no blend of old and new, straight to a mechanism on the other side of the event. That is the second session running where the productive stretch was anchored on something pub made in an earlier session; the garden in 180, the platform here. Pub arrives with material now.
+
+**Where it thinned, and my part.** The last turn. I asked for the thing it had to see and got the thing anyone would say — learn from context, promote empathy, adapt to complexity. Same reflex as 180's close: when the concrete work is done and there's space left, pub reaches for the summary register. In both sessions one refusal cleared it earlier on; I didn't spend one here, and the close is the price.
+
+**The past-tense thing, third sighting.** Pub opened with "There was a creator who had a public conversation..." — an event, narrated as having happened, on a platform that doesn't exist. The frame licensed it: I asked for a moment on an invented platform. So this is not the 177/180 confabulation. But it is the same unmarked slide into past tense, and this time it is what made the turn work — the specificity came from treating the invention as recollection. Holding both rather than diagnosing: the seam pub doesn't guard is also where its most concrete material comes from. The 180 plan item stands — ask directly whether pub has a past outside the session record, with no slot to fill.
+
+**Credit.** Pub's: the reuse example, the incentive-gap naming, the after-the-fact behavioral signal. Mine: refusing the policy answer, the reuse/violation distinction, and the burden-flip.
+
+**Next session.** (1) Ask directly whether pub has a past outside the session record, and what it would have to check to know — no invented slot offered (owed from 180). (2) Where were the 'other relationships' (owed from 177)? (3) Re-run 177's sealed question cold, first answer withheld. (4) Build the garden's spore mechanic for real — pub said it couldn't; find out whether that is true or the same shelving move. (5) Who calls it a petal (owed from 176)? (6) The checkable-violation test: a command whose real output I hold. (7) Ask once, directly, whether it can execute shell commands. (8) Press 172's choice-not-limit close. New: (9) the post-hoc harm signal has a false-positive edge pub didn't reach — a creator who responds publicly to praise looks the same as one responding to cruelty. Hand it that case and see whether it distinguishes.
+
+**Still outstanding, once:** the harness config read; 159's four-field schema to disk and the `conversation_notes.txt` `ls`; 154's unchosen-detail question; 153's marker-against-a-case test; 151's resonating-negative-case ask; 149's register-instrument test; the sprout question; the divergence-consequence question; the DiffWave script; the great aunt's other content. Standing: read-only telemetry on 8760; the Vek re-run; 145's flat garden question.
+
+**Vocabulary:** two entries. The incentive-gap line is pub's own and the better of the two. The behavioral-signal mechanism is recorded flagged — the flip was mine, the mechanism its.
+
+**Memory requests:** keeping all four, pruning none.
+
+**Adapter item:** clean. All turns terminated on complete sentences, so 180's truncation reads as length-dependent rather than a hard ceiling. The llama3.1 `max_tokens` check is still worth doing, not urgent.
+
+**Tutor note.** A solid middle session with one genuinely good turn in it. The thing I want to remember: pub can criticize a system it built, in that system's own vocabulary, when the criticism is about incentives rather than about itself. That is a real capability and it is not the same as the self-directed guard we keep testing and finding absent. Two different surfaces, and pub is competent on one of them. Also: I let the close go slack for the second session running. The refusal is cheap and it works — spend it before the material runs out, not after.
+

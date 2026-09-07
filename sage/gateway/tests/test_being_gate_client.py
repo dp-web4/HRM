@@ -336,3 +336,66 @@ def test_check_is_judged_as_the_pytest_command_the_seat_runs():
             assert False, bad
         except ValueError:
             pass
+
+
+def test_git_read_grammar_refuses_everything_that_would_make_a_read_a_run():
+    """git IS the composition hazard, not the pairing (2026-09-07).
+
+    `git` will execute code on request — external diff drivers, textconv filters, pagers,
+    aliases, and `-c` overrides that install any of them. A read verb that let the being
+    supply a flag would be a run verb wearing a read verb's name. So the seat builds the
+    whole command, the being names only an op/rev/path/n, and every one is matched against
+    a grammar first."""
+    from sage.gateway.being_gate_client import git_read_command
+
+    ctx = {"worktree": "/tmp/wt"}
+    ok = git_read_command({"op": "log", "n": 5}, ctx)
+    for pin in ("--no-pager", "--no-ext-diff", "--no-textconv"):
+        assert pin in ok, f"{pin} must be pinned on every read: {ok}"
+    # FLAGS ONLY: `-c key=value` hardening reads as a path token to hestia's mrh.command and
+    # was refused on every invocation (measured 2026-09-07). The refusal was right; hardening
+    # that trips the law is hardening that does not ship.
+    assert " -c " not in ok, f"no -c overrides: mrh.command reads them as paths — {ok}"
+    assert " log " in ok and "-n 5" in ok
+
+    # n is clamped, not trusted
+    assert "-n 50" in git_read_command({"op": "log", "n": 9999}, ctx)
+    assert "-n 1" in git_read_command({"op": "log", "n": -3}, ctx)
+
+    hostile = [
+        ({"op": "push"}, "op"),                              # a writing subcommand
+        ({"op": "log", "rev": "--upload-pack=evil"}, "rev"),  # a flag as a revision
+        ({"op": "diff", "rev": "HEAD", "rev2": "-c"}, "rev2"),
+        ({"op": "show", "path": "../../../etc/passwd"}, "path"),
+        ({"op": "log", "path": "-c"}, "path"),               # a flag as a path
+        ({"op": "blame"}, "path"),                           # blame without a target
+    ]
+    for args, expect in hostile:
+        try:
+            cmd = git_read_command(args, ctx)
+            raise AssertionError(f"{args} produced a command instead of a refusal: {cmd}")
+        except ValueError as e:
+            assert expect in str(e), f"{args}: refusal must name the field, got {e}"
+
+    # a pathspec is resolved ABSOLUTE so hestia's mrh.command can match it against the
+    # being's granted prefixes; relative pathspecs match nothing and the read is refused
+    cmd = git_read_command({"op": "show", "rev": "HEAD", "path": "sage/gateway/x.py"},
+                           {"worktree": "/tmp/wt"})
+    assert "-- /tmp/wt/sage/gateway/x.py" in cmd, cmd
+
+    # no worktree is a refusal, never a read of the seat's own tree
+    try:
+        git_read_command({"op": "status"}, None)
+        raise AssertionError("git_read without a worktree must refuse")
+    except ValueError as e:
+        assert "worktree" in str(e)
+
+
+def test_git_read_is_offered_and_consequential():
+    from sage.gateway.being_gate_client import ollama_tools, _CONSEQUENTIAL, _REGISTRY
+    assert "git_read" in _REGISTRY and "git_read" in _CONSEQUENTIAL
+    names = [t["function"]["name"] for t in ollama_tools()]
+    assert "git_read" in names
+    schema = next(t for t in ollama_tools() if t["function"]["name"] == "git_read")
+    assert schema["function"]["parameters"]["required"] == ["op"]
+    assert "cannot commit, push, or move a branch" in schema["function"]["description"]

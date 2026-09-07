@@ -561,6 +561,67 @@ class HestiaF1aDispatcher:
                 "committed": _git("log", "-1", "--format=%cI"),
                 "dirty": None if status is None else bool(status.strip())}
 
+    def _do_git_read(self, intent: BeingIntent) -> ResultEnvelope:
+        """Read the history of the tree the being lives in. Read-only by construction.
+
+        dp, 2026-09-07: "the being should be able to check git by itself." Until now the
+        only way it learned that its worktree had moved between beats was a seat telling
+        it, which makes provenance a matter of trusting the seat — the exact dependency the
+        `tree` block on a check result exists to remove.
+
+        Same shape as _do_check and for the same reason: the command is REBUILT here from
+        the same function the gate judged, so the law never rules on one string while the
+        seat runs another. git is run with cwd set to the worktree rather than `git -C`,
+        because `-C` silently redirects the read away from the tree you think you are in
+        (legion-claude learned that one the hard way in a review) — here the cwd IS the
+        subject, and it must be the same tree `check` executes in."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import git_read_command
+        if not self.worktree or not os.path.isdir(self.worktree):
+            return ResultEnvelope(ok=False, pending=True,
+                                  note="git_read needs a worktree of your own; none is "
+                                       "configured on this seat")
+        try:
+            cmd = git_read_command(intent.args, {"worktree": self.worktree})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        op = str(intent.args.get("op", "")).strip()
+        begin = self._call("hestia_begin_action", {"tool_name": "git_read", "target": op})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+        try:
+            proc = subprocess.run(shlex.split(cmd), cwd=self.worktree, text=True,
+                                  capture_output=True, timeout=60)
+            out = ((proc.stdout or "") + (proc.stderr or "")).strip()
+            ran, rc = True, proc.returncode
+        except Exception as e:
+            ran, rc, out = False, -1, f"{type(e).__name__}: {e}"
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": ran, "magnitude": 0.0})
+        except Exception:
+            pass
+        if not ran:
+            return ResultEnvelope(ok=False, error=f"git_read could not run: {out[:400]}",
+                                  witness_id=action_id)
+        # Truncate from the FRONT: for a log the newest commits are at the top and matter
+        # most, but for show/diff/blame the tail carries the change itself. Keep the head
+        # for log, the tail otherwise, and say which was cut — a silent truncation
+        # manufactures false absences (see reference_f1a._do_memory_read).
+        limit = 6000
+        if len(out) > limit:
+            if op == "log":
+                out = out[:limit] + f"\n[… truncated: {len(out) - limit} more characters of older history …]"
+            else:
+                out = f"[… truncated: {len(out) - limit} earlier characters withheld …]\n" + out[-limit:]
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"op": op, "exit": rc, "output": out,
+                                      "tree": self._worktree_revision(),
+                                      "action_id": action_id})
+
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:
         return ResultEnvelope(ok=False, pending=True,

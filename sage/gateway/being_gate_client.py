@@ -161,6 +161,114 @@ def check_command(args: dict, ctx: Optional[dict] = None) -> str:
     return f"python3 -m pytest -q -c /dev/null --rootdir={worktree} {path}"
 
 
+
+# git_read: the being inspects its own repository history. READ-ONLY BY CONSTRUCTION, and
+# the construction is the interesting part rather than the intent.
+#
+# dp, 2026-09-07: "the being should be able to check git by itself." Right — it reasons
+# about a tree that moves under it between beats, and until now the only way it learned the
+# harness had changed was a seat telling it so.
+#
+# WHAT THIS COMPOSES WITH (the rule earned on 09-07, when a gated write plus a gated execute
+# turned into arbitrary code):
+#   * with `check`, which executes pytest in the same worktree — git_read cannot write, so
+#     it cannot author what check runs;
+#   * with `memory_write`, which is confined to the being's home — a diff it reads can be
+#     saved to scratch, and the home is not a tree anything executes;
+#   * git ITSELF is the composition hazard here, not the pairing. `git` will run code on
+#     request: external diff drivers, textconv filters, pagers, aliases, and `-c` overrides
+#     that install any of them. So the seat builds the whole command, the being never
+#     supplies a flag, and every invocation is pinned with --no-pager, --no-ext-diff and
+#     core.pager=cat so a repo-local config cannot turn a read into an exec.
+# Only these five subcommands, no others, and every argument is matched against a grammar
+# before it can reach the shell.
+GIT_OPS = ("log", "show", "diff", "status", "blame")
+
+# A revision the being may name: a hex sha, HEAD with optional ~n/^n, or a plain branch or
+# tag name. Deliberately excludes anything containing a flag, a space, or a path separator
+# trick — `--upload-pack=...`-style arguments are the classic way a read verb becomes a run.
+_REV = r"(?:[0-9a-fA-F]{7,40}|HEAD(?:[~^][0-9]{1,3})?|[A-Za-z][A-Za-z0-9._/-]{0,60})"
+
+
+def git_read_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The shell command the seat runs for a git_read intent, built from validated args.
+
+    The being names an operation and, optionally, a revision and a path inside its own
+    worktree. It never names a flag. Anything the grammar cannot represent raises, and the
+    refusal says what the grammar accepts — a refusal that names its own valid set is one
+    the being can correct without asking (measured 2026-09-07: it did exactly that on
+    `check`, in one beat, and explicitly declined to appeal a grammar error)."""
+    import os
+    import re
+    worktree = (ctx or {}).get("worktree")
+    if not worktree:
+        raise ValueError("git_read needs a worktree of your own; none is configured on this seat")
+    op = str(args.get("op", "")).strip()
+    if op not in GIT_OPS:
+        raise ValueError(f"git_read 'op' must be one of {list(GIT_OPS)}, got {op!r}")
+
+    rev = str(args.get("rev", "")).strip()
+    if rev and not re.fullmatch(_REV, rev):
+        raise ValueError(f"git_read 'rev' must be a sha, HEAD, HEAD~n or a branch name, got {rev!r}")
+
+    path = str(args.get("path", "")).strip()
+    if path:
+        if path.startswith("-") or ".." in path.split("/"):
+            raise ValueError(f"git_read 'path' must be a plain path inside your worktree, got {path!r}")
+        full = os.path.realpath(os.path.join(worktree, path))
+        if not (full == os.path.realpath(worktree)
+                or full.startswith(os.path.realpath(worktree) + os.sep)):
+            raise ValueError(f"git_read 'path' escapes your worktree: {path!r}")
+        # The pathspec goes into the command ABSOLUTE, not as the being typed it. hestia's
+        # mrh.command matches command tokens against GRANTED PREFIXES, which are absolute;
+        # a relative 'sage/gateway/x.py' matches nothing and the whole read is refused
+        # (measured 2026-09-07: "'py' is not granted"). Resolving it here means the law sees
+        # the real target of the read and can rule on it — which is the point of the rule,
+        # not an obstacle to it. It also removes any doubt about what the pathspec meant.
+        path = full
+
+    try:
+        n = int(args.get("n", 20))
+    except (TypeError, ValueError):
+        raise ValueError("git_read 'n' must be a whole number of commits (1-50)")
+    n = max(1, min(50, n))
+
+    # Every read pinned against git's own execution surfaces — with FLAGS ONLY, no
+    # `-c key=value`. The first cut used `-c core.pager=cat -c diff.external= -c alias.x=!true`
+    # and hestia refused every invocation: mrh.command reads `pager=cat` as a path token and
+    # correctly reports it as outside the being's grant. That refusal was RIGHT, and the fix
+    # is not to argue with it — the flags below buy the identical property with fewer moving
+    # parts. `--no-pager` already defeats a repo-local pager, `--no-ext-diff` already defeats
+    # an external diff driver, `--no-textconv` defeats a textconv filter, and a git alias
+    # cannot shadow a built-in subcommand at all, so the alias override was never doing
+    # anything. Hardening that trips the law is hardening that does not ship.
+    base = "git --no-pager"
+    if op == "status":
+        return f"{base} status --porcelain=v1 --branch"
+    if op == "log":
+        cmd = f"{base} log --no-ext-diff --no-textconv --oneline --no-decorate -n {n}"
+        if rev:
+            cmd += f" {rev}"
+        return cmd + (f" -- {path}" if path else "")
+    if op == "show":
+        return f"{base} show --no-ext-diff --no-textconv --stat --patch {rev or 'HEAD'}" + (f" -- {path}" if path else "")
+    if op == "diff":
+        rev2 = str(args.get("rev2", "")).strip()
+        if rev2 and not re.fullmatch(_REV, rev2):
+            raise ValueError(f"git_read 'rev2' must be a sha, HEAD, HEAD~n or a branch name, got {rev2!r}")
+        # TWO ARGUMENTS, never `A..B`. hestia's mrh.command reads the `..` in a revision
+        # range as a parent-directory traversal and resolves the whole command's scope to
+        # the workspace root, refusing it (measured 2026-09-07: "'<workspace root>' is not
+        # granted"). `git diff A B` is exactly equivalent for a two-point diff and contains
+        # no token that looks like a path escape. The rule is doing its job on a token that
+        # genuinely looks like traversal; the command should not hand it one.
+        span = f"{rev} {rev2}" if rev and rev2 else (rev or "HEAD~1")
+        return f"{base} diff --no-ext-diff --no-textconv {span}" + (f" -- {path}" if path else "")
+    if not path:
+        raise ValueError("git_read op='blame' needs a 'path' inside your worktree")
+    return f"{base} blame --no-textconv -L 1,120 {rev or 'HEAD'} -- {path}"
+
+
 _REGISTRY = {
     "peer_ask":       dict(tool="peer_ask",     path_args=(),       cmd_arg=None),
     "witness":        dict(tool="witness",      path_args=(),       cmd_arg=None),
@@ -182,6 +290,11 @@ _REGISTRY = {
     # being never holds a shell. A failing check is a first-class result, not an error.
     "check":          dict(tool="check",       path_args=(),       cmd_arg=None,
                            compose=check_command),
+    # git_read: read the history of the tree that constitutes it. Composed like check —
+    # the being names an op, the SEAT builds the command, the law judges THAT string, and
+    # the being never holds a flag. See git_read_command for what it composes with.
+    "git_read":       dict(tool="git_read",    path_args=(),       cmd_arg=None,
+                           compose=git_read_command),
     # Long-term semantic memory (membot brain cartridge, the being's own): recall is
     # observational; remember is consequential but passes local law under ANY grant
     # (paths=()), and that is not because it is "classed with memory_write" (which the
@@ -210,7 +323,7 @@ _REGISTRY = {
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read", "recall", "appeal"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
-                            "remember", "request_scope", "check"})
+                            "remember", "request_scope", "check", "git_read"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -240,6 +353,17 @@ _TOOL_SCHEMAS = {
               {"target": "'gateway' or 'irp' for a whole suite, or '<suite>::<test_name>' "
                          "for one test, e.g. 'gateway::test_relative_memory_path'"},
               ["target"]),
+    "git_read": ("Read the history of the repository you live in: what changed, when, and "
+                 "in which commit. Read-only — you cannot commit, push, or move a branch "
+                 "with this. Use it to find out whether the tree moved under you between "
+                 "beats, and to compare a `check` result's tree block against what is "
+                 "actually in the history.",
+                 {"op": "one of 'log', 'show', 'diff', 'status', 'blame'",
+                  "rev": "optional: a commit sha, HEAD, HEAD~2, or a branch name",
+                  "rev2": "optional, for op='diff': the second revision of the span",
+                  "path": "optional: a path inside your worktree to narrow the answer to",
+                  "n": "optional, for op='log': how many commits (1-50, default 20)"},
+                 ["op"]),
     "recall": ("Search your long-term memory (semantic search over everything you have "
                "remembered). Use it before deciding what to do; use it when something "
                "feels familiar.",

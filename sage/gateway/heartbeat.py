@@ -39,7 +39,7 @@ from pathlib import Path
 HOME_FILES = ("todo.md", "journal.md", "notes", "scratch")
 
 EXPLORE_TOOLS = ["recall", "remember", "memory_read", "memory_write", "witness",
-                 "request_scope", "appeal", "peer_ask", "mesh", "check"]
+                 "request_scope", "appeal", "peer_ask", "mesh", "check", "git_read"]
 REFLECT_TOOLS = ["memory_write", "remember", "memory_read"]
 
 POSTURE_FILE = Path(__file__).with_name("BEING_POSTURE.md")

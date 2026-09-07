@@ -111,7 +111,7 @@ def test_run_ollama_tool_turn_with_fake_llm():
     # result. Argued from measurement, not taste — given only a diff this being asserted
     # a compile error that did not exist; given the same diff plus a real test result it
     # made zero false claims (PRD_BEINGS_IMPROVE_THEIR_HARNESS §2).
-    assert len(ollama_tools()) == 12   # + check (M0, 2026-09-07)
+    assert len(ollama_tools()) == 13   # + check (M0), + git_read (2026-09-07)
 
     calls = {"n": 0}
 

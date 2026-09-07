@@ -382,12 +382,13 @@ def test_compaction_leaves_room_for_the_answer_and_never_touches_the_beings_own_
                ({"role": "assistant", "content": "A" * 500}, {"role": "tool", "content": "T" * 5000})])
     out, elided = compact_convo(msgs, _LLM())
 
-    assert len(elided) == 2, "the two oldest tool results, not the two most recent"
-    assert [e["index"] for e in elided] == [3, 5]
+    assert len(elided) == 3, "every tool result but the most recent"
+    assert [e["index"] for e in elided] == [3, 5, 7]
     assert sum(len(m["content"]) for m in out) < sum(len(m["content"]) for m in msgs)
     assert out[0]["content"] == msgs[0]["content"], "system prompt untouched"
     assert out[1]["content"] == msgs[1]["content"], "the being's own frame untouched"
-    assert out[7]["content"] == out[9]["content"] == "T" * 5000, "two most recent kept whole"
+    assert out[9]["content"] == "T" * 5000, "the most recent is kept whole"
+    assert "elided to leave room" in out[7]["content"], "the one before it is not protected"
     for i in (2, 4, 6, 8):
         assert out[i]["content"] == "A" * 500, "assistant turns untouched"
     assert "elided to leave room for your answer" in out[3]["content"], "the being is told"

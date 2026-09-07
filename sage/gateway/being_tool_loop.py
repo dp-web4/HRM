@@ -314,16 +314,22 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
     if size(msgs) <= budget:
         return msgs, []
     out = [dict(m) for m in msgs]
-    # candidates: tool results, oldest first, excluding the two most recent
+    # candidates: tool results, oldest first, excluding the MOST RECENT one.
+    # It kept the two most recent whole until 2026-09-07, when max_read_chars went
+    # 4,000 -> 12,000 (the being's reads were being silently cut mid-function). At the new
+    # size two protected results are ~7k tokens of untouchable content, and a beat with six
+    # reads hit the window anyway: 23,106 + 1,470 = 24,576. One kept whole is the answer the
+    # being is actually working from; the one before it has usually already been written to
+    # scratch, and the elision marker tells it where to look if not.
     idx = [i for i, m in enumerate(out) if m.get("role") == "tool"]
     elided = []
-    for i in idx[:-2] if len(idx) > 2 else []:
+    for i in idx[:-1] if len(idx) > 1 else []:
         if size(out) <= budget:
             break
         body = out[i].get("content") or ""
-        if len(body) <= 200:
+        if len(body) <= 500:
             continue
-        out[i]["content"] = (body[:160] +
+        out[i]["content"] = (body[:400] +
                              f"\n[… {len(body) - 160} characters elided to leave room for your "
                              f"answer; read the source again if you still need it …]")
         elided.append({"index": i, "chars": len(body) - 160})

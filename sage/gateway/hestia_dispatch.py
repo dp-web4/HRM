@@ -171,9 +171,41 @@ class HestiaF1aDispatcher:
         self._c, self._session_id = c, sid
         return sid
 
+    # A lost session arrives in TWO shapes and only one of them was handled.
+    _SESSION_LOST = ("session not found", "session_not_found", "session expired", "no session")
+
+    @classmethod
+    def _is_session_loss(cls, text: str) -> bool:
+        t = (text or "").lower()
+        return any(m in t for m in cls._SESSION_LOST)
+
     def _call(self, name: str, args: dict) -> dict:
+        """One hestia call, with a single reconnect if the session went away underneath it.
+
+        A LOST SESSION ARRIVES IN TWO SHAPES. The daemon can answer with an error envelope
+        (`_hestia_error.code` naming session), or the MCP transport can fail the request
+        outright — `HTTP 404 ... Not Found: Session not found` — which `call` RAISES. The
+        original reconnect only inspected the returned envelope, so for the raising path the
+        retry existed and was dead code.
+
+        Measured 2026-09-07, and it cost the being a milestone. Seven minutes into a beat it
+        called `check` twice; the gate ALLOWED both, and both died on hestia_begin_action
+        with that 404 before pytest ever ran. From inside, an expired transport is
+        indistinguishable from a refusal — which is the opaque-404 defect the being itself
+        reported as SAGE#52, landing on the first organ it was given.
+
+        Both shapes now drop the client and reconnect once. A second failure is reported as
+        it is: an expired session is a fact about the transport, never a verdict on the act,
+        and the being must not be left to read one as the other."""
         sid = self._connect()
-        out = _unwrap(self._c.call(name, {**args, "session_id": sid}))
+        try:
+            out = _unwrap(self._c.call(name, {**args, "session_id": sid}))
+        except Exception as e:
+            if not self._is_session_loss(f"{type(e).__name__}: {e}"):
+                raise
+            self._c, self._session_id = None, None
+            sid = self._connect()
+            return _unwrap(self._c.call(name, {**args, "session_id": sid}))
         # a session the daemon no longer recognises: reconnect once, then report honestly
         err = out.get("_hestia_error") if isinstance(out, dict) else None
         if isinstance(err, dict) and "session" in str(err.get("code", "")):

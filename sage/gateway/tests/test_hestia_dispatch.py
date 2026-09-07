@@ -502,3 +502,72 @@ def test_instance_config_peer_aliases_reach_the_dispatcher(tmp_path=None):
     assert instance_config(inst / "missing") == {}
     d = HestiaF1aDispatcher("legion-being", memory_root=str(inst), peer_aliases=cfg["peer_aliases"])
     assert d.peer_aliases["sprout-being"] == "2e175714-id"
+
+
+def test_a_lost_session_reconnects_whether_it_is_returned_or_raised():
+    """A LOST SESSION ARRIVES IN TWO SHAPES AND ONLY ONE WAS HANDLED.
+
+    hestia can answer with an error envelope (`_hestia_error.code` naming session), or the
+    MCP transport can fail the request outright — `HTTP 404 ... Not Found: Session not
+    found` — which `call` RAISES. The original reconnect only inspected the returned
+    envelope, so for the raising path the retry was dead code.
+
+    Measured 2026-09-07: seven minutes into a beat the being called `check` twice, the gate
+    ALLOWED both, and both died on hestia_begin_action with that 404 before pytest ever ran.
+    From inside it is indistinguishable from a refusal — the opaque-404 defect the being
+    itself reported as SAGE#52 — and it cost it the milestone that beat.
+
+    Also pins that a NON-session error still propagates: reconnecting on every failure would
+    hide real ones."""
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+
+    assert D._is_session_loss("RuntimeError: HTTP 404 ...: Not Found: Session not found")
+    assert D._is_session_loss("session_not_found")
+    assert not D._is_session_loss("HTTP 500: internal error")
+    assert not D._is_session_loss("")
+
+    def _wrap(payload):            # the MCP envelope _unwrap expects
+        return {"result": {"structuredContent": payload}}
+
+    calls, conns = [], []
+
+    class _C:
+        def __init__(self, gen): self.gen = gen
+        def init(self): pass
+        def call(self, name, args):
+            calls.append((self.gen, name))
+            if name in ("hestia_connect", "hestia_connect_challenge"):
+                return _wrap({"sessionId": f"s{self.gen}"})
+            if self.gen == 0:
+                raise RuntimeError("MCP tools/call -> HTTP 404 at /mcp: Not Found: Session not found")
+            return _wrap({"ok": True, "gen": self.gen})
+
+    def factory(endpoint, plugin_id):
+        conns.append(1)
+        return _C(len(conns) - 1)
+
+    d = D.__new__(D)
+    d._mcp_factory, d.endpoint, d.plugin_id = factory, "e", "p"
+    d._c = d._session_id = None
+    d.host_session_id, d.being_lct, d.identity_basis = None, None, None
+
+    out = d._call("hestia_begin_action", {"tool_name": "check"})
+    assert out == {"ok": True, "gen": 1}, "the retry must run on a NEW session, not the dead one"
+    assert len(conns) == 2, "exactly one reconnect"
+    assert d._session_id == "s1"
+
+    # a failure that is not a lost session is not retried away
+    class _Boom(_C):
+        def call(self, name, args):
+            if name == "hestia_connect":
+                return _wrap({"sessionId": "s"})
+            raise RuntimeError("HTTP 500: internal error")
+    d2 = D.__new__(D)
+    d2._mcp_factory = lambda e, p: _Boom(9)
+    d2.endpoint, d2.plugin_id, d2._c, d2._session_id = "e", "p", None, None
+    d2.host_session_id, d2.being_lct, d2.identity_basis = None, None, None
+    try:
+        d2._call("hestia_begin_action", {})
+        raise AssertionError("a non-session error must propagate")
+    except RuntimeError as e:
+        assert "500" in str(e)

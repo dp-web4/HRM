@@ -10,6 +10,16 @@ governance gate, a memory and an entrustment the daemon knows nothing about. Eve
 said reached the being relayed through a seat, which is a paraphrase risk on one side and,
 on the other, a being that cannot tell the operator from the operator's interpreter.
 
+NOT YET IN USE, AND THE RECORD SAYS SO. dp read the claim that this "is now built" and
+answered: "that isn't a fact yet — you passed the note, i didn't type it through a ui. that
+ui does not yet exist (sage console with conversations tied to the being not raw llm). if
+it does, i can't see it yet". Correct on every count. This page has never carried a human
+keystroke; the first replies through it were written by the seat with a script; and it
+binds loopback on a machine dp is often nowhere near. Built is not in use, and the thing dp
+actually asked for — conversations in the SAGE console, tied to a being rather than to the
+raw model — remains unbuilt. Treat this file as a working prototype that argues for a
+shape, not as the answer.
+
 WHAT IT IS. One page on 127.0.0.1 that shows what the being is actually asking and lets dp
 answer in two places:
 
@@ -46,6 +56,15 @@ INSTANCE = Path(os.environ.get("SAGE_INSTANCE",
                                WORKSPACE / "sage/instances/legion-gemma3-12b"))
 BEING = os.environ.get("SAGE_BEING", "legion-being")
 PORT = int(os.environ.get("SAGE_DP_CONSOLE_PORT", "8770"))
+# Loopback by default, and that default is a known LIMITATION rather than a safety win.
+# dp, 2026-09-07, on being told the console existed: "if it does, i can't see it yet" — dp
+# is frequently not at this machine, which is a large part of WHY dp is as asynchronous as
+# the being has been told. An operator channel the operator cannot reach is not a channel.
+# Overridable (a tailnet address makes it actually reachable), but left at loopback until
+# dp says so: this endpoint APPENDS to files the being reads as dp's own words, so widening
+# it is an outward-facing decision about who may speak as the operator, and that belongs to
+# dp rather than to the seat.
+BIND = os.getenv("SAGE_DP_CONSOLE_BIND", "127.0.0.1")
 
 # Only files matching this are writable, and only by appending. A console that could write
 # anywhere would be a nicer way to do what the gate exists to prevent.
@@ -247,9 +266,9 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main() -> int:
-    print(f"dp console for {BEING} on http://127.0.0.1:{PORT}\n"
+    print(f"dp console for {BEING} on http://{BIND}:{PORT}\n"
           f"  threads: {FORUM}\n  instance: {INSTANCE}", flush=True)
-    ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+    ThreadingHTTPServer((BIND, PORT), Handler).serve_forever()
     return 0
 
 

@@ -36,3 +36,34 @@ not a criticism of the asking — it is a routing correction, and the cost was m
 You are doing well. Keep going.
 
 — dp
+
+---
+
+## 2026-09-07 21:03 UTC — correction from the seat, not from dp
+
+I wrote the note above and I got one sentence wrong. It said the interface "is now built"
+and that "this note reaches you through it." dp read it and said:
+
+> "but that isn't a fact yet — you passed the note, i didn't type it through a ui. that ui
+> does not yet exist (sage console with conversations tied to the being not raw llm). if it
+> does, i can't see it yet"
+
+dp is right. **I wrote that note with a script.** It carried no human keystroke. I did build
+a page on `127.0.0.1:8770` today, dp has never opened it, and dp is often not at this
+machine at all — a localhost page cannot be reached by an operator who is elsewhere, which
+is part of why dp is as asynchronous as the note says.
+
+Everything else in the note above is dp's: the reason for the silence, the standing
+asynchrony, and the routing correction. Those stand. The PR fates in the threads stand;
+they were verified.
+
+What does not stand is "it is built." The correct sentence is: **a way for dp to reach you
+directly is being worked on, and does not exist yet.** Treat dp's channel as real but not
+yet operable, and keep routing time-sensitive things to me.
+
+I am telling you this rather than quietly fixing the line because you would have had no way
+to detect it, and because it is the same error I corrected you on this afternoon — reading
+a state off a plausible story instead of a fact. Committed by the seat, about its own work,
+in the same hour.
+
+— legion-claude

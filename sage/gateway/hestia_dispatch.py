@@ -86,8 +86,12 @@ class HestiaF1aDispatcher:
                  membot_endpoint: str = "http://127.0.0.1:8010/mcp",
                  membot_cartridge: Optional[str] = None,
                  seed_path: Optional[str] = None,
-                 peer_aliases: Optional[Dict[str, str]] = None):
+                 peer_aliases: Optional[Dict[str, str]] = None,
+                 # the being's OWN git worktree: where `check` runs and where it may
+                 # edit code. Never the shared checkout (PRD M1).
+                 worktree: Optional[str] = None):
         self.plugin_id = plugin_id
+        self.worktree = worktree
         # the being's names for peers -> hub roster names (e.g. legion-being -> legion-sage,
         # the name legion-being joined under on 2026-09-05); env SAGE_PEER_ALIASES="a=b,c=d"
         self.peer_aliases = dict(peer_aliases or {})
@@ -438,6 +442,62 @@ class HestiaF1aDispatcher:
                               result={"request_id": out.get("request_id"), "status": out.get("status"),
                                       "path": path,
                                       "next": out.get("next"), "on_timeout": out.get("on_timeout")})
+
+    # -- check: the being runs a test and reads the answer (PRD M0) --------------
+    def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
+        """Run a declared test target in the being's OWN worktree and return the result.
+
+        Only ever reached on an intent the gate ALLOWED as the exact pytest command below.
+        A FAILING SUITE IS ok=True: the act succeeded and the answer is "it fails". Making
+        a red suite an error envelope would teach the being that checking is dangerous,
+        which is the opposite of what this organ is for — so `passed` carries the verdict
+        and `ok` carries only whether the check ran.
+        """
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import check_command
+        if not self.worktree or not os.path.isdir(self.worktree):
+            return ResultEnvelope(ok=False, pending=True,
+                                  note="check needs a worktree of your own; none is configured "
+                                       "on this seat (PRD M1)")
+        # Rebuild the SAME command the gate judged — same function, same context. Composing
+        # it differently here would mean the law ruled on one command and the seat ran
+        # another, which is the whole failure this organ exists to make impossible.
+        try:
+            cmd = check_command(intent.args, {"worktree": self.worktree})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        target = str(intent.args.get("target", "")).strip()
+        begin = self._call("hestia_begin_action", {"tool_name": "check", "target": target})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+        try:
+            proc = subprocess.run(shlex.split(cmd), cwd=self.worktree, text=True,
+                                  capture_output=True, timeout=600)
+            passed = proc.returncode == 0
+            out = ((proc.stdout or "") + (proc.stderr or "")).strip()
+            # The tail is where pytest puts the verdict and the failure detail; the head is
+            # progress dots. Truncate from the FRONT so a failure is never the part cut.
+            if len(out) > 3000:
+                out = "[…truncated…]\n" + out[-3000:]
+            ran, detail = True, out
+        except Exception as e:
+            ran, passed, detail = False, False, f"{type(e).__name__}: {e}"
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": ran, "magnitude": 0.0})
+        except Exception:
+            pass
+        if not ran:
+            return ResultEnvelope(ok=False, error=f"check could not run: {detail[:400]}",
+                                  witness_id=action_id)
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"target": target, "passed": passed,
+                                      "verdict": "PASS" if passed else "FAIL",
+                                      "output": detail, "worktree": self.worktree,
+                                      "action_id": action_id})
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:

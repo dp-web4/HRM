@@ -298,3 +298,41 @@ if __name__ == "__main__":
         if name.startswith("test_") and callable(fn):
             fn(); n += 1; print(f"PASS {name}")
     print(f"\n{n} passed")
+
+
+def test_check_is_judged_as_the_pytest_command_the_seat_runs():
+    """check reaches the law as the exact command, and the allow-list is the whole grammar:
+    a being can name a declared suite or one test inside it, and nothing else."""
+    from sage.gateway.being_gate_client import check_command
+    seen = {}
+    c = _client(_allows)
+    c.worktree = "/tmp/being-wt"
+    c._core = SimpleNamespace(
+        NormalizedEvent=lambda **kw: seen.update(kw) or SimpleNamespace(raw=kw.get("raw", {}), tool=kw.get("tool")),
+        evaluate=lambda ev, prof, ws, policy=None: SimpleNamespace(
+            decision="allow", rule="", reason="ok", innate=False),
+    )
+    c.gate(BeingIntent("check", {"target": "gateway"}))
+    # ABSOLUTE, inside the worktree: the law must judge the path the command touches, not
+    # the same relative path resolved against the shared checkout (measured 2026-09-07).
+    assert seen["command"] == (
+        "python3 -m pytest -q -c /dev/null --rootdir=/tmp/being-wt "
+        "/tmp/being-wt/sage/gateway/tests/"), seen["command"]
+    assert seen["tool"] == "check"
+    c.gate(BeingIntent("check", {"target": "gateway::test_thing"}))
+    assert seen["command"].endswith("/tmp/being-wt/sage/gateway/tests/ -k test_thing")
+    # no worktree is a deny, never a command judged against somebody else's tree
+    c.worktree = None
+    v = c.gate(BeingIntent("check", {"target": "gateway"}))
+    assert v.decision == "deny" and v.rule == "gate.raised", v
+    c.worktree = "/tmp/being-wt"
+    # anything the allow-list cannot represent is a deny, never a shell
+    for bad in ("; rm -rf /", "sage/", "gateway::a b", "gateway::../x", "", "other"):
+        v = c.gate(BeingIntent("check", {"target": bad}))
+        assert v.decision == "deny" and v.rule == "gate.raised", (bad, v)
+    for bad in ({"target": "gateway::a;b"}, {"target": "irp::"}):
+        try:
+            check_command(bad, {"worktree": "/tmp/being-wt"})
+            assert False, bad
+        except ValueError:
+            pass

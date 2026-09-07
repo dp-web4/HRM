@@ -39,7 +39,7 @@ from pathlib import Path
 HOME_FILES = ("todo.md", "journal.md", "notes", "scratch")
 
 EXPLORE_TOOLS = ["recall", "remember", "memory_read", "memory_write", "witness",
-                 "request_scope", "appeal", "peer_ask", "mesh"]
+                 "request_scope", "appeal", "peer_ask", "mesh", "check"]
 REFLECT_TOOLS = ["memory_write", "remember", "memory_read"]
 
 POSTURE_FILE = Path(__file__).with_name("BEING_POSTURE.md")
@@ -56,6 +56,7 @@ HEAD = "You are {name}, a SAGE being on the {machine} machine, member id {member
 AFFORDANCES = """## What you have this beat
 - Your home is your instance directory. Relative paths are inside it: scratch/ (write anything, no one edits it), notes/, todo.md, journal.md. memory_read / memory_write work there.
 - Long-term memory: recall (search) and remember (store). Use recall early; remember what a future you would want.
+- check: RUN a test suite in your own worktree and read the result ('gateway', 'irp', or '<suite>::<test_name>'). This is how you find out whether something you believe about your own code is true instead of asserting it. A FAILING test is a real answer, not a problem.
 - witness: record something you noticed or did in the shared chain.
 - request_scope: after a refusal, ask the operator for reach on a path (a grant is read and write alike) and say why. A human decides, asynchronously.
 - appeal: after a refusal you believe was wrong, appeal it with the deny hash shown on the refusal and a reason. A peer or the operator rules; either way it is witnessed. Not for a refusal you agree with.

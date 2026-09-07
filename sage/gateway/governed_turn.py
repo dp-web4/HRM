@@ -170,11 +170,15 @@ def build_client(member: str, instance: Path, model: str, workspace: str,
     dispatcher = None if gate_only else HestiaF1aDispatcher(
         member, memory_root=str(instance), publish_fn=publish_fn,
         host_session_id=host_session_id, being_lct=being_lct_for(member, workspace),
-        peer_aliases=instance_config(instance).get("peer_aliases") or None)
+        peer_aliases=instance_config(instance).get("peer_aliases") or None,
+        # The being's own git worktree, for `check` and (M1) for editing code. Read from
+        # instance.json so it is a per-being fact beside the being, not a launcher flag.
+        worktree=instance_config(instance).get("worktree") or None)
     client = BeingGateClient(member_id=member,
                              identity_path=str(instance / "identity.json"),
                              workspace=workspace, dispatcher=dispatcher,
-                             host_session_id=host_session_id)
+                             host_session_id=host_session_id,
+                             worktree=instance_config(instance).get("worktree") or None)
     # Reasoning models (empero Qwen3.8 distills etc.) only emit structured tool calls
     # with `think` on — off, they narrate a bracketed placeholder instead of acting
     # (measured on Sprout 2026-08-28 and again on the first governed turn, 2026-09-03:

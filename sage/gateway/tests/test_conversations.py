@@ -197,3 +197,29 @@ def test_awaiting_means_unseen_not_merely_spoken_after():
     assert "2 turn(s) from legion-claude" in block and "unanswered" in block
     # now they have been shown: nothing awaits
     assert conv.awaiting(inst, "legion-claude", "legion-being") == []
+
+
+def test_concurrent_writers_never_interleave_or_reuse_a_sequence():
+    """Two processes write these files for real — the Python heartbeat (the being's `say`)
+    and the Rust daemon (a turn typed into the dashboard). A turn is prose and exceeds
+    PIPE_BUF routinely, so O_APPEND alone is not atomic for it; the failure is two
+    half-lines, neither parseable, in the durable account of what was said. flock on both
+    sides, seq assigned inside the lock. Three processes x 20 long turns here; the manual
+    proof at commit time was six x 40."""
+    import json
+    import subprocess
+    import sys as _sys
+    inst = _inst(); _two(inst)
+    prog = (
+        "import sys; sys.path.insert(0, %r); from pathlib import Path; "
+        "from sage.gateway import conversations as c; "
+        "[c.append(Path(%r), 'dp', speaker='dp', text='x'*5000 + str(i)) for i in range(20)]"
+        % (os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")), str(inst))
+    )
+    procs = [subprocess.Popen([_sys.executable, "-c", prog]) for _ in range(3)]
+    assert all(p.wait(timeout=60) == 0 for p in procs)
+    lines = [l for l in (inst / "conversations" / "dp.jsonl").read_text().splitlines() if l.strip()]
+    assert len(lines) == 60
+    seqs = [json.loads(l)["seq"] for l in lines]          # every line parses
+    assert sorted(seqs) == list(range(1, 61)), "no duplicate, no gap"
+    assert conv.integrity(inst, "dp")["unreadable"] == 0

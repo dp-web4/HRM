@@ -303,9 +303,14 @@ def test_granted_roots_come_from_the_policy_scope():
     class Pol: scope = ("path:/tmp/being-home", "repo:sage", "path:~/nope-not-real")
     class Core:
         @staticmethod
-        def _scope_parts(scopes, ws): return ((), tuple(s[5:] for s in scopes if s.startswith("path:")))
-    assert _granted_roots(Core, Pol, "/ws") == ("/tmp/being-home", "~/nope-not-real")
-    assert _granted_roots(object(), Pol, "/ws")[0].endswith("/tmp/being-home")   # fallback parser
+        def _scope_roots_with_reach(scopes, ws):
+            return tuple((s[5:].removesuffix("/**"), s.endswith("/**"))
+                         for s in scopes if s.startswith("path:"))
+    assert _granted_roots(Core, Pol, "/ws") == (("/tmp/being-home", False), ("~/nope-not-real", False))
+    fb = _granted_roots(object(), Pol, "/ws")
+    assert fb[0][0].endswith("/tmp/being-home") and fb[0][1] is False
+    class PolRec: scope = ("path:/tmp/tree/**",)
+    assert _granted_roots(object(), PolRec, "/ws") == (("/tmp/tree", True),)
     assert _granted_roots(Core, None, "/ws") == () and GatewayVerdict("allow").granted == ()
 
 

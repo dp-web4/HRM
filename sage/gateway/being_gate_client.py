@@ -345,20 +345,30 @@ def _home_hint(intent: "BeingIntent", dispatcher) -> str:
 
 
 def _granted_roots(core, policy, workspace: str) -> tuple:
-    """The absolute path roots a resolved policy grants ("path:<abs>" scopes), via the
-    core's own resolver when it has one. () when there is no policy or no path scope."""
+    """``((abs_root, recursive), ...)`` for every `path:` scope a resolved policy grants.
+
+    REACH TRAVELS WITH THE ROOT (hestia #1002; GPT review of #55/#56). This used to return
+    bare roots via `_scope_parts(...)[1]`, and the dispatcher then admitted `p == root OR
+    root in p.parents` — so an EXACT hestia grant on /x became recursive /x/** inside SAGE's
+    own defense-in-depth layer, wider than the law that produced it. Now the pair is kept:
+    the core's `_scope_roots_with_reach` when it has one (post-#1002), else parsed here from
+    the `/**` spelling, so an older core still yields exact-by-default rather than a guess."""
     if policy is None:
         return ()
     try:
         scopes = list(getattr(policy, "scope", ()) or ())
-        parts = getattr(core, "_scope_parts", None)
-        if parts is not None:
-            return tuple(parts(scopes, workspace)[1])
-        roots = []
+        with_reach = getattr(core, "_scope_roots_with_reach", None)
+        if with_reach is not None:
+            return tuple((str(r), bool(rec)) for r, rec in with_reach(scopes, workspace))
+        out = []
         for sc in scopes:
             if isinstance(sc, str) and sc.startswith("path:"):
-                roots.append(os.path.realpath(os.path.expanduser(sc[5:])))
-        return tuple(roots)
+                raw = sc[5:]
+                rec = raw.endswith("/**")
+                if rec:
+                    raw = raw[:-3]
+                out.append((os.path.realpath(os.path.expanduser(raw)), rec))
+        return tuple(out)
     except Exception:
         return ()
 

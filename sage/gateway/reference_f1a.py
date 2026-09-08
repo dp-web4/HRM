@@ -45,8 +45,16 @@ class ReferenceF1aDispatcher:
 
     # -- the Dispatcher contract ---------------------------------------------
     def __call__(self, intent: BeingIntent, verdict: GatewayVerdict) -> ResultEnvelope:
-        # confinement = the home + whatever the law just consulted as granted for THIS verdict
-        self._extra_roots = tuple(Path(r).resolve() for r in (getattr(verdict, "granted", ()) or ()))
+        # confinement = the home + whatever the law just consulted as granted for THIS verdict,
+        # WITH REACH: each entry is (root, recursive). A bare string (an older gate client)
+        # is read as EXACT — the default hestia #1002 chose — never widened by guessing.
+        roots = []
+        for g in (getattr(verdict, "granted", ()) or ()):
+            if isinstance(g, (tuple, list)) and len(g) == 2:
+                roots.append((Path(str(g[0])).resolve(), bool(g[1])))
+            else:
+                roots.append((Path(str(g)).resolve(), False))
+        self._extra_roots = tuple(roots)
         handler = getattr(self, f"_do_{intent.effector}", None)
         if handler is None:
             # a consequential network act the reference won't run — real F1a's job
@@ -97,12 +105,18 @@ class ReferenceF1aDispatcher:
         if not p.is_absolute():
             p = self.memory_root / p
         p = p.resolve()
-        roots = (self.memory_root,)
+        # (root, recursive) pairs. The home is always a subtree — it is the being's own.
+        roots = [(self.memory_root, True)]
         if not writing:
-            roots = roots + tuple(getattr(self, "_extra_roots", ()) or ())
-        if not any(p == r or r in p.parents for r in roots):
-            if writing and any(p == r or r in p.parents
-                               for r in (getattr(self, "_extra_roots", ()) or ())):
+            roots += list(getattr(self, "_extra_roots", ()) or ())
+        def _covered(path: Path, root: Path, recursive: bool) -> bool:
+            # exact: the root itself; recursive: the root and everything under it.
+            # Separator-aware by construction (Path.parents): /a never fronts for /ab.
+            return path == root or (recursive and root in path.parents)
+
+        if not any(_covered(p, r, rec) for r, rec in roots):
+            if writing and any(_covered(p, r, rec)
+                               for r, rec in (getattr(self, "_extra_roots", ()) or ())):
                 raise ValueError(
                     f"writes stay inside your own home ({self.memory_root}); {p} is readable "
                     "to you but not writable, because a tree you can write is a tree `check` "

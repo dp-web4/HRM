@@ -432,6 +432,16 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             # input": a long memory_write body cut off by num_predict (measured 2026-09-04).
             import sys as _sys
             print(f"[tool-loop] transport error, retrying once: {content[:200]}", file=_sys.stderr)
+            # Same rule as the length-retry below: the SAME prompt to a deterministic
+            # model is the same failure (legion-being 20:33Z 2026-09-08: journal body cut
+            # mid-JSON, retried identically, cut identically; the beat's reflect recorded
+            # nothing). The model is told what happened and asked for a shorter body.
+            msgs.append({"role": "user", "content": (
+                "[harness] Your previous tool call could not be delivered: its arguments were "
+                "cut off before the JSON closed — the window ran out while you were writing "
+                "the body. Make the same call with a body a third of the length, or split it "
+                "into two calls; what you leave out can go in the next beat.")})
+            nudged = True
             # no raw reply here, so no prompt_eval_count: the retry gets the think budget
             # (for a no-think model that is still more than its variant num_predict)
             with _retry_room(llm, _retry_budget(llm, None)) as budget:

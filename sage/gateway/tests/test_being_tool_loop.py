@@ -534,3 +534,32 @@ def test_compaction_keeps_the_tail_where_a_verdict_lives():
     assert "FAILED tests/test_a.py::test_b" in c and "1 failed, 182 passed" in c
     assert c.startswith("x" * (COMPACT_KEEP_CHARS // 2)) and "elided from the middle" in c
     assert el[0]["chars"] == len(check_out) - COMPACT_KEEP_CHARS   # accounting: kept + elided == original
+
+
+
+def test_transport_error_retry_asks_for_a_shorter_body():
+    """20:33Z 2026-09-08 reflect: journal body cut mid-JSON (Ollama 500 "unexpected end of
+    JSON input"), retried with the identical prompt, cut identically, nothing recorded."""
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    seen = []
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 24576
+        num_predict_override = None
+
+        def get_chat_response(self, messages, tools=None):
+            seen.append([dict(m) for m in messages])
+            if len(seen) == 1:
+                return {"content": "[OllamaIRP: Connection error: HTTP Error 500: Internal Server Error — "
+                                   "{\"error\":\"llama-server returned invalid tool call arguments for "
+                                   "\\\"memory_write\\\": unexpected end of JSON input\"}]",
+                        "tool_calls": [], "raw": {}}
+            return {"content": "shorter entry written", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 21000, "eval_count": 300, "message": {}}}
+
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "reflect"}])
+    assert r.reply == "shorter entry written" and len(seen) == 2
+    nudge = seen[1][-1]
+    assert nudge["role"] == "user" and nudge["content"].startswith("[harness]") and "third of the length" in nudge["content"]
+    assert r.generates[-1]["nudged"] is True and r.generates[-1]["retried"] == 1

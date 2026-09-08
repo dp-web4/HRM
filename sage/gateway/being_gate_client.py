@@ -234,8 +234,12 @@ def sandbox_prefix(worktree: str) -> str:
         " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind /lib64 /lib64 --ro-bind /bin /bin"
         " --ro-bind /etc/alternatives /etc/alternatives"
         f" --ro-bind {interp} {interp}"
-        f" --bind {worktree} {worktree}"
+        # ORDER IS THE MOUNT ORDER, and a later mount masks an earlier one. --tmpfs /tmp
+        # used to come after the worktree bind; a worktree under /tmp then vanished inside
+        # the sandbox (measured 2026-09-08 by the real-conftest fixture: pytest ran in an
+        # empty tree and the probe never wrote). tmpfs first, the worktree over it.
         " --proc /proc --dev /dev --tmpfs /tmp"
+        f" --bind {worktree} {worktree}"
         " --unshare-pid --unshare-net --unshare-ipc --unshare-uts"
         " --new-session --die-with-parent"
         # PYTHONUTF8 rather than LANG=C.UTF-8, and the reason is hestia #988: mrh.command

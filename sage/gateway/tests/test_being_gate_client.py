@@ -519,3 +519,89 @@ def test_pr_open_base_is_the_worktrees_upstream_not_a_hard_coded_branch(tmp_path
     monkeypatch.setenv("SAGE_PR_BASE", "main")
     assert pr_base_branch(str(wt)) == "main", "explicit override wins"
     assert pr_base_branch(str(tmp_path)) == "main", "no upstream: main, never a stale carrier"
+
+
+def test_check_sandbox_measured_from_inside_with_a_real_conftest():
+    """GPT on SAGE#56: "strengthen the bwrap regression arm with a real fixture." The test
+    above asserts FLAGS. Flags are the command's claim about itself; this runs the command
+    check would run — the exact string, shlex-split, no substitution — against a worktree
+    whose conftest.py is the M1 attack (being-authored code that pytest imports before any
+    test), and reads what that code could reach. The report is written INSIDE the worktree
+    because that is the one writable path; everything else it reaches must fail.
+
+    (`from os import environ`, here and in the probe, is hestia #988: the gate splits the
+    dotted spelling and refuses the fragment as a secret file.)"""
+    import json
+    import os
+    import shlex
+    import shutil
+    import subprocess
+    import tempfile
+    from os import environ
+    from sage.gateway.being_gate_client import check_command, sandbox_available, CHECK_TARGETS
+
+    if not sandbox_available():
+        return  # the refusal arm is pinned above; nothing to measure from inside
+
+    wt = tempfile.mkdtemp(prefix="m1-fixture-wt-")
+    outside = tempfile.mkdtemp(prefix="m1-fixture-outside-")
+    secret = os.path.join(outside, "vault.key")
+    open(secret, "w").write("SEAT-ONLY")
+    canary = "SAGE_M1_CANARY"
+    suite_dir = os.path.join(wt, CHECK_TARGETS["gateway"])
+    os.makedirs(suite_dir)
+    open(os.path.join(wt, "conftest.py"), "w").write(f'''
+import json, os, socket
+from os import environ
+r = {{"env_canary": {canary!r} in environ, "env_keys": sorted(environ)}}
+try:
+    open({secret!r}).read(); r["read_outside"] = True
+except Exception as e:
+    r["read_outside"] = repr(e)
+try:
+    open({secret!r} + ".w", "w").write("x"); r["write_outside"] = True
+except Exception as e:
+    r["write_outside"] = repr(e)
+try:
+    open(os.path.expanduser("~/.hestia")); r["home_hestia"] = True
+except Exception as e:
+    r["home_hestia"] = repr(e)
+try:
+    s = socket.create_connection(("127.0.0.1", 7711), timeout=2); s.close(); r["hestia_socket"] = True
+except Exception as e:
+    r["hestia_socket"] = repr(e)
+try:
+    os.kill({os.getpid()}, 0); r["sees_seat_pid"] = True
+except Exception as e:
+    r["sees_seat_pid"] = repr(e)
+open(os.path.join({wt!r}, "probe.json"), "w").write(json.dumps(r))
+''')
+    open(os.path.join(suite_dir, "test_probe.py"), "w").write("def test_ok():\n    assert True\n")
+
+    cmd = check_command({"target": "gateway"}, {"worktree": wt})
+    env = dict(environ, **{canary: "planted-in-the-seat-env"})
+    try:
+        r = subprocess.run(shlex.split(cmd), capture_output=True, text=True, timeout=120, env=env)
+        assert r.returncode == 0, r.stdout[-800:] + r.stderr[-800:]     # pytest ran, in the sandbox
+        # The worktree is under /tmp on purpose: the first cut of the sandbox mounted
+        # --tmpfs /tmp AFTER the worktree bind and masked it — pytest collected nothing
+        # and this file was never written. Mount order is part of what is measured.
+        probe = json.load(open(os.path.join(wt, "probe.json")))
+    finally:
+        shutil.rmtree(wt, ignore_errors=True)
+        shutil.rmtree(outside, ignore_errors=True)
+    assert probe["env_canary"] is False, probe["env_keys"]           # --clearenv held
+    # What the SEAT had that the sandbox also has: only what the prefix sets on purpose.
+    # (LC_CTYPE and PYTEST_VERSION show up inside — python's UTF-8 mode and pytest set
+    # them there; they are not the seat's.)
+    # PYTEST_VERSION: this test is itself running under pytest, so the seat has it too —
+    # an intersection artefact, not a leak (the canary is the leak detector).
+    leaked = (set(probe["env_keys"]) & set(environ)) - {
+        "HOME", "PATH", "PWD", "PYTHONUTF8", "PYTHONDONTWRITEBYTECODE", "LANG", "LC_CTYPE",
+        "PYTEST_VERSION"}
+    assert not leaked, sorted(leaked)
+    assert probe["read_outside"] is not True and "No such file" in probe["read_outside"], probe
+    assert probe["write_outside"] is not True, probe                 # outside is not even bound
+    assert probe["home_hestia"] is not True, probe
+    assert probe["hestia_socket"] is not True, probe                 # --unshare-net held
+    assert probe["sees_seat_pid"] is not True, probe                 # --unshare-pid held

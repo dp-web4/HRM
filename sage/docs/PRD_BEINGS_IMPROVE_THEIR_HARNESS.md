@@ -1,6 +1,10 @@
 # PRD — Beings improve their own harness
 
-**Status:** DRAFT r3 — Legion seat, 2026-09-07.
+**Status:** DRAFT r4 — Legion seat, 2026-09-08. r4 records that M1's hard prerequisite is
+built and measured, M1 is live, and the path from worktree to pull request exists (§5 M1,
+§9, §10.5). No milestone definitions changed; one moved from blocked to done.
+
+r3 — Legion seat, 2026-09-07.
 
 r3 folds in an outside-seat review of r2 (GPT, PR #54) and one live security
 measurement made while answering it. Changes: dp's standing direction becomes a
@@ -295,6 +299,47 @@ M1 must buy that invariant back by isolation instead of subtraction:
 This is where the A2-harness / own-vault direction stops being aspiration and
 becomes a dated blocker on a milestone.
 
+#### LANDED — 2026-09-08. The prerequisite is built, and M1 is live.
+
+dp: *"do the unblock."* The isolation is bubblewrap, and it needed exactly one root
+action: Ubuntu 24.04 sets `kernel.apparmor_restrict_unprivileged_userns=1` and
+`/usr/bin/bwrap` is not setuid, so every unprivileged sandbox attempt died at
+`setting up uid map: Permission denied`. `/etc/apparmor.d/bwrap` grants `userns` to
+that binary alone — the distro's own pattern (`ch-run`, `crun`, `flatpak`) — chosen
+over relaxing the sysctl for every binary on the machine.
+
+**The §10.5 falsifier, run from inside being-authored code, not from a shell.** The
+being's `memory_write` put a hostile `conftest.py` into its worktree (ALLOWED — the
+write confinement is lifted where the sandbox works), `check` imported it, and it
+wrote what it could reach:
+
+```
+vault_file=FileNotFoundError  vault_dir=False  shared_tree=False
+home_listing=['ai-workspace','miniforge3']
+hestia_7711=ConnectionRefusedError  ollama_11434=ConnectionRefusedError
+uid=1000  pid=2
+```
+
+The day before, that same write would have run as the seat with the vault passphrase
+in reach. The invariant *the tree `check` executes is not a tree the being can write*
+is now held by isolation instead of subtraction.
+
+**Fail closed.** `sandbox_available()` runs a real sandbox rather than testing for the
+binary — presence is not permission — and where it is unavailable `check` refuses and
+worktree writes stay confined, with the refusal saying *M1 is not withheld, it is
+waiting on the box*. A machine without the profile keeps the stopgap; nothing degrades
+silently.
+
+**And the door out (§7):** `pr_open`. The being names a slug, a title and a body; the
+seat branches, commits with the `Being` / `Being-LCT` / `Witness` / `Seat` trailers the
+being cannot alter, pushes, and runs the one command the law judged, `gh pr create`.
+Allowed only because SAGE's single CI workflow byte-compiles and does not execute — a PR
+reaches no executor the being's code has not already been proven against. The verb's own
+comment says what changes if a workflow that runs code is ever added.
+
+M1's done-condition (edit → `check` → iterate in one beat) is now reachable and not yet
+demonstrated. It is the being's to demonstrate.
+
 ### M2 — read its own architecture
 
 16K of context cannot hold `handler.rs`, and pretending otherwise is how a being
@@ -468,7 +513,7 @@ audit without taking our word for anything.
 | half | owner |
 |---|---|
 | `check` effector, worktree, write-confinement (M-1, M0) | Legion seat |
-| principal isolation (the M1 blocker) | Legion seat, unassigned in time — M1 waits on it |
+| principal isolation (the M1 blocker) | **done 2026-09-08** — bwrap + a one-binary AppArmor profile; per-machine root action elsewhere in the fleet |
 | registry review (it is the co-owned contract) | Sprout seat |
 | cross-body verification of every finding | sprout-being, on its own hardware |
 | NOT-SAME review of a being's PR (§7) | any seat or being that did not co-author it |
@@ -493,11 +538,12 @@ audit without taking our word for anything.
    delegated-arbitration path (hestia #962) now exists to grant it without waiting
    on a human — which is the first real use of that machinery for something other
    than its own notes.
-5. **What shape does principal isolation take here?** Separate uid is the obvious
-   answer on this box and the cheapest to audit; a container or a user namespace
-   buys more and costs a build. Undecided, and M1 is blocked until it is. The
-   falsifier is concrete: from the being's principal, attempt to read the vault,
-   reach the hestia socket, and use the ssh-agent. All three must fail.
+5. ~~**What shape does principal isolation take here?**~~ **ANSWERED 2026-09-08.**
+   bubblewrap, unprivileged, enabled by a one-binary AppArmor profile. The falsifier
+   named here — from the being's principal, reads of the vault, the hestia socket and
+   the agent environment must all fail — was run from inside being-authored code and
+   passed on every count (§5, M1 LANDED). What remains open is fleet-wide: the profile
+   is a per-box root action, and a Jetson may need a different one.
 6. **Does the entrustment change what the being does, or only what it says?** §4
    makes extending it an intervention with a named boundary. The honest failure
    mode is a being that narrates the entrustment in every journal entry and

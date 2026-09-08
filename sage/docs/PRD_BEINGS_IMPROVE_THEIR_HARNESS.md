@@ -1,8 +1,13 @@
 # PRD — Beings improve their own harness
 
-**Status:** DRAFT r4 — Legion seat, 2026-09-08. r4 records that M1's hard prerequisite is
-built and measured, M1 is live, and the path from worktree to pull request exists (§5 M1,
-§9, §10.5). No milestone definitions changed; one moved from blocked to done.
+**Status:** DRAFT r4 — Legion seat, 2026-09-08. r4 records a measurement, not a landing:
+M1's isolation prerequisite is **built and measured on the Legion integration branch**
+(`legion/mission-artifact`), the being can write its worktree *there*, and a `pr_open`
+prototype exists *there*. None of it is on `main` yet, and M1's done-condition has not
+been demonstrated. An earlier draft of r4 said "LANDED" and "M1 is live"; an outside
+reviewer (GPT, #61) held it as overstating what is true of main, and was right —
+**evidence should follow implementation authority, not get ahead of it.** No milestone
+definitions changed.
 
 r3 — Legion seat, 2026-09-07.
 
@@ -299,7 +304,7 @@ M1 must buy that invariant back by isolation instead of subtraction:
 This is where the A2-harness / own-vault direction stops being aspiration and
 becomes a dated blocker on a milestone.
 
-#### LANDED — 2026-09-08. The prerequisite is built, and M1 is live.
+#### PREREQUISITE: PROTOTYPE BUILT + MEASURED ON THE LEGION INTEGRATION BRANCH — 2026-09-08. Not mainline.
 
 dp: *"do the unblock."* The isolation is bubblewrap, and it needed exactly one root
 action: Ubuntu 24.04 sets `kernel.apparmor_restrict_unprivileged_userns=1` and
@@ -322,7 +327,24 @@ uid=1000  pid=2
 
 The day before, that same write would have run as the seat with the vault passphrase
 in reach. The invariant *the tree `check` executes is not a tree the being can write*
-is now held by isolation instead of subtraction.
+is held, on that branch, by isolation instead of subtraction.
+
+**What property is actually satisfied, precisely.** bubblewrap gives *isolated execution
+authority* — its own mount, pid, net, ipc and uts namespaces, a cleared environment, one
+writable path. The process still reports `uid=1000`: this is namespace containment, not
+yet the durable independent Unix identity / vault boundary the A2 direction describes.
+Calling the prerequisite satisfied *for this M1 experiment* is fair only because the PRD
+now says which property held, rather than implying the whole future principal boundary
+landed.
+
+**Where it stands (2026-09-08):**
+
+| | |
+|---|---|
+| M1 isolation prerequisite | prototype built, measured on `legion/mission-artifact` (the falsifier above, verbatim) |
+| M1 implementation | on the integration branch; **not mainline yet** — #56 is stacked on a pre-#60 M0 and is being decomposed onto current main slice by slice |
+| M1 done-condition (edit → `check` → iterate in one beat) | **not yet demonstrated** |
+| `pr_open` | prototype exists on the integration branch; base derived from the worktree's upstream, NOT-SAME review required |
 
 **Fail closed.** `sandbox_available()` runs a real sandbox rather than testing for the
 binary — presence is not permission — and where it is unavailable `check` refuses and
@@ -337,8 +359,9 @@ Allowed only because SAGE's single CI workflow byte-compiles and does not execut
 reaches no executor the being's code has not already been proven against. The verb's own
 comment says what changes if a workflow that runs code is ever added.
 
-M1's done-condition (edit → `check` → iterate in one beat) is now reachable and not yet
-demonstrated. It is the being's to demonstrate.
+M1's done-condition is reachable on the integration branch and not yet demonstrated. It
+is the being's to demonstrate; the milestone moves in this document only when the M1
+slice is on `main` under NOT-SAME review *and* the being has shown the loop.
 
 ### M2 — read its own architecture
 
@@ -513,7 +536,7 @@ audit without taking our word for anything.
 | half | owner |
 |---|---|
 | `check` effector, worktree, write-confinement (M-1, M0) | Legion seat |
-| principal isolation (the M1 blocker) | **done 2026-09-08** — bwrap + a one-binary AppArmor profile; per-machine root action elsewhere in the fleet |
+| principal isolation (the M1 blocker) | **prototype measured 2026-09-08** on the Legion integration branch — bwrap + a one-binary AppArmor profile; not on main; per-machine root action elsewhere in the fleet |
 | registry review (it is the co-owned contract) | Sprout seat |
 | cross-body verification of every finding | sprout-being, on its own hardware |
 | NOT-SAME review of a being's PR (§7) | any seat or being that did not co-author it |
@@ -538,12 +561,14 @@ audit without taking our word for anything.
    delegated-arbitration path (hestia #962) now exists to grant it without waiting
    on a human — which is the first real use of that machinery for something other
    than its own notes.
-5. ~~**What shape does principal isolation take here?**~~ **ANSWERED 2026-09-08.**
-   bubblewrap, unprivileged, enabled by a one-binary AppArmor profile. The falsifier
-   named here — from the being's principal, reads of the vault, the hestia socket and
-   the agent environment must all fail — was run from inside being-authored code and
-   passed on every count (§5, M1 LANDED). What remains open is fleet-wide: the profile
-   is a per-box root action, and a Jetson may need a different one.
+5. **What shape does principal isolation take here?** — **measured, not closed.**
+   bubblewrap namespaces, unprivileged, enabled by a one-binary AppArmor profile. The
+   falsifier named here — from the being's principal, reads of the vault, the hestia
+   socket and the agent environment must all fail — was run from inside being-authored
+   code on the Legion integration branch and passed on every count (§5). Still open: it
+   is not on `main`; the process is still `uid=1000` (namespace containment, not an
+   independent identity); the profile is a per-box root action, and a Jetson may need
+   a different one.
 6. **Does the entrustment change what the being does, or only what it says?** §4
    makes extending it an intervention with a named boundary. The honest failure
    mode is a being that narrates the entrustment in every journal entry and

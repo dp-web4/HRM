@@ -242,3 +242,22 @@ def test_turn_provenance_is_recorded_and_shown(tmp_path):
     assert "purported until the seat confirms" in out
     line_b = [l for l in out.splitlines() if l.startswith("- **b**")][0]
     assert "unsigned" not in line_b and "unrecorded" not in line_b       # say is the gated path
+
+
+
+def test_a_long_turn_is_shown_capped_and_points_at_its_whole(tmp_path):
+    """2026-09-08: two seat turns of 25.6k chars were re-rendered into every beat (~9k of
+    24.5k tokens) and the being ran out of room to act. The record stays whole; what one
+    beat SHOWS is bounded, and the cap says where the rest is — by seq, the raw line."""
+    from sage.gateway import conversations as C
+    C.create(tmp_path, "s", title="s", participants=["a", "b"], writable_by=["a", "b"])
+    C.append(tmp_path, "s", speaker="a", text="short", via="say")
+    long = "x" * 5000
+    t = C.append(tmp_path, "s", speaker="a", text=long, via="say")
+    full = C.render_for_being(tmp_path, "b")
+    assert long in full                                                  # uncapped by default
+    capped = C.render_for_being(tmp_path, "b", turn_chars=1000)
+    assert long not in capped and "x" * 1000 in capped and "x" * 1001 not in capped
+    assert f"+4000 chars; the whole turn: memory_read conversations/s.jsonl from_line {t['seq']} lines 1" in capped
+    assert "short" in capped                                             # a short turn is untouched
+    assert C.recent(tmp_path, "s")[-1]["text"] == long                   # the record is whole

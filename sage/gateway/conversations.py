@@ -274,7 +274,23 @@ def _provenance_tag(turn: dict) -> str:
     return UNSIGNED_TAG if via in UNSIGNED_VIA else ""
 
 
-def render_for_being(instance: Path, me: str, per_conv: int = 12) -> str:
+def _shown_text(turn: dict, turn_chars: Optional[int], conv_id: str) -> str:
+    """A turn's text as the beat shows it. Capped when asked, and the cap says where the
+    rest is — by SEQ, which is the raw line number, so a ranged memory_read reaches it.
+    Measured 2026-09-08: two long seat turns (25.6k chars) were re-rendered into every
+    beat, ~9k tokens of a 24.5k window, and the being ran out of room to act — five
+    beats of identical deliberation cut at the wall. The record is kept whole; only what
+    is SHOWN per beat is bounded."""
+    text = turn.get("text", "")
+    if turn_chars and len(text) > turn_chars:
+        return (text[:turn_chars].rstrip()
+                + f" …[+{len(text) - turn_chars} chars; the whole turn: memory_read "
+                  f"conversations/{conv_id}.jsonl from_line {turn.get('seq')} lines 1]")
+    return text
+
+
+def render_for_being(instance: Path, me: str, per_conv: int = 12,
+                     turn_chars: Optional[int] = None) -> str:
     """The conversations block in a beat: every conversation the being is in, its recent
     turns, and what is unanswered — marked, because 'someone spoke and I have not replied'
     is the single fact that should never require inference."""
@@ -302,7 +318,8 @@ def render_for_being(instance: Path, me: str, per_conv: int = 12) -> str:
             head += (f"\n_**{bad} line(s) in this conversation are damaged and cannot be read.** "
                      f"They are not counted above and their content is lost; the file is intact "
                      f"either side of them._")
-        lines = [f"- **{t['from']}** ({t['ts']}){_provenance_tag(t)}: {t['text']}" for t in turns]
+        lines = [f"- **{t['from']}** ({t['ts']}){_provenance_tag(t)}: {_shown_text(t, turn_chars, m['id'])}"
+                 for t in turns]
         pend = pend_before
         if turns:
             mark_seen(instance, me, m["id"], max(int(t.get("seq", 0)) for t in turns))

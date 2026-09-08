@@ -333,7 +333,8 @@ def _fill_headroom(cfg: dict, partial: Path, host_session_id: str) -> dict:
     return cfg
 
 
-def own_state(instance: Path, entrusted: str = "", member: str = "") -> str:
+def own_state(instance: Path, entrusted: str = "", member: str = "",
+              per_conv: int = 12, turn_chars: Optional[int] = None) -> str:
     from sage.gateway.being_join import carried_account, last_session_number
     parts = []
     if entrusted:
@@ -347,7 +348,7 @@ def own_state(instance: Path, entrusted: str = "", member: str = "") -> str:
     # that from a wall of notes. The notes files below stay for now as history; new
     # exchanges go here, where both directions live in one ordered record.
     from sage.gateway import conversations as _conv
-    convs = _conv.render_for_being(instance, member)
+    convs = _conv.render_for_being(instance, member, per_conv=per_conv, turn_chars=turn_chars)
     if convs.strip():
         parts.append("## Your conversations (both directions, kept forever; reply with `say`)\n"
                      + convs.strip())
@@ -371,6 +372,58 @@ def own_state(instance: Path, entrusted: str = "", member: str = "") -> str:
         names = sorted(x.name for x in p.iterdir()) if p.is_dir() else []
         parts.append(f"## {d}/\n" + ("\n".join(f"- {n}" for n in names[:30]) if names else "(empty)"))
     return "\n\n".join(parts)
+
+
+# Conservative chars-per-token for mixed English + paths + JSON; under-estimating the
+# token count would defeat the guard, so estimate high (fewer chars/token). Measured on
+# this being 2026-09-08: 70.5k prompt chars -> 20,812 prompt tokens = 3.39.
+CPT = 3.4
+ANSWER_RESERVE_CAP = 6144
+
+
+def window_budget_chars(num_ctx: int, num_predict: int, slack: int = 512) -> int:
+    """How many prompt chars fit beside a p99 answer. One producer for both fitters."""
+    reserve = min(num_predict, ANSWER_RESERVE_CAP)
+    return int(max(0, (num_ctx - reserve - slack)) * CPT)
+
+
+# What the beat shows of the conversations, from full to sparse: (turns per conversation,
+# chars per turn). Stepped down ONLY when the fixed prompt would not fit even with the
+# digest and recall at their floors — the case fit_to_window cannot help with, and the
+# case this being sat in for five beats on 2026-09-08 (headroom -2.4k..-4k tokens, every
+# generate cut at the wall before a tool call, the retry re-sending the same prompt).
+CONV_LADDER = ((12, None), (12, 1500), (6, 1200), (3, 900), (2, 700))
+
+
+def fit_state(build, *, num_ctx, num_predict, other_chars: int, slack: int = 512):
+    """`build(per_conv, turn_chars) -> state text`. Returns (text, rung, intervention).
+
+    Steps down CONV_LADDER until other_chars + len(text) fits the window budget. The
+    record is never trimmed — only what one beat shows — and every step is returned as
+    an intervention naming what was suppressed, so a thin conversation block is never
+    mistaken for a quiet channel. The last rung is used even if it still does not fit:
+    the beat then runs overcommitted and says so (config.context_overcommitted)."""
+    if not isinstance(num_ctx, int) or not isinstance(num_predict, int):
+        return build(*CONV_LADDER[0]), CONV_LADDER[0], None
+    budget = window_budget_chars(num_ctx, num_predict, slack)
+    first = None
+    for i, rung in enumerate(CONV_LADDER):
+        text = build(*rung)
+        if first is None:
+            first = len(text)
+        fits = other_chars + len(text) <= budget
+        if fits or i == len(CONV_LADDER) - 1:
+            if i == 0:
+                return text, rung, None
+            pc, tc = rung
+            return text, rung, {
+                "kind": "context_fit", "block": "conversations",
+                "suppressed": f"{first - len(text)} chars of conversations (showing the last "
+                              f"{pc} turns per conversation, each at most {tc} chars)",
+                "reason": f"the fixed prompt ({other_chars + first} chars at full display) "
+                          f"would not fit num_ctx {num_ctx} even with the digest and recall "
+                          f"at their floors; " + ("fits now" if fits else "STILL does not fit at the sparsest rung"),
+            }
 
 
 def fit_to_window(*, num_ctx, num_predict, fixed_chars: int, blocks: dict, slack: int = 512):
@@ -409,11 +462,8 @@ def fit_to_window(*, num_ctx, num_predict, fixed_chars: int, blocks: dict, slack
     # p90 3,909, p99 5,741, max 7,253. Reserving 6,144 covers p99 with headroom while
     # leaving the digest something to say; reserving the full num_predict would floor the
     # digest every beat to buy room the model has never used.
-    reserve = min(num_predict, 6144)
-    # Conservative chars-per-token for mixed English + paths + JSON; under-estimating the
-    # token count here would defeat the whole guard, so estimate high (fewer chars/token).
-    CPT = 3.4
-    budget_chars = int(max(0, (num_ctx - reserve - slack)) * CPT)
+    reserve = min(num_predict, ANSWER_RESERVE_CAP)
+    budget_chars = window_budget_chars(num_ctx, num_predict, slack)
     order = ("digest", "recall")
     floors = {"digest": 1200, "recall": 400}
     out, interventions = dict(blocks), []
@@ -641,14 +691,34 @@ def main(argv=None) -> int:
     # the oldest tokens (system prompt, posture) with no error anywhere. Measured on this
     # being: two beats at 16,380 / 16,323 prompt tokens against a 16,384 window returned 4
     # and 61 tokens, done_reason "length".
-    state_block = (f"# Your own state\n\n{own_state(instance, entrusted, args.member)}\n\n"
-                   f"## Reach you hold (hestia scope)\n{scope}\n\n")
-    _fixed = len(posture()) + len(state_block) + len(inbox) + 4000  # + affordances/ask/tools
+    _num_ctx = getattr(llm, "num_ctx", None)
+    _num_predict = (llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
+                    else getattr(llm, "max_response_tokens", None))
+
+    def _build_state(per_conv, turn_chars):
+        return (f"# Your own state\n\n"
+                f"{own_state(instance, entrusted, args.member, per_conv=per_conv, turn_chars=turn_chars)}\n\n"
+                f"## Reach you hold (hestia scope)\n{scope}\n\n")
+    # The conversations step down only when the rest cannot fit with digest and recall at
+    # their floors (1200 + 400): fit_to_window's worst case is this fitter's input.
+    _other = len(posture()) + len(inbox) + 4000 + 1200 + 400  # + affordances/ask/tools
+    state_block, conv_rung, conv_intervention = fit_state(
+        _build_state, num_ctx=_num_ctx, num_predict=_num_predict, other_chars=_other)
+    _fixed = len(posture()) + len(state_block) + len(inbox) + 4000
     blocks, fit_interventions = fit_to_window(
-        num_ctx=getattr(llm, "num_ctx", None),
-        num_predict=(llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
-                     else getattr(llm, "max_response_tokens", None)),
+        num_ctx=_num_ctx, num_predict=_num_predict,
         fixed_chars=_fixed, blocks={"digest": digest, "recall": recall})
+    if conv_intervention:
+        fit_interventions = [conv_intervention] + list(fit_interventions)
+    # Sizes into the record, so the next overcommit names its block from the file and the
+    # chars-per-token assumption can be checked against prompt_tokens_max at beat end.
+    prompt_sizes = {
+        "prompt_blocks_chars": {"posture": len(posture()), "state": len(state_block),
+                                "inbox": len(inbox), "digest": len(blocks["digest"] or ""),
+                                "recall": len(blocks["recall"] or ""), "fixed_other": 4000,
+                                "conversations_rung": list(conv_rung)},
+        "prompt_chars": _fixed + len(blocks["digest"] or "") + len(blocks["recall"] or ""),
+    }
     seed, posture_turn = compose(
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
         nothink=nothink,
@@ -791,7 +861,7 @@ def main(argv=None) -> int:
         # whose config resolved a 4096 window while the tree offered a verb the model was
         # never shown. A starved beat and a silent one are indistinguishable unless the
         # record says which tools were offered and whether the window is the intended one.
-        "config": _fill_headroom(_config_check(instance, args.model, llm, EXPLORE_TOOLS),
+        "config": _fill_headroom({**_config_check(instance, args.model, llm, EXPLORE_TOOLS), **prompt_sizes},
                                  partial, host_session_id),
         "scope": scope_record,
         # which harness produced this beat; pairs with the `tree` block on any check result

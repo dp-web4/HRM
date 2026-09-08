@@ -384,6 +384,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             compacted.append({"step": len(thoughts), "elisions": len(elided),
                               "chars": sum(e["chars"] for e in elided)})
         retried = 0
+        nudged = False
         sent = _sent_budget(llm)          # the num_predict of the reply that stands
         resp = llm.get_chat_response(msgs, tools=tools)
         content = resp.get("content", "") or ""
@@ -420,8 +421,19 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             # override so the config's first-attempt budget cannot silently re-apply.
             if raw.get("done_reason") == "length" and (hasattr(llm, "max_response_tokens")
                                                        or hasattr(llm, "num_predict_override")):
+                # NOT the same prompt again. Measured 2026-09-08: five beats in a row the
+                # first attempt was cut at the wall mid-deliberation (20812 + 3764 == num_ctx)
+                # and the retry, identical prompt, produced the identical 3764 tokens — a
+                # deterministic loop, twice per beat. The retry has to change something the
+                # model can see: it is told what happened and asked to act.
+                msgs.append({"role": "user", "content": (
+                    f"[harness] Your previous attempt spent its whole budget deliberating "
+                    f"({raw.get('eval_count')} tokens) and the window cut it before any tool "
+                    f"call. The window will not grow. Act now: one tool call. The deliberation "
+                    f"belongs in journal.md, after the act.")})
+                nudged = True
                 with _retry_room(llm, _retry_budget(llm, raw)) as budget:
-                    print(f"[tool-loop] retrying once with num_predict={budget} "
+                    print(f"[tool-loop] retrying once with num_predict={budget} and a nudge "
                           f"(num_ctx={getattr(llm, 'num_ctx', None)} prompt_eval={raw.get('prompt_eval_count')})",
                           file=_sys.stderr)
                     resp = llm.get_chat_response(msgs, tools=tools)
@@ -439,6 +451,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         raw = resp.get("raw") or {}
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
                  "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent}
+        if nudged:
+            entry["nudged"] = True   # only when it happened: exact-compare callers stay exact
         # only when it happened: an always-present null would be noise in every record and
         # would break every caller that compares the entry exactly
         if compacted and compacted[-1]["step"] == len(thoughts) - 1:

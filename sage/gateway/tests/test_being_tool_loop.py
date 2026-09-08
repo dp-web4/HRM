@@ -157,7 +157,7 @@ def test_generate_stats_record_the_window_wall_and_the_retry():
     assert r.reply == "done" and calls["n"] == 2
     # num_predict: the retry's budget (no window declared -> the 6000 floor), not the first 1024
     assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1,
-                            "num_predict": 6000}]
+                            "num_predict": 6000, "nudged": True}]
 
 
 def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
@@ -190,7 +190,7 @@ def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
     assert llm.num_predict_override is None                  # restored
     assert llm.max_response_tokens == 3000                   # untouched: it is not the lever
     assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1,
-                            "num_predict": 16384 - 6721 - RETRY_MARGIN}]
+                            "num_predict": 16384 - 6721 - RETRY_MARGIN, "nudged": True}]
 
 
 def test_length_retry_without_a_window_falls_back_to_the_think_budget():
@@ -424,3 +424,36 @@ def test_compaction_reports_exactly_what_it_removed():
     marker = re.search(r"\[… (\d+) characters elided", out[3]["content"])
     assert marker and int(marker.group(1)) == e["chars"], "the marker and the record agree"
     assert out[3]["content"].startswith(body[:COMPACT_KEEP_CHARS])
+
+
+
+def test_length_retry_changes_the_prompt_it_resends():
+    """Legion 2026-09-08, five beats: first attempt cut at the wall mid-deliberation
+    (20812 + 3764 == num_ctx), retry with the IDENTICAL prompt produced the IDENTICAL
+    3764 tokens. A deterministic model given the same input twice is a loop, not a retry.
+    The retry appends a harness turn naming what happened and asking for one tool call."""
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    seen = []
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 24576
+        num_predict_override = None
+
+        def get_chat_response(self, messages, tools=None):
+            seen.append([dict(m) for m in messages])
+            if len(seen) == 1:
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 20812, "eval_count": 3764,
+                                "message": {"thinking": "Actually wait — let me reconsider"}}}
+            return {"content": "acted", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 20900, "eval_count": 60, "message": {}}}
+
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "beat"}])
+    assert r.reply == "acted" and len(seen) == 2
+    assert seen[0] == [{"role": "user", "content": "beat"}]
+    assert seen[1][:1] == seen[0] and len(seen[1]) == 2                 # same prompt PLUS the nudge
+    nudge = seen[1][-1]
+    assert nudge["role"] == "user" and nudge["content"].startswith("[harness]")
+    assert "3764 tokens" in nudge["content"] and "one tool call" in nudge["content"]
+    assert r.generates[-1]["nudged"] is True and r.generates[-1]["retried"] == 1

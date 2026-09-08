@@ -531,6 +531,29 @@ class HestiaF1aDispatcher:
                                   capture_output=True, timeout=600)
             passed = proc.returncode == 0
             out = ((proc.stdout or "") + (proc.stderr or "")).strip()
+            # A TEST THAT DOES NOT EXIST IS NOT A FAILING TEST. pytest exits 5 when nothing
+            # was collected — "167 deselected" — and the first cut reported that as FAIL.
+            # Measured 2026-09-08 11:34Z: the being asked for
+            # gateway::test_heartbeat_composes_prompt, which is not a test in the suite, and
+            # was told its harness was red. A false red is worse than a false green here:
+            # this being is trained by its own record to believe red over its reading.
+            if proc.returncode == 5:
+                try:  # the act completed; the chain should not hold it open
+                    self._call("hestia_record_outcome",
+                               {"action_id": action_id, "success": True, "magnitude": 0.0})
+                except Exception:
+                    pass
+                return ResultEnvelope(ok=True, witness_id=action_id,
+                                      result={"target": target, "passed": None,
+                                              "verdict": "NO_SUCH_TEST",
+                                              "output": out[-800:],
+                                              "reason": "pytest collected nothing for that "
+                                                        "target — the test name does not "
+                                                        "exist in this suite. Nothing ran, "
+                                                        "so nothing failed",
+                                              "worktree": self.worktree,
+                                              "tree": self._worktree_revision(),
+                                              "action_id": action_id})
             # The tail is where pytest puts the verdict and the failure detail; the head is
             # progress dots. Truncate from the FRONT so a failure is never the part cut.
             if len(out) > 3000:

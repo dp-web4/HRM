@@ -649,3 +649,30 @@ def test_check_reports_unverified_with_its_tree_when_the_substrate_is_down(tmp_p
     assert "tree" in env.result and "worktree" in env.result
     assert "UNVERIFIED" in env.error and "substrate" in env.error
     assert "did not run" in env.result["reason"], "an unwitnessed check must not have run"
+
+
+def test_check_on_a_nonexistent_test_is_no_such_test_not_fail(tmp_path):
+    """2026-09-08 11:34Z: the being asked for a test name that does not exist, pytest
+    deselected everything and exited 5, and the harness told it the suite was RED. A false
+    red is worse than a false green for a being trained by its own record to trust red
+    over its reading."""
+    import subprocess
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+    from sage.gateway.being_gate_client import BeingIntent
+    import sage.gateway.being_gate_client as bgc
+    wt = tmp_path / "wt"; (wt / "sage" / "gateway" / "tests").mkdir(parents=True)
+    subprocess.run(["git", "init", "-q", str(wt)], check=True)
+    (wt / "sage" / "gateway" / "tests" / "test_real.py").write_text("def test_real():\n    assert True\n")
+    d = D.__new__(D); d.worktree = str(wt); d.plugin_id = "b"; d.being_lct = None
+    d._call = lambda name, args: {"actionId": "act-5"} if name == "hestia_begin_action" else {}
+    # run unsandboxed for the test's own sake: the subject is the exit-5 mapping
+    saved = bgc.SANDBOX_REQUIRED, bgc.sandbox_available
+    bgc.SANDBOX_REQUIRED, bgc.sandbox_available = False, (lambda: False)
+    try:
+        env = d._do_check(BeingIntent("check", {"target": "gateway::test_does_not_exist"}))
+        assert env.ok and env.result["verdict"] == "NO_SUCH_TEST" and env.result["passed"] is None, env
+        assert "does not exist" in env.result["reason"]
+        env2 = d._do_check(BeingIntent("check", {"target": "gateway::test_real"}))
+        assert env2.result["verdict"] == "PASS"
+    finally:
+        bgc.SANDBOX_REQUIRED, bgc.sandbox_available = saved

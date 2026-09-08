@@ -476,6 +476,9 @@ def main(argv=None) -> int:
     if nothink:
         interventions.append({"kind": "think_suffix", "suppressed": "thinking (model resolves think off)"})
     for ph, res in (("explore", explore), ("posture", after), ("reflect", reflect)):
+        for dup in (getattr(res, "duplicates", None) or []):
+            interventions.append({"kind": "duplicate", "phase": ph, "effector": dup.get("effector"),
+                                  "suppressed": "a second execution of an identical call in the same turn"})
         for sv in (getattr(res, "salvaged", None) or []):
             interventions.append({"kind": "salvage", "phase": ph, "effector": sv.get("effector"), "form": sv.get("form"),
                                   "suppressed": "text-channel narration in place of a native tool call"})

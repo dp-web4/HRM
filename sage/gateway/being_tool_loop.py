@@ -35,6 +35,7 @@ class ToolTurnResult:
     capped: bool = False                                   # hit max_steps still wanting tools
     thinking: List[str] = field(default_factory=list)      # the model's think block per generate, if any
     salvaged: List[dict] = field(default_factory=list)     # calls lifted from the text channel: {step, effector, form}
+    duplicates: List[dict] = field(default_factory=list)   # identical calls answered without re-executing: {step, effector}
     generates: List[dict] = field(default_factory=list)    # per generate, from Ollama's reply: {done_reason, prompt_eval_count, eval_count, retried}
 
     @property
@@ -55,6 +56,8 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
     """
     convo = list(messages)
     trace: List[Tuple[BeingIntent, ResultEnvelope]] = []
+    done_ok: set = set()
+    duplicates: List[dict] = []
 
     for step in range(max_steps):
         out = generate(convo)
@@ -62,11 +65,27 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
         intents = out.get("intents") or []
 
         if not intents:                                    # a spoken turn — the being is done
-            return ToolTurnResult(reply=content, trace=trace, steps=step)
+            res = ToolTurnResult(reply=content, trace=trace, steps=step)
+            res.duplicates = duplicates
+            return res
 
         convo.append({"role": "assistant", "content": content, "intents": intents})
         for intent in intents:
+            # A call identical to one this turn already executed is not a second act: the model
+            # re-emits its last calls after reading their results (beat 149, 2026-09-08: the
+            # journal and todo each written twice, same bytes, one step apart). Answered
+            # without executing, and named in the record as an intervention.
+            key = (intent.effector, json.dumps(dict(intent.args or {}), sort_keys=True, default=str))
+            if key in done_ok:
+                env = ResultEnvelope(ok=True, result="(already done this beat: identical call, not repeated)",
+                                     note="duplicate")
+                duplicates.append({"step": step, "effector": intent.effector})
+                trace.append((intent, env))
+                convo.append({"role": "tool", "effector": intent.effector, "content": env.to_tool_message()})
+                continue
             env = client.dispatch(intent)                  # gate + F1a dispatch + consume
+            if env.ok:
+                done_ok.add(key)
             trace.append((intent, env))
             convo.append({"role": "tool", "effector": intent.effector,
                           "content": env.to_tool_message()})
@@ -74,8 +93,10 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
     # Cap reached with tools still pending: force one final spoken close — we take its
     # words even if it wants more tools, so the being always ends its turn in language.
     out = generate(convo)
-    return ToolTurnResult(reply=out.get("content") or "", trace=trace,
-                          steps=max_steps, capped=True)
+    res = ToolTurnResult(reply=out.get("content") or "", trace=trace,
+                         steps=max_steps, capped=True)
+    res.duplicates = duplicates
+    return res
 
 
 _FENCE = re.compile(r"```[A-Za-z0-9_+-]*[ \t]*\n(.*?)```", re.S)

@@ -353,6 +353,21 @@ def test_salvage_accepts_the_other_name_keys_and_flat_arguments():
     assert [(c["function"]["name"], c["function"]["arguments"]) for c in r] == [("recall", {"query": "q", "top_k": 3})]
 
 
+def test_an_identical_call_in_the_same_turn_is_answered_not_re_executed():
+    from sage.gateway.being_tool_loop import run_tool_turn
+    from sage.gateway.being_gate_client import BeingIntent, ResultEnvelope
+    calls = []
+    class C:
+        def dispatch(self, i):
+            calls.append((i.effector, dict(i.args))); return ResultEnvelope(ok=True, result="wrote")
+    w = BeingIntent("memory_write", {"path": "journal.md", "content": "same bytes"})
+    outs = [{"content": "", "intents": [w]}, {"content": "", "intents": [w, BeingIntent("memory_write", {"path": "todo.md", "content": "x"})]}, {"content": "done", "intents": []}]
+    r = run_tool_turn(C(), lambda convo: outs.pop(0), [], max_steps=3)
+    assert len(calls) == 2 and [c[1]["path"] for c in calls] == ["journal.md", "todo.md"]
+    assert len(r.trace) == 3 and r.trace[1][1].note == "duplicate" and "already done" in r.trace[1][1].result
+    assert r.duplicates == [{"step": 1, "effector": "memory_write"}]
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

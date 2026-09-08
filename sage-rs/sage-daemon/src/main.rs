@@ -420,10 +420,32 @@ async fn stream_chat(
 /// A being answers on its own rhythm. This records the turn and reports how it will be
 /// delivered. Every machine gets the same behaviour from the same route, which is what
 /// "canonically" asks for.
+/// The daemon listens on 0.0.0.0 so peers can federate; a SPEAKER'S NAME is a different
+/// matter. Nothing on these routes signs anything, so the only assurance a `from` carries
+/// is "someone at this machine typed it" — which is exactly the dp console's assurance,
+/// and exactly nothing from across the LAN. GPT on SAGE#56: client-supplied identity on a
+/// network-bound route is a hard blocker. Loopback or refused; and the turn records the
+/// channel (`via`) so the being's view can say "asserted, not signed".
+fn loopback_only(peer: std::net::SocketAddr, route: &str)
+    -> Option<(StatusCode, Json<serde_json::Value>)> {
+    if peer.ip().is_loopback() {
+        return None;
+    }
+    Some((StatusCode::FORBIDDEN, Json(serde_json::json!({
+        "error": format!("{route} accepts a speaker only over loopback; {} is not this machine", peer.ip()),
+        "why": "no route here authenticates a speaker; a name asserted from the network would be written into the being's record as if it were the operator's",
+        "hint": "speak from the machine the being runs on (dp console on 127.0.0.1), or through the seat's governed channel",
+    }))))
+}
+
 async fn chat_being(
     State(state): State<Arc<AppState>>,
+    axum::extract::ConnectInfo(peer): axum::extract::ConnectInfo<std::net::SocketAddr>,
     Json(req): Json<ChatRequest>,
 ) -> (StatusCode, Json<serde_json::Value>) {
+    if let Some(refused) = loopback_only(peer, "/chat") {
+        return refused;
+    }
     // The operator's own conversation with this being is the default target. A machine
     // whose being has no such conversation yet says so plainly instead of silently
     // falling back to the raw model — a silent fallback here would mean a user believing
@@ -436,7 +458,8 @@ async fn chat_being(
             "hint": "create it with sage.gateway.conversations.create, or use /chat/raw to prompt the model directly (that is NOT the being)",
         })));
     }
-    match conversations::append(&state.being_instance, id, "dp", &req.message) {
+    match conversations::append_via(&state.being_instance, id, "dp", &req.message,
+                                    Some("daemon-loopback")) {
         Ok(turn) => {
             let woke = conversations::arouse(&state.root, &state.being_instance, "dp_turn",
                                              &format!("dp spoke in conversation '{id}'"));
@@ -501,11 +524,16 @@ async fn conversation_get(
 /// thirty minutes teaches its user that silence means failure.
 async fn conversation_say(
     State(state): State<Arc<AppState>>,
+    axum::extract::ConnectInfo(peer): axum::extract::ConnectInfo<std::net::SocketAddr>,
     axum::extract::Path(id): axum::extract::Path<String>,
     Json(req): Json<SayRequest>,
 ) -> (StatusCode, Json<serde_json::Value>) {
+    if let Some(refused) = loopback_only(peer, "/conversations/:id/say") {
+        return refused;
+    }
     let speaker = req.from.unwrap_or_else(|| "dp".to_string());
-    match conversations::append(&state.being_instance, &id, &speaker, &req.message) {
+    match conversations::append_via(&state.being_instance, &id, &speaker, &req.message,
+                                    Some("daemon-loopback")) {
         Ok(turn) => {
             let woke = conversations::arouse(
                 &state.root, &state.being_instance,
@@ -834,7 +862,9 @@ async fn main() {
 
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
 
-    let server = axum::serve(listener, app)
+    // ConnectInfo is what lets the speaker routes tell loopback from the LAN.
+    let server = axum::serve(
+        listener, app.into_make_service_with_connect_info::<std::net::SocketAddr>())
         .with_graceful_shutdown(async move {
             let ctrl_c = tokio::signal::ctrl_c();
             let mut sigterm = tokio::signal::unix::signal(
@@ -854,4 +884,36 @@ async fn main() {
 
     let _ = loop_handle.await;
     info!("sage-daemon shut down cleanly");
+}
+
+#[cfg(test)]
+mod speaker_route_tests {
+    use super::*;
+    fn peer(s: &str) -> std::net::SocketAddr { s.parse().unwrap() }
+
+    #[test]
+    fn a_speaker_is_accepted_only_from_this_machine() {
+        assert!(loopback_only(peer("127.0.0.1:5000"), "/chat").is_none());
+        assert!(loopback_only(peer("[::1]:5000"), "/chat").is_none());
+        for lan in ["192.168.1.20:5000", "10.0.0.3:1", "[fe80::1]:1", "0.0.0.0:1"] {
+            let (code, body) = loopback_only(peer(lan), "/chat").expect(lan);
+            assert_eq!(code, StatusCode::FORBIDDEN, "{lan}");
+            assert!(body.0["error"].as_str().unwrap().contains("only over loopback"), "{lan}");
+        }
+    }
+
+    #[test]
+    fn a_daemon_turn_records_its_channel() {
+        let dir = tempfile::tempdir().unwrap();
+        let inst = dir.path();
+        std::fs::create_dir_all(inst.join("conversations")).unwrap();
+        std::fs::write(inst.join("conversations/dp.meta.json"),
+            r#"{"id":"dp","title":"dp","participants":["dp","b"],"writable_by":["dp","b"]}"#).unwrap();
+        let t = conversations::append_via(inst, "dp", "dp", "hello", Some("daemon-loopback")).unwrap();
+        assert_eq!(t.via.as_deref(), Some("daemon-loopback"));
+        let line = std::fs::read_to_string(inst.join("conversations/dp.jsonl")).unwrap();
+        assert!(line.contains(r#""via":"daemon-loopback""#), "{line}");
+        let bare = conversations::append(inst, "dp", "b", "hi").unwrap();
+        assert!(bare.via.is_none());
+    }
 }

@@ -61,6 +61,11 @@ pub struct Turn {
     pub witness: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub beat: Option<String>,
+    /// PROVENANCE: which channel asserted `from`. The Python writer records the same
+    /// field ("say" for the being's gated verb, "dp-console" for the loopback page);
+    /// this daemon writes "daemon-loopback". A turn without it predates the field.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub via: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -201,6 +206,15 @@ pub fn list(instance: &Path, being: &str) -> Vec<Summary> {
 /// "you may read this and may not speak in it" is a different fact from "no such
 /// conversation", and a caller should never have to guess which it hit.
 pub fn append(instance: &Path, id: &str, speaker: &str, text: &str) -> Result<Turn, String> {
+    append_via(instance, id, speaker, text, None)
+}
+
+/// `append` with the channel that asserted the speaker recorded on the turn. The daemon's
+/// HTTP routes pass "daemon-loopback" — and only accept a speaker over loopback at all
+/// (see `loopback_only` in main.rs): the daemon binds 0.0.0.0 for federation, and a LAN
+/// peer must not be able to write `from: dp` into the operator's own conversation.
+pub fn append_via(instance: &Path, id: &str, speaker: &str, text: &str,
+                  via: Option<&str>) -> Result<Turn, String> {
     let meta = get_meta(instance, id).ok_or_else(|| format!("no such conversation: {id}"))?;
     let text = text.trim();
     if text.is_empty() {
@@ -243,6 +257,7 @@ pub fn append(instance: &Path, id: &str, speaker: &str, text: &str) -> Result<Tu
         text: text.to_string(),
         witness: None,
         beat: None,
+        via: via.map(str::to_string),
     };
     let line = serde_json::to_string(&turn).map_err(|e| e.to_string())?;
     f.seek(SeekFrom::End(0)).map_err(|e| e.to_string())?;
@@ -395,6 +410,7 @@ mod tests {
         let t = |from: &str| Turn {
             ts: String::new(), seq: 0, from: from.into(), text: String::new(),
             witness: None, beat: None,
+            via: None,
         };
         let nowhere = std::env::temp_dir().join("conv-rs-no-seen");
         let aw = |ts: &[Turn]| awaiting(&nowhere, "x", ts, "being");
@@ -452,6 +468,7 @@ mod cross_writer_tests {
         let mine = serde_json::to_string(&Turn {
             ts: iso_utc_now(), seq: 3, from: "dp".into(), text: "x".into(),
             witness: None, beat: None,
+            via: None,
         }).unwrap();
         let v: serde_json::Value = serde_json::from_str(&mine).unwrap();
         assert!(v.get("from").is_some(), "the field is `from`, not `from_`: {mine}");

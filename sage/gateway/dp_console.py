@@ -447,7 +447,9 @@ class Handler(BaseHTTPRequestHandler):
                 flash = f"Sent. It lands in the being's next beat, at the top: {p}"
             elif self.path == "/say":
                 cid = (form.get("to") or [""])[0]
-                turn = conv.append(INSTANCE, cid, speaker=DP, text=text)
+                # provenance travels with the turn: this is a loopback page, its "dp" is
+                # whoever sits at this machine — asserted, not signed (GPT, SAGE#56)
+                turn = conv.append(INSTANCE, cid, speaker=DP, text=text, via="dp-console")
                 # A world input, not a filing. dp: "beat is default idle state. world
                 # inputs require engagement." The policy lives in arousal, not here.
                 from sage.gateway import arousal

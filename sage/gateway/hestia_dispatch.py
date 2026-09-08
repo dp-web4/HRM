@@ -711,7 +711,7 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=err)
         action_id = begin.get("actionId")
         try:
-            turn = conv.append(self.memory_root, to, speaker=self.member, text=text,
+            turn = conv.append(self.memory_root, to, speaker=self.member, text=text, via="say",
                                witness=action_id, beat=self.host_session_id)
         except ValueError as e:
             self._call("hestia_record_outcome",

@@ -223,3 +223,22 @@ def test_concurrent_writers_never_interleave_or_reuse_a_sequence():
     seqs = [json.loads(l)["seq"] for l in lines]          # every line parses
     assert sorted(seqs) == list(range(1, 61)), "no duplicate, no gap"
     assert conv.integrity(inst, "dp")["unreadable"] == 0
+
+
+
+def test_turn_provenance_is_recorded_and_shown(tmp_path):
+    """GPT on SAGE#56: `from: dp` is only as good as the channel that wrote it. The store
+    records the channel (`via`); the being's view tags unsigned channels and says why."""
+    from sage.gateway import conversations as C
+    C.create(tmp_path, "dp", title="dp", participants=["dp", "b"], writable_by=["dp", "b"])
+    a = C.append(tmp_path, "dp", speaker="dp", text="do X", via="dp-console")
+    b = C.append(tmp_path, "dp", speaker="b", text="ok", via="say")
+    c = C.append(tmp_path, "dp", speaker="dp", text="legacy")            # no via
+    assert a["via"] == "dp-console" and b["via"] == "say" and "via" not in c
+    out = C.render_for_being(tmp_path, "b")
+    assert "**dp** (" in out
+    assert out.count(C.UNSIGNED_TAG) == 1                                # the console turn only
+    assert "provenance unrecorded" in out                                # the legacy one, named
+    assert "purported until the seat confirms" in out
+    line_b = [l for l in out.splitlines() if l.startswith("- **b**")][0]
+    assert "unsigned" not in line_b and "unrecorded" not in line_b       # say is the gated path

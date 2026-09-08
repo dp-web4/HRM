@@ -55,6 +55,16 @@ def test_predicates_are_per_model_not_size():
     assert not needs_think_to_act("qwen3.5:0.8b")
 
 
+def test_the_affordances_ask_for_bare_names_not_a_full_path():
+    """15 of 15 path refusals on Sprout were the absolute home path reproduced from memory and
+    truncated (…/sage/sage/journal.md six times), against 51 successful writes by bare name."""
+    for act_first in (False, True):
+        seed, second = compose(act_first, **KW)
+        text = seed[0]["content"] + seed[1]["content"] + (second or "")
+        assert "Write bare names, never a full path" in text
+        assert "journal.md" in text and "scratch/x.md" in text
+
+
 if __name__ == "__main__":
     for n, f in list(globals().items()):
         if n.startswith("test_"):

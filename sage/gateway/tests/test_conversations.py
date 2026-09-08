@@ -143,3 +143,35 @@ def test_say_is_actually_offered_in_a_beat_not_only_registered():
     params = schema["function"]["parameters"]
     assert set(params["required"]) == {"to", "text"}
     assert "saying nothing" in schema["function"]["description"].lower()
+
+
+def test_a_damaged_line_is_reported_as_damage_not_as_history():
+    """FOUND BY legion-being, 2026-09-07, from reading conversations.py during a beat —
+    before any seat had noticed, and correctly labelled by it as "suspected-from-reading,
+    not check-verified" because it cannot author a test until M1 lands.
+
+    `count()` counted every non-empty line while `recent()` skipped ones that raise
+    JSONDecodeError, so one corrupt line made "showing the last X of {total}" claim history
+    that is not there. A FALSE ABSENCE — the inverse of the silent read truncation fixed
+    the same morning: there it was shown less than it thought, here it is told there is
+    more than exists. Both make it reason about a gap that is not where it believes."""
+    inst = _inst(); _two(inst)
+    conv.append(inst, "dp", speaker="dp", text="one")
+    conv.append(inst, "dp", speaker="dp", text="two")
+    log = inst / "conversations" / "dp.jsonl"
+    with open(log, "a") as f:                       # a truncated write, as a crash leaves
+        f.write('{"ts":"2026-09-08T00:00:00Z","seq":3,"from":"dp","te\n')
+    conv.append(inst, "dp", speaker="dp", text="four")
+
+    assert conv.count(inst, "dp") == len(conv.recent(inst, "dp")) == 3, \
+        "the count and the reader must agree, or the view misdescribes the record"
+    assert conv.integrity(inst, "dp") == {"readable": 3, "unreadable": 1, "lines": 4}
+
+    block = conv.render_for_being(inst, "legion-being")
+    assert "1 line(s) in this conversation are damaged" in block, \
+        "damage is reported as damage, never hidden inside a count"
+    assert "showing the last 3 of 4" not in block, "and never impersonates withheld history"
+
+    # sequence stays monotonic ACROSS the scar: a gap reads as a scar, a duplicate would
+    # make two different turns share one identity
+    assert conv.append(inst, "dp", speaker="dp", text="five")["seq"] == 5

@@ -101,13 +101,40 @@ def listing(instance: Path) -> list[dict]:
     return out
 
 
-def count(instance: Path, conv_id: str) -> int:
+def integrity(instance: Path, conv_id: str) -> dict:
+    """Readable turns vs lines that will not parse.
+
+    FOUND BY legion-being, 2026-09-07, from reading this file's source during a beat:
+    `count()` counted every non-empty line while `recent()` skipped the ones that raise
+    JSONDecodeError, so a single corrupt line made "showing the last X of {total}" claim
+    history that is not there. It labelled the finding "suspected-from-reading, not
+    check-verified" and was exactly right. Reproduced: 3 readable turns, count 4, and the
+    beat block said "showing the last 3 of 4 turns" with nothing withheld.
+
+    That is a FALSE ABSENCE — the same class as the silent read truncation fixed earlier
+    the same day, inverted: there the being was shown less than it thought, here it is told
+    there is more than there is. Both make it reason about a gap that is not where it
+    believes. Corruption is now reported as corruption instead of impersonating history."""
     log, _ = _paths(instance, conv_id)
+    readable = unreadable = 0
     try:
-        with open(log, "rb") as f:
-            return sum(1 for line in f if line.strip())
+        for line in log.read_text(errors="replace").splitlines():
+            if not line.strip():
+                continue
+            try:
+                json.loads(line)
+                readable += 1
+            except json.JSONDecodeError:
+                unreadable += 1
     except Exception:
-        return 0
+        pass
+    return {"readable": readable, "unreadable": unreadable, "lines": readable + unreadable}
+
+
+def count(instance: Path, conv_id: str) -> int:
+    """Turns a reader can actually see. Deliberately NOT the line count: a number that
+    includes lines nobody can read is a number that misdescribes the record."""
+    return integrity(instance, conv_id)["readable"]
 
 
 def recent(instance: Path, conv_id: str, limit: int = DEFAULT_LIMIT) -> list[dict]:
@@ -160,6 +187,10 @@ def append(instance: Path, conv_id: str, *, speaker: str, text: str,
         fcntl.flock(f.fileno(), fcntl.LOCK_EX)
         try:
             f.seek(0)
+            # RAW line count on purpose, not the readable count: a damaged line still
+            # occupies a position in the record, and reusing its sequence number would make
+            # two different turns share one identity. A gap in the sequence is a scar and
+            # reads as one; a duplicate is a corruption of the account itself.
             seq = sum(1 for line in f if line.strip()) + 1
             turn = {"ts": _now(), "seq": seq, "from": speaker, "text": text}
             if witness:
@@ -198,6 +229,13 @@ def render_for_being(instance: Path, me: str, per_conv: int = 12) -> str:
                 f"{m.get('summary','')}".rstrip())
         if total > len(turns):
             head += f"\n_showing the last {len(turns)} of {total} turns; the rest is kept and readable_"
+        bad = integrity(instance, m["id"])["unreadable"]
+        if bad:
+            # Never silently. A damaged line is a hole in the record, and the being is
+            # entitled to know the record has a hole rather than to infer one from a count.
+            head += (f"\n_**{bad} line(s) in this conversation are damaged and cannot be read.** "
+                     f"They are not counted above and their content is lost; the file is intact "
+                     f"either side of them._")
         lines = [f"- **{t['from']}** ({t['ts']}): {t['text']}" for t in turns]
         pend = awaiting(instance, m["id"], me)
         if pend:

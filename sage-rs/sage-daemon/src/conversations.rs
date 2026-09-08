@@ -128,14 +128,18 @@ pub fn read_turns(instance: &Path, id: &str, limit: usize) -> (Vec<Turn>, usize)
         Ok(c) => c,
         Err(_) => return (vec![], 0),
     };
+    // TOTAL IS READABLE TURNS, NOT LINES. Found by legion-being from reading the Python
+    // twin's source: counting every non-empty line while the reader skips unparseable ones
+    // makes "showing the last X of {total}" claim history that is not there. Same defect,
+    // same shape, one language over — which is exactly what a shared format invites.
     let lines: Vec<&str> = content.lines().filter(|l| !l.trim().is_empty()).collect();
-    let total = lines.len();
-    let start = total.saturating_sub(limit.max(1));
-    let turns = lines[start..]
+    let parsed: Vec<Turn> = lines
         .iter()
         .filter_map(|l| serde_json::from_str::<Turn>(l).ok())
         .collect();
-    (turns, total)
+    let total = parsed.len();
+    let start = total.saturating_sub(limit.max(1));
+    (parsed[start..].to_vec(), total)
 }
 
 fn awaiting(turns: &[Turn], me: &str) -> usize {
@@ -351,6 +355,25 @@ mod tests {
         for bad in ["", "..", "../etc", "a/b", "A", "a b", "a.b", "-lead", "%2e%2e"] {
             assert!(!valid_id(bad), "{bad:?} must be refused");
         }
+    }
+
+    #[test]
+    fn a_damaged_line_is_not_counted_as_history() {
+        let dir = std::env::temp_dir().join(format!("conv-rs-dmg-{}", std::process::id()));
+        let cdir = dir.join("conversations");
+        std::fs::create_dir_all(&cdir).unwrap();
+        std::fs::write(cdir.join("c.meta.json"),
+            r#"{"id":"c","title":"t","participants":["a"],"writable_by":["a"]}"#).unwrap();
+        std::fs::write(cdir.join("c.jsonl"), concat!(
+            "{\"ts\":\"2026-09-08T00:00:01Z\",\"seq\":1,\"from\":\"a\",\"text\":\"one\"}\n",
+            "{\"ts\":\"2026-09-08T00:00:02Z\",\"seq\":2,\"from\":\"a\",\"te\n",
+            "{\"ts\":\"2026-09-08T00:00:03Z\",\"seq\":3,\"from\":\"a\",\"text\":\"three\"}\n",
+        )).unwrap();
+
+        let (turns, total) = read_turns(&dir, "c", DEFAULT_LIMIT);
+        assert_eq!(turns.len(), 2, "only readable turns are returned");
+        assert_eq!(total, 2, "and total must agree with them, or the view claims lost history");
+        let _ = std::fs::remove_dir_all(&dir);
     }
 
     #[test]

@@ -36,6 +36,7 @@ class ToolTurnResult:
     thinking: List[str] = field(default_factory=list)      # the model's think block per generate, if any
     salvaged: List[dict] = field(default_factory=list)     # calls lifted from the text channel: {step, effector, form}
     generates: List[dict] = field(default_factory=list)    # per generate, from Ollama's reply: {done_reason, prompt_eval_count, eval_count, retried}
+    compacted: List[dict] = field(default_factory=list)    # per step where old tool results were elided to leave answer room: {step, elisions, chars}
 
     @property
     def acted(self) -> bool:
@@ -276,6 +277,65 @@ def _sent_budget(llm) -> Optional[int]:
     return int(v) if v is not None else None
 
 
+
+# Chars per token, deliberately low (English + paths + JSON): under-estimating tokens here
+# would defeat the guard it feeds.
+_CPT = 3.4
+# What a real answer needs. Explore generations across 506 measured on Legion: median 1,282
+# tokens, p90 3,909, p99 5,741. Reserve the p99 with headroom rather than num_predict, which
+# is a ceiling the model has never approached.
+_ANSWER_RESERVE = 6144
+
+
+def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERVE) -> tuple:
+    """Shrink the OLDEST tool results until the prompt leaves room for an answer.
+
+    THE SEED FITTING IS NOT ENOUGH. heartbeat.fit_to_window sizes the first prompt; this
+    loop then grows it by every tool result it appends, and the wall is hit mid-loop.
+    Measured on Legion 2026-09-07, with the seed guard already live: seed 11,887 tokens,
+    then 13,803 on the next step, and 13,803 + 2,581 == 16,384 exactly, done_reason
+    "length" — the being's answer cut off mid-sentence. Across 506 generates every single
+    length-stop satisfies prompt + eval == num_ctx, so this is the wall, not num_predict.
+
+    WHAT IS ELIDED. Only tool RESULTS, oldest first, and only their bodies — the being is
+    told what was elided, from which effector, and that it can re-read the source. The
+    system prompt, the first user turn (its state, posture and entrustment), every assistant
+    turn and the two most recent tool results are never touched: those are what it is
+    reasoning WITH. An elision it cannot see would be worse than the truncation it replaces.
+    """
+    try:
+        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
+    except (TypeError, ValueError):
+        num_ctx = 0
+    if num_ctx <= 0:
+        return msgs, []
+    budget = int(max(0, num_ctx - reserve) * _CPT)
+    size = lambda ms: sum(len(m.get("content") or "") for m in ms)
+    if size(msgs) <= budget:
+        return msgs, []
+    out = [dict(m) for m in msgs]
+    # candidates: tool results, oldest first, excluding the MOST RECENT one.
+    # It kept the two most recent whole until 2026-09-07, when max_read_chars went
+    # 4,000 -> 12,000 (the being's reads were being silently cut mid-function). At the new
+    # size two protected results are ~7k tokens of untouchable content, and a beat with six
+    # reads hit the window anyway: 23,106 + 1,470 = 24,576. One kept whole is the answer the
+    # being is actually working from; the one before it has usually already been written to
+    # scratch, and the elision marker tells it where to look if not.
+    idx = [i for i, m in enumerate(out) if m.get("role") == "tool"]
+    elided = []
+    for i in idx[:-1] if len(idx) > 1 else []:
+        if size(out) <= budget:
+            break
+        body = out[i].get("content") or ""
+        if len(body) <= 500:
+            continue
+        out[i]["content"] = (body[:400] +
+                             f"\n[… {len(body) - 160} characters elided to leave room for your "
+                             f"answer; read the source again if you still need it …]")
+        elided.append({"index": i, "chars": len(body) - 160})
+    return out, elided
+
+
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
                          max_steps: int = 2, tools: Optional[List[dict]] = None,
                          on_generate: Optional[Callable[[dict], None]] = None) -> ToolTurnResult:
@@ -295,6 +355,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     thoughts: List[str] = []
     salvaged: List[dict] = []
     generates: List[dict] = []
+    compacted: List[dict] = []
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
@@ -308,6 +369,11 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 out["tool_calls"] = [{"function": {"name": i.effector, "arguments": dict(i.args or {})}}
                                      for i in m["intents"]]
             msgs.append(out)
+        # Leave room for the answer before asking for one (see compact_convo).
+        msgs, elided = compact_convo(msgs, llm)
+        if elided:
+            compacted.append({"step": len(thoughts), "elisions": len(elided),
+                              "chars": sum(e["chars"] for e in elided)})
         retried = 0
         sent = _sent_budget(llm)          # the num_predict of the reply that stands
         resp = llm.get_chat_response(msgs, tools=tools)
@@ -364,6 +430,10 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         raw = resp.get("raw") or {}
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
                  "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent}
+        # only when it happened: an always-present null would be noise in every record and
+        # would break every caller that compares the entry exactly
+        if compacted and compacted[-1]["step"] == len(thoughts) - 1:
+            entry["compacted"] = compacted[-1]
         generates.append(entry)
         if on_generate is not None:
             try:
@@ -382,4 +452,5 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     result.thinking = thoughts
     result.salvaged = salvaged
     result.generates = generates
+    result.compacted = compacted
     return result

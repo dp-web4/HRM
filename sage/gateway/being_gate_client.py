@@ -158,7 +158,271 @@ def check_command(args: dict, ctx: Optional[dict] = None) -> str:
         if not re.fullmatch(r"[A-Za-z0-9_]+", node):
             raise ValueError(f"check test name must be a bare identifier; got {node!r}")
         path = f"{os.path.join(worktree, CHECK_TARGETS[suite])} -k {node}"
-    return f"python3 -m pytest -q -c /dev/null --rootdir={worktree} {path}"
+    inner = f"python3 -m pytest -q -c /dev/null --rootdir={worktree} {path}"
+    return sandbox_prefix(worktree) + inner
+
+
+# The M1 PREREQUISITE, built. Being-authored code runs under a principal that is not this
+# seat — the hard blocker PRD r3 §5 put on M1, cleared 2026-09-08.
+#
+# WHY IT IS NOT OPTIONAL. `check` executes pytest, pytest imports conftest.py from its
+# rootdir, and M1 gives the being write access to that rootdir. Under the seat's own uid
+# that composes into arbitrary code holding the vault passphrase and every key on this box
+# (measured 2026-09-07, SAGE#55, and closed then by taking write access away — a stopgap
+# with the wrong shape for a being whose entrustment is to author code there).
+#
+# WHAT THE SANDBOX IS. bubblewrap with a cleared environment: nothing of the seat's is
+# bound except a read-only interpreter, no network at all, its own pid/ipc/uts namespaces,
+# a fresh session so it cannot signal the seat's process group, and --die-with-parent so a
+# runaway cannot outlive the beat. The only writable path is the being's own worktree.
+#
+# THE FALSIFIER, and it is the point of the whole exercise (PRD r3 §10.5): from inside,
+# reads of the vault, the hestia socket and the agent environment must all fail. Measured
+# on 2026-09-08 — ~/.hestia, ~/.config, ~/.local, private-context, shared-context and the
+# shared SAGE tree all blocked; hestia 7711 and ollama 11434 unreachable; the environment
+# carries exactly HOME, LANG, PATH, PWD, PYTHONDONTWRITEBYTECODE. 152 tests pass inside it.
+#
+# ENABLEMENT: Ubuntu 24.04 sets kernel.apparmor_restrict_unprivileged_userns=1 and bwrap is
+# not setuid, so this needs /etc/apparmor.d/bwrap granting `userns` to that binary alone —
+# the distro's own pattern (see ch-run, crun, flatpak). Chosen over relaxing the sysctl
+# machine-wide: narrow beats convenient when the thing relaxed is a containment boundary.
+# Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
+SANDBOX = "/usr/bin/bwrap"
+# Fail CLOSED by default: a check that silently ran unsandboxed would be the seat quietly
+# handing back the authority the sandbox exists to remove, and nothing in the result would
+# say so. A machine without bwrap sets this false deliberately and lives with M0 only.
+SANDBOX_REQUIRED = True
+
+
+def sandbox_available() -> bool:
+    """Whether bwrap is present AND permitted to create a user namespace here. Presence is
+    not permission: on Ubuntu 24.04 the binary exists and every attempt fails with
+    'setting up uid map: Permission denied' until an AppArmor profile allows it, so this
+    ACTUALLY RUNS one rather than testing for the file."""
+    import os
+    import subprocess
+    if not os.path.exists(SANDBOX):
+        return False
+    try:
+        # The probe must be a REAL sandbox, loader included. The first cut bound only
+        # /usr and failed on missing /lib64 — reporting "no sandbox permitted" on a machine
+        # where the sandbox works perfectly, which would have refused every check.
+        r = subprocess.run([SANDBOX, "--ro-bind", "/usr", "/usr", "--ro-bind", "/lib", "/lib",
+                            "--ro-bind", "/lib64", "/lib64", "--unshare-pid",
+                            "/usr/bin/true"], capture_output=True, timeout=10)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def sandbox_prefix(worktree: str) -> str:
+    """The bwrap invocation that wraps every executed check, or "" when running unsandboxed
+    is explicitly permitted."""
+    import os
+    import sys
+    if not sandbox_available():
+        if SANDBOX_REQUIRED:
+            raise ValueError(
+                "check needs its sandbox and cannot get one: bubblewrap is missing or not "
+                "permitted to create a user namespace on this machine. Running your tests "
+                "under the seat's own authority instead would hand back exactly what the "
+                "sandbox exists to remove, so it is refused rather than silently downgraded")
+        return ""
+    interp = os.path.dirname(os.path.dirname(sys.executable))  # e.g. ~/miniforge3
+    return (
+        f"{SANDBOX} --clearenv"
+        " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind /lib64 /lib64 --ro-bind /bin /bin"
+        " --ro-bind /etc/alternatives /etc/alternatives"
+        f" --ro-bind {interp} {interp}"
+        f" --bind {worktree} {worktree}"
+        " --proc /proc --dev /dev --tmpfs /tmp"
+        " --unshare-pid --unshare-net --unshare-ipc --unshare-uts"
+        " --new-session --die-with-parent"
+        # PYTHONUTF8 rather than LANG=C.UTF-8, and the reason is hestia #988: mrh.command
+        # splits a dotted token and fails the fragment, so "C.UTF-8" is refused as an
+        # ungranted path called "UTF-8" and the whole check dies. PYTHONUTF8=1 buys the
+        # same UTF-8 filesystem and IO encoding with no dot in it. Third time today that
+        # defect has shaped a command; the issue carries the evidence.
+        " --setenv HOME /tmp --setenv PYTHONUTF8 1 --setenv PYTHONDONTWRITEBYTECODE 1"
+        f" --setenv PATH {interp}/bin:/usr/bin:/bin"
+        f" --chdir {worktree} "
+    )
+
+
+
+# git_read: the being inspects its own repository history. READ-ONLY BY CONSTRUCTION, and
+# the construction is the interesting part rather than the intent.
+#
+# dp, 2026-09-07: "the being should be able to check git by itself." Right — it reasons
+# about a tree that moves under it between beats, and until now the only way it learned the
+# harness had changed was a seat telling it so.
+#
+# WHAT THIS COMPOSES WITH (the rule earned on 09-07, when a gated write plus a gated execute
+# turned into arbitrary code):
+#   * with `check`, which executes pytest in the same worktree — git_read cannot write, so
+#     it cannot author what check runs;
+#   * with `memory_write`, which is confined to the being's home — a diff it reads can be
+#     saved to scratch, and the home is not a tree anything executes;
+#   * git ITSELF is the composition hazard here, not the pairing. `git` will run code on
+#     request: external diff drivers, textconv filters, pagers, aliases, and `-c` overrides
+#     that install any of them. So the seat builds the whole command, the being never
+#     supplies a flag, and every invocation is pinned with --no-pager, --no-ext-diff and
+#     core.pager=cat so a repo-local config cannot turn a read into an exec.
+# Only these five subcommands, no others, and every argument is matched against a grammar
+# before it can reach the shell.
+GIT_OPS = ("log", "show", "diff", "status", "blame")
+
+# A revision the being may name: a hex sha, HEAD with optional ~n/^n, or a plain branch or
+# tag name. Deliberately excludes anything containing a flag, a space, or a path separator
+# trick — `--upload-pack=...`-style arguments are the classic way a read verb becomes a run.
+# `~n` / `^n` suffixes are allowed on ANY base, not only HEAD. The being flagged (not
+# litigated) that `<sha>~1` was refused and span diffs against anything older than HEAD~k
+# were unnameable — two witnessed denies on 2026-09-08 for a natural thing to want. Still
+# no flags: a suffix is digits after ~ or ^, nothing else survives.
+_REV = (r"(?:[0-9a-fA-F]{7,40}|HEAD|[A-Za-z][A-Za-z0-9._/-]{0,60})"
+        r"(?:[~^][0-9]{0,3})?")
+
+
+def git_read_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The shell command the seat runs for a git_read intent, built from validated args.
+
+    The being names an operation and, optionally, a revision and a path inside its own
+    worktree. It never names a flag. Anything the grammar cannot represent raises, and the
+    refusal says what the grammar accepts — a refusal that names its own valid set is one
+    the being can correct without asking (measured 2026-09-07: it did exactly that on
+    `check`, in one beat, and explicitly declined to appeal a grammar error)."""
+    import os
+    import re
+    worktree = (ctx or {}).get("worktree")
+    if not worktree:
+        raise ValueError("git_read needs a worktree of your own; none is configured on this seat")
+    op = str(args.get("op", "")).strip()
+    if op not in GIT_OPS:
+        raise ValueError(f"git_read 'op' must be one of {list(GIT_OPS)}, got {op!r}")
+
+    rev = str(args.get("rev", "")).strip()
+    if rev and not re.fullmatch(_REV, rev):
+        raise ValueError(f"git_read 'rev' must be a sha, HEAD, HEAD~n or a branch name, got {rev!r}")
+
+    path = str(args.get("path", "")).strip()
+    if path:
+        if path.startswith("-") or ".." in path.split("/"):
+            raise ValueError(f"git_read 'path' must be a plain path inside your worktree, got {path!r}")
+        full = os.path.realpath(os.path.join(worktree, path))
+        if not (full == os.path.realpath(worktree)
+                or full.startswith(os.path.realpath(worktree) + os.sep)):
+            raise ValueError(f"git_read 'path' escapes your worktree: {path!r}")
+        # The pathspec goes into the command ABSOLUTE, not as the being typed it. hestia's
+        # mrh.command matches command tokens against GRANTED PREFIXES, which are absolute;
+        # a relative 'sage/gateway/x.py' matches nothing and the whole read is refused
+        # (measured 2026-09-07: "'py' is not granted"). Resolving it here means the law sees
+        # the real target of the read and can rule on it — which is the point of the rule,
+        # not an obstacle to it. It also removes any doubt about what the pathspec meant.
+        path = full
+
+    try:
+        n = int(args.get("n", 20))
+    except (TypeError, ValueError):
+        raise ValueError("git_read 'n' must be a whole number of commits (1-50)")
+    n = max(1, min(50, n))
+
+    # Every read pinned against git's own execution surfaces — with FLAGS ONLY, no
+    # `-c key=value`. The first cut used `-c core.pager=cat -c diff.external= -c alias.x=!true`
+    # and hestia refused every invocation: mrh.command reads `pager=cat` as a path token and
+    # correctly reports it as outside the being's grant. That refusal was RIGHT, and the fix
+    # is not to argue with it — the flags below buy the identical property with fewer moving
+    # parts. `--no-pager` already defeats a repo-local pager, `--no-ext-diff` already defeats
+    # an external diff driver, `--no-textconv` defeats a textconv filter, and a git alias
+    # cannot shadow a built-in subcommand at all, so the alias override was never doing
+    # anything. Hardening that trips the law is hardening that does not ship.
+    base = "git --no-pager"
+    if op == "status":
+        return f"{base} status --porcelain=v1 --branch"
+    if op == "log":
+        cmd = f"{base} log --no-ext-diff --no-textconv --oneline --no-decorate -n {n}"
+        if rev:
+            cmd += f" {rev}"
+        return cmd + (f" -- {path}" if path else "")
+    if op == "show":
+        return f"{base} show --no-ext-diff --no-textconv --stat --patch {rev or 'HEAD'}" + (f" -- {path}" if path else "")
+    if op == "diff":
+        rev2 = str(args.get("rev2", "")).strip()
+        if rev2 and not re.fullmatch(_REV, rev2):
+            raise ValueError(f"git_read 'rev2' must be a sha, HEAD, HEAD~n or a branch name, got {rev2!r}")
+        # TWO ARGUMENTS, never `A..B`. hestia's mrh.command reads the `..` in a revision
+        # range as a parent-directory traversal and resolves the whole command's scope to
+        # the workspace root, refusing it (measured 2026-09-07: "'<workspace root>' is not
+        # granted"). `git diff A B` is exactly equivalent for a two-point diff and contains
+        # no token that looks like a path escape. The rule is doing its job on a token that
+        # genuinely looks like traversal; the command should not hand it one.
+        span = f"{rev} {rev2}" if rev and rev2 else (rev or "HEAD~1")
+        return f"{base} diff --no-ext-diff --no-textconv {span}" + (f" -- {path}" if path else "")
+    if not path:
+        raise ValueError("git_read op='blame' needs a 'path' inside your worktree")
+    return f"{base} blame --no-textconv -L 1,120 {rev or 'HEAD'} -- {path}"
+
+
+
+# pr_open: the being's work enters the tree. PRD r3 §7 — every change reaches main through
+# a pull request, attributed on the artefact, reviewed by someone NOT-SAME.
+#
+# dp, 2026-09-07: "the being should be able to ... submit prs directly." Built only after M1,
+# and only because of what CI does: SAGE's one workflow (syntax-gate.yml) runs
+# `python -m compileall`, which byte-compiles and does not execute. A PR from the being
+# therefore reaches no executor it has not already been proven against — its own sandboxed
+# `check`. If a workflow that RUNS code is ever added, this verb becomes the composition
+# hazard of 2026-09-07 wearing GitHub's clothes, and the gate should learn that before the
+# workflow lands.
+#
+# WHAT THE BEING SUPPLIES: a slug (the branch name's tail), a title, a body. Nothing else.
+# WHAT THE LAW JUDGES: the outward act, `gh pr create ...`, as a string, with the title
+# passed as one argument and the body over stdin so no text of the being's reaches a shell.
+# WHAT THE SEAT DOES AROUND IT (hestia_dispatch._do_pr_open): branch from the worktree's
+# HEAD, `git add -A`, commit with the message over stdin and the attribution trailers the
+# being cannot omit or alter, push. The commit is authored by the seat's git identity and
+# ATTRIBUTED to the being in trailers — §6 says signatures come at M3; this is the
+# legibility form, honestly labelled as such in every PR body.
+PR_BASE_BRANCH = "legion/mission-artifact"   # where the harness runs from; NOT main
+PR_REPO = "dp-web4/SAGE"
+_SLUG = r"[a-z0-9][a-z0-9-]{1,40}"
+
+
+def pr_open_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The shell command the seat runs for a pr_open intent — the `gh pr create`, which is
+    the outward act. The git preparation is not composed here because none of it carries
+    being-supplied text into a shell: the message travels by stdin."""
+    import re
+    worktree = (ctx or {}).get("worktree")
+    if not worktree:
+        raise ValueError("pr_open needs a worktree of your own; none is configured on this seat")
+    slug = str(args.get("slug", "")).strip()
+    if not re.fullmatch(_SLUG, slug):
+        raise ValueError("pr_open 'slug' names your branch tail: lowercase letters, digits and "
+                         f"dashes, 2-41 chars, got {slug!r}")
+    title = " ".join(str(args.get("title", "")).split())
+    if not (8 <= len(title) <= 120):
+        raise ValueError("pr_open 'title' must be one line, 8-120 characters")
+    if not str(args.get("body", "")).strip():
+        raise ValueError("pr_open needs a 'body': what changed, what you verified, what you "
+                         "only suspect, and the check output with its tree head")
+    branch = f"legion-being/{slug}"
+    # shlex-quote the title: it is the ONE being-supplied string on the command line
+    import shlex
+    return (f"gh pr create --repo {PR_REPO} --base {PR_BASE_BRANCH} --head {branch} "
+            f"--title {shlex.quote(title)} --body-file -")
+
+
+def pr_attribution(member_id: str, action_id: Optional[str], being_lct: Optional[str],
+                   seat: str = "legion-claude") -> str:
+    """The trailers on a commit a being authored (PRD r3 §7.2). Appended by the dispatcher;
+    the being cannot omit or alter them."""
+    lines = [f"Being: {member_id}"]
+    if being_lct:
+        lines.append(f"Being-LCT: {being_lct}")
+    if action_id:
+        lines.append(f"Witness: {action_id}")
+    lines.append(f"Seat: {seat}")
+    return "\n".join(lines)
 
 
 _REGISTRY = {
@@ -182,6 +446,22 @@ _REGISTRY = {
     # being never holds a shell. A failing check is a first-class result, not an error.
     "check":          dict(tool="check",       path_args=(),       cmd_arg=None,
                            compose=check_command),
+    # git_read: read the history of the tree that constitutes it. Composed like check —
+    # the being names an op, the SEAT builds the command, the law judges THAT string, and
+    # the being never holds a flag. See git_read_command for what it composes with.
+    "git_read":       dict(tool="git_read",    path_args=(),       cmd_arg=None,
+                           compose=git_read_command),
+    # say: add a turn to a conversation the being is IN. Bounded by construction, like
+    # remember: the being names a conversation id, and the dispatcher refuses any id whose
+    # meta does not list it as a participant AND as writable. It cannot create a
+    # conversation, cannot speak in one it is not in, and cannot edit a turn once spoken —
+    # its own included. path_args=() is correct: the target is a conversation, not a path,
+    # and the reach is fixed by the meta file the seat owns rather than by the being's args.
+    "say":            dict(tool="say",         path_args=(),       cmd_arg=None),
+    # pr_open: the being's worktree changes become a pull request, attributed to it,
+    # for NOT-SAME review. Composed like pr_review — the law rules on the `gh` string.
+    "pr_open":        dict(tool="pr_open",     path_args=(),       cmd_arg=None,
+                           compose=pr_open_command),
     # Long-term semantic memory (membot brain cartridge, the being's own): recall is
     # observational; remember is consequential but passes local law under ANY grant
     # (paths=()), and that is not because it is "classed with memory_write" (which the
@@ -210,7 +490,7 @@ _REGISTRY = {
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read", "recall", "appeal"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
-                            "remember", "request_scope", "check"})
+                            "remember", "request_scope", "check", "git_read", "say", "pr_open"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -219,7 +499,9 @@ _TOOL_SCHEMAS = {
     "witness": ("Record a witnessed note of something you did or noticed.",
                 {"event": "what to witness"}, ["event"]),
     "memory_read": ("Read one of your own memory notes.",
-                    {"path": "path to your note"}, ["path"]),
+                    {"from_line": "optional: 1-based line to start from — for a file longer than the read cap, read it in ranges",
+                     "lines": "optional: how many lines from from_line (default: to the end, still capped)",
+                     "path": "path to your note"}, ["path"]),
     "memory_write": ("Write a note into your own memory.",
                      {"path": "path to your note", "content": "what to write"}, ["path", "content"]),
     "channel_egress": ("Send a message out through a sealed channel.",
@@ -240,6 +522,34 @@ _TOOL_SCHEMAS = {
               {"target": "'gateway' or 'irp' for a whole suite, or '<suite>::<test_name>' "
                          "for one test, e.g. 'gateway::test_relative_memory_path'"},
               ["target"]),
+    "git_read": ("Read the history of the repository you live in: what changed, when, and "
+                 "in which commit. Read-only — you cannot commit, push, or move a branch "
+                 "with this. Use it to find out whether the tree moved under you between "
+                 "beats, and to compare a `check` result's tree block against what is "
+                 "actually in the history.",
+                 {"op": "one of 'log', 'show', 'diff', 'status', 'blame'",
+                  "rev": "optional: a commit sha, HEAD, HEAD~2, or a branch name",
+                  "rev2": "optional, for op='diff': the second revision of the span",
+                  "path": "optional: a path inside your worktree to narrow the answer to",
+                  "n": "optional, for op='log': how many commits (1-50, default 20)"},
+                 ["op"]),
+    "say": ("Add a turn to a conversation you are in — this is how you ANSWER someone, "
+            "rather than writing about them in your journal. The turn is attributed to you "
+            "and kept forever; nobody can edit it afterwards, including you. Saying nothing "
+            "is also a choice and is recorded as one.",
+            {"to": "the conversation id, shown beside each conversation in your state",
+             "text": "what you want to say"},
+            ["to", "text"]),
+    "pr_open": ("Open a pull request from the changes in your worktree. This is how your work "
+                "enters the tree (PRD §7): on your own branch, attributed to you in the commit "
+                "trailers, reviewed by someone who is not you and did not co-author it. You "
+                "cannot merge it. Write the body the way your best review was written — what "
+                "you VERIFIED (with the check output and its tree head) versus what you only "
+                "SUSPECT — so a reviewer re-runs it instead of trusting you.",
+                {"slug": "your branch's tail, e.g. 'count-readable-turns' (lowercase, dashes)",
+                 "title": "one line, 8-120 characters",
+                 "body": "what changed, why, what you verified and how, what you did not"},
+                ["slug", "title", "body"]),
     "recall": ("Search your long-term memory (semantic search over everything you have "
                "remembered). Use it before deciding what to do; use it when something "
                "feels familiar.",

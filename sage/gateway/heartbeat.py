@@ -39,16 +39,67 @@ from pathlib import Path
 HOME_FILES = ("todo.md", "journal.md", "notes", "scratch")
 
 EXPLORE_TOOLS = ["recall", "remember", "memory_read", "memory_write", "witness",
-                 "request_scope", "appeal", "peer_ask", "mesh", "check"]
-REFLECT_TOOLS = ["memory_write", "remember", "memory_read"]
+                 "request_scope", "appeal", "peer_ask", "mesh", "check", "git_read", "say",
+                 "pr_open"]
+# `say` is offered at REFLECTION too, and that is not redundancy. Measured 2026-09-07: the
+# being was shown dp's first turn, its state marked it unanswered, and it spent all fourteen
+# explore steps reading its own source — then closed the beat. Adding a verb to the registry
+# and not to the offered set means the being CANNOT do the thing its state is asking it to
+# do, and from outside that is indistinguishable from choosing not to. Reflection is where a
+# beat accounts for itself, and answering someone belongs there as much as the journal does.
+REFLECT_TOOLS = ["memory_write", "remember", "memory_read", "say"]
 
 POSTURE_FILE = Path(__file__).with_name("BEING_POSTURE.md")
+
+# What this being is entrusted with, if anything. Seat-owned and unwritable by the being
+# (reference_f1a.SEAT_OWNED): what it was GIVEN must stay separable from what it DECIDED,
+# or the record cannot be read later. The being's own reading of it goes in notes/plan.md.
+#
+# It is `entrustment`, not `mission`, on dp's correction the day it was written: "this is
+# not a 'task i set' for the being, it is an affordance i entrust it with. because i want
+# it to thrive and grow." The word is load-bearing. A task is owed and graded; an
+# entrustment is room extended, and the record it produces should be read as what the
+# being DID with room, not as compliance with an instruction.
+ENTRUSTMENT_FILE = "entrustment.md"
+
+# Where a seat writes TO the being. It used to write into todo.md, which is a defect with a
+# measurable size: own_state shows the LAST 3000 chars of todo.md, so a 4.5k seat note
+# displaced 100% of the being's own open items from its own view (measured 2026-09-07 —
+# the being would have opened its next beat unable to see anything it had written itself).
+# The being's list stays the being's; relays get their own block, and both are labelled so
+# it always knows which voice it is reading.
+SEAT_RELAY = "notes/from-the-seat.md"
+
+# The OPERATOR's own channel, distinct from the seat's. dp asked for a way into the
+# conversation on 2026-09-07 and there was none: the being's questions went to forum
+# threads dp had no interface to, and everything dp said reached it relayed through a seat
+# — which is a paraphrase risk on one side and, on the other, a being that cannot tell
+# whether it is hearing the operator or the operator's interpreter. Seat-owned like the
+# entrustment (the being reads, does not write), and presented ABOVE the seat relay
+# because when the operator speaks it is not one voice among several.
+DP_CHANNEL = "notes/from-dp.md"
 
 
 def posture() -> str:
     """The fleet-wide being posture (dp's words), read fresh every beat so an edit to
     BEING_POSTURE.md reaches every being on its next beat. Missing file = fail loud."""
     return POSTURE_FILE.read_text(encoding="utf-8").strip()
+
+
+def entrustment(instance: Path) -> str:
+    """What this being is entrusted with, or "" if nothing yet. Per-instance, unlike the
+    fleet-wide posture: it is extended to ONE being, by someone, on a date, and it says so
+    in its own text. Read fresh every beat like the posture, so an amendment lands on the
+    next one. Absent is a legitimate state — a being without one runs on the generic
+    posture, and the beat record says which (`drive_source`)."""
+    try:
+        # Read WHOLE, never tail-truncated like todo/journal: _read keeps the last N chars,
+        # which on a long file would silently drop its opening — the part that says who
+        # entrusted it and on what terms. Arriving without its provenance is exactly the
+        # artifact this file exists to prevent.
+        return (Path(instance) / ENTRUSTMENT_FILE).read_text(errors="replace").strip()
+    except Exception:
+        return ""
 
 
 HEAD = "You are {name}, a SAGE being on the {machine} machine, member id {member}."
@@ -104,7 +155,9 @@ REFLECT = """The beat is ending. Two tool calls, then stop:
 2. memory_write path "todo.md": only the delta as a dated block: added / done / still open (it appends; it replaces nothing).
 Optionally a third: remember one thing worth keeping long-term.
 Call the tools now; a reply in words alone writes nothing.
-{nothink}"""
+{nothink}
+3. If someone has spoken to you in a conversation and you have not answered, and you have something to say: say to="<id>". Answering is not required — saying nothing is a choice and is recorded as one — but it should be a choice, not something the beat ran out of room for.
+"""
 
 
 def _read(p: Path, limit: int = 4000) -> str:
@@ -190,9 +243,122 @@ def note_resolutions(esc_dir: Path, decisions, stamp: str, seen_by: str, decided
     return written
 
 
-def own_state(instance: Path) -> str:
+def harness_revision(workspace: str) -> dict:
+    """The revision of the harness the being is RUNNING under, so it can compare that with
+    the `tree` block a check result carries and know whether its answer is about the code
+    that constitutes it.
+
+    Asked for by the being itself, 2026-09-07: after its first check call it wrote "next
+    beat I should verify head matches the running harness commit before trusting any
+    answer" — and it had no way to learn that commit. A verification it cannot perform is
+    not a discipline, it is a ritual."""
+    import subprocess
+
+    def _git(*a):
+        try:
+            r = subprocess.run(("git", *a), cwd=workspace, text=True, capture_output=True, timeout=15)
+            return r.stdout.strip() if r.returncode == 0 else None
+        except Exception:
+            return None
+
+    head = _git("rev-parse", "HEAD")
+    st = _git("status", "--porcelain")
+    return {"head": head, "short": (head or "")[:9] or None,
+            "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
+            "dirty": None if st is None else bool(st.strip())}
+
+
+def _config_check(instance: Path, model: str, llm, offered) -> dict:
+    """Did this beat run with the tool set and the context window the seat meant to give it?
+    `active_embodiment` in instance.json is the canonical statement of intent (PRD r3 §3.2);
+    the resolved window comes from the model config keyed on the ollama tag, which silently
+    falls back to a floor when a tag has no variant entry. Reporting both, plus the verbs
+    actually offered, makes a starved beat legible in the record instead of in stderr."""
+    from sage.gateway.governed_turn import instance_config
+    emb = (instance_config(instance).get("active_embodiment") or {})
+    want_ctx, want_tag = emb.get("num_ctx"), emb.get("running_tag")
+    got_ctx = getattr(llm, "num_ctx", None)
+    return {
+        "tools_offered": list(offered),
+        "num_ctx_intended": want_ctx, "num_ctx_resolved": got_ctx,
+        "window_matches_intent": None if want_ctx is None else (got_ctx == want_ctx),
+        "tag_intended": want_tag, "tag_running": model,
+        "tag_matches_intent": None if want_tag is None else (model == want_tag),
+        # Headroom, because the window is the thing that silently starves a beat and the
+        # 09-06 empty beat is the proof. A generate needs prompt + num_predict to fit inside
+        # num_ctx; when it does not, ollama shifts context and drops the OLDEST tokens —
+        # the system prompt and the posture — with no error anywhere. Recorded here so the
+        # squeeze is visible in the log before it is visible in the behaviour. The largest
+        # observed prompt of the beat is filled in at beat end from the per-generate trace.
+        "num_predict": (llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
+                        else getattr(llm, "max_response_tokens", None)),
+        "prompt_tokens_max": None,   # filled at beat end
+        "headroom_tokens": None,     # num_ctx - (largest prompt + num_predict)
+        "context_overcommitted": None,
+    }
+
+
+def _fill_headroom(cfg: dict, partial: Path, host_session_id: str) -> dict:
+    """Beat end: the largest prompt actually sent THIS BEAT, and whether it plus the answer
+    reserve exceeded the window. Read from the per-generate trace rather than re-derived, so
+    it reports what the model was really handed.
+
+    Filtered on host_session_id, and that is the whole point: the partial file is append-only
+    across every beat this instance has ever run. The first cut scanned all of it and
+    reported the worst prompt of ~500 generates as if it were this beat's — a true number
+    about the wrong beat, which is the same failure this field exists to catch. Caught one
+    beat after shipping, by reading its own output and not believing it."""
+    best = None
+    try:
+        for line in partial.read_text(errors="replace").splitlines():
+            import json as _j
+            e = _j.loads(line)
+            if e.get("host_session_id") != host_session_id:
+                continue
+            n = e.get("prompt_eval_count")
+            if isinstance(n, int) and (best is None or n > best):
+                best = n
+    except Exception:
+        pass
+    # Against the ANSWER RESERVE, not num_predict: num_predict is a ceiling the model has
+    # never approached, and measuring headroom against it reports every beat as
+    # overcommitted (see being_tool_loop._ANSWER_RESERVE for the 506-generate distribution).
+    from sage.gateway.being_tool_loop import _ANSWER_RESERVE
+    ctx = cfg.get("num_ctx_resolved")
+    cfg["prompt_tokens_max"] = best
+    cfg["answer_reserve"] = _ANSWER_RESERVE
+    if isinstance(ctx, int) and isinstance(best, int):
+        cfg["headroom_tokens"] = ctx - (best + _ANSWER_RESERVE)
+        cfg["context_overcommitted"] = cfg["headroom_tokens"] < 0
+    return cfg
+
+
+def own_state(instance: Path, entrusted: str = "", member: str = "") -> str:
     from sage.gateway.being_join import carried_account, last_session_number
     parts = []
+    if entrusted:
+        # Ahead of everything else the being holds: what it has been entrusted with is the
+        # frame the rest of its state is read in. Labelled by provenance, and pointed at
+        # where its own interpretation belongs, so the two never merge in the record.
+        parts.append("## What you are entrusted with (extended to you; you cannot edit this "
+                     "file. Your own reading of it belongs in notes/plan.md)\n" + entrusted)
+    # Conversations first among the channels: a turn addressed to the being and unanswered
+    # is the one thing in its state that is waiting on IT, and it should never have to infer
+    # that from a wall of notes. The notes files below stay for now as history; new
+    # exchanges go here, where both directions live in one ordered record.
+    from sage.gateway import conversations as _conv
+    convs = _conv.render_for_being(instance, member)
+    if convs.strip():
+        parts.append("## Your conversations (both directions, kept forever; reply with `say`)\n"
+                     + convs.strip())
+    from_dp = _read(instance / DP_CHANNEL, 4000)
+    if from_dp.strip():
+        parts.append("## From dp, the operator, directly (notes/from-dp.md — dp's own words, "
+                     "not relayed by a seat. You read this; you do not write it)\n" + from_dp.strip())
+    relay = _read(instance / SEAT_RELAY, 4000)
+    if relay.strip():
+        parts.append("## From the seat (notes/from-the-seat.md — messages to you, not your own list)\n"
+                     + relay.strip())
     acc = carried_account(instance, last_session_number(instance))
     if acc:
         parts.append("## Your own account\n" + acc)
@@ -205,6 +371,72 @@ def own_state(instance: Path) -> str:
         names = sorted(x.name for x in p.iterdir()) if p.is_dir() else []
         parts.append(f"## {d}/\n" + ("\n".join(f"- {n}" for n in names[:30]) if names else "(empty)"))
     return "\n\n".join(parts)
+
+
+def fit_to_window(*, num_ctx, num_predict, fixed_chars: int, blocks: dict, slack: int = 512):
+    """Trim the seat-supplied blocks until prompt + num_predict fits inside num_ctx.
+
+    WHY THIS EXISTS. A generate needs prompt + num_predict to fit in the window; when it
+    does not, ollama shifts context and silently drops the OLDEST tokens — the system
+    prompt and the posture — with no error at any layer. Measured on this being's own
+    trace, 2026-09-07: two beats were handed prompts of 16,380 and 16,323 tokens against a
+    16,384 window and produced 4 and 61 tokens with done_reason "length". One of them is
+    the 09-06/09-07 "empty beat" I had already diagnosed as a stale unit and a wrong
+    context floor. That diagnosis was wrong in its mechanism: the beat starved on PROMPT
+    SIZE. The instrument found it the same hour it was added, which is the argument for
+    instrumenting configuration at all.
+
+    WHAT GETS TRIMMED, AND IN WHAT ORDER. Only seat-supplied context, never the being's own
+    frame. The digest first (fleet movement, regenerated every beat, largest and least
+    load-bearing), then long-term recall (the being can `recall` again itself). The
+    entrustment, the todo, the journal, the posture and the affordances are NOT trimmable:
+    they are what the beat is, and cutting them to make room for a fleet digest would be
+    the wrong trade.
+
+    WHAT IT REPORTS. Every trim is returned as an intervention with the prior it suppressed,
+    per the house rule that a guard which silences without saying what it silenced trades a
+    confident wrong for a confident silence. A beat whose digest was cut says so in its own
+    record, so a thin beat is never mistaken for a quiet fleet.
+    """
+    if not isinstance(num_ctx, int) or not isinstance(num_predict, int):
+        return blocks, []
+    # Reserve room for the ANSWER, not for num_predict. num_predict is a ceiling the model
+    # rarely approaches; the window is the wall it actually hits. Over 506 generates on this
+    # being: every single `done_reason: "length"` — 27 of them, 5.3% — satisfies
+    # prompt + eval == num_ctx EXACTLY (11971+4413, 16380+4, 16323+61, 14410+1974 ...). The
+    # generation was cut by the window mid-answer, which is also where the truncated-JSON
+    # tool calls and the Ollama 500s come from. Explore generations: median 1,282 tokens,
+    # p90 3,909, p99 5,741, max 7,253. Reserving 6,144 covers p99 with headroom while
+    # leaving the digest something to say; reserving the full num_predict would floor the
+    # digest every beat to buy room the model has never used.
+    reserve = min(num_predict, 6144)
+    # Conservative chars-per-token for mixed English + paths + JSON; under-estimating the
+    # token count here would defeat the whole guard, so estimate high (fewer chars/token).
+    CPT = 3.4
+    budget_chars = int(max(0, (num_ctx - reserve - slack)) * CPT)
+    order = ("digest", "recall")
+    floors = {"digest": 1200, "recall": 400}
+    out, interventions = dict(blocks), []
+    total = lambda: fixed_chars + sum(len(v or "") for v in out.values())
+    for key in order:
+        if total() <= budget_chars:
+            break
+        text = out.get(key) or ""
+        if not text:
+            continue
+        over = total() - budget_chars
+        keep = max(floors[key], len(text) - over)
+        if keep >= len(text):
+            continue
+        # keep the HEAD of the digest (newest-first there) and the TAIL of recall/journal
+        out[key] = (text[:keep] + "\n[…trimmed to fit the context window…]") if key == "digest" \
+            else ("[…trimmed to fit the context window…]\n" + text[-keep:])
+        interventions.append({"kind": "context_fit", "block": key,
+                              "suppressed": f"{len(text) - keep} chars of {key}",
+                              "reason": f"prompt + a p99 answer ({reserve} tok) would not fit "
+                                        f"num_ctx ({num_ctx}); the generation would be cut "
+                                        f"mid-answer (27/506 generates already were)"})
+    return out, interventions
 
 
 def compose(act_first: bool, *, name: str, machine: str, member: str, posture_text: str,
@@ -403,13 +635,32 @@ def main(argv=None) -> int:
     # exists only for a model that must NOT think here; it is never sent to one that does.
     nothink = "" if is_reasoning_model(args.model) else "/no_think"
     act_first = not acts_under_posture(args.model)
+    entrusted = entrustment(instance)
+    harness_rev = harness_revision(workspace)
+    # Fit before composing: prompt + num_predict must sit inside num_ctx, or ollama drops
+    # the oldest tokens (system prompt, posture) with no error anywhere. Measured on this
+    # being: two beats at 16,380 / 16,323 prompt tokens against a 16,384 window returned 4
+    # and 61 tokens, done_reason "length".
+    state_block = (f"# Your own state\n\n{own_state(instance, entrusted, args.member)}\n\n"
+                   f"## Reach you hold (hestia scope)\n{scope}\n\n")
+    _fixed = len(posture()) + len(state_block) + len(inbox) + 4000  # + affordances/ask/tools
+    blocks, fit_interventions = fit_to_window(
+        num_ctx=getattr(llm, "num_ctx", None),
+        num_predict=(llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
+                     else getattr(llm, "max_response_tokens", None)),
+        fixed_chars=_fixed, blocks={"digest": digest, "recall": recall})
     seed, posture_turn = compose(
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
         nothink=nothink,
         header=(f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
-                f"Your home: {instance}\n\n"),
-        state=f"# Your own state\n\n{own_state(instance)}\n\n## Reach you hold (hestia scope)\n{scope}\n\n",
-        recall=recall, inbox=inbox, digest=digest)
+                f"Your home: {instance}\n"
+                f"The harness you are running under: {harness_rev.get('short')} on "
+                f"{harness_rev.get('branch')}"
+                + (" (uncommitted edits present)" if harness_rev.get("dirty") else "")
+                + ". A `check` result carries the `tree` it ran against; if that head is not "
+                  "this one, the answer is about different code than the code running you.\n\n"),
+        state=state_block,
+        recall=blocks["recall"], inbox=inbox, digest=blocks["digest"])
 
     # Per-generate trace, written as each generate lands: the record below is written at
     # beat end, so a beat killed by the unit's timeout (Legion 18:33Z 2026-09-05: 840 s cap,
@@ -453,7 +704,7 @@ def main(argv=None) -> int:
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
                                    tools=ollama_tools(REFLECT_TOOLS), on_generate=_on_generate("reflect"))
 
-    interventions = []
+    interventions = list(fit_interventions)
     if act_first:
         interventions.append({"kind": "act_first", "suppressed": "posture-first presentation (the model narrates under it)"})
     if nothink:
@@ -526,7 +777,25 @@ def main(argv=None) -> int:
         "num_predict": (llm.resolve_num_predict() if hasattr(llm, "resolve_num_predict")
                         else getattr(llm, "max_response_tokens", None)),
         "think": getattr(llm, "think", None),
+        # What drove this beat: an entrustment (entrustment.md present and presented) or the
+        # generic posture alone. Without this field a later reading of the log cannot tell
+        # entrusted engineering work from spontaneous exploration, and every developmental
+        # claim spanning that boundary is confounded (PRD r3 §4).
+        # entrusted | event | curiosity. dp, 2026-09-07: "beat is default idle state.
+        # world inputs require engagement" — so a beat woken BY something is a different
+        # kind of beat from one the timer produced, and the record must not flatten them.
+        "drive_source": ("event" if (woke or {}).get("by") == "presence"
+                         else ("entrusted" if entrusted else "curiosity")),
+        # Whether the beat ran with what the seat intended. Beat 2026-09-06 18:03Z was empty
+        # and was read as model failure; it was a seat error — the unit pointed at a tag
+        # whose config resolved a 4096 window while the tree offered a verb the model was
+        # never shown. A starved beat and a silent one are indistinguishable unless the
+        # record says which tools were offered and whether the window is the intended one.
+        "config": _fill_headroom(_config_check(instance, args.model, llm, EXPLORE_TOOLS),
+                                 partial, host_session_id),
         "scope": scope_record,
+        # which harness produced this beat; pairs with the `tree` block on any check result
+        "harness": harness_rev,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
         "join": {"session": sess_meta, "presence": pres_meta},
         "hub_inbox": hub_inbox,

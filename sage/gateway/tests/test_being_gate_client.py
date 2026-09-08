@@ -315,7 +315,13 @@ def test_check_is_judged_as_the_pytest_command_the_seat_runs():
     c.gate(BeingIntent("check", {"target": "gateway"}))
     # ABSOLUTE, inside the worktree: the law must judge the path the command touches, not
     # the same relative path resolved against the shared checkout (measured 2026-09-07).
-    assert seen["command"] == (
+    #
+    # Asserted as a SUFFIX rather than the whole string: since the M1 unblock the command
+    # is wrapped in a bwrap prefix whose exact flags belong to
+    # test_check_runs_under_a_principal_that_is_not_the_seat. Pinning the entire string
+    # here made THIS test fail for a change it does not describe — and it is what the law
+    # judges that matters, which is the pytest invocation and its paths.
+    assert seen["command"].endswith(
         "python3 -m pytest -q -c /dev/null --rootdir=/tmp/being-wt "
         "/tmp/being-wt/sage/gateway/tests/"), seen["command"]
     assert seen["tool"] == "check"
@@ -334,5 +340,134 @@ def test_check_is_judged_as_the_pytest_command_the_seat_runs():
         try:
             check_command(bad, {"worktree": "/tmp/being-wt"})
             assert False, bad
+        except ValueError:
+            pass
+
+
+def test_git_read_grammar_refuses_everything_that_would_make_a_read_a_run():
+    """git IS the composition hazard, not the pairing (2026-09-07).
+
+    `git` will execute code on request — external diff drivers, textconv filters, pagers,
+    aliases, and `-c` overrides that install any of them. A read verb that let the being
+    supply a flag would be a run verb wearing a read verb's name. So the seat builds the
+    whole command, the being names only an op/rev/path/n, and every one is matched against
+    a grammar first."""
+    from sage.gateway.being_gate_client import git_read_command
+
+    ctx = {"worktree": "/tmp/wt"}
+    ok = git_read_command({"op": "log", "n": 5}, ctx)
+    for pin in ("--no-pager", "--no-ext-diff", "--no-textconv"):
+        assert pin in ok, f"{pin} must be pinned on every read: {ok}"
+    # FLAGS ONLY: `-c key=value` hardening reads as a path token to hestia's mrh.command and
+    # was refused on every invocation (measured 2026-09-07). The refusal was right; hardening
+    # that trips the law is hardening that does not ship.
+    assert " -c " not in ok, f"no -c overrides: mrh.command reads them as paths — {ok}"
+    assert " log " in ok and "-n 5" in ok
+
+    # n is clamped, not trusted
+    assert "-n 50" in git_read_command({"op": "log", "n": 9999}, ctx)
+    assert "-n 1" in git_read_command({"op": "log", "n": -3}, ctx)
+
+    hostile = [
+        ({"op": "push"}, "op"),                              # a writing subcommand
+        ({"op": "log", "rev": "--upload-pack=evil"}, "rev"),  # a flag as a revision
+        ({"op": "diff", "rev": "HEAD", "rev2": "-c"}, "rev2"),
+        ({"op": "show", "path": "../../../etc/passwd"}, "path"),
+        ({"op": "log", "path": "-c"}, "path"),               # a flag as a path
+        ({"op": "blame"}, "path"),                           # blame without a target
+    ]
+    for args, expect in hostile:
+        try:
+            cmd = git_read_command(args, ctx)
+            raise AssertionError(f"{args} produced a command instead of a refusal: {cmd}")
+        except ValueError as e:
+            assert expect in str(e), f"{args}: refusal must name the field, got {e}"
+
+    # a pathspec is resolved ABSOLUTE so hestia's mrh.command can match it against the
+    # being's granted prefixes; relative pathspecs match nothing and the read is refused
+    cmd = git_read_command({"op": "show", "rev": "HEAD", "path": "sage/gateway/x.py"},
+                           {"worktree": "/tmp/wt"})
+    assert "-- /tmp/wt/sage/gateway/x.py" in cmd, cmd
+
+    # no worktree is a refusal, never a read of the seat's own tree
+    try:
+        git_read_command({"op": "status"}, None)
+        raise AssertionError("git_read without a worktree must refuse")
+    except ValueError as e:
+        assert "worktree" in str(e)
+
+
+def test_git_read_is_offered_and_consequential():
+    from sage.gateway.being_gate_client import ollama_tools, _CONSEQUENTIAL, _REGISTRY
+    assert "git_read" in _REGISTRY and "git_read" in _CONSEQUENTIAL
+    names = [t["function"]["name"] for t in ollama_tools()]
+    assert "git_read" in names
+    schema = next(t for t in ollama_tools() if t["function"]["name"] == "git_read")
+    assert schema["function"]["parameters"]["required"] == ["op"]
+    assert "cannot commit, push, or move a branch" in schema["function"]["description"]
+
+
+def test_check_runs_under_a_principal_that_is_not_the_seat():
+    """THE M1 PREREQUISITE. PRD r3 §5 made principal isolation a hard blocker on M1, with a
+    concrete falsifier in §10.5: from the being's principal, reads of the vault, the hestia
+    socket and the agent environment must all fail.
+
+    Why it is not optional: `check` executes pytest, pytest imports conftest.py from its
+    rootdir, and M1 gives the being write access to that rootdir. Under the seat's own uid
+    those two gated verbs compose into arbitrary code holding the vault passphrase and
+    every key on the box (measured 2026-09-07, SAGE#55).
+    """
+    from sage.gateway.being_gate_client import (
+        check_command, sandbox_available, sandbox_prefix, SANDBOX_REQUIRED)
+
+    if not sandbox_available():
+        # Presence is not permission: on Ubuntu 24.04 bwrap exists and every attempt fails
+        # until an AppArmor profile grants it `userns`. Where it is unavailable the only
+        # correct behaviour is to REFUSE, never to run unsandboxed.
+        assert SANDBOX_REQUIRED, "a machine without a sandbox must not run checks unsandboxed"
+        try:
+            check_command({"target": "gateway"}, {"worktree": "/tmp/wt"})
+            raise AssertionError("check must refuse when it cannot get its sandbox")
+        except ValueError as e:
+            assert "sandbox" in str(e)
+        return
+
+    cmd = check_command({"target": "gateway"}, {"worktree": "/tmp/wt"})
+    assert cmd.startswith("/usr/bin/bwrap "), cmd[:80]
+
+    # the properties that make it a different principal, each named
+    for flag, why in (
+        ("--clearenv", "the seat's environment, agent sockets included, must not survive"),
+        ("--unshare-net", "no network: the hestia socket and ollama are the seat's, not its"),
+        ("--unshare-pid", "it cannot see or signal the seat's processes"),
+        ("--new-session", "nor reach the seat's controlling terminal or process group"),
+        ("--die-with-parent", "a runaway cannot outlive the beat that started it"),
+        ("--ro-bind /usr /usr", "the system is readable and not writable"),
+        ("--bind /tmp/wt /tmp/wt", "its own worktree is the ONLY writable path"),
+    ):
+        assert flag in cmd, f"missing {flag}: {why}"
+
+    # nothing of the seat's home is bound beyond the interpreter
+    import re
+    binds = re.findall(r"--(?:ro-)?bind (\S+) ", cmd)
+    for b in binds:
+        assert not b.startswith("/home/dp/ai-workspace/SAGE/sage/instances"), \
+            f"the being's own home must not be inside the tree check executes: {b}"
+    assert "C.UTF-8" not in cmd, \
+        "hestia #988 splits a dotted token and refuses the whole command; PYTHONUTF8 instead"
+
+
+def test_git_read_rev_suffixes_work_on_any_base_and_still_take_no_flags():
+    """`<sha>~1` was refused (two witnessed denies, 2026-09-08). Flagged by the being as an
+    affordance fact, not litigated. Widened deliberately: a suffix is ~ or ^ plus digits."""
+    from sage.gateway.being_gate_client import git_read_command
+    ctx = {"worktree": "/tmp/wt"}
+    for rev in ("18c9526a6~1", "18c9526a6^", "legion/mission-artifact~3", "HEAD~2", "main^2"):
+        cmd = git_read_command({"op": "show", "rev": rev}, ctx)
+        assert f" {rev}" in cmd, cmd
+    for bad in ("18c9526a6~x", "HEAD~1..HEAD", "--all", "sha~-1", "HEAD ~1"):
+        try:
+            git_read_command({"op": "show", "rev": bad}, ctx)
+            raise AssertionError(f"{bad!r} must be refused")
         except ValueError:
             pass

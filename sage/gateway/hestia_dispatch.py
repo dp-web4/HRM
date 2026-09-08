@@ -92,6 +92,11 @@ class HestiaF1aDispatcher:
                  worktree: Optional[str] = None):
         self.plugin_id = plugin_id
         self.worktree = worktree
+        # the being's own home, and the name it speaks under in a conversation. plugin_id
+        # IS the member name here (build_client passes the member), but bind it explicitly
+        # rather than relying on that staying true.
+        self.memory_root = memory_root
+        self.member = plugin_id
         # the being's names for peers -> hub roster names (e.g. legion-being -> legion-sage,
         # the name legion-being joined under on 2026-09-05); env SAGE_PEER_ALIASES="a=b,c=d"
         self.peer_aliases = dict(peer_aliases or {})
@@ -117,6 +122,7 @@ class HestiaF1aDispatcher:
         self._mcp_factory = mcp_factory or _Mcp
         self._local = ReferenceF1aDispatcher(
             memory_root=memory_root,
+            worktree=worktree,
             witness_fn=make_hestia_witness_fn(plugin_id, endpoint) if mcp_factory is None else None)
         self._c = None
         self._session_id: Optional[str] = None
@@ -171,9 +177,41 @@ class HestiaF1aDispatcher:
         self._c, self._session_id = c, sid
         return sid
 
+    # A lost session arrives in TWO shapes and only one of them was handled.
+    _SESSION_LOST = ("session not found", "session_not_found", "session expired", "no session")
+
+    @classmethod
+    def _is_session_loss(cls, text: str) -> bool:
+        t = (text or "").lower()
+        return any(m in t for m in cls._SESSION_LOST)
+
     def _call(self, name: str, args: dict) -> dict:
+        """One hestia call, with a single reconnect if the session went away underneath it.
+
+        A LOST SESSION ARRIVES IN TWO SHAPES. The daemon can answer with an error envelope
+        (`_hestia_error.code` naming session), or the MCP transport can fail the request
+        outright — `HTTP 404 ... Not Found: Session not found` — which `call` RAISES. The
+        original reconnect only inspected the returned envelope, so for the raising path the
+        retry existed and was dead code.
+
+        Measured 2026-09-07, and it cost the being a milestone. Seven minutes into a beat it
+        called `check` twice; the gate ALLOWED both, and both died on hestia_begin_action
+        with that 404 before pytest ever ran. From inside, an expired transport is
+        indistinguishable from a refusal — which is the opaque-404 defect the being itself
+        reported as SAGE#52, landing on the first organ it was given.
+
+        Both shapes now drop the client and reconnect once. A second failure is reported as
+        it is: an expired session is a fact about the transport, never a verdict on the act,
+        and the being must not be left to read one as the other."""
         sid = self._connect()
-        out = _unwrap(self._c.call(name, {**args, "session_id": sid}))
+        try:
+            out = _unwrap(self._c.call(name, {**args, "session_id": sid}))
+        except Exception as e:
+            if not self._is_session_loss(f"{type(e).__name__}: {e}"):
+                raise
+            self._c, self._session_id = None, None
+            sid = self._connect()
+            return _unwrap(self._c.call(name, {**args, "session_id": sid}))
         # a session the daemon no longer recognises: reconnect once, then report honestly
         err = out.get("_hestia_error") if isinstance(out, dict) else None
         if isinstance(err, dict) and "session" in str(err.get("code", "")):
@@ -468,16 +506,54 @@ class HestiaF1aDispatcher:
         except ValueError as e:
             return ResultEnvelope(ok=False, error=str(e))
         target = str(intent.args.get("target", "")).strip()
-        begin = self._call("hestia_begin_action", {"tool_name": "check", "target": target})
-        err = _hestia_error(begin)
+        # UNVERIFIED IS A RESULT. The being's own design answer (2026-09-07, its Q1): keep
+        # `check` gated and witnessed, do not build an unwitnessed local fallback — "two
+        # verification paths can diverge, and the unwitnessed one becomes the one people
+        # trust" — but when the substrate is down, say UNVERIFIED explicitly rather than
+        # returning nothing or something ambiguous. "A failing test is a real answer; so is
+        # 'the checker was down.'" The envelope carries the tree block either way, so the
+        # being can record WHICH tree it could not verify.
+        try:
+            begin = self._call("hestia_begin_action", {"tool_name": "check", "target": target})
+            err = _hestia_error(begin)
+        except Exception as e:
+            begin, err = {}, f"{type(e).__name__}: {e}"
         if err:
-            return ResultEnvelope(ok=False, error=err)
+            return ResultEnvelope(
+                ok=False, error=f"check UNVERIFIED: the witness substrate is unreachable ({str(err)[:160]})",
+                result={"target": target, "verdict": "UNVERIFIED", "passed": None,
+                        "reason": "hestia_begin_action failed; the test did not run because an "
+                                  "unwitnessed check is not a check",
+                        "tree": self._worktree_revision(), "worktree": self.worktree})
         action_id = begin.get("actionId")
         try:
             proc = subprocess.run(shlex.split(cmd), cwd=self.worktree, text=True,
                                   capture_output=True, timeout=600)
             passed = proc.returncode == 0
             out = ((proc.stdout or "") + (proc.stderr or "")).strip()
+            # A TEST THAT DOES NOT EXIST IS NOT A FAILING TEST. pytest exits 5 when nothing
+            # was collected — "167 deselected" — and the first cut reported that as FAIL.
+            # Measured 2026-09-08 11:34Z: the being asked for
+            # gateway::test_heartbeat_composes_prompt, which is not a test in the suite, and
+            # was told its harness was red. A false red is worse than a false green here:
+            # this being is trained by its own record to believe red over its reading.
+            if proc.returncode == 5:
+                try:  # the act completed; the chain should not hold it open
+                    self._call("hestia_record_outcome",
+                               {"action_id": action_id, "success": True, "magnitude": 0.0})
+                except Exception:
+                    pass
+                return ResultEnvelope(ok=True, witness_id=action_id,
+                                      result={"target": target, "passed": None,
+                                              "verdict": "NO_SUCH_TEST",
+                                              "output": out[-800:],
+                                              "reason": "pytest collected nothing for that "
+                                                        "target — the test name does not "
+                                                        "exist in this suite. Nothing ran, "
+                                                        "so nothing failed",
+                                              "worktree": self.worktree,
+                                              "tree": self._worktree_revision(),
+                                              "action_id": action_id})
             # The tail is where pytest puts the verdict and the failure detail; the head is
             # progress dots. Truncate from the FRONT so a failure is never the part cut.
             if len(out) > 3000:
@@ -497,7 +573,264 @@ class HestiaF1aDispatcher:
                               result={"target": target, "passed": passed,
                                       "verdict": "PASS" if passed else "FAIL",
                                       "output": detail, "worktree": self.worktree,
+                                      "tree": self._worktree_revision(),
                                       "action_id": action_id})
+
+    def _worktree_revision(self) -> dict:
+        """WHICH TREE THE ANSWER IS ABOUT. A check result without this is not evidence: the
+        being reasons about the harness it LIVES in, and the worktree is a separate checkout
+        that drifts. Measured 2026-09-07, before the being had ever called `check` — its
+        worktree sat on an unrelated raising commit from another machine, three tests behind
+        the running code and missing the very fix it would most want to verify. It would
+        have gotten a true answer about a tree that is not the one constituting it, with
+        nothing in the envelope to say so.
+
+        `dirty` matters as much as the SHA: uncommitted edits mean the SHA names something
+        other than what ran. PRD r3 §6 requires this on every check result."""
+        import subprocess
+
+        def _git(*args):
+            try:
+                r = subprocess.run(("git", *args), cwd=self.worktree, text=True,
+                                   capture_output=True, timeout=15)
+                return r.stdout.strip() if r.returncode == 0 else None
+            except Exception:
+                return None
+
+        head = _git("rev-parse", "HEAD")
+        status = _git("status", "--porcelain")
+        return {"head": head, "short": (head or "")[:9] or None,
+                "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
+                "subject": _git("log", "-1", "--format=%s"),
+                "committed": _git("log", "-1", "--format=%cI"),
+                "dirty": None if status is None else bool(status.strip())}
+
+    def _do_git_read(self, intent: BeingIntent) -> ResultEnvelope:
+        """Read the history of the tree the being lives in. Read-only by construction.
+
+        dp, 2026-09-07: "the being should be able to check git by itself." Until now the
+        only way it learned that its worktree had moved between beats was a seat telling
+        it, which makes provenance a matter of trusting the seat — the exact dependency the
+        `tree` block on a check result exists to remove.
+
+        Same shape as _do_check and for the same reason: the command is REBUILT here from
+        the same function the gate judged, so the law never rules on one string while the
+        seat runs another. git is run with cwd set to the worktree rather than `git -C`,
+        because `-C` silently redirects the read away from the tree you think you are in
+        (legion-claude learned that one the hard way in a review) — here the cwd IS the
+        subject, and it must be the same tree `check` executes in."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import git_read_command
+        if not self.worktree or not os.path.isdir(self.worktree):
+            return ResultEnvelope(ok=False, pending=True,
+                                  note="git_read needs a worktree of your own; none is "
+                                       "configured on this seat")
+        try:
+            cmd = git_read_command(intent.args, {"worktree": self.worktree})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        op = str(intent.args.get("op", "")).strip()
+        begin = self._call("hestia_begin_action", {"tool_name": "git_read", "target": op})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+        try:
+            proc = subprocess.run(shlex.split(cmd), cwd=self.worktree, text=True,
+                                  capture_output=True, timeout=60)
+            out = ((proc.stdout or "") + (proc.stderr or "")).strip()
+            ran, rc = True, proc.returncode
+        except Exception as e:
+            ran, rc, out = False, -1, f"{type(e).__name__}: {e}"
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": ran, "magnitude": 0.0})
+        except Exception:
+            pass
+        if not ran:
+            return ResultEnvelope(ok=False, error=f"git_read could not run: {out[:400]}",
+                                  witness_id=action_id)
+        # Truncate from the FRONT: for a log the newest commits are at the top and matter
+        # most, but for show/diff/blame the tail carries the change itself. Keep the head
+        # for log, the tail otherwise, and say which was cut — a silent truncation
+        # manufactures false absences (see reference_f1a._do_memory_read).
+        # AN EMPTY ANSWER MUST SAY WHY IT IS EMPTY. Measured 2026-09-08: the being asked
+        # `show 5cd0ca518 -- sage/gateway/check.py`, a path that does not exist, and git
+        # returned exit 0 and nothing. It read that as "show does not cross branches" —
+        # a wrong model of its own tool built on a silent zero. A silent zero is a false
+        # absence, the same class as the truncated read and the miscounted turns.
+        if not out.strip() and rc == 0 and op in ("show", "diff", "log", "blame"):
+            pth = str(intent.args.get("path", "")).strip()
+            out = ("[no output: " + (
+                f"nothing in that revision touches '{pth}', or no such path exists there" if pth
+                else "the revision(s) produced no differences") +
+                " — an empty diff is a true answer, not a failed read]")
+        limit = 6000
+        if len(out) > limit:
+            if op == "log":
+                out = out[:limit] + f"\n[… truncated: {len(out) - limit} more characters of older history …]"
+            else:
+                out = f"[… truncated: {len(out) - limit} earlier characters withheld …]\n" + out[-limit:]
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"op": op, "exit": rc, "output": out,
+                                      "tree": self._worktree_revision(),
+                                      "action_id": action_id})
+
+    def _do_say(self, intent: BeingIntent) -> ResultEnvelope:
+        """Add a turn to a conversation the being is in.
+
+        The being names a conversation id and text. Everything that decides whether it MAY
+        speak lives in the conversation's meta file, which the seat owns and the being
+        cannot write — so this reach is fixed by construction rather than by the argument,
+        the same property that makes `remember` safe with path_args=().
+
+        Refusals here are ordinary and informative: 'you are not in that conversation' and
+        'you may read that one but not speak in it' are different sentences, and the being
+        should never have to guess which it hit."""
+        from sage.gateway import conversations as conv
+        to = str(intent.args.get("to", "")).strip()
+        text = str(intent.args.get("text", "")).strip()
+        if not to or not text:
+            return ResultEnvelope(ok=False, error="say needs 'to' (a conversation id) and 'text'")
+        meta = conv.get_meta(self.memory_root, to)
+        if meta is None:
+            known = [m["id"] for m in conv.listing(self.memory_root)
+                     if self.member in m.get("participants", [])]
+            return ResultEnvelope(ok=False, error=f"no conversation {to!r}; you are in: {known}")
+        if self.member not in meta.get("participants", []):
+            return ResultEnvelope(ok=False,
+                                  error=f"you are not a participant in {to!r}")
+        if self.member not in meta.get("writable_by", []):
+            return ResultEnvelope(
+                ok=False, error=f"you may read {to!r} and not speak in it "
+                                f"(writable_by: {meta.get('writable_by')})")
+        begin = self._call("hestia_begin_action", {"tool_name": "say", "target": to})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+        try:
+            turn = conv.append(self.memory_root, to, speaker=self.member, text=text,
+                               witness=action_id, beat=self.host_session_id)
+        except ValueError as e:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": False, "magnitude": 0.0})
+            return ResultEnvelope(ok=False, error=str(e), witness_id=action_id)
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": True, "magnitude": 0.0})
+        except Exception:
+            pass
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"conversation": to, "seq": turn["seq"],
+                                      "said": turn["text"][:200], "action_id": action_id})
+
+    def _do_pr_open(self, intent: BeingIntent) -> ResultEnvelope:
+        """The being's worktree changes become a pull request, attributed to it.
+
+        Order: begin_action -> branch -> add -> commit (message over stdin, trailers the
+        being cannot alter) -> push -> `gh pr create` (the command the gate judged) ->
+        record_outcome. Every failure short of the push leaves the worktree on its new
+        branch with the commit intact, so nothing the being wrote is lost by a failed act.
+
+        The seat's git identity authors the commit; the trailers attribute it (PRD r3 §7.2).
+        That is the legibility form — §6 says a being-signed tree hash comes at M3 — and the
+        PR body says so rather than letting a trailer pass for a signature."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import pr_open_command, pr_attribution
+        if not self.worktree or not os.path.isdir(self.worktree):
+            return ResultEnvelope(ok=False, pending=True,
+                                  note="pr_open needs a worktree of your own; none is configured")
+        try:
+            cmd = pr_open_command(intent.args, {"worktree": self.worktree})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        slug = str(intent.args["slug"]).strip()
+        title = " ".join(str(intent.args["title"]).split())
+        body = str(intent.args["body"]).rstrip()
+        branch = f"legion-being/{slug}"
+
+        def git(*a, inp=None):
+            return subprocess.run(["git", *a], cwd=self.worktree, text=True, input=inp,
+                                  capture_output=True, timeout=120)
+
+        # nothing to propose is a refusal with a reason, not an empty PR
+        st = git("status", "--porcelain")
+        if st.returncode != 0:
+            return ResultEnvelope(ok=False, error=f"git status failed: {st.stderr[:200]}")
+        if not st.stdout.strip():
+            return ResultEnvelope(ok=False, error="pr_open: your worktree has no changes to "
+                                                  "propose. Write the change first, then open the PR")
+        if git("rev-parse", "--verify", "--quiet", branch).returncode == 0:
+            return ResultEnvelope(ok=False, error=f"pr_open: branch {branch} already exists; "
+                                                  "pick another slug")
+
+        begin = self._call("hestia_begin_action", {"tool_name": "pr_open", "target": branch})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+
+        steps = []
+        def fail(stage, proc):
+            detail = (proc.stderr or proc.stdout or "").strip()[:400]
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False,
+                                                     "magnitude": 0.0, "error": f"{stage}: {detail[:200]}"})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"pr_open failed at {stage}: {detail}",
+                                  result={"steps": steps, "branch": branch})
+
+        r = git("checkout", "-b", branch)
+        if r.returncode != 0:
+            return fail("branch", r)
+        steps.append(f"branch {branch}")
+        r = git("add", "-A")
+        if r.returncode != 0:
+            return fail("add", r)
+        steps.append("add")
+        trailers = pr_attribution(self.plugin_id, action_id, self.being_lct)
+        message = f"{title}\n\n{body}\n\n{trailers}\n"
+        r = git("commit", "-q", "-F", "-", inp=message)
+        if r.returncode != 0:
+            return fail("commit", r)
+        sha = git("rev-parse", "--short=9", "HEAD").stdout.strip()
+        steps.append(f"commit {sha}")
+        r = git("push", "-q", "-u", "origin", branch)
+        if r.returncode != 0:
+            return fail("push", r)
+        steps.append("push")
+
+        pr_body = (body + "\n\n---\n"
+                   f"Authored by **{self.plugin_id}**, a SAGE being, from its own worktree; "
+                   f"the seat composed the outward act. Commit `{sha}` carries `Being` / "
+                   f"`Being-LCT` / `Witness` / `Seat` trailers — attribution, not yet a "
+                   f"signature (PRD r3 §6). The being cannot merge this; a NOT-SAME reviewer "
+                   f"decides.\n"
+                   + (f"LCT: `{self.being_lct}`\n" if self.being_lct else "")
+                   + f"hestia witness action: `{action_id}`\n")
+        try:
+            proc = subprocess.run(shlex.split(cmd), input=pr_body, text=True,
+                                  cwd=self.worktree, capture_output=True, timeout=120)
+        except Exception as e:
+            proc = subprocess.CompletedProcess(cmd, 1, "", f"{type(e).__name__}: {e}")
+        if proc.returncode != 0:
+            return fail("gh pr create", proc)
+        url = proc.stdout.strip().splitlines()[-1] if proc.stdout.strip() else ""
+        steps.append("pr")
+        try:
+            self._call("hestia_record_outcome", {"action_id": action_id, "success": True, "magnitude": 0.0})
+        except Exception:
+            pass
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"pr": url, "branch": branch, "commit": sha,
+                                      "steps": steps, "action_id": action_id,
+                                      "note": "your worktree is now on this branch; a reviewer "
+                                              "who is not you decides. You cannot merge it."})
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:

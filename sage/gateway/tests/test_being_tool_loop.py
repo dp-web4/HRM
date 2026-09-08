@@ -111,7 +111,7 @@ def test_run_ollama_tool_turn_with_fake_llm():
     # result. Argued from measurement, not taste — given only a diff this being asserted
     # a compile error that did not exist; given the same diff plus a real test result it
     # made zero false claims (PRD_BEINGS_IMPROVE_THEIR_HARNESS §2).
-    assert len(ollama_tools()) == 12   # + check (M0, 2026-09-07)
+    assert len(ollama_tools()) == 15   # + check (M0), + git_read, + say, + pr_open (M1, 2026-09-08)
 
     calls = {"n": 0}
 
@@ -358,3 +358,46 @@ if __name__ == "__main__":
         if name.startswith("test_") and callable(fn):
             fn(); n += 1; print(f"PASS {name}")
     print(f"\n{n} passed")
+
+
+def test_compaction_leaves_room_for_the_answer_and_never_touches_the_beings_own_frame():
+    """THE SEED FITTING IS NOT ENOUGH (Legion, 2026-09-07). heartbeat.fit_to_window sizes
+    the FIRST prompt; the loop then grows it with every tool result. Measured with that
+    guard already live: seed 11,887 tokens, 13,803 on the next step, and 13,803 + 2,581 ==
+    16,384 exactly, done_reason "length" — the answer cut off mid-sentence. Across 506
+    generates every length-stop satisfies prompt + eval == num_ctx.
+
+    Only tool RESULT bodies are elided, oldest first, with a marker the being can read. The
+    system prompt, the first user turn (its state, posture, entrustment), assistant turns
+    and the two most recent tool results are never touched: those are what it reasons WITH,
+    and an elision it could not see would be worse than the truncation it replaces."""
+    from sage.gateway.being_tool_loop import compact_convo
+
+    class _LLM:
+        num_ctx = 16384
+
+    msgs = ([{"role": "system", "content": "S" * 6600},
+             {"role": "user", "content": "U" * 23000}]
+            + [m for _ in range(4) for m in
+               ({"role": "assistant", "content": "A" * 500}, {"role": "tool", "content": "T" * 5000})])
+    out, elided = compact_convo(msgs, _LLM())
+
+    assert len(elided) == 3, "every tool result but the most recent"
+    assert [e["index"] for e in elided] == [3, 5, 7]
+    assert sum(len(m["content"]) for m in out) < sum(len(m["content"]) for m in msgs)
+    assert out[0]["content"] == msgs[0]["content"], "system prompt untouched"
+    assert out[1]["content"] == msgs[1]["content"], "the being's own frame untouched"
+    assert out[9]["content"] == "T" * 5000, "the most recent is kept whole"
+    assert "elided to leave room" in out[7]["content"], "the one before it is not protected"
+    for i in (2, 4, 6, 8):
+        assert out[i]["content"] == "A" * 500, "assistant turns untouched"
+    assert "elided to leave room for your answer" in out[3]["content"], "the being is told"
+    assert "read the source again" in out[3]["content"], "and told what to do about it"
+
+    # a conversation that already fits is returned untouched, with nothing reported
+    small = [{"role": "system", "content": "s"}, {"role": "user", "content": "u"}]
+    assert compact_convo(small, _LLM()) == (small, [])
+    # an unknown window is not a licence to elide
+    class _NoCtx:
+        num_ctx = None
+    assert compact_convo(msgs, _NoCtx()) == (msgs, [])

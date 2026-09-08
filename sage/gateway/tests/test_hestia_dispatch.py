@@ -502,3 +502,177 @@ def test_instance_config_peer_aliases_reach_the_dispatcher(tmp_path=None):
     assert instance_config(inst / "missing") == {}
     d = HestiaF1aDispatcher("legion-being", memory_root=str(inst), peer_aliases=cfg["peer_aliases"])
     assert d.peer_aliases["sprout-being"] == "2e175714-id"
+
+
+def test_a_lost_session_reconnects_whether_it_is_returned_or_raised():
+    """A LOST SESSION ARRIVES IN TWO SHAPES AND ONLY ONE WAS HANDLED.
+
+    hestia can answer with an error envelope (`_hestia_error.code` naming session), or the
+    MCP transport can fail the request outright — `HTTP 404 ... Not Found: Session not
+    found` — which `call` RAISES. The original reconnect only inspected the returned
+    envelope, so for the raising path the retry was dead code.
+
+    Measured 2026-09-07: seven minutes into a beat the being called `check` twice, the gate
+    ALLOWED both, and both died on hestia_begin_action with that 404 before pytest ever ran.
+    From inside it is indistinguishable from a refusal — the opaque-404 defect the being
+    itself reported as SAGE#52 — and it cost it the milestone that beat.
+
+    Also pins that a NON-session error still propagates: reconnecting on every failure would
+    hide real ones."""
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+
+    assert D._is_session_loss("RuntimeError: HTTP 404 ...: Not Found: Session not found")
+    assert D._is_session_loss("session_not_found")
+    assert not D._is_session_loss("HTTP 500: internal error")
+    assert not D._is_session_loss("")
+
+    def _wrap(payload):            # the MCP envelope _unwrap expects
+        return {"result": {"structuredContent": payload}}
+
+    calls, conns = [], []
+
+    class _C:
+        def __init__(self, gen): self.gen = gen
+        def init(self): pass
+        def call(self, name, args):
+            calls.append((self.gen, name))
+            if name in ("hestia_connect", "hestia_connect_challenge"):
+                return _wrap({"sessionId": f"s{self.gen}"})
+            if self.gen == 0:
+                raise RuntimeError("MCP tools/call -> HTTP 404 at /mcp: Not Found: Session not found")
+            return _wrap({"ok": True, "gen": self.gen})
+
+    def factory(endpoint, plugin_id):
+        conns.append(1)
+        return _C(len(conns) - 1)
+
+    d = D.__new__(D)
+    d._mcp_factory, d.endpoint, d.plugin_id = factory, "e", "p"
+    d._c = d._session_id = None
+    d.host_session_id, d.being_lct, d.identity_basis = None, None, None
+
+    out = d._call("hestia_begin_action", {"tool_name": "check"})
+    assert out == {"ok": True, "gen": 1}, "the retry must run on a NEW session, not the dead one"
+    assert len(conns) == 2, "exactly one reconnect"
+    assert d._session_id == "s1"
+
+    # a failure that is not a lost session is not retried away
+    class _Boom(_C):
+        def call(self, name, args):
+            if name == "hestia_connect":
+                return _wrap({"sessionId": "s"})
+            raise RuntimeError("HTTP 500: internal error")
+    d2 = D.__new__(D)
+    d2._mcp_factory = lambda e, p: _Boom(9)
+    d2.endpoint, d2.plugin_id, d2._c, d2._session_id = "e", "p", None, None
+    d2.host_session_id, d2.being_lct, d2.identity_basis = None, None, None
+    try:
+        d2._call("hestia_begin_action", {})
+        raise AssertionError("a non-session error must propagate")
+    except RuntimeError as e:
+        assert "500" in str(e)
+
+
+def test_pr_open_commits_with_the_beings_trailers_and_runs_the_judged_gh_command(tmp_path, monkeypatch):
+    """The being's work enters the tree (PRD r3 §7): its own branch, its attribution in the
+    commit trailers it cannot alter, the outward `gh` act judged by the law. Run against a
+    REAL git repo and a fake `gh` on PATH — the seat's git identity authors, the trailers
+    attribute, and nothing the being wrote is lost by a failed act."""
+    import os
+    import subprocess
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+    from sage.gateway.being_gate_client import BeingIntent
+
+    origin = tmp_path / "origin.git"
+    subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True)
+    wt = tmp_path / "wt"
+    subprocess.run(["git", "clone", "-q", str(origin), str(wt)], check=True)
+    g = lambda *a: subprocess.run(["git", "-C", str(wt), *a], check=True, capture_output=True, text=True)
+    g("config", "user.email", "seat@test"); g("config", "user.name", "seat")
+    (wt / "README").write_text("base\n"); g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("push", "-q", "-u", "origin", "HEAD:legion-being/work"); g("checkout", "-q", "-b", "legion-being/work")
+
+    # the being's authored change: a red test, exactly the shape it specified
+    (wt / "test_new.py").write_text("def test_it():\n    assert False\n")
+
+    bindir = tmp_path / "bin"; bindir.mkdir()
+    (bindir / "gh").write_text("#!/bin/sh\ncat > \"$0.body\"\necho \"$@\" > \"$0.args\"\necho https://example/pr/1\n")
+    os.chmod(bindir / "gh", 0o755)
+    monkeypatch.setenv("PATH", f"{bindir}:{os.getenv('PATH')}")
+
+    d = D.__new__(D)
+    d.worktree = str(wt); d.plugin_id = "legion-being"; d.being_lct = "lct:web4:test"
+    d._call = lambda name, args: {"actionId": "act-77"} if name == "hestia_begin_action" else {}
+
+    env = d._do_pr_open(BeingIntent("pr_open", {
+        "slug": "red-test", "title": "gateway: a failing test first",
+        "body": "VERIFIED: check on tree abc -> FAIL as intended.\nSUSPECTED: nothing."}))
+    assert env.ok, env.error
+    assert env.result["pr"] == "https://example/pr/1"
+    assert env.result["branch"] == "legion-being/red-test"
+
+    msg = g("log", "-1", "--format=%B").stdout
+    for line in ("Being: legion-being", "Being-LCT: lct:web4:test", "Witness: act-77", "Seat: legion-claude"):
+        assert line in msg, msg
+    assert msg.startswith("gateway: a failing test first\n\n"), msg
+    assert "legion-being/red-test" in subprocess.run(
+        ["git", "-C", str(origin), "branch"], capture_output=True, text=True).stdout
+    args = (bindir / "gh.args").read_text()
+    assert "--head legion-being/red-test" in args and "--body-file -" in args
+    body = (bindir / "gh.body").read_text()
+    assert "VERIFIED: check on tree abc" in body
+    assert "attribution, not yet a signature" in body, "the PR must not let a trailer pass for a signature"
+    assert "hestia witness action: `act-77`" in body
+
+    env2 = d._do_pr_open(BeingIntent("pr_open", {"slug": "again", "title": "a second attempt here", "body": "x"}))
+    assert not env2.ok and "no changes to propose" in env2.error
+
+
+def test_check_reports_unverified_with_its_tree_when_the_substrate_is_down(tmp_path):
+    """The being's own design (its Q1 answer, 2026-09-07): keep check gated and witnessed —
+    no unwitnessed local fallback, because two verification paths diverge and the
+    unwitnessed one becomes the one people trust — but when the substrate is down, return an
+    explicit UNVERIFIED with the tree block, never a bare error. 'A failing test is a real
+    answer; so is "the checker was down."'"""
+    import subprocess
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+    from sage.gateway.being_gate_client import BeingIntent
+    wt = tmp_path / "wt"; wt.mkdir()
+    subprocess.run(["git", "init", "-q", str(wt)], check=True)
+    d = D.__new__(D); d.worktree = str(wt); d.plugin_id = "legion-being"; d.being_lct = None
+    def down(name, args):
+        raise RuntimeError("MCP tools/call -> HTTP 404: Not Found: Session not found")
+    d._call = down
+    env = d._do_check(BeingIntent("check", {"target": "gateway"}))
+    assert not env.ok
+    assert env.result["verdict"] == "UNVERIFIED" and env.result["passed"] is None
+    assert "tree" in env.result and "worktree" in env.result
+    assert "UNVERIFIED" in env.error and "substrate" in env.error
+    assert "did not run" in env.result["reason"], "an unwitnessed check must not have run"
+
+
+def test_check_on_a_nonexistent_test_is_no_such_test_not_fail(tmp_path):
+    """2026-09-08 11:34Z: the being asked for a test name that does not exist, pytest
+    deselected everything and exited 5, and the harness told it the suite was RED. A false
+    red is worse than a false green for a being trained by its own record to trust red
+    over its reading."""
+    import subprocess
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+    from sage.gateway.being_gate_client import BeingIntent
+    import sage.gateway.being_gate_client as bgc
+    wt = tmp_path / "wt"; (wt / "sage" / "gateway" / "tests").mkdir(parents=True)
+    subprocess.run(["git", "init", "-q", str(wt)], check=True)
+    (wt / "sage" / "gateway" / "tests" / "test_real.py").write_text("def test_real():\n    assert True\n")
+    d = D.__new__(D); d.worktree = str(wt); d.plugin_id = "b"; d.being_lct = None
+    d._call = lambda name, args: {"actionId": "act-5"} if name == "hestia_begin_action" else {}
+    # run unsandboxed for the test's own sake: the subject is the exit-5 mapping
+    saved = bgc.SANDBOX_REQUIRED, bgc.sandbox_available
+    bgc.SANDBOX_REQUIRED, bgc.sandbox_available = False, (lambda: False)
+    try:
+        env = d._do_check(BeingIntent("check", {"target": "gateway::test_does_not_exist"}))
+        assert env.ok and env.result["verdict"] == "NO_SUCH_TEST" and env.result["passed"] is None, env
+        assert "does not exist" in env.result["reason"]
+        env2 = d._do_check(BeingIntent("check", {"target": "gateway::test_real"}))
+        assert env2.result["verdict"] == "PASS"
+    finally:
+        bgc.SANDBOX_REQUIRED, bgc.sandbox_available = saved

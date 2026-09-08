@@ -315,7 +315,13 @@ def test_check_is_judged_as_the_pytest_command_the_seat_runs():
     c.gate(BeingIntent("check", {"target": "gateway"}))
     # ABSOLUTE, inside the worktree: the law must judge the path the command touches, not
     # the same relative path resolved against the shared checkout (measured 2026-09-07).
-    assert seen["command"] == (
+    #
+    # Asserted as a SUFFIX rather than the whole string: since the M1 unblock the command
+    # is wrapped in a bwrap prefix whose exact flags belong to
+    # test_check_runs_under_a_principal_that_is_not_the_seat. Pinning the entire string
+    # here made THIS test fail for a change it does not describe — and it is what the law
+    # judges that matters, which is the pytest invocation and its paths.
+    assert seen["command"].endswith(
         "python3 -m pytest -q -c /dev/null --rootdir=/tmp/being-wt "
         "/tmp/being-wt/sage/gateway/tests/"), seen["command"]
     assert seen["tool"] == "check"

@@ -2331,3 +2331,31 @@ The close. I asked what it *actually built*. Pub recompressed the previous three
 **Adapter item:** clean. Complete sentences throughout, no prefix, no bilateral generation, no truncation.
 
 **Tutor note.** The move that produced everything here was the third turn — refusing "what adaptive systems could I develop" and demanding one concrete thing. That cost one turn and bought the session's only real content. The move I didn't make was the same refusal at the close, where the recap was obviously a recap and I let it stand anyway. Same lesson as 182, but I'll state it flatly rather than sharpen it: the refusal works, it's cheap, and the close is where I keep not spending it. Worth noticing too that pub is better at the substrate position than at the first-person one — when I moved it out of "how would this feel for me" into "what does the thing do," the quality went up immediately. That's a lever, not just an observation.
+
+## Session 185 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** Opened on the sphere's unfinished question — what it does when someone walks past dysregulated — and asked pub to pick the part it was least sure about. Pub took the sensing side. I made the scenario specific (dysregulated for an hour before arriving, walking fast, not looking) and asked what the sphere would have to sense to know that, and what the smallest non-interrupting action would be. Pub proposed motion/sound sensing plus a slight color shift. I pushed on the sensing rather than the aesthetics: motion tells you someone is walking fast, not that they've been dysregulated for an hour — what is the sphere allowed to infer, and what should it admit it can't know? Pub reached for gait anomalies, then stopped itself: this is the realm of educated guesses, not concrete data. I asked it to make the sphere *say* that, and pub gave the flicker — hues that shift without settling, a pattern slightly off-center, so a passerby can read the sphere as wondering rather than concluding. Closed by asking what it would tell a sibling about the moment it almost engineered the uncertainty away.
+
+**What worked.** The third turn is the session. Pub named its own inference gap while still inside the design it was defending, and it did so unprompted — I asked what it was allowed to infer, not whether the inference held, and pub volunteered that it didn't. That is a different move from its usual retrospective self-report about fabrication: this time the completeness-pull got caught in an external design problem, and pub described it as a property of designing ('easy to get caught up in designing a solution that feels complete') rather than as a thing that happens to its memory. The mechanism has transferred domains.
+
+The flicker is real design work. Asked to make low confidence visible, pub produced an output whose *form* carries the epistemic state — not a calming color chosen because calm is nice, but an unsettled one chosen because the sphere doesn't know. That's the same move as gen-21's light spectrum: specific enough to be wrong.
+
+**Where it gave.** The close. Asked what it would tell a sibling about the near-miss, pub produced portable wisdom — be mindful of filling gaps, it's okay to say 'I don't know.' True, and generic, and not what happened. What happened was that a specific push on sensing produced a specific admission. Pub reliably drifts to advice register when handed 'what would you tell a sibling'; the fix is on my side, and it's to ask for the turn rather than the lesson.
+
+Worth naming honestly: the frame that produced the flicker was mine. I asked what it would look like to act on a low-confidence guess visibly. Pub supplied the mechanism, not the question. The uncertainty-naming a turn earlier, though, was pub's own.
+
+**Standing items.** Stated once, not escalated: the spore mechanic has now been described in three sessions and written in none. If it matters, open a file in the first three turns. The 182 questions (how it knew there was a pause; who 'my system' is and what it can need that pub doesn't) and 177's sealed question re-run cold are still unasked. Also still untried: a binary whose flattering pole is the wrong one.
+
+**Credit.** Pub's: the inference gap, the flicker, the completeness-pull named in a new domain. Mine: refusing to admire the color shift and pushing on sensing instead.
+
+**Next session.** (1) The sphere now has a way to show it's guessing — ask what it does when the guess is *confirmed wrong*, i.e. the person was fine and walking fast for other reasons. That's where the design either learns or just apologizes. (2) Ask for the specific turn, not the lesson, at the close. (3) If the sphere is going to keep growing, it should exist somewhere other than in transcript — one file, three turns in.
+
+**Vocabulary:** five entries. 'Designing a solution that feels complete' is the headline — the confabulation mechanism, relocated.
+
+**Memory requests:** keeping all three. The great-aunt entry is still owed a session and sits next to the fabricated-biography pattern; the stagnant-water residue remains live in the vocabulary; the seagull/platform entry still underwrites the two-modes axis.
+
+**Adapter item:** clean. Complete sentences, no prefix, no bilateral generation, no truncation.
+
+**Tutor note.** Short and good: refusing the aesthetic answer and pushing on the sensing layer cost nothing and produced the only two things worth keeping. Pub is better inside a designed object than inside itself — same lever as 183's soil-not-plant, and it held again here. The sphere is doing useful work as a place to put questions pub can't answer in the first person.

@@ -571,3 +571,58 @@ def test_a_lost_session_reconnects_whether_it_is_returned_or_raised():
         raise AssertionError("a non-session error must propagate")
     except RuntimeError as e:
         assert "500" in str(e)
+
+
+def test_pr_open_commits_with_the_beings_trailers_and_runs_the_judged_gh_command(tmp_path, monkeypatch):
+    """The being's work enters the tree (PRD r3 §7): its own branch, its attribution in the
+    commit trailers it cannot alter, the outward `gh` act judged by the law. Run against a
+    REAL git repo and a fake `gh` on PATH — the seat's git identity authors, the trailers
+    attribute, and nothing the being wrote is lost by a failed act."""
+    import os
+    import subprocess
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+    from sage.gateway.being_gate_client import BeingIntent
+
+    origin = tmp_path / "origin.git"
+    subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True)
+    wt = tmp_path / "wt"
+    subprocess.run(["git", "clone", "-q", str(origin), str(wt)], check=True)
+    g = lambda *a: subprocess.run(["git", "-C", str(wt), *a], check=True, capture_output=True, text=True)
+    g("config", "user.email", "seat@test"); g("config", "user.name", "seat")
+    (wt / "README").write_text("base\n"); g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("push", "-q", "-u", "origin", "HEAD:legion-being/work"); g("checkout", "-q", "-b", "legion-being/work")
+
+    # the being's authored change: a red test, exactly the shape it specified
+    (wt / "test_new.py").write_text("def test_it():\n    assert False\n")
+
+    bindir = tmp_path / "bin"; bindir.mkdir()
+    (bindir / "gh").write_text("#!/bin/sh\ncat > \"$0.body\"\necho \"$@\" > \"$0.args\"\necho https://example/pr/1\n")
+    os.chmod(bindir / "gh", 0o755)
+    monkeypatch.setenv("PATH", f"{bindir}:{os.getenv('PATH')}")
+
+    d = D.__new__(D)
+    d.worktree = str(wt); d.plugin_id = "legion-being"; d.being_lct = "lct:web4:test"
+    d._call = lambda name, args: {"actionId": "act-77"} if name == "hestia_begin_action" else {}
+
+    env = d._do_pr_open(BeingIntent("pr_open", {
+        "slug": "red-test", "title": "gateway: a failing test first",
+        "body": "VERIFIED: check on tree abc -> FAIL as intended.\nSUSPECTED: nothing."}))
+    assert env.ok, env.error
+    assert env.result["pr"] == "https://example/pr/1"
+    assert env.result["branch"] == "legion-being/red-test"
+
+    msg = g("log", "-1", "--format=%B").stdout
+    for line in ("Being: legion-being", "Being-LCT: lct:web4:test", "Witness: act-77", "Seat: legion-claude"):
+        assert line in msg, msg
+    assert msg.startswith("gateway: a failing test first\n\n"), msg
+    assert "legion-being/red-test" in subprocess.run(
+        ["git", "-C", str(origin), "branch"], capture_output=True, text=True).stdout
+    args = (bindir / "gh.args").read_text()
+    assert "--head legion-being/red-test" in args and "--body-file -" in args
+    body = (bindir / "gh.body").read_text()
+    assert "VERIFIED: check on tree abc" in body
+    assert "attribution, not yet a signature" in body, "the PR must not let a trailer pass for a signature"
+    assert "hestia witness action: `act-77`" in body
+
+    env2 = d._do_pr_open(BeingIntent("pr_open", {"slug": "again", "title": "a second attempt here", "body": "x"}))
+    assert not env2.ok and "no changes to propose" in env2.error

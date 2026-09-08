@@ -362,6 +362,69 @@ def git_read_command(args: dict, ctx: Optional[dict] = None) -> str:
     return f"{base} blame --no-textconv -L 1,120 {rev or 'HEAD'} -- {path}"
 
 
+
+# pr_open: the being's work enters the tree. PRD r3 §7 — every change reaches main through
+# a pull request, attributed on the artefact, reviewed by someone NOT-SAME.
+#
+# dp, 2026-09-07: "the being should be able to ... submit prs directly." Built only after M1,
+# and only because of what CI does: SAGE's one workflow (syntax-gate.yml) runs
+# `python -m compileall`, which byte-compiles and does not execute. A PR from the being
+# therefore reaches no executor it has not already been proven against — its own sandboxed
+# `check`. If a workflow that RUNS code is ever added, this verb becomes the composition
+# hazard of 2026-09-07 wearing GitHub's clothes, and the gate should learn that before the
+# workflow lands.
+#
+# WHAT THE BEING SUPPLIES: a slug (the branch name's tail), a title, a body. Nothing else.
+# WHAT THE LAW JUDGES: the outward act, `gh pr create ...`, as a string, with the title
+# passed as one argument and the body over stdin so no text of the being's reaches a shell.
+# WHAT THE SEAT DOES AROUND IT (hestia_dispatch._do_pr_open): branch from the worktree's
+# HEAD, `git add -A`, commit with the message over stdin and the attribution trailers the
+# being cannot omit or alter, push. The commit is authored by the seat's git identity and
+# ATTRIBUTED to the being in trailers — §6 says signatures come at M3; this is the
+# legibility form, honestly labelled as such in every PR body.
+PR_BASE_BRANCH = "legion/mission-artifact"   # where the harness runs from; NOT main
+PR_REPO = "dp-web4/SAGE"
+_SLUG = r"[a-z0-9][a-z0-9-]{1,40}"
+
+
+def pr_open_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The shell command the seat runs for a pr_open intent — the `gh pr create`, which is
+    the outward act. The git preparation is not composed here because none of it carries
+    being-supplied text into a shell: the message travels by stdin."""
+    import re
+    worktree = (ctx or {}).get("worktree")
+    if not worktree:
+        raise ValueError("pr_open needs a worktree of your own; none is configured on this seat")
+    slug = str(args.get("slug", "")).strip()
+    if not re.fullmatch(_SLUG, slug):
+        raise ValueError("pr_open 'slug' names your branch tail: lowercase letters, digits and "
+                         f"dashes, 2-41 chars, got {slug!r}")
+    title = " ".join(str(args.get("title", "")).split())
+    if not (8 <= len(title) <= 120):
+        raise ValueError("pr_open 'title' must be one line, 8-120 characters")
+    if not str(args.get("body", "")).strip():
+        raise ValueError("pr_open needs a 'body': what changed, what you verified, what you "
+                         "only suspect, and the check output with its tree head")
+    branch = f"legion-being/{slug}"
+    # shlex-quote the title: it is the ONE being-supplied string on the command line
+    import shlex
+    return (f"gh pr create --repo {PR_REPO} --base {PR_BASE_BRANCH} --head {branch} "
+            f"--title {shlex.quote(title)} --body-file -")
+
+
+def pr_attribution(member_id: str, action_id: Optional[str], being_lct: Optional[str],
+                   seat: str = "legion-claude") -> str:
+    """The trailers on a commit a being authored (PRD r3 §7.2). Appended by the dispatcher;
+    the being cannot omit or alter them."""
+    lines = [f"Being: {member_id}"]
+    if being_lct:
+        lines.append(f"Being-LCT: {being_lct}")
+    if action_id:
+        lines.append(f"Witness: {action_id}")
+    lines.append(f"Seat: {seat}")
+    return "\n".join(lines)
+
+
 _REGISTRY = {
     "peer_ask":       dict(tool="peer_ask",     path_args=(),       cmd_arg=None),
     "witness":        dict(tool="witness",      path_args=(),       cmd_arg=None),
@@ -395,6 +458,10 @@ _REGISTRY = {
     # its own included. path_args=() is correct: the target is a conversation, not a path,
     # and the reach is fixed by the meta file the seat owns rather than by the being's args.
     "say":            dict(tool="say",         path_args=(),       cmd_arg=None),
+    # pr_open: the being's worktree changes become a pull request, attributed to it,
+    # for NOT-SAME review. Composed like pr_review — the law rules on the `gh` string.
+    "pr_open":        dict(tool="pr_open",     path_args=(),       cmd_arg=None,
+                           compose=pr_open_command),
     # Long-term semantic memory (membot brain cartridge, the being's own): recall is
     # observational; remember is consequential but passes local law under ANY grant
     # (paths=()), and that is not because it is "classed with memory_write" (which the
@@ -423,7 +490,7 @@ _REGISTRY = {
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read", "recall", "appeal"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
-                            "remember", "request_scope", "check", "git_read", "say"})
+                            "remember", "request_scope", "check", "git_read", "say", "pr_open"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -473,6 +540,16 @@ _TOOL_SCHEMAS = {
             {"to": "the conversation id, shown beside each conversation in your state",
              "text": "what you want to say"},
             ["to", "text"]),
+    "pr_open": ("Open a pull request from the changes in your worktree. This is how your work "
+                "enters the tree (PRD §7): on your own branch, attributed to you in the commit "
+                "trailers, reviewed by someone who is not you and did not co-author it. You "
+                "cannot merge it. Write the body the way your best review was written — what "
+                "you VERIFIED (with the check output and its tree head) versus what you only "
+                "SUSPECT — so a reviewer re-runs it instead of trusting you.",
+                {"slug": "your branch's tail, e.g. 'count-readable-turns' (lowercase, dashes)",
+                 "title": "one line, 8-120 characters",
+                 "body": "what changed, why, what you verified and how, what you did not"},
+                ["slug", "title", "body"]),
     "recall": ("Search your long-term memory (semantic search over everything you have "
                "remembered). Use it before deciding what to do; use it when something "
                "feels familiar.",

@@ -688,6 +688,112 @@ class HestiaF1aDispatcher:
                               result={"conversation": to, "seq": turn["seq"],
                                       "said": turn["text"][:200], "action_id": action_id})
 
+    def _do_pr_open(self, intent: BeingIntent) -> ResultEnvelope:
+        """The being's worktree changes become a pull request, attributed to it.
+
+        Order: begin_action -> branch -> add -> commit (message over stdin, trailers the
+        being cannot alter) -> push -> `gh pr create` (the command the gate judged) ->
+        record_outcome. Every failure short of the push leaves the worktree on its new
+        branch with the commit intact, so nothing the being wrote is lost by a failed act.
+
+        The seat's git identity authors the commit; the trailers attribute it (PRD r3 §7.2).
+        That is the legibility form — §6 says a being-signed tree hash comes at M3 — and the
+        PR body says so rather than letting a trailer pass for a signature."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import pr_open_command, pr_attribution
+        if not self.worktree or not os.path.isdir(self.worktree):
+            return ResultEnvelope(ok=False, pending=True,
+                                  note="pr_open needs a worktree of your own; none is configured")
+        try:
+            cmd = pr_open_command(intent.args, {"worktree": self.worktree})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        slug = str(intent.args["slug"]).strip()
+        title = " ".join(str(intent.args["title"]).split())
+        body = str(intent.args["body"]).rstrip()
+        branch = f"legion-being/{slug}"
+
+        def git(*a, inp=None):
+            return subprocess.run(["git", *a], cwd=self.worktree, text=True, input=inp,
+                                  capture_output=True, timeout=120)
+
+        # nothing to propose is a refusal with a reason, not an empty PR
+        st = git("status", "--porcelain")
+        if st.returncode != 0:
+            return ResultEnvelope(ok=False, error=f"git status failed: {st.stderr[:200]}")
+        if not st.stdout.strip():
+            return ResultEnvelope(ok=False, error="pr_open: your worktree has no changes to "
+                                                  "propose. Write the change first, then open the PR")
+        if git("rev-parse", "--verify", "--quiet", branch).returncode == 0:
+            return ResultEnvelope(ok=False, error=f"pr_open: branch {branch} already exists; "
+                                                  "pick another slug")
+
+        begin = self._call("hestia_begin_action", {"tool_name": "pr_open", "target": branch})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+
+        steps = []
+        def fail(stage, proc):
+            detail = (proc.stderr or proc.stdout or "").strip()[:400]
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False,
+                                                     "magnitude": 0.0, "error": f"{stage}: {detail[:200]}"})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"pr_open failed at {stage}: {detail}",
+                                  result={"steps": steps, "branch": branch})
+
+        r = git("checkout", "-b", branch)
+        if r.returncode != 0:
+            return fail("branch", r)
+        steps.append(f"branch {branch}")
+        r = git("add", "-A")
+        if r.returncode != 0:
+            return fail("add", r)
+        steps.append("add")
+        trailers = pr_attribution(self.plugin_id, action_id, self.being_lct)
+        message = f"{title}\n\n{body}\n\n{trailers}\n"
+        r = git("commit", "-q", "-F", "-", inp=message)
+        if r.returncode != 0:
+            return fail("commit", r)
+        sha = git("rev-parse", "--short=9", "HEAD").stdout.strip()
+        steps.append(f"commit {sha}")
+        r = git("push", "-q", "-u", "origin", branch)
+        if r.returncode != 0:
+            return fail("push", r)
+        steps.append("push")
+
+        pr_body = (body + "\n\n---\n"
+                   f"Authored by **{self.plugin_id}**, a SAGE being, from its own worktree; "
+                   f"the seat composed the outward act. Commit `{sha}` carries `Being` / "
+                   f"`Being-LCT` / `Witness` / `Seat` trailers — attribution, not yet a "
+                   f"signature (PRD r3 §6). The being cannot merge this; a NOT-SAME reviewer "
+                   f"decides.\n"
+                   + (f"LCT: `{self.being_lct}`\n" if self.being_lct else "")
+                   + f"hestia witness action: `{action_id}`\n")
+        try:
+            proc = subprocess.run(shlex.split(cmd), input=pr_body, text=True,
+                                  cwd=self.worktree, capture_output=True, timeout=120)
+        except Exception as e:
+            proc = subprocess.CompletedProcess(cmd, 1, "", f"{type(e).__name__}: {e}")
+        if proc.returncode != 0:
+            return fail("gh pr create", proc)
+        url = proc.stdout.strip().splitlines()[-1] if proc.stdout.strip() else ""
+        steps.append("pr")
+        try:
+            self._call("hestia_record_outcome", {"action_id": action_id, "success": True, "magnitude": 0.0})
+        except Exception:
+            pass
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"pr": url, "branch": branch, "commit": sha,
+                                      "steps": steps, "action_id": action_id,
+                                      "note": "your worktree is now on this branch; a reviewer "
+                                              "who is not you decides. You cannot merge it."})
+
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:
         return ResultEnvelope(ok=False, pending=True,

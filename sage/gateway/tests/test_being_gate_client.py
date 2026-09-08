@@ -292,6 +292,33 @@ def test_granted_roots_come_from_the_policy_scope():
     assert _granted_roots(Core, None, "/ws") == () and GatewayVerdict("allow").granted == ()
 
 
+def test_a_refused_home_file_names_the_right_path_in_the_refusal_itself():
+    import os, tempfile
+    from sage.gateway.being_gate_client import BeingGateClient, GatewayVerdict, BeingIntent
+
+    root = tempfile.mkdtemp(prefix="home-")
+
+    class Disp:
+        class _L:
+            memory_root = root
+        _local = _L()
+        def witness_deny(self, intent, verdict):
+            return "dh-1"
+        def __call__(self, intent, verdict):
+            raise AssertionError("a refused intent is never dispatched")
+
+    c = BeingGateClient.__new__(BeingGateClient)
+    c._dispatcher = Disp()
+    c.gate = lambda i: GatewayVerdict("deny", "mrh.path", "outside your granted scope", stage="local-law")
+    env = c.dispatch(BeingIntent("memory_write", {"path": "/home/user/journal.md", "content": "x"}))
+    assert "no grant is needed" in env.error and os.path.join(os.path.realpath(root), "journal.md") in env.error
+    # a real ask keeps its plain refusal, and the home file itself is never hinted at
+    e2 = c.dispatch(BeingIntent("memory_read", {"path": "/srv/peer/notes.txt"}))
+    assert "no grant is needed" not in e2.error
+    e3 = c.dispatch(BeingIntent("memory_write", {"path": os.path.join(root, "journal.md"), "content": "x"}))
+    assert "no grant is needed" not in e3.error
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

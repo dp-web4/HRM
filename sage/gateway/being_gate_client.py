@@ -229,6 +229,33 @@ def parse_tool_calls(tool_calls: list) -> List["BeingIntent"]:
     return intents
 
 
+_HOME_FILENAMES = ("journal.md", "todo.md", "account.json", "notes", "scratch")
+
+
+def _home_hint(intent: "BeingIntent", dispatcher) -> str:
+    """When a refused path names one of the being's OWN home files but is rooted elsewhere,
+    the remedy is the right path, not a grant. Say so in the refusal the being reads, so it
+    can correct inside the same beat (dp, 2026-09-07: "mistakes become lessons"). Measured on
+    Sprout: it wrote journal.md and todo.md to `<repo>/sage/` and to `/home/user/`, a generic
+    placeholder path, while writing its real journal correctly 51 times in the same period."""
+    try:
+        raw = str((intent.args or {}).get("path", "")).strip()
+        name = os.path.basename(raw.rstrip("/"))
+        if not raw or name not in _HOME_FILENAMES:
+            return ""
+        root = getattr(getattr(dispatcher, "_local", None), "memory_root", None) \
+            or getattr(dispatcher, "memory_root", None)
+        if not root:
+            return ""
+        correct = os.path.join(os.path.realpath(str(root)), name)
+        if os.path.realpath(raw) == correct:
+            return ""
+        return (f" — no grant is needed for this: your own '{name}' is at {correct}, "
+                f"and a bare '{name}' is resolved inside your home.")
+    except Exception:
+        return ""
+
+
 def _granted_roots(core, policy, workspace: str) -> tuple:
     """The absolute path roots a resolved policy grants ("path:<abs>" scopes), via the
     core's own resolver when it has one. () when there is no policy or no path scope."""
@@ -508,6 +535,7 @@ class BeingGateClient:
             import dataclasses as _dc
             v = _dc.replace(v, witness_id=wid)      # GatewayVerdict is frozen
             err = f"{v.rule}: {v.reason}"
+            err += _home_hint(intent, self._dispatcher)
             err += (f" (deny witnessed {wid}; if you think this is wrong, appeal with deny_hash={wid})"
                     if wid else " (deny not witnessed: daemon unreachable, so it cannot be appealed yet)")
             return ResultEnvelope(ok=False, refused=True, verdict=v, error=err, witness_id=wid)

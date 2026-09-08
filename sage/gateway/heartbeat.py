@@ -393,6 +393,8 @@ def window_budget_chars(num_ctx: int, num_predict: int, slack: int = 512) -> int
 # case this being sat in for five beats on 2026-09-08 (headroom -2.4k..-4k tokens, every
 # generate cut at the wall before a tool call, the retry re-sending the same prompt).
 CONV_LADDER = ((12, None), (12, 1500), (6, 1200), (3, 900), (2, 700))
+# Room the seed leaves for the loop's own growth (one full recent tool result plus stubs).
+LOOP_GROWTH_CHARS = 10_000
 
 
 def fit_state(build, *, num_ctx, num_predict, other_chars: int, slack: int = 512):
@@ -701,7 +703,12 @@ def main(argv=None) -> int:
                 f"## Reach you hold (hestia scope)\n{scope}\n\n")
     # The conversations step down only when the rest cannot fit with digest and recall at
     # their floors (1200 + 400): fit_to_window's worst case is this fitter's input.
-    _other = len(posture()) + len(inbox) + 4000 + 1200 + 400  # + affordances/ask/tools
+    # LOOP_GROWTH_CHARS: the seed is not the prompt the loop ends on. Every tool result is
+    # appended; compaction keeps the newest whole, and one 260-line read is ~10k chars
+    # (~3k tokens). Measured 21:04Z 2026-09-08 with the seed fitted at 17.5k tokens: step 6
+    # reached 23,823 of 24,576 and was cut. The seed must leave room for the loop, not only
+    # for the answer.
+    _other = len(posture()) + len(inbox) + 4000 + 1200 + 400 + LOOP_GROWTH_CHARS
     state_block, conv_rung, conv_intervention = fit_state(
         _build_state, num_ctx=_num_ctx, num_predict=_num_predict, other_chars=_other)
     _fixed = len(posture()) + len(state_block) + len(inbox) + 4000

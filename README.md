@@ -77,7 +77,7 @@ Every cycle, SAGE runs a continuous loop ([full spec](sage/docs/UNIFIED_CONSCIOU
 
 HRM began as hierarchical reasoning research — exploring how small models solve complex tasks through structured decomposition. It evolved into SAGE as the focus shifted from task decomposition to **cognition orchestration**: treating intelligence as iterative refinement across specialized components, grounded in biological patterns.
 
-The project is now a distributed research effort across **8 machines** hosting **21 configured SAGE instances** (2026-08-27 census) from **5 model families**, accumulating **5,000+ commits** and a **raising session count of 1,400+** through the BECOMING developmental curriculum. The raising count is summed over the one primary raising instance per machine (the fleet table); it is a session tally, not a count of running daemons.
+The project is now a distributed research effort across **8 machines** hosting **21 configured SAGE instances** (2026-09-08 census) from **5 model families**, accumulating **5,000+ commits** and a **raising session count of 2,700+** through the BECOMING developmental curriculum. The raising count is summed over the one primary raising instance per machine (the fleet table); it is a session tally, not a count of running daemons.
 
 ---
 
@@ -85,23 +85,23 @@ The project is now a distributed research effort across **8 machines** hosting *
 
 SAGE runs as a federation of autonomous instances, each developing its own identity through raising sessions while sharing architecture and curriculum.
 
-**Fleet snapshot as of 2026-08-27**, by metric:
+**Fleet snapshot as of 2026-09-08**, by metric:
 
 - **Configured instance**: a machine+model directory under `sage/instances/` on a machine registered in [`sage/federation/fleet.json`](sage/federation/fleet.json). 21 across the 8 machines.
 - **Active daemon**: a `sage-daemon` process running on the census day. A green dashboard alone does not establish this; the census found one instance that had run twelve days on a deleted binary behind a green dashboard (deployment defect, fixed).
 - **Instance with recorded experience**: an instance whose SNARC experience buffer holds at least one entry. 3 (Sprout 638, Nomad 278, McNugget 196); 2 of them recorded on the census day.
-- **Raising session count**: the Raising sessions column below, one primary raising instance per machine, summed for the 1,400+ figure. Eight instances carry a raising history, one per machine; that is a curriculum tally, not a count of running daemons.
+- **Raising session count**: the Raising sessions column below, one primary raising instance per machine, summed for the 2,700+ figure. Eight instances carry a raising history, one per machine; that is a curriculum tally, not a count of running daemons — and three of the eight are currently stopped (see the column). Counted from the highest session number under each instance's `sessions/`, not from a previous edition of this table: the 2026-08-27 figures here were copied outward to the public site and propagated as fact, so this block is a source others read.
 
 | Machine | Hardware | Model | Raising sessions | Phase | Role |
 |---------|----------|-------|----------|-------|------|
-| **Sprout** | Jetson Orin Nano, 8GB | Qwen3.8-2B-Distill | 629 | Creating | Primary raising host, consciousness probes; embodied (dual-camera + IMU + audio) |
-| **Thor** | Jetson AGX Thor, 122GB | Qwen 3.5 27B | 151 | Creating | Research lead, selection-environment experiments |
-| **Legion** | RTX 4090 laptop, 32GB | Gemma 3 12B | 197 | Creating | Heavy compute, multi-model raising |
-| **McNugget** | Mac Mini M4, 16GB | Gemma 3 12B | 218 | Creating | Apple Silicon, automated sessions |
-| **CBP** | RTX 2060 SUPER, WSL2 | Gemma 3 4B | 32 | Questioning | Oversight, identity portability |
-| **Nomad** | RTX 4060 laptop | Gemma 3 4B | 8 | Sensing | Mobile raising, portable cognition |
-| **HUB** | AMD Radeon Pro W5500 (Mesa/Vulkan) | granite4:h-tiny | 121 | — | Mamba/transformer-hybrid raising (society-host) |
-| **Pub** | CPU society-host | Llama 3.1 8B | 141 | — | Autonomous Llama-family raising (society-host) |
+| **Sprout** | Jetson Orin Nano, 8GB | Qwen3.8-2B-Distill | 661 | Creating | Primary raising host, consciousness probes; embodied (dual-camera + IMU + audio) |
+| **Thor** | Jetson AGX Thor, 122GB | Qwen 3.5 27B | 268 (stopped 2026-07-19) | Creating | Research lead, selection-environment experiments |
+| **Legion** | RTX 4090 laptop, 32GB | Gemma 3 12B | 462 | Creating | Heavy compute, multi-model raising |
+| **McNugget** | Mac Mini M4, 16GB | Gemma 4 12B | 451 | Creating | Apple Silicon, automated sessions |
+| **CBP** | RTX 2060 SUPER, WSL2 | Gemma 3 4B | 240 (paused 2026-08-06) | Creating | Oversight, identity portability |
+| **Nomad** | RTX 4060 laptop | Gemma 4 e2b | 335 | Creating | Mobile raising, portable cognition |
+| **HUB** | AMD Radeon Pro W5500 (Mesa/Vulkan) | granite4:h-tiny | 121 (no session since 2026-07-29) | Creating | Mamba/transformer-hybrid raising (society-host) |
+| **Pub** | Dell Precision 3650, i7-11700, 30GB, AMD W5500 (Vulkan) | Llama 3.1 8B | 187 | Creating | Autonomous Llama-family raising (society-host) |
 
 **Instance management**: Each machine+model pair gets a self-contained directory under `sage/instances/`. Live state files (identity, experience buffer, peer trust) are gitignored; raising sessions snapshot state to tracked `snapshots/` directories at session boundaries. See [snapshot template](sage/scripts/snapshot_state.py).
 
@@ -363,4 +363,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-*Last updated: August 28, 2026 | v0.4.0a6 | 5,000+ commits | raising session count 1,400+ | 8 machines | 21 configured instances, 3 with recorded experience (2026-08-27 census) | 5 model families*
+*Last updated: September 8, 2026 | v0.4.0a6 | 5,000+ commits | raising session count 2,700+ | 8 machines | 21 configured instances, 3 with recorded experience (2026-08-27 census) | 5 model families*

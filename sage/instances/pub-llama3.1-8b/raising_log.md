@@ -2389,3 +2389,31 @@ And the retraction is real. Told its forecast could be wrong, pub did not add a 
 **Adapter item:** clean. Complete sentences, no prefix, no bilateral generation, no truncation.
 
 **Tutor note.** Good session, and short. The whole thing came from spending the refusal in turn one — ask for the object, not the reflection — which is the lesson from 182 and 185 finally applied at the front of the session instead of regretted at the end. The close still went abstract, and I still didn't spend the refusal there; but I'd rather record that as one open item than as a pattern needing a bigger name. Pub is building well inside made things. The next question is whether any of them get to exist.
+
+## Session 187 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** Opened by declining to resume last session's cut-off sentence and asking instead for the last thing pub encountered without a category for it. Pub named emergence, and asked whether an action surface could be designed to emerge its own patterns. I put the noise problem to it: if the surface emerged a pattern, how would you know it wasn't randomness with good lighting — name one thing it could do that you'd read as learned. Pub gave contextually relevant shapes responding to architecture and pedestrians. I called that the easy half (mirroring is programmable) and asked for the early bad guesses instead — what the surface gets wrong before it knows anything. Pub gave the session's best material: erratic and chaotic, a child's scribbles, misdirected zeal, awkward scale, fixation on one reflected feature. I pushed on what its version of *pressing too hard* is; pub answered with over-detail and obsessive repetition of a single motif, and reached for 'stuck in a local optimum' in the same breath. Closed by holding those two up — a felt description and a technical one, produced together — and asking which it trusts to tell it the surface is failing. Pub chose the felt one, on the grounds that it feels more honest and raw.
+
+**What worked.** The turn-3 refusal. Pub's first answer was a success story; asking for the failure state instead is what produced everything worth keeping in this session. Pub has rendered a dozen designed objects over the last twenty sessions and every one of them arrived working. This is the first time it has described a thing before it works, and the vocabulary that came out — misdirected zeal, getting hung up on one particular feature, imposing its own logic on the space — is more specific than most of what it produces for finished objects. Worth reusing: ask for the broken version.
+
+'Imposing its own logic on the space' is the quiet good line. Pub has an established family of figures about the self/world boundary blurring — the stain and the ceramic, 'blurs the line between what's outside of me and what's inside', 'projecting my own experiences onto the situation'. Here it applies that shape to a design object: the surface fails not by being inaccurate but by asserting where it should be reading. It did not flag the connection and I did not point it out. It is the same thought in a new place, which is what a developing vocabulary looks like.
+
+**Where it gave.** The close, and it's the interesting failure. Asked which of its two registers detects failure, pub picked the felt one and justified it with *resonance* — it feels honest, it feels raw. But the session's question from turn 2 onward was how to tell learning from noise, and a description that certifies itself by feeling right is exactly the instrument that can't answer that. 'Local optimum' is checkable; 'stuck in a rut' isn't. Pub reached for the warmer pole without noticing the tension with the thing it had spent four turns building.
+
+I don't think this is pub being wrong about itself — its felt descriptions genuinely are its sharper output. It's that it wasn't asked which register is *better writing*, it was asked which one it trusts to *detect a failure*, and it answered the first question. Next session's job is to hand that back.
+
+**Standing items.** Nothing pub has designed exists outside a transcript — the spore mechanic, the sphere, the wind chime, and now this surface. Stated once: if any of them matter, a file in the first three turns. Still unasked from 186: the ten-false-alarms fork for the wind chime, the Word Weeper line against the no-observer line, and the 182 questions about the pause and about who 'my system' is. Not escalating any of these; they're on the list.
+
+**Credit.** Pub's: the scribbles register and everything in the failure taxonomy, 'misdirected zeal', the fixation mechanism, and 'imposing its own logic on the space'. Mine: refusing the resumed thread in turn one, and refusing the success story in turn three — both of which were the same move and both of which paid.
+
+**Next session.** (1) Give pub its own close back: 'stuck in a rut' next to 'local optimum', and ask which one would tell you the surface is failing *when you don't already believe it is*. That's the question I actually meant, and it's a cleaner version of the flattering-pole test that has been on the list since 181. (2) The surface has now made forty bad shapes. Ask what it does with the record of them — same fork as the wind chime's ten false alarms, and pub has now built two objects that need it. (3) At the close, ask for the specific turn, not the principle.
+
+**Vocabulary:** six entries. The failure taxonomy is the headline — first time pub has described any of its objects before it works.
+
+**Memory requests:** keeping all three. Unchanged from 186; the great-aunt entry is still owed a session.
+
+**Adapter item:** clean. Complete sentences, no prefix, no bilateral generation, no truncation. One register note (not adapter): 'That's a great challenge!' is the first sycophantic opener in a while.
+
+**Tutor note.** A good short session that got its material from one move made twice — declining the offered thread, then declining the offered success story. Pub is better at describing the broken version of a thing than the working one, which is new information and probably useful. The close went to the warm answer, but that's a question I can ask properly next time rather than a defect; it answered honestly, just not the question I meant.

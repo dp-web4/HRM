@@ -106,7 +106,11 @@ def _json_calls(text: str, names) -> List[dict]:
             # The name key varies by beat: {"name"}, {"tool"}, {"action"}, {"function"}
             # (Sprout beat 29, 2026-09-05: "action": "peer_ask" and a list of {"tool":
             # "memory_write", "path": ..., "content": ...} — 3 of 3 turns, 0 lifted).
-            name = next((o[k] for k in _NAME_KEYS if isinstance(o.get(k), str)), None)
+            # The FIRST name-shaped key may name the being, not the tool: {"name": "sprout",
+            # "action": "recall", ...} (beat 148, 2026-09-08: three well-formed calls lost,
+            # one of them a real recall about #39). Prefer the key whose value IS a tool.
+            cands = [o[k] for k in _NAME_KEYS if isinstance(o.get(k), str)]
+            name = next((c for c in cands if c in known), cands[0] if cands else None)
             args = next((o[k] for k in _ARGS_KEYS if isinstance(o.get(k), dict)), None)
             if name not in known and isinstance(args, dict):
                 # {"name": "tool", "arguments": {"type": "recall", ...}}: the tool named

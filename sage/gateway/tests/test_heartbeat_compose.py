@@ -62,7 +62,7 @@ def test_the_affordances_ask_for_bare_names_not_a_full_path():
         seed, second = compose(act_first, **KW)
         text = seed[0]["content"] + seed[1]["content"] + (second or "")
         assert "Write bare names, never a full path" in text
-        assert "journal.md" in text and "scratch/x.md" in text
+        assert "journal.md" in text and "scratch/" in text and "x.md" not in text   # examples got echoed literally as paths
 
 
 if __name__ == "__main__":

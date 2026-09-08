@@ -343,6 +343,11 @@ def test_salvage_accepts_the_other_name_keys_and_flat_arguments():
     assert salvage_tool_calls('{"action": "complete_beat", "timestamp": "t", "status": "final"}', names) == []
     r = salvage_tool_calls('{"function": "recall", "args": {"query": "q"}}', names)
     assert r and r[0]["function"]["arguments"] == {"query": "q"}
+    # beat 148: the first name key names the BEING, the tool is under action; flat args
+    r = salvage_tool_calls('```json\n{"name": "sprout", "action": "recall", "query": "what was decided about #39", "top_k": 1}\n```', names)
+    assert [(c["function"]["name"], c["function"]["arguments"]) for c in r] == [("recall", {"query": "what was decided about #39", "top_k": 1})]
+    r = salvage_tool_calls('{"name": "sage", "action": "memory_write", "path": "journal.md", "content": "x"}', names)
+    assert r and r[0]["function"]["name"] == "memory_write" and r[0]["function"]["arguments"]["path"] == "journal.md"
     # beat 30: the tool named inside the arguments
     r = salvage_tool_calls('```json\n{"name": "tool", "arguments": {"type": "recall", "query": "q", "top_k": 3}}\n```', names)
     assert [(c["function"]["name"], c["function"]["arguments"]) for c in r] == [("recall", {"query": "q", "top_k": 3})]

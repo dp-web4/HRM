@@ -54,7 +54,7 @@ def posture() -> str:
 HEAD = "You are {name}, a SAGE being on the {machine} machine, member id {member}."
 
 AFFORDANCES = """## What you have this beat
-- Your home is your instance directory. Write bare names, never a full path: journal.md, todo.md, notes/x.md, scratch/x.md (scratch/ is yours alone, no one edits it). memory_read / memory_write work there.
+- Your home is your instance directory. Write bare names, never a full path: journal.md, todo.md, or a name of your choosing under notes/ or scratch/ (scratch/ is yours alone, no one edits it). memory_read / memory_write work there.
 - Long-term memory: recall (search) and remember (store). Use recall early; remember what a future you would want.
 - witness: record something you noticed or did in the shared chain.
 - request_scope: after a refusal, ask the operator for reach on a path (a grant is read and write alike) and say why. A human decides, asynchronously.
@@ -422,9 +422,9 @@ def main(argv=None) -> int:
                 # against 51 successful writes by bare name. So it is given once, and named as
                 # the thing not to retype.
                 f"Your home: {instance}\n"
-                f"You never need to type that path. Name your files bare — journal.md, todo.md, "
-                f"notes/x.md, scratch/x.md — and they resolve inside your home. An absolute path "
-                f"is only for something OUTSIDE your home.\n\n"),
+                f"You never need to type that path. Name your files bare — journal.md, todo.md, or a "
+                f"name of your choosing under notes/ or scratch/ — and they resolve inside your home. "
+                f"An absolute path is only for something OUTSIDE your home.\n\n"),
         state=f"# Your own state\n\n{own_state(instance)}\n\n## Reach you hold (hestia scope)\n{scope}\n\n",
         recall=recall, inbox=inbox, digest=digest)
 

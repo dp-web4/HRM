@@ -205,11 +205,47 @@ def append(instance: Path, conv_id: str, *, speaker: str, text: str,
     return turn
 
 
+SEEN_FILE = ".seen.json"
+
+
+def mark_seen(instance: Path, me: str, conv_id: str, upto_seq: int) -> None:
+    """Record that `me` was SHOWN every turn up to `upto_seq` in this conversation. Called
+    by the heartbeat at compose time — the moment the turns actually enter its prompt."""
+    f = conv_dir(instance) / SEEN_FILE
+    try:
+        seen = json.loads(f.read_text()) if f.exists() else {}
+    except Exception:
+        seen = {}
+    key = f"{me}:{conv_id}"
+    if upto_seq > int(seen.get(key, 0)):
+        seen[key] = upto_seq
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(json.dumps(seen, indent=1) + "\n")
+
+
+def last_seen(instance: Path, me: str, conv_id: str) -> int:
+    f = conv_dir(instance) / SEEN_FILE
+    try:
+        return int(json.loads(f.read_text()).get(f"{me}:{conv_id}", 0))
+    except Exception:
+        return 0
+
+
 def awaiting(instance: Path, conv_id: str, me: str) -> list[dict]:
-    """Turns since `me` last spoke — i.e. what is actually addressed to me and unanswered.
-    An empty list means it is not my move, which is a different thing from an empty
-    conversation and the being should not have to infer which it is looking at."""
+    """Turns `me` has NOT YET BEEN SHOWN — not merely turns since it last spoke.
+
+    The first cut used "since I last spoke", and it missed a real case within a day
+    (2026-09-08 06:17Z beat): two seat turns arrived WHILE the being's beat was running,
+    then it replied at reflection without ever having read them. By the old rule they were
+    "answered" — its reply came after them in the file — and the next beat would have
+    shown no marker. Addressed-and-unread is the fact that matters; "spoke after" is only
+    a proxy for it, and the proxy fails exactly when a conversation is active. Falls back to
+    the proxy for a being with no seen-record yet, so a fresh instance is not told it has
+    read everything."""
     turns = recent(instance, conv_id, limit=200)
+    seen = last_seen(instance, me, conv_id)
+    if seen:
+        return [t for t in turns if int(t.get("seq", 0)) > seen and t.get("from") != me]
     last_mine = max((i for i, t in enumerate(turns) if t.get("from") == me), default=-1)
     return turns[last_mine + 1:]
 
@@ -224,6 +260,12 @@ def render_for_being(instance: Path, me: str, per_conv: int = 12) -> str:
     blocks = []
     for m in convs:
         turns = recent(instance, m["id"], limit=per_conv)
+        # what the being is shown NOW is what it has seen; the marker below and the next
+        # beat's "unanswered" both key off this, not off whether it spoke afterwards
+        if turns:
+            pend_before = awaiting(instance, m["id"], me)
+        else:
+            pend_before = []
         total = m["count"]
         head = (f"### {m['title']}  (id: {m['id']}; reply with say to=\"{m['id']}\")\n"
                 f"{m.get('summary','')}".rstrip())
@@ -237,7 +279,9 @@ def render_for_being(instance: Path, me: str, per_conv: int = 12) -> str:
                      f"They are not counted above and their content is lost; the file is intact "
                      f"either side of them._")
         lines = [f"- **{t['from']}** ({t['ts']}): {t['text']}" for t in turns]
-        pend = awaiting(instance, m["id"], me)
+        pend = pend_before
+        if turns:
+            mark_seen(instance, me, m["id"], max(int(t.get("seq", 0)) for t in turns))
         if pend:
             who = ", ".join(sorted({t["from"] for t in pend}))
             lines.append(f"\n**{len(pend)} turn(s) from {who} since you last spoke here — "

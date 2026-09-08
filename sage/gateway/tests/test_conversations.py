@@ -175,3 +175,25 @@ def test_a_damaged_line_is_reported_as_damage_not_as_history():
     # sequence stays monotonic ACROSS the scar: a gap reads as a scar, a duplicate would
     # make two different turns share one identity
     assert conv.append(inst, "dp", speaker="dp", text="five")["seq"] == 5
+
+
+def test_awaiting_means_unseen_not_merely_spoken_after():
+    """2026-09-08 06:17Z: two seat turns arrived WHILE the being's beat ran; it replied at
+    reflection without having read them. By "since I last spoke" they counted as answered.
+    Addressed-and-unread is the real fact; "spoke after" only proxies it."""
+    inst = _inst(); _two(inst)
+    conv.append(inst, "legion-claude", speaker="legion-claude", text="q1")
+    # the being is SHOWN q1 (render marks it seen), then answers
+    conv.render_for_being(inst, "legion-being")
+    conv.append(inst, "legion-claude", speaker="legion-being", text="a1")
+    assert conv.awaiting(inst, "legion-claude", "legion-being") == []
+    # two seat turns land mid-beat, THEN the being speaks without having seen them
+    conv.append(inst, "legion-claude", speaker="legion-claude", text="q2")
+    conv.append(inst, "legion-claude", speaker="legion-claude", text="q3")
+    conv.append(inst, "legion-claude", speaker="legion-being", text="a-blind")
+    pend = conv.awaiting(inst, "legion-claude", "legion-being")
+    assert [t["text"] for t in pend] == ["q2", "q3"], "unseen turns stay awaiting even after it spoke"
+    block = conv.render_for_being(inst, "legion-being")
+    assert "2 turn(s) from legion-claude" in block and "unanswered" in block
+    # now they have been shown: nothing awaits
+    assert conv.awaiting(inst, "legion-claude", "legion-being") == []

@@ -142,7 +142,21 @@ pub fn read_turns(instance: &Path, id: &str, limit: usize) -> (Vec<Turn>, usize)
     (parsed[start..].to_vec(), total)
 }
 
-fn awaiting(turns: &[Turn], me: &str) -> usize {
+/// Turns `me` has NOT BEEN SHOWN — the Python side's definition, read from the same
+/// `.seen.json` the heartbeat writes at compose time. The first cut counted "turns since
+/// `me` last spoke", which missed a real case within a day: two turns arrived while a beat
+/// ran, and the being replied at reflection without having read them. Two producers of
+/// one fact again, so the daemon reads the record rather than re-deriving it, and falls
+/// back to the proxy only for an instance with no seen-record.
+fn awaiting(instance: &Path, id: &str, turns: &[Turn], me: &str) -> usize {
+    let seen: u64 = std::fs::read_to_string(dir(instance).join(".seen.json"))
+        .ok()
+        .and_then(|s| serde_json::from_str::<serde_json::Value>(&s).ok())
+        .and_then(|v| v.get(format!("{me}:{id}")).and_then(|n| n.as_u64()))
+        .unwrap_or(0);
+    if seen > 0 {
+        return turns.iter().filter(|t| t.seq > seen && t.from != me).count();
+    }
     match turns.iter().rposition(|t| t.from == me) {
         Some(i) => turns.len() - i - 1,
         None => turns.len(),
@@ -168,7 +182,7 @@ pub fn list(instance: &Path, being: &str) -> Vec<Summary> {
             // then gets cached and then gets stale.
             let (turns, count) = read_turns(instance, &id, 200);
             out.push(Summary {
-                awaiting_being: awaiting(&turns, being),
+                awaiting_being: awaiting(instance, &id, &turns, being),
                 last: turns.last().cloned(),
                 count,
                 meta,
@@ -382,11 +396,13 @@ mod tests {
             ts: String::new(), seq: 0, from: from.into(), text: String::new(),
             witness: None, beat: None,
         };
-        assert_eq!(awaiting(&[t("dp"), t("being"), t("dp")], "being"), 1);
-        assert_eq!(awaiting(&[t("dp"), t("being")], "being"), 0);
+        let nowhere = std::env::temp_dir().join("conv-rs-no-seen");
+        let aw = |ts: &[Turn]| awaiting(&nowhere, "x", ts, "being");
+        assert_eq!(aw(&[t("dp"), t("being"), t("dp")]), 1);
+        assert_eq!(aw(&[t("dp"), t("being")]), 0);
         // never spoken: everything is waiting on it, not zero
-        assert_eq!(awaiting(&[t("dp"), t("dp")], "being"), 2);
-        assert_eq!(awaiting(&[], "being"), 0);
+        assert_eq!(aw(&[t("dp"), t("dp")]), 2);
+        assert_eq!(aw(&[]), 0);
     }
 
     #[test]

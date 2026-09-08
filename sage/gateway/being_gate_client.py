@@ -306,6 +306,13 @@ def git_read_command(args: dict, ctx: Optional[dict] = None) -> str:
 
     path = str(args.get("path", "")).strip()
     if path:
+        # WHITESPACE IS JUDGED/EXECUTED DRIFT (GPT review of #56, #6): a path with a space
+        # passes the path grammar, is interpolated unquoted into the composed string the law
+        # judges, and shlex.split() then hands the executor MORE argv elements than the law
+        # saw. One representation, or the gate rules on a command that is not the one run.
+        if any(ch.isspace() for ch in path) or any(ch.isspace() for ch in rev):
+            raise ValueError("git_read 'path' and 'rev' may not contain whitespace: the command "
+                             "the law judges must split into exactly the argv that runs")
         if path.startswith("-") or ".." in path.split("/"):
             raise ValueError(f"git_read 'path' must be a plain path inside your worktree, got {path!r}")
         full = os.path.realpath(os.path.join(worktree, path))
@@ -382,8 +389,31 @@ def git_read_command(args: dict, ctx: Optional[dict] = None) -> str:
 # being cannot omit or alter, push. The commit is authored by the seat's git identity and
 # ATTRIBUTED to the being in trailers — §6 says signatures come at M3; this is the
 # legibility form, honestly labelled as such in every PR body.
-PR_BASE_BRANCH = "legion/mission-artifact"   # where the harness runs from; NOT main
 PR_REPO = "dp-web4/SAGE"
+
+
+def pr_base_branch(worktree: str) -> str:
+    """The branch a being's PR targets: the upstream its worktree branch tracks.
+
+    Was a hard-coded `legion/mission-artifact` — correct only while the live being rides
+    that development branch (GPT review of #56, #8). After decomposition the integration
+    target moves, and a PR verb that still aimed at a historical feature carrier would
+    propose work against dead history. So the base is READ from the worktree: whatever
+    `legion-being/work` tracks is what the seat last synced it to, which is the current
+    governed integration target by construction. `SAGE_PR_BASE` overrides explicitly."""
+    import subprocess
+    env = os.getenv("SAGE_PR_BASE", "").strip()
+    if env:
+        return env
+    try:
+        r = subprocess.run(["git", "rev-parse", "--abbrev-ref", "legion-being/work@{upstream}"],
+                           cwd=worktree, text=True, capture_output=True, timeout=10)
+        up = r.stdout.strip()
+        if r.returncode == 0 and up.startswith("origin/"):
+            return up[len("origin/"):]
+    except Exception:
+        pass
+    return "main"
 _SLUG = r"[a-z0-9][a-z0-9-]{1,40}"
 
 
@@ -408,7 +438,7 @@ def pr_open_command(args: dict, ctx: Optional[dict] = None) -> str:
     branch = f"legion-being/{slug}"
     # shlex-quote the title: it is the ONE being-supplied string on the command line
     import shlex
-    return (f"gh pr create --repo {PR_REPO} --base {PR_BASE_BRANCH} --head {branch} "
+    return (f"gh pr create --repo {PR_REPO} --base {pr_base_branch(worktree)} --head {branch} "
             f"--title {shlex.quote(title)} --body-file -")
 
 
@@ -615,20 +645,30 @@ def parse_tool_calls(tool_calls: list) -> List["BeingIntent"]:
 
 
 def _granted_roots(core, policy, workspace: str) -> tuple:
-    """The absolute path roots a resolved policy grants ("path:<abs>" scopes), via the
-    core's own resolver when it has one. () when there is no policy or no path scope."""
+    """``((abs_root, recursive), ...)`` for every `path:` scope a resolved policy grants.
+
+    REACH TRAVELS WITH THE ROOT (hestia #1002; GPT review of #56, #2). This used to return
+    bare roots via `_scope_parts(...)[1]`, and the dispatcher then admitted `p == root OR
+    root in p.parents` — so an EXACT hestia grant on /x became recursive /x/** inside SAGE's
+    own defense-in-depth layer, wider than the law that produced it. Now the pair is kept:
+    the core's `_scope_roots_with_reach` when it has one (post-#1002), else parsed here from
+    the `/**` spelling, so an older core still yields exact-by-default rather than a guess."""
     if policy is None:
         return ()
     try:
         scopes = list(getattr(policy, "scope", ()) or ())
-        parts = getattr(core, "_scope_parts", None)
-        if parts is not None:
-            return tuple(parts(scopes, workspace)[1])
-        roots = []
+        with_reach = getattr(core, "_scope_roots_with_reach", None)
+        if with_reach is not None:
+            return tuple((str(r), bool(rec)) for r, rec in with_reach(scopes, workspace))
+        out = []
         for sc in scopes:
             if isinstance(sc, str) and sc.startswith("path:"):
-                roots.append(os.path.realpath(os.path.expanduser(sc[5:])))
-        return tuple(roots)
+                raw = sc[5:]
+                rec = raw.endswith("/**")
+                if rec:
+                    raw = raw[:-3]
+                out.append((os.path.realpath(os.path.expanduser(raw)), rec))
+        return tuple(out)
     except Exception:
         return ()
 
@@ -641,8 +681,10 @@ class GatewayVerdict:
     innate: bool = False
     stage: str = ""        # which stage decided: registry | local-law | society
     witness_id: Optional[str] = None   # the deny's chain hash once witnessed (appeal handle)
-    # The path roots the law consulted for this verdict (the member's grants, resolved):
-    # the dispatcher's own confinement follows THESE, not only the home. Legion measured
+    # The path roots the law consulted for this verdict, WITH THEIR REACH: a tuple of
+    # (abs_root, recursive) pairs since hestia #1002 — exact unless the operator made the
+    # grant recursive. The dispatcher's own confinement follows THESE, not only the home,
+    # and must honour the reach, or SAGE's defense-in-depth is wider than the law. Legion measured
     # 2026-09-05 that a shared-context read grant "cannot be used at all" because the local
     # dispatcher confined memory_read to the instance dir before hestia's gate was consulted.
     granted: tuple = ()

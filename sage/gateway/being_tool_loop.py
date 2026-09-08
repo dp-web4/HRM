@@ -285,6 +285,9 @@ _CPT = 3.4
 # tokens, p90 3,909, p99 5,741. Reserve the p99 with headroom rather than num_predict, which
 # is a ceiling the model has never approached.
 _ANSWER_RESERVE = 6144
+# Compaction keeps this many chars of an elided tool result and reports exactly the rest.
+COMPACT_KEEP_CHARS = 400
+COMPACT_MIN_BODY = 500        # a body at or under this is never elided
 
 
 def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERVE) -> tuple:
@@ -327,12 +330,18 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
         if size(out) <= budget:
             break
         body = out[i].get("content") or ""
-        if len(body) <= 500:
+        if len(body) <= COMPACT_MIN_BODY:
             continue
-        out[i]["content"] = (body[:400] +
-                             f"\n[… {len(body) - 160} characters elided to leave room for your "
+        # ONE constant for what is kept, and the accounting derives from it. The first cut
+        # kept body[:400] and reported len(body) - 160 — every elision overstated by 240
+        # chars, in the record AND in the marker the being reads (GPT review of #56, #5).
+        # An instrument that misreports its own intervention is the false-absence class
+        # again: the being would plan around a gap that was 240 chars smaller than told.
+        kept, elided_n = body[:COMPACT_KEEP_CHARS], len(body) - COMPACT_KEEP_CHARS
+        out[i]["content"] = (kept +
+                             f"\n[… {elided_n} characters elided to leave room for your "
                              f"answer; read the source again if you still need it …]")
-        elided.append({"index": i, "chars": len(body) - 160})
+        elided.append({"index": i, "chars": elided_n, "kept": COMPACT_KEEP_CHARS})
     return out, elided
 
 

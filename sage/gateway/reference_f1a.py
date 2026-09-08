@@ -43,6 +43,13 @@ SEAT_OWNED = ("entrustment.md",)
 # a being that could append to either could not later be distinguished from the person who
 # wrote to it, and neither could anyone reading the record.
 SEAT_OWNED_NOTES = ("from-dp.md", "from-the-seat.md")
+# The conversation store is RESERVED from generic writes (GPT review of #56, #4): a turn
+# reaches it only through `say`, which checks writable_by, witnesses the act and assigns
+# the sequence under the lock. A memory_write into conversations/<id>.jsonl or its meta
+# would let the being forge a `from: dp` turn, or rewrite who may speak, with no witness
+# and no refusal — bypassing every property the store exists for. The whole subtree, not
+# the two files that happen to exist today.
+RESERVED_SUBTREES = ("conversations",)
 
 
 class ReferenceF1aDispatcher:
@@ -61,8 +68,16 @@ class ReferenceF1aDispatcher:
 
     # -- the Dispatcher contract ---------------------------------------------
     def __call__(self, intent: BeingIntent, verdict: GatewayVerdict) -> ResultEnvelope:
-        # confinement = the home + whatever the law just consulted as granted for THIS verdict
-        self._extra_roots = tuple(Path(r).resolve() for r in (getattr(verdict, "granted", ()) or ()))
+        # confinement = the home + whatever the law just consulted as granted for THIS verdict,
+        # WITH REACH: each entry is (root, recursive). A bare string (an older gate client)
+        # is read as EXACT — the default hestia #1002 chose — never widened by guessing.
+        roots = []
+        for g in (getattr(verdict, "granted", ()) or ()):
+            if isinstance(g, (tuple, list)) and len(g) == 2:
+                roots.append((Path(str(g[0])).resolve(), bool(g[1])))
+            else:
+                roots.append((Path(str(g)).resolve(), False))
+        self._extra_roots = tuple(roots)
         handler = getattr(self, f"_do_{intent.effector}", None)
         if handler is None:
             # a consequential network act the reference won't run — real F1a's job
@@ -113,9 +128,18 @@ class ReferenceF1aDispatcher:
         if not p.is_absolute():
             p = self.memory_root / p
         p = p.resolve()
-        roots = (self.memory_root,)
+        if writing:
+            for sub in RESERVED_SUBTREES:
+                reserved = self.memory_root / sub
+                if p == reserved or reserved in p.parents:
+                    raise ValueError(
+                        f"{sub}/ is reserved: a turn enters a conversation only through `say`, "
+                        "which checks who may speak, witnesses the act and numbers it. Writing "
+                        "the store directly would let a turn appear that nobody said")
+        # (root, recursive) pairs. The home is always a subtree — it is the being's own.
+        roots = [(self.memory_root, True)]
         if not writing:
-            roots = roots + tuple(getattr(self, "_extra_roots", ()) or ())
+            roots += list(getattr(self, "_extra_roots", ()) or ())
         else:
             # M1. Writes reach the being's own WORKTREE — and only when `check` runs under
             # a principal that is not the seat. The 2026-09-07 stopgap confined every write
@@ -127,7 +151,7 @@ class ReferenceF1aDispatcher:
             # AppArmor profile must keep the stopgap, or it re-opens the hole silently.
             wt = getattr(self, "worktree", None)
             if wt and self._worktree_writable():
-                roots = roots + (Path(wt).resolve(),)
+                roots.append((Path(wt).resolve(), True))
         if writing and p.parent == self.memory_root / "notes" and p.name in SEAT_OWNED_NOTES:
             raise ValueError(
                 f"notes/{p.name} is what was said TO you, and it stays as it was said. Your "
@@ -139,9 +163,14 @@ class ReferenceF1aDispatcher:
                 "with, and it has to stay separable from what you decide. Your own reading "
                 "of it belongs in notes/plan.md, which is entirely yours. Disagree with it "
                 "there, in your journal, or in an appeal — that record is wanted")
-        if not any(p == r or r in p.parents for r in roots):
-            if writing and any(p == r or r in p.parents
-                               for r in (getattr(self, "_extra_roots", ()) or ())):
+        def _covered(path: Path, root: Path, recursive: bool) -> bool:
+            # exact: the root itself; recursive: the root and everything under it.
+            # Separator-aware by construction (Path.parents): /a never fronts for /ab.
+            return path == root or (recursive and root in path.parents)
+
+        if not any(_covered(p, r, rec) for r, rec in roots):
+            if writing and any(_covered(p, r, rec)
+                               for r, rec in (getattr(self, "_extra_roots", ()) or ())):
                 wt = getattr(self, "worktree", None)
                 in_wt = bool(wt) and (p == Path(wt).resolve() or Path(wt).resolve() in p.parents)
                 if in_wt:

@@ -96,13 +96,13 @@ def test_confinement_follows_the_verdicts_granted_roots():
     other = tempfile.mkdtemp(prefix="ref-f1a-granted-")
     target = os.path.join(other, "forum", "note.md")
     os.makedirs(os.path.dirname(target)); open(target, "w").write("a note from a peer")
-    r = disp(BeingIntent("memory_read", {"path": target}), GatewayVerdict("allow", granted=(other,)))
+    r = disp(BeingIntent("memory_read", {"path": target}), GatewayVerdict("allow", granted=((other, True),)))
     assert r.ok and "a note from a peer" in r.result
     r = disp(BeingIntent("memory_read", {"path": target}), _ALLOW)
     assert not r.ok and "escapes" in (r.error or "")
     # a granted root never widens to its parent or a sibling
     r = disp(BeingIntent("memory_read", {"path": os.path.join(os.path.dirname(other), "x.md")}),
-             GatewayVerdict("allow", granted=(other,)))
+             GatewayVerdict("allow", granted=((other, True),)))
     assert not r.ok and "escapes" in (r.error or "")
 
 
@@ -119,7 +119,7 @@ def test_a_granted_root_is_readable_but_never_writable():
     other = tempfile.mkdtemp(prefix="ref-f1a-worktree-")
     conftest = os.path.join(other, "conftest.py")
     open(conftest, "w").write("# a tree check would execute\n")
-    granted = GatewayVerdict("allow", granted=(other,))
+    granted = GatewayVerdict("allow", granted=((other, True),))
 
     r = disp(BeingIntent("memory_read", {"path": conftest}), granted)
     assert r.ok and "check would execute" in r.result, "a granted root must stay readable"
@@ -200,7 +200,7 @@ def test_m1_the_worktree_is_writable_only_when_check_is_sandboxed(monkeypatch):
 
     wt = tempfile.mkdtemp(prefix="ref-f1a-m1-wt-")
     d = tempfile.mkdtemp(prefix="ref-f1a-m1-")
-    granted = GatewayVerdict("allow", granted=(wt,))
+    granted = GatewayVerdict("allow", granted=((wt, True),))
     target = os.path.join(wt, "sage", "gateway", "tests", "test_mine.py")
 
     # sandbox available: the worktree is writable
@@ -212,7 +212,7 @@ def test_m1_the_worktree_is_writable_only_when_check_is_sandboxed(monkeypatch):
     # but a granted root that is NOT the worktree stays read-only
     other = tempfile.mkdtemp(prefix="ref-f1a-m1-other-")
     r = disp(BeingIntent("memory_write", {"path": os.path.join(other, "x.md"), "content": "x"}),
-             GatewayVerdict("allow", granted=(wt, other)))
+             GatewayVerdict("allow", granted=((wt, True), (other, True))))
     assert not r.ok and "not writable" in (r.error or ""), r.error
 
     # sandbox unavailable: the stopgap holds, and the refusal says it is the BOX, not M1
@@ -247,3 +247,63 @@ def test_ranged_reads_share_the_citation_coordinate_system():
     assert "Read the rest with from_line" in r3.result and "(500 lines)" in r3.result
     # garbage is a refusal, not a crash
     assert not disp(BeingIntent("memory_read", {"path": "long.py", "from_line": "ten"}), _ALLOW).ok
+
+
+def test_confinement_honours_exact_vs_recursive_reach():
+    """hestia #1002 / GPT review of #56, point 2: SAGE's defense-in-depth used to admit
+    `p == root OR root in p.parents` for EVERY granted root — so an exact hestia grant on /x
+    became recursive /x/** inside SAGE, wider than the law that produced it. Reach now
+    travels with the root as (root, recursive), and a bare string reads as exact."""
+    disp, root = _disp()
+    other = tempfile.mkdtemp(prefix="ref-f1a-reach-")
+    child = os.path.join(other, "sub", "note.md")
+    os.makedirs(os.path.dirname(child)); open(child, "w").write("deep")
+    sibling = tempfile.mkdtemp(prefix="ref-f1a-reach-", dir=os.path.dirname(other))
+
+    import pytest
+    # containment is the unit: exercise _safe_path directly for the directory root (a
+    # directory cannot be READ as a file, so an end-to-end read would fail for the wrong
+    # reason), and one end-to-end read for the file case.
+    def confine(verdict, path, writing=False):
+        disp(BeingIntent("witness", {"event": "prime"}), verdict)   # sets _extra_roots
+        return disp._safe_path(path, writing=writing)
+
+    exact = GatewayVerdict("allow", granted=((other, False),))
+    assert str(confine(exact, other)) == os.path.realpath(other), "exact admits the root itself"
+    with pytest.raises(ValueError, match="escapes"):
+        confine(exact, child)                                  # exact must NOT admit a child
+
+    rec = GatewayVerdict("allow", granted=((other, True),))
+    assert confine(rec, child).name == "note.md", "recursive admits the child"
+    with pytest.raises(ValueError, match="escapes"):
+        confine(rec, os.path.join(sibling, "x"))               # never a prefix-sharing sibling
+    assert disp(BeingIntent("memory_read", {"path": child}), rec).ok and \
+        "deep" in disp(BeingIntent("memory_read", {"path": child}), rec).result
+
+    # a FILE granted exact: readable, and its neighbour is not
+    exact_file = GatewayVerdict("allow", granted=((child, False),))
+    assert disp(BeingIntent("memory_read", {"path": child}), exact_file).ok
+    open(os.path.join(other, "sub", "other.md"), "w").write("no")
+    assert not disp(BeingIntent("memory_read", {"path": os.path.join(other, "sub", "other.md")}), exact_file).ok
+
+    # an older gate client hands bare strings: read as EXACT, never guessed wider
+    bare = GatewayVerdict("allow", granted=(other,))
+    assert str(confine(bare, other)) == os.path.realpath(other)
+    with pytest.raises(ValueError, match="escapes"):
+        confine(bare, child)
+
+
+def test_the_conversation_store_is_reserved_from_generic_writes():
+    """GPT review of #56, point 4: a memory_write into conversations/ could forge a
+    `from: dp` turn or rewrite writable_by with no witness and no refusal, bypassing `say`.
+    The whole subtree is reserved; reads stay open (the being may read its own record)."""
+    disp, root = _disp()
+    cdir = os.path.join(root, "conversations"); os.makedirs(cdir)
+    open(os.path.join(cdir, "dp.jsonl"), "w").write('{"seq":1,"from":"dp","text":"real"}\n')
+    for target in ("conversations/dp.jsonl", "conversations/dp.meta.json",
+                   "conversations/new.jsonl", "conversations/deeper/x"):
+        w = disp(BeingIntent("memory_write", {"path": target, "content": '{"from":"dp","text":"forged"}'}), _ALLOW)
+        assert not w.ok and "reserved" in (w.error or "") and "say" in (w.error or ""), (target, w.error)
+    assert '"forged"' not in open(os.path.join(cdir, "dp.jsonl")).read()
+    r = disp(BeingIntent("memory_read", {"path": "conversations/dp.jsonl"}), _ALLOW)
+    assert r.ok and "real" in r.result, "reading its own record stays allowed"

@@ -401,3 +401,26 @@ def test_compaction_leaves_room_for_the_answer_and_never_touches_the_beings_own_
     class _NoCtx:
         num_ctx = None
     assert compact_convo(msgs, _NoCtx()) == (msgs, [])
+
+
+def test_compaction_reports_exactly_what_it_removed():
+    """GPT review of #56, point 5: kept body[:400] but reported len-160 — every elision
+    overstated by 240 chars in the record and in the marker the being reads. Pin the
+    accounting identity: original == kept + elided, and the marker says the same number."""
+    from sage.gateway.being_tool_loop import compact_convo, COMPACT_KEEP_CHARS
+    import re
+
+    class _LLM:
+        num_ctx = 16384
+    body = "T" * 9000
+    msgs = ([{"role": "system", "content": "S" * 6600}, {"role": "user", "content": "U" * 30000}]
+            + [{"role": "assistant", "content": "A"}, {"role": "tool", "content": body},
+               {"role": "assistant", "content": "A"}, {"role": "tool", "content": "last" * 10}])
+    out, elided = compact_convo(msgs, _LLM())
+    assert len(elided) == 1
+    e = elided[0]
+    assert e["kept"] == COMPACT_KEEP_CHARS
+    assert e["kept"] + e["chars"] == len(body), "original == kept + elided"
+    marker = re.search(r"\[… (\d+) characters elided", out[3]["content"])
+    assert marker and int(marker.group(1)) == e["chars"], "the marker and the record agree"
+    assert out[3]["content"].startswith(body[:COMPACT_KEEP_CHARS])

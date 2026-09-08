@@ -286,9 +286,15 @@ def test_granted_roots_come_from_the_policy_scope():
     class Pol: scope = ("path:/tmp/being-home", "repo:sage", "path:~/nope-not-real")
     class Core:
         @staticmethod
-        def _scope_parts(scopes, ws): return ((), tuple(s[5:] for s in scopes if s.startswith("path:")))
-    assert _granted_roots(Core, Pol, "/ws") == ("/tmp/being-home", "~/nope-not-real")
-    assert _granted_roots(object(), Pol, "/ws")[0].endswith("/tmp/being-home")   # fallback parser
+        def _scope_roots_with_reach(scopes, ws):
+            return tuple((s[5:].removesuffix("/**"), s.endswith("/**"))
+                         for s in scopes if s.startswith("path:"))
+    # reach travels with the root (hestia #1002): pairs, not bare roots
+    assert _granted_roots(Core, Pol, "/ws") == (("/tmp/being-home", False), ("~/nope-not-real", False))
+    fb = _granted_roots(object(), Pol, "/ws")                                  # fallback parser
+    assert fb[0][0].endswith("/tmp/being-home") and fb[0][1] is False
+    class PolRec: scope = ("path:/tmp/tree/**",)
+    assert _granted_roots(object(), PolRec, "/ws") == (("/tmp/tree", True),), "the /** spelling is reach"
     assert _granted_roots(Core, None, "/ws") == () and GatewayVerdict("allow").granted == ()
 
 
@@ -471,3 +477,45 @@ def test_git_read_rev_suffixes_work_on_any_base_and_still_take_no_flags():
             raise AssertionError(f"{bad!r} must be refused")
         except ValueError:
             pass
+
+
+def test_git_read_rejects_whitespace_so_judged_argv_is_executed_argv():
+    """GPT review of #56, point 6: a path with a space passed the grammar, was interpolated
+    unquoted into the judged string, and shlex.split() handed the executor more argv than
+    the law saw. One representation, or the gate rules on a command that is not the one run."""
+    from sage.gateway.being_gate_client import git_read_command
+    ctx = {"worktree": "/tmp/wt"}
+    for args in ({"op": "show", "rev": "HEAD", "path": "sage/gate way/x"},
+                 {"op": "log", "path": "a\tb"},
+                 {"op": "show", "rev": "HEAD --all"}):
+        try:
+            git_read_command(args, ctx)
+            raise AssertionError(f"{args} must be refused")
+        except ValueError as e:
+            assert "whitespace" in str(e) or "rev" in str(e), e
+    ok = git_read_command({"op": "show", "rev": "HEAD", "path": "sage/gateway/x"}, ctx)
+    import shlex
+    assert shlex.split(ok)[-1] == "/tmp/wt/sage/gateway/x", "one path, one argv element"
+
+
+def test_pr_open_base_is_the_worktrees_upstream_not_a_hard_coded_branch(tmp_path, monkeypatch):
+    """GPT review of #56, point 8: a hard-coded `legion/mission-artifact` base is right only
+    while the being rides that branch; after decomposition it would propose against dead
+    history. The base is read from what legion-being/work tracks — the current integration
+    target by construction — with SAGE_PR_BASE as the explicit override."""
+    import subprocess
+    from sage.gateway.being_gate_client import pr_base_branch, pr_open_command
+    origin = tmp_path / "o.git"; subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True)
+    wt = tmp_path / "wt"; subprocess.run(["git", "clone", "-q", str(origin), str(wt)], check=True)
+    g = lambda *a: subprocess.run(["git", "-C", str(wt), *a], check=True, capture_output=True, text=True)
+    g("config", "user.email", "t@t"); g("config", "user.name", "t")
+    (wt / "f").write_text("x"); g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("push", "-q", "origin", "HEAD:legion/some-integration-target")
+    g("checkout", "-q", "-b", "legion-being/work", "--track", "origin/legion/some-integration-target")
+    monkeypatch.delenv("SAGE_PR_BASE", raising=False)
+    assert pr_base_branch(str(wt)) == "legion/some-integration-target"
+    assert "--base legion/some-integration-target" in pr_open_command(
+        {"slug": "s-1", "title": "a title long enough", "body": "b"}, {"worktree": str(wt)})
+    monkeypatch.setenv("SAGE_PR_BASE", "main")
+    assert pr_base_branch(str(wt)) == "main", "explicit override wins"
+    assert pr_base_branch(str(tmp_path)) == "main", "no upstream: main, never a stale carrier"

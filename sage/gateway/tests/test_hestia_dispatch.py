@@ -292,7 +292,7 @@ def test_mesh_witness_id_falls_back_to_queued_id():
 def test_recall_sends_query_and_clamps_top_k():
     d, _ = _mdisp()
     env = d(BeingIntent("recall", {"query": "what was I doing", "top_k": 99}), _ALLOW)
-    assert env.ok and env.result == "1. something remembered" and env.witness_id, env
+    assert env.ok and env.result == "From long-term memory:\n1. something remembered" and env.witness_id, env
     assert _mb_calls("memory_search") == [{"query": "what was I doing", "top_k": 20}]
     d(BeingIntent("recall", {"query": "x", "top_k": -3}), _ALLOW)
     assert _mb_calls("memory_search")[-1]["top_k"] == 1
@@ -516,6 +516,23 @@ def test_git_land_survives_an_unrelated_dirty_file_in_the_checkout():
     log = subprocess.run(["git", "-C", bare, "log", "--format=%s"], capture_output=True, text=True).stdout
     assert "being: peer_ask -> legion" in log and "peer" in log
     assert "sibling" in open(os.path.join(work, "seed.md")).read()   # the dirty file is untouched
+
+
+def test_recall_answers_from_the_home_first_then_long_term_memory():
+    import tempfile
+    from sage.gateway.being_gate_client import GatewayVerdict
+    root = tempfile.mkdtemp(prefix="hd-")
+    open(root + "/journal.md", "w").write("2026-09-07 23:12 UTC — hearing is receiving, listening is attention.\n")
+    d = HestiaF1aDispatcher("sprout-being", root, mcp_factory=lambda ep, pid: FakeMembot(ep, pid))
+    env = d(BeingIntent("recall", {"query": "listening attention"}), GatewayVerdict("allow"))
+    assert env.ok and "From your own journal" in env.result and "journal.md @ 2026-09-07 23:12" in env.result
+    assert "From long-term memory" in env.result and "something remembered" in env.result
+    # membot down: the home still answers; membot down AND nothing at home: an error
+    d2 = HestiaF1aDispatcher("sprout-being", root, mcp_factory=lambda ep, pid: FakeMembot(ep, pid, fail={"memory_search": "rpc"}))
+    env = d2(BeingIntent("recall", {"query": "listening"}), GatewayVerdict("allow"))
+    assert env.ok and "From your own journal" in env.result and "unreachable" in env.result
+    env = d2(BeingIntent("recall", {"query": "zebra"}), GatewayVerdict("allow"))
+    assert not env.ok and "membot" in env.error
 
 
 if __name__ == "__main__":

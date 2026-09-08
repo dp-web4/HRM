@@ -340,10 +340,23 @@ class HestiaF1aDispatcher:
             k = int(intent.args.get("top_k") or 5)
         except (TypeError, ValueError):
             k = 5
+        # The being's own writing first (journal entries, todo blocks, notes, scratch): read-only,
+        # mechanical, hermetic (home_recall). Then long-term memory (membot). Measured 2026-09-07:
+        # a 34 KB journal it could see 900 chars of, and a cartridge with three entries.
+        from sage.gateway.home_recall import search_home, render
+        home = ""
         try:
-            text = self._membot_call("memory_search", {"query": q, "top_k": max(1, min(k, 20))})
+            home = render(search_home(self._local.memory_root, q, top_k=max(1, min(k, 8))))
+        except Exception as e:                      # never let the home search take recall down
+            home = f"(home search failed: {type(e).__name__})"
+        try:
+            lt = self._membot_call("memory_search", {"query": q, "top_k": max(1, min(k, 20))})
+            lt = "From long-term memory:\n" + lt if lt and lt.strip() else ""
         except Exception as e:
-            return ResultEnvelope(ok=False, error=f"membot ({type(e).__name__}): {e}")
+            lt = f"(long-term memory unreachable: {type(e).__name__})"
+            if not home:
+                return ResultEnvelope(ok=False, error=f"membot ({type(e).__name__}): {e}")
+        text = "\n\n".join(x for x in (home, lt) if x) or "(nothing matched, in your home or in long-term memory)"
         return ResultEnvelope(ok=True, result=text,
                               witness_id=self._local._witness(f"recall {q[:80]}"))
 

@@ -101,7 +101,7 @@ ASK_ACT_FIRST = "This time is yours. Do one thing now and leave a trace of it.\n
 REFLECT = """The beat is ending. Two tool calls, then stop:
 1. memory_write path "journal.md": one entry starting with the date {date}: what you did, what you noticed, what was refused and why you think so, what you want next time.
 2. memory_write path "todo.md": only the delta as a dated block: added / done / still open (it appends; it replaces nothing).
-Optionally a third: remember one thing worth keeping long-term.
+3. remember: one sentence a future you would want to FIND by searching (what you learned, decided, or noticed), only if there is one. Your journal is searchable by recall now; remember is for the line that should outlast it.
 Call the tools now; a reply in words alone writes nothing.
 {nothink}"""
 
@@ -195,9 +195,11 @@ def own_state(instance: Path) -> str:
     acc = carried_account(instance, last_session_number(instance))
     if acc:
         parts.append("## Your own account\n" + acc)
-    todo = _read(instance / "todo.md", 3000)
+    # tails are short now that recall searches the whole home (window pressure: median 6157
+    # of 8192 tokens per prompt, max 8013, measured 2026-09-07)
+    todo = _read(instance / "todo.md", 1500)
     parts.append("## todo.md\n" + (todo.strip() or "(empty: you have no todo list yet)"))
-    journal = _read(instance / "journal.md", 2500)
+    journal = _read(instance / "journal.md", 1200)
     parts.append("## journal.md (tail)\n" + (journal.strip() or "(empty: this is your first beat)"))
     for d in ("scratch", "notes"):
         p = instance / d
@@ -372,12 +374,20 @@ def main(argv=None) -> int:
                      + "(live grants die when the daemon restarts; only standing grants persist)")
         except Exception as e:
             scope = f"(scope status unavailable: {type(e).__name__})"
-    recall = "(no long-term memory yet)"
+    # what it starts oriented by: its own recent writing (searched, not just the tail) and
+    # long-term memory. The home search is the S5 answer to "34 KB written, 900 chars seen".
+    from sage.gateway.home_recall import search_home, render as _render_home
+    q0 = "what I was doing, what I want next, what I learned, what was refused"
+    try:
+        recall = _render_home(search_home(instance, q0, top_k=4, snippet=260)) or "(nothing in your home matched)"
+    except Exception as e:
+        recall = f"(home search failed: {type(e).__name__})"
     if disp is not None and hasattr(disp, "_membot_call"):
         try:
-            recall = disp._membot_call("memory_search", {"query": "what I was doing, what I want next, what I learned", "top_k": 5})[:2500]
+            lt = disp._membot_call("memory_search", {"query": q0, "top_k": 4})[:1200]
+            recall += "\n\nFrom long-term memory:\n" + lt
         except Exception as e:
-            recall = f"(membot unreachable: {type(e).__name__})"
+            recall += f"\n\n(long-term memory unreachable: {type(e).__name__})"
 
     now = datetime.now(timezone.utc)
     t0 = time.time()

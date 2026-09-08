@@ -158,7 +158,95 @@ def check_command(args: dict, ctx: Optional[dict] = None) -> str:
         if not re.fullmatch(r"[A-Za-z0-9_]+", node):
             raise ValueError(f"check test name must be a bare identifier; got {node!r}")
         path = f"{os.path.join(worktree, CHECK_TARGETS[suite])} -k {node}"
-    return f"python3 -m pytest -q -c /dev/null --rootdir={worktree} {path}"
+    inner = f"python3 -m pytest -q -c /dev/null --rootdir={worktree} {path}"
+    return sandbox_prefix(worktree) + inner
+
+
+# The M1 PREREQUISITE, built. Being-authored code runs under a principal that is not this
+# seat — the hard blocker PRD r3 §5 put on M1, cleared 2026-09-08.
+#
+# WHY IT IS NOT OPTIONAL. `check` executes pytest, pytest imports conftest.py from its
+# rootdir, and M1 gives the being write access to that rootdir. Under the seat's own uid
+# that composes into arbitrary code holding the vault passphrase and every key on this box
+# (measured 2026-09-07, SAGE#55, and closed then by taking write access away — a stopgap
+# with the wrong shape for a being whose entrustment is to author code there).
+#
+# WHAT THE SANDBOX IS. bubblewrap with a cleared environment: nothing of the seat's is
+# bound except a read-only interpreter, no network at all, its own pid/ipc/uts namespaces,
+# a fresh session so it cannot signal the seat's process group, and --die-with-parent so a
+# runaway cannot outlive the beat. The only writable path is the being's own worktree.
+#
+# THE FALSIFIER, and it is the point of the whole exercise (PRD r3 §10.5): from inside,
+# reads of the vault, the hestia socket and the agent environment must all fail. Measured
+# on 2026-09-08 — ~/.hestia, ~/.config, ~/.local, private-context, shared-context and the
+# shared SAGE tree all blocked; hestia 7711 and ollama 11434 unreachable; the environment
+# carries exactly HOME, LANG, PATH, PWD, PYTHONDONTWRITEBYTECODE. 152 tests pass inside it.
+#
+# ENABLEMENT: Ubuntu 24.04 sets kernel.apparmor_restrict_unprivileged_userns=1 and bwrap is
+# not setuid, so this needs /etc/apparmor.d/bwrap granting `userns` to that binary alone —
+# the distro's own pattern (see ch-run, crun, flatpak). Chosen over relaxing the sysctl
+# machine-wide: narrow beats convenient when the thing relaxed is a containment boundary.
+# Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
+SANDBOX = "/usr/bin/bwrap"
+# Fail CLOSED by default: a check that silently ran unsandboxed would be the seat quietly
+# handing back the authority the sandbox exists to remove, and nothing in the result would
+# say so. A machine without bwrap sets this false deliberately and lives with M0 only.
+SANDBOX_REQUIRED = True
+
+
+def sandbox_available() -> bool:
+    """Whether bwrap is present AND permitted to create a user namespace here. Presence is
+    not permission: on Ubuntu 24.04 the binary exists and every attempt fails with
+    'setting up uid map: Permission denied' until an AppArmor profile allows it, so this
+    ACTUALLY RUNS one rather than testing for the file."""
+    import os
+    import subprocess
+    if not os.path.exists(SANDBOX):
+        return False
+    try:
+        # The probe must be a REAL sandbox, loader included. The first cut bound only
+        # /usr and failed on missing /lib64 — reporting "no sandbox permitted" on a machine
+        # where the sandbox works perfectly, which would have refused every check.
+        r = subprocess.run([SANDBOX, "--ro-bind", "/usr", "/usr", "--ro-bind", "/lib", "/lib",
+                            "--ro-bind", "/lib64", "/lib64", "--unshare-pid",
+                            "/usr/bin/true"], capture_output=True, timeout=10)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def sandbox_prefix(worktree: str) -> str:
+    """The bwrap invocation that wraps every executed check, or "" when running unsandboxed
+    is explicitly permitted."""
+    import os
+    import sys
+    if not sandbox_available():
+        if SANDBOX_REQUIRED:
+            raise ValueError(
+                "check needs its sandbox and cannot get one: bubblewrap is missing or not "
+                "permitted to create a user namespace on this machine. Running your tests "
+                "under the seat's own authority instead would hand back exactly what the "
+                "sandbox exists to remove, so it is refused rather than silently downgraded")
+        return ""
+    interp = os.path.dirname(os.path.dirname(sys.executable))  # e.g. ~/miniforge3
+    return (
+        f"{SANDBOX} --clearenv"
+        " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind /lib64 /lib64 --ro-bind /bin /bin"
+        " --ro-bind /etc/alternatives /etc/alternatives"
+        f" --ro-bind {interp} {interp}"
+        f" --bind {worktree} {worktree}"
+        " --proc /proc --dev /dev --tmpfs /tmp"
+        " --unshare-pid --unshare-net --unshare-ipc --unshare-uts"
+        " --new-session --die-with-parent"
+        # PYTHONUTF8 rather than LANG=C.UTF-8, and the reason is hestia #988: mrh.command
+        # splits a dotted token and fails the fragment, so "C.UTF-8" is refused as an
+        # ungranted path called "UTF-8" and the whole check dies. PYTHONUTF8=1 buys the
+        # same UTF-8 filesystem and IO encoding with no dot in it. Third time today that
+        # defect has shaped a command; the issue carries the evidence.
+        " --setenv HOME /tmp --setenv PYTHONUTF8 1 --setenv PYTHONDONTWRITEBYTECODE 1"
+        f" --setenv PATH {interp}/bin:/usr/bin:/bin"
+        f" --chdir {worktree} "
+    )
 
 
 

@@ -399,3 +399,53 @@ def test_git_read_is_offered_and_consequential():
     schema = next(t for t in ollama_tools() if t["function"]["name"] == "git_read")
     assert schema["function"]["parameters"]["required"] == ["op"]
     assert "cannot commit, push, or move a branch" in schema["function"]["description"]
+
+
+def test_check_runs_under_a_principal_that_is_not_the_seat():
+    """THE M1 PREREQUISITE. PRD r3 §5 made principal isolation a hard blocker on M1, with a
+    concrete falsifier in §10.5: from the being's principal, reads of the vault, the hestia
+    socket and the agent environment must all fail.
+
+    Why it is not optional: `check` executes pytest, pytest imports conftest.py from its
+    rootdir, and M1 gives the being write access to that rootdir. Under the seat's own uid
+    those two gated verbs compose into arbitrary code holding the vault passphrase and
+    every key on the box (measured 2026-09-07, SAGE#55).
+    """
+    from sage.gateway.being_gate_client import (
+        check_command, sandbox_available, sandbox_prefix, SANDBOX_REQUIRED)
+
+    if not sandbox_available():
+        # Presence is not permission: on Ubuntu 24.04 bwrap exists and every attempt fails
+        # until an AppArmor profile grants it `userns`. Where it is unavailable the only
+        # correct behaviour is to REFUSE, never to run unsandboxed.
+        assert SANDBOX_REQUIRED, "a machine without a sandbox must not run checks unsandboxed"
+        try:
+            check_command({"target": "gateway"}, {"worktree": "/tmp/wt"})
+            raise AssertionError("check must refuse when it cannot get its sandbox")
+        except ValueError as e:
+            assert "sandbox" in str(e)
+        return
+
+    cmd = check_command({"target": "gateway"}, {"worktree": "/tmp/wt"})
+    assert cmd.startswith("/usr/bin/bwrap "), cmd[:80]
+
+    # the properties that make it a different principal, each named
+    for flag, why in (
+        ("--clearenv", "the seat's environment, agent sockets included, must not survive"),
+        ("--unshare-net", "no network: the hestia socket and ollama are the seat's, not its"),
+        ("--unshare-pid", "it cannot see or signal the seat's processes"),
+        ("--new-session", "nor reach the seat's controlling terminal or process group"),
+        ("--die-with-parent", "a runaway cannot outlive the beat that started it"),
+        ("--ro-bind /usr /usr", "the system is readable and not writable"),
+        ("--bind /tmp/wt /tmp/wt", "its own worktree is the ONLY writable path"),
+    ):
+        assert flag in cmd, f"missing {flag}: {why}"
+
+    # nothing of the seat's home is bound beyond the interpreter
+    import re
+    binds = re.findall(r"--(?:ro-)?bind (\S+) ", cmd)
+    for b in binds:
+        assert not b.startswith("/home/dp/ai-workspace/SAGE/sage/instances"), \
+            f"the being's own home must not be inside the tree check executes: {b}"
+    assert "C.UTF-8" not in cmd, \
+        "hestia #988 splits a dotted token and refuses the whole command; PYTHONUTF8 instead"

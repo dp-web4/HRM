@@ -58,7 +58,15 @@ source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 DAEMON_MODEL=$(curl -s --max-time 3 "http://localhost:${SAGE_PORT:-8760}/health" 2>/dev/null \
     | /opt/homebrew/bin/python3 -c "import sys,json; print(json.load(sys.stdin).get('model','gemma3:12b'))" 2>/dev/null \
     || echo "gemma3:12b")
-INSTANCE_SLUG="mcnugget-${DAEMON_MODEL//:/-}"
+# HONOUR SAGE_INSTANCE FIRST. Deriving the slug from the model made the being's
+# IDENTITY a function of its MODEL: a model swap silently pointed raising at a new,
+# empty instance and started it over at session 1. That is not hypothetical — this
+# fleet already carries the wreckage (mcnugget-gemma4-e4b: 0 sessions; legion has
+# four such dirs; cbp has three). The resolver has always supported SAGE_INSTANCE as
+# priority 1; nothing was using it. Renaming the dir to match a new model is NOT the
+# fix: the sealed identity's key derivation includes the instance path, so a rename
+# breaks the seal (loudly now, since authorize() verifies the fingerprint).
+INSTANCE_SLUG="${SAGE_INSTANCE:-mcnugget-${DAEMON_MODEL//:/-}}"
 INSTANCE_DIR="sage/instances/$INSTANCE_SLUG"
 echo "[McNugget-Raising] Active instance: $INSTANCE_SLUG (daemon model: $DAEMON_MODEL)"
 

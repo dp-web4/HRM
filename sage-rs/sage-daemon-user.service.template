@@ -10,6 +10,7 @@
 #
 # INSTALL (substitute the three markers, or use install-sage-daemon-user.sh):
 #   sed -e "s|@ROOT@|$PWD|" -e "s|@MACHINE@|cbp|" -e "s|@MODEL@|gemma3:4b|" \
+#       -e "s|@BEING_INSTANCE@|cbp-gemma3-4b|" \
 #       sage-rs/sage-daemon-user.service.template \
 #     > ~/.config/systemd/user/sage-daemon.service
 #   systemctl --user daemon-reload
@@ -51,7 +52,7 @@ Environment=SAGE_MODEL=@MODEL@
 # substrate. Point SAGE_BEING_INSTANCE at the directory holding the being's
 # heartbeats.jsonl and conversations/; SAGE_BEING is the name it speaks under.
 Environment=SAGE_BEING=@MACHINE@-being
-Environment=SAGE_BEING_INSTANCE=@SAGE_ROOT@/sage/instances/@BEING_INSTANCE@
+Environment=SAGE_BEING_INSTANCE=@ROOT@/sage/instances/@BEING_INSTANCE@
 Environment=RUST_LOG=info
 
 # Ollama may not be listening yet at boot; keep trying rather than failing once.

@@ -360,10 +360,19 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
         # chars, in the record AND in the marker the being reads (GPT review of #56, #5).
         # An instrument that misreports its own intervention is the false-absence class
         # again: the being would plan around a gap that was 240 chars smaller than told.
-        kept, elided_n = body[:COMPACT_KEEP_CHARS], len(body) - COMPACT_KEEP_CHARS
-        out[i]["content"] = (kept +
-                             f"\n[… {elided_n} characters elided to leave room for your "
-                             f"answer; read the source again if you still need it …]")
+        # BOTH ENDS. The head names what was read (path, op); the TAIL carries a command's
+        # verdict — pytest's FAILED line and count are its last lines. legion-being 20:41Z
+        # 2026-09-08: its first call was `check` (FAIL), five steps later the result had
+        # been elided to its head and it reported "I cannot name which test failed: the
+        # output was truncated in my view before the failure line reached me". True, and
+        # the harness's doing. Half and half of the same constant; the accounting holds.
+        h = COMPACT_KEEP_CHARS // 2
+        kept_head, kept_tail = body[:h], body[-(COMPACT_KEEP_CHARS - h):]
+        elided_n = len(body) - COMPACT_KEEP_CHARS
+        out[i]["content"] = (kept_head +
+                             f"\n[… {elided_n} characters elided from the middle to leave room "
+                             f"for your answer; read the source again if you still need it …]\n"
+                             + kept_tail)
         elided.append({"index": i, "chars": elided_n, "kept": COMPACT_KEEP_CHARS})
     return out, elided
 

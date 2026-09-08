@@ -388,10 +388,10 @@ def test_compaction_leaves_room_for_the_answer_and_never_touches_the_beings_own_
     assert out[0]["content"] == msgs[0]["content"], "system prompt untouched"
     assert out[1]["content"] == msgs[1]["content"], "the being's own frame untouched"
     assert out[9]["content"] == "T" * 5000, "the most recent is kept whole"
-    assert "elided to leave room" in out[7]["content"], "the one before it is not protected"
+    assert "to leave room for your answer" in out[7]["content"], "the one before it is not protected"
     for i in (2, 4, 6, 8):
         assert out[i]["content"] == "A" * 500, "assistant turns untouched"
-    assert "elided to leave room for your answer" in out[3]["content"], "the being is told"
+    assert "elided from the middle to leave room for your answer" in out[3]["content"], "the being is told"
     assert "read the source again" in out[3]["content"], "and told what to do about it"
 
     # a conversation that already fits is returned untouched, with nothing reported
@@ -423,7 +423,8 @@ def test_compaction_reports_exactly_what_it_removed():
     assert e["kept"] + e["chars"] == len(body), "original == kept + elided"
     marker = re.search(r"\[… (\d+) characters elided", out[3]["content"])
     assert marker and int(marker.group(1)) == e["chars"], "the marker and the record agree"
-    assert out[3]["content"].startswith(body[:COMPACT_KEEP_CHARS])
+    assert out[3]["content"].startswith(body[:COMPACT_KEEP_CHARS // 2])          # head half
+    assert out[3]["content"].endswith(body[-(COMPACT_KEEP_CHARS - COMPACT_KEEP_CHARS // 2):])  # tail half
 
 
 
@@ -483,7 +484,8 @@ def test_compaction_is_anchored_on_the_measured_prompt():
     assert el == [] and out is msgs
     # measured HIGH (code reads tokenize dense): 21,000 for 55,000 -> 24.5k -> compacts
     out, el = compact_convo(msgs, LLM(), measured=(21_000, 55_000))
-    assert len(el) == 2 and out[3]["content"].startswith("r" * 400) and out[7]["content"] == body
+    assert len(el) == 2 and out[3]["content"].startswith("r" * 200) and out[3]["content"].endswith("r" * 200)
+    assert out[7]["content"] == body
     assert _est_tokens(sum(len(m["content"]) for m in out), (21_000, 55_000)) <= 24576 - _ANSWER_RESERVE
 
 
@@ -513,3 +515,22 @@ def test_loop_feeds_the_previous_prompt_count_into_compaction():
     assert r.reply == "done"
     assert seen[0] is None                                   # nothing measured before the first generate
     assert seen[1][0] == 17_541 and seen[1][1] == len("beat")  # the server's count for the prompt as sent
+
+
+
+def test_compaction_keeps_the_tail_where_a_verdict_lives():
+    """legion-being 20:41Z 2026-09-08: `check` FAILed at step 1; by the time it spoke the
+    result had been elided to its head and the FAILED line was gone from its view."""
+    from sage.gateway.being_tool_loop import compact_convo, COMPACT_KEEP_CHARS
+
+    class LLM:
+        num_ctx = 4000
+    check_out = "x" * 6000 + "\nFAILED tests/test_a.py::test_b\n1 failed, 182 passed"
+    msgs = [{"role": "user", "content": "u" * 3000},
+            {"role": "assistant", "content": ""}, {"role": "tool", "content": check_out},
+            {"role": "assistant", "content": ""}, {"role": "tool", "content": "y" * 3000}]
+    out, el = compact_convo(msgs, LLM())
+    c = out[2]["content"]
+    assert "FAILED tests/test_a.py::test_b" in c and "1 failed, 182 passed" in c
+    assert c.startswith("x" * (COMPACT_KEEP_CHARS // 2)) and "elided from the middle" in c
+    assert el[0]["chars"] == len(check_out) - COMPACT_KEEP_CHARS   # accounting: kept + elided == original

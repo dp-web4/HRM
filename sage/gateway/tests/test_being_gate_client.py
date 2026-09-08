@@ -571,7 +571,11 @@ try:
 except Exception as e:
     r["hestia_socket"] = repr(e)
 try:
-    os.kill({os.getpid()}, 0); r["sees_seat_pid"] = True
+    # A pid number is namespace-relative: inside a nested sandbox (this suite run through
+    # `check`, legion-being 20:41Z 2026-09-08) pid {os.getpid()} exists again and is a
+    # different process. Compare the process's start time, not the number.
+    st = open("/proc/{os.getpid()}/stat").read().rsplit(")", 1)[1].split()
+    r["sees_seat_pid"] = (st[19] == {os.stat("/proc/self/stat") and open("/proc/self/stat").read().rsplit(")", 1)[1].split()[19]!r})
 except Exception as e:
     r["sees_seat_pid"] = repr(e)
 open(os.path.join({wt!r}, "probe.json"), "w").write(json.dumps(r))
@@ -604,4 +608,4 @@ open(os.path.join({wt!r}, "probe.json"), "w").write(json.dumps(r))
     assert probe["write_outside"] is not True, probe                 # outside is not even bound
     assert probe["home_hestia"] is not True, probe
     assert probe["hestia_socket"] is not True, probe                 # --unshare-net held
-    assert probe["sees_seat_pid"] is not True, probe                 # --unshare-pid held
+    assert probe["sees_seat_pid"] is not True, probe                 # --unshare-pid held (start-time compared)

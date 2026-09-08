@@ -290,7 +290,24 @@ COMPACT_KEEP_CHARS = 400
 COMPACT_MIN_BODY = 500        # a body at or under this is never elided
 
 
-def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERVE) -> tuple:
+# Chars the prompt carries that are not in any message's content: the tool schemas and the
+# chat template. heartbeat.fit_to_window budgets the same 4000 for the seed.
+_UNCOUNTED_CHARS = 4000
+
+
+def _est_tokens(chars_now: int, measured) -> float:
+    """Tokens the next prompt will cost. With a measurement from the previous generate —
+    (prompt_eval_count, content chars at that prompt) — the estimate is anchored on what
+    the server actually counted and only the DELTA rides the chars-per-token guess.
+    Without one, the whole prompt does, plus the uncounted schema chars."""
+    if measured:
+        tokens_at, chars_at = measured
+        return tokens_at + (chars_now - chars_at) / _CPT
+    return (chars_now + _UNCOUNTED_CHARS) / _CPT
+
+
+def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERVE,
+                  measured=None) -> tuple:
     """Shrink the OLDEST tool results until the prompt leaves room for an answer.
 
     THE SEED FITTING IS NOT ENOUGH. heartbeat.fit_to_window sizes the first prompt; this
@@ -312,10 +329,16 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
         num_ctx = 0
     if num_ctx <= 0:
         return msgs, []
-    budget = int(max(0, num_ctx - reserve) * _CPT)
+    # ANCHOR ON THE MEASUREMENT. Legion 2026-09-08 20:01Z beat: the seed fit (17.5k tokens
+    # measured), three 260-line reads later the loop's chars/3.4 estimate said ~19k while
+    # the server counted 22,720, and the next memory_write body was cut mid-JSON (the
+    # Ollama 500). Code reads tokenize denser than prose, and the tool schemas were never
+    # in the sum at all. The previous generate's prompt_eval_count IS the number; use it.
     size = lambda ms: sum(len(m.get("content") or "") for m in ms)
-    if size(msgs) <= budget:
+    room = num_ctx - reserve
+    if _est_tokens(size(msgs), measured) <= room:
         return msgs, []
+    budget = None  # decided per elision below, against the anchored estimate
     out = [dict(m) for m in msgs]
     # candidates: tool results, oldest first, excluding the MOST RECENT one.
     # It kept the two most recent whole until 2026-09-07, when max_read_chars went
@@ -327,7 +350,7 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
     idx = [i for i, m in enumerate(out) if m.get("role") == "tool"]
     elided = []
     for i in idx[:-1] if len(idx) > 1 else []:
-        if size(out) <= budget:
+        if _est_tokens(size(out), measured) <= room:
             break
         body = out[i].get("content") or ""
         if len(body) <= COMPACT_MIN_BODY:
@@ -365,8 +388,10 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     salvaged: List[dict] = []
     generates: List[dict] = []
     compacted: List[dict] = []
+    measured = None   # (prompt_eval_count, content chars) of the last prompt the server counted
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
+        nonlocal measured
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
         # turn that emitted intents MUST keep them as tool_calls: Qwen's chat template
         # raises on a tool message that follows an assistant message without tool_calls,
@@ -378,13 +403,15 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 out["tool_calls"] = [{"function": {"name": i.effector, "arguments": dict(i.args or {})}}
                                      for i in m["intents"]]
             msgs.append(out)
-        # Leave room for the answer before asking for one (see compact_convo).
-        msgs, elided = compact_convo(msgs, llm)
+        # Leave room for the answer before asking for one (see compact_convo), anchored on
+        # what the server counted for the previous prompt when there was one.
+        msgs, elided = compact_convo(msgs, llm, measured=measured)
         if elided:
             compacted.append({"step": len(thoughts), "elisions": len(elided),
                               "chars": sum(e["chars"] for e in elided)})
         retried = 0
         nudged = False
+        chars_sent = sum(len(m.get("content") or "") for m in msgs)
         sent = _sent_budget(llm)          # the num_predict of the reply that stands
         resp = llm.get_chat_response(msgs, tools=tools)
         content = resp.get("content", "") or ""
@@ -449,6 +476,11 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         # "did the retry have more room than the first attempt" reads from the file, not
         # from stderr (SAGE #45 sends the room; this says what it was).
         raw = resp.get("raw") or {}
+        if raw.get("prompt_eval_count"):
+            # the nudge (if any) was appended to msgs before the reply that stands, so the
+            # chars it added are inside this count: re-measure from the list as sent
+            measured = (int(raw["prompt_eval_count"]),
+                        sum(len(m.get("content") or "") for m in msgs))
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
                  "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent}
         if nudged:

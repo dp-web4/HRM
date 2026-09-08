@@ -261,3 +261,20 @@ def test_a_long_turn_is_shown_capped_and_points_at_its_whole(tmp_path):
     assert f"+4000 chars; the whole turn: memory_read conversations/s.jsonl from_line {t['seq']} lines 1" in capped
     assert "short" in capped                                             # a short turn is untouched
     assert C.recent(tmp_path, "s")[-1]["text"] == long                   # the record is whole
+
+
+
+def test_seen_is_not_answered(tmp_path):
+    """dp's 16:30Z turn (2026-09-08) was shown on eight beats that could not act, marked
+    seen on the first, and then vanished from the being's sense of what it owed."""
+    from sage.gateway import conversations as C
+    C.create(tmp_path, "dp", title="dp", participants=["dp", "b"], writable_by=["dp", "b"])
+    C.append(tmp_path, "dp", speaker="dp", text="have fun!", via="dp-console")
+    first = C.render_for_being(tmp_path, "b")
+    assert "1 turn(s) from dp since you last spoke here" in first          # unseen: the loud marker
+    again = C.render_for_being(tmp_path, "b")
+    assert "since you last spoke here" not in again                        # seen now
+    assert "The last word here is dp's (seq 1" in again and "still yours to answer" in again
+    C.append(tmp_path, "dp", speaker="b", text="I will.", via="say")
+    after = C.render_for_being(tmp_path, "b")
+    assert "last word here" not in after and "since you last spoke" not in after

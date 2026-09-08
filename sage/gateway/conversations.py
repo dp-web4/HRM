@@ -328,6 +328,16 @@ def render_for_being(instance: Path, me: str, per_conv: int = 12,
             lines.append(f"\n**{len(pend)} turn(s) from {who} since you last spoke here — "
                          f"unanswered. Reply with `say to=\"{m['id']}\"` if you have something "
                          f"to say; saying nothing is also a choice, and it is recorded as one.**")
+        elif turns and turns[-1].get("from") != me:
+            # SEEN is not ANSWERED. dp spoke at 16:30Z 2026-09-08; the turn was shown to the
+            # being on eight beats that could not act (window overcommitted), was marked
+            # seen on the first of them, and from then on nothing in its state said a reply
+            # was still owed. Unseen turns get the marker above; a conversation whose last
+            # word is someone else's gets this one, every beat, until the being speaks.
+            last = turns[-1]
+            lines.append(f"\n_The last word here is {last['from']}'s (seq {last.get('seq')}, "
+                         f"{last['ts']}); you have not spoken since. Already shown to you — "
+                         f"still yours to answer or to leave._")
         blocks.append(head + "\n" + "\n".join(lines))
     if any(t.get("via") in UNSIGNED_VIA or t.get("via") is None
            for m in convs for t in recent(instance, m["id"], limit=per_conv)):

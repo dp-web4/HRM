@@ -457,3 +457,59 @@ def test_length_retry_changes_the_prompt_it_resends():
     assert nudge["role"] == "user" and nudge["content"].startswith("[harness]")
     assert "3764 tokens" in nudge["content"] and "one tool call" in nudge["content"]
     assert r.generates[-1]["nudged"] is True and r.generates[-1]["retried"] == 1
+
+
+
+def test_compaction_is_anchored_on_the_measured_prompt():
+    """Legion 20:01Z 2026-09-08: the loop's chars/3.4 estimate said ~19k while the server
+    had counted 22,720; the next memory_write body was cut mid-JSON. With a measurement
+    the estimate starts from the server's number and only the delta rides the guess."""
+    from sage.gateway.being_tool_loop import compact_convo, _est_tokens, _ANSWER_RESERVE
+
+    class LLM:
+        num_ctx = 24576
+    body = "r" * 12_000
+    msgs = [{"role": "system", "content": "s" * 1000}, {"role": "user", "content": "u" * 30_000},
+            {"role": "assistant", "content": ""}, {"role": "tool", "content": body},
+            {"role": "assistant", "content": ""}, {"role": "tool", "content": body},
+            {"role": "assistant", "content": ""}, {"role": "tool", "content": body}]
+    chars = sum(len(m["content"]) for m in msgs)                     # 67,000
+    # unmeasured: (67000 + 4000) / 3.4 = 20.9k + 6144 > 24576 -> compacts
+    out, el = compact_convo(msgs, LLM())
+    assert el, "unmeasured estimate must still guard"
+    # measured: the server counted 14,000 tokens for a 55,000-char prompt one step ago;
+    # 12,000 new chars -> 14,000 + 3,529 = 17.5k + 6144 < 24576 -> nothing to do
+    out, el = compact_convo(msgs, LLM(), measured=(14_000, 55_000))
+    assert el == [] and out is msgs
+    # measured HIGH (code reads tokenize dense): 21,000 for 55,000 -> 24.5k -> compacts
+    out, el = compact_convo(msgs, LLM(), measured=(21_000, 55_000))
+    assert len(el) == 2 and out[3]["content"].startswith("r" * 400) and out[7]["content"] == body
+    assert _est_tokens(sum(len(m["content"]) for m in out), (21_000, 55_000)) <= 24576 - _ANSWER_RESERVE
+
+
+def test_loop_feeds_the_previous_prompt_count_into_compaction():
+    from sage.gateway import being_tool_loop as L
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    seen = []
+    orig = L.compact_convo
+
+    def spy(msgs, llm, reserve=L._ANSWER_RESERVE, measured=None):
+        seen.append(measured)
+        return orig(msgs, llm, reserve, measured)
+    L.compact_convo = spy
+    try:
+        class FakeLLM:
+            num_ctx = 24576
+
+            def get_chat_response(self, messages, tools=None):
+                if len(seen) == 1:
+                    return {"content": "", "tool_calls": [{"function": {"name": "recall", "arguments": {"query": "x"}}}],
+                            "raw": {"done_reason": "stop", "prompt_eval_count": 17_541, "eval_count": 100, "message": {}}}
+                return {"content": "done", "tool_calls": [],
+                        "raw": {"done_reason": "stop", "prompt_eval_count": 18_000, "eval_count": 10, "message": {}}}
+        r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "beat"}])
+    finally:
+        L.compact_convo = orig
+    assert r.reply == "done"
+    assert seen[0] is None                                   # nothing measured before the first generate
+    assert seen[1][0] == 17_541 and seen[1][1] == len("beat")  # the server's count for the prompt as sent

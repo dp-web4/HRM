@@ -188,3 +188,62 @@ def test_a_truncated_read_says_so_and_names_what_it_hid():
     open(small, "w").write("short\n")
     r2 = disp(BeingIntent("memory_read", {"path": "small.md"}), _ALLOW)
     assert r2.result == "short\n" and "truncated" not in r2.result
+
+
+def test_m1_the_worktree_is_writable_only_when_check_is_sandboxed(monkeypatch):
+    """M1. The 2026-09-07 stopgap confined every write to the home because write + execute
+    composed into arbitrary code as the seat. With `check` sandboxed under a principal that
+    is not the seat, a write into the worktree composes into the harmless thing it should
+    be. Gated on the sandbox being AVAILABLE, not on M1 having landed: a machine without the
+    AppArmor profile keeps the stopgap, or it re-opens the hole silently."""
+    import sage.gateway.being_gate_client as bgc
+
+    wt = tempfile.mkdtemp(prefix="ref-f1a-m1-wt-")
+    d = tempfile.mkdtemp(prefix="ref-f1a-m1-")
+    granted = GatewayVerdict("allow", granted=(wt,))
+    target = os.path.join(wt, "sage", "gateway", "tests", "test_mine.py")
+
+    # sandbox available: the worktree is writable
+    monkeypatch.setattr(bgc, "sandbox_available", lambda: True)
+    disp = ReferenceF1aDispatcher(memory_root=d, worktree=wt)
+    w = disp(BeingIntent("memory_write", {"path": target, "content": "def test_x(): pass"}), granted)
+    assert w.ok, w.error
+    assert open(target).read().strip() == "def test_x(): pass"
+    # but a granted root that is NOT the worktree stays read-only
+    other = tempfile.mkdtemp(prefix="ref-f1a-m1-other-")
+    r = disp(BeingIntent("memory_write", {"path": os.path.join(other, "x.md"), "content": "x"}),
+             GatewayVerdict("allow", granted=(wt, other)))
+    assert not r.ok and "not writable" in (r.error or ""), r.error
+
+    # sandbox unavailable: the stopgap holds, and the refusal says it is the BOX, not M1
+    monkeypatch.setattr(bgc, "sandbox_available", lambda: False)
+    disp2 = ReferenceF1aDispatcher(memory_root=d, worktree=wt)
+    w2 = disp2(BeingIntent("memory_write", {"path": os.path.join(wt, "conftest.py"), "content": "x"}), granted)
+    assert not w2.ok
+    assert "cannot get its sandbox" in (w2.error or "") and "waiting on the box" in (w2.error or ""), w2.error
+    assert not os.path.exists(os.path.join(wt, "conftest.py"))
+    # the home is writable in both worlds
+    assert disp2(BeingIntent("memory_write", {"path": "journal.md", "content": "ok"}), granted).ok
+
+
+def test_ranged_reads_share_the_citation_coordinate_system():
+    """Asked for three beats running: a 12k cap gave the being heartbeat.py's opening and
+    never its body. Line-based so a read and a file+line citation agree."""
+    disp, root = _disp()
+    p = os.path.join(root, "long.py")
+    open(p, "w").write("".join(f"line {i}\n" for i in range(1, 501)))
+
+    r = disp(BeingIntent("memory_read", {"path": "long.py", "from_line": 100, "lines": 3}), _ALLOW)
+    assert r.ok
+    assert r.result.startswith("[lines 100-102 of 500 in long.py]\n"), r.result[:80]
+    assert "line 100\nline 101\nline 102\n" in r.result and "line 103" not in r.result
+
+    # past the end clamps honestly rather than erroring
+    r2 = disp(BeingIntent("memory_read", {"path": "long.py", "from_line": 499}), _ALLOW)
+    assert r2.result.startswith("[lines 499-500 of 500")
+    # a whole-file read that truncates now says how to get the rest
+    disp.max_read_chars = 200
+    r3 = disp(BeingIntent("memory_read", {"path": "long.py"}), _ALLOW)
+    assert "Read the rest with from_line" in r3.result and "(500 lines)" in r3.result
+    # garbage is a refusal, not a crash
+    assert not disp(BeingIntent("memory_read", {"path": "long.py", "from_line": "ten"}), _ALLOW).ok

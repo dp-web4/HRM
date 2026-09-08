@@ -275,7 +275,12 @@ GIT_OPS = ("log", "show", "diff", "status", "blame")
 # A revision the being may name: a hex sha, HEAD with optional ~n/^n, or a plain branch or
 # tag name. Deliberately excludes anything containing a flag, a space, or a path separator
 # trick — `--upload-pack=...`-style arguments are the classic way a read verb becomes a run.
-_REV = r"(?:[0-9a-fA-F]{7,40}|HEAD(?:[~^][0-9]{1,3})?|[A-Za-z][A-Za-z0-9._/-]{0,60})"
+# `~n` / `^n` suffixes are allowed on ANY base, not only HEAD. The being flagged (not
+# litigated) that `<sha>~1` was refused and span diffs against anything older than HEAD~k
+# were unnameable — two witnessed denies on 2026-09-08 for a natural thing to want. Still
+# no flags: a suffix is digits after ~ or ^, nothing else survives.
+_REV = (r"(?:[0-9a-fA-F]{7,40}|HEAD|[A-Za-z][A-Za-z0-9._/-]{0,60})"
+        r"(?:[~^][0-9]{0,3})?")
 
 
 def git_read_command(args: dict, ctx: Optional[dict] = None) -> str:
@@ -427,7 +432,9 @@ _TOOL_SCHEMAS = {
     "witness": ("Record a witnessed note of something you did or noticed.",
                 {"event": "what to witness"}, ["event"]),
     "memory_read": ("Read one of your own memory notes.",
-                    {"path": "path to your note"}, ["path"]),
+                    {"from_line": "optional: 1-based line to start from — for a file longer than the read cap, read it in ranges",
+                     "lines": "optional: how many lines from from_line (default: to the end, still capped)",
+                     "path": "path to your note"}, ["path"]),
     "memory_write": ("Write a note into your own memory.",
                      {"path": "path to your note", "content": "what to write"}, ["path", "content"]),
     "channel_egress": ("Send a message out through a sealed channel.",

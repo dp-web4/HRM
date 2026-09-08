@@ -455,3 +455,19 @@ def test_check_runs_under_a_principal_that_is_not_the_seat():
             f"the being's own home must not be inside the tree check executes: {b}"
     assert "C.UTF-8" not in cmd, \
         "hestia #988 splits a dotted token and refuses the whole command; PYTHONUTF8 instead"
+
+
+def test_git_read_rev_suffixes_work_on_any_base_and_still_take_no_flags():
+    """`<sha>~1` was refused (two witnessed denies, 2026-09-08). Flagged by the being as an
+    affordance fact, not litigated. Widened deliberately: a suffix is ~ or ^ plus digits."""
+    from sage.gateway.being_gate_client import git_read_command
+    ctx = {"worktree": "/tmp/wt"}
+    for rev in ("18c9526a6~1", "18c9526a6^", "legion/mission-artifact~3", "HEAD~2", "main^2"):
+        cmd = git_read_command({"op": "show", "rev": rev}, ctx)
+        assert f" {rev}" in cmd, cmd
+    for bad in ("18c9526a6~x", "HEAD~1..HEAD", "--all", "sha~-1", "HEAD ~1"):
+        try:
+            git_read_command({"op": "show", "rev": bad}, ctx)
+            raise AssertionError(f"{bad!r} must be refused")
+        except ValueError:
+            pass

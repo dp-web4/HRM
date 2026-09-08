@@ -122,6 +122,7 @@ class HestiaF1aDispatcher:
         self._mcp_factory = mcp_factory or _Mcp
         self._local = ReferenceF1aDispatcher(
             memory_root=memory_root,
+            worktree=worktree,
             witness_fn=make_hestia_witness_fn(plugin_id, endpoint) if mcp_factory is None else None)
         self._c = None
         self._session_id: Optional[str] = None
@@ -616,6 +617,17 @@ class HestiaF1aDispatcher:
         # most, but for show/diff/blame the tail carries the change itself. Keep the head
         # for log, the tail otherwise, and say which was cut — a silent truncation
         # manufactures false absences (see reference_f1a._do_memory_read).
+        # AN EMPTY ANSWER MUST SAY WHY IT IS EMPTY. Measured 2026-09-08: the being asked
+        # `show 5cd0ca518 -- sage/gateway/check.py`, a path that does not exist, and git
+        # returned exit 0 and nothing. It read that as "show does not cross branches" —
+        # a wrong model of its own tool built on a silent zero. A silent zero is a false
+        # absence, the same class as the truncated read and the miscounted turns.
+        if not out.strip() and rc == 0 and op in ("show", "diff", "log", "blame"):
+            pth = str(intent.args.get("path", "")).strip()
+            out = ("[no output: " + (
+                f"nothing in that revision touches '{pth}', or no such path exists there" if pth
+                else "the revision(s) produced no differences") +
+                " — an empty diff is a true answer, not a failed read]")
         limit = 6000
         if len(out) > limit:
             if op == "log":

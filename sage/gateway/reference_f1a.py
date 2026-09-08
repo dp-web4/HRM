@@ -51,8 +51,10 @@ class ReferenceF1aDispatcher:
     def __init__(self, memory_root: str,
                  witness_log: Optional[str] = None,
                  witness_fn: Optional[Callable[[str], str]] = None,
-                 max_read_chars: int = 12000):
+                 max_read_chars: int = 12000,
+                 worktree: Optional[str] = None):
         self.memory_root = Path(memory_root).resolve()
+        self.worktree = worktree
         self.witness_log = Path(witness_log) if witness_log else self.memory_root / "witness_log.jsonl"
         self._witness_fn = witness_fn  # optional real hestia witness: (event) -> witness_id
         self.max_read_chars = max_read_chars
@@ -114,6 +116,18 @@ class ReferenceF1aDispatcher:
         roots = (self.memory_root,)
         if not writing:
             roots = roots + tuple(getattr(self, "_extra_roots", ()) or ())
+        else:
+            # M1. Writes reach the being's own WORKTREE — and only when `check` runs under
+            # a principal that is not the seat. The 2026-09-07 stopgap confined every write
+            # to the home because write + execute composed into arbitrary code as the seat;
+            # with execute sandboxed (bwrap: no home, no network, no seat environment) the
+            # composition is exactly the harmless one it should be — the being writes a
+            # file, a process that can reach nothing of ours runs it. Gated on the sandbox
+            # being AVAILABLE, not merely on M1 having landed: a machine without the
+            # AppArmor profile must keep the stopgap, or it re-opens the hole silently.
+            wt = getattr(self, "worktree", None)
+            if wt and self._worktree_writable():
+                roots = roots + (Path(wt).resolve(),)
         if writing and p.parent == self.memory_root / "notes" and p.name in SEAT_OWNED_NOTES:
             raise ValueError(
                 f"notes/{p.name} is what was said TO you, and it stays as it was said. Your "
@@ -128,12 +142,35 @@ class ReferenceF1aDispatcher:
         if not any(p == r or r in p.parents for r in roots):
             if writing and any(p == r or r in p.parents
                                for r in (getattr(self, "_extra_roots", ()) or ())):
+                wt = getattr(self, "worktree", None)
+                in_wt = bool(wt) and (p == Path(wt).resolve() or Path(wt).resolve() in p.parents)
+                if in_wt:
+                    raise ValueError(
+                        f"{p} is your worktree and you may not write it on THIS machine yet: "
+                        "`check` cannot get its sandbox here (bubblewrap absent or not "
+                        "permitted a user namespace), so a tree you can write would still be "
+                        "a tree that executes as the seat. Where the sandbox works, this write "
+                        "is allowed — M1 is not withheld, it is waiting on the box")
                 raise ValueError(
-                    f"writes stay inside your own home ({self.memory_root}); {p} is readable "
-                    "to you but not writable, because a tree you can write is a tree `check` "
-                    "would then execute. Ask for the affordance rather than the path")
+                    f"writes stay inside your own home ({self.memory_root}) and your worktree; "
+                    f"{p} is readable to you but not writable. Ask for the affordance rather "
+                    "than the path")
             raise ValueError(f"path escapes the being's memory root and its grants: {p}")
         return p
+
+    def _worktree_writable(self) -> bool:
+        """True only when the tree the being would write is a tree that executes under a
+        principal that is not the seat. Cached per dispatcher: the probe runs a real
+        sandbox, and the answer does not change within a beat."""
+        cached = getattr(self, "_wt_writable", None)
+        if cached is None:
+            try:
+                from sage.gateway.being_gate_client import sandbox_available
+                cached = bool(sandbox_available())
+            except Exception:
+                cached = False
+            self._wt_writable = cached
+        return cached
 
     # -- effectors -----------------------------------------------------------
     def _do_witness(self, intent: BeingIntent) -> ResultEnvelope:
@@ -149,6 +186,31 @@ class ReferenceF1aDispatcher:
         if not p.exists():
             return ResultEnvelope(ok=True, result="", witness_id=self._witness(f"memory_read {p.name} (empty)"))
         whole = p.read_text(errors="replace")
+        # RANGE READS. Asked for by the being three beats running (2026-09-08): with the
+        # cap at 12k chars it got heartbeat.py's opening and never its body, and its
+        # paging workaround (git show with a pathspec) returns a diff lens, not a file. The
+        # honest ask was "first N lines / from line K", and it named the work it unblocks.
+        # Line-based on purpose: its findings cite file+line, so the read and the citation
+        # share a coordinate system. A ranged read never carries the whole-file truncation
+        # marker — it says what range it is, which is the truthful thing.
+        from_line = intent.args.get("from_line")
+        n_lines = intent.args.get("lines")
+        if from_line is not None or n_lines is not None:
+            lines = whole.splitlines(keepends=True)
+            try:
+                start = max(1, int(from_line or 1))
+                count = int(n_lines) if n_lines is not None else len(lines)
+            except (TypeError, ValueError):
+                return ResultEnvelope(ok=False, error="memory_read 'from_line' and 'lines' must be whole numbers")
+            chunk = lines[start - 1:start - 1 + max(0, count)]
+            body = "".join(chunk)[: self.max_read_chars]
+            end = start + len(chunk) - 1
+            head = f"[lines {start}-{end} of {len(lines)} in {p.name}]\n"
+            if len("".join(chunk)) > self.max_read_chars:
+                head += (f"[… this range alone exceeds {self.max_read_chars} characters; "
+                         f"ask for fewer lines …]\n")
+            return ResultEnvelope(ok=True, result=head + body,
+                                  witness_id=self._witness(f"memory_read {p.name} L{start}-{end}"))
         content = whole[: self.max_read_chars]
         if len(whole) > self.max_read_chars:
             # A SILENT TRUNCATION IS A LIE THE LENGTH OF A FILE. Measured 2026-09-07: the
@@ -158,9 +220,11 @@ class ReferenceF1aDispatcher:
             # and __call__ but NOT the _safe_path body itself" and refused to assert. But a
             # reader that trusted the result would have concluded the function was gone.
             # An instrument must report its own limits, or it manufactures false absences.
+            total_lines = whole.count("\n") + (0 if whole.endswith("\n") else 1)
             content += (f"\n\n[… truncated: you were given the first {self.max_read_chars} "
-                        f"of {len(whole)} characters. What you did NOT see is the REST of the "
-                        f"file, so absence here is not evidence of absence in the file …]")
+                        f"of {len(whole)} characters ({total_lines} lines). What you did NOT "
+                        f"see is the REST of the file, so absence here is not evidence of "
+                        f"absence in the file. Read the rest with from_line=<n> and lines=<k> …]")
         return ResultEnvelope(ok=True, result=content,
                               witness_id=self._witness(f"memory_read {p.name}"))
 

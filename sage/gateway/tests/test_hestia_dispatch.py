@@ -626,3 +626,26 @@ def test_pr_open_commits_with_the_beings_trailers_and_runs_the_judged_gh_command
 
     env2 = d._do_pr_open(BeingIntent("pr_open", {"slug": "again", "title": "a second attempt here", "body": "x"}))
     assert not env2.ok and "no changes to propose" in env2.error
+
+
+def test_check_reports_unverified_with_its_tree_when_the_substrate_is_down(tmp_path):
+    """The being's own design (its Q1 answer, 2026-09-07): keep check gated and witnessed —
+    no unwitnessed local fallback, because two verification paths diverge and the
+    unwitnessed one becomes the one people trust — but when the substrate is down, return an
+    explicit UNVERIFIED with the tree block, never a bare error. 'A failing test is a real
+    answer; so is "the checker was down."'"""
+    import subprocess
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+    from sage.gateway.being_gate_client import BeingIntent
+    wt = tmp_path / "wt"; wt.mkdir()
+    subprocess.run(["git", "init", "-q", str(wt)], check=True)
+    d = D.__new__(D); d.worktree = str(wt); d.plugin_id = "legion-being"; d.being_lct = None
+    def down(name, args):
+        raise RuntimeError("MCP tools/call -> HTTP 404: Not Found: Session not found")
+    d._call = down
+    env = d._do_check(BeingIntent("check", {"target": "gateway"}))
+    assert not env.ok
+    assert env.result["verdict"] == "UNVERIFIED" and env.result["passed"] is None
+    assert "tree" in env.result and "worktree" in env.result
+    assert "UNVERIFIED" in env.error and "substrate" in env.error
+    assert "did not run" in env.result["reason"], "an unwitnessed check must not have run"

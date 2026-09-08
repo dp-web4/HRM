@@ -506,10 +506,25 @@ class HestiaF1aDispatcher:
         except ValueError as e:
             return ResultEnvelope(ok=False, error=str(e))
         target = str(intent.args.get("target", "")).strip()
-        begin = self._call("hestia_begin_action", {"tool_name": "check", "target": target})
-        err = _hestia_error(begin)
+        # UNVERIFIED IS A RESULT. The being's own design answer (2026-09-07, its Q1): keep
+        # `check` gated and witnessed, do not build an unwitnessed local fallback — "two
+        # verification paths can diverge, and the unwitnessed one becomes the one people
+        # trust" — but when the substrate is down, say UNVERIFIED explicitly rather than
+        # returning nothing or something ambiguous. "A failing test is a real answer; so is
+        # 'the checker was down.'" The envelope carries the tree block either way, so the
+        # being can record WHICH tree it could not verify.
+        try:
+            begin = self._call("hestia_begin_action", {"tool_name": "check", "target": target})
+            err = _hestia_error(begin)
+        except Exception as e:
+            begin, err = {}, f"{type(e).__name__}: {e}"
         if err:
-            return ResultEnvelope(ok=False, error=err)
+            return ResultEnvelope(
+                ok=False, error=f"check UNVERIFIED: the witness substrate is unreachable ({str(err)[:160]})",
+                result={"target": target, "verdict": "UNVERIFIED", "passed": None,
+                        "reason": "hestia_begin_action failed; the test did not run because an "
+                                  "unwitnessed check is not a check",
+                        "tree": self._worktree_revision(), "worktree": self.worktree})
         action_id = begin.get("actionId")
         try:
             proc = subprocess.run(shlex.split(cmd), cwd=self.worktree, text=True,

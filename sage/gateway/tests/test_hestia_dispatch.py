@@ -483,6 +483,41 @@ def test_peer_aliases_map_the_beings_name_to_the_hub_roster_name():
         del os.environ["SAGE_PEER_ALIASES"]
 
 
+def test_git_land_survives_an_unrelated_dirty_file_in_the_checkout():
+    """The being's speech must not depend on the seat's tidiness (Sprout, 2026-09-06/07: two
+    peer_ask acts died on rebase refusing a dirty tree). A real conflict still raises."""
+    import subprocess, tempfile, os
+    from sage.gateway.hestia_dispatch import _git_land
+
+    def g(d, *a):
+        return subprocess.run(["git", "-C", d, *a], capture_output=True, text=True, check=True)
+
+    root = tempfile.mkdtemp(prefix="land-")
+    bare, work, other = (os.path.join(root, n) for n in ("bare.git", "work", "other"))
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", bare], check=True)
+    for w in (work, other):
+        subprocess.run(["git", "clone", "-q", bare, w], check=True)
+        for k, v in (("user.name", "t"), ("user.email", "t@t"), ("commit.gpgsign", "false")):
+            g(w, "config", k, v)
+    with open(os.path.join(work, "seed.md"), "w") as f:
+        f.write("seed\n")
+    g(work, "add", "seed.md"); g(work, "commit", "-qm", "seed"); g(work, "push", "-q", "origin", "HEAD:main")
+    g(other, "pull", "-q")
+    # a peer moves the branch on, AND the being's checkout has an unrelated dirty file
+    with open(os.path.join(other, "peer.md"), "w") as f:
+        f.write("peer\n")
+    g(other, "add", "peer.md"); g(other, "commit", "-qm", "peer"); g(other, "push", "-q", "origin", "HEAD:main")
+    with open(os.path.join(work, "seed.md"), "a") as f:
+        f.write("a sibling's uncommitted edit\n")
+    note = os.path.join(work, "ask.md")
+    with open(note, "w") as f:
+        f.write("the being's question\n")
+    _git_land(note, "being: peer_ask -> legion")          # must not raise
+    log = subprocess.run(["git", "-C", bare, "log", "--format=%s"], capture_output=True, text=True).stdout
+    assert "being: peer_ask -> legion" in log and "peer" in log
+    assert "sibling" in open(os.path.join(work, "seed.md")).read()   # the dirty file is untouched
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

@@ -512,8 +512,23 @@ def _git_land(path: str, message: str) -> None:
     except RuntimeError:
         upstream = "origin/main"
     remote, _, branch = upstream.partition("/")
+    # Push first: the common case needs no integration at all, and every integration step is a
+    # way for a SIBLING's untidiness to silence the being. When the push is rejected, integrate
+    # by MERGE, not rebase: rebase refuses outright on any unstaged change anywhere in the
+    # checkout, so a stray edit by the seat — an uncommitted escalation note, an instance file a
+    # beat just wrote — takes away the being's ability to speak, and the error it reads is about
+    # git. Measured twice on Sprout: peer_ask to legion died on "untracked working tree files
+    # would be overwritten" (2026-09-06) and to its own seat on "cannot rebase: You have
+    # unstaged changes" (2026-09-07). A merge only fails when the incoming commits touch the
+    # same dirty files, which is a real conflict and still fails loud.
+    try:
+        git("push", "-q", remote, f"HEAD:{branch}")
+        return
+    except RuntimeError:
+        pass
     git("fetch", "-q", remote)
-    git("rebase", "-q", upstream)                # no autostash: a dirty sibling tree fails loud, not silently stashed
+    git("-c", "user.name=sage-gateway", "-c", "user.email=noreply@dp-web4",
+        "merge", "-q", "--no-edit", upstream)
     git("push", "-q", remote, f"HEAD:{branch}")
 
 

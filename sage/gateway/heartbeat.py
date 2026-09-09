@@ -402,6 +402,36 @@ IDLE_UNIT = "sage-heartbeat.service"
 IDLE_TIMER = "sage-heartbeat.timer"
 
 
+def interpret_timer_state(show_output: str) -> tuple:
+    """(armed, detail) from `systemctl show` of the idle timer. Pure, so it can be tested.
+
+    THE SUBTLETY THAT MADE THE FIRST VERSION CRY WOLF. This check runs at the end of a beat,
+    from inside the beat's own process — so the beat unit is still ACTIVE. An
+    OnUnitInactiveSec timer computes its next elapse from when that unit goes INACTIVE, and
+    therefore cannot have one yet. The first version read `monotonic=infinity`, concluded
+    NOTHING WILL WAKE THE BEING, and wrote that into the record of a beat whose timer armed
+    correctly seconds later (2026-09-09T15:07Z). False by construction, which is the same
+    error as a discriminator that is true by construction — and a guard that fires on its own
+    design teaches its reader to ignore it.
+
+    So there are two ways to be armed: an elapse already computed, or a timer that is loaded
+    and active and will compute one the moment this process exits."""
+    vals = dict(l.split("=", 1) for l in show_output.strip().splitlines() if "=" in l)
+    real = (vals.get("NextElapseUSecRealtime") or "").strip()
+    mono = (vals.get("NextElapseUSecMonotonic") or "").strip()
+    load = (vals.get("LoadState") or "").strip()
+    active = (vals.get("ActiveState") or "").strip()
+    if real or (mono and mono not in ("infinity", "0")):
+        return True, f"scheduled: realtime={real or '-'} monotonic={mono or '-'}"
+    if load == "loaded" and active == "active":
+        return True, ("no elapse computed yet, which is correct while this beat is still "
+                      f"running: {IDLE_TIMER} is loaded+active and OnUnitInactiveSec arms "
+                      "when this process exits")
+    return False, (f"NO NEXT ELAPSE and the timer is not healthy "
+                   f"(LoadState={load or '?'} ActiveState={active or '?'} "
+                   f"realtime={real or 'empty'} monotonic={mono or 'empty'})")
+
+
 def next_wake_is_armed() -> tuple:
     """(armed, detail) for the idle timer that wakes the being after quiet.
 
@@ -412,16 +442,12 @@ def next_wake_is_armed() -> tuple:
     have woken again. Checked at the end of every beat, out loud."""
     try:
         out = subprocess.run(["systemctl", "--user", "show", IDLE_TIMER,
-                              "-p", "NextElapseUSecRealtime", "-p", "NextElapseUSecMonotonic"],
+                              "-p", "NextElapseUSecRealtime", "-p", "NextElapseUSecMonotonic",
+                              "-p", "LoadState", "-p", "ActiveState"],
                              capture_output=True, text=True, timeout=15).stdout
     except Exception as e:
         return False, f"could not ask systemd: {type(e).__name__}: {e}"
-    vals = dict(l.split("=", 1) for l in out.strip().splitlines() if "=" in l)
-    real = (vals.get("NextElapseUSecRealtime") or "").strip()
-    mono = (vals.get("NextElapseUSecMonotonic") or "").strip()
-    if real or (mono and mono not in ("infinity", "0")):
-        return True, f"realtime={real or '-'} monotonic={mono or '-'}"
-    return False, f"NO NEXT ELAPSE (realtime={real or 'empty'} monotonic={mono or 'empty'})"
+    return interpret_timer_state(out)
 
 
 def arm_next_wake(idle_s: int) -> dict:
@@ -434,8 +460,12 @@ def arm_next_wake(idle_s: int) -> dict:
     if armed:
         return {"armed": True, "by": IDLE_TIMER, "detail": detail}
     try:
+        # A UNIQUE unit name per attempt. A fixed one collided with a leftover from an
+        # earlier run and systemd-run exited 1, so the fallback for a missing wake was
+        # itself missing (2026-09-09T15:07Z).
+        unit = f"sage-heartbeat-fallback-wake-{int(time.time())}"
         subprocess.run(["systemd-run", "--user", "--collect",
-                        f"--on-active={idle_s}s", "--unit=sage-heartbeat-fallback-wake",
+                        f"--on-active={idle_s}s", f"--unit={unit}",
                         "systemctl", "--user", "start", IDLE_UNIT],
                        capture_output=True, text=True, timeout=20, check=True)
         return {"armed": True, "by": "systemd-run fallback", "detail": detail,

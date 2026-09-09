@@ -57,3 +57,36 @@ def test_unknown_window_means_full_display():
     build, calls = _build_factory({CONV_LADDER[0]: 1})
     text, rung, iv = fit_state(build, num_ctx=None, num_predict=8000, other_chars=0)
     assert rung == CONV_LADDER[0] and iv is None
+
+
+
+# -- the next-wake check must not be false by construction -----------------------------
+def test_a_running_beat_does_not_read_as_an_unarmed_timer():
+    """2026-09-09T15:07Z: the end-of-beat check read `monotonic=infinity` and wrote
+    "NOTHING WILL WAKE THE BEING" into the record of a beat whose timer armed correctly
+    seconds later. An OnUnitInactiveSec timer CANNOT have a next elapse while the unit it
+    watches is running — and this check runs from inside that unit."""
+    from sage.gateway.heartbeat import interpret_timer_state
+
+    running = ("NextElapseUSecRealtime=\n"
+               "NextElapseUSecMonotonic=infinity\n"
+               "LoadState=loaded\nActiveState=active\n")
+    armed, why = interpret_timer_state(running)
+    assert armed is True, why
+    assert "correct while this beat is still running" in why
+
+    scheduled = ("NextElapseUSecRealtime=Wed 2026-09-09 09:03:39 PDT\n"
+                 "NextElapseUSecMonotonic=infinity\nLoadState=loaded\nActiveState=active\n")
+    armed, why = interpret_timer_state(scheduled)
+    assert armed is True and why.startswith("scheduled:")
+
+    # the real failure this exists for: the timer is gone or dead, not merely unscheduled
+    for bad in ("NextElapseUSecRealtime=\nNextElapseUSecMonotonic=infinity\n"
+                "LoadState=not-found\nActiveState=inactive\n",
+                "NextElapseUSecRealtime=\nNextElapseUSecMonotonic=infinity\n"
+                "LoadState=loaded\nActiveState=failed\n",
+                "NextElapseUSecRealtime=\nNextElapseUSecMonotonic=infinity\n"
+                "LoadState=loaded\nActiveState=inactive\n"):
+        armed, why = interpret_timer_state(bad)
+        assert armed is False, why
+        assert "not healthy" in why

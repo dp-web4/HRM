@@ -141,7 +141,13 @@ def _json_calls(text: str, names) -> List[dict]:
                     name = inner
                     args = {k: v for k, v in args.items() if k not in ("type", "tool", "name", "action")}
             if name not in known:
-                continue
+                # {"memory_write": {"path": ..., "content": ...}} — the tool name is the KEY and
+                # its arguments the value (measured 2026-09-09, several beats lost this way).
+                inner = [(k, v) for k, v in o.items() if k in known and isinstance(v, dict)]
+                if len(inner) == 1:
+                    name, args = inner[0]
+                else:
+                    continue
             if args is None:
                 # flat form: the arguments sit beside the name key; keep only schema params
                 # when the schema is known, so stray keys ("timestamp", "status") never

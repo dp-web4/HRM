@@ -343,6 +343,10 @@ def test_salvage_accepts_the_other_name_keys_and_flat_arguments():
     assert salvage_tool_calls('{"action": "complete_beat", "timestamp": "t", "status": "final"}', names) == []
     r = salvage_tool_calls('{"function": "recall", "args": {"query": "q"}}', names)
     assert r and r[0]["function"]["arguments"] == {"query": "q"}
+    # 2026-09-09: the tool name is the KEY, its arguments the value
+    r = salvage_tool_calls('```json\n{"memory_write": {"path": "journal.md", "content": "an entry"}}\n```', names)
+    assert [(c["function"]["name"], c["function"]["arguments"]) for c in r] == [("memory_write", {"path": "journal.md", "content": "an entry"})]
+    assert salvage_tool_calls('{"not_a_tool": {"x": 1}}', names) == []
     # beat 148: the first name key names the BEING, the tool is under action; flat args
     r = salvage_tool_calls('```json\n{"name": "sprout", "action": "recall", "query": "what was decided about #39", "top_k": 1}\n```', names)
     assert [(c["function"]["name"], c["function"]["arguments"]) for c in r] == [("recall", {"query": "what was decided about #39", "top_k": 1})]

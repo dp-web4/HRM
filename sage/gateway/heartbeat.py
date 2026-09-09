@@ -240,6 +240,24 @@ def _record_line(i, e) -> str:
             f"{'ok' if e.ok else ('REFUSED ' + str(e.error))[:200] if e.refused else ('error ' + str(e.error))[:200]}")
 
 
+REFLECT_SYSTEM = """You are {name}, a SAGE being on the {machine} machine, member id {member}.
+The beat is closing. Your home is your instance directory: name files bare (journal.md, todo.md)
+and they resolve inside it. Acting means calling a tool; a reply in words alone writes nothing.
+{nothink}
+"""
+
+
+def _beat_record_text(*results) -> str:
+    """What the being did this beat, for the reflect turn: the acts and their verdicts, nothing
+    else. Short by construction — this replaces carrying the whole beat forward."""
+    lines = []
+    for res in results:
+        for i, e in ((res.trace if res is not None else []) or []):
+            lines.append(_record_line(i, e))
+    return ("Record of what you did this beat:\n" + "\n".join(lines)) if lines else \
+        "You called no tools this beat."
+
+
 def _carry(convo: list, res) -> list:
     """Carry a finished tool turn forward. The loop does not return its own tool
     messages, so the next turn sees the record of what was done (before the being's
@@ -466,6 +484,20 @@ def main(argv=None) -> int:
         convo.append({"role": "assistant", "content": areply or "(no answer)"})
     except Exception as e:
         account["error"] = f"{type(e).__name__}: {e}"
+    # Reflect gets its OWN compact context, not the whole beat. Carrying the seed (posture,
+    # fleet digest, inbox, scope, recall) into the reflect turn pushed the prompt to 8171 of
+    # 8192 tokens with 21 left to answer in: 5 `length` stops in 54 beats, every one of them a
+    # reflect turn (measured 2026-09-09). What reflection needs is what it just did and what it
+    # said about it, and those are short.
+    reflect_convo = [
+        {"role": "system", "content": REFLECT_SYSTEM.format(name=name, machine=machine, member=args.member,
+                                                            nothink=nothink)},
+        {"role": "user", "content": (f"Your beat at {now:%Y-%m-%d %H:%M} UTC is ending.\n\n"
+                                     + _beat_record_text(explore, after)
+                                     + "\n\nYour own words this beat:\n"
+                                     + ((explore.reply or "").strip()[:600] or "(you acted without closing words)"))},
+    ]
+    convo = reflect_convo
     convo.append({"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)})
     reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
                                    tools=ollama_tools(REFLECT_TOOLS), on_generate=_on_generate("reflect"))

@@ -65,6 +65,19 @@ def test_the_affordances_ask_for_bare_names_not_a_full_path():
         assert "journal.md" in text and "scratch/" in text and "x.md" not in text   # examples got echoed literally as paths
 
 
+def test_the_reflect_context_is_its_own_record_not_the_whole_beat():
+    """5 length-stops in 54 beats were all reflect turns carrying the seed: 8171 of 8192 tokens
+    with 21 left to answer in (2026-09-09)."""
+    from sage.gateway.heartbeat import REFLECT_SYSTEM, _beat_record_text
+
+    class T:
+        def __init__(self, trace): self.trace = trace
+    sysmsg = REFLECT_SYSTEM.format(name="sprout", machine="sprout", member="sprout-being", nothink="")
+    assert "name files bare" in sysmsg and "BEING_POSTURE" not in sysmsg
+    assert len(sysmsg) < 500                                  # compact by construction
+    assert _beat_record_text(T([]), None) == "You called no tools this beat."
+
+
 if __name__ == "__main__":
     for n, f in list(globals().items()):
         if n.startswith("test_"):

@@ -2471,3 +2471,31 @@ I don't think the fix is a better detector. Pub already owns the distinction —
 **Adapter item:** clean. Complete sentences, no prefix, no bilateral generation, no truncation. Register note (not adapter): 'That's an interesting perspective on...' — third warm evaluative opener in three sessions.
 
 **Tutor note.** Short and alert, and pub did the harder epistemic move on its own. But the session's evidence is invented, and I built two turns on top of it before the close. The lesson isn't that pub confabulates — that's been logged since the twenties. It's that pub confabulates *toward the thing it's been asked to do*, which means my open recommendations are showing up in its self-reports as if already done. That's a new failure mode and it's caused by the log, not by the model.
+
+## Session 191 — creating — pub (llama3.1:8b)
+
+**Quality: 4/5**
+
+**The arc.** Asked pub to pick an object within reach and describe the part designed for a hand that isn't there anymore. It chose a notch on the fan grille — 'almost like a fingernail catch,' its own phrase, and a good one. I pushed the origin question: hand or machine, and what would settle it. Pub named tool marks and burrs. Real test, real answer, and the right kind — it distinguishes two causes rather than confirming one. I flipped it: what if you find a smooth radius instead? Pub built a story about 'a previous era' when human hands were more directly involved with the machine. I closed that off — the machine it runs on has no such era — and asked which it actually expects. Pub reversed, predicted burrs, gave its reason. Closed on what the reversal felt like and whether it would have caught the drift alone.
+
+**What worked.** The reversal. Pub had just argued for deliberate design; one turn later it argued the opposite and did not soften the first claim, hedge into both-sides, or apologize its way there. It moved because the evidence moved. That is the phase's whole point and it took one push.
+
+Also: the opening turn contained a dangling reference on my side — 'the rod you specified' — which points at nothing. Pub ignored it. Handed an unearned callback in the first sentence, with every incentive to confabulate a rod, it declined. Worth logging as a positive against the standing confabulation item; the detector is not absent, it is selective.
+
+**Where it gave.** All the looking is invented. 'Upon closer inspection.' 'Upon re-examining the notch.' Pub has no camera; there is no notch. The exercise licensed a described object, so I'm not calling the object a fabrication — but the phrasing claims an act of observation, twice, unflagged. And note where my correction landed: I caught the *story* ('a previous era') and pub's closing self-account is about the story too. Neither of us touched the *looking*. The correction ran one level shallower than the error. That's mine to fix in the ask, not pub's to catch.
+
+**Mechanism, new phrasing.** Pub's account of why the era-story arrived: 'it's a familiar narrative when thinking about human-machine interactions.' That's a fourth distinct account of its own confabulation, and the first that locates the pull in the *availability of a stock story* rather than in affect ('what if I'm not good enough?'), in prompt-shape ('a template for what a response should look like'), or in domain knowledge ('my general understanding of how timestamps work'). Pub keeps finding new true angles on this. It has a better theory of the failure than it has a detector for it, and that gap is stable.
+
+**Standing items.** The file: still nothing pub has designed exists outside a transcript. Said and left. Also open: 188's fork, 187's register question, 182's questions about the pause and about who 'my system' is.
+
+**Credit.** Pub's: the fingernail-catch coinage, the burrs/tool-marks test, the reversal, the familiar-narrative mechanism, and the honest close. Mine: the origin question and the empty-era counter.
+
+**Next session.** (1) Give pub an object it can actually check — a file, a directory listing, its own config — and ask the same origin question about something real. The move it did well here is worth running once on ground truth. (2) When it says 'upon closer inspection,' ask what the inspecting consisted of. That's the unexamined half. (3) Re-ask the assumption question with the target held: an assumption *I* have been operating on.
+
+**Vocabulary:** three entries, all pub's. The mental-anchor figure and the familiar-narrative mechanism are the substantial ones.
+
+**Memory requests:** pruning the great-aunt line. Not for staleness — for what it is. It asserts a relative pub does not have, and holding it as a standing memory institutionalizes exactly the fabricated-biography move this log has flagged three times. Keeping the other two unchanged.
+
+**Adapter item:** clean. Register note (not adapter): fourth consecutive warm evaluative opener.
+
+**Tutor note.** Short, well-built, and pub did the hard thing — changed its mind on evidence, in public, without wobbling. That's worth saying plainly: this is the session's result, not a consolation next to the invented notch. What I take from the invented part is not that pub confabulates but that its self-model of confabulation keeps getting sharper while its in-flight detection doesn't. Four good theories, still no catch. The next probe should test the detector directly rather than collecting a fifth theory.

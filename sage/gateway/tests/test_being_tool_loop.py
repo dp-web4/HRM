@@ -376,8 +376,12 @@ def test_compaction_leaves_room_for_the_answer_and_never_touches_the_beings_own_
     class _LLM:
         num_ctx = 16384
 
+    # Sized so that eliding the three older results is exactly enough (budget = (16384-6144)
+    # tokens * 3.4 - 4000 uncounted chars = 30,816): 43,600 before, 34,600 after two, ~30,400
+    # after three. The case where even that is not enough — the newest then yields too —
+    # is pinned in test_added_chars_are_counted_dense_and_the_newest_result_yields_last.
     msgs = ([{"role": "system", "content": "S" * 6600},
-             {"role": "user", "content": "U" * 23000}]
+             {"role": "user", "content": "U" * 15000}]
             + [m for _ in range(4) for m in
                ({"role": "assistant", "content": "A" * 500}, {"role": "tool", "content": "T" * 5000})])
     out, elided = compact_convo(msgs, _LLM())
@@ -478,9 +482,9 @@ def test_compaction_is_anchored_on_the_measured_prompt():
     # unmeasured: (67000 + 4000) / 3.4 = 20.9k + 6144 > 24576 -> compacts
     out, el = compact_convo(msgs, LLM())
     assert el, "unmeasured estimate must still guard"
-    # measured: the server counted 14,000 tokens for a 55,000-char prompt one step ago;
-    # 12,000 new chars -> 14,000 + 3,529 = 17.5k + 6144 < 24576 -> nothing to do
-    out, el = compact_convo(msgs, LLM(), measured=(14_000, 55_000))
+    # measured: the server counted 13,000 tokens for a 55,000-char prompt one step ago;
+    # 12,000 new chars at the dense ratio -> 13,000 + 4,800 = 17.8k + 6144 < 24576 -> nothing to do
+    out, el = compact_convo(msgs, LLM(), measured=(13_000, 55_000))
     assert el == [] and out is msgs
     # measured HIGH (code reads tokenize dense): 21,000 for 55,000 -> 24.5k -> compacts
     out, el = compact_convo(msgs, LLM(), measured=(21_000, 55_000))
@@ -563,3 +567,29 @@ def test_transport_error_retry_asks_for_a_shorter_body():
     nudge = seen[1][-1]
     assert nudge["role"] == "user" and nudge["content"].startswith("[harness]") and "third of the length" in nudge["content"]
     assert r.generates[-1]["nudged"] is True and r.generates[-1]["retried"] == 1
+
+
+
+def test_added_chars_are_counted_dense_and_the_newest_result_yields_last():
+    """03:27Z 2026-09-09: a 12,116-char JSON read took the prompt 19,620 -> 24,466 (2.5
+    chars/token); the estimate at 3.4 said ~21k, the older results were already stubs, the
+    newest was protected, and the generate was cut at the wall with nothing said."""
+    from sage.gateway.being_tool_loop import compact_convo, _est_tokens, _CPT_ADDED, COMPACT_KEEP_CHARS
+
+    assert _est_tokens(55_000 + 12_116, (19_620, 55_000)) == 19_620 + 12_116 / _CPT_ADDED
+    assert _est_tokens(55_000 - 3_400, (19_620, 55_000)) == 19_620 - 1_000       # removals counted light
+
+    class LLM:
+        num_ctx = 24576
+    big = "{" + "j" * 12_000 + "}"
+    msgs = [{"role": "user", "content": "u" * 50_000},
+            {"role": "assistant", "content": ""}, {"role": "tool", "content": "old" * 300},
+            {"role": "assistant", "content": ""}, {"role": "tool", "content": big}]
+    # the server counted 19,620 for the prompt before `big` was appended
+    chars_before = sum(len(m["content"]) for m in msgs[:-1])
+    out, el = compact_convo(msgs, LLM(), measured=(19_620, chars_before))
+    newest = out[-1]["content"]
+    assert newest != big and "NEWEST result" in newest
+    assert newest.startswith("{" + "j" * (COMPACT_KEEP_CHARS * 2 - 1)) and newest.endswith("j" * (COMPACT_KEEP_CHARS * 2 - 1) + "}")
+    assert el[-1]["newest"] is True and el[-1]["kept"] == COMPACT_KEEP_CHARS * 4
+    assert el[-1]["chars"] + el[-1]["kept"] == len(big)                          # accounting holds

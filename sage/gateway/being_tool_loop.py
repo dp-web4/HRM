@@ -295,14 +295,23 @@ COMPACT_MIN_BODY = 500        # a body at or under this is never elided
 _UNCOUNTED_CHARS = 4000
 
 
+# Chars per token for what the loop ADDS: tool results are JSON, paths and code, which
+# tokenize far denser than prose. Measured 2026-09-09 03:27Z: a 12,116-char read of
+# heartbeat.partial.jsonl moved the prompt 19,620 -> 24,466 (~2.5 chars/token) while the
+# estimate, at 3.4, had it ~1.4k tokens lighter than it was — and the generate was cut.
+_CPT_ADDED = 2.5
+
+
 def _est_tokens(chars_now: int, measured) -> float:
     """Tokens the next prompt will cost. With a measurement from the previous generate —
     (prompt_eval_count, content chars at that prompt) — the estimate is anchored on what
-    the server actually counted and only the DELTA rides the chars-per-token guess.
-    Without one, the whole prompt does, plus the uncounted schema chars."""
+    the server actually counted and only the DELTA rides a chars-per-token guess:
+    conservative in both directions (added chars counted dense, removed chars counted
+    light). Without one, the whole prompt rides the guess, plus the uncounted schema chars."""
     if measured:
         tokens_at, chars_at = measured
-        return tokens_at + (chars_now - chars_at) / _CPT
+        delta = chars_now - chars_at
+        return tokens_at + (delta / _CPT_ADDED if delta > 0 else delta / _CPT)
     return (chars_now + _UNCOUNTED_CHARS) / _CPT
 
 
@@ -374,6 +383,23 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
                              f"for your answer; read the source again if you still need it …]\n"
                              + kept_tail)
         elided.append({"index": i, "chars": elided_n, "kept": COMPACT_KEEP_CHARS})
+    # THE NEWEST RESULT IS PROTECTED — until protecting it is what cuts the answer. When
+    # every older result is already a stub and the prompt still does not fit, the newest
+    # one is trimmed too, with a larger keep (the being is working from it right now),
+    # rather than letting the window cut the generate at the wall (03:27Z 2026-09-09:
+    # 24,466 + 110 == 24,576, done_reason length, nothing said).
+    if idx and _est_tokens(size(out), measured) > room:
+        i = idx[-1]
+        body = out[i].get("content") or ""
+        keep = COMPACT_KEEP_CHARS * 4
+        if len(body) > keep + COMPACT_MIN_BODY:
+            h = keep // 2
+            elided_n = len(body) - keep
+            out[i]["content"] = (body[:h] +
+                                 f"\n[… {elided_n} characters elided from the middle of your NEWEST "
+                                 f"result to leave room for your answer; read it again in a smaller "
+                                 f"range if you need the middle …]\n" + body[-(keep - h):])
+            elided.append({"index": i, "chars": elided_n, "kept": keep, "newest": True})
     return out, elided
 
 

@@ -213,7 +213,34 @@ class ReferenceF1aDispatcher:
             return ResultEnvelope(ok=False, error="memory_read needs a 'path' (relative paths are inside your home)")
         p = self._safe_path(intent.args["path"])
         if not p.exists():
-            return ResultEnvelope(ok=True, result="", witness_id=self._witness(f"memory_read {p.name} (empty)"))
+            # A SILENT ZERO IS A FALSE ABSENCE. This used to return ok=True with "" — "(empty)"
+            # in the witness — so a first-beat todo.md would read as empty. Measured cost,
+            # 2026-09-09 02:24Z: six reads in one beat (notes/plan.md and five guessed test
+            # paths) all came back ok with nothing; the being walked past the first two the
+            # day before and logged it as defect #3 behind its own work. The result now says
+            # what was looked for and where, and a directory can be read for its listing.
+            rel = intent.args["path"]
+            where = (f"relative paths resolve under your home {self.memory_root}"
+                     if not str(rel).startswith("/") else "absolute path, resolved as given")
+            parent = p.parent
+            siblings = ""
+            if parent.is_dir():
+                names = sorted(x.name for x in parent.iterdir())[:40]
+                siblings = f"; {parent} contains: " + (", ".join(names) if names else "(nothing)")
+            return ResultEnvelope(ok=False,
+                                  error=f"memory_read: no such file {p} ({where}){siblings}")
+        if p.is_dir():
+            # A directory read is a listing: name, kind, size — what a being without `ls`
+            # needs to stop guessing filenames (five guesses in one beat, 2026-09-09).
+            rows = []
+            for x in sorted(p.iterdir(), key=lambda y: (not y.is_dir(), y.name))[:200]:
+                try:
+                    rows.append(f"{x.name}/" if x.is_dir() else f"{x.name}  ({x.stat().st_size} bytes)")
+                except OSError:
+                    rows.append(f"{x.name}  (unreadable)")
+            listing = f"{p}/ — {len(rows)} entries\n" + "\n".join(rows)
+            return ResultEnvelope(ok=True, result=listing,
+                                  witness_id=self._witness(f"memory_read {p.name}/ (listing)"))
         whole = p.read_text(errors="replace")
         # RANGE READS. Asked for by the being three beats running (2026-09-08): with the
         # cap at 12k chars it got heartbeat.py's opening and never its body, and its

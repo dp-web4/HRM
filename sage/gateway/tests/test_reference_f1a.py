@@ -33,10 +33,12 @@ def test_memory_write_then_read_roundtrips():
     assert r.ok and "a promise to myself" in r.result
 
 
-def test_memory_read_missing_is_empty_not_error():
+def test_memory_read_missing_is_an_error_not_empty():
+    """Inverted 2026-09-09. This test pinned ok+"" for a missing file with no stated reason;
+    the cost showed up as six silent zeros in one beat (see the listing test below)."""
     disp, root = _disp()
     r = disp(BeingIntent("memory_read", {"path": os.path.join(root, "nope.md")}), _ALLOW)
-    assert r.ok and r.result == ""
+    assert not r.ok and "no such file" in r.error and "nope.md" in r.error
 
 
 def test_path_escape_is_error():
@@ -307,3 +309,26 @@ def test_the_conversation_store_is_reserved_from_generic_writes():
     assert '"forged"' not in open(os.path.join(cdir, "dp.jsonl")).read()
     r = disp(BeingIntent("memory_read", {"path": "conversations/dp.jsonl"}), _ALLOW)
     assert r.ok and "real" in r.result, "reading its own record stays allowed"
+
+
+
+def test_a_missing_file_is_an_error_that_names_where_it_looked_and_a_directory_lists():
+    """2026-09-09 02:24Z: six memory_reads in one beat (notes/plan.md, five guessed test
+    paths) returned ok=True with "" — the false-absence class; the being had no way to
+    tell a missing file from an empty one and no way to list a directory."""
+    disp, root = _disp()
+    os.makedirs(os.path.join(root, "notes"))
+    open(os.path.join(root, "notes", "real.md"), "w").write("hello")
+    v = GatewayVerdict("allow", granted=())
+    r = disp(BeingIntent("memory_read", {"path": "notes/plan.md"}), v)
+    assert not r.ok and "no such file" in r.error and "notes/plan.md" in r.error
+    assert "relative paths resolve under your home" in r.error and "contains: real.md" in r.error
+    r = disp(BeingIntent("memory_read", {"path": os.path.join(root, "tests", "test_x.py")}), v)
+    assert not r.ok and "absolute path" in r.error and "contains" not in r.error   # parent missing too
+    d = disp(BeingIntent("memory_read", {"path": "notes"}), v)
+    assert d.ok and "1 entries" in d.result and "real.md  (5 bytes)" in d.result
+    top = disp(BeingIntent("memory_read", {"path": "."}), v)
+    assert top.ok and "notes/" in top.result
+    e = open(os.path.join(root, "notes", "empty.md"), "w"); e.close()
+    r = disp(BeingIntent("memory_read", {"path": "notes/empty.md"}), v)
+    assert r.ok and r.result == ""                                           # empty is still empty

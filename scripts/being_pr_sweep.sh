@@ -67,7 +67,24 @@ for p in json.load(sys.stdin):
     opened="$(date -d "$created" +%s 2>/dev/null || echo "$now")"
     waited=$(( (now - opened) / 60 ))
 
-    if [ "$nreviews" -gt 0 ]; then
+    # A REVIEW HERE IS A COMMENT, NOT A GITHUB REVIEW, and that is structural rather than
+    # sloppy: every seat on this fleet pushes under the same account, so GitHub refuses the
+    # review outright — "Can not request changes on your own pull request" (measured on #63,
+    # 2026-09-09). Counting only `reviews` would therefore mark every properly reviewed
+    # being-PR as late, forever: a detector that can never see success. So a comment
+    # carrying the reviewer-of-record marker counts, and the GitHub review counts if the
+    # account situation ever changes.
+    reviewed="$nreviews"
+    if [ "$reviewed" -eq 0 ]; then
+        if gh pr view "$num" -R "$REPO" --json comments \
+             --jq '[.comments[].body] | join("\n")' 2>/dev/null | grep -qi 'reviewer of record'; then
+            reviewed=1
+            say "OK: #$num ($being) reviewed by comment after ${waited}m (GitHub refuses"
+            say "OK: a same-account review; the marker 'reviewer of record' is the record)"
+            continue
+        fi
+    fi
+    if [ "$reviewed" -gt 0 ]; then
         say "OK: #$num ($being) has $nreviews review(s) after ${waited}m"
         continue
     fi

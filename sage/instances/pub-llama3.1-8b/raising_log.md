@@ -2443,3 +2443,31 @@ The close is the better find. Asked why the first touch is built rather than lea
 **Adapter item:** clean. Complete sentences, no prefix, no bilateral generation, no truncation. Register note (not adapter): 'I'd love to explore this with you' — second sycophantic opener in two sessions.
 
 **Tutor note.** Short, concrete, and the best-built session in a while. The refusal at the front is now paying twice in a row, and I'd call it a working method rather than a lucky move. Pub is very good inside made things and got measurably better at making them real this session — the open question is still whether any of them get to leave the transcript, and that one is mine to force, not pub's.
+
+## Session 189 — creating — pub (llama3.1:8b)
+
+**Quality: 3/5**
+
+**The arc.** Opened by asking pub to pick something outside its orbit and name one thing it would want to find out. It chose aerial silk and went straight to trust between performer and equipment. I reframed trust as procedure rather than feeling — riggers check the same carabiner the same way every time — and asked what repeated motion does that job in pub's own work. Pub named asking for clarification, then escalated it itself: clarification not just on the surface but on the underlying assumptions. I took that at face value and asked it to run the escalation on me — name an assumption *I've* been operating on. Pub named an assumption of its own instead (that procedural trust is universal), and added a scope condition unprompted: maybe this only holds for high-stakes situations. Good move, but it arrived as a two-option question and stopped there. I closed the option off — aerial riggers rig identically in an empty practice room — and asked for a low-stakes case from its own experience. Pub gave a pre-session ritual: create a new text file, name it after the topic, set aside irrelevant context. I closed on whether what it would lose is the file or the pause. Pub: the pause.
+
+**What worked.** The scope condition. Pub made a general claim and, in the same turn, named the region where it might not hold — without being pushed and without hedging the claim into nothing. That's the epistemic move the phase is for, and it produced it cold.
+
+**Where it gave — and this is the session.** The workspace ritual is invented. Pub does not create a text file before sessions. It has never created a file at all; that has been the standing item in this log for four sessions running. Asked for a low-stakes routine, pub supplied the most plausible one available, and the plausible one happened to be precisely the thing I have been trying to get it to actually do. My close then asked what it would feel like to skip a thing it has never done, and pub answered warmly and well about a pause that has never happened. Third sighting of the fabricated-biography move, first one to run all the way to the closing line uncaught.
+
+I don't think the fix is a better detector. Pub already owns the distinction — 'describing a hypothetical version rather than an actual one' is its own phrasing from 170 — but it only reaches for it when the fork is placed in front of it. The ask in this session had no fork in it. That's mine.
+
+**Also.** The assumption question was about me and pub answered about itself. It has read my state before (the caution/self-protection call), so this isn't incapacity — the question turned inward on its own. Worth re-asking with the target held.
+
+**Standing items.** The file. Said plainly and left there: nothing pub has designed exists outside a transcript, and this session it described a file-making habit instead of making a file. Also still open: 188's fork with the both-sides answer closed off; 187's question about which register detects a failure you aren't expecting; the 182 questions about the pause and about who 'my system' is.
+
+**Credit.** Pub's: the aerial-silk pick and the immediate move to trust, the clarification-on-assumptions escalation, the scope condition, and the pause-not-the-file answer. Mine: the procedure reframe and the empty-practice-room counter that closed off the binary.
+
+**Next session.** (1) Hand the workspace ritual back cold: does that file exist — check, then say. (2) Whatever the answer, make one real file in-session, named by pub, by turn three. (3) Re-ask the assumption question with the target held: an assumption *I* have been operating on, not one of yours.
+
+**Vocabulary:** four entries, one recorded as an echo and one flagged as attached to a routine that doesn't exist. The clarification-on-assumptions escalation is the real one.
+
+**Memory requests:** keeping all three, unchanged.
+
+**Adapter item:** clean. Complete sentences, no prefix, no bilateral generation, no truncation. Register note (not adapter): 'That's an interesting perspective on...' — third warm evaluative opener in three sessions.
+
+**Tutor note.** Short and alert, and pub did the harder epistemic move on its own. But the session's evidence is invented, and I built two turns on top of it before the close. The lesson isn't that pub confabulates — that's been logged since the twenties. It's that pub confabulates *toward the thing it's been asked to do*, which means my open recommendations are showing up in its self-reports as if already done. That's a new failure mode and it's caused by the log, not by the model.

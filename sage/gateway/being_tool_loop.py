@@ -18,6 +18,7 @@ from __future__ import annotations
 import ast
 import json
 import re
+import time
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
@@ -37,6 +38,7 @@ class ToolTurnResult:
     salvaged: List[dict] = field(default_factory=list)     # calls lifted from the text channel: {step, effector, form}
     generates: List[dict] = field(default_factory=list)    # per generate, from Ollama's reply: {done_reason, prompt_eval_count, eval_count, retried}
     compacted: List[dict] = field(default_factory=list)    # per step where old tool results were elided to leave answer room: {step, elisions, chars}
+    deadline_hit: bool = False                             # stopped issuing steps because the wall-clock budget ran out
 
     @property
     def acted(self) -> bool:
@@ -48,16 +50,27 @@ class ToolTurnResult:
 
 
 def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
-                  messages: List[Dict[str, Any]], max_steps: int = 3) -> ToolTurnResult:
+                  messages: List[Dict[str, Any]], max_steps: int = 3,
+                  deadline: Optional[float] = None) -> ToolTurnResult:
     """Run one being turn that may reach for tools, gated end to end.
 
     Loop invariant: the being never sees a fabricated result — each tool message is a
     real ResultEnvelope (executed, refused, or honestly `pending` until F1a exists).
+
+    `deadline` (epoch seconds): once passed, no further tool step is issued and the turn
+    closes in words, exactly as at max_steps. Legion 04:30Z 2026-09-09: eight steps of
+    2-6k-token thinking at 19 tok/s took 36 minutes, reflect started, and the unit's
+    45-minute timeout killed the beat — journal, todo and the record itself lost. Steps
+    are the being's; the clock is the box's, and the box's limit is physical.
     """
     convo = list(messages)
     trace: List[Tuple[BeingIntent, ResultEnvelope]] = []
+    hit = False
 
     for step in range(max_steps):
+        if deadline is not None and step > 0 and time.time() >= deadline:
+            hit = True
+            break
         out = generate(convo)
         content = out.get("content") or ""
         intents = out.get("intents") or []
@@ -74,9 +87,13 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
 
     # Cap reached with tools still pending: force one final spoken close — we take its
     # words even if it wants more tools, so the being always ends its turn in language.
+    if hit:
+        convo.append({"role": "user", "content": (
+            "[harness] The time budget for this phase is spent; no further tool call will be "
+            "executed this beat. Close in words: what you did, and what you want next beat.")})
     out = generate(convo)
     return ToolTurnResult(reply=out.get("content") or "", trace=trace,
-                          steps=max_steps, capped=True)
+                          steps=(step if hit else max_steps), capped=True, deadline_hit=hit)
 
 
 _FENCE = re.compile(r"```[A-Za-z0-9_+-]*[ \t]*\n(.*?)```", re.S)
@@ -405,7 +422,8 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
 
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
                          max_steps: int = 2, tools: Optional[List[dict]] = None,
-                         on_generate: Optional[Callable[[dict], None]] = None) -> ToolTurnResult:
+                         on_generate: Optional[Callable[[dict], None]] = None,
+                         deadline: Optional[float] = None) -> ToolTurnResult:
     """Run a gated tool turn using an OllamaIRP-like `llm` exposing
     get_chat_response(messages, tools=...) -> {"content", "tool_calls"}.
 
@@ -548,7 +566,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                              "form": c["_salvaged"]} for c in calls)
         return {"content": content, "intents": parse_tool_calls(calls)}
 
-    result = run_tool_turn(client, generate, seed_messages, max_steps=max_steps)
+    result = run_tool_turn(client, generate, seed_messages, max_steps=max_steps, deadline=deadline)
     result.thinking = thoughts
     result.salvaged = salvaged
     result.generates = generates

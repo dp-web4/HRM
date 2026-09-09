@@ -593,3 +593,27 @@ def test_added_chars_are_counted_dense_and_the_newest_result_yields_last():
     assert newest.startswith("{" + "j" * (COMPACT_KEEP_CHARS * 2 - 1)) and newest.endswith("j" * (COMPACT_KEEP_CHARS * 2 - 1) + "}")
     assert el[-1]["newest"] is True and el[-1]["kept"] == COMPACT_KEEP_CHARS * 4
     assert el[-1]["chars"] + el[-1]["kept"] == len(big)                          # accounting holds
+
+
+
+def test_deadline_stops_issuing_steps_and_closes_in_words():
+    """04:30Z 2026-09-09: eight steps of long thinking took 36 min, reflect began, the
+    unit's 45-min timeout killed the beat. A deadline ends explore in time, in words."""
+    import time
+    from sage.gateway.being_tool_loop import run_tool_turn
+    calls = []
+
+    def gen(convo):
+        calls.append([m.get("content", "")[:20] for m in convo])
+        if any("[harness] The time budget" in (m.get("content") or "") for m in convo):
+            return {"content": "closing: did one thing, want two next beat", "intents": []}
+        return {"content": "", "intents": [BeingIntent("witness", {"event": "x"})]}
+
+    r = run_tool_turn(_client(OK_DISPATCH), gen, [{"role": "user", "content": "beat"}],
+                      max_steps=8, deadline=time.time() - 1)          # already past: one step, then close
+    assert r.steps == 1 and r.capped and r.deadline_hit
+    assert len(r.trace) == 1 and r.reply.startswith("closing")
+    assert "[harness] The time budget" in calls[-1][-1] or any("[harness]" in c for c in calls[-1])
+    r2 = run_tool_turn(_client(OK_DISPATCH), gen, [{"role": "user", "content": "beat"}],
+                       max_steps=3, deadline=time.time() + 3600)      # far away: normal cap
+    assert r2.steps == 3 and r2.capped and not r2.deadline_hit

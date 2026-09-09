@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
 import subprocess
 import sys
 import time
@@ -397,6 +398,19 @@ CONV_LADDER = ((12, None), (12, 1500), (6, 1200), (3, 900), (2, 700))
 LOOP_GROWTH_CHARS = 10_000
 
 
+class BeatKilled(Exception):
+    """SIGTERM arrived mid-beat (the unit's TimeoutStartSec, or a stop). Raised from the
+    signal handler so the beat unwinds to its record instead of vanishing: 04:30Z
+    2026-09-09 a 51-minute beat left nothing in heartbeats.jsonl and the monitor never
+    knew it had happened. systemd allows TimeoutStopSec (90 s) after SIGTERM — enough."""
+
+
+def install_kill_handler() -> None:
+    def _on_term(signum, frame):
+        raise BeatKilled(f"signal {signum} ({signal.Signals(signum).name})")
+    signal.signal(signal.SIGTERM, _on_term)
+
+
 def fit_state(build, *, num_ctx, num_predict, other_chars: int, slack: int = 512):
     """`build(per_conv, turn_chars) -> state text`. Returns (text, rung, intervention).
 
@@ -548,6 +562,10 @@ def main(argv=None) -> int:
     ap.add_argument("--model", required=True)
     ap.add_argument("--instance", required=True)
     ap.add_argument("--max-steps", type=int, default=8)
+    ap.add_argument("--explore-budget-s", type=int, default=1500,
+                    help="wall-clock seconds from beat start after which explore issues no further "
+                         "tool step (25 min: leaves 20 under the unit's 45-min timeout for the "
+                         "account ask and reflect — 04:30Z 2026-09-09 lost all three to the kill)")
     ap.add_argument("--reflect-steps", type=int, default=3)
     ap.add_argument("--since-hours", type=float, default=None,
                     help="digest window; default: since the last beat, min 1h, max 48h")
@@ -666,6 +684,7 @@ def main(argv=None) -> int:
 
     now = datetime.now(timezone.utc)
     t0 = time.time()
+    install_kill_handler()
     digest = fleet_digest(hours, Path(args.forum_dir), [r.strip() for r in args.repos.split(",") if r.strip()])
     # S1 join, raising -> beat: the last session's closing words + buffer tail, attributed
     from sage.gateway.being_join import session_block, ACCOUNT_ASK, parse_account, save_account
@@ -752,36 +771,55 @@ def main(argv=None) -> int:
                 f.write(json.dumps(line, default=str) + "\n")
         return cb
 
-    explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,
-                                   tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("explore"))
-    convo = _carry(seed, explore)
-    after = None
-    if posture_turn is not None:
-        convo.append({"role": "user", "content": posture_turn})
-        after = run_ollama_tool_turn(client, llm, convo, max_steps=args.max_steps,
-                                     tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("posture"))
-        convo = _carry(convo, after)
-    # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
+    # Everything below runs under the kill handler: a SIGTERM (the unit's 45-minute
+    # TimeoutStartSec) unwinds here and the record is still written, marked, with the
+    # phases that completed. Explore and the posture turn share one wall-clock deadline.
+    explore_deadline = t0 + args.explore_budget_s
+    explore = after = reflect = None
     account = {"present": False, "sha256": None, "reply": ""}
+    killed = None
     try:
-        ask_msgs = [{"role": m["role"], "content": m["content"]} for m in convo] + \
-                   [{"role": "user", "content": ACCOUNT_ASK + nothink}]
-        aresp = llm.get_chat_response(ask_msgs)
-        areply = (aresp.get("content") or "").strip()
-        parsed = parse_account(areply)
-        account["reply"] = areply[:1200]
-        if parsed:
-            rec = save_account(instance, parsed, host_session_id)
-            account.update({"present": True, "sha256": rec["sha256"], "session_at_write": rec["session_at_write"]})
-        convo.append({"role": "user", "content": ACCOUNT_ASK})
-        convo.append({"role": "assistant", "content": areply or "(no answer)"})
-    except Exception as e:
-        account["error"] = f"{type(e).__name__}: {e}"
-    convo.append({"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)})
-    reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
-                                   tools=ollama_tools(REFLECT_TOOLS), on_generate=_on_generate("reflect"))
+        explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,
+                                       tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("explore"),
+                                       deadline=explore_deadline)
+        convo = _carry(seed, explore)
+        after = None
+        if posture_turn is not None:
+            convo.append({"role": "user", "content": posture_turn})
+            after = run_ollama_tool_turn(client, llm, convo, max_steps=args.max_steps,
+                                         tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("posture"),
+                                         deadline=explore_deadline)
+            convo = _carry(convo, after)
+        # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
+        account = {"present": False, "sha256": None, "reply": ""}
+        try:
+            ask_msgs = [{"role": m["role"], "content": m["content"]} for m in convo] + \
+                       [{"role": "user", "content": ACCOUNT_ASK + nothink}]
+            aresp = llm.get_chat_response(ask_msgs)
+            areply = (aresp.get("content") or "").strip()
+            parsed = parse_account(areply)
+            account["reply"] = areply[:1200]
+            if parsed:
+                rec = save_account(instance, parsed, host_session_id)
+                account.update({"present": True, "sha256": rec["sha256"], "session_at_write": rec["session_at_write"]})
+            convo.append({"role": "user", "content": ACCOUNT_ASK})
+            convo.append({"role": "assistant", "content": areply or "(no answer)"})
+        except Exception as e:
+            account["error"] = f"{type(e).__name__}: {e}"
+        convo.append({"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC", nothink=nothink)})
+        reflect = run_ollama_tool_turn(client, llm, convo, max_steps=args.reflect_steps,
+                                       tools=ollama_tools(REFLECT_TOOLS), on_generate=_on_generate("reflect"))
+    except BeatKilled as _k:
+        killed = str(_k)
+        print(f"[heartbeat] KILLED mid-beat: {killed} — writing the record with what completed", file=sys.stderr)
 
     interventions = list(fit_interventions)
+    for ph, res in (("explore", explore), ("posture", after)):
+        if getattr(res, "deadline_hit", False):
+            interventions.append({"kind": "deadline", "phase": ph,
+                                  "suppressed": f"further {ph} tool steps after {args.explore_budget_s}s",
+                                  "reason": "the unit's 45-min timeout killed a 51-min beat on 2026-09-09 "
+                                            "and took the reflect and the record with it"})
     if act_first:
         interventions.append({"kind": "act_first", "suppressed": "posture-first presentation (the model narrates under it)"})
     if nothink:
@@ -803,7 +841,8 @@ def main(argv=None) -> int:
         try:
             from sage.gateway import escalate as _esc
             woken = set()
-            for it, env in list(explore.trace) + (list(after.trace) if after is not None else []) + list(reflect.trace):
+            for it, env in (list(getattr(explore, "trace", [])) + list(getattr(after, "trace", []))
+                            + list(getattr(reflect, "trace", []))):   # any phase may be None after a kill
                 if not env.refused:
                     continue
                 kind = _esc.classify(env)
@@ -843,6 +882,7 @@ def main(argv=None) -> int:
         # a version says so instead of making it infer from key presence).
         "schema": "heartbeat/v2",
         "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "t0": t0, "elapsed_s": round(time.time() - t0, 1),
+        **({"killed": killed} if killed else {}),
         "member": args.member, "model": args.model, "window_h": round(hours, 2),
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
         # the window and budget actually sent, so a beat is verifiable from this file alone

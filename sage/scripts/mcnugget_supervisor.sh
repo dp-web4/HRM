@@ -11,6 +11,11 @@
 
 set -u
 
+# Resolve a working python3 (see resolve_python.sh). Explicit `|| exit 1`:
+# these scripts do not all `set -e`, and a quiet fallthrough here is exactly
+# how raising died unnoticed for 29 days.
+. "$(dirname "$0")/resolve_python.sh" || exit 1
+
 SAGE_DIR="/Users/dennispalatov/repos/SAGE"
 DEV_SAGE="/Users/dennispalatov/repos/dev-SAGE"
 SHARED="/Users/dennispalatov/repos/shared-context"
@@ -87,7 +92,7 @@ else
             export SAGE_GAME_DIAG_DIR="$SWEEP_DIR/diagnostic_games"
 
             cd "$SAGE_DIR"
-            nohup /opt/homebrew/bin/python3 \
+            nohup "$SAGE_PY" \
                 "$DEV_SAGE/arc-agi-3/experiments/sweep_all_25.py" \
                 --model "$MODEL" --max-steps 600 --max-revisions 100 \
                 > "$SWEEP_LOG" 2>&1 &

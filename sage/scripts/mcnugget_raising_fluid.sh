@@ -11,6 +11,11 @@
 
 set -e
 
+# Resolve a working python3 (see resolve_python.sh). Explicit `|| exit 1`:
+# these scripts do not all `set -e`, and a quiet fallthrough here is exactly
+# how raising died unnoticed for 29 days.
+. "$(dirname "$0")/resolve_python.sh" || exit 1
+
 SAGE_DIR="/Users/dennispalatov/repos/SAGE"
 PYTHONPATH="$SAGE_DIR"
 export PYTHONPATH
@@ -45,7 +50,7 @@ source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 # Run raising session via unified launcher + fluid runner
 # Uses the identity-anchored fluid variant with MRH block-based prompt
 # and Thor S86 anti-crystallization mitigations.
-/opt/homebrew/bin/python3 -m sage.session --raising --fluid \
+"$SAGE_PY" -m sage.session --raising --fluid \
     --machine mcnugget \
     2>&1
 
@@ -56,7 +61,7 @@ source "$SAGE_DIR/sage/scripts/ensure_daemon.sh"
 # runs gemma3:12b (Sprint 7 default) — dream consolidation would skip
 # with "Session file not found". Auto-detect from /health.
 DAEMON_MODEL=$(curl -s --max-time 3 "http://localhost:${SAGE_PORT:-8760}/health" 2>/dev/null \
-    | /opt/homebrew/bin/python3 -c "import sys,json; print(json.load(sys.stdin).get('model','gemma3:12b'))" 2>/dev/null \
+    | "$SAGE_PY" -c "import sys,json; print(json.load(sys.stdin).get('model','gemma3:12b'))" 2>/dev/null \
     || echo "gemma3:12b")
 # HONOUR SAGE_INSTANCE FIRST. Deriving the slug from the model made the being's
 # IDENTITY a function of its MODEL: a model swap silently pointed raising at a new,
@@ -72,18 +77,18 @@ echo "[McNugget-Raising] Active instance: $INSTANCE_SLUG (daemon model: $DAEMON_
 
 # Snapshot state
 echo "[McNugget-Raising] Snapshotting state..."
-/opt/homebrew/bin/python3 -m sage.scripts.snapshot_state \
+"$SAGE_PY" -m sage.scripts.snapshot_state \
     --machine mcnugget \
     --instance "$INSTANCE_SLUG" 2>/dev/null || true
 
 # Read session info
-SESSION_NUM=$(/opt/homebrew/bin/python3 -c "
+SESSION_NUM=$("$SAGE_PY" -c "
 import json
 with open('$SAGE_DIR/$INSTANCE_DIR/identity.json') as f:
     print(json.load(f)['identity']['session_count'])
 " 2>/dev/null || echo "?")
 
-PHASE=$(/opt/homebrew/bin/python3 -c "
+PHASE=$("$SAGE_PY" -c "
 import json
 with open('$SAGE_DIR/$INSTANCE_DIR/identity.json') as f:
     print(json.load(f)['development']['phase_name'])
@@ -91,7 +96,7 @@ with open('$SAGE_DIR/$INSTANCE_DIR/identity.json') as f:
 
 # Dream consolidation
 echo "[McNugget-Raising] Dream consolidation..."
-/opt/homebrew/bin/python3 -m sage.raising.scripts.dream_consolidation \
+"$SAGE_PY" -m sage.raising.scripts.dream_consolidation \
     --instance "$INSTANCE_DIR" \
     --session "$SESSION_NUM" 2>&1 || {
     echo "[McNugget-Raising] Dream consolidation skipped"

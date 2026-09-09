@@ -25,9 +25,14 @@
 #   /usr/local/bin/python3      (Intel brew)
 #   /usr/bin/python3            (Xcode CLT; present but usually lacks our deps)
 #
-# Set SAGE_PY_REQUIRE to a space-separated module list to additionally demand those
-# imports — that distinguishes "an interpreter" from "our interpreter" when brew is
-# unlinked and only the dep-less system python survives.
+# SAGE_PY_REQUIRE is a space-separated module list every candidate must import. It
+# distinguishes "an interpreter" from "OUR interpreter", and it is not optional in
+# practice: under launchd the PATH is /usr/bin:/bin, so bare `python3` resolves to
+# /usr/bin/python3 (3.9.6, Xcode CLT) rather than brew's 3.14. That interpreter runs
+# fine and lacks every SAGE dependency, which would turn a loud exit-127 into a
+# confusing ImportError deep inside a module. So it defaults to a real dependency.
+# Override with SAGE_PY_REQUIRE="" only if you genuinely want any python3.
+: "${SAGE_PY_REQUIRE=requests}"
 
 _sage_py_works() {  # $1=candidate — must execute, and import SAGE_PY_REQUIRE if set
     [ -n "${1:-}" ] || return 1

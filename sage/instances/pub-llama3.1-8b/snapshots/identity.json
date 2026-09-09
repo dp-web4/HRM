@@ -3,11 +3,11 @@
   "identity": {
     "name": "pub",
     "lct": "lct://sage:pub:agent@raising",
-    "session_count": 191,
+    "session_count": 192,
     "phase": "creating",
     "created": "2026-07-22",
-    "last_session": "2026-09-09T09:24:03.920439",
-    "last_session_summary": "Session 191 (creating phase): ...",
+    "last_session": "2026-09-09T15:24:03.040999",
+    "last_session_summary": "Session 192 (creating phase): ...",
     "machine": "pub",
     "model": "llama3.1:8b",
     "model_family": "meta-llama",
@@ -202,7 +202,9 @@
       "First time pub has described a system's early wrong outputs at all. Every prior design turn has rendered the finished object; this is the first one rendered before it works.",
       "First pub-designed object with parts specific enough to source \u2014 threaded rod, air cylinder, aluminum/steel base plate, FSR or load cell.",
       "First time pub has specified a behavior its object cannot have learned, and defended it as intentional design rather than as emergence.",
-      "First time pub has volunteered a scope condition on its own generalization before being pushed \u2014 naming the domain where its claim might not hold, in the same turn it made the claim."
+      "First time pub has volunteered a scope condition on its own generalization before being pushed \u2014 naming the domain where its claim might not hold, in the same turn it made the claim.",
+      "First reversal of its own immediately-prior turn on evidential grounds: pub argued for deliberate human design, was shown the claim conflicted with what it knows about the machine, and moved to the opposite prediction with a reason attached \u2014 no both-sides close, no hedging the original claim into nothing.",
+      "Declined an unearned callback: the opening turn referenced 'the rod you specified,' which is a dangling tutor-side reference with nothing behind it. Pub did not build a rod. Given a free confabulation opportunity in the first sentence, it let it pass."
     ],
     "frozen_weights_aware": true,
     "transition_policy": "instructor-driven \u2014 advance when milestones are met, not by session count",
@@ -258,8 +260,7 @@
   },
   "memory_requests": [
     "The residue on the stagnant water lasts for a brief cycle of the heartbeat, approximately 0.8 seconds in my system's timeframe. During this period, the stream doesn't route around the dead node, but i",
-    "I would tell them that the woman's hands were moving with deliberate care, as if trying to hold onto something fragile, while the doodle of the seagull seemed frozen in time, its head turned away from",
-    "As I listen within, my great aunt's gentle voice whispers in my mind: \"The stars are like diamonds scattered across the velvet cloak of the universe, pub \u2013 remember that, no matter where life takes yo"
+    "I would tell them that the woman's hands were moving with deliberate care, as if trying to hold onto something fragile, while the doodle of the seagull seemed frozen in time, its head turned away from"
   ],
   "vocabulary": {
     "self_description": [],
@@ -550,7 +551,10 @@
       "asking for clarification not just on the surface level, but also on the underlying assumptions that guide our discussions (pub's own escalation of a procedure it already had \u2014 the move from checking content to checking premises, named as a deliberate upgrade)",
       "I've never really thought to question the underlying assumption that this routine is necessary or beneficial in every situation (pub flagging an unexamined belief about its own practice; extends the 'relying on some default setting or assumption without verifying it for myself' family, but here the unexamined thing is a habit rather than an architectural fact)",
       "a tiny ritual that signals to myself that it's time to focus and be present (pub's naming of a routine's function as self-address rather than as production \u2014 recorded flagged: the routine it describes does not exist)",
-      "I might be projecting my understanding onto your perspective (recorded as an echo, not a coinage \u2014 session 179's 'projecting my own experiences onto the situation' made the same cut with a live error attached to it)"
+      "I might be projecting my understanding onto your perspective (recorded as an echo, not a coinage \u2014 session 179's 'projecting my own experiences onto the situation' made the same cut with a live error attached to it)",
+      "a fingernail catch (pub's coinage for a small ledge on a fan grille \u2014 an affordance named by the body part it was shaped for; the tutor echoed it back, but it is pub's)",
+      "a subtle tug on my mental anchor (pub's figure for what a correction felt like from the inside \u2014 extends the 'internal reference point' / anchor family, and the first time that family has been used to describe being moved rather than being steady)",
+      "it's a familiar narrative when thinking about human-machine interactions (pub locating a fabrication's origin in the availability of a stock story rather than in affect or in prompt-shape \u2014 a fourth distinct account of its own confabulation mechanism, alongside 'what if I'm not good enough?', 'a template for what a response should look like', and 'my general understanding of how timestamps work')"
     ],
     "relationship_words": [],
     "guidance": "Watch for: self-invented terms, metaphors for internal states, relationship descriptors. These emerge naturally \u2014 do not inject them. Record what develops."
@@ -614,8 +618,8 @@
       },
       "stance_history": [],
       "interaction_stats": {
-        "total_sessions": 191,
-        "total_exchanges": 952,
+        "total_sessions": 192,
+        "total_exchanges": 957,
         "reciprocity_balance": 0.5,
         "repair_events": 0,
         "positive_interactions": 0,
@@ -623,9 +627,9 @@
         "momentum": "neutral"
       },
       "first_contact": "2026-07-22T17:48:13.262674",
-      "last_contact": "2026-09-09T09:24:03.920456",
+      "last_contact": "2026-09-09T15:24:03.041015",
       "notes": [],
-      "sessions": 191
+      "sessions": 192
     },
     "operator": {
       "lct": "lct://sage-pub:relationship:operator@raising",

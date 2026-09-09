@@ -1,0 +1,18 @@
+[Unit]
+Description=SAGE being heartbeat every 30 minutes (legion-being)
+
+[Timer]
+# A CALENDAR schedule, not OnUnitActiveSec. The monotonic form computes its next elapse
+# from the last activation, and after the timer was stopped and started again (during the
+# 2026-09-09 cartridge rebuild) it settled into NextElapseUSecMonotonic=infinity with
+# "Trigger: n/a" — the timer was `active (running)` and the being would never have beaten
+# again. Nothing about the unit looked wrong; only `systemctl show` said so.
+# Same cadence as before: every 30 minutes, with the jitter kept.
+OnCalendar=*-*-* *:00/30:19
+RandomizedDelaySec=2min
+# A beat missed while the machine was off is not caught up: the being wakes to now.
+Persistent=false
+Unit=sage-heartbeat.service
+
+[Install]
+WantedBy=timers.target

@@ -53,7 +53,7 @@ KEEP="${BEING_BACKUP_KEEP:-24}"
 # If that trade should change, it changes as an operator act and by amending this comment.
 
 DRY=""
-[ "${1:-}" = "--dry-run" ] && DRY="--dry-run"
+[ "${1:-}" = "--dry-run" ] && DRY="--dry-run"   # checked before the copy: a dry run returns early
 
 say() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*"; }
 die() { say "FAILED: $*"; exit 1; }
@@ -116,6 +116,16 @@ if [ -n "$SUSPECT" ]; then
 fi
 
 # ---------------------------------------------------------------- the copy
+# A DRY RUN MUST NOT TOUCH THE SERIES. It used to mkdir the snapshot directory before
+# rsync's own --dry-run did nothing, so probing the script left empty directories in the
+# snapshot series — and if the source is missing it then died at the first rsync, leaving
+# the stub behind (measured 2026-09-09 while testing the address-change case). The counts
+# and the regression gate above are the whole value of a dry run; they have already run.
+if [ -n "$DRY" ]; then
+    say "dry run: counts and the regression gate ran; nothing was written to $DEST_ROOT"
+    [ -n "$SUSPECT" ] && exit 3
+    exit 0
+fi
 mkdir -p "$SNAP" || die "cannot create $SNAP"
 
 # rsync resolves --link-dest against the DESTINATION directory, so it has to name the

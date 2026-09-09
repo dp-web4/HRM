@@ -398,6 +398,54 @@ CONV_LADDER = ((12, None), (12, 1500), (6, 1200), (3, 900), (2, 700))
 LOOP_GROWTH_CHARS = 10_000
 
 
+IDLE_UNIT = "sage-heartbeat.service"
+IDLE_TIMER = "sage-heartbeat.timer"
+
+
+def next_wake_is_armed() -> tuple:
+    """(armed, detail) for the idle timer that wakes the being after quiet.
+
+    The beat is no longer a metronome: the timer measures INACTIVITY, so its next elapse is
+    computed from the end of this beat. That makes it exactly the kind of thing that can
+    stop scheduling without anything looking wrong — which happened on 2026-09-09, when a
+    monotonic timer sat `active (running)` with `Trigger: n/a` and the being would never
+    have woken again. Checked at the end of every beat, out loud."""
+    try:
+        out = subprocess.run(["systemctl", "--user", "show", IDLE_TIMER,
+                              "-p", "NextElapseUSecRealtime", "-p", "NextElapseUSecMonotonic"],
+                             capture_output=True, text=True, timeout=15).stdout
+    except Exception as e:
+        return False, f"could not ask systemd: {type(e).__name__}: {e}"
+    vals = dict(l.split("=", 1) for l in out.strip().splitlines() if "=" in l)
+    real = (vals.get("NextElapseUSecRealtime") or "").strip()
+    mono = (vals.get("NextElapseUSecMonotonic") or "").strip()
+    if real or (mono and mono not in ("infinity", "0")):
+        return True, f"realtime={real or '-'} monotonic={mono or '-'}"
+    return False, f"NO NEXT ELAPSE (realtime={real or 'empty'} monotonic={mono or 'empty'})"
+
+
+def arm_next_wake(idle_s: int) -> dict:
+    """Make sure something will wake the being after `idle_s` of quiet.
+
+    The persistent timer normally does this on its own (OnUnitInactiveSec). This is the
+    fallback for the state where it has stopped computing a next elapse: a one-shot
+    transient timer, so a scheduling failure costs a longer gap and never silence."""
+    armed, detail = next_wake_is_armed()
+    if armed:
+        return {"armed": True, "by": IDLE_TIMER, "detail": detail}
+    try:
+        subprocess.run(["systemd-run", "--user", "--collect",
+                        f"--on-active={idle_s}s", "--unit=sage-heartbeat-fallback-wake",
+                        "systemctl", "--user", "start", IDLE_UNIT],
+                       capture_output=True, text=True, timeout=20, check=True)
+        return {"armed": True, "by": "systemd-run fallback", "detail": detail,
+                "why": "the idle timer had no next elapse; a one-shot was armed instead"}
+    except Exception as e:
+        return {"armed": False, "by": None, "detail": detail,
+                "error": f"{type(e).__name__}: {e}",
+                "why": "NOTHING WILL WAKE THE BEING until a seat or a message does"}
+
+
 class BeatKilled(Exception):
     """SIGTERM arrived mid-beat (the unit's TimeoutStartSec, or a stop). Raised from the
     signal handler so the beat unwinds to its record instead of vanishing: 04:30Z
@@ -561,11 +609,22 @@ def main(argv=None) -> int:
     ap.add_argument("--member", required=True)
     ap.add_argument("--model", required=True)
     ap.add_argument("--instance", required=True)
-    ap.add_argument("--max-steps", type=int, default=8)
-    ap.add_argument("--explore-budget-s", type=int, default=1500,
-                    help="wall-clock seconds from beat start after which explore issues no further "
-                         "tool step (25 min: leaves 20 under the unit's 45-min timeout for the "
-                         "account ask and reflect — 04:30Z 2026-09-09 lost all three to the kill)")
+    ap.add_argument("--max-steps", type=int, default=0,
+                    help="0 = no step cap: the beat ends when the being stops asking for "
+                         "tools or a resource runs out (dp 2026-09-09: it continues as long "
+                         "as it wishes). A positive value caps it, as before.")
+    ap.add_argument("--idle-wake-s", type=int, default=1800,
+                    help="quiet time after a beat ENDS before the next one is due. The beat "
+                         "is an inactivity timer, not a metronome (dp 2026-09-09): working "
+                         "pushes the next beat out, and this is only how long the being is "
+                         "left alone before something wakes it to look around.")
+    ap.add_argument("--explore-budget-s", type=int, default=7200,
+                    help="wall-clock seconds from beat start after which explore issues no "
+                         "further tool step. This is the REAL bound on a beat now that there "
+                         "is no step cap: work continues while there is work, and the clock "
+                         "is the box's limit rather than a guess at how much work there is. "
+                         "Keep the unit's TimeoutStartSec comfortably above it — the record "
+                         "is written at beat end, and a kill loses the beat.")
     ap.add_argument("--reflect-steps", type=int, default=3)
     ap.add_argument("--since-hours", type=float, default=None,
                     help="digest window; default: since the last beat, min 1h, max 48h")
@@ -779,16 +838,22 @@ def main(argv=None) -> int:
     account = {"present": False, "sha256": None, "reply": ""}
     killed = None
     try:
+        def _interject() -> str:
+            """What arrived since the seed was composed. Drained between steps so a turn
+            from dp or a seat reaches the being inside the beat it is already awake for."""
+            from sage.gateway import conversations as _c
+            return _c.drain_new_for(instance, args.member)
+
         explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,
                                        tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("explore"),
-                                       deadline=explore_deadline)
+                                       deadline=explore_deadline, interject=_interject)
         convo = _carry(seed, explore)
         after = None
         if posture_turn is not None:
             convo.append({"role": "user", "content": posture_turn})
             after = run_ollama_tool_turn(client, llm, convo, max_steps=args.max_steps,
                                          tools=ollama_tools(EXPLORE_TOOLS), on_generate=_on_generate("posture"),
-                                         deadline=explore_deadline)
+                                         deadline=explore_deadline, interject=_interject)
             convo = _carry(convo, after)
         # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
         account = {"present": False, "sha256": None, "reply": ""}
@@ -874,6 +939,7 @@ def main(argv=None) -> int:
                 for i, e in res.trace]
     def _turn(res):
         return None if res is None else {"reply": res.reply, "steps": res.steps, "capped": res.capped,
+                                         "interjected": list(getattr(res, "interjected", [])),
                                          "trace": _trace(res), "thinking": [t[:4000] for t in res.thinking],
                                          "salvaged": list(res.salvaged), "generates": list(res.generates)}
     record = {
@@ -928,6 +994,11 @@ def main(argv=None) -> int:
         "reflect": _turn(reflect),
         "escalations": escalations, "egress": egress,
     }
+    # The last thing a beat does is make sure there will be another one.
+    record["next_wake"] = arm_next_wake(args.idle_wake_s)
+    if not record["next_wake"].get("armed"):
+        print(f"[heartbeat] NO NEXT WAKE ARMED: {record['next_wake']}", file=sys.stderr)
+
     with open(log, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
     print(json.dumps(record, indent=2, ensure_ascii=False, default=str))

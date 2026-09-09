@@ -617,3 +617,86 @@ def test_deadline_stops_issuing_steps_and_closes_in_words():
     r2 = run_tool_turn(_client(OK_DISPATCH), gen, [{"role": "user", "content": "beat"}],
                        max_steps=3, deadline=time.time() + 3600)      # far away: normal cap
     assert r2.steps == 3 and r2.capped and not r2.deadline_hit
+
+
+
+# -- the metabolic beat: work while there is work, and hear the world while working -----
+#
+# dp, 2026-09-09: "1. a message from you or me wakes it immediately to respond 2. it should
+# be able to continue as long as it wishes 3. activity resets the beat timer 4. if timer
+# reaches the beat interval, we wake it. so basically it works while there's something to
+# do, beat wakes it after set period of inactivity."
+def test_an_uncapped_turn_runs_until_the_being_stops_asking():
+    """A step count was never a statement about the work — it was a guess at how much work
+    there would be, applied as a limit. max_steps=0 removes the guess."""
+    from sage.gateway.being_tool_loop import run_tool_turn
+    import time
+    calls = {"n": 0}
+
+    def gen(convo):
+        calls["n"] += 1
+        if calls["n"] <= 20:
+            return {"content": "", "intents": [BeingIntent("witness", {"event": f"step{calls['n']}"})]}
+        return {"content": "done after twenty", "intents": []}
+
+    r = run_tool_turn(_client(OK_DISPATCH), gen, [{"role": "user", "content": "go"}],
+                      max_steps=0, deadline=time.time() + 3600)
+    assert r.reply == "done after twenty" and not r.capped
+    assert r.steps == 20 and len(r.trace) == 20      # far past the old cap of 8
+
+
+def test_an_uncapped_turn_without_a_clock_gets_a_safety_ceiling():
+    """"As long as it wishes" is bounded by a resource, not by nothing."""
+    from sage.gateway.being_tool_loop import run_tool_turn, _UNCAPPED_SAFETY_CEILING
+
+    def gen(convo):
+        return {"content": "", "intents": [BeingIntent("witness", {"event": "x"})]}
+
+    r = run_tool_turn(_client(OK_DISPATCH), gen, [{"role": "user", "content": "go"}], max_steps=0)
+    assert r.capped and r.steps == _UNCAPPED_SAFETY_CEILING
+    assert any("safety ceiling" in str(i.get("note", "")) for i in r.interjected)
+
+
+def test_a_message_arriving_mid_turn_reaches_the_being_between_steps():
+    """The conversation block is composed at beat start, so before this a turn arriving
+    while the being worked waited for the next beat — which under a two-hour beat is the
+    opposite of waking it immediately."""
+    from sage.gateway.being_tool_loop import run_tool_turn
+    import time
+    mail = ["", "dp: are you there?", "", ""]
+    seen = []
+
+    def interject():
+        return mail.pop(0) if mail else ""
+
+    def gen(convo):
+        seen.append([m.get("content", "") for m in convo])
+        if len(seen) <= 3:
+            return {"content": "", "intents": [BeingIntent("witness", {"event": "w"})]}
+        return {"content": "ok", "intents": []}
+
+    r = run_tool_turn(_client(OK_DISPATCH), gen, [{"role": "user", "content": "beat"}],
+                      max_steps=0, deadline=time.time() + 3600, interject=interject)
+    assert r.reply == "ok"
+    delivered = [c for c in seen[-1] if "a message arrived while you were working" in c]
+    assert len(delivered) == 1 and "dp: are you there?" in delivered[0]
+    # it was NOT delivered before the first generate: the seed already carried the state
+    assert not any("a message arrived" in c for c in seen[0])
+    assert r.interjected and r.interjected[0]["chars"] == len("dp: are you there?")
+
+
+def test_a_broken_mailbox_does_not_end_the_beat():
+    from sage.gateway.being_tool_loop import run_tool_turn
+    import time
+
+    def interject():
+        raise RuntimeError("conversation store is locked")
+
+    def gen(convo):
+        return {"content": "", "intents": [BeingIntent("witness", {"event": "w"})]} \
+            if len(convo) < 6 else {"content": "still fine", "intents": []}
+
+    r = run_tool_turn(_client(OK_DISPATCH), gen, [{"role": "user", "content": "beat"}],
+                      max_steps=0, deadline=time.time() + 3600, interject=interject)
+    assert r.reply == "still fine"
+    assert any("RuntimeError" in str(i.get("error", "")) for i in r.interjected)

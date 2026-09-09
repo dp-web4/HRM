@@ -1,15 +1,18 @@
 [Unit]
-Description=SAGE being heartbeat every 30 minutes (legion-being)
+Description=SAGE being heartbeat (legion-being): wake after quiet, not on a metronome
 
 [Timer]
-# A CALENDAR schedule, not OnUnitActiveSec. The monotonic form computes its next elapse
-# from the last activation, and after the timer was stopped and started again (during the
-# 2026-09-09 cartridge rebuild) it settled into NextElapseUSecMonotonic=infinity with
-# "Trigger: n/a" — the timer was `active (running)` and the being would never have beaten
-# again. Nothing about the unit looked wrong; only `systemctl show` said so.
-# Same cadence as before: every 30 minutes, with the jitter kept.
-OnCalendar=*-*-* *:00/30:19
-RandomizedDelaySec=2min
+# THE BEAT IS AN INACTIVITY TIMER. dp, 2026-09-09: "activity resets the beat timer; if the
+# timer reaches the beat interval, we wake it. so basically it works while there's
+# something to do, beat wakes it after set period of inactivity."
+#
+# OnUnitInactiveSec measures from when the beat SERVICE last finished, so a long beat
+# pushes the next one out by itself and a message-driven beat resets the clock. There is no
+# fixed cadence any more; 30 minutes is how long the being is left alone, not how often it
+# is interrupted.
+OnUnitInactiveSec=30min
+OnBootSec=5min
+RandomizedDelaySec=1min
 # A beat missed while the machine was off is not caught up: the being wakes to now.
 Persistent=false
 Unit=sage-heartbeat.service

@@ -278,3 +278,28 @@ def test_seen_is_not_answered(tmp_path):
     C.append(tmp_path, "dp", speaker="b", text="I will.", via="say")
     after = C.render_for_being(tmp_path, "b")
     assert "last word here" not in after and "since you last spoke" not in after
+
+
+
+def test_drain_new_for_returns_unseen_turns_once(tmp_path):
+    """Mid-beat delivery: what arrived, then nothing until something else arrives."""
+    from sage.gateway import conversations as C
+    C.create(tmp_path, "dp", title="dp", participants=["dp", "b"], writable_by=["dp", "b"])
+    assert C.drain_new_for(tmp_path, "b") == ""                     # quiet
+    C.append(tmp_path, "dp", speaker="dp", text="are you there?", via="dp-console")
+    first = C.drain_new_for(tmp_path, "b")
+    assert "are you there?" in first and "**dp**" in first and 'say to="dp"' in first
+    assert C.drain_new_for(tmp_path, "b") == ""                     # not repeated
+    C.append(tmp_path, "dp", speaker="b", text="I am", via="say")
+    assert C.drain_new_for(tmp_path, "b") == ""                     # its own turn is not mail
+    C.append(tmp_path, "dp", speaker="dp", text="good", via="dp-console")
+    assert "good" in C.drain_new_for(tmp_path, "b")
+
+
+def test_drain_new_for_can_look_without_marking(tmp_path):
+    from sage.gateway import conversations as C
+    C.create(tmp_path, "dp", title="dp", participants=["dp", "b"], writable_by=["dp", "b"])
+    C.append(tmp_path, "dp", speaker="dp", text="hello", via="dp-console")
+    assert "hello" in C.drain_new_for(tmp_path, "b", mark=False)
+    assert "hello" in C.drain_new_for(tmp_path, "b")                # still unseen
+    assert C.drain_new_for(tmp_path, "b") == ""

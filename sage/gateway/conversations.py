@@ -289,6 +289,32 @@ def _shown_text(turn: dict, turn_chars: Optional[int], conv_id: str) -> str:
     return text
 
 
+def drain_new_for(instance: Path, me: str, *, mark: bool = True) -> str:
+    """Turns addressed to `me` that it has not seen yet, formatted for delivery MID-BEAT,
+    or "" when nothing arrived. Marks them seen, so the next call does not repeat them.
+
+    WHY THIS EXISTS. The conversation block is composed into the seed prompt at beat start,
+    so anything said afterwards waited for the next beat. That was tolerable when a beat was
+    eighteen minutes. Under the metabolic model (dp, 2026-09-09: "a message from you or me
+    wakes it immediately to respond... it should be able to continue as long as it wishes")
+    a beat can run for hours, and a message arriving into a working being would have waited
+    the whole time — the opposite of what waking it immediately is for. So the loop drains
+    this between steps and hands it to the being as it works."""
+    out = []
+    for m in listing(instance):
+        if me not in m.get("participants", []):
+            continue
+        pend = awaiting(instance, m["id"], me)
+        if not pend:
+            continue
+        lines = [f"- **{t['from']}** ({t['ts']}){_provenance_tag(t)}: {t['text']}" for t in pend]
+        out.append(f"### {m['title']}  (id: {m['id']}; reply with say to=\"{m['id']}\")\n"
+                   + "\n".join(lines))
+        if mark:
+            mark_seen(instance, me, m["id"], max(int(t.get("seq", 0)) for t in pend))
+    return "\n\n".join(out)
+
+
 def render_for_being(instance: Path, me: str, per_conv: int = 12,
                      turn_chars: Optional[int] = None) -> str:
     """The conversations block in a beat: every conversation the being is in, its recent

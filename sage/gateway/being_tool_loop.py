@@ -39,6 +39,7 @@ class ToolTurnResult:
     generates: List[dict] = field(default_factory=list)    # per generate, from Ollama's reply: {done_reason, prompt_eval_count, eval_count, retried}
     compacted: List[dict] = field(default_factory=list)    # per step where old tool results were elided to leave answer room: {step, elisions, chars}
     deadline_hit: bool = False                             # stopped issuing steps because the wall-clock budget ran out
+    interjected: List[dict] = field(default_factory=list)   # messages delivered mid-turn: {step, chars}
 
     @property
     def acted(self) -> bool:
@@ -51,32 +52,64 @@ class ToolTurnResult:
 
 def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
                   messages: List[Dict[str, Any]], max_steps: int = 3,
-                  deadline: Optional[float] = None) -> ToolTurnResult:
+                  deadline: Optional[float] = None,
+                  interject: "Optional[Callable[[], str]]" = None) -> ToolTurnResult:
     """Run one being turn that may reach for tools, gated end to end.
 
     Loop invariant: the being never sees a fabricated result — each tool message is a
     real ResultEnvelope (executed, refused, or honestly `pending` until F1a exists).
+
+    `max_steps <= 0` means NO STEP CAP: the turn ends when the being stops asking for
+    tools, or when a resource runs out. dp, 2026-09-09: "it should be able to continue as
+    long as it wishes." A step count was never a statement about the work — it was a guess
+    at how much work there would be, applied as if it were a limit.
 
     `deadline` (epoch seconds): once passed, no further tool step is issued and the turn
     closes in words, exactly as at max_steps. Legion 04:30Z 2026-09-09: eight steps of
     2-6k-token thinking at 19 tok/s took 36 minutes, reflect started, and the unit's
     45-minute timeout killed the beat — journal, todo and the record itself lost. Steps
     are the being's; the clock is the box's, and the box's limit is physical.
+
+    `interject()` is drained before every generate after the first. Whatever it returns is
+    handed to the being as a user turn, so something that arrives while it is working
+    reaches it in seconds rather than at the next beat.
     """
     convo = list(messages)
     trace: List[Tuple[BeingIntent, ResultEnvelope]] = []
     hit = False
+    interjected: List[dict] = []
+    uncapped = max_steps is None or max_steps <= 0
+    if uncapped and deadline is None:
+        # "As long as it wishes" is bounded by a resource, not by nothing. Without a clock
+        # an uncapped loop with a model that always asks for one more tool never returns.
+        max_steps, uncapped = _UNCAPPED_SAFETY_CEILING, False
+        interjected.append({"note": "no deadline given with an uncapped turn; "
+                                    f"applied a safety ceiling of {max_steps} steps"})
+    step = 0
 
-    for step in range(max_steps):
+    while uncapped or step < max_steps:
         if deadline is not None and step > 0 and time.time() >= deadline:
             hit = True
             break
+        if step > 0 and interject is not None:
+            try:
+                arrived = interject()
+            except Exception as e:                      # a broken mailbox must not end a beat
+                arrived = ""
+                interjected.append({"step": step, "error": f"{type(e).__name__}: {e}"})
+            if arrived:
+                convo.append({"role": "user", "content": (
+                    "[a message arrived while you were working — you are mid-beat and may "
+                    "answer it now with `say`, or finish what you are doing first]\n\n"
+                    + arrived)})
+                interjected.append({"step": step, "chars": len(arrived)})
         out = generate(convo)
         content = out.get("content") or ""
         intents = out.get("intents") or []
 
         if not intents:                                    # a spoken turn — the being is done
-            return ToolTurnResult(reply=content, trace=trace, steps=step)
+            return ToolTurnResult(reply=content, trace=trace, steps=step,
+                                  interjected=interjected)
 
         convo.append({"role": "assistant", "content": content, "intents": intents})
         for intent in intents:
@@ -84,6 +117,7 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
             trace.append((intent, env))
             convo.append({"role": "tool", "effector": intent.effector,
                           "content": env.to_tool_message()})
+        step += 1
 
     # Cap reached with tools still pending: force one final spoken close — we take its
     # words even if it wants more tools, so the being always ends its turn in language.
@@ -93,7 +127,8 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
             "executed this beat. Close in words: what you did, and what you want next beat.")})
     out = generate(convo)
     return ToolTurnResult(reply=out.get("content") or "", trace=trace,
-                          steps=(step if hit else max_steps), capped=True, deadline_hit=hit)
+                          steps=step, capped=True, deadline_hit=hit,
+                          interjected=interjected)
 
 
 _FENCE = re.compile(r"```[A-Za-z0-9_+-]*[ \t]*\n(.*?)```", re.S)
@@ -302,6 +337,9 @@ _CPT = 3.4
 # tokens, p90 3,909, p99 5,741. Reserve the p99 with headroom rather than num_predict, which
 # is a ceiling the model has never approached.
 _ANSWER_RESERVE = 6144
+# An uncapped turn is bounded by its deadline. If a caller gives neither, this is the
+# backstop — high enough never to bind real work, low enough to end a runaway.
+_UNCAPPED_SAFETY_CEILING = 200
 # Compaction keeps this many chars of an elided tool result and reports exactly the rest.
 COMPACT_KEEP_CHARS = 400
 COMPACT_MIN_BODY = 500        # a body at or under this is never elided
@@ -423,7 +461,8 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
                          max_steps: int = 2, tools: Optional[List[dict]] = None,
                          on_generate: Optional[Callable[[dict], None]] = None,
-                         deadline: Optional[float] = None) -> ToolTurnResult:
+                         deadline: Optional[float] = None,
+                         interject: "Optional[Callable[[], str]]" = None) -> ToolTurnResult:
     """Run a gated tool turn using an OllamaIRP-like `llm` exposing
     get_chat_response(messages, tools=...) -> {"content", "tool_calls"}.
 
@@ -566,7 +605,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                              "form": c["_salvaged"]} for c in calls)
         return {"content": content, "intents": parse_tool_calls(calls)}
 
-    result = run_tool_turn(client, generate, seed_messages, max_steps=max_steps, deadline=deadline)
+    result = run_tool_turn(client, generate, seed_messages, max_steps=max_steps,
+                           deadline=deadline, interject=interject)
     result.thinking = thoughts
     result.salvaged = salvaged
     result.generates = generates

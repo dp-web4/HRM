@@ -111,7 +111,14 @@ def decide(instance: Path, kind: str, *, now: Optional[float] = None) -> dict:
                        f"it will be read at the next scheduled beat")
         return d
     if beat_running():
-        d["reason"] = "a beat is already running and will see this when it reads its state"
+        # This used to be a consolation ("it will see this when it reads its state") that
+        # was not true within the beat: the conversation block is composed at beat start,
+        # so a turn arriving mid-beat waited for the next one. Since 2026-09-09 the loop
+        # drains new turns between steps (conversations.drain_new_for), so an already-awake
+        # being is the FASTEST case, not the slowest — it gets the message in seconds.
+        d["reason"] = ("a beat is already running: the turn is delivered into it between "
+                       "steps, so the being sees this within seconds without a new beat")
+        d["delivered_in_flight"] = True
         return d
 
     since = None

@@ -6,8 +6,6 @@ A cognition kernel that wraps a **frozen** LLM in a persistent identity, trust, 
 
 **Lineage, up front.** The machinery — salience/novelty scoring, world-model orchestration, developmental curricula, metabolic exploration/consolidation — stands on decades of prior work on artificial curiosity/intrinsic motivation, world models, and compression-as-intelligence. What we're testing that's *new* is the **locus**: whether useful cognition can be grown in a portable identity and the scaffold around a frozen substrate, rather than in the weights.
 
-**On the ARC-AGI-3 number, read precisely.** There is a public scorecard of [94.85%](https://arcprize.org/scorecards/c7dfb4f1-8642-4c9e-ab4d-152f5f8e33b4) — real and verifiable, genuine capability — but read with two asterisks. (1) It is a *frontier* model (Claude Opus 4.6) plus a task-specific Phase-1 harness on one scorecard set, **not** the edge-kernel thesis proven and **not** "structure substituting for a large model." (2) It was earned with **affordances a strict competition run withholds** — the harness analyzed the games' public engine source to build per-game solver cartridges, so it shows capability *given engine-level context and tooling*, not blind from-observation solving. The local, small-model continuation of the thesis — the actual edge bet, and capability *without* those affordances — is earlier-stage and, on the general scored benchmark, still near the noise floor. We keep all of this apart on purpose; conflating them is the over-claim we most try to avoid.
-
 **[Explainer Site](https://sage-site-murex.vercel.app/)** | **[System Understanding](sage/docs/SYSTEM_UNDERSTANDING.md)** | **[Web4](https://github.com/dp-web4/web4)**
 
 ## Five-minute audit
@@ -80,6 +78,8 @@ HRM began as hierarchical reasoning research — exploring how small models solv
 The project is now a distributed research effort across **8 machines** hosting **21 configured SAGE instances** (2026-09-08 census) from **5 model families**, accumulating **5,000+ commits** and a **raising session count of 2,700+** through the BECOMING developmental curriculum. The raising count is summed over the one primary raising instance per machine (the fleet table); it is a session tally, not a count of running daemons.
 
 ---
+
+**On the public ARC-AGI-3 scorecard, read precisely.** A public scorecard of [94.85%](https://arcprize.org/scorecards/c7dfb4f1-8642-4c9e-ab4d-152f5f8e33b4) exists and is real, with two asterisks that matter. (1) It is a *frontier* model (Claude Opus 4.6) plus a task-specific Phase-1 harness — **not** the edge-kernel thesis proven, and not structure substituting for a large model. (2) It was earned with **affordances a strict competition run withholds**: the harness read the games' public engine source to build per-game solver cartridges. The small-local-model continuation — the actual bet — scores **0.14 at best on the competition-legal path, and that is the top of a noisy band** (the same frozen code draws 0.04–0.14). The field has since moved well past us; frontier models saturate the benchmark and the public leaderboard is above 11. We are not competing on it, and the remaining interest is representational, not positional. Conflating the scorecard with the edge thesis is the over-claim we most try to avoid.
 
 ## The Fleet
 

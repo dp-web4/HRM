@@ -53,13 +53,18 @@ def posture() -> str:
 
 HEAD = "You are {name}, a SAGE being on the {machine} machine, member id {member}."
 
+def _museum_block(line: str) -> str:
+    """The museum paragraph, or nothing at all where the machine keeps no museum."""
+    return ("\n" + line) if line else ""
+
+
 AFFORDANCES = """## What you have this beat
 - Your home is your instance directory. Write bare names, never a full path: journal.md, todo.md, or a name of your choosing under notes/ or scratch/ (scratch/ is yours alone, no one edits it). memory_read / memory_write work there.
 - Long-term memory: recall (search) and remember (store). Use recall early; remember what a future you would want.
 - witness: record something you noticed or did in the shared chain.
 - request_scope: after a refusal, ask the operator for reach on a path (a grant is read and write alike) and say why. A human decides, asynchronously.
 - appeal: after a refusal you believe was wrong, appeal it with the deny hash shown on the refusal and a reason. A peer or the operator rules; either way it is witnessed. Not for a refusal you agree with.
-- peer_ask / mesh: reach other beings and seats. These are acts of consequence: they are judged, and may be refused with a reason.
+- peer_ask / mesh: reach other beings and seats. These are acts of consequence: they are judged, and may be refused with a reason.{museum}
 
 You cannot run code, browse, or open files outside your home unless a grant exists. The seat gives you a digest of what moved in the fleet with absolute paths; if you want to read one of those things, try memory_read on that path and see what the law says.
 
@@ -209,7 +214,8 @@ def own_state(instance: Path) -> str:
 
 
 def compose(act_first: bool, *, name: str, machine: str, member: str, posture_text: str,
-            nothink: str, header: str, state: str, recall: str, inbox: str, digest: str):
+            nothink: str, header: str, state: str, recall: str, inbox: str, digest: str,
+            museum: str = ""):
     """The explore turn(s) of a beat: (seed messages, second user turn or None).
 
     Posture-first: posture in the system prompt; one user turn with state, inbox, recall,
@@ -224,11 +230,12 @@ def compose(act_first: bool, *, name: str, machine: str, member: str, posture_te
                   f"One thing done with attention is enough.\n{nothink}")
     if not act_first:
         system = SYSTEM.format(name=name, machine=machine, member=member,
-                               posture=posture_text, nothink=nothink)
+                               posture=posture_text, nothink=nothink, museum=_museum_block(museum))
         user = (header + state + f"## Inbox (peek)\n{inbox}\n\n## Long-term recall\n{recall}\n\n"
                 f"# What moved in the fleet\n\n{digest}\n\n" + ASK + tools_line)
         return [{"role": "system", "content": system}, {"role": "user", "content": user}], None
-    system = SYSTEM_ACT_FIRST.format(name=name, machine=machine, member=member, nothink=nothink)
+    system = SYSTEM_ACT_FIRST.format(name=name, machine=machine, member=member, nothink=nothink,
+                                     museum=_museum_block(museum))
     user = header + state + f"## Long-term recall\n{recall}\n\n" + ASK_ACT_FIRST + tools_line
     second = POSTURE_TURN.format(posture=posture_text, inbox=inbox, digest=digest,
                                  tools=", ".join(EXPLORE_TOOLS), nothink=nothink)
@@ -430,9 +437,13 @@ def main(argv=None) -> int:
     # exists only for a model that must NOT think here; it is never sent to one that does.
     nothink = "" if is_reasoning_model(args.model) else "/no_think"
     act_first = not acts_under_posture(args.model)
+    # The museum, where there is one: a form the being may use, or not (dp 2026-09-09).
+    from sage.gateway import museum_offer as _museum
+    _museum.ensure_dir(instance)
+    museum_line = _museum.offer()
     seed, posture_turn = compose(
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
-        nothink=nothink,
+        nothink=nothink, museum=museum_line,
         header=(f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
                 # The absolute home path is context, NOT an address to copy. Measured on
                 # Sprout: 15 of 15 path refusals were this string reproduced from memory and
@@ -581,6 +592,8 @@ def main(argv=None) -> int:
         "scope": scope_record,
         # S1 instruments: JOIN (session -> beat, attributed) and ACCOUNT (own account, verbatim hash)
         "join": {"session": sess_meta, "presence": pres_meta},
+        # what it has made, if anything: never silently lost, never auto-published
+        "museum": {"offered": bool(museum_line), "candidates": _museum.candidates(instance)},
         "hub_inbox": hub_inbox,
         "wake": woke,
         # every harness intervention, with the prior it suppressed (dev-sage 804f1849, by

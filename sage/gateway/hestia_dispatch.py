@@ -878,9 +878,22 @@ class HestiaF1aDispatcher:
             self._call("hestia_record_outcome", {"action_id": action_id, "success": True, "magnitude": 0.0})
         except Exception:
             pass
+        # THE REVIEW TRIGGER. dp, 2026-09-09: "we don't want being's prs sitting unreviewed."
+        # A being's PR is opened by a governed act that no human watched, so nothing else
+        # would announce it. The queue file is the durable half of the trigger — a seat is a
+        # session and may not be running — and the sweep timer reads it. Failure to queue
+        # never fails the PR: the PR is real either way, and a lost queue entry is caught by
+        # the sweep, which lists open PRs directly.
+        queued = None
+        try:
+            queued = _queue_for_review(self.memory_root, member=self.member, url=url,
+                                       branch=branch, commit=sha, action_id=action_id)
+        except Exception as e:
+            queued = f"not queued ({type(e).__name__}: {e}) — the sweep will still find it"
         return ResultEnvelope(ok=True, witness_id=action_id,
                               result={"pr": url, "branch": branch, "commit": sha,
                                       "steps": steps, "action_id": action_id,
+                                      "review_queued": queued,
                                       "note": "your worktree is now on this branch; a reviewer "
                                               "who is not you decides. You cannot merge it."})
 
@@ -889,6 +902,29 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=False, pending=True,
                               note="channel_egress awaits hestia's send-side tool (hestia_egress_pending is "
                                    "read-only; F5 enforcement gated on rate-governor calibration, PRD §12)")
+
+
+REVIEW_QUEUE = "review_queue.jsonl"
+
+
+def _queue_for_review(memory_root, *, member: str, url: str, branch: str,
+                      commit: str, action_id) -> str:
+    """Record that a being opened a PR and it is waiting on a reviewer.
+
+    Append-only beside the being's own records, because that is what survives a seat
+    session ending. The sweep (scripts/being_pr_sweep.sh) reads GitHub directly and does
+    not depend on this file — the queue exists so the wait is visible from the being's own
+    directory too, and so a review can be tied back to the witnessed act that opened it."""
+    import json as _json
+    from datetime import datetime, timezone
+    from pathlib import Path as _P
+    q = _P(memory_root) / REVIEW_QUEUE
+    row = {"ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+           "member": member, "pr": url, "branch": branch, "commit": commit,
+           "action_id": action_id, "state": "awaiting_review"}
+    with open(q, "a", encoding="utf-8") as f:
+        f.write(_json.dumps(row) + "\n")
+    return f"queued in {q.name} at {row['ts']}"
 
 
 # --------------------------------------------------------------------------

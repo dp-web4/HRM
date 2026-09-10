@@ -6,6 +6,7 @@ this exercises the Stage-2 policy in isolation. Runnable under pytest or directl
 """
 import os
 import sys
+import tempfile
 from types import SimpleNamespace
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
@@ -609,3 +610,52 @@ open(os.path.join({wt!r}, "probe.json"), "w").write(json.dumps(r))
     assert probe["home_hestia"] is not True, probe
     assert probe["hestia_socket"] is not True, probe                 # --unshare-net held
     assert probe["sees_seat_pid"] is not True, probe                 # --unshare-pid held (start-time compared)
+
+
+
+# -- pr_amend: a review that requests changes must be answerable -----------------------
+def test_pr_amend_reads_the_branch_from_the_worktree_and_refuses_a_non_pr_branch():
+    """SAGE#63: the review asked for a corrected body and a green suite, and the author had
+    no verb that could reach either — pr_open claims a slug once and refuses it after. The
+    being names neither branch nor PR number here; both are read, so it can only revise its
+    own open proposal."""
+    import subprocess
+    import pytest
+    from sage.gateway.being_gate_client import pr_amend_command, _pr_number_for_branch
+
+    wt = tempfile.mkdtemp(prefix="pr-amend-")
+    def git(*a):
+        return subprocess.run(["git", *a], cwd=wt, capture_output=True, text=True)
+    git("init", "-q"); git("config", "user.email", "t@t"); git("config", "user.name", "t")
+    open(os.path.join(wt, "f"), "w").write("x"); git("add", "-A"); git("commit", "-qm", "c")
+
+    git("checkout", "-qb", "legion-being/work")
+    with pytest.raises(ValueError, match="not one of your PR branches"):
+        _pr_number_for_branch(wt)          # the work branch is not a proposal
+    git("checkout", "-qb", "some/other")
+    with pytest.raises(ValueError, match="not one of your PR branches"):
+        _pr_number_for_branch(wt)
+
+    # arg validation happens before any lookup, so a bad call never reaches the network
+    for bad, msg in ((({"title": "too short", "message": "m"}), None),
+                     (({"title": "a" * 200, "message": "m"}), "8-120"),
+                     (({"title": "a proper title here", "message": "  "}), "needs a 'message'")):
+        if msg is None:
+            continue
+        with pytest.raises(ValueError, match=msg):
+            pr_amend_command(bad, {"worktree": wt})
+    with pytest.raises(ValueError, match="needs a worktree"):
+        pr_amend_command({"title": "a proper title here", "message": "m"}, {})
+
+    # no new body -> commit and push only; nothing outward is composed
+    assert pr_amend_command({"title": "a proper title here", "message": "why"},
+                            {"worktree": wt}) == "true"
+
+
+def test_pr_amend_is_offered_to_the_being():
+    """A verb in the registry but not in the offered set is a verb the being does not have."""
+    from sage.gateway.being_gate_client import _REGISTRY
+    from sage.gateway.heartbeat import EXPLORE_TOOLS
+    assert "pr_amend" in _REGISTRY
+    assert "pr_amend" in EXPLORE_TOOLS
+    assert _REGISTRY["pr_amend"]["tool"] == "pr_amend"      # the law sees the outward act

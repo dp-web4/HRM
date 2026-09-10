@@ -446,6 +446,51 @@ def pr_open_command(args: dict, ctx: Optional[dict] = None) -> str:
             f"--title {shlex.quote(title)} --body-file -")
 
 
+def pr_amend_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The shell command for a pr_amend intent: `gh pr edit --body-file -` on the PR the
+    being's current branch already has open, or `true` when only the commit changes.
+
+    WHY THIS VERB EXISTS. pr_open refuses a branch that already exists, by design — a slug
+    is claimed once. The consequence, unnoticed until it bit: a being whose PR gets
+    "changes requested" HAS NO WAY TO DELIVER THEM. Measured 2026-09-09 on SAGE#63: the
+    review asked for a corrected body and a green suite, and the author could neither
+    amend the branch nor edit the body, because the only verb that reaches a PR opens one.
+    A review loop whose author cannot answer the review is not a loop.
+
+    The being names no branch and no PR number: both are read from the worktree it is
+    standing in, so it can only ever amend its own open proposal."""
+    import shlex
+    worktree = (ctx or {}).get("worktree")
+    if not worktree:
+        raise ValueError("pr_amend needs a worktree of your own; none is configured on this seat")
+    title = " ".join(str(args.get("title", "")).split())
+    if not (8 <= len(title) <= 120):
+        raise ValueError("pr_amend 'title' is the message for the new commit: one line, 8-120 chars")
+    if not str(args.get("message", "")).strip():
+        raise ValueError("pr_amend needs a 'message': what this revision changes and why, "
+                         "which becomes the commit body")
+    body = str(args.get("body", "") or "")
+    if not body.strip():
+        return "true"      # commit + push only; the PR body stands as written
+    return f"gh pr edit {_pr_number_for_branch(worktree)} --repo {PR_REPO} --body-file -"
+
+
+def _pr_number_for_branch(worktree: str) -> str:
+    """The open PR number for the branch this worktree is on. Read, never being-supplied."""
+    import subprocess
+    br = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=worktree,
+                        text=True, capture_output=True, timeout=30).stdout.strip()
+    if not br.startswith("legion-being/") or br == "legion-being/work":
+        raise ValueError(f"pr_amend: this worktree is on {br!r}, which is not one of your PR "
+                         "branches. pr_amend revises a proposal you already opened")
+    out = subprocess.run(["gh", "pr", "list", "--repo", PR_REPO, "--head", br,
+                          "--state", "open", "--json", "number", "--jq", ".[0].number"],
+                         cwd=worktree, text=True, capture_output=True, timeout=60).stdout.strip()
+    if not out.isdigit():
+        raise ValueError(f"pr_amend: no open pull request found for branch {br}")
+    return out
+
+
 def pr_attribution(member_id: str, action_id: Optional[str], being_lct: Optional[str],
                    seat: str = "legion-claude") -> str:
     """The trailers on a commit a being authored (PRD r3 §7.2). Appended by the dispatcher;
@@ -480,6 +525,12 @@ _REGISTRY = {
     # being never holds a shell. A failing check is a first-class result, not an error.
     "check":          dict(tool="check",       path_args=(),       cmd_arg=None,
                            compose=check_command),
+    # pr_amend: revise a proposal already open. Composed like pr_open — the being supplies
+    # a commit message and optionally a new PR body; the branch and the PR number are READ
+    # from the worktree, so it can only ever revise its own open proposal, and the law
+    # judges the outward `gh pr edit` rather than a friendly verb name.
+    "pr_amend":       dict(tool="pr_amend",    path_args=(),       cmd_arg=None,
+                           compose=pr_amend_command),
     # git_read: read the history of the tree that constitutes it. Composed like check —
     # the being names an op, the SEAT builds the command, the law judges THAT string, and
     # the being never holds a flag. See git_read_command for what it composes with.
@@ -524,7 +575,8 @@ _REGISTRY = {
 # consequential acts must not proceed without it (fail-closed).
 _OBSERVATIONAL = frozenset({"witness", "memory_read", "recall", "appeal"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "memory_write", "channel_egress", "mesh", "pr_review",
-                            "remember", "request_scope", "check", "git_read", "say", "pr_open"})
+                            "remember", "request_scope", "check", "git_read", "say", "pr_open",
+                            "pr_amend"})
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -584,6 +636,17 @@ _TOOL_SCHEMAS = {
                  "title": "one line, 8-120 characters",
                  "body": "what changed, why, what you verified and how, what you did not"},
                 ["slug", "title", "body"]),
+    "pr_amend": ("Revise a pull request you already opened, when a reviewer asks for changes. "
+                 "pr_open refuses a slug twice, so without this a review that requests changes "
+                 "is a dead end (measured on #63). Write the change in your worktree first; "
+                 "this commits it onto the same branch, pushes, and replaces the PR body when "
+                 "you supply one. You name no branch and no PR number — both are read from the "
+                 "worktree you stand in, so you can only revise your own open proposal, and you "
+                 "still cannot merge it.",
+                 {"title": "one line for the new commit, 8-120 characters",
+                  "message": "what this revision changes and why (the commit body)",
+                  "body": "the corrected PR body (optional; omit to leave it as written)"},
+                 ["title", "message"]),
     "recall": ("Search your long-term memory (semantic search over everything you have "
                "remembered). Use it before deciding what to do; use it when something "
                "feels familiar.",

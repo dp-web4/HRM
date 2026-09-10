@@ -897,6 +897,105 @@ class HestiaF1aDispatcher:
                                       "note": "your worktree is now on this branch; a reviewer "
                                               "who is not you decides. You cannot merge it."})
 
+    def _do_pr_amend(self, intent: BeingIntent) -> ResultEnvelope:
+        """Revise a proposal already open: commit onto the same branch, push, optionally
+        replace the PR body. Same witnessed shape as pr_open.
+
+        WHY IT EXISTS: pr_open claims a slug once and refuses it thereafter, so a being whose
+        PR got "changes requested" could not deliver them — measured on SAGE#63, where the
+        review asked for a corrected body and a green suite and the author had no verb that
+        could reach either. A review loop whose author cannot answer the review is not a loop.
+
+        The being names neither branch nor PR number; both are read from the worktree, so this
+        can only ever revise its own open proposal. It still cannot merge."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import pr_amend_command, pr_attribution
+        if not self.worktree or not os.path.isdir(self.worktree):
+            return ResultEnvelope(ok=False, pending=True,
+                                  note="pr_amend needs a worktree of your own; none is configured")
+        try:
+            cmd = pr_amend_command(intent.args, {"worktree": self.worktree})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        title = " ".join(str(intent.args["title"]).split())
+        message = str(intent.args["message"]).rstrip()
+        new_body = str(intent.args.get("body", "") or "").rstrip()
+
+        def git(*a, inp=None):
+            return subprocess.run(["git", *a], cwd=self.worktree, text=True, input=inp,
+                                  capture_output=True, timeout=120)
+
+        branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
+        st = git("status", "--porcelain")
+        if st.returncode != 0:
+            return ResultEnvelope(ok=False, error=f"git status failed: {st.stderr[:200]}")
+        if not st.stdout.strip() and not new_body:
+            return ResultEnvelope(ok=False,
+                                  error="pr_amend: nothing to revise — the worktree is clean and "
+                                        "you supplied no new body. Change the code or the body first")
+
+        begin = self._call("hestia_begin_action", {"tool_name": "pr_amend", "target": branch})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=err)
+        action_id = begin.get("actionId")
+        steps = []
+
+        def fail(stage, proc):
+            detail = (getattr(proc, "stderr", "") or getattr(proc, "stdout", "") or "").strip()[:400]
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False,
+                                                     "magnitude": 0.0, "error": f"{stage}: {detail[:200]}"})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"pr_amend failed at {stage}: {detail}",
+                                  result={"steps": steps, "branch": branch})
+
+        sha = git("rev-parse", "--short=9", "HEAD").stdout.strip()
+        if st.stdout.strip():
+            r = git("add", "-A")
+            if r.returncode != 0:
+                return fail("add", r)
+            steps.append("add")
+            trailers = pr_attribution(self.plugin_id, action_id, self.being_lct)
+            r = git("commit", "-q", "-F", "-", inp=f"{title}\n\n{message}\n\n{trailers}\n")
+            if r.returncode != 0:
+                return fail("commit", r)
+            sha = git("rev-parse", "--short=9", "HEAD").stdout.strip()
+            steps.append(f"commit {sha}")
+            r = git("push", "-q", "origin", branch)
+            if r.returncode != 0:
+                return fail("push", r)
+            steps.append("push")
+
+        edited = False
+        if new_body:
+            body_out = (new_body + "\n\n---\n"
+                        f"Revised by **{self.plugin_id}** via pr_amend; commit `{sha}` carries the "
+                        f"`Being` / `Being-LCT` / `Witness` / `Seat` trailers. Still attribution "
+                        f"rather than a signature (PRD r3 §6), and the being still cannot merge.\n"
+                        f"hestia witness action: `{action_id}`\n")
+            try:
+                proc = subprocess.run(shlex.split(cmd), input=body_out, text=True,
+                                      cwd=self.worktree, capture_output=True, timeout=120)
+            except Exception as e:
+                proc = subprocess.CompletedProcess(cmd, 1, "", f"{type(e).__name__}: {e}")
+            if proc.returncode != 0:
+                return fail("gh pr edit", proc)
+            steps.append("body")
+            edited = True
+        try:
+            self._call("hestia_record_outcome", {"action_id": action_id, "success": True, "magnitude": 0.0})
+        except Exception:
+            pass
+        return ResultEnvelope(ok=True, witness_id=action_id,
+                              result={"branch": branch, "commit": sha, "body_replaced": edited,
+                                      "steps": steps, "action_id": action_id,
+                                      "note": "the reviewer sees the revision; they decide. "
+                                              "You still cannot merge it."})
+
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:
         return ResultEnvelope(ok=False, pending=True,

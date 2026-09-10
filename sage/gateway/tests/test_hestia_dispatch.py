@@ -757,3 +757,29 @@ def test_a_duplicate_is_a_store_that_earns_its_save():
     FakeMcp.calls = []
     env = d(BeingIntent("remember", {"content": "keep me"}), _ALLOW)
     assert env.ok and _mb_calls("save_cartridge") == [{"name": "sprout-being"}]
+
+
+
+def test_pr_amend_refuses_when_there_is_nothing_to_revise():
+    """A clean worktree and no new body is not a revision. Refused before begin_action, so
+    no witnessed act is spent on a no-op."""
+    import subprocess
+    d, root = _mdisp()
+    wt = tempfile.mkdtemp(prefix="amend-noop-")
+    def git(*a):
+        return subprocess.run(["git", *a], cwd=wt, capture_output=True, text=True)
+    git("init", "-q"); git("config", "user.email", "t@t"); git("config", "user.name", "t")
+    open(os.path.join(wt, "f"), "w").write("x"); git("add", "-A"); git("commit", "-qm", "c")
+    git("checkout", "-qb", "legion-being/some-proposal")
+    d.worktree = wt
+
+    env = d(BeingIntent("pr_amend", {"title": "a title long enough", "message": "why"}), _ALLOW)
+    assert not env.ok and "nothing to revise" in env.error
+    assert env.witness_id is None, "a refused no-op must not consume a witnessed action"
+
+
+def test_pr_amend_without_a_worktree_is_pending_not_an_error():
+    d, _ = _mdisp()
+    d.worktree = None
+    env = d(BeingIntent("pr_amend", {"title": "a title long enough", "message": "why"}), _ALLOW)
+    assert env.pending and "worktree of your own" in env.note

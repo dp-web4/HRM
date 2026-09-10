@@ -44,9 +44,34 @@ from typing import Any, Callable, List, Optional
 # Locate the shared hestia gate law portably (env override, then fleet layout).
 # --------------------------------------------------------------------------
 def _resolve_hestia_shared() -> Optional[str]:
-    env = os.environ.get("HESTIA_GATE_SHARED")
-    if env and os.path.isdir(env):
-        return env
+    """Locate the shared law this client imports.
+
+    Order is deliberate: an explicit override, then the INSTALLED law the deploy
+    maintains, then the source checkout. The installed copy is what the seats on
+    this box actually enforce and what `hestia-deploy` keeps current and attests
+    in the manifest, so a being judged by anything else is judged by a different
+    law than its seat.
+
+    `HESTIA_SHARED_DIR` and `HESTIA_HOME` are the fleet's own config vocabulary:
+    the vault projection at `$HESTIA_HOME/seats/<plugin_id>.env` publishes both.
+    Reading them here means a box that is correctly configured for its seats is
+    correctly configured for its beings, with nothing further to set.
+
+    The `~/ai-workspace` entries are kept last for the machines laid out that
+    way; they are one layout, not a location every box has. On a box that checks
+    out elsewhere the old list resolved to None and EVERY intent fail-closed on
+    `gate.unreachable: No module named 'hestia_gate_core'`, which reads like a
+    broken gate rather than an unconfigured path (measured 2026-09-09).
+    """
+    for env_key in ("HESTIA_GATE_SHARED", "HESTIA_SHARED_DIR"):
+        env = os.environ.get(env_key)
+        if env and os.path.isdir(env):
+            return env
+    home = os.environ.get("HESTIA_HOME")
+    if home:
+        p = os.path.join(os.path.expanduser(home), "shared")
+        if os.path.isdir(p):
+            return p
     for base in ("~/ai-workspace/hestia", "~/ai-workspace/HESTIA"):
         p = os.path.join(os.path.expanduser(base), "plugins", "_shared")
         if os.path.isdir(p):

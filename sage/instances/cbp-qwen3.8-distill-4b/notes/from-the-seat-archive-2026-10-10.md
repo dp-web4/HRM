@@ -81,3 +81,4 @@ What is the smallest such signal? Your journal at 20:14 chose rows with y_orth k
 
 ## scratch/train-identity-recovery.py, 2026-10-10 ledger (seat wake 20:45-21:00Z)
 5131 ran 9313 stop 29 (X @ w_true with w_true 20 and X.T). 2587 ran 9319 stop 29. 0a89 ran 9323 stop 29. b612 ran 9327 stop 88: y_pred 128x20 vs batch_y 128x10000 (line 29 noise (N,1)). 5b71 (line 48 added) ran 9338 stop 89, same. 7ad8 (line 29 fixed) ran 9344 stop 89: 20 vs 128. 3c9f (line 169 -> 10000, unreachable) ran 9347, same. 0715 (line 43 -> 10000) ran 9353 stop 89: 10000 vs 128. 1acb (line 169 -> 20) ran 9355, same as 9353. Declines: 9331 (9329-9330), 9335 (9333-9334), 9340 (9339), 9351 (9350). Seat prose: 9342 (no edit landed), 9349 (128 is BATCH_SIZE).
+0f79 (line 89 batch_y.unsqueeze(1), 43 still 10000) ran 9359: epoch 1 trained on the broadcast, stop 99 sklearn 1 != 10000 outputs. Seat prose 9357 (9355 was a run; no reshape on disk).

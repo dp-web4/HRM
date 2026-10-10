@@ -62,3 +62,35 @@ def test_main_records_the_arm_and_strips_expect_off_arm():
     src = inspect.getsource(heartbeat.main)
     assert 'trial_arm(instance, instance / "heartbeats.jsonl", "expect_trial")' in src
     assert 'record["expect_trial"] = _expect_arm' in src and '.pop("expect", None)' in src
+
+
+def test_phase_b_closes_game_source_but_never_the_game(tmp_path):
+    import json
+    from sage.gateway.being_gate_client import trial_game_source_refusal, BeingIntent
+    (tmp_path / "instance.json").write_text(json.dumps({"params": {"game_source": "closed"}}))
+    src = "/home/dp/ai-workspace/SAGE/environment_files/ar25/0c556536/ar25.py"
+    for eff, args in (("memory_read", {"path": src}), ("search", {"pattern": "def x", "path": src}),
+                      ("run", {"path": "scratch/sim.py", "data": src})):
+        assert "closed until the expect trial ends" in trial_game_source_refusal(BeingIntent(eff, args), str(tmp_path))
+    assert trial_game_source_refusal(BeingIntent("game", {"game": "ar25", "probes": "[]"}), str(tmp_path)) is None
+    assert trial_game_source_refusal(BeingIntent("memory_read", {"path": "notes/established.md"}), str(tmp_path)) is None
+    (tmp_path / "instance.json").write_text(json.dumps({"params": {"game_source": "open"}}))
+    assert trial_game_source_refusal(BeingIntent("memory_read", {"path": src}), str(tmp_path)) is None
+
+
+def test_the_being_cannot_reopen_the_source_itself(tmp_path):
+    import json
+    from sage.gateway import being_params as bp
+    (tmp_path / "instance.json").write_text(json.dumps({"params": {"game_source": "closed"}}))
+    ok, text = bp.tune(tmp_path, "game_source", "open", "I want to read it")
+    assert not ok and "seat" in text
+
+
+def test_the_gate_refuses_before_the_law_when_closed(tmp_path):
+    import json
+    from sage.gateway import being_gate_client as g
+    (tmp_path / "instance.json").write_text(json.dumps({"params": {"game_source": "closed"}}))
+    c = g.BeingGateClient.__new__(g.BeingGateClient)
+    c.memory_root = str(tmp_path)
+    v = c.gate(g.BeingIntent("memory_read", {"path": "/x/environment_files/ar25/0c556536/ar25.py"}))
+    assert v.decision == "deny" and v.stage == "trial" and "not by the law" in v.reason

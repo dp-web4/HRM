@@ -2462,7 +2462,13 @@ _TOOL_SCHEMAS = {
              "Predict before you read.",
              {"probes": "list of probes, at most 8, e.g. [[\"ACTION6\",36,36],[\"LOOK\",30,30,45,45],[\"RESET\"]]",
               "game": ("optional: which game (default ft09). Yours to choose: " + ", ".join(GAME_PLAYABLE)
-                       + ". Each keeps its own move log; switching loses nothing.")},
+                       + ". Each keeps its own move log; switching loses nothing."),
+              "expect": ("optional: what you predict, checked against the result and reported back as "
+                         "confirmed / CONTRADICTED / unverifiable. A JSON list of: "
+                         '{"probe": 1, "changes": true} (that move changes the board), '
+                         '{"levels_completed": 2}, {"state": "WIN"}, '
+                         '{"cell": [x, y], "value": 5} (checked against a LOOK in this same batch). '
+                         "A contradiction is the most informative thing a probe can return.")},
              ["probes"]),
     "camera": ("Capture ONE frame from this machine's camera into your own scratch — no "
               "stream, nothing persists across beats. The seat runs ffmpeg against /dev/"

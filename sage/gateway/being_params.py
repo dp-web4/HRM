@@ -80,6 +80,9 @@ PARAMS: Dict[str, Param] = {p.name: p for p in (
     Param("floor_handoff_after", "int", 2, lo=1, hi=8,
           doc="steps at the window floor before the harness writes scratch/handoff.md for you "
               "and starts the next beat with an empty window"),
+    Param("game_source", "choice", "open", choices=("open", "closed"), self_tunable=False,
+          doc="seat-run trial condition: whether acts naming the offline game engines' source "
+              "(environment_files/) are refused for the duration of the expect trial"),
     Param("expect_trial", "choice", "off", choices=("off", "on", "alternate"), self_tunable=False,
           doc="the expect trial (seat-run): whether game's `expect` (a checked prediction) is offered "
               "every beat (on), never (off), or on alternate beats (alternate)"),

@@ -1270,7 +1270,7 @@ def test_a_window_retry_increases_even_a_large_being_answer_reserve(tmp_path, mo
     seed = [{"role": "system", "content": "s"}, {"role": "user", "content": "go"}]
     for i in range(5):
         seed.extend([{"role": "assistant", "content": "", "tool_calls": [
-            {"function": {"name": "memory_read", "arguments": {"path": f"f{i}"}}]},
+            {"function": {"name": "memory_read", "arguments": {"path": f"f{i}"}}}]},
             {"role": "tool", "content": "x" * 6000}])
     client = _client(OK_DISPATCH)
     client.memory_root = str(tmp_path)

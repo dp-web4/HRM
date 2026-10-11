@@ -1230,3 +1230,52 @@ def test_the_answer_reserve_is_the_beings_parameter(tmp_path):
     # each per-step pass records what the window is made of after it (convo_composition)
     assert r.compacted and all(set(x.get("after") or {}) >= {"seed", "results_whole", "results_stub"}
                                for x in r.compacted), r.compacted
+
+
+def test_a_window_retry_increases_even_a_large_being_answer_reserve(tmp_path, monkeypatch):
+    """A 12,288-token tuned reserve must not shrink to the old 8,192-token retry constant.
+
+    The first generate has demonstrably exhausted the window. Inspect the real
+    compaction-call arguments: a retry must reserve strictly more than the first attempt.
+    """
+    import json as _json
+    from sage.gateway import being_tool_loop as loop
+    (tmp_path / "instance.json").write_text(_json.dumps({"params": {"answer_reserve": 12288}}))
+    seen = []
+    original_compact = loop.compact_convo
+
+    def capture_reserve(msgs, llm, **kwargs):
+        seen.append(kwargs.get("reserve"))
+        return original_compact(msgs, llm, **kwargs)
+
+    monkeypatch.setattr(loop, "compact_convo", capture_reserve)
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 32768
+        num_predict_override = None
+        think = False
+        attempts = 0
+
+        def get_chat_response(self, messages, tools=None):
+            self.attempts += 1
+            if self.attempts == 1:
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 30768,
+                                "eval_count": 2000, "message": {"content": "", "thinking": ""}}}
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 3000,
+                            "eval_count": 20, "message": {}}}
+
+    seed = [{"role": "system", "content": "s"}, {"role": "user", "content": "go"}]
+    for i in range(5):
+        seed.extend([{"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "memory_read", "arguments": {"path": f"f{i}"}}]},
+            {"role": "tool", "content": "x" * 6000}])
+    client = _client(OK_DISPATCH)
+    client.memory_root = str(tmp_path)
+    llm = FakeLLM()
+    result = loop.run_ollama_tool_turn(client, llm, seed)
+    assert llm.attempts == 2 and result.reply == "done"
+    assert result.generates[0]["retry_cause"] == "window"
+    assert seen[:2] == [12288, 13312], seen

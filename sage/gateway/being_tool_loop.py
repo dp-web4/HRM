@@ -1355,7 +1355,10 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 # Output-budget and stopped-thinking retries are unchanged: the window had room.
                 _budget_raw = raw
                 if retry_cause == "window" and _failed:
-                    msgs, _re = compact_convo(msgs, llm, reserve=_RETRY_RESERVE, measured=_failed,
+                    # A being may already reserve MORE than the historic retry default.
+                    # A window-cut retake must increase, never relax, that chosen headroom.
+                    retry_reserve = max(_RETRY_RESERVE, reserve + 1024)
+                    msgs, _re = compact_convo(msgs, llm, reserve=retry_reserve, measured=_failed,
                                               spill_root=getattr(client, "memory_root", None),
                                               own_turns=compact_own_turns)
                     if _re:

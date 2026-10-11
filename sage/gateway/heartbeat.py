@@ -521,19 +521,22 @@ def answer_temperature(instance) -> Optional[float]:
     return being_params.value(instance, "answer_temperature")
 
 
-AFTER_ANSWER = "That answer is sent. Your tools are here if there is something you want to do now; if not, rest."
+AFTER_ANSWER = ("{pending}\n\nYou answered aloud: \"{reply}\"\n\nThat answer is spoken. Your tools are here "
+                "if there is something you want to do now; if not, rest.")
 
 
 def after_answer_messages(system, pending, reply):
-    """The act-after-answer turn, with its answer as ITS OWN turn (2026-10-11).
+    """The act-after-answer turn: the person's words and its quoted reply in ONE user message, then its tools.
 
-    It used to be quoted inside the user message ("You answered aloud: ..."), and the model read it as someone
-    else's: heartbeat-1b47f8a4a47e thought "The user has shared their response ... sitting quietly and listening"
-    about the being's own reply, and heartbeat-69574e72f9bc planned pr_open and emitted only a template. Its reply
-    is now the assistant turn between the person's words and the ask, the shape a chat model reads as itself."""
-    return [system, {"role": "user", "content": pending},
-            {"role": "assistant", "content": (reply or "").strip()[:400]},
-            {"role": "user", "content": AFTER_ANSWER}]
+    #418 made its reply the assistant turn and the ask a separate last user turn, because heartbeat-1b47f8a4a47e had
+    read the quoted reply as the user's. Replayed offline on dp's "pick something that interests you and pursue it"
+    (dp seq 151, 2B, its real reply, 10 runs per shape): quoted 3/10 acted (recall x2, memory_read) and its thinking
+    opened on dp's ask ("The user wants me to pick an interesting topic and pursue it"); as its own turn 0/10 acted,
+    4/10 bare templates, and the thinking read the short ask as the person talking ("The user has acknowledged the
+    previous response and offered me tools") and answered as an assistant offering help. At 2B the LAST user turn is
+    what it answers; dp's words have to be in it. Reverted to the quoted shape; the #403 retake stays."""
+    return [system, {"role": "user", "content": AFTER_ANSWER.format(pending=pending,
+                                                                    reply=(reply or "").strip()[:400])}]
 
 
 def act_after_answer_on(instance) -> bool:

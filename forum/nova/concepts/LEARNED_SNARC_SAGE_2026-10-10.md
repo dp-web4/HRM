@@ -2,7 +2,7 @@
 **Status:** proposal; existing SAGE SNARC implementations are not being replaced here.
 
 ## Why
-Typed decision inference is becoming inexpensive enough for frequent attention selection. But SAGE's target is *outcome-calibrated allocation of cognition across sensor, effector, memory, MRH and puzzle tiles*, not a yes/no relevance API. Preserve the five-dimensional SNARC vector and the IRP-key (salience metadata, not necessarily raw values) boundary described in [SNARC specification](../claude/SAGE/SNARC_SPECIFICATION.md) and [NOVA SAGE–SNARC discussion](SAGE-SNARC.md).
+Typed decision inference is becoming inexpensive enough for frequent attention selection. But SAGE's target is *outcome-calibrated allocation of cognition across sensor, effector, memory, MRH and puzzle tiles*, not a yes/no relevance API. Preserve the five-dimensional SNARC vector and the IRP-key (salience metadata, not necessarily raw values) boundary described in [SNARC specification](../../claude/SAGE/SNARC_SPECIFICATION.md) and [NOVA SAGE–SNARC discussion](SAGE-SNARC.md).
 
 ## Existing SAGE surfaces to audit
 - `sage/attention/snarc_scorer.py`: neural hidden-state scorer and attention bias; this is an existing learned-capable substrate, not a new proposal.

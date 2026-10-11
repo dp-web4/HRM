@@ -58,6 +58,14 @@ PRE_ROLL_S = 0.3           # keep a little audio from before the onset so first 
 NO_SPEECH_MAX = 0.6
 LOGPROB_MIN = -1.0
 KEEPALIVE_S = float(os.environ.get("SAGE_LISTEN_KEEPALIVE_S") or 40)   # wake mode: engaged window (dp: 30-45 s)
+# Memory, per body (2026-10-11): whisper base.en held ~430 MB of GPU once loaded, forever. SAGE_LISTEN_MODEL picks
+# the model (default base.en, unchanged); SAGE_LISTEN_UNLOAD_S frees it after that many seconds with nothing to
+# transcribe (default 0 = never, unchanged).
+MODEL_NAME = (os.environ.get("SAGE_LISTEN_MODEL") or "base.en").strip()
+try:
+    UNLOAD_IDLE_S = max(0.0, float(os.environ.get("SAGE_LISTEN_UNLOAD_S") or 0))
+except ValueError:
+    UNLOAD_IDLE_S = 0.0
 
 import re as _re
 # The name as whisper actually writes it: "Sprout", and the near-misses it produces for it.
@@ -246,11 +254,13 @@ class Segmenter:
 class Transcriber(threading.Thread):
     """Turns queued utterances into heard.jsonl lines. Loads whisper on first use; fails open."""
 
-    def __init__(self, source: str, heard_path: Optional[str] = None, model_name: str = "base.en"):
+    def __init__(self, source: str, heard_path: Optional[str] = None, model_name: Optional[str] = None):
         super().__init__(daemon=True)
         self.q: "queue.Queue[bytes]" = queue.Queue(maxsize=8)
-        self.source, self.heard_path, self.model_name = source, heard_path or HEARD_PATH, model_name
+        self.source, self.heard_path = source, heard_path or HEARD_PATH
+        self.model_name = model_name or MODEL_NAME
         self.model = None
+        self._last_use = 0.0          # last transcription, for UNLOAD_IDLE_S
         self.status = "idle"          # idle | loading | ready | unavailable: <why>
         self.running = True
         self.backlog_drops = 0        # utterances dropped because transcription fell behind (counted, logged)
@@ -287,17 +297,37 @@ class Transcriber(threading.Thread):
         r = self.model.transcribe(a, fp16=self._fp16, language="en", condition_on_previous_text=False)
         return judge_segments(r.get("segments") or [], seconds=round(len(a) / RATE, 1), source=self.source)
 
+    def unload_if_idle(self, now: Optional[float] = None) -> bool:
+        """Free whisper after UNLOAD_IDLE_S with nothing to transcribe (0 = never). The next utterance
+        reloads it (2.3 s on Sprout for base.en); the loss is that much latency on the first words, never words."""
+        now = time.time() if now is None else now
+        if not UNLOAD_IDLE_S or self.model is None or now - self._last_use < UNLOAD_IDLE_S:
+            return False
+        self.model = None
+        self.status = "idle"
+        try:
+            import gc
+            gc.collect()
+            import torch
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except Exception:
+            pass
+        return True
+
     def run(self):
         while self.running:
             try:
                 item = self.q.get(timeout=1.0)
             except queue.Empty:
+                self.unload_if_idle()
                 continue
             audio, ended_at = item if isinstance(item, tuple) else (item, None)
             if self.model is None and not self.status.startswith("unavailable"):
                 self._load()
             if self.model is None:
                 continue
+            self._last_use = time.time()
             self._handle(audio, ended_at)
 
     def _handle(self, audio: bytes, ended_at: Optional[float] = None) -> None:

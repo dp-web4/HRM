@@ -97,6 +97,8 @@ def perception(now: Optional[float] = None, path: Optional[str] = None) -> Dict:
         "gaze": d.get("gaze"), "salience": sal.get("salience"), "coherence": d.get("coherence"),
         "eyes_live": sum(1 for c in eyes.values() if isinstance(c, dict) and not c.get("stalled")),
         "eyes": len(eyes),
+        # eyes the body's config keeps closed (lean cortex, 2026-10-11): resting, not dark
+        "eyes_resting": [str(s) for s in (d.get("eyes_resting") or []) if isinstance(s, str)],
         "audio_ok": bool((d.get("audio") or {}).get("ok")),
         "audio_level": (d.get("audio") or {}).get("level"),
         "audio_words": (d.get("audio") or {}).get("words"),   # listener status (listening.py)
@@ -190,6 +192,8 @@ def render(cur: Dict, prev: Optional[Dict], name: str = "", proprioception: bool
         lines.append(_prop.being_line(mb.get("snapshot"), why_missing=mb.get("why") or ""))
     if p.get("live"):
         eyes = f"{p.get('eyes_live', 0)} of {p.get('eyes', 0)} eyes live"
+        if p.get("eyes_resting"):
+            eyes += f"; your {' and '.join(p['eyes_resting'])} eye is resting (kept closed to leave memory free)"
         ears = "hearing on" if p.get("audio_ok") else "hearing off"
         imu = f"body {p.get('self_motion') or 'unknown'}" if p.get("imu_ok") else "inner ear off"
         lines.append(f"- Your senses ({eyes}, {ears}, {imu}) report: {p.get('descriptor') or '(no words)'}")

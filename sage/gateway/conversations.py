@@ -721,7 +721,7 @@ def _cap_for(turn: dict, me: str, answered_upto: int, turn_chars: Optional[int],
              answered_cap: Optional[int] = None) -> Optional[int]:
     """Chars to show of one turn. Answered turns (anything up to the being's own last word
     in this conversation, its own turns included) get the short cap; anything after it is
-    live and shown at full width. Never widens past `turn_chars`.
+    live and shown at full width. Never widens past the tightest applicable cap.
 
     `answered_cap` (being_params `answered_turn_chars`) caps an answered turn EVEN AT THE FULL
     RUNG, where `turn_chars` is None. Without it the short cap only ever applies once the fitter
@@ -729,9 +729,12 @@ def _cap_for(turn: dict, me: str, answered_upto: int, turn_chars: Optional[int],
     legion-being 2026-10-07 the seat's two long answered turns were 2,379 chars of every beat."""
     if int(turn.get("seq", 0)) > answered_upto:
         return turn_chars
-    if not turn_chars:
-        return answered_cap or turn_chars
-    return min(ANSWERED_TURN_CHARS, turn_chars)
+    if turn_chars is None:
+        return answered_cap
+    # All three ceilings constrain an answered turn independently. In particular, a
+    # being-tuned 200-char cap must never widen to the 400-char default at a
+    # narrower compaction rung (SAGE #411 review, 2026-10-11).
+    return min(ANSWERED_TURN_CHARS, turn_chars, answered_cap) if answered_cap is not None else min(ANSWERED_TURN_CHARS, turn_chars)
 
 
 def _refuted_mark(text: str, refuted) -> str:

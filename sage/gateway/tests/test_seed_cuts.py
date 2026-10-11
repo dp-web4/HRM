@@ -28,6 +28,25 @@ def test_an_answered_turn_is_capped_at_the_full_rung_only_when_asked():
     assert conv._cap_for(t, me, answered_upto=5, turn_chars=1200, answered_cap=600) == conv.ANSWERED_TURN_CHARS
 
 
+def test_answered_turn_tuned_cap_never_widens_at_any_compaction_rung():
+    """Regression: answered_turn_chars=200/300 must remain binding at each rung.
+
+    Before this fix _cap_for honored it at the full rung, but returned 400
+    at turn_chars=800/1200, which silently expanded an intentionally smaller cap.
+    """
+    me, answered, live = "being", {"seq": 3}, {"seq": 9}
+    for tuned in (200, 300):
+        for rung in (None, 1200, 800, 400, 350, 250, 100):
+            expected = tuned if rung is None else min(conv.ANSWERED_TURN_CHARS, tuned, rung)
+            assert conv._cap_for(answered, me, answered_upto=5, turn_chars=rung,
+                                 answered_cap=tuned) == expected, (tuned, rung)
+            # Never compact an unanswered message based on the answered-turn setting.
+            assert conv._cap_for(live, me, answered_upto=5, turn_chars=rung,
+                                 answered_cap=tuned) == rung
+    assert conv._cap_for(answered, me, answered_upto=5, turn_chars=250) == 250
+    assert conv._cap_for(answered, me, answered_upto=5, turn_chars=1200) == conv.ANSWERED_TURN_CHARS
+
+
 # -- listings --------------------------------------------------------------------------------
 def test_the_listing_limit_is_the_beings_and_says_it_is_partial(tmp_path):
     (tmp_path / "notes").mkdir()

@@ -22,11 +22,17 @@ FAKE = r'''
 import json, sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 a = sys.argv; port = int(a[a.index("--port") + 1]); log = a[a.index("-m") + 1] + ".log"
+pre = a[a.index("--request-path") + 1] if "--request-path" in a else ""
+mode = open(a[a.index("-m") + 1]).read()
 class H(BaseHTTPRequestHandler):
     def log_message(self, *x): pass
     def do_GET(self):
+        if self.path != pre + "/":
+            self.send_response(404); self.end_headers(); return
         self.send_response(200); self.end_headers(); self.wfile.write(b"ok")
     def do_POST(self):
+        if self.path not in (pre + "/inference", pre + "/load"):
+            self.send_response(404); self.end_headers(); return
         n = int(self.headers["Content-Length"]); body = self.rfile.read(n)
         ctype = self.headers["Content-Type"]; bd = ctype.split("boundary=")[1].encode()
         fields = {}
@@ -40,6 +46,8 @@ class H(BaseHTTPRequestHandler):
             {"text": " hey sprout hello", "start": 0, "end": 1, "no_speech_prob": 0.01, "avg_logprob": -0.2,
              "tokens": [1, 2], "words": []},
             {"text": " thank you", "start": 1, "end": 2, "no_speech_prob": 0.9, "avg_logprob": -0.3}]}
+        if mode == "noconf":
+            for x in out["segments"]: x.pop("no_speech_prob")
         b = json.dumps(out).encode(); self.send_response(200)
         self.send_header("Content-Type", "application/json"); self.end_headers(); self.wfile.write(b)
 HTTPServer(("127.0.0.1", port), H).serve_forever()
@@ -198,3 +206,63 @@ def test_a_continuation_carries_the_more_cautious_no_speech_into_the_guard():
            {"text": "world", "no_speech_prob": 0.9, "avg_logprob": -0.2}]
     rec = listening.judge_segments(wc.join_split_words(raw))
     assert rec["text"] == "" and rec["dropped"][0]["text"] == "helloworld"
+
+
+def test_a_stranger_on_the_port_cannot_reach_the_server_or_swap_its_model(fake):
+    import urllib.error
+    import urllib.request
+    exe, model = fake
+    s = wc.WhisperCpp(str(model), bin_path=str(exe))
+    try:
+        s.start()
+        assert len(s.path) == 25 and s.path.startswith("/")
+        for path, data in (("/", None), ("/inference", b"x"), ("/load", b"model=/tmp/other.bin")):
+            with pytest.raises(urllib.error.HTTPError) as e:
+                urllib.request.urlopen(f"http://127.0.0.1:{s.port}{path}", data=data, timeout=5)
+            assert e.value.code == 404
+        assert s.segments(b"\x00\x00" * 1600)            # the client, knowing the path, is served
+    finally:
+        s.stop()
+
+
+def test_segments_without_whispers_confidences_are_an_error_never_unguarded_words(monkeypatch, tmp_path, fake):
+    exe, model = fake
+    model.write_text("noconf")
+    s = wc.WhisperCpp(str(model), bin_path=str(exe))
+    try:
+        with pytest.raises(wc.NoConfidence):
+            s.segments(b"\x00\x00" * 1600)
+    finally:
+        s.stop()
+    # in the ear: a transcribe_error in unheard.jsonl, nothing heard
+    unheard = tmp_path / "unheard.jsonl"
+    monkeypatch.setattr(listening, "UNHEARD_PATH", str(unheard))
+    t = _ear(monkeypatch, tmp_path, exe, model)
+    try:
+        t._load()
+        t._handle(b"\x00\x00" * 16000)
+        rec = json.loads(unheard.read_text().splitlines()[-1])
+        assert rec["why"] == "transcribe_error" and rec["error"] == "NoConfidence"
+        assert not (tmp_path / "heard.jsonl").exists()
+    finally:
+        t.model.stop()
+
+
+def test_the_server_is_told_to_die_with_its_parent_without_preexec(fake, monkeypatch):
+    import shutil
+    if not shutil.which("setpriv"):
+        pytest.skip("no util-linux setpriv here")
+    exe, model = fake
+    seen = {}
+    real = wc.subprocess.Popen
+
+    def spy(cmd, **kw):
+        seen["cmd"], seen["kw"] = cmd, kw
+        return real(cmd, **kw)
+    monkeypatch.setattr(wc.subprocess, "Popen", spy)
+    s = wc.WhisperCpp(str(model), bin_path=str(exe))
+    try:
+        s.start()
+        assert seen["cmd"][:3] == ["setpriv", "--pdeathsig", "TERM"] and "preexec_fn" not in seen["kw"]
+    finally:
+        s.stop()

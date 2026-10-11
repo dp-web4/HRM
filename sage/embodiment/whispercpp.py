@@ -12,7 +12,8 @@ int16 PCM, which is what goes on the wire.
 
 SETUP, per body (whisper.cpp is not vendored; SAGE_WHISPERCPP_HOME points at the checkout, default
 ~/ai-workspace/whisper.cpp):
-    git clone --depth 1 https://github.com/ggml-org/whisper.cpp && cd whisper.cpp
+    git clone https://github.com/ggml-org/whisper.cpp && cd whisper.cpp
+    git checkout 7e26d3b          # the commit measured; the client needs verbose_json's no_speech_prob
     cmake -B build -DGGML_CUDA=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build -j --target whisper-server
     sh ./models/download-ggml-model.sh base.en        # or tiny.en; the ear's SAGE_LISTEN_MODEL picks
 Then SAGE_LISTEN_BACKEND=whispercpp in the cortex's service environment.
@@ -95,15 +96,20 @@ def join_split_words(raw: List[dict]) -> List[dict]:
     return out
 
 
-def _die_with_parent() -> None:
+def _die_with_parent() -> List[str]:
     """The server must not outlive the ear: a cortex killed without its finally (SIGKILL, a watchdog restart
-    outside systemd's cgroup) would otherwise leave ~240 MB behind. Linux PR_SET_PDEATHSIG; elsewhere a no-op."""
-    try:
-        import ctypes
-        import signal
-        ctypes.CDLL("libc.so.6", use_errno=True).prctl(1, signal.SIGTERM)
-    except Exception:
-        pass
+    outside systemd's cgroup) would otherwise leave ~240 MB behind. util-linux `setpriv --pdeathsig` sets
+    PR_SET_PDEATHSIG in the child before exec; not `preexec_fn`, which Python documents as unsafe in a threaded
+    process (the cortex is one). The signal follows the spawning THREAD, which is the ear's long-lived
+    transcriber. Without setpriv the server only stops with the ear's own stop() or the service's cgroup."""
+    import shutil
+    return ["setpriv", "--pdeathsig", "TERM"] if shutil.which("setpriv") else []
+
+
+class NoConfidence(RuntimeError):
+    """The server gave a segment without Whisper's confidences. judge_segments would read the missing values as
+    0 and keep everything, which switches off the guard against words on silence, so this is an error (the ear
+    logs a transcribe_error, never speech), not a default."""
 
 
 def _free_port() -> int:
@@ -130,15 +136,21 @@ class WhisperCpp:
             if not os.path.exists(p):
                 raise FileNotFoundError(f"{what} not found: {p}")
         self.port = _free_port()
+        # AN UNGUESSABLE PATH. whisper-server also serves POST /load, which swaps the model for any file path;
+        # on a bare 127.0.0.1 port any local process could change what the ear hears with. Every route sits
+        # under a random prefix only this client knows, so a stranger gets 404 (and so does a different server
+        # that took the port between _free_port and bind).
+        self.path = "/" + os.urandom(12).hex()
         self.proc = subprocess.Popen(
-            [self.bin, "-m", self.model, "-t", str(self.threads), "--host", "127.0.0.1", "--port", str(self.port)],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, preexec_fn=_die_with_parent)
+            _die_with_parent() + [self.bin, "-m", self.model, "-t", str(self.threads), "--host", "127.0.0.1",
+                                  "--port", str(self.port), "--request-path", self.path],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         end = time.time() + timeout
         while time.time() < end:
             if self.proc.poll() is not None:
                 raise RuntimeError(f"whisper-server exited with {self.proc.returncode}")
             try:
-                urllib.request.urlopen(f"http://127.0.0.1:{self.port}/", timeout=1)
+                urllib.request.urlopen(f"http://127.0.0.1:{self.port}{self.path}/", timeout=1)
                 return
             except Exception:
                 time.sleep(0.1)
@@ -159,13 +171,16 @@ class WhisperCpp:
                  f"Content-Type: audio/wav\r\n\r\n".encode() + wav_bytes(pcm16) + b"\r\n"]
         parts += [f"--{bd}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n".encode()
                   for k, v in fields.items()]
-        req = urllib.request.Request(f"http://127.0.0.1:{self.port}/inference",
+        req = urllib.request.Request(f"http://127.0.0.1:{self.port}{self.path}/inference",
                                      b"".join(parts) + f"--{bd}--\r\n".encode(),
                                      {"Content-Type": f"multipart/form-data; boundary={bd}"})
         r = json.load(urllib.request.urlopen(req, timeout=timeout))
         if "error" in r:
             raise RuntimeError(str(r["error"])[:120])
-        return join_split_words(r.get("segments") or [])
+        raw = r.get("segments") or []
+        if any(s.get("no_speech_prob") is None or s.get("avg_logprob") is None for s in raw):
+            raise NoConfidence("whisper-server returned a segment without no_speech_prob / avg_logprob")
+        return join_split_words(raw)
 
     def peak_rss_mb(self) -> Optional[float]:
         """The child's resident high-water mark (Linux), for the harness and the budget."""

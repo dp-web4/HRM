@@ -19,6 +19,6 @@ IRP observation (key + bounded history + MRH context) → deterministic safety/q
 ## Immediate experiments
 Inventory field semantics and reward definitions; instrument event-to-delayed-outcome joins without leakage; benchmark algorithmic vs existing neural vs tiny MLP/temporal model vs hybrid; train first as heuristic imitation then against evidence-backed delayed utility. Evaluate rare high-consequence missed events, contradiction detection, stale memory, compute/energy and calibration/abstention. Run shadow mode on a small fleet node before anything can change attention allocation.
 
-Full requirements, risks, milestones, data provenance and acceptance gates: [SNARC PRD](https://github.com/dp-web4/snarc/blob/exploration/learned-snarc-2026-10-10/prd/LEARNED_SNARC_PRD_2026-10-10.md). Coordinate with dev-SAGE for ARC/SWE competition-specific ablations.
+Full requirements, risks, milestones, data provenance and acceptance gates: [SNARC PRD](https://github.com/dp-web4/snarc/blob/main/prd/LEARNED_SNARC_PRD_2026-10-10.md). Coordinate with dev-SAGE for ARC/SWE competition-specific ablations.
 
 **No implementation or training results are asserted by this note.**

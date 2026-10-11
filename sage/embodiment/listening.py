@@ -321,8 +321,13 @@ class Transcriber(threading.Thread):
         now = time.time() if now is None else now
         if not UNLOAD_IDLE_S or self.model is None or now - self._last_use < UNLOAD_IDLE_S:
             return False
-        if hasattr(self.model, "stop"):        # whisper.cpp: its server process is the memory
+        if BACKEND == "whispercpp":
+            # its server process IS the memory: stopping it frees all of it. Never touch torch here; the point
+            # of this backend is an ear without it (and a body that has no torch at all).
             self.model.stop()
+            self.model = None
+            self.status = "idle"
+            return True
         self.model = None
         self.status = "idle"
         try:

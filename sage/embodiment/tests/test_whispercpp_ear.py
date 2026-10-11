@@ -266,3 +266,32 @@ def test_the_server_is_told_to_die_with_its_parent_without_preexec(fake, monkeyp
         assert seen["cmd"][:3] == ["setpriv", "--pdeathsig", "TERM"] and "preexec_fn" not in seen["kw"]
     finally:
         s.stop()
+
+
+class _TorchImported(BaseException):
+    """BaseException, so the ear's own `except Exception` cleanup cannot swallow the tripwire."""
+
+
+class _NoTorch:
+    def find_spec(self, name, path=None, target=None):
+        if name == "torch" or name.startswith("torch.") or name == "whisper":
+            raise _TorchImported(name)
+        return None
+
+
+def test_the_whole_whispercpp_ear_never_imports_torch_load_hear_unload(monkeypatch, tmp_path, fake):
+    """GPT on #422: unload stopped the server and then fell through to torch's CUDA cleanup."""
+    exe, model = fake
+    for m in [m for m in sys.modules if m == "torch" or m.startswith("torch.") or m == "whisper"]:
+        monkeypatch.delitem(sys.modules, m)
+    monkeypatch.setattr(sys, "meta_path", [_NoTorch()] + sys.meta_path)
+    t = _ear(monkeypatch, tmp_path, exe, model)
+    monkeypatch.setattr(listening, "UNLOAD_IDLE_S", 10.0)
+    t._load()
+    assert t.status == "ready"
+    assert t.transcribe(b"\x00\x00" * 16000)["text"] == "hey sprout hello"
+    server = t.model
+    t._last_use = time.time() - 60
+    assert t.unload_if_idle() is True
+    assert t.model is None and t.status == "idle" and not server.alive()
+    assert "torch" not in sys.modules

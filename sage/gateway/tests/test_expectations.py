@@ -94,3 +94,15 @@ def test_the_gate_refuses_before_the_law_when_closed(tmp_path):
     c.memory_root = str(tmp_path)
     v = c.gate(g.BeingIntent("memory_read", {"path": "/x/environment_files/ar25/0c556536/ar25.py"}))
     assert v.decision == "deny" and v.stage == "trial" and "not by the law" in v.reason
+
+
+def test_the_closure_never_refuses_the_beings_own_writing_for_its_words(tmp_path):
+    """2026-10-11: the first Phase B beat had its own handoff note refused for mentioning the path."""
+    import json
+    from sage.gateway.being_gate_client import trial_game_source_refusal, BeingIntent
+    (tmp_path / "instance.json").write_text(json.dumps({"params": {"game_source": "closed"}}))
+    note = BeingIntent("memory_write", {"path": "scratch/handoff.md",
+                                        "content": "the seat closed environment_files/ for the trial"})
+    assert trial_game_source_refusal(note, str(tmp_path)) is None
+    edit = BeingIntent("memory_edit", {"path": "notes/established.md", "new": "see environment_files/ar25"})
+    assert trial_game_source_refusal(edit, str(tmp_path)) is None

@@ -1996,6 +1996,9 @@ GAME_SOURCE_CLOSED = (
     "the trial ends, access is restored as before.")
 
 
+GAME_SOURCE_PATH_ARGS = ("path", "data", "paths", "file", "target", "rev_path")
+
+
 def trial_game_source_refusal(intent, memory_root) -> Optional[str]:
     """The Phase B refusal text when `game_source` is closed and the act names game-engine source;
     None otherwise. The `game` verb itself is never refused here: playing is the point."""
@@ -2007,9 +2010,15 @@ def trial_game_source_refusal(intent, memory_root) -> Optional[str]:
             return None
     except Exception:
         return None
-    import json as _json
-    blob = _json.dumps(intent.args or {}, default=str)
-    return GAME_SOURCE_CLOSED if GAME_SOURCE_MARKER in blob else None
+    # PATHS ONLY, NEVER CONTENT (2026-10-11): the first version scanned every argument, so the
+    # being's own handoff note was refused for MENTIONING the closed path in its text, and it began
+    # rewording its notes to avoid the words -- the trial censoring the being's writing, which it
+    # promised not to do. Only arguments that name what an act TOUCHES are checked.
+    for k in GAME_SOURCE_PATH_ARGS:
+        v = (intent.args or {}).get(k)
+        if v is not None and GAME_SOURCE_MARKER in str(v):
+            return GAME_SOURCE_CLOSED
+    return None
 
 
 def tune_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:

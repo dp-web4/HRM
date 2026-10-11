@@ -30,7 +30,9 @@ def test_defaults_are_the_full_organ(monkeypatch):
 
 
 def test_eyes_setting_parses_and_never_opens_nothing(monkeypatch):
-    for v, want in (("0", [0]), ("1", [1]), ("0,1", [0, 1]), (" 1 ", [1]), ("7", [0, 1]), ("x", [0, 1]), ("", [0, 1])):
+    for v, want in (("0", [0]), ("1", [1]), ("0,1", [0, 1]), ("0,0", [0]),
+                    ("1,0", [0, 1]), ("1,1,0", [0, 1]), (" 1 ", [1]),
+                    ("7", [0, 1]), ("x", [0, 1]), ("", [0, 1])):
         monkeypatch.setenv("SAGE_CORTEX_EYES", v)
         assert vc._env_eyes() == want, v
 
@@ -198,6 +200,17 @@ def test_one_eye_runs_the_real_loop_and_tells_the_truth(monkeypatch, tmp_path):
 def test_the_right_eye_alone_is_keyed_and_named_as_the_right(monkeypatch, tmp_path):
     _, st = _one_tick(monkeypatch, tmp_path, [1])
     assert list(st["cameras"]) == ["1"] and st["cameras"]["1"]["side"] == "right" and st["eyes_resting"] == ["left"]
+    assert st["dominant_eye"] == 1, "dominant eye is the physical sensor ID, not the compact list index"
+
+
+def test_right_eye_alone_is_dominant_in_blind_state_too(monkeypatch, tmp_path):
+    c, _ = _one_tick(monkeypatch, tmp_path, [1])
+    states = []
+    c._emit = states.append
+    c._sense_blind([0], [None], "open", None)
+    assert list(states[-1]["cameras"]) == ["1"]
+    assert states[-1]["dominant_eye"] == 1
+    assert states[-1]["cameras"]["1"]["side"] == "right"
 
 
 def test_two_eyes_run_the_real_loop_as_before(monkeypatch, tmp_path):

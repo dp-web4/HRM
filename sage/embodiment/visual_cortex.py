@@ -47,7 +47,7 @@ DET_PERIOD = 1.0         # object detection cadence (1Hz) — objects don't chan
 def _env_eyes() -> list:
     try:
         ids = [int(x) for x in (os.environ.get("SAGE_CORTEX_EYES") or "0,1").split(",") if x.strip() != ""]
-        return [i for i in ids if i in (0, 1)] or [0, 1]
+        return sorted({i for i in ids if i in (0, 1)}) or [0, 1]
     except ValueError:
         return [0, 1]
 
@@ -742,7 +742,8 @@ class VisualCortex:
         dmeta: dict = {}
         state = {"ts": round(now, 2),
                  "cameras": {str(self.sids[i]): eyes[i] for i in range(len(eyes))},
-                 "dominant_eye": 0, "binocular": binoc, "proprioception": prop,
+                 "dominant_eye": self.sids[next((i for i, e in enumerate(eyes) if not e.get("stalled")), 0)],
+                 "binocular": binoc, "proprioception": prop,
                  "audio": aud, "gaze": gaze,
                  "descriptor": _object_phrase(self._objects)
                                + describe(eyes, binoc, prop, gaze, aud, meta=dmeta)}
@@ -813,7 +814,7 @@ class VisualCortex:
                 self._adjudicate_sensors(eyes, binoc, prop)  # still vs stalled, using ego-motion + cross-eye
                 dmeta = {}
                 state = {"ts": round(time.time(), 2), "cameras": {str(self.sids[i]): eyes[i] for i in range(n)},
-                         "dominant_eye": int(np.argmax([e["motion"] for e in eyes])),
+                         "dominant_eye": self.sids[int(np.argmax([e["motion"] for e in eyes]))],
                          "binocular": binoc, "proprioception": prop, "audio": aud, "gaze": gaze,
                          "descriptor": _object_phrase(self._objects) + describe(eyes, binoc, prop, gaze, aud, meta=dmeta)}
                 state.update(dmeta)  # modalities + audio_onset, truth from composition time

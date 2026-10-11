@@ -144,6 +144,20 @@ def test_answer_then_act_is_opt_in_and_wired_without_say_or_speak(tmp_path):
     assert "act_form=explore_turn_mode(instance)" in block and 'get("sent")' in block and "preempted" in block
     assert '"act_after_answer": _turn(act_after)' in src
     assert "if not, rest." in hb.AFTER_ANSWER, "a format with rest as a full answer, not an instruction to act"
+    assert "_aa_seed = after_answer_messages(seed[0], selected.render(), answer.reply)" in block
+
+
+def test_its_answer_is_its_own_turn_not_quoted_in_the_user_message():
+    """2026-10-11: quoted inside the user message, its reply was read as the user's ("The user has shared their
+    response ..."). It is the assistant turn between the person's words and the ask."""
+    sys_msg = {"role": "system", "content": "S"}
+    m = hb.after_answer_messages(sys_msg, "dp: pick something and pursue it", "  I'd like to look at the moss.  ")
+    assert [x["role"] for x in m] == ["system", "user", "assistant", "user"] and m[0] is sys_msg
+    assert m[1]["content"] == "dp: pick something and pursue it"
+    assert m[2]["content"] == "I'd like to look at the moss."
+    assert m[3]["content"] == hb.AFTER_ANSWER and "moss" not in m[3]["content"] and "pursue" not in m[3]["content"]
+    assert len(hb.after_answer_messages(sys_msg, "p", "x" * 900)[2]["content"]) == 400
+    assert hb.after_answer_messages(sys_msg, "p", None)[2]["content"] == ""
 
 
 def test_once_a_web_verb_exists_the_line_names_it_and_stops_saying_no_internet(monkeypatch):

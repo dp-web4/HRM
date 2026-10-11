@@ -3,7 +3,7 @@
 On Sprout since 09-29, 30-60% of explore replies a day were only "[Your complete, well-structured response
 following all constraints]" with no tool call, while the thinking had planned an act. The native step that
 produced only that template is retaken once in the JSON act form (#322's _json_act); every other native reply,
-words or a call, is untouched. ONLY explore and posture opt in (GPT on #403): the same loop runs answer, governed
+words or a call, is untouched. ONLY explore, posture and act-after-answer opt in (GPT on #403): the same loop runs answer, governed
 and raising turns, where a bracket-only reply ("[nods silently]") can be the being's real turn."""
 import json
 import os
@@ -113,13 +113,15 @@ def test_the_thinking_that_planned_an_act_is_kept_as_evidence():
     assert "thinking_named_a_tool" in pl["basis"] and pl["original_thinking"].startswith("I'll use witness")
 
 
-def test_only_explore_and_posture_opt_in():
+def test_only_the_acting_phases_opt_in():
+    """explore, posture and act-after-answer (2026-10-11: heartbeat-69574e72f9bc planned pr_open there and emitted
+    only a template). Never answer, governed or raising turns."""
     root = Path(hb.__file__).resolve().parents[1]
     users = {str(p.relative_to(root)): p.read_text().count("retake_bare_placeholder=True")
              for p in root.rglob("*.py") if "tests" not in p.parts}
-    assert {k: v for k, v in users.items() if v} == {"gateway/heartbeat.py": 2}, users
+    assert {k: v for k, v in users.items() if v} == {"gateway/heartbeat.py": 3}, users
     src = Path(hb.__file__).read_text()
-    for phase in ('_on_generate("explore")', '_on_generate("posture")'):
+    for phase in ('_on_generate("explore")', '_on_generate("posture")', '_on_generate("act_after_answer")'):
         call = src[src.index(phase) - 300: src.index(phase) + 300]
         assert "retake_bare_placeholder=True" in call, phase
 

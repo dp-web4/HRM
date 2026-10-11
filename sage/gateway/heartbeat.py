@@ -521,8 +521,19 @@ def answer_temperature(instance) -> Optional[float]:
     return being_params.value(instance, "answer_temperature")
 
 
-AFTER_ANSWER = ("{pending}\n\nYou answered aloud: \"{reply}\"\n\nThat answer is spoken. Your tools are here "
-                "if there is something you want to do now; if not, rest.")
+AFTER_ANSWER = "That answer is sent. Your tools are here if there is something you want to do now; if not, rest."
+
+
+def after_answer_messages(system, pending, reply):
+    """The act-after-answer turn, with its answer as ITS OWN turn (2026-10-11).
+
+    It used to be quoted inside the user message ("You answered aloud: ..."), and the model read it as someone
+    else's: heartbeat-1b47f8a4a47e thought "The user has shared their response ... sitting quietly and listening"
+    about the being's own reply, and heartbeat-69574e72f9bc planned pr_open and emitted only a template. Its reply
+    is now the assistant turn between the person's words and the ask, the shape a chat model reads as itself."""
+    return [system, {"role": "user", "content": pending},
+            {"role": "assistant", "content": (reply or "").strip()[:400]},
+            {"role": "user", "content": AFTER_ANSWER}]
 
 
 def act_after_answer_on(instance) -> bool:
@@ -3992,12 +4003,13 @@ def main(argv=None) -> int:
                 and (getattr(answer, "answer_form", None) or {}).get("sent") and selected is not None):
             _phase("wrap-up", "act-after-answer", host_session_id)
             _aa_tools = [t for t in _explore_specs if t["function"]["name"] not in ("say", "speak")]
-            _aa_seed = [seed[0], {"role": "user", "content": AFTER_ANSWER.format(
-                pending=selected.render(), reply=(answer.reply or "").strip()[:400])}]
+            _aa_seed = after_answer_messages(seed[0], selected.render(), answer.reply)
+            # An acting phase like explore, so the #403 retake applies: in heartbeat-69574e72f9bc its thinking planned
+            # pr_open and the reply was only "[Your complete, well-structured response ...]" (0 acts in 6 beats).
             act_after = run_ollama_tool_turn(client, llm, _aa_seed, max_steps=2, tools=_aa_tools,
                                              on_generate=_on_generate("act_after_answer"),
                                              should_yield=_yield_for_a_person,
-                                             act_form=explore_turn_mode(instance))
+                                             act_form=explore_turn_mode(instance), retake_bare_placeholder=True)
 
     except BeatKilled as _k:
         killed = str(_k)

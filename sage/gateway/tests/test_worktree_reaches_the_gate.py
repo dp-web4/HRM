@@ -91,9 +91,11 @@ def test_the_gate_composes_with_the_worktree():
         # An ENUMERATION, and it grows only with a reason: #218 (the ARC game verb) added
         # `game_stepper`, which `game` composes the judged line from, and `member`, which a
         # composed git verb needs to name only the being's own branches (being_branch_prefix).
+        # The camera-from-cortex PR (2026-10-12) added `camera_source`: `camera` composes either ffmpeg or the
+        # cortex look client from it, so it is part of what the law judges.
         # A key not listed here is a composer reaching past the law's view of the act.
         check("the ctx carries nothing unlisted -- a composer must not reach past the act",
-              sorted(ctx), ["game_stepper", "member", "memory_root", "worktree"])
+              sorted(ctx), ["camera_source", "game_stepper", "member", "memory_root", "worktree"])
         for eff, args in (("search", {"pattern": "def compose("}), ("git_read", {"op": "log"})):
             ev = c._normalize(B.BeingIntent(effector=eff, args=args))
             check(f"{eff}: the gate composed a command at all", bool(ev.command))

@@ -91,7 +91,7 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     dispatcher interprets (see _do_camera).
     """
     import shlex
-    worktree = ctx["worktree"] if ctx else None
+    worktree = (ctx or {}).get("worktree")
     memory_root = (ctx or {}).get("memory_root")
     # CAMERA IS THE FOURTH VERB THE WORKTREE UNLOCKS, and the only one that never uses it: the
     # frame is resolved against memory_root below, and `worktree` is read on this line and
@@ -105,7 +105,14 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     # thing holding camera to the same condition as the other three. Dropping it is a policy
     # decision about whether every being with a memory_root may capture a frame, not a cleanup.
     # Pinned by test_without_a_worktree_the_verbs_still_fail_closed.
-    if not worktree:
+    #
+    # THE CORTEX AS THE CAMERA (dp 2026-10-12). A seat may declare `camera_source: "cortex"` in
+    # instance.json: its eyes are CSI sensors that only the running cortex can read (raw Bayer through
+    # v4l2; Argus in the cortex), so the frame comes from the cortex (sage/embodiment/look.py). That
+    # declaration IS the seat-level policy decision the worktree hold stands in for, made explicitly
+    # for this seat by its operator, so it, not a worktree, enables the verb there.
+    source = (ctx or {}).get("camera_source")
+    if source != "cortex" and not worktree:
         raise ValueError(NO_WORKTREE_REFUSAL["camera"])
     if not memory_root:
         raise ValueError("camera requires a memory_root context")
@@ -129,6 +136,9 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     # and renames only after the image is complete. That keeps old-or-new semantics INSIDE
     # the exact ffmpeg command Hestia judges; the dispatcher performs no extra filesystem
     # mutation behind the law's back.
+    if source == "cortex":
+        # the look client publishes by temp + rename itself, like image2's atomic_writing below
+        return f"python3 -m sage.embodiment.look {shlex.quote(full)}"
     device = args.get("device", "/dev/video0")
     return (f"ffmpeg -hide_banner -loglevel error -y -f v4l2 -i {shlex.quote(device)} "
             f"-frames:v 1 -qscale:v 3 -f image2 -atomic_writing 1 {shlex.quote(full)}")
@@ -2415,10 +2425,13 @@ class BeingGateClient:
                  dispatcher: "Optional[Dispatcher]" = None,
                  host_session_id: Optional[str] = None,
                  worktree: Optional[str] = None,
-                 game_stepper: Optional[str] = None):
+                 game_stepper: Optional[str] = None,
+                 camera_source: Optional[str] = None):
         self.member_id = member_id
         # the seat-side ARC stepper `game` composes with; a per-being fact (instance.json)
         self.game_stepper = game_stepper
+        # where `camera` gets a frame: "cortex" (sage/embodiment/look.py) or absent (ffmpeg on a device)
+        self.camera_source = camera_source
         self.workspace = workspace
         # THE BEING'S OWN WORKTREE, and the gate needs it as much as the dispatcher does.
         #
@@ -2549,7 +2562,9 @@ class BeingGateClient:
                 # the seat's ARC stepper: `game` composes the line the law judges from it
                 "game_stepper": getattr(self, "game_stepper", None),
                 # whose branches a composed git verb may name (being_branch_prefix)
-                "member": getattr(self, "member_id", None)}
+                "member": getattr(self, "member_id", None),
+                # where `camera` gets a frame (instance.json camera_source; "cortex" or absent)
+                "camera_source": getattr(self, "camera_source", None)}
 
     # -- gate one intent (intent -> verdict), fail-closed --------------------
     def _policy_grants(self) -> tuple:

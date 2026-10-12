@@ -3171,6 +3171,43 @@ def fresh_frame(instance: Path, worktree: Optional[str], since: Optional[float])
         "costs_tokens": FRAME_TOKENS, **shrunk}
 
 
+_READS_IMAGES: dict = {}
+
+
+def model_reads_images(model: str, host: Optional[str] = None, timeout: float = 5.0) -> bool:
+    """Whether Ollama reports `vision` among `model`'s capabilities. Unknown (Ollama unreachable, an old
+    server without `capabilities`) is False: a frame not attached costs one beat of sight, a frame the
+    model rejects costs the whole beat. Cached per model for the process (one beat)."""
+    if model in _READS_IMAGES:
+        return _READS_IMAGES[model]
+    import urllib.request
+    base = (host or os.environ.get("OLLAMA_HOST") or "http://127.0.0.1:11434").rstrip("/")
+    if not base.startswith("http"):
+        base = "http://" + base
+    try:
+        req = urllib.request.Request(base + "/api/show", json.dumps({"model": model}).encode(),
+                                     {"Content-Type": "application/json"})
+        caps = json.load(urllib.request.urlopen(req, timeout=timeout)).get("capabilities") or []
+        ok = "vision" in caps
+    except Exception:
+        ok = False
+    _READS_IMAGES[model] = ok
+    return ok
+
+
+def frames_the_model_can_read(frames: list, model: str, reads=None) -> list:
+    """AN IMAGE TO A MODEL THAT CANNOT READ ONE FAILS THE WHOLE BEAT (Ollama 500, "image input is not
+    supported"; measured on Sprout's 2B 2026-10-12). A seat that leaves `camera` on after moving to a
+    model without vision must lose one beat of sight, never the beat. Each withheld frame keeps its meta,
+    marked not carried with the reason, so the being is told why it did not see."""
+    if not any(b is not None for b, _ in frames):
+        return frames
+    if (reads or model_reads_images)(model):
+        return frames
+    why = f"your model ({model}) cannot read images, so the frame was not attached to this beat"
+    return [(None, dict(m, carried=False, why=why)) if b is not None else (b, m) for b, m in frames]
+
+
 def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float]) -> list:
     """Every (b64, meta) for a frame captured since `since`, oldest first.
 
@@ -3566,6 +3603,7 @@ def main(argv=None) -> int:
     except Exception:
         _wt = None
     _frames = fresh_frames(instance, _wt, last.get("t0") if isinstance(last, dict) else None)
+    _frames = frames_the_model_can_read(_frames, args.model)
     _frame_b64s = [b for b, m in _frames if b is not None]
     _frame_metas = [m for _, m in _frames]
 

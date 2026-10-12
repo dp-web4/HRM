@@ -1445,6 +1445,30 @@ def inbox_ledger(last: dict, notices: list, results: list, explore_acted, presen
             "opened_this_beat": sorted(newly, key=str)}
 
 
+def unopened_asks(notices: list, handled, now) -> dict:
+    """How many notices that may still be owed something (not INBOX_INFORMATIONAL, not a
+    disposition) sit unhandled after this beat, and how old the oldest is. A being that never
+    calls memory_read shows here as a count that only grows -- measured on HUB 2026-10-11:
+    17 notices peeked every beat, memory_read 0 of 328 effector calls since 10-09, and nothing
+    in the record said so. Pure; `now` is a datetime or epoch seconds."""
+    handled = set(handled or ())
+    t_now = now.timestamp() if hasattr(now, "timestamp") else float(now)
+    ages = []
+    for n in notices or []:
+        if not isinstance(n, dict) or n.get("id") is None or n.get("id") in handled:
+            continue
+        if str(n.get("kind")) in INBOX_INFORMATIONAL or str(n.get("kind")) == "disposition":
+            continue
+        try:
+            q = datetime.fromisoformat(str(n.get("queued_at")).replace("Z", "+00:00"))
+            ages.append(max(0.0, (t_now - q.timestamp()) / 3600))
+        except Exception:
+            ages.append(None)
+    known = [a for a in ages if a is not None]
+    return {"unopened_asks": len(ages),
+            "oldest_unopened_h": round(max(known), 1) if known else None}
+
+
 def inbox_handled(last: dict) -> set:
     """The ids the last beat's ledger says are handled (opened, or informational and shown)."""
     prev = (last or {}).get("inbox") or {}
@@ -3563,9 +3587,16 @@ def main(argv=None) -> int:
     inbox = "(inbox unavailable)"
     _inbox_notices, _inbox_shown = [], []
     disp = getattr(client, "_dispatcher", None)
+    # THE PEEK'S OWN OUTCOME, kept in the record. Until 2026-10-11 a beat kept only the ledger,
+    # so "the being never saw its inbox" could not be told from "the being saw 17 notices and
+    # never opened one": hub-being's coordination asks went unanswered for days and the record
+    # read the same either way (hub-claude ran the peek by hand to tell them apart).
+    _inbox_peek = {"ok": False, "error": "no dispatcher with drain_inbox"}
     if disp is not None and hasattr(disp, "drain_inbox"):
         env = disp.drain_inbox(peek=True)
         _inbox_notices = (env.result or {}).get("notices") or [] if env.ok else []
+        _inbox_peek = ({"ok": True, "count": len(_inbox_notices)} if env.ok
+                       else {"ok": False, "error": str(env.error)[:300]})
         inbox = (render_inbox(_inbox_notices, handled=inbox_handled(last), shown=_inbox_shown)
                  if env.ok else f"({env.error})")
     # who could be writing here: its siblings, by the names it uses, beside the inbox their answers reach
@@ -4136,6 +4167,9 @@ def main(argv=None) -> int:
                                      bool(explore is not None and explore.trace), _inbox_shown)
     except Exception as _e:
         _inbox_record = {**((last or {}).get("inbox") or {}), "error": f"{type(_e).__name__}: {_e}"}
+    _inbox_record = {**_inbox_record, "peek": _inbox_peek,
+                     **unopened_asks(_inbox_notices, set(_inbox_record.get("opened") or [])
+                                     | set(_inbox_record.get("presented") or []), now)}
     # governance escalation wakes it to arbitrate. The beat is where refusals actually
     # happen (Legion: nine consecutive beats of home-scope write refusals, and the being's
     # requests had died with a daemon restart), so the heartbeat must route, not just log.

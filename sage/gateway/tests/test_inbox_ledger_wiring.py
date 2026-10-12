@@ -132,3 +132,33 @@ def test_main_a_beat_that_never_acted_presents_nothing_and_a_failed_open_opens_n
     assert rec2["inbox"]["opened"] == [] and rec2["inbox"]["presented"] == [502], rec2["inbox"]
     inbox3, _ = beat([])
     assert "coord-plan.md" in inbox3 and "seq=4100" in inbox3 and "feedface" not in inbox3, inbox3
+
+
+def test_main_records_the_peek_outcome_and_the_unopened_asks(beat):
+    """The record keeps what the peek returned and how many asks sit unopened, so a being that
+    never opens its inbox is visible in its own record (hub-being, 2026-10-11: 17 notices peeked
+    every beat, memory_read 0 of 328 calls, and nothing in the record said so)."""
+    _, rec1 = beat([_act("memory_write", "journal.md")])
+    assert rec1["inbox"]["peek"] == {"ok": True, "count": 3}, rec1["inbox"]
+    # the coordination note and the reply; the finished review is informational
+    assert rec1["inbox"]["unopened_asks"] == 2, rec1["inbox"]
+    assert rec1["inbox"]["oldest_unopened_h"] > 0, rec1["inbox"]
+    _, rec2 = beat([_act("memory_read", "shared-context/plans/coord-plan.md")])
+    assert rec2["inbox"]["unopened_asks"] == 1, rec2["inbox"]
+
+
+def test_main_records_a_failed_peek(beat):
+    def boom(peek=False):
+        return ResultEnvelope(ok=False, result=None, error="daemon unreachable")
+    beat.disp.drain_inbox = boom
+    _, rec = beat([])
+    assert rec["inbox"]["peek"] == {"ok": False, "error": "daemon unreachable"}, rec["inbox"]
+    assert rec["inbox"]["unopened_asks"] == 0, rec["inbox"]
+
+
+def test_unopened_asks_is_pure():
+    ns = [COORD, REVIEW, REPLY, {"id": 9, "kind": "disposition", "pointer_uri": "hestia://scope/x"},
+          {"id": 10, "kind": "handoff", "queued_at": "not a time"}]
+    t = hb.datetime(2026, 10, 2, 12, 0, tzinfo=hb.timezone.utc)
+    assert hb.unopened_asks(ns, {501}, t) == {"unopened_asks": 2, "oldest_unopened_h": 2.0}
+    assert hb.unopened_asks([], set(), t) == {"unopened_asks": 0, "oldest_unopened_h": None}

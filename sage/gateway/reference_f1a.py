@@ -1215,18 +1215,31 @@ class ReferenceF1aDispatcher:
         # enough: the being journaled the fix as made and asked its seat to run the file
         # (seq 8477). A multi-line old= that stops mid-line is a cut, not a choice: refuse it
         # and show the tail it would have left behind. A single-line old= can be a deliberate
-        # in-line token swap, so it is left alone.
-        if "\n" in old.strip("\n") and not old.endswith("\n"):
+        # in-line token swap, so it is left alone -- UNLESS new already ends with the tail.
+        # Measured 2026-10-12 07:59Z: cbp-being sent old '    y = A @ ' (one line, stopping
+        # mid-line) and new = the whole line. The rest of the line stayed, so line 27 held its
+        # tail twice ('... * noise_stdw_true + ... * noise_std'); it still parsed, so the receipt
+        # said nothing was wrong. At 08:02 the being sent the RIGHT repair, old = the whole
+        # line, new '    y = A @ w_true': it matched the first copy and left the second, making
+        # 'w_truew_true'. The seat read three beats of that as the being failing to learn. A
+        # swap ('z = ' -> 'z = -') does not end with the tail; a whole line sent as new does.
+        if not old.endswith("\n"):
             end = text.index(old) + len(old)
             rest = text[end:].split("\n", 1)[0]
-            if rest:
+            multi = "\n" in old.strip("\n")
+            twice = len(rest.strip()) >= 3 and new.rstrip("\n").endswith(rest)
+            if rest and (multi or twice):
                 at = text.count("\n", 0, end) + 1
+                why = (f"The rest of that line, {rest!r}, would have been left in place, "
+                       f"spliced onto the end of your new text")
+                if twice:
+                    why += ", which already ends with it, so the line would hold it twice"
                 return ResultEnvelope(ok=False, error=(
                     f"your old text stops in the middle of line {at} of '{path}', so nothing "
-                    f"was changed. The rest of that line, {rest!r}, would have been left in "
-                    f"place, spliced onto the end of your new text. If old was copied from a "
-                    f"read that was cut there, memory_read start_line={at} to see the whole "
-                    f"line, then include all of it in old."))
+                    f"was changed. {why}. To replace the whole line, include all of it in old, "
+                    f"or call memory_edit with start_line={at} end_line={at}; if old was copied "
+                    f"from a read that was cut there, memory_read start_line={at} to see the "
+                    f"whole line."))
         return self._commit_edit(p, path, text, text.replace(old, new, 1),
                                  "replaced 1 occurrence", "")
 

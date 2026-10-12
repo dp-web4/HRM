@@ -65,3 +65,29 @@ def test_vision_is_read_from_ollamas_capabilities_and_unknown_is_no(monkeypatch)
     assert hb.model_reads_images("seer") is True
     assert hb.model_reads_images("blind") is False
     assert hb.model_reads_images("gone") is False                      # unknown is no, never a failed beat
+
+
+def _last(t0, *acts):
+    return {"t0": t0, "explore": {"trace": [dict(effector="camera", ok=ok, args={"out_path": p},
+                                                result={"out_path": p} if ok else None) for p, ok in acts]}}
+
+
+def test_a_frame_saved_outside_scratch_camera_still_reaches_the_being(tmp_path):
+    """sprout-being's first look (2026-10-12 21:02) saved scratch/test-vision.jpg; the beat looked only
+    under scratch/camera/, so the frame never rode."""
+    import time
+    t0 = time.time() - 5
+    (tmp_path / "scratch").mkdir()
+    jpg = b"\xff\xd8\xff" + b"x" * 64 + b"\xff\xd9"
+    (tmp_path / "scratch" / "test-vision.jpg").write_bytes(jpg)
+    last = _last(t0, ("scratch/test-vision.jpg", True), ("scratch/failed.jpg", False), ("../outside.jpg", True))
+    paths = hb.camera_frame_paths(last, tmp_path)
+    assert [p.name for p in paths] == ["test-vision.jpg"]                # the failed act and the escape are not taken
+    frames = hb.fresh_frames(tmp_path, None, t0, extra=paths)
+    assert [m.get("carried") for _, m in frames] == [True] and frames[0][0]
+    assert hb.fresh_frames(tmp_path, None, t0) == []                       # without the act's path: the old miss
+
+
+def test_no_last_beat_or_no_camera_act_adds_nothing(tmp_path):
+    assert hb.camera_frame_paths(None, tmp_path) == []
+    assert hb.camera_frame_paths({"explore": {"trace": [{"effector": "gaze", "ok": True}]}}, tmp_path) == []

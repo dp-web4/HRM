@@ -3065,7 +3065,7 @@ def frame_age_bound(since: Optional[float], now: Optional[float] = None) -> floa
     return max(FRAME_AGE_FLOOR_S, (now - since) + FRAME_AGE_GRACE_S)
 
 
-def _frame_paths(instance: Path, worktree: Optional[str]) -> list:
+def _frame_paths(instance: Path, worktree: Optional[str], extra=()) -> list:
     """Every frame the being may have captured, in either tree.
 
     NOT a fixed filename. `camera`'s whole grammar is that the being names its own output
@@ -3089,6 +3089,32 @@ def _frame_paths(instance: Path, worktree: Optional[str]) -> list:
                        if p.is_file() and p.suffix.lower() in (".jpg", ".jpeg"))
         except OSError:
             continue
+    # WHEREVER THE BEING SAVED IT. The verb lets the being name any path inside its home, and on
+    # sprout-being's first look (2026-10-12 21:02, the first beat on its 4B) it saved to
+    # scratch/test-vision.jpg; this producer looked only under scratch/camera/, so the frame never rode
+    # and the being asked to see and did not. `camera_frame_paths` reads the last beat's own camera
+    # acts, so a frame is found where the act put it.
+    seen = {str(p) for p in out}
+    for p in extra:
+        if str(p) not in seen and p.is_file() and p.suffix.lower() in (".jpg", ".jpeg"):
+            out.append(p)
+            seen.add(str(p))
+    return out
+
+
+def camera_frame_paths(last: Optional[dict], instance: Path) -> list:
+    """The files the previous beat's successful `camera` acts wrote, resolved inside the being's home only."""
+    home = Path(instance).resolve()
+    out = []
+    for phase in ("explore", "posture", "reflect", "act_after_answer"):
+        rec = (last or {}).get(phase) if isinstance(last, dict) else None
+        for t in (rec or {}).get("trace") or [] if isinstance(rec, dict) else []:
+            if not (isinstance(t, dict) and t.get("effector") == "camera" and t.get("ok")):
+                continue
+            rel = ((t.get("result") or {}).get("out_path") or (t.get("args") or {}).get("out_path") or "")
+            p = (home / str(rel)).resolve()
+            if rel and home in p.parents:
+                out.append(p)
     return out
 
 
@@ -3208,7 +3234,7 @@ def frames_the_model_can_read(frames: list, model: str, reads=None) -> list:
     return [(None, dict(m, carried=False, why=why)) if b is not None else (b, m) for b, m in frames]
 
 
-def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float]) -> list:
+def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float], extra=()) -> list:
     """Every (b64, meta) for a frame captured since `since`, oldest first.
 
     The plural of `fresh_frame`: the cadence organ delivers every frame the being
@@ -3218,7 +3244,7 @@ def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float]
     unknown age is unknown, not young. `fresh_frame` stays as-is for callers that
     want exactly one; this returns all of them, so a beat can see a sequence."""
     out = []
-    for p in _frame_paths(instance, worktree):
+    for p in _frame_paths(instance, worktree, extra):
         try:
             st = p.stat()
         except OSError:
@@ -3602,7 +3628,8 @@ def main(argv=None) -> int:
         _wt = _icfg(instance).get("worktree") or None
     except Exception:
         _wt = None
-    _frames = fresh_frames(instance, _wt, last.get("t0") if isinstance(last, dict) else None)
+    _frames = fresh_frames(instance, _wt, last.get("t0") if isinstance(last, dict) else None,
+                           extra=camera_frame_paths(last, instance))
     _frames = frames_the_model_can_read(_frames, args.model)
     _frame_b64s = [b for b, m in _frames if b is not None]
     _frame_metas = [m for _, m in _frames]

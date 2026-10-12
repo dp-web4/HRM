@@ -1475,7 +1475,35 @@ def inbox_handled(last: dict) -> set:
     return set(prev.get("opened") or []) | set(prev.get("presented") or [])
 
 
-def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None) -> str:
+INLINE_ASKS = 2            # unopened asks shown with what they say, newest first
+INLINE_ASK_CHARS = 700     # of each; the envelope (and memory_read) has the rest
+_INLINE_KINDS = ("reply", "coordination", "handoff")
+
+
+def delivered_excerpt(home, pointer: str, cap: int = INLINE_ASK_CHARS) -> str:
+    """What a relayed ask says, from the envelope the courier wrote into the being's OWN home
+    (notes/inbox/<file>, being_inbox_drain.DELIVERED_HEADING), or "" if there is none. Only the
+    being's home is read here: the courier, not the beat, decided what to deliver (option (b), dp
+    2026-10-11), so nothing outside the being's reach reaches its prompt by this path."""
+    if not home or "/notes/inbox/" not in str(pointer or ""):
+        return ""
+    try:
+        from sage.gateway.being_inbox_drain import DELIVERED_HEADING
+        p = Path(home) / "notes" / "inbox" / Path(str(pointer).split("#", 1)[0]).name
+        if not p.is_file():
+            return ""
+        text = p.read_text(encoding="utf-8", errors="replace")
+        if DELIVERED_HEADING not in text:
+            return ""
+        part = text.split(DELIVERED_HEADING, 1)[1]
+        body = part.split("~~~~\n", 1)[1].rsplit("\n~~~~", 1)[0] if part.count("~~~~") >= 2 else ""
+        body = " ".join(body.split())
+        return body[:cap] + ("…" if len(body) > cap else "")
+    except Exception:
+        return ""
+
+
+def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None, home=None) -> str:
     """The being's hestia inbox as it should read it: newest first, one line each, the kinds
     that want its attention (reply, review, handoff, unreachable) ahead of bookkeeping, and
     the scope dispositions it has already been told about (note_resolutions writes them into
@@ -1514,6 +1542,7 @@ def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None
     appeal_disp = [n for n in disp if ptr_of(n).startswith("hestia://appeal/")]
     other_disp = [n for n in disp if n not in scope_disp and n not in appeal_disp]
     lines = []
+    inlined = 0
     for n in appeal_disp[:limit]:
         target = ptr_of(n).split("#", 1)[0]
         deny = target.rsplit("/", 1)[-1]
@@ -1541,6 +1570,10 @@ def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None
         else:
             when = str(n.get("queued_at") or "")[:16].replace("T", " ")
             lines.append(f"- [{k}] from {frm}{' at ' + when if when else ''}: read it with memory_read on {ptr}")
+            says = delivered_excerpt(home, ptr) if k in _INLINE_KINDS and inlined < INLINE_ASKS else ""
+            if says:
+                inlined += 1
+                lines.append(f"    It says (the sender's words, delivered with it): \"{says}\"")
     if scope_disp:
         lines.append(f"- {len(scope_disp)} scope decision notice(s), already written into your notes; nothing to do.")
     if len(rest) > limit:
@@ -3597,7 +3630,7 @@ def main(argv=None) -> int:
         _inbox_notices = (env.result or {}).get("notices") or [] if env.ok else []
         _inbox_peek = ({"ok": True, "count": len(_inbox_notices)} if env.ok
                        else {"ok": False, "error": str(env.error)[:300]})
-        inbox = (render_inbox(_inbox_notices, handled=inbox_handled(last), shown=_inbox_shown)
+        inbox = (render_inbox(_inbox_notices, handled=inbox_handled(last), shown=_inbox_shown, home=instance)
                  if env.ok else f"({env.error})")
     # who could be writing here: its siblings, by the names it uses, beside the inbox their answers reach
     try:

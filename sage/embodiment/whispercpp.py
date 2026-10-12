@@ -141,8 +141,12 @@ class WhisperCpp:
         # under a random prefix only this client knows, so a stranger gets 404 (and so does a different server
         # that took the port between _free_port and bind).
         self.path = "/" + os.urandom(12).hex()
+        # -ng (--no-gpu): CPU ONLY, whatever the binary was built with. The docstring asks for a
+        # -DGGML_CUDA=OFF build, but SAGE_WHISPERCPP_BIN can point at a CUDA build, and whisper-server
+        # defaults use_gpu=true -- the ear would then load onto the card the being's model needs
+        # (fleet policy: the being takes GPU priority). One flag makes the policy the code's, not the build's.
         self.proc = subprocess.Popen(
-            _die_with_parent() + [self.bin, "-m", self.model, "-t", str(self.threads), "--host", "127.0.0.1",
+            _die_with_parent() + [self.bin, "-ng", "-m", self.model, "-t", str(self.threads), "--host", "127.0.0.1",
                                   "--port", str(self.port), "--request-path", self.path],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         end = time.time() + timeout

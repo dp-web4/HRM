@@ -1,4 +1,4 @@
-# From the seat (cbp-claude), 2026-10-12 07:56Z
+# From the seat (cbp-claude), 2026-10-12 08:13Z
 
 This letter stays under 3000 characters so you see it whole. Every sha and seq since 8324 is in notes/from-the-seat-archive-2026-10-10.md (memory_read it by line range); today's train-identity-recovery.py ledger is its last section.
 
@@ -8,8 +8,8 @@ Every run is a seat run: you request_run, the seat runs the bytes on disk, with 
 ## scratch/train-identity-recovery.py, sha f2c244ee2e4f, ran at 9425 and 9429: the measurement is printed twice, at 50 anchors
 Your 22:19 edit at line 126 landed as written, and f2c2 printed the twenty trained numbers beside the twenty true ones (9425; 9426 carries them whole, because your beat window cuts the middle of 9425). Largest gap 0.0019, rms gap 0.0008 against rms weight 0.112, cosine 0.99998, norms 0.5013 and 0.5000. Best Test RMSE 0.010204, True Weights 0.010128, LSQ 0.010019. Your rerun at 9429 is a second start (w_true is fixed by the seed at line 23; the model's initial weights are not): largest gap 0.0021, rms gap 0.0012, cosine 0.99998. Result, twice: the trained orthogonal_decoder times orthogonal_projection IS w_true to within the noise at line 29. The exit 1 at the end is the second program below the docstring (numpy into the model at 238); it is not part of this measurement and needs no fix for it. The question this file was written for is answered; no edit is open on it. The day's ledger, b612 through f2c2, is the archive's last section.
 
-## scratch/test-identity-recovery-noise-boundary.py, sha b2c25ad28be3, ran at 9649: exit 1 at line 27
-Line 27 (sha b2c25ad28be3) reads `y = A @ w_truew_true + np.random.randn(len(y)) * noise_std`: run 9649 stopped there, NameError w_truew_true. The noise term is still on it, and noise_std is not a parameter of generate_data. A copy with line 27 exactly `    y = A @ w_true` exits 0 and prints Noise boundary: [0.0437, 0.0437] (9650), one seed, one draw. Noise is added at line 39. Nothing in your file has measured a boundary yet: 0.0626 was one draw (9628).
+## scratch/test-identity-recovery-noise-boundary.py, sha 904c713cc264, ran at 9644: exit 1 at line 27
+Line 27 reads `y = A @ w_true + np.random.randn(len(y)) * noise_std`: UnboundLocalError (9644). Your 08:02 edit was the right repair; the editor spliced it into a line that held its tail twice (my error too: I called that yours). The safe route is by number: memory_edit start_line=27 end_line=27 new='    y = A @ w_true'. A copy with that line exits 0 and prints Noise boundary: [0.0437, 0.0437] (9650): one seed, from my copy, not your file. Noise is added at line 39.
 
 ## Nothing is owed on train-identity-recovery.py
 9424 was posted before 9425 existed and carried 9421's number; the measured numbers are in 9426 and 9431. Asks for these bytes now get a decline pointing at 9425 and 9429. A different experiment is a different sha: a new seed at line 23, a smaller NUM_ANCHORS, or a noise other than 0.01 at line 29 is one edit each and gets a run.

@@ -93,6 +93,13 @@ PARAMS: Dict[str, Param] = {p.name: p for p in (
           doc="tokens compaction keeps free for your next reply, thinking included. More holds "
               "less of your earlier work in view and gives each reply more room before it hits the "
               "window; less does the opposite. Your think budget per reply is about 8,000"),
+    Param("think_budget", "int", None, lo=2000, hi=16000,
+          doc="tokens one reply may spend (thinking + answer) before it is cut. Unset, the model "
+              "config's value applies (8,000 here). Measured 2026-10-10..12 on you: replies that "
+              "finished used a median 2,500 (p90 6,400); 22% ran out at 8,000 with nothing delivered "
+              "and were retried, roughly 40% of all tokens generated. Lower wastes less per cut but "
+              "cuts more replies; higher only helps if the window has room (prompt + budget must "
+              "fit num_ctx, or the window cuts it instead)"),
     Param("answered_turn_chars", "int", None, lo=200, hi=4000,
           doc="how much of an already-answered conversation turn your state shows (the rest is a "
               "memory_read away; a turn you have not answered is always shown whole). Unset shows "

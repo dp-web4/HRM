@@ -93,8 +93,40 @@ def map_kind(kind: str) -> str:
     return _KIND_MAP.get(root, "coordination")
 
 
-def persist_notice(instance: Path, n: Dict, relayed_by: str) -> Path:
-    """Write one notice into the being's home with provenance; return the file."""
+# WHAT IT SAYS TRAVELS WITH THE ENVELOPE (dp, 2026-10-11: option (b) of the inline question on
+# forum/sprout-to-hub-hub-being-never-reads-record-pr-and-inline-question-2026-10-11.md). Measured on HUB:
+# hub-being peeked 17 notices every beat and made 0 memory_read calls in 328 tool calls since 10-09, so
+# an envelope that only POINTS at the ask is an ask never read. The courier already writes into the
+# being's home; it now copies what the pointer says, as delivered mail. Only from the fleet's shared
+# checkout (shared-context, which every member reads), never private-context, never a URL, never a
+# path that escapes it, and capped -- the rest stays a memory_read away.
+DELIVERED_CHARS = 3000
+DELIVERED_HEADING = "## What it says (delivered with the notice)"
+_DELIVERABLE_SUFFIXES = (".md", ".txt", ".json", ".jsonl")
+
+
+def delivered_content(pointer: str, workspace: Optional[str]) -> Dict:
+    """{'text', 'chars', 'truncated'} for a pointer the courier may copy, or {'why'} when it may not."""
+    target = str(pointer or "").split("#", 1)[0].strip()
+    if not workspace:
+        return {"why": "no workspace to resolve it against"}
+    if not target or "://" in target:
+        return {"why": "not a file in the shared checkout"}
+    shared = (Path(workspace).resolve().parent / "shared-context").resolve()
+    if not target.startswith("shared-context/"):
+        return {"why": "not in shared-context"}
+    p = (shared.parent / target).resolve()
+    if shared not in p.parents or p.suffix.lower() not in _DELIVERABLE_SUFFIXES:
+        return {"why": "not a document in shared-context"}
+    if not p.is_file():
+        return {"why": "not in this machine's copy of shared-context yet"}
+    text = p.read_text(encoding="utf-8", errors="replace")
+    return {"text": text[:DELIVERED_CHARS], "chars": len(text), "truncated": len(text) > DELIVERED_CHARS}
+
+
+def persist_notice(instance: Path, n: Dict, relayed_by: str, workspace: Optional[str] = None) -> Path:
+    """Write one notice into the being's home with provenance (and, where the courier may, what it says);
+    return the file."""
     inbox = Path(instance) / "notes" / "inbox"
     inbox.mkdir(parents=True, exist_ok=True)
     nid = str(n.get("pair_id") or n.get("id") or "")
@@ -110,6 +142,15 @@ def persist_notice(instance: Path, n: Dict, relayed_by: str) -> Path:
             f"This file was written by your seat's inbox drain ({relayed_by}), not by you and not by the sender: "
             f"it is a copy of the envelope so you can find the notice from inside your home. "
             f"If the pointer is a path you hold no reach to, that is where request_scope applies.\n")
+    got = delivered_content(str(n.get("pointer_uri", "")), workspace)
+    if got.get("text") is not None:
+        more = (f" It is the first {DELIVERED_CHARS} of {got['chars']} characters; memory_read on the pointer "
+                f"has the rest." if got["truncated"] else "")
+        body += (f"\n{DELIVERED_HEADING}\n\nCopied by {relayed_by} when it delivered this notice. These are "
+                 f"the sender's words, as they wrote them -- not your seat's, and not dp's.{more}\n\n"
+                 f"~~~~\n{got['text'].rstrip()}\n~~~~\n")
+    else:
+        body += f"\n(The courier did not copy what it says: {got.get('why')}.)\n"
     p.write_text(body, encoding="utf-8")
     return p
 
@@ -143,7 +184,7 @@ def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, st
             out["skipped"] += 1
             continue
         try:
-            files.append((persist_notice(instance, n, relayed_by), n))
+            files.append((persist_notice(instance, n, relayed_by, workspace=workspace), n))
             out["persisted"] += 1
             if nid:
                 seen.add(nid)

@@ -130,6 +130,14 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
     floor_warned_at = None                             # the step the floor notice was given
     handoff_due = None                                 # the window reading that made the handoff due
     reads_this_turn: Dict[str, List[int]] = {}
+    # A beat that carries frames tells the being to "Describe it in text as your first output ...
+    # act with verbs after that" (heartbeat's vision line). A text-only reply ends the turn, so
+    # on 2026-10-12 three legion-being beats (06:21Z, 16:46Z, 19:51Z) were exactly that: the
+    # description, then nothing -- the instruction's "after that" did not exist. Once, and only
+    # on the first generate of a turn whose seed carries images, the description is taken as
+    # the first output it was asked for and the turn continues.
+    frames_in_seed = any(isinstance(m, dict) and m.get("images") for m in messages)
+    described_frames = False
 
     while uncapped or step < max_steps:
         if deadline is not None and step > 0 and time.time() >= deadline:
@@ -201,6 +209,16 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
                 # state note ("I'm at the context floor. Let me write a precise scratch note ...")
                 # and the harness's note listed it as "NOT run". The being's own words outrank ours.
                 handoff_due = w
+
+        if not intents and frames_in_seed and step == 0 and not described_frames and content.strip():
+            described_frames = True
+            convo.append({"role": "assistant", "content": content})
+            convo.append({"role": "user", "content": (
+                "[harness] That description is the first output the vision line asked for; the "
+                "beat is not over. Act now with a verb (or call `rest` if there is genuinely "
+                "nothing to do).")})
+            interjected.append({"step": step, "nudge": "described_frames"})
+            continue
 
         if not intents:                                    # a spoken turn — the being is done
             return ToolTurnResult(reply=content, trace=trace, steps=step,

@@ -28,7 +28,8 @@ three bounds chosen so the ear is a reply channel and not a room recorder:
 
 Transcription is whisper base.en on the GPU, loaded lazily on the first utterance (measured on
 Sprout 2026-09-26: 2.3 s load, 0.47 s for a 3 s clip warm, 439 MB). Fails open: no whisper → the
-state says so and Hearing's level/onset are untouched.
+state says so and Hearing's level/onset are untouched. SAGE_LISTEN_BACKEND=whispercpp runs the same model
+through whisper.cpp on the CPU instead (sage/embodiment/whispercpp.py): no torch, no GPU memory.
 """
 from __future__ import annotations
 
@@ -62,6 +63,10 @@ KEEPALIVE_S = float(os.environ.get("SAGE_LISTEN_KEEPALIVE_S") or 40)   # wake mo
 # the model (default base.en, unchanged); SAGE_LISTEN_UNLOAD_S frees it after that many seconds with nothing to
 # transcribe (default 0 = never, unchanged).
 MODEL_NAME = (os.environ.get("SAGE_LISTEN_MODEL") or "base.en").strip()
+# Per body (2026-10-11): "torch" (default, unchanged) is openai-whisper, on the GPU where there is one;
+# "whispercpp" is the same model through whisper.cpp on the CPU (sage/embodiment/whispercpp.py): no torch, no GPU
+# memory, the same no_speech_prob / avg_logprob for judge_segments. Unloading it stops its server process.
+BACKEND = (os.environ.get("SAGE_LISTEN_BACKEND") or "torch").strip().lower()
 try:
     UNLOAD_IDLE_S = max(0.0, float(os.environ.get("SAGE_LISTEN_UNLOAD_S") or 0))
 except ValueError:
@@ -280,6 +285,16 @@ class Transcriber(threading.Thread):
 
     def _load(self):
         self.status = "loading"
+        if BACKEND == "whispercpp":
+            try:
+                from sage.embodiment.whispercpp import WhisperCpp
+                server = WhisperCpp(self.model_name)
+                server.start()
+                self.model, self._fp16, self.status = server, False, "ready"
+            except Exception as e:
+                self.model = None
+                self.status = f"unavailable: {type(e).__name__}: {e}"[:160]
+            return
         try:
             import torch
             import whisper
@@ -292,6 +307,9 @@ class Transcriber(threading.Thread):
             self.status = f"unavailable: {type(e).__name__}: {e}"[:160]
 
     def transcribe(self, audio: bytes) -> Optional[dict]:
+        if BACKEND == "whispercpp":
+            return judge_segments(self.model.segments(audio), seconds=round(len(audio) / 2 / RATE, 1),
+                                  source=self.source)
         import numpy as np
         a = np.frombuffer(audio, np.int16).astype(np.float32) / 32768.0
         r = self.model.transcribe(a, fp16=self._fp16, language="en", condition_on_previous_text=False)
@@ -303,6 +321,13 @@ class Transcriber(threading.Thread):
         now = time.time() if now is None else now
         if not UNLOAD_IDLE_S or self.model is None or now - self._last_use < UNLOAD_IDLE_S:
             return False
+        if BACKEND == "whispercpp":
+            # its server process IS the memory: stopping it frees all of it. Never touch torch here; the point
+            # of this backend is an ear without it (and a body that has no torch at all).
+            self.model.stop()
+            self.model = None
+            self.status = "idle"
+            return True
         self.model = None
         self.status = "idle"
         try:

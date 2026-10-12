@@ -265,16 +265,19 @@ def build_client(member: str, instance: Path, model: str, workspace: str,
     # the seat's ARC stepper, the same way and for the same reason: one read, both halves.
     # Absent, `game` refuses at composition with "no game is set up on this seat".
     game_stepper = instance_config(instance).get("game_stepper") or None
+    # where `camera` gets a frame, the same way: one read, both halves ("cortex" or absent)
+    camera_source = instance_config(instance).get("camera_source") or None
     dispatcher = None if gate_only else HestiaF1aDispatcher(
         member, memory_root=str(instance), publish_fn=publish_fn,
         host_session_id=host_session_id, being_lct=being_lct_for(member, workspace),
         peer_aliases=instance_config(instance).get("peer_aliases") or None,
-        worktree=worktree, game_stepper=game_stepper)
+        worktree=worktree, game_stepper=game_stepper, camera_source=camera_source)
     client = BeingGateClient(member_id=member,
                              identity_path=str(instance / "identity.json"),
                              workspace=workspace, dispatcher=dispatcher,
                              host_session_id=host_session_id,
-                             worktree=worktree, game_stepper=game_stepper)
+                             worktree=worktree, game_stepper=game_stepper,
+                             camera_source=camera_source)
     # Reasoning models (empero Qwen3.8 distills etc.) only emit structured tool calls
     # with `think` on — off, they narrate a bracketed placeholder instead of acting
     # (measured on Sprout 2026-08-28 and again on the first governed turn, 2026-09-03:

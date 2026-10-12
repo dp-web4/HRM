@@ -20,6 +20,7 @@ from sage.embodiment.proprioception import Proprioception
 from sage.embodiment.salience import SalienceFilter
 from sage.embodiment.audio import Hearing
 from sage.embodiment.detector import ObjectDetector
+from sage.embodiment import look as _look
 
 STATE_PATH = os.path.expanduser("~/.sprout/perception.json")
 GAZE_PATH = os.path.expanduser("~/.sprout/gaze.json")   # the self's attention stance: {"mode": open|avert|dwell|closed, "target": [cx,cy]}
@@ -772,6 +773,13 @@ class VisualCortex:
                 t0 = time.time()
                 gaze, target = self._read_gaze()
                 self._note_choice(gaze, target)
+                # A FRAME ON DEMAND (sage/embodiment/look.py): the being's `camera` act on a seat whose eyes
+                # only this organ can read. Answered here, before the closed-eyes branch, so a request made
+                # with the eyes shut gets "your eyes are closed" rather than silence. Never fatal to seeing.
+                try:
+                    _look.respond([c.frame for c in self.cams], self.sids, gaze)
+                except Exception:
+                    pass
                 if gaze == "closed":
                     # eyes shut — the self refuses the stream. The senses rest.
                     self._emit({"ts": round(time.time(), 2), "gaze": "closed",

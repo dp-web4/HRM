@@ -279,9 +279,12 @@ class HestiaF1aDispatcher:
                  worktree: Optional[str] = None,
                  # the seat-side ARC stepper `game` composes with (instance.json
                  # game_stepper); both composition sites carry it, so judged == run.
-                 game_stepper: Optional[str] = None):
+                 game_stepper: Optional[str] = None,
+                 # instance.json camera_source; "cortex" = frames from the running cortex (look.py)
+                 camera_source: Optional[str] = None):
         self.plugin_id = plugin_id
         self.game_stepper = game_stepper
+        self.camera_source = camera_source
         # The being's OWN git worktree: the tree it reads its own history from. Never the
         # shared checkout — a being reasons about the code that constitutes it, and the
         # shared tree is a different one that drifts (PRD M1).
@@ -2148,12 +2151,14 @@ class HestiaF1aDispatcher:
         import shlex
         out_rel = intent.args.get("out_path") or "scratch/camera/last-frame.jpg"
         full_out = os.path.realpath(os.path.join(self.memory_root, out_rel))
-        device = intent.args.get("device", "/dev/video0")
+        cortex = getattr(self, "camera_source", None) == "cortex"
+        device = "cortex" if cortex else intent.args.get("device", "/dev/video0")
 
         try:
             cmd = camera_command(intent.args, {
                 "worktree": self.worktree,
                 "memory_root": self.memory_root,
+                "camera_source": getattr(self, "camera_source", None),
             })
         except ValueError as e:
             return ResultEnvelope(ok=False, error=str(e))
@@ -2204,7 +2209,10 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=True, witness_id=action_id, result={
                 "device": device, "out_path": out_rel,
                 "bytes": os.path.getsize(full_out),
-                "note": ("one frame captured FROM THE WEBCAM (this device, not any game or file the seat drops). It is a JPEG, so memory_read will hand you "
+                "note": (("one frame from YOUR OPEN EYE, as your cortex sees it right now (not any game or file "
+                          "the seat drops). " if cortex else
+                          "one frame captured FROM THE WEBCAM (this device, not any game or file the seat drops). ")
+                         + "It is a JPEG, so memory_read will hand you "
                          "binary, not a picture — it returns ok and you learn nothing. "
                          # STALE UNTIL 2026-09-16: this said "a vision-capable reader is not
                          # wired yet" for two days after heartbeat.py joined both ends
@@ -2214,7 +2222,17 @@ class HestiaF1aDispatcher:
                          # cannot avoid reading, so it must say what is true NOW.
                          "You SEE it on your NEXT beat: this act is the request to see, and "
                          "the frame rides that beat as an image (heartbeat.fresh_frames). "
-                         "FFmpeg publishes the completed image atomically.")})
+                         "The completed image is published atomically.")})
+
+        if proc.returncode != 0 and cortex:
+            # sage/embodiment/look.py: 3 = no cortex answered, 4 = it answered no (its reason on stderr)
+            _err = (proc.stderr or b"").decode("utf-8", "replace").strip()
+            kind = {3: "the cortex did not answer: your eyes' organ may not be running",
+                    4: "the cortex answered but gave no frame"}.get(proc.returncode, "the frame request failed")
+            return ResultEnvelope(ok=False, witness_id=action_id, result={
+                "device": device, "out_path": out_rel, "exit_code": proc.returncode,
+                "stderr": _err[:300] or "(nothing said)",
+                "note": f"no frame: {kind}. `stderr` is the cortex's own account. Any previous file at the path is untouched."})
 
         if proc.returncode != 0:
             # image2 atomic_writing keeps any previous final path untouched on a failed

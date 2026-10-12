@@ -105,6 +105,15 @@ def unavailable(body_reading: Optional[dict] = None, worktree: Optional[str] = N
             if v in _TOOL_SCHEMAS:
                 out[v] = NO_WORKTREE_HERE.get(
                     v, "it works in a code-repository checkout (a worktree), and this seat has none")
+    # A CORTEX-SOURCED CAMERA (instance.json camera_source "cortex", sage/embodiment/look.py) needs no
+    # device node and no worktree: it needs the running cortex, which the body inventory measures. The
+    # inventory's own "camera" verb means a free device for ffmpeg, which a cortex holding the eyes is not.
+    if "camera" in _TOOL_SCHEMAS and (cfg or {}).get("camera_source") == "cortex":
+        out.pop("camera", None)
+        if inv is None:
+            out["camera"] = "availability unknown: this machine's body was not measured this turn"
+        elif not inv.get("cortex_live"):
+            out["camera"] = "your eyes' organ (the cortex) is not running, so there is no frame to give you (measured)"
     if "game" in _TOOL_SCHEMAS and not (cfg or {}).get("game_stepper"):
         out["game"] = "no game is set up on this seat (instance.json has no game_stepper)"
     return out

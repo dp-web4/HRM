@@ -3,7 +3,9 @@ directly what it's looking at"). On Sprout the eyes are CSI sensors only the run
 seat declaring `camera_source: "cortex"` gets its frame from the cortex's current image.
 
 The responder runs on real numpy frames and real OpenCV; the client runs as the real subprocess the seat
-would run (`python3 -m sage.embodiment.look`), against a responder thread standing in for the cortex loop."""
+would run (`python3 -m sage.embodiment.look`), against a responder thread standing in for the cortex loop.
+One file per request (GPT's hold on #425): concurrent clients, an overlapping timeout and racing
+responders are pinned below."""
 import json
 import os
 import subprocess
@@ -27,42 +29,63 @@ FRAME = np.full((720, 1280, 3), 90, np.uint8)
 
 
 def _ask(body, rid="r1", age=0.0):
-    (body / look.REQUEST).write_text(json.dumps({"id": rid, "ts": time.time() - age}))
+    req, _, _ = look._dirs(str(body))
+    p = Path(req) / f"{rid}.json"
+    p.write_text(json.dumps({"id": rid, "ts": time.time() - age}))
+    if age:
+        os.utime(p, (time.time() - age, time.time() - age))
+    return p
+
+
+def _result(body, rid):
+    return json.loads((Path(body) / look.LOOK_DIR / "results" / f"{rid}.json").read_text())
+
+
+def _client_env(body):
+    env = dict(os.environ)
+    env.update(SAGE_BODY_DIR=str(body), PYTHONPATH=str(ROOT))
+    return env
 
 
 # ---- the cortex's half --------------------------------------------------------------------------
 
 def test_the_cortex_answers_with_a_resized_jpeg_of_the_open_eye(tmp_path):
-    _ask(tmp_path)
-    r = look.respond([None, FRAME], [0, 1], "open", body_dir=str(tmp_path))
+    req = _ask(tmp_path)
+    (r,) = look.respond([None, FRAME], [0, 1], "open", body_dir=str(tmp_path))
     assert r["ok"] and r["eye"] == "right" and r["width"] == look.WIDTH and r["height"] == 576
     data = Path(r["path"]).read_bytes()
     assert data[:3] == b"\xff\xd8\xff" and data[-2:] == b"\xff\xd9"
-    assert json.loads((tmp_path / look.RESULT).read_text())["id"] == "r1"
-    assert not (tmp_path / look.REQUEST).exists()
+    assert _result(tmp_path, "r1")["id"] == "r1" and not req.exists()
 
 
 def test_closed_eyes_are_respected_not_overridden(tmp_path):
     _ask(tmp_path)
-    r = look.respond([FRAME], [1], "closed", body_dir=str(tmp_path))
+    (r,) = look.respond([FRAME], [1], "closed", body_dir=str(tmp_path))
     assert r["ok"] is False and "eyes are closed" in r["why"]
-    assert not (tmp_path / look.OUT_DIR).exists()
+    assert not list((tmp_path / look.LOOK_DIR / "frames").iterdir())
 
 
-def test_no_frame_yet_and_stale_requests(tmp_path):
+def test_no_frame_yet_stale_and_mislabelled_requests(tmp_path):
     _ask(tmp_path)
-    assert look.respond([None], [1], "open", body_dir=str(tmp_path))["why"] == "no eye has delivered a frame yet"
-    _ask(tmp_path, rid="old", age=look.STALE_S + 5)
-    assert look.respond([FRAME], [1], "open", body_dir=str(tmp_path)) is None   # its asker is gone
-    assert look.respond([FRAME], [1], "open", body_dir=str(tmp_path)) is None   # nothing pending
+    assert look.respond([None], [1], "open", body_dir=str(tmp_path))[0]["why"] == "no eye has delivered a frame yet"
+    old = _ask(tmp_path, rid="old", age=look.STALE_S + 5)
+    assert look.respond([FRAME], [1], "open", body_dir=str(tmp_path)) == [] and not old.exists()
+    req, _, _ = look._dirs(str(tmp_path))
+    (Path(req) / "aaa.json").write_text(json.dumps({"id": "bbb", "ts": time.time()}))   # names someone else
+    assert look.respond([FRAME], [1], "open", body_dir=str(tmp_path)) == []
+    assert not (tmp_path / look.LOOK_DIR / "results" / "bbb.json").exists()
 
 
-def test_only_the_last_few_answers_are_kept(tmp_path):
-    for i in range(look.KEEP + 3):
-        _ask(tmp_path, rid=f"r{i}")
-        look.respond([FRAME], [1], "open", body_dir=str(tmp_path))
-        time.sleep(0.01)
-    assert len(list((tmp_path / look.OUT_DIR).glob("*.jpg"))) == look.KEEP
+def test_old_results_and_frames_are_removed_by_age_only(tmp_path):
+    _ask(tmp_path, rid="a")
+    look.respond([FRAME], [1], "open", body_dir=str(tmp_path))
+    old = time.time() - look.RESULT_TTL_S - 1
+    for sub, name in (("results", "a.json"), ("frames", "a.jpg")):     # a's answer was never collected
+        os.utime(tmp_path / look.LOOK_DIR / sub / name, (old, old))
+    _ask(tmp_path, rid="b")
+    look.respond([FRAME], [1], "open", body_dir=str(tmp_path))
+    assert {p.name for p in (tmp_path / look.LOOK_DIR / "results").iterdir()} == {"b.json"}
+    assert {p.name for p in (tmp_path / look.LOOK_DIR / "frames").iterdir()} == {"b.jpg"}
 
 
 # ---- the seat's half, as the real subprocess ----------------------------------------------------
@@ -73,10 +96,9 @@ def _cortex(body, frames, gaze, stop):
         time.sleep(0.05)
 
 
-def _run_client(body, out, timeout=20):
-    env = dict(os.environ, SAGE_BODY_DIR=str(body), PYTHONPATH=str(ROOT))
-    return subprocess.run([sys.executable, "-m", "sage.embodiment.look", str(out)], env=env,
-                          capture_output=True, text=True, timeout=timeout, cwd=str(ROOT))
+def _client(body, out):
+    return subprocess.Popen([sys.executable, "-m", "sage.embodiment.look", str(out)], env=_client_env(body),
+                            cwd=str(ROOT), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 
 @pytest.mark.parametrize("gaze,code", [("open", 0), ("closed", 4)])
@@ -87,21 +109,68 @@ def test_the_client_gets_the_frame_or_the_cortexs_reason(tmp_path, gaze, code):
     t = threading.Thread(target=_cortex, args=(body, [FRAME], gaze, stop), daemon=True)
     t.start()
     try:
-        p = _run_client(body, out)
+        p = _client(body, out)
+        stdout, stderr = p.communicate(timeout=20)
     finally:
         stop.set(); t.join()
-    assert p.returncode == code, p.stderr
+    assert p.returncode == code, stderr
     if code == 0:
-        assert json.loads(p.stdout)["eye"] == "right"
+        assert json.loads(stdout)["eye"] == "right"
         assert out.read_bytes()[:3] == b"\xff\xd8\xff"
         assert not list(out.parent.glob("*.tmp-*"))            # published by rename, nothing half-written
     else:
-        assert "eyes are closed" in p.stderr and not out.exists()
+        assert "eyes are closed" in stderr and not out.exists()
+    assert not list((body / look.LOOK_DIR / "results").iterdir())   # the client took its result away
 
 
 def test_no_cortex_is_said_and_leaves_no_request_behind(tmp_path):
     rc = look.request(str(tmp_path / "f.jpg"), body_dir=str(tmp_path), wait_s=0.3)
-    assert rc == 3 and not (tmp_path / look.REQUEST).exists()
+    assert rc == 3 and not list((tmp_path / look.LOOK_DIR / "requests").iterdir())
+
+
+# ---- concurrency (GPT's hold on #425) ----------------------------------------------------------
+
+def test_two_concurrent_clients_each_get_their_own_frame(tmp_path):
+    body = tmp_path / "body"
+    body.mkdir()
+    stop = threading.Event()
+    t = threading.Thread(target=_cortex, args=(body, [FRAME], "open", stop), daemon=True)
+    t.start()
+    try:
+        outs = [tmp_path / f"o{i}.jpg" for i in range(2)]
+        ps = [_client(body, o) for o in outs]
+        codes = [p.wait(timeout=20) for p in ps]
+    finally:
+        stop.set(); t.join()
+    assert codes == [0, 0] and all(o.read_bytes()[:3] == b"\xff\xd8\xff" for o in outs)
+
+
+def test_a_timeout_withdraws_only_its_own_request(tmp_path):
+    other = _ask(tmp_path, rid="b")                          # B is waiting; no cortex yet
+    assert look.request(str(tmp_path / "a.jpg"), body_dir=str(tmp_path), wait_s=0.3) == 3
+    assert other.exists()                                    # A's timeout left B's request alone
+    (r,) = look.respond([FRAME], [1], "open", body_dir=str(tmp_path))
+    assert r["id"] == "b" and r["ok"]
+
+
+def test_racing_responders_answer_each_request_exactly_once(tmp_path):
+    n = 24
+    for i in range(n):
+        _ask(tmp_path, rid=f"q{i:02d}")
+    answered, lock = [], threading.Lock()
+
+    def worker():
+        for _ in range(20):
+            got = look.respond([FRAME], [1], "open", body_dir=str(tmp_path))
+            with lock:
+                answered.extend(r["id"] for r in got)
+    ts = [threading.Thread(target=worker) for _ in range(3)]
+    for t in ts:
+        t.start()
+    for t in ts:
+        t.join()
+    assert sorted(answered) == [f"q{i:02d}" for i in range(n)]          # all, none twice
+    assert not list((tmp_path / look.LOOK_DIR / "requests").iterdir())
 
 
 # ---- the verb: composition, dispatch, availability ----------------------------------------------

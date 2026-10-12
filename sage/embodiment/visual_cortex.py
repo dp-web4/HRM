@@ -775,11 +775,14 @@ class VisualCortex:
                 self._note_choice(gaze, target)
                 # A FRAME ON DEMAND (sage/embodiment/look.py): the being's `camera` act on a seat whose eyes
                 # only this organ can read. Answered here, before the closed-eyes branch, so a request made
-                # with the eyes shut gets "your eyes are closed" rather than silence. Never fatal to seeing.
+                # with the eyes shut gets "your eyes are closed" rather than silence. Never fatal to seeing,
+                # but never silent either: a failure is logged at most once a minute (GPT on #425).
                 try:
                     _look.respond([c.frame for c in self.cams], self.sids, gaze)
-                except Exception:
-                    pass
+                except Exception as e:
+                    if t0 - getattr(self, "_look_err_ts", 0.0) > 60:
+                        self._look_err_ts = t0
+                        print(f"[cortex] frame-on-demand failed: {type(e).__name__}: {e}"[:300], flush=True)
                 if gaze == "closed":
                     # eyes shut — the self refuses the stream. The senses rest.
                     self._emit({"ts": round(time.time(), 2), "gaze": "closed",

@@ -1350,3 +1350,68 @@ def test_a_multi_line_old_that_stops_mid_line_is_refused_and_names_the_tail():
     r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "z = ", "new": "z = -"}), _ALLOW)
     assert r.ok, r.error
     assert (home / "notes" / "s.py").read_text().endswith("z = -2\n")
+
+
+SWEEP = ("from m import a, b, \\\n    c, d\nN = 10\n\ndef f():\n    for s in range(N):\n"
+         "        print(s)\n")
+
+
+def test_an_edit_that_breaks_a_parsing_file_says_it_is_the_cause_and_the_spaces_are_not():
+    """cbp-being 2026-10-12 09:11:53Z: start_line 53 replaced the import continuation
+    `    orthogonal_decoder, orthogonal_projection` with `np.random.seed(seed)`. The receipt
+    said the spaces changed (4 -> 0) ahead of the SyntaxError, and named the removed line last.
+    The next beat (09:15:27Z) re-indented line 53 three times, 0 -> 8 -> 4 -> 8, and never put
+    the import back. Two facts the receipt can check with compile() and did not say: the file
+    parsed before this edit, and no indentation of the new line parses."""
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text(SWEEP)
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "np.random.seed(seed)"}), _ALLOW)
+    assert r.ok and "cannot parse s.py now: SyntaxError at line 2" in r.result, r.result
+    assert "Before this edit s.py parsed, so this edit is what stopped it" in r.result, r.result
+    assert "With 4 spaces, as the line it replaced had, Python still cannot parse it: " \
+           "the spaces are not the cause" in r.result, r.result
+    # The already-broken file: each indentation flip is told the spaces are not the cause,
+    # and is NOT told it caused the break (it did not).
+    for n in (8, 4, 8):
+        r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                              "new": " " * n + "np.random.seed(seed)"}), _ALLOW)
+        assert r.ok and "cannot parse" in r.result, r.result
+        assert "this edit is what stopped it" not in r.result, r.result
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "np.random.seed(seed)"}), _ALLOW)
+    assert "the spaces are not the cause" in r.result, r.result
+
+
+def test_a_dropped_indent_that_breaks_the_file_is_told_the_old_spaces_would_parse():
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text("def g(n):\n    y = n + 1\n    return y\n")
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "y = n + 2"}), _ALLOW)
+    assert r.ok and "IndentationError" in r.result, r.result
+    assert "With 4 spaces, as the line it replaced had, Python could parse it" in r.result, r.result
+    assert "Before this edit s.py parsed" in r.result, r.result
+
+
+def test_an_edit_that_keeps_the_file_parsing_or_is_not_python_adds_no_cause_note():
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text(SWEEP)
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 3, "end_line": 3,
+                                          "new": "N = 5"}), _ALLOW)
+    assert r.ok and "can parse" in r.result and "stopped it" not in r.result, r.result
+    g = Path(root) / "n.md"
+    g.write_text("a\n    b\n")
+    r = disp(BeingIntent("memory_edit", {"path": "n.md", "start_line": 2, "end_line": 2, "new": "b("}), _ALLOW)
+    assert r.ok and "stopped it" not in r.result and "spaces are not" not in r.result, r.result
+
+
+def test_a_text_edit_that_breaks_a_parsing_file_says_it_is_the_cause():
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text(SWEEP)
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "old": "    c, d\n", "new": "x = (\n"}), _ALLOW)
+    assert r.ok and "cannot parse" in r.result, r.result
+    assert "Before this edit s.py parsed, so this edit is what stopped it" in r.result, r.result

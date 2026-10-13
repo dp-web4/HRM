@@ -1171,6 +1171,29 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     # (prompt_eval_count, chars at that prompt) from the last generate the server counted.
     # Compaction is anchored on this, so only the DELTA rides a chars-per-token estimate.
     measured = None
+    attempts: List[dict] = []
+
+    def _model_call(phase: str, messages, **kwargs):
+        """Account for every returned provider call, including discarded attempts.
+
+        The existing generate counters still describe its final reply: use these
+        attempt rows INSTEAD of those counters for totals, not in addition. These rows
+        expose retry and JSON-selection costs without storing prompts, arguments or
+        deliberation. Missing provider counts stay unknown, never zero. An exception
+        or process death before the call returns is not durable evidence here.
+        """
+        budget = _sent_budget(llm)
+        response = llm.get_chat_response(messages, **kwargs)
+        raw = response.get("raw") or {}
+        attempts.append({
+            "phase": phase, "num_predict": budget,
+            "done_reason": raw.get("done_reason"),
+            "prompt_eval_count": raw.get("prompt_eval_count"),
+            "eval_count": raw.get("eval_count"),
+            "transport_error": bool((response.get("content") or "").startswith("[OllamaIRP:")
+                                    and not response.get("tool_calls")),
+        })
+        return response
 
     def _json_act(msgs: List[Dict[str, Any]]) -> Dict[str, Any]:
         """One act as two closed JSON objects (act_form="json"), returned in the native reply's shape.
@@ -1190,7 +1213,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                        for c in (m.get("tool_calls") or [])]
         ask = {"role": "user", "content": ACT_ASK_JSON + (
             f" This turn you have already done: {', '.join(done_so_far)}." if done_so_far else "")}
-        r1 = llm.get_chat_response(msgs + [ask], fmt={
+        r1 = _model_call("json_select", msgs + [ask], fmt={
             "type": "object", "required": ["act", "why"],
             "properties": {"act": {"type": "string", "enum": ["done"] + names}, "why": {"type": "string"}}})
         c1 = r1.get("content", "") or ""
@@ -1220,7 +1243,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         # `fmt`); `problem` goes only to telemetry (json_arg_failures) if that draw fails too.
         problem, r2, args = None, None, None
         for attempt in range(2):
-            r2 = llm.get_chat_response(arg_msgs, fmt=spec[act])
+            r2 = _model_call("json_arguments", arg_msgs, fmt=spec[act])
             args, problem = _check_args(r2.get("content", "") or "", spec[act])
             if problem is None:
                 break
@@ -1235,10 +1258,11 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         """ONE attempt in this turn's act form, for the first try AND every retry (GPT on #322: both retries
         fell back to native tool calling, so a JSON-mode step could switch arms mid-step after a transport
         error or a think-only reply). The retries' budget and think handling still wrap this call."""
-        return _json_act(msgs) if act_form == "json" else llm.get_chat_response(msgs, tools=tools)
+        return _json_act(msgs) if act_form == "json" else _model_call("tools", msgs, tools=tools)
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
         nonlocal measured
+        attempts.clear()
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
         # turn that emitted intents MUST keep them as tool_calls: Qwen's chat template
         # raises on a tool message that follows an assistant message without tool_calls,
@@ -1454,7 +1478,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             # re-measure from the list AS SENT: any nudge appended above is inside this count
             measured = (int(raw["prompt_eval_count"]), _convo_chars(msgs))
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
-                 "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent}
+                 "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent,
+                 "attempts": [dict(a) for a in attempts]}
         if retry_cause:
             entry["retry_cause"] = retry_cause   # what the FIRST attempt hit; the counts above are the retry's
         generates.append(entry)

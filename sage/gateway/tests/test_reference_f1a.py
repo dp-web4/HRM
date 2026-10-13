@@ -569,6 +569,22 @@ def test_a_missed_edit_anchor_says_where_it_stopped_matching():
                                          "new": "def train():"}), _ALLOW)
     assert not r.ok and "no line defines train" in r.error, r.error
 
+    # An assignment is found by the name it assigns: measured on cbp-being 2026-10-12.
+    disp(BeingIntent("memory_write", {"path": "notes/a.py", "content":
+        "projected = proj(w_true, A)\nw_with_outside = w_true + v\n"
+        "projected_modified = proj(w_with_outside, A)\n"}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/a.py",
+                                         "old": "projected, norm = proj(A, w_with_outside)",
+                                         "new": "projected = proj(w_true, A)[0]"}), _ALLOW)
+    assert not r.ok and "projected is assigned at line 1: 'projected = proj(w_true, A)'" \
+        in r.error, r.error
+    assert "line 3" not in r.error, r.error
+    # A name no line assigns falls back to the nearest line.
+    r = disp(BeingIntent("memory_edit", {"path": "notes/a.py",
+                                         "old": "fresh = proj(w_with_outside, A)",
+                                         "new": "fresh = 1"}), _ALLOW)
+    assert not r.ok and "The closest line is line 3" in r.error, r.error
+
     r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "zzz", "new": "q"}), _ALLOW)
     assert not r.ok and "Not even your first line" in r.error, r.error
     assert f.read_text() == before

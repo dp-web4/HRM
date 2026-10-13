@@ -479,6 +479,25 @@ def _where_it_diverged(text: str, old: str, width: int = 160) -> str:
                         f"{where}; you sent {cut(want[0])!r}.")
             return (f" Your first line is not in the file, and no line defines "
                     f"{sent.group(2)}; you sent {cut(want[0])!r}.")
+        # An assignment is anchored by the name it assigns, for the same reason. Measured
+        # 2026-10-12 on cbp-being: asked to edit line 31, 'projected = orthogonal_projection(
+        # w_true, A)', it sent 'projected, norm = orthogonal_projection(A, w_with_outside)'.
+        # The closest line was 47, 'projected_modified = orthogonal_projection(w_with_outside,
+        # A)' (shared arguments again), and its next edit rewrote 47, dropping the w_with_outside
+        # the test existed to project. Name the lines that assign its first name, if any do;
+        # otherwise fall through, since a new name is often what an edit is introducing.
+        lhs = re.compile(r"[\w.]+(?:\s*,\s*[\w.]+)*\s*=(?!=)")
+
+        def assigns(b: str) -> list:
+            m = lhs.match(b)
+            return re.findall(r"[\w.]+", m.group(0)) if m else []
+        assigned = assigns(want[0].strip())
+        if assigned:
+            same = [i for i, b in enumerate(bare) if assigned[0] in assigns(b)]
+            if same:
+                where = "; ".join(f"line {i + 1}: {cut(have[i])!r}" for i in same[:5])
+                return (f" Your first line is not in the file. {assigned[0]} is assigned at "
+                        f"{where}; you sent {cut(want[0])!r}.")
         near = difflib.get_close_matches(want[0].strip(), bare, n=1, cutoff=0.6)
         if not near:
             return f" Not even your first line ({cut(want[0])!r}) is in the file."

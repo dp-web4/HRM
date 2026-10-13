@@ -1366,3 +1366,31 @@ def test_a_multi_line_old_that_stops_mid_line_is_refused_and_names_the_tail():
     r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "z = ", "new": "z = -"}), _ALLOW)
     assert r.ok, r.error
     assert (home / "notes" / "s.py").read_text().endswith("z = -2\n")
+
+
+def test_a_single_line_old_that_stops_mid_line_is_refused_when_new_ends_with_the_tail():
+    """Measured 2026-10-12 07:59Z: cbp-being sent old '    y = A @ ' and the whole line as new.
+    The replace kept the rest of the line, so line 27 held its tail twice and still parsed.
+    Its next, correct edit (old = the whole first copy) then left the second copy behind,
+    making 'w_truew_true'. A single-line old= that stops mid-line, with a new= that already
+    ends with the rest of the line, is a cut: refuse, name the tail and the line-number route."""
+    disp, root = _disp()
+    home = Path(root)
+    body = "def g(A, w):\n    y = A @ w + noise(len(A)) * s\n    return y\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": body}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "    y = A @ ",
+                                         "new": "    y = A @ w + noise(len(A)) * s"}), _ALLOW)
+    assert not r.ok and "middle of line 2" in r.error and "hold it twice" in r.error, r.error
+    assert "start_line=2 end_line=2" in r.error, r.error
+    assert (home / "notes" / "s.py").read_text() == body, "a cut old= changed the file"
+    # the being's real repair, old = the whole line, lands cleanly
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py",
+                                         "old": "    y = A @ w + noise(len(A)) * s",
+                                         "new": "    y = A @ w"}), _ALLOW)
+    assert r.ok, r.error
+    assert "    y = A @ w\n    return y\n" in (home / "notes" / "s.py").read_text()
+    # an in-line swap whose new does not end with the tail is still a choice
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "    y = A @ ",
+                                         "new": "    y = 2 * A @ "}), _ALLOW)
+    assert r.ok, r.error
+    assert "    y = 2 * A @ w\n" in (home / "notes" / "s.py").read_text()

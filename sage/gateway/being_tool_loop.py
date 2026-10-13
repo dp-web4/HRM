@@ -1036,6 +1036,30 @@ def _sent_budget(llm) -> Optional[int]:
     return int(v) if v is not None else None
 
 
+def generate_with_evidence(llm, messages, *, phase: str, **kwargs):
+    """Return (response, attempt metadata) for ONE provider call, without changing it.
+
+    Generate-level counters describe the final reply: use attempt rows INSTEAD for
+    totals, not in addition. Missing counts stay unknown, never zero. No prompts,
+    arguments or deliberation are stored here. This is not a crash-durable journal:
+    exceptions/process death before return or before publication leave no row.
+    JSON phases name the provider operation, not why it ran; placeholder-retake
+    attribution still requires the enclosing generate's placeholders/step record.
+    """
+    budget = _sent_budget(llm)
+    response = llm.get_chat_response(messages, **kwargs)
+    raw = (response or {}).get("raw") or {}
+    attempt = {
+        "phase": phase, "num_predict": budget,
+        "done_reason": raw.get("done_reason"),
+        "prompt_eval_count": raw.get("prompt_eval_count"),
+        "eval_count": raw.get("eval_count"),
+        "transport_error": bool(((response or {}).get("content") or "").startswith("[OllamaIRP:")
+                                and not (response or {}).get("tool_calls")),
+    }
+    return response, attempt
+
+
 # Outward acts whose slots a JSON turn cannot ground in this turn's state (GPT on #311): not offered there.
 JSON_ACT_EXCLUDE = frozenset({"channel_egress", "mesh", "pr_review", "pr_open", "pr_amend", "patch_apply",
                               "request_scope", "appeal", "request_run", "git_restore"})
@@ -1174,25 +1198,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     attempts: List[dict] = []
 
     def _model_call(phase: str, messages, **kwargs):
-        """Account for every returned provider call, including discarded attempts.
-
-        The existing generate counters still describe its final reply: use these
-        attempt rows INSTEAD of those counters for totals, not in addition. These rows
-        expose retry and JSON-selection costs without storing prompts, arguments or
-        deliberation. Missing provider counts stay unknown, never zero. An exception
-        or process death before the call returns is not durable evidence here.
-        """
-        budget = _sent_budget(llm)
-        response = llm.get_chat_response(messages, **kwargs)
-        raw = response.get("raw") or {}
-        attempts.append({
-            "phase": phase, "num_predict": budget,
-            "done_reason": raw.get("done_reason"),
-            "prompt_eval_count": raw.get("prompt_eval_count"),
-            "eval_count": raw.get("eval_count"),
-            "transport_error": bool((response.get("content") or "").startswith("[OllamaIRP:")
-                                    and not response.get("tool_calls")),
-        })
+        response, attempt = generate_with_evidence(llm, messages, phase=phase, **kwargs)
+        attempts.append(attempt)
         return response
 
     def _json_act(msgs: List[Dict[str, Any]]) -> Dict[str, Any]:

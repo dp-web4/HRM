@@ -59,6 +59,7 @@ def beat(tmp_path, monkeypatch):
         assert rc == 0
         return json.loads((inst / "heartbeats.jsonl").read_text().strip().splitlines()[-1]), list(calls)
     run.woke_turn = f"dp:{woke_seq}"
+    run.llm = llm
     return run
 
 
@@ -78,6 +79,18 @@ def test_without_the_flag_the_full_beat_runs_as_before(beat):
     assert not rec.get("preempted"), rec.get("preempted")
     assert rec["explore"] is not None, "explore ran"
     assert len(calls) >= 2, calls
+
+
+@pytest.mark.parametrize("count", [None, 17])
+def test_account_records_one_attempt_even_without_provider_counts(beat, monkeypatch, count):
+    monkeypatch.setattr(beat.llm, "get_chat_response", lambda msgs: {
+        "content": "", "raw": {} if count is None else {"eval_count": count}})
+    rec, _ = beat(preempt=True, answer_woke=True)
+    gen = rec["account"]["generates"][0]
+    assert gen["retried"] == 0
+    assert gen["attempts"] == [{"phase": "account", "num_predict": None,
+                                "done_reason": None, "prompt_eval_count": None,
+                                "eval_count": count, "transport_error": False}]
 
 
 def test_r3_needs_preemption_on(beat):

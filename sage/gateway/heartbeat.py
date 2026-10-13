@@ -565,6 +565,21 @@ def _trial_name(instance) -> Optional[str]:
         return None
 
 
+def apply_think_budget(llm, instance) -> Optional[int]:
+    """being_params `think_budget`, when set, becomes the beat's first-attempt num_predict for every
+    turn (OllamaIRP.num_predict_override wins over the model config). Retries still set their own
+    budget for one call and restore this one after. Unset leaves the config's value untouched."""
+    try:
+        from sage.gateway import being_params
+        tb = being_params.value(instance, "think_budget")
+    except Exception:
+        return None
+    if tb is None or not hasattr(llm, "num_predict_override"):
+        return None
+    llm.num_predict_override = int(tb)
+    return int(tb)
+
+
 def answer_temperature(instance) -> Optional[float]:
     """Opt-in per instance: instance.json "answer_temperature" (0..1.5) samples the answer turn alone.
 
@@ -3668,6 +3683,7 @@ def main(argv=None) -> int:
     client, llm = build_client(args.member, instance, args.model, workspace, args.forum_dir,
                                host_session_id, args.temperature, args.max_tokens,
                                gate_only=args.gate_only)
+    apply_think_budget(llm, instance)
 
     # S4 inbound: notices addressed to the being's own hub identity, persisted into its
     # home and pointed at from its hestia inbox by the seat (courier), before the peek.

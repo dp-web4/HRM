@@ -160,7 +160,12 @@ def _spaces_verdict(lines: list, s0: int, s1: int, removed: str, new: str) -> st
     the new text at the replaced line's indent and say whether THAT parses. 2026-10-12
     09:15:27Z: cbp-being read "Line 53 now starts with 0 spaces" as the cause of a
     SyntaxError the spaces had nothing to do with, and spent a beat flipping them (8, 4, 8).
-    The indentation note says the counts differ; this says whether the counts matter."""
+    The indentation note says the counts differ; this says whether the counts matter.
+
+    A failed retry proves only that the spaces ALONE do not repair the file, not that they
+    play no part: the new text can carry a second defect beside its indent, or the file can
+    already be broken elsewhere (Nova, SAGE #427, 2026-10-13). So the negative verdict says
+    what was measured and nothing more."""
     def first(s: str) -> str:
         return next((ln for ln in s.splitlines() if ln.strip()), "")
     a, b = first(removed), first(new)
@@ -179,7 +184,7 @@ def _spaces_verdict(lines: list, s0: int, s1: int, removed: str, new: str) -> st
     if _parses(trial):
         return (f" With {na} spaces, as the line it replaced had, Python could parse it.")
     return (f" With {na} spaces, as the line it replaced had, Python still cannot parse it: "
-            f"the spaces are not the cause.")
+            f"changing the spaces alone will not make it parse.")
 
 
 def _leading_spaces(line: str) -> int:

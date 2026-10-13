@@ -1371,8 +1371,8 @@ def test_an_edit_that_breaks_a_parsing_file_says_it_is_the_cause_and_the_spaces_
     assert r.ok and "cannot parse s.py now: SyntaxError at line 2" in r.result, r.result
     assert "Before this edit s.py parsed, so this edit is what stopped it" in r.result, r.result
     assert "With 4 spaces, as the line it replaced had, Python still cannot parse it: " \
-           "the spaces are not the cause" in r.result, r.result
-    # The already-broken file: each indentation flip is told the spaces are not the cause,
+           "changing the spaces alone will not make it parse" in r.result, r.result
+    # The already-broken file: each indentation flip is told the spaces alone will not fix it,
     # and is NOT told it caused the break (it did not).
     for n in (8, 4, 8):
         r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
@@ -1381,7 +1381,7 @@ def test_an_edit_that_breaks_a_parsing_file_says_it_is_the_cause_and_the_spaces_
         assert "this edit is what stopped it" not in r.result, r.result
     r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
                                           "new": "np.random.seed(seed)"}), _ALLOW)
-    assert "the spaces are not the cause" in r.result, r.result
+    assert "changing the spaces alone will not make it parse" in r.result, r.result
 
 
 def test_a_dropped_indent_that_breaks_the_file_is_told_the_old_spaces_would_parse():
@@ -1405,7 +1405,30 @@ def test_an_edit_that_keeps_the_file_parsing_or_is_not_python_adds_no_cause_note
     g = Path(root) / "n.md"
     g.write_text("a\n    b\n")
     r = disp(BeingIntent("memory_edit", {"path": "n.md", "start_line": 2, "end_line": 2, "new": "b("}), _ALLOW)
-    assert r.ok and "stopped it" not in r.result and "spaces are not" not in r.result, r.result
+    assert r.ok and "stopped it" not in r.result and "spaces alone" not in r.result, r.result
+
+
+def test_two_defects_the_failed_retry_does_not_say_the_spaces_are_innocent():
+    """Nova, SAGE #427: one re-indent that still fails cannot prove the indent played no part.
+    (1) The new text drops the indent AND opens a paren it never closes: the indent is one of
+    two defects. (2) The file was already broken elsewhere, and the edit drops an indent: the
+    indent is wrong, and the retry fails because of the other defect. Neither receipt may say
+    the spaces are not the cause; both say only that the spaces alone will not fix it."""
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text("def g(n):\n    y = n + 1\n    return y\n")
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "y = (n + 2"}), _ALLOW)
+    assert r.ok and "cannot parse s.py now" in r.result, r.result
+    assert "not the cause" not in r.result, r.result
+    assert "With 4 spaces, as the line it replaced had, Python still cannot parse it: " \
+           "changing the spaces alone will not make it parse" in r.result, r.result
+    f.write_text("x = f(1))\ndef g(n):\n    y = n + 1\n    return y\n")
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 3, "end_line": 3,
+                                          "new": "y = n + 2"}), _ALLOW)
+    assert r.ok and "cannot parse s.py now" in r.result, r.result
+    assert "not the cause" not in r.result and "stopped it" not in r.result, r.result
+    assert "changing the spaces alone will not make it parse" in r.result, r.result
 
 
 def test_a_text_edit_that_breaks_a_parsing_file_says_it_is_the_cause():

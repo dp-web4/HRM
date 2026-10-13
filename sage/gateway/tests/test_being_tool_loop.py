@@ -166,8 +166,79 @@ def test_generate_stats_record_the_window_wall_and_the_retry():
     # one generate as the loop sees it: the empty turn was retried once and the retry stood
     assert r.reply == "done" and calls["n"] == 2
     # num_predict: the retry's budget (no window declared -> the 6000 floor), not the first 1024
-    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1,
+    assert [{k: v for k, v in g.items() if k != "attempts"} for g in r.generates] == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1,
                             "num_predict": 6000, "retry_cause": "length"}]   # no num_ctx on this fake: not guessed
+
+
+def test_attempt_evidence_keeps_tokens_spent_before_a_successful_retry():
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+
+    class FakeLLM:
+        max_response_tokens = 1024
+        responses = iter([
+            {"content": "", "raw": {"done_reason": "length", "prompt_eval_count": 5000,
+             "eval_count": 3192, "message": {"thinking": "PRIVATE DRAFT"}}},
+            {"content": "done", "raw": {"done_reason": "stop", "prompt_eval_count": 5100,
+             "eval_count": 40}},
+        ])
+
+        def get_chat_response(self, messages, **kwargs):
+            return next(self.responses)
+
+    landed = []
+    result = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [], on_generate=landed.append)
+    attempts = result.generates[0]["attempts"]
+    assert [a["eval_count"] for a in attempts] == [3192, 40]
+    assert [a["num_predict"] for a in attempts] == [1024, 6000]
+    assert [a["phase"] for a in attempts] == ["tools", "tools"]
+    assert result.generates[0]["eval_count"] == 40
+    assert landed[0]["attempts"] == attempts
+    assert "PRIVATE DRAFT" not in repr(attempts)
+
+
+def test_attempt_evidence_retains_unknown_transport_cost_not_zero():
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+
+    class FakeLLM:
+        max_response_tokens = 1000
+        responses = iter([{"content": "[OllamaIRP: transport failure]"},
+                          {"content": "done", "raw": {"eval_count": 7}}])
+
+        def get_chat_response(self, messages, **kwargs):
+            return next(self.responses)
+
+    result = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [])
+    attempts = result.generates[0]["attempts"]
+    assert len(attempts) == 2
+    assert attempts[0]["eval_count"] is None
+    assert attempts[0]["transport_error"] is True
+    assert attempts[1]["eval_count"] == 7
+
+
+def test_attempt_evidence_includes_json_selection_and_failed_argument_draw():
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+
+    class FakeLLM:
+        max_response_tokens = 1000
+        responses = iter([
+            {"content": '{"act":"memory_read","why":"inspect"}', "raw": {"eval_count": 11}},
+            {"content": 'not JSON', "raw": {"eval_count": 13}},
+            {"content": '{"path":"example.txt"}', "raw": {"eval_count": 17}},
+            {"content": '{"act":"done","why":"finished"}', "raw": {"eval_count": 19}},
+        ])
+
+        def get_chat_response(self, messages, **kwargs):
+            return next(self.responses)
+
+    tools = [{"function": {"name": "memory_read", "parameters": {
+        "type": "object", "required": ["path"], "properties": {"path": {"type": "string"}}}}}]
+    result = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [], max_steps=1,
+                                  tools=tools, act_form="json")
+    attempts = result.generates[0]["attempts"]
+    assert [a["phase"] for a in attempts] == ["json_select", "json_arguments", "json_arguments"]
+    assert [a["eval_count"] for a in attempts] == [11, 13, 17]
+    assert len(result.trace) == 1
+    assert [a["eval_count"] for a in result.generates[1]["attempts"]] == [19]
 
 
 def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
@@ -199,7 +270,7 @@ def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
     assert seen == [None, 16384 - 6721 - RETRY_MARGIN]      # first attempt: config budget; retry: the window's room
     assert llm.num_predict_override is None                  # restored
     assert llm.max_response_tokens == 3000                   # untouched: it is not the lever
-    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1,
+    assert [{k: v for k, v in g.items() if k != "attempts"} for g in r.generates] == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1,
                             "num_predict": 16384 - 6721 - RETRY_MARGIN,
                             "retry_cause": "output_budget"}]   # 6721 + 6000 < 16384: num_predict ran out
 

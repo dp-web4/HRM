@@ -132,6 +132,61 @@ def _python_status(p) -> str:
 
 
 
+def _parses(src: str) -> bool:
+    try:
+        compile(src, "<edit>", "exec")
+    except (SyntaxError, ValueError):
+        return False
+    return True
+
+
+def _broke_it(p, before: str, after: str) -> str:
+    """A .py edit that took a parsing file to an unparseable one says it is the cause.
+
+    Measured on cbp-being, 2026-10-12 09:11:53Z: a range edit overwrote an import
+    continuation line (`    orthogonal_decoder, orthogonal_projection`) and the receipt said
+    the spaces changed, then the SyntaxError, then the removed line last. The next beat
+    re-indented the new line three times and never put the import back. The receipt knew,
+    and did not say, that the file parsed one edit ago; undoing this edit is a measured
+    repair, not a guess, because the text before it is the text that parsed."""
+    if not str(p).endswith(".py") or _parses(after) or not _parses(before):
+        return ""
+    return (f" Before this edit {p.name} parsed, so this edit is what stopped it: putting "
+            f"back the text it removed makes {p.name} parse again.")
+
+
+def _spaces_verdict(lines: list, s0: int, s1: int, removed: str, new: str) -> str:
+    """When a range edit leaves the file unparseable AND changed the first line's indent, try
+    the new text at the replaced line's indent and say whether THAT parses. 2026-10-12
+    09:15:27Z: cbp-being read "Line 53 now starts with 0 spaces" as the cause of a
+    SyntaxError the spaces had nothing to do with, and spent a beat flipping them (8, 4, 8).
+    The indentation note says the counts differ; this says whether the counts matter.
+
+    A failed retry proves only that the spaces ALONE do not repair the file, not that they
+    play no part: the new text can carry a second defect beside its indent, or the file can
+    already be broken elsewhere (Nova, SAGE #427, 2026-10-13). So the negative verdict says
+    what was measured and nothing more."""
+    def first(s: str) -> str:
+        return next((ln for ln in s.splitlines() if ln.strip()), "")
+    a, b = first(removed), first(new)
+    if not a or not b:
+        return ""
+    na, nb = _leading_spaces(a), _leading_spaces(b)
+    if na == nb:
+        return ""
+    d = na - nb
+    shifted = "".join((" " * d + ln) if d > 0 and ln.strip()
+                      else (ln[min(-d, _leading_spaces(ln)):] if d < 0 else ln)
+                      for ln in new.splitlines(keepends=True))
+    if shifted and not shifted.endswith("\n") and removed.endswith("\n"):
+        shifted += "\n"
+    trial = "".join(lines[:s0 - 1]) + shifted + "".join(lines[s1:])
+    if _parses(trial):
+        return (f" With {na} spaces, as the line it replaced had, Python could parse it.")
+    return (f" With {na} spaces, as the line it replaced had, Python still cannot parse it: "
+            f"changing the spaces alone will not make it parse.")
+
+
 def _leading_spaces(line: str) -> int:
     """How many spaces a line starts with: the count both indentation notes below report."""
     return len(line) - len(line.lstrip(" "))
@@ -1170,6 +1225,8 @@ class ReferenceF1aDispatcher:
             new_text = "".join(lines[:s0 - 1]) + repl + "".join(lines[s1:])
             what = f"replaced lines {s0}-{s1} ({s1 - s0 + 1} lines)" + _indent_changed(removed, new, s0)
             gone = f" The lines removed were:\n{_head_and_tail(removed)}" + _defs_removed(removed)
+            if str(p).endswith(".py") and not _parses(new_text):
+                gone = _spaces_verdict(lines, s0, s1, removed, new) + gone
             return self._commit_edit(p, path, text, new_text, what, gone)
         hits = text.count(old)
         if hits == 0 and len(new.strip()) >= 40 and new not in old and _whole_lines_once(text, new):
@@ -1301,7 +1358,7 @@ class ReferenceF1aDispatcher:
             ok=True,
             result=(f"edited {p.name}: {what}; the file went from {before} to "
                     f"{after} lines. This changed the file on disk — it is not an append."
-                    f"{_python_status(p)}{gone}"),
+                    f"{_python_status(p)}{_broke_it(p, text, new_text)}{gone}"),
             witness_id=self._witness(f"memory_edit {p.name} ({before}->{after} lines)"))
 
     def _do_retire_note(self, intent: BeingIntent) -> ResultEnvelope:

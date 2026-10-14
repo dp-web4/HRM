@@ -51,6 +51,23 @@ from sage.gateway.reference_f1a import ReferenceF1aDispatcher
 _RUN_MARKER = "[request_run]"
 # The first line of a seat run/decline receipt (seat_run_requests.py): the verb and the path.
 _SEAT_RUN_LINE = re.compile(r"\[request_run\] I (ran|did not run) (\S+)")
+
+# What `speak` will not play: text shaped like a shell command (see _do_speak). A leading command
+# word (lowercase, then an argument) or a shell operator. Prose that mentions sudo mid-sentence,
+# or starts "Python is...", is not matched.
+_SPOKEN_CMD_HEAD = re.compile(
+    r"^(sudo|python3?|bash|pip3?|apt(-get)?|systemctl|usermod|chmod|chown|journalctl|dmesg|"
+    r"v4l2-ctl|nvidia-smi|pkill)\s+\S")
+_SPOKEN_CMD_OPS = re.compile(r"&&|\|\||2>&1|\$\(|\$USER|\|\s*(tee|grep|head|tail)\b|[;&|]\s*sudo\s")
+
+
+def _body_command_shape(text: str) -> str:
+    """'' for speech; else a short quote of the command-shaped part, for the refusal."""
+    t = (text or "").strip()
+    m = _SPOKEN_CMD_HEAD.match(t) or _SPOKEN_CMD_OPS.search(t)
+    if not m:
+        return ""
+    return "`" + t[:60] + ("…" if len(t) > 60 else "") + "`"
 # A say that ASKS for a run, and the runnable names it could mean. Kept narrow on purpose:
 # a false match reroutes a turn, so it must name a .py/.sh AND ask with the verb. The bare
 # verb matched seq 2893, "Waiting for dp's confirmation of a full successful run" — a
@@ -1934,6 +1951,23 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=(
                 f"speak takes one utterance of up to {_body.SPEAK_MAX_CHARS} characters; yours is "
                 f"{len(text)}. Nothing was said. Say the part that matters most, or say it in turns."))
+        # A SHELL COMMAND SPOKEN ALOUD RUNS NOTHING, AND IS NOT PLAYED. Measured on sprout-being
+        # 2026-10-14: with its run requests unanswered, it spoke `python3 scratch/... 2>&1 | tee`
+        # four times and `sudo usermod -aG video $USER && sudo systemctl restart ...` three times
+        # through the headset, then asked the seat to verify the result "after adding user to the
+        # video group" -- it took the speaking for the doing. The seat told it, in its own channel,
+        # that speech runs nothing (seq 248); it spoke the sudo line twice more. The correction has
+        # to arrive in the act's own receipt, at the moment of the act. And a root command broadcast
+        # into a room is an ask to whoever is listening, which is not a door this body offers.
+        # Narrow on purpose: a leading command word or a shell operator, not prose that mentions one.
+        cmd = _body_command_shape(text)
+        if cmd:
+            return ResultEnvelope(ok=False, error=(
+                f"Not said aloud: this reads as a shell command ({cmd}). Speaking plays sound "
+                f"only; it runs nothing, and it does not ask anyone in the room to run it for you. "
+                f"To have a script of yours run, keep it as a .py or .sh file in your home and use "
+                f"request_run; the seat decides and answers in your conversation with it. To say "
+                f"something to a person, say it as words to them."))
         # Refused BEFORE any hestia action is opened and before any sound: a being on a body with
         # no speaker gets a true sentence, the way a headless being calling `gaze` does.
         prov = _body.speak_provider()

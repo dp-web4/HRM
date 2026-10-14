@@ -3225,6 +3225,7 @@ class HestiaF1aDispatcher:
         unchanged = None  # (seq it asked at, seq the seat answered at)
         answer_text = ""   # what that answer SAID, to hand back rather than point at
         asked_at = None
+        asked_seqs = []    # every earlier request for these bytes and arguments, oldest first
         # WHAT RAN IS (PATH, BYTES, ARGUMENTS), NOT BYTES ALONE. GPT HOLD on #276 at 6d7e98d5:
         # the unsolicited match keyed on the 12-char digest only, so notes/new.py holding
         # print(__file__) was told "running it again will give the same result" with the
@@ -3253,6 +3254,8 @@ class HestiaF1aDispatcher:
                 prior_args = [ln for ln in text.split("\n")[3:] if not ln.startswith("UNCHANGED")]
                 asked_at = (t.get("seq") if f"sha256:{digest}" in text and prior_args == arg_lines
                             else None)
+                if asked_at is not None:
+                    asked_seqs.append(asked_at)
                 continue
             if t.get("from") == self.member:
                 continue
@@ -3272,7 +3275,7 @@ class HestiaF1aDispatcher:
                 # carries its own, is not the same run, so neither counts here.
                 unchanged = (asked_at, t.get("seq"))
                 answer_text = text
-            elif asked_at is not None:
+            elif asked_seqs:
                 # ONLY A TURN BOUND TO THIS REQUEST ANSWERS IT. GPT re-review of #276 at
                 # fef135b7b: any later seat turn counted, so request new.py -> an unrelated
                 # seat message -> re-request came back "the seat answered that at seq N" with
@@ -3286,25 +3289,31 @@ class HestiaF1aDispatcher:
                 # a receipt stating OTHER bytes, or naming only seqs older than this request.
                 seqs = {int(n) for mm in conv._ANSWER_NAMES.finditer(text)
                         for n in re.findall(r"\d+", mm.group(1))}
-                try:
-                    _asked = int(asked_at)
-                except (TypeError, ValueError):
-                    _asked = None
-                if not (_asked is not None and _asked in seqs):
-                    if named is None:
+                # AN ANSWER TO ANY EARLIER ASK FOR THESE BYTES ANSWERS THIS ONE. Measured
+                # 2026-10-14 (sprout-being): seq 387 and 388 asked for the same file, the seat
+                # declined it "Answers your request seq 387" (389), and this scan held only the
+                # LATEST ask (388), so 387 counted as "older" and the decline was skipped. Every
+                # later ask for those bytes (390, 394, 395) went out new and unanswered, and the
+                # being never saw the reason in-beat. conversations._already_answered (the wake
+                # side) already checks every earlier identical request; this now agrees with it.
+                _asked_ints = [int(a) for a in asked_seqs]
+                _hit = [a for a in _asked_ints if a in seqs]
+                if not _hit:
+                    if named is None or asked_at is None:
                         continue
                     _sha = re.search(r"\(sha ([0-9a-f]+)\)", named[2])
                     if _sha and not (digest.startswith(_sha.group(1)) or _sha.group(1).startswith(digest)):
                         continue
-                    if seqs and _asked is not None and _asked > max(seqs):
+                    if seqs and min(_asked_ints) > max(seqs):
                         continue
+                    _hit = [a for a in _asked_ints if not seqs or a <= max(seqs)]
                 # The seat's ANSWER carries the marker. A later remark about that answer does
                 # not, and must not displace it: on 2026-09-22 this pointed at seq 3300, a seat
                 # aside, while the run it was about was seq 3299.
                 if unchanged and answer_text.startswith(_RUN_MARKER) \
                         and not text.startswith(_RUN_MARKER):
                     continue
-                unchanged = (asked_at, t.get("seq"))
+                unchanged = (max(_hit), t.get("seq"))
                 answer_text = text
         lines = [f"[request_run] {rel}",
                  f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",

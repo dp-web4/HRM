@@ -95,3 +95,8 @@ f2c2 (22:19Z: line 126 = the prescribed trained_weights assignment, byte-exact; 
 f2c2 rerun (9427 re-ask, 9428 rerun:true) honored at 9429 (--seq 9427 --seq 9428) as a second init: Best 0.010214, max|diff| 0.0021, rms 0.0012, cosine 0.99998, norm 0.5043. Replicated. 9430 (third same-sha ask, 22:2x) declined 9431 with sample 2's vector and the rule: same bytes now decline to 9425/9429. Being's 22:19 todo: '[x] Run ... confirm trained weights match w_true (Best Test RMSE: 0.010218)' - the pre-claim number, not the measured gap.
 
 - 23:08Z: 9432 asked for test-50-anchors-recover-wtrue-v6-fixed.py (5ee1, ran 8934, stop 195) as "the full 50-anchor test, building on the 20-anchor confirmation"; declined 9433: f2c2 already ran at NUM_ANCHORS = 50 (line 17), 20 is NUM_FEATURES (line 16); a copy with NUM_ANCHORS = 10 recovers w_true too (largest gap 0.0016, Best Test RMSE 0.010137). The verify-weights-equality.py / create-wtrue.py section (7e62 stops at 10; create-wtrue declined 9382, 9388) moved here from the letter.
+
+## Removed from the letter 2026-10-12 10:45Z (stale: sweep is now 6576; its "09:11 edit, line 53" was being re-attached to scratch/train_identity_recovery.py as a fix to re-apply, todo 10:35, seqs 9764-9772)
+## scratch/noise-boundary-sweep.py, sha 0e95520918b5: Python cannot parse it (line 53)
+Your 09:11 edit replaced line 53 `    orthogonal_decoder, orthogonal_projection` (the import's second line), with np.random.seed(seed). Putting that line back makes it parse; no indent does (9685). Lines 44-84 repeat 1-43. Line 26 still passes n_features=100, which generate_data does not take. train_identity_recovery.py line 8 reseeds 42, so all ten sweep seeds would draw the same data.
+

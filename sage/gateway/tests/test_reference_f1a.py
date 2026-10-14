@@ -569,6 +569,22 @@ def test_a_missed_edit_anchor_says_where_it_stopped_matching():
                                          "new": "def train():"}), _ALLOW)
     assert not r.ok and "no line defines train" in r.error, r.error
 
+    # An assignment is found by the name it assigns: measured on cbp-being 2026-10-12.
+    disp(BeingIntent("memory_write", {"path": "notes/a.py", "content":
+        "projected = proj(w_true, A)\nw_with_outside = w_true + v\n"
+        "projected_modified = proj(w_with_outside, A)\n"}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/a.py",
+                                         "old": "projected, norm = proj(A, w_with_outside)",
+                                         "new": "projected = proj(w_true, A)[0]"}), _ALLOW)
+    assert not r.ok and "projected is assigned at line 1: 'projected = proj(w_true, A)'" \
+        in r.error, r.error
+    assert "line 3" not in r.error, r.error
+    # A name no line assigns falls back to the nearest line.
+    r = disp(BeingIntent("memory_edit", {"path": "notes/a.py",
+                                         "old": "fresh = proj(w_with_outside, A)",
+                                         "new": "fresh = 1"}), _ALLOW)
+    assert not r.ok and "The closest line is line 3" in r.error, r.error
+
     r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "zzz", "new": "q"}), _ALLOW)
     assert not r.ok and "Not even your first line" in r.error, r.error
     assert f.read_text() == before
@@ -1438,3 +1454,31 @@ def test_a_text_edit_that_breaks_a_parsing_file_says_it_is_the_cause():
     r = disp(BeingIntent("memory_edit", {"path": "s.py", "old": "    c, d\n", "new": "x = (\n"}), _ALLOW)
     assert r.ok and "cannot parse" in r.result, r.result
     assert "Before this edit s.py parsed, so this edit is what stopped it" in r.result, r.result
+
+
+def test_a_single_line_old_that_stops_mid_line_is_refused_when_new_ends_with_the_tail():
+    """Measured 2026-10-12 07:59Z: cbp-being sent old '    y = A @ ' and the whole line as new.
+    The replace kept the rest of the line, so line 27 held its tail twice and still parsed.
+    Its next, correct edit (old = the whole first copy) then left the second copy behind,
+    making 'w_truew_true'. A single-line old= that stops mid-line, with a new= that already
+    ends with the rest of the line, is a cut: refuse, name the tail and the line-number route."""
+    disp, root = _disp()
+    home = Path(root)
+    body = "def g(A, w):\n    y = A @ w + noise(len(A)) * s\n    return y\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": body}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "    y = A @ ",
+                                         "new": "    y = A @ w + noise(len(A)) * s"}), _ALLOW)
+    assert not r.ok and "middle of line 2" in r.error and "hold it twice" in r.error, r.error
+    assert "start_line=2 end_line=2" in r.error, r.error
+    assert (home / "notes" / "s.py").read_text() == body, "a cut old= changed the file"
+    # the being's real repair, old = the whole line, lands cleanly
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py",
+                                         "old": "    y = A @ w + noise(len(A)) * s",
+                                         "new": "    y = A @ w"}), _ALLOW)
+    assert r.ok, r.error
+    assert "    y = A @ w\n    return y\n" in (home / "notes" / "s.py").read_text()
+    # an in-line swap whose new does not end with the tail is still a choice
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "    y = A @ ",
+                                         "new": "    y = 2 * A @ "}), _ALLOW)
+    assert r.ok, r.error
+    assert "    y = 2 * A @ w\n" in (home / "notes" / "s.py").read_text()

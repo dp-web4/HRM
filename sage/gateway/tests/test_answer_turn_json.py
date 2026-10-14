@@ -101,6 +101,46 @@ def test_one_retry_on_an_empty_or_cut_reply_like_the_tool_loop():
     assert len(llm.calls) == 2 and res.answer_form["why"] == "empty reply", "one retry, not a loop"
 
 
+def test_answer_attempts_include_discarded_cost_and_reach_callback():
+    class CountedLLM(LLM):
+        def get_chat_response(self, *args, **kwargs):
+            r = super().get_chat_response(*args, **kwargs)
+            r["raw"]["eval_count"] = 100 if len(self.calls) == 1 else 20
+            return r
+
+    llm = CountedLLM("", json.dumps({"answer": True, "message": "Yes."}))
+    client, landed = Client(), []
+    res = hb.answer_turn_json(client, llm, hb.SelectedTurn("dp", TURN),
+                              name="test", machine="test", member="test-being",
+                              on_generate=landed.append)
+    gen = res.generates[0]
+    assert gen["eval_count"] == 20 and gen["retried"] == 1
+    assert [a["eval_count"] for a in gen["attempts"]] == [100, 20]
+    assert [a["phase"] for a in gen["attempts"]] == ["answer_json", "answer_json"]
+    assert [a["num_predict"] for a in gen["attempts"]] == [6000, 6000]
+    assert landed[0]["attempts"] == gen["attempts"]
+    assert "dp asked if I heard" not in repr(gen["attempts"])
+    assert len(client.sent) == 1
+
+
+def test_answer_transport_cost_is_unknown_and_no_retry_has_one_row():
+    class FailedLLM(LLM):
+        def get_chat_response(self, *args, **kwargs):
+            r = super().get_chat_response(*args, **kwargs)
+            if len(self.calls) == 1:
+                r.pop("raw")
+            return r
+
+    llm = FailedLLM("[OllamaIRP: connection lost]", '{"answer": false, "message": ""}')
+    res = hb.answer_turn_json(Client(), llm, hb.SelectedTurn("dp", TURN),
+                              name="test", machine="test", member="test-being")
+    assert res.generates[0]["attempts"][0]["eval_count"] is None
+    assert res.generates[0]["attempts"][0]["transport_error"] is True
+    assert res.generates[0]["attempts"][1]["eval_count"] == 60
+    res, _, _ = _run('{"answer": false, "message": ""}')
+    assert len(res.generates[0]["attempts"]) == 1
+
+
 def test_acts_are_shown_only_when_passed():
     _, llm, _ = _run(json.dumps({"answer": False, "message": ""}), acts="Record of what you did this beat:\n- memory_write ok")
     assert llm.calls[0]["messages"][-1]["content"].startswith("Record of what you did this beat")

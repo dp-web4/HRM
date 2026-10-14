@@ -565,6 +565,21 @@ def _trial_name(instance) -> Optional[str]:
         return None
 
 
+def apply_think_budget(llm, instance) -> Optional[int]:
+    """being_params `think_budget`, when set, becomes the beat's first-attempt num_predict for every
+    turn (OllamaIRP.num_predict_override wins over the model config). Retries still set their own
+    budget for one call and restore this one after. Unset leaves the config's value untouched."""
+    try:
+        from sage.gateway import being_params
+        tb = being_params.value(instance, "think_budget")
+    except Exception:
+        return None
+    if tb is None or not hasattr(llm, "num_predict_override"):
+        return None
+    llm.num_predict_override = int(tb)
+    return int(tb)
+
+
 def answer_temperature(instance) -> Optional[float]:
     """Opt-in per instance: instance.json "answer_temperature" (0..1.5) samples the answer turn alone.
 
@@ -886,14 +901,16 @@ def answer_schema_for(cid: str) -> dict:
 
 def _answer_generate(llm, msgs, schema=None):
     """One constrained generate, retried once on the shapes the tool loop also retries: empty
-    content (think-only), a length cut, or a transport error. Returns (r, retried)."""
+    content (think-only), a length cut, or a transport error. Returns (r, retried, attempts)."""
+    from sage.gateway.being_tool_loop import generate_with_evidence
     schema = schema or ANSWER_SCHEMA
-    r = llm.get_chat_response(msgs, fmt=schema)
+    r, first = generate_with_evidence(llm, msgs, phase="answer_json", fmt=schema)
     raw = (r or {}).get("raw") or {}
     content = ((r or {}).get("content") or "").strip()
     if not content or raw.get("done_reason") == "length" or content.startswith("[OllamaIRP"):
-        return llm.get_chat_response(msgs, fmt=schema), 1
-    return r, 0
+        r, second = generate_with_evidence(llm, msgs, phase="answer_json", fmt=schema)
+        return r, 1, [first, second]
+    return r, 0, [first]
 
 
 def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: str,
@@ -922,7 +939,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
     if temperature is not None and _prior_t is not None:
         llm.temperature = float(temperature)
     try:
-        r, retried = _answer_generate(llm, msgs, answer_schema_for(selected.cid))
+        r, retried, attempts = _answer_generate(llm, msgs, answer_schema_for(selected.cid))
     finally:
         if temperature is not None and _prior_t is not None:
             llm.temperature = _prior_t
@@ -931,7 +948,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
     thinking = ((raw.get("message") or {}).get("thinking") or "").strip()
     gen = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
            "eval_count": raw.get("eval_count"), "retried": retried,
-           "num_predict": getattr(llm, "resolve_num_predict", lambda: None)()}
+           "num_predict": getattr(llm, "resolve_num_predict", lambda: None)(), "attempts": attempts}
     if on_generate is not None:
         try:
             on_generate(dict(gen))
@@ -3065,7 +3082,7 @@ def frame_age_bound(since: Optional[float], now: Optional[float] = None) -> floa
     return max(FRAME_AGE_FLOOR_S, (now - since) + FRAME_AGE_GRACE_S)
 
 
-def _frame_paths(instance: Path, worktree: Optional[str]) -> list:
+def _frame_paths(instance: Path, worktree: Optional[str], extra=()) -> list:
     """Every frame the being may have captured, in either tree.
 
     NOT a fixed filename. `camera`'s whole grammar is that the being names its own output
@@ -3089,6 +3106,32 @@ def _frame_paths(instance: Path, worktree: Optional[str]) -> list:
                        if p.is_file() and p.suffix.lower() in (".jpg", ".jpeg"))
         except OSError:
             continue
+    # WHEREVER THE BEING SAVED IT. The verb lets the being name any path inside its home, and on
+    # sprout-being's first look (2026-10-12 21:02, the first beat on its 4B) it saved to
+    # scratch/test-vision.jpg; this producer looked only under scratch/camera/, so the frame never rode
+    # and the being asked to see and did not. `camera_frame_paths` reads the last beat's own camera
+    # acts, so a frame is found where the act put it.
+    seen = {str(p) for p in out}
+    for p in extra:
+        if str(p) not in seen and p.is_file() and p.suffix.lower() in (".jpg", ".jpeg"):
+            out.append(p)
+            seen.add(str(p))
+    return out
+
+
+def camera_frame_paths(last: Optional[dict], instance: Path) -> list:
+    """The files the previous beat's successful `camera` acts wrote, resolved inside the being's home only."""
+    home = Path(instance).resolve()
+    out = []
+    for phase in ("explore", "posture", "reflect", "act_after_answer"):
+        rec = (last or {}).get(phase) if isinstance(last, dict) else None
+        for t in (rec or {}).get("trace") or [] if isinstance(rec, dict) else []:
+            if not (isinstance(t, dict) and t.get("effector") == "camera" and t.get("ok")):
+                continue
+            rel = ((t.get("result") or {}).get("out_path") or (t.get("args") or {}).get("out_path") or "")
+            p = (home / str(rel)).resolve()
+            if rel and home in p.parents:
+                out.append(p)
     return out
 
 
@@ -3171,7 +3214,44 @@ def fresh_frame(instance: Path, worktree: Optional[str], since: Optional[float])
         "costs_tokens": FRAME_TOKENS, **shrunk}
 
 
-def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float]) -> list:
+_READS_IMAGES: dict = {}
+
+
+def model_reads_images(model: str, host: Optional[str] = None, timeout: float = 5.0) -> bool:
+    """Whether Ollama reports `vision` among `model`'s capabilities. Unknown (Ollama unreachable, an old
+    server without `capabilities`) is False: a frame not attached costs one beat of sight, a frame the
+    model rejects costs the whole beat. Cached per model for the process (one beat)."""
+    if model in _READS_IMAGES:
+        return _READS_IMAGES[model]
+    import urllib.request
+    base = (host or os.environ.get("OLLAMA_HOST") or "http://127.0.0.1:11434").rstrip("/")
+    if not base.startswith("http"):
+        base = "http://" + base
+    try:
+        req = urllib.request.Request(base + "/api/show", json.dumps({"model": model}).encode(),
+                                     {"Content-Type": "application/json"})
+        caps = json.load(urllib.request.urlopen(req, timeout=timeout)).get("capabilities") or []
+        ok = "vision" in caps
+    except Exception:
+        ok = False
+    _READS_IMAGES[model] = ok
+    return ok
+
+
+def frames_the_model_can_read(frames: list, model: str, reads=None) -> list:
+    """AN IMAGE TO A MODEL THAT CANNOT READ ONE FAILS THE WHOLE BEAT (Ollama 500, "image input is not
+    supported"; measured on Sprout's 2B 2026-10-12). A seat that leaves `camera` on after moving to a
+    model without vision must lose one beat of sight, never the beat. Each withheld frame keeps its meta,
+    marked not carried with the reason, so the being is told why it did not see."""
+    if not any(b is not None for b, _ in frames):
+        return frames
+    if (reads or model_reads_images)(model):
+        return frames
+    why = f"your model ({model}) cannot read images, so the frame was not attached to this beat"
+    return [(None, dict(m, carried=False, why=why)) if b is not None else (b, m) for b, m in frames]
+
+
+def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float], extra=()) -> list:
     """Every (b64, meta) for a frame captured since `since`, oldest first.
 
     The plural of `fresh_frame`: the cadence organ delivers every frame the being
@@ -3181,7 +3261,7 @@ def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float]
     unknown age is unknown, not young. `fresh_frame` stays as-is for callers that
     want exactly one; this returns all of them, so a beat can see a sequence."""
     out = []
-    for p in _frame_paths(instance, worktree):
+    for p in _frame_paths(instance, worktree, extra):
         try:
             st = p.stat()
         except OSError:
@@ -3565,7 +3645,9 @@ def main(argv=None) -> int:
         _wt = _icfg(instance).get("worktree") or None
     except Exception:
         _wt = None
-    _frames = fresh_frames(instance, _wt, last.get("t0") if isinstance(last, dict) else None)
+    _frames = fresh_frames(instance, _wt, last.get("t0") if isinstance(last, dict) else None,
+                           extra=camera_frame_paths(last, instance))
+    _frames = frames_the_model_can_read(_frames, args.model)
     _frame_b64s = [b for b, m in _frames if b is not None]
     _frame_metas = [m for _, m in _frames]
 
@@ -3582,7 +3664,7 @@ def main(argv=None) -> int:
 
     from sage.gateway.governed_turn import build_client
     from sage.gateway.being_gate_client import ollama_tools
-    from sage.gateway.being_tool_loop import run_ollama_tool_turn, _sent_budget
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn, _sent_budget, generate_with_evidence
     workspace = str(Path(__file__).resolve().parents[2])
     host_session_id = f"heartbeat-{uuid.uuid4().hex[:12]}"
     # The beat has begun: wake, before anything below reads the daemon's /status into the
@@ -3603,6 +3685,7 @@ def main(argv=None) -> int:
     client, llm = build_client(args.member, instance, args.model, workspace, args.forum_dir,
                                host_session_id, args.temperature, args.max_tokens,
                                gate_only=args.gate_only)
+    apply_think_budget(llm, instance)
 
     # S4 inbound: notices addressed to the being's own hub identity, persisted into its
     # home and pointed at from its hestia inbox by the seat (courier), before the peek.
@@ -3994,10 +4077,11 @@ def main(argv=None) -> int:
                 raise RuntimeError("preempted for a person: the account waits for the next beat")
             ask_msgs = [{"role": m["role"], "content": m["content"]} for m in convo] + \
                        [{"role": "user", "content": ACCOUNT_ASK}]
-            aresp = llm.get_chat_response(ask_msgs)
+            aresp, _attempt = generate_with_evidence(llm, ask_msgs, phase="account")
             _raw = aresp.get("raw") or {}
             _gen = {"done_reason": _raw.get("done_reason"), "prompt_eval_count": _raw.get("prompt_eval_count"),
-                    "eval_count": _raw.get("eval_count"), "retried": 0, "num_predict": _sent_budget(llm)}
+                    "eval_count": _raw.get("eval_count"), "retried": 0, "num_predict": _sent_budget(llm),
+                    "attempts": [_attempt]}
             account["generates"].append(_gen)
             try:
                 _on_generate("account")(dict(_gen))   # the partial trace, same as the tool turns

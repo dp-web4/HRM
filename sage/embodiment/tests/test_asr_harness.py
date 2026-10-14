@@ -97,6 +97,46 @@ def test_every_candidate_is_registered_with_its_guard_status():
     assert h.CANDIDATES["parakeet_mlx"].guarded is False
 
 
+def test_the_ane_candidate_maps_verbose_json_and_counts_an_uninformative_no_speech_prob():
+    """WhisperKit (Core ML, Apple Neural Engine) answers OpenAI verbose_json. Its segments carry
+    avg_logprob and no_speech_prob, so it is judged by the ear's guard -- but measured on McNugget
+    its no_speech_prob is 0 on near-silence, which disables the guard's silence test. The candidate
+    must pass the fields through as given and report how often no_speech_prob was nonzero."""
+    import http.server
+    import json as _j
+    import threading
+    replies = [{"segments": [{"text": " You", "avg_logprob": -0.77, "no_speech_prob": 0}]},
+               {"segments": [{"text": " Hello there.", "avg_logprob": -0.2, "no_speech_prob": 0.01}]}]
+
+    class H(http.server.BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.rfile.read(int(self.headers.get("Content-Length", 0)))
+            body = _j.dumps(replies.pop(0) if replies else {"segments": []}).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *a):
+            pass
+
+    srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        c = h.WhisperKitAne()
+        c.url = f"http://127.0.0.1:{srv.server_address[1]}"
+        audio = [0.0] * h.RATE
+        segs = c.segments(audio, "")
+        assert segs == [{"text": " You", "no_speech_prob": 0, "avg_logprob": -0.77}], segs
+        c.segments(audio, "")
+        meta = c.extra_meta()
+        assert meta["segments_seen"] == 2 and meta["no_speech_prob_nonzero"] == 1, meta
+        assert h.CANDIDATES["whisperkit_ane"].guarded is True
+    finally:
+        srv.shutdown()
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):

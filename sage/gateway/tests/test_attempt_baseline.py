@@ -61,7 +61,19 @@ def test_new_phase_and_phase_error_do_not_disappear():
     r["future"] = {"generates": []}
     r["account"] = {"generates": [], "error": "call failed before publication"}
     out = report(r)
-    assert out["totals"]["cost_issues"] == {"unknown_generation_phase": 1, "phase_error": 1}
+    assert out["totals"]["cost_issues"] == {"unknown_generation_phase": 1}
+    assert out["totals"]["phase_errors"] == 1
+
+
+def test_phase_error_does_not_discard_known_recorded_cost():
+    r = {"schema": "heartbeat/v2", "account": {
+        "generates": [{"attempts": [attempt(12)]}], "error": "save failed"}}
+    out = report(r)
+    assert out["coverage"]["complete_recorded"] == 1
+    assert out["totals"]["output_tokens_total"] == 12
+    assert out["phases"]["account"]["phase_errors"] == 1
+    r["account"].pop("generates")
+    assert report(r)["coverage"]["incomplete"] == 1
 
 
 def test_retry_requires_at_least_one_more_attempt_than_retries():
@@ -88,6 +100,30 @@ def test_receipts_not_success_scores_and_repeats_span_phases_not_beats():
     assert "PRIVATE" not in json.dumps(out)
 
 
+def test_repeat_transitions_follow_latest_receipt_and_split_memory_operations():
+    def receipt(effector, ok):
+        return {"effector": effector, "args": {"secret": "PRIVATE"}, "ok": ok}
+    rows = [receipt("memory_edit", False), receipt("memory_edit", False),
+            receipt("memory_edit", True), receipt("memory_edit", True),
+            receipt("memory_read", True), receipt("memory_read", True),
+            receipt("PRIVATE EFFECTOR", True), receipt("PRIVATE EFFECTOR", True)]
+    out = report(beat([], trace=rows))
+    assert out["totals"]["repeats_by_memory_operation_and_status"] == {
+        "memory_write:failed->failed": 1, "memory_write:failed->ok": 1,
+        "memory_write:ok->ok": 1, "memory_read:ok->ok": 1, "other:ok->ok": 1}
+    assert out["totals"]["repeated_proposals"] == 5
+    assert "PRIVATE" not in json.dumps(out)
+
+
+def test_nonfinal_reasons_are_bounded_and_exclude_final_attempt():
+    attempts = [{**attempt(), "done_reason": reason}
+                for reason in ("length", "stop", "PRIVATE", None, "length")]
+    out = report(beat([{"attempts": attempts}]))
+    assert out["totals"]["nonfinal_by_done_reason"] == {
+        "length": 1, "stop": 1, "other": 1, "missing": 1}
+    assert "PRIVATE" not in json.dumps(out)
+
+
 def test_malformed_input_and_empty_input_never_report_complete():
     assert summarize(["{bad", "null", "[]", " "])["malformed_rows"] == 3
     assert not summarize([])["totals"]["recorded_cost_complete"]
@@ -110,5 +146,23 @@ def test_cli_reads_file_without_mutating_it(tmp_path, capsys):
     assert main([str(path)]) == 0
     out = json.loads(capsys.readouterr().out)
     assert out["totals"]["output_tokens_total"] == 7
-    assert out["input_text_sha256"] == hashlib.sha256(text.encode()).hexdigest()
+    assert out["input_bytes_sha256"] == hashlib.sha256(text.encode()).hexdigest()
     assert path.read_text() == text
+
+
+@pytest.mark.parametrize("suffix", [b"\r\n", b"\r\n\xff\n", b'\n{"bad":"\xff"}\n'])
+def test_cli_file_and_stdin_hash_raw_bytes_and_agree(tmp_path, suffix):
+    import hashlib
+    import subprocess
+    import sys
+    raw = json.dumps(beat([{"attempts": [attempt()]}])).encode() + suffix
+    path = tmp_path / "beats.jsonl"
+    path.write_bytes(raw)
+    command = [sys.executable, "-m", "sage.gateway.attempt_baseline"]
+    file_out = subprocess.run(command + [str(path)], capture_output=True, check=True)
+    stdin_out = subprocess.run(command + ["-"], input=raw, capture_output=True, check=True)
+    assert file_out.stdout == stdin_out.stdout
+    out = json.loads(file_out.stdout)
+    assert out["input_bytes_sha256"] == hashlib.sha256(raw).hexdigest()
+    assert out["malformed_rows"] == (1 if b"\xff" in suffix else 0)
+    assert path.read_bytes() == raw

@@ -46,6 +46,8 @@ def test_it_speaks_the_words_and_keeps_them_in_its_own_home(monkeypatch):
     assert "your turn in the room conversation" in env.result, "voice is a conversation: the room"
     assert "played aloud through AIRHUG 01" in env.result
     assert "heard it" not in env.result, "playback proves the sink got sound, not that anyone listened"
+    # sprout-being 2026-10-14 spoke a sudo command and then treated it as applied.
+    assert "nothing said aloud is executed" in env.result
     assert calls[-1][1]["outcome"] == "ok"
 
 

@@ -1983,7 +1983,14 @@ class HestiaF1aDispatcher:
                                 beat=self.host_session_id)
         except Exception as e:
             room_err = f"{type(e).__name__}: {e}"[:160]
-        said = f"played aloud through {speaker} ({done['seconds']}s): \"{text}\"."
+        # SOUND RUNS NOTHING, AND THE RECEIPT SAYS SO. Measured on sprout-being 2026-10-14: with
+        # its run requests going nowhere, it spoke `python3 scratch/test-cv2-video1.py ...` aloud
+        # three times, then `sudo usermod -aG video $USER && sudo systemctl restart ...`, and 40 s
+        # later asked the seat to verify OpenCV "after adding user to the video group and
+        # restarting udisks2" — it took the speaking for the doing. The receipt said only that
+        # the words were played, which is true and left the inference open.
+        said = (f"played aloud through {speaker} ({done['seconds']}s): \"{text}\". "
+                f"Speaking is sound only: nothing said aloud is executed.")
         where = ("It is your turn in the room conversation; what you hear back in the next two "
                  "minutes is added there." if room_err is None
                  else f"It could not be added to the room conversation ({room_err}).")

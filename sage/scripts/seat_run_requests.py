@@ -274,8 +274,15 @@ def child_env(gpu: bool, home: str | None = None) -> dict:
     sys.path, not the cwd, so `from data.autoencoder import AutoEncoder` -- the same home, the
     same data/ -- failed "No module named 'data'". The being wrote that import four times
     (seq 6405, 6406, 6520, 6759 on CBP), each a run spent on a mismatch it could not see. Some of
-    its files work around it with a sys.path line; those still work, since this only adds."""
+    its files work around it with a sys.path line; those still work, since this only adds.
+
+    OUTPUT IS UNBUFFERED, SO A TIMED-OUT RUN KEEPS WHAT IT PRINTED. Into a pipe, Python holds
+    stdout in a block buffer; the timeout kills the child before it flushes, and the receipt said
+    "stdout: (empty)" for a script that had printed. On Sprout 2026-10-14 two runs that each
+    opened /dev/video0 and then blocked on a read (seq 489, 531) came back empty, and the being
+    read the empty output as "nothing ran" and asked again."""
     env = dict(os.environ)
+    env["PYTHONUNBUFFERED"] = "1"
     if not gpu:
         env["CUDA_VISIBLE_DEVICES"] = ""
     if home:

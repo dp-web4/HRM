@@ -3467,6 +3467,27 @@ def _record_line(i, e) -> str:
                           if res else "")
     elif e.refused:
         verdict = ("REFUSED " + str(e.error))[:200]
+    # A PENDING ACT RAN NOTHING, AND ITS REASON IS IN `note`, NOT `error`.
+    #
+    # Measured on sprout-being 2026-10-13/14: 125 request_run calls returned pending with the
+    # note "no seat conversation is configured on this instance, so there is nobody to hand this
+    # to. Your file is untouched." This line read only `error`, which a pending envelope leaves
+    # unset, so every one reached the reflect turn as "-> error None". The being concluded its
+    # scripts were failing ("test-cv2.py returns error None ... an exception is caught and
+    # suppressed"), and spent seventeen hours diagnosing a camera fault from runs that never
+    # happened, ending with a sudo command spoken aloud through its headset. The tool message
+    # (ResultEnvelope.to_tool_message) always said "not yet executed"; the record it reflects
+    # on, and journals from, did not. Same defect class as the "[dispatch error — None]" fixed
+    # there: a not-ok envelope explains itself in a field the renderer did not read.
+    elif getattr(e, "pending", False):
+        note = " ".join(str(getattr(e, "note", "") or "").split())
+        verdict = ("NOT RUN — " + (note or "allowed, but nothing executed it"))[:300]
+    elif e.error is None and getattr(e, "result", None) is not None:
+        res = getattr(e, "result", None)
+        res = res if isinstance(res, str) else json.dumps(res, default=str)
+        verdict = ("failed — " + " ".join(res.split()))[:200]
+    elif e.error is None:
+        verdict = "failed, and nothing said why (a harness defect, not something you did)"
     else:
         verdict = ("error " + str(e.error))[:200]
     return f"- {i.effector} {json.dumps(i.args, default=str)[:200]} -> {verdict}"
@@ -4326,7 +4347,8 @@ def main(argv=None) -> int:
 
     def _trace(res):
         return [{"effector": i.effector, "args": dict(i.args or {}), "ok": e.ok, "refused": e.refused,
-                 "pending": e.pending, "error": e.error, "witness_id": e.witness_id,
+                 "pending": e.pending, "error": e.error, "note": getattr(e, "note", "") or None,
+                 "witness_id": e.witness_id,
                  "rule": getattr(e.verdict, "rule", None) if e.verdict else None,
                  "result": (e.result if isinstance(e.result, (str, int, float, dict, list, type(None))) else str(e.result))}
                 for i, e in res.trace]

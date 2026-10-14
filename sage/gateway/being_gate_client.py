@@ -519,6 +519,28 @@ GAME_HOLDOUTS = ("cn04", "dc22", "lf52", "re86")
 # What it may pick. Listed so the choice is real: a selector whose options are not shown is a
 # default with extra steps (the being asked dp for "a new game instance" on 2026-09-19 because
 # nothing told it that it already had one).
+def _default_game(memory_root: str) -> str:
+    """The game a `game` call means when it names none. A being that has played ONE game means that
+    one; a being with no history gets ft09. A being that has played several is REFUSED, named the
+    games it has played (most recent first): on 2026-10-14 legion-being, days into ar25, left `game`
+    out three times (10:06Z twice, 14:33Z). Each call ran on ft09, appended 7 moves to ft09's
+    replayed history, and its expectations were checked against ft09's board while it believed it
+    was playing ar25 ("7 of 8 confirmed"). A silent default is a guess about intent; the being knows
+    which game it means and says it in one word."""
+    import glob
+    logs = sorted(glob.glob(os.path.join(memory_root, "scratch", "game", "*_actions.jsonl")),
+                  key=lambda p: os.path.getmtime(p), reverse=True)
+    played = [os.path.basename(p)[:-len("_actions.jsonl")] for p in logs]
+    played = [g for g in played if g in GAME_PLAYABLE]
+    if not played:
+        return "ft09"
+    if len(played) == 1:
+        return played[0]
+    raise ValueError("game: name the game — you have played " + ", ".join(played)
+                     + f" (most recent first: {played[0]}). Nothing ran; add \"game\": \"{played[0]}\" "
+                     "or another of them and call again.")
+
+
 GAME_PLAYABLE = ("ar25", "bp35", "cd82", "ft09", "g50t", "ka59", "lp85", "ls20", "m0r0", "r11l",
                  "s5i5", "sb26", "sc25", "sk48", "sp80", "su15", "tn36", "tr87", "tu93", "vc33", "wa30")
 
@@ -554,7 +576,7 @@ def game_command(args: dict, ctx: Optional[dict] = None) -> str:
     memory_root = (ctx or {}).get("memory_root")
     if not memory_root or any(ch.isspace() for ch in memory_root):
         raise ValueError("game requires a memory_root context without whitespace")
-    game = str(args.get("game") or "ft09").strip()     # null / "" from a model means the default
+    game = str(args.get("game") or "").strip() or _default_game(memory_root)
     if not re.fullmatch(_GAME_ID, game):
         raise ValueError(f"game 'game' must be a four-character id like 'ft09', got {game!r}")
     if game in GAME_HOLDOUTS:
@@ -2495,7 +2517,7 @@ _TOOL_SCHEMAS = {
              "Full boards ride your next beat; current.md and board.txt are rewritten. "
              "Predict before you read.",
              {"probes": "list of probes, at most 8, e.g. [[\"ACTION6\",36,36],[\"LOOK\",30,30,45,45],[\"RESET\"]]",
-              "game": ("optional: which game (default ft09). Yours to choose: " + ", ".join(GAME_PLAYABLE)
+              "game": ("which game. Optional only until you have played two: with none played it is ft09, with one it is that one; once you have played more than one, name it (a call without it is refused, nothing runs). Yours to choose: " + ", ".join(GAME_PLAYABLE)
                        + ". Each keeps its own move log; switching loses nothing."),
               "expect": ("optional: what you predict, checked against the result and reported back as "
                          "confirmed / CONTRADICTED / unverifiable. A JSON list of: "

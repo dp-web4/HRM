@@ -565,6 +565,21 @@ def _trial_name(instance) -> Optional[str]:
         return None
 
 
+def apply_think_budget(llm, instance) -> Optional[int]:
+    """being_params `think_budget`, when set, becomes the beat's first-attempt num_predict for every
+    turn (OllamaIRP.num_predict_override wins over the model config). Retries still set their own
+    budget for one call and restore this one after. Unset leaves the config's value untouched."""
+    try:
+        from sage.gateway import being_params
+        tb = being_params.value(instance, "think_budget")
+    except Exception:
+        return None
+    if tb is None or not hasattr(llm, "num_predict_override"):
+        return None
+    llm.num_predict_override = int(tb)
+    return int(tb)
+
+
 def answer_temperature(instance) -> Optional[float]:
     """Opt-in per instance: instance.json "answer_temperature" (0..1.5) samples the answer turn alone.
 
@@ -886,14 +901,16 @@ def answer_schema_for(cid: str) -> dict:
 
 def _answer_generate(llm, msgs, schema=None):
     """One constrained generate, retried once on the shapes the tool loop also retries: empty
-    content (think-only), a length cut, or a transport error. Returns (r, retried)."""
+    content (think-only), a length cut, or a transport error. Returns (r, retried, attempts)."""
+    from sage.gateway.being_tool_loop import generate_with_evidence
     schema = schema or ANSWER_SCHEMA
-    r = llm.get_chat_response(msgs, fmt=schema)
+    r, first = generate_with_evidence(llm, msgs, phase="answer_json", fmt=schema)
     raw = (r or {}).get("raw") or {}
     content = ((r or {}).get("content") or "").strip()
     if not content or raw.get("done_reason") == "length" or content.startswith("[OllamaIRP"):
-        return llm.get_chat_response(msgs, fmt=schema), 1
-    return r, 0
+        r, second = generate_with_evidence(llm, msgs, phase="answer_json", fmt=schema)
+        return r, 1, [first, second]
+    return r, 0, [first]
 
 
 def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: str,
@@ -922,7 +939,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
     if temperature is not None and _prior_t is not None:
         llm.temperature = float(temperature)
     try:
-        r, retried = _answer_generate(llm, msgs, answer_schema_for(selected.cid))
+        r, retried, attempts = _answer_generate(llm, msgs, answer_schema_for(selected.cid))
     finally:
         if temperature is not None and _prior_t is not None:
             llm.temperature = _prior_t
@@ -931,7 +948,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
     thinking = ((raw.get("message") or {}).get("thinking") or "").strip()
     gen = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
            "eval_count": raw.get("eval_count"), "retried": retried,
-           "num_predict": getattr(llm, "resolve_num_predict", lambda: None)()}
+           "num_predict": getattr(llm, "resolve_num_predict", lambda: None)(), "attempts": attempts}
     if on_generate is not None:
         try:
             on_generate(dict(gen))
@@ -3647,7 +3664,7 @@ def main(argv=None) -> int:
 
     from sage.gateway.governed_turn import build_client
     from sage.gateway.being_gate_client import ollama_tools
-    from sage.gateway.being_tool_loop import run_ollama_tool_turn, _sent_budget
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn, _sent_budget, generate_with_evidence
     workspace = str(Path(__file__).resolve().parents[2])
     host_session_id = f"heartbeat-{uuid.uuid4().hex[:12]}"
     # The beat has begun: wake, before anything below reads the daemon's /status into the
@@ -3668,6 +3685,7 @@ def main(argv=None) -> int:
     client, llm = build_client(args.member, instance, args.model, workspace, args.forum_dir,
                                host_session_id, args.temperature, args.max_tokens,
                                gate_only=args.gate_only)
+    apply_think_budget(llm, instance)
 
     # S4 inbound: notices addressed to the being's own hub identity, persisted into its
     # home and pointed at from its hestia inbox by the seat (courier), before the peek.
@@ -4059,10 +4077,11 @@ def main(argv=None) -> int:
                 raise RuntimeError("preempted for a person: the account waits for the next beat")
             ask_msgs = [{"role": m["role"], "content": m["content"]} for m in convo] + \
                        [{"role": "user", "content": ACCOUNT_ASK}]
-            aresp = llm.get_chat_response(ask_msgs)
+            aresp, _attempt = generate_with_evidence(llm, ask_msgs, phase="account")
             _raw = aresp.get("raw") or {}
             _gen = {"done_reason": _raw.get("done_reason"), "prompt_eval_count": _raw.get("prompt_eval_count"),
-                    "eval_count": _raw.get("eval_count"), "retried": 0, "num_predict": _sent_budget(llm)}
+                    "eval_count": _raw.get("eval_count"), "retried": 0, "num_predict": _sent_budget(llm),
+                    "attempts": [_attempt]}
             account["generates"].append(_gen)
             try:
                 _on_generate("account")(dict(_gen))   # the partial trace, same as the tool turns

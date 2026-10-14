@@ -1036,6 +1036,30 @@ def _sent_budget(llm) -> Optional[int]:
     return int(v) if v is not None else None
 
 
+def generate_with_evidence(llm, messages, *, phase: str, **kwargs):
+    """Return (response, attempt metadata) for ONE provider call, without changing it.
+
+    Generate-level counters describe the final reply: use attempt rows INSTEAD for
+    totals, not in addition. Missing counts stay unknown, never zero. No prompts,
+    arguments or deliberation are stored here. This is not a crash-durable journal:
+    exceptions/process death before return or before publication leave no row.
+    JSON phases name the provider operation, not why it ran; placeholder-retake
+    attribution still requires the enclosing generate's placeholders/step record.
+    """
+    budget = _sent_budget(llm)
+    response = llm.get_chat_response(messages, **kwargs)
+    raw = (response or {}).get("raw") or {}
+    attempt = {
+        "phase": phase, "num_predict": budget,
+        "done_reason": raw.get("done_reason"),
+        "prompt_eval_count": raw.get("prompt_eval_count"),
+        "eval_count": raw.get("eval_count"),
+        "transport_error": bool(((response or {}).get("content") or "").startswith("[OllamaIRP:")
+                                and not (response or {}).get("tool_calls")),
+    }
+    return response, attempt
+
+
 # Outward acts whose slots a JSON turn cannot ground in this turn's state (GPT on #311): not offered there.
 JSON_ACT_EXCLUDE = frozenset({"channel_egress", "mesh", "pr_review", "pr_open", "pr_amend", "patch_apply",
                               "request_scope", "appeal", "request_run", "git_restore"})
@@ -1171,6 +1195,12 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     # (prompt_eval_count, chars at that prompt) from the last generate the server counted.
     # Compaction is anchored on this, so only the DELTA rides a chars-per-token estimate.
     measured = None
+    attempts: List[dict] = []
+
+    def _model_call(phase: str, messages, **kwargs):
+        response, attempt = generate_with_evidence(llm, messages, phase=phase, **kwargs)
+        attempts.append(attempt)
+        return response
 
     def _json_act(msgs: List[Dict[str, Any]]) -> Dict[str, Any]:
         """One act as two closed JSON objects (act_form="json"), returned in the native reply's shape.
@@ -1190,7 +1220,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                        for c in (m.get("tool_calls") or [])]
         ask = {"role": "user", "content": ACT_ASK_JSON + (
             f" This turn you have already done: {', '.join(done_so_far)}." if done_so_far else "")}
-        r1 = llm.get_chat_response(msgs + [ask], fmt={
+        r1 = _model_call("json_select", msgs + [ask], fmt={
             "type": "object", "required": ["act", "why"],
             "properties": {"act": {"type": "string", "enum": ["done"] + names}, "why": {"type": "string"}}})
         c1 = r1.get("content", "") or ""
@@ -1220,7 +1250,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         # `fmt`); `problem` goes only to telemetry (json_arg_failures) if that draw fails too.
         problem, r2, args = None, None, None
         for attempt in range(2):
-            r2 = llm.get_chat_response(arg_msgs, fmt=spec[act])
+            r2 = _model_call("json_arguments", arg_msgs, fmt=spec[act])
             args, problem = _check_args(r2.get("content", "") or "", spec[act])
             if problem is None:
                 break
@@ -1235,10 +1265,11 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         """ONE attempt in this turn's act form, for the first try AND every retry (GPT on #322: both retries
         fell back to native tool calling, so a JSON-mode step could switch arms mid-step after a transport
         error or a think-only reply). The retries' budget and think handling still wrap this call."""
-        return _json_act(msgs) if act_form == "json" else llm.get_chat_response(msgs, tools=tools)
+        return _json_act(msgs) if act_form == "json" else _model_call("tools", msgs, tools=tools)
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
         nonlocal measured
+        attempts.clear()
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
         # turn that emitted intents MUST keep them as tool_calls: Qwen's chat template
         # raises on a tool message that follows an assistant message without tool_calls,
@@ -1454,7 +1485,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             # re-measure from the list AS SENT: any nudge appended above is inside this count
             measured = (int(raw["prompt_eval_count"]), _convo_chars(msgs))
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
-                 "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent}
+                 "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent,
+                 "attempts": [dict(a) for a in attempts]}
         if retry_cause:
             entry["retry_cause"] = retry_cause   # what the FIRST attempt hit; the counts above are the retry's
         generates.append(entry)

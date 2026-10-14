@@ -16,7 +16,18 @@ def episode():
     return read, edit
 
 
-def test_recorded_miss_grounded_success_and_stale_refusal():
+def test_recorded_miss_grounded_success_and_stale_refusal(monkeypatch):
+    from sage.gateway.reference_f1a import ReferenceF1aDispatcher
+    from pathlib import Path
+    dispatch = ReferenceF1aDispatcher.__call__
+    calls = []
+
+    def capture(self, intent, verdict):
+        path = Path(self.memory_root) / intent.args["path"]
+        calls.append((intent.args.copy(), path.read_text()))
+        return dispatch(self, intent, verdict)
+
+    monkeypatch.setattr(ReferenceF1aDispatcher, "__call__", capture)
     read, edit = episode()
     result = probe(read, edit, 2, "- [done] Verify result")
     arms = result["arms"]
@@ -25,8 +36,36 @@ def test_recorded_miss_grounded_success_and_stale_refusal():
     assert arms["grounded_oracle"]["reported_ok"] and arms["grounded_oracle"]["matches_oracle"]
     assert not arms["stale_read_control"]["reported_ok"]
     assert not arms["stale_read_control"]["changed"]
+    for label in ("relative_numbering_control", "stale_text_control"):
+        assert not arms[label]["reported_ok"]
+        assert not arms[label]["changed"]
     assert result["selected_line"] == 21
+    assert result["tests_numbering_translation"]
+    oracle_args, oracle_copy = calls[1]
+    assert len(oracle_copy.splitlines()) == result["observed_total_lines"] == 40
+    assert oracle_copy.splitlines()[19:22] == [
+        "heading", "- [still open] Verify result", "leave this alone"]
+    assert oracle_args["start_line"] == oracle_args["end_line"] == result["selected_line"]
+    assert arms["grounded_oracle"]["dispatched_start_line"] == 21
+    assert calls[2][0]["start_line"] == arms["relative_numbering_control"]["dispatched_start_line"] == 2
+    assert calls[2][1] == oracle_copy
     assert "PRIVATE" not in json.dumps(result) and "Verify result" not in json.dumps(result)
+
+
+def test_first_line_window_has_no_numbering_translation_to_test():
+    read, edit = episode()
+    read["result"] = read["result"].replace("20-22 of 40", "1-3 of 40")
+    result = probe(read, edit, 2, "done")
+    assert not result["tests_numbering_translation"]
+    assert result["arms"]["relative_numbering_control"]["reported_ok"]
+
+
+def test_padding_cannot_match_selected_old_text():
+    read, edit = episode()
+    read["result"] = read["result"].replace("- [still open] Verify result", "[unobserved padding]")
+    result = probe(read, edit, 2, "done")
+    assert result["arms"]["grounded_oracle"]["matches_oracle"]
+    assert not result["arms"]["relative_numbering_control"]["reported_ok"]
 
 
 @pytest.mark.parametrize("mutation", ["missing_footer", "missing_header", "missing_line", "bad_bounds", "wrong_footer"])

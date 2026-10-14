@@ -1316,6 +1316,37 @@ class ReferenceF1aDispatcher:
                     f"or call memory_edit with start_line={at} end_line={at}; if old was copied "
                     f"from a read that was cut there, memory_read start_line={at} to see the "
                     f"whole line."))
+        # AN EXTENSION ALREADY ON DISK IS NOT A NEW EDIT. Measured 2026-10-14 02:18Z: line 18
+        # of cbp-being's test file already read 'import numpy as np', and it sent old
+        # 'import numpy as', new 'import numpy as np' twice in one beat. Each replace matched
+        # the prefix and added the suffix again: 'np np', then 'np np np', a SyntaxError. The
+        # tail guard above missed both (a tail of ' np' is under its 3-char floor; ' np np' is
+        # not what new ends with). When new is old plus a suffix and the disk already continues
+        # with that suffix, the edit was made: if the line ends there it is a satisfied no-op
+        # (#388); if more follows, the line is not what new says, so refuse and show it. This
+        # runs after the tail guard, so a cut that guard names is still refused as a cut.
+        ext = new[len(old):] if new.startswith(old) else ""
+        end = text.index(old) + len(old)
+        if ext.strip() and text.startswith(ext, end):
+            stop = end + len(ext)
+            at = text.count("\n", 0, end) + 1
+            if ext.endswith("\n") or stop == len(text) or text[stop] == "\n":
+                return ResultEnvelope(ok=True, result=(
+                    f"already in place; nothing changed. On line {at} of '{path}' your old "
+                    f"text is already followed by {ext!r}, so the file already says what this "
+                    f"edit asks for (most likely an earlier memory_edit of yours made it). "
+                    f"Nothing was written: '{path}' is unchanged, byte for byte. This is not a "
+                    f"failed edit, and it is not a new one."),
+                    witness_id=self._witness(f"memory_edit {p.name} (already in place; unchanged)"))
+            ls = text.rfind("\n", 0, end) + 1
+            le = text.find("\n", end)
+            line = text[ls:le if le != -1 else len(text)]
+            return ResultEnvelope(ok=False, error=(
+                f"your old text on line {at} of '{path}' is already followed by {ext!r}, so "
+                f"this edit would add {ext!r} a second time, and nothing was changed. Line "
+                f"{at} now reads {line!r}. To set the whole line, call memory_edit with "
+                f"start_line={at} end_line={at}, old set to that line, and new set to the "
+                f"line you want."))
         return self._commit_edit(p, path, text, text.replace(old, new, 1),
                                  "replaced 1 occurrence", "")
 

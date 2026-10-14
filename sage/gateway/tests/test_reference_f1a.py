@@ -1482,3 +1482,31 @@ def test_a_single_line_old_that_stops_mid_line_is_refused_when_new_ends_with_the
                                          "new": "    y = 2 * A @ "}), _ALLOW)
     assert r.ok, r.error
     assert "    y = 2 * A @ w\n" in (home / "notes" / "s.py").read_text()
+
+
+def test_an_extension_already_on_disk_is_not_applied_twice():
+    """Measured 2026-10-14 02:18Z: line 18 already read 'import numpy as np'; cbp-being sent
+    old 'import numpy as', new 'import numpy as np' twice, and the line grew to
+    'import numpy as np np np' (a SyntaxError). A line that already ends with the extension
+    is a satisfied no-op; a line where more follows is refused and shown whole."""
+    disp, root = _disp()
+    f = Path(root) / "notes" / "s.py"
+    body = "import numpy as np\nx = np.zeros(3)\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": body}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "import numpy as",
+                                         "new": "import numpy as np"}), _ALLOW)
+    assert r.ok and r.result.startswith("already in place"), (r.ok, r.error, r.result)
+    assert f.read_text() == body
+    # the broken state the being reached: the extension is there, and more follows it
+    grown = "import numpy as np np\nx = np.zeros(3)\n"
+    f.write_text(grown)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "import numpy as",
+                                         "new": "import numpy as np"}), _ALLOW)
+    assert not r.ok and "a second time" in r.error, r.error
+    assert "'import numpy as np np'" in r.error and "start_line=1 end_line=1" in r.error
+    assert f.read_text() == grown
+    # a real extension, not yet on disk, still lands
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "x = np.zeros(3)",
+                                         "new": "x = np.zeros(3) + 1"}), _ALLOW)
+    assert r.ok, r.error
+    assert "x = np.zeros(3) + 1\n" in f.read_text()

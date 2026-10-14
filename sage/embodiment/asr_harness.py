@@ -232,11 +232,43 @@ class WhisperKitAne(Candidate):
                 "no_speech_prob_nonzero": getattr(self, "ns_nonzero", 0)}
 
 
+class GemmaNativeAudio(Candidate):
+    """The being's OWN model hearing raw audio: gemma4 lists native audio, and Ollama takes the WAV in
+    `images` (its `audio` field does not reach the model; measured on McNugget 2026-10-14). The
+    question is whether a being can hear in its own model instead of reading a transcript. It
+    returns no per-segment confidences, so the ear's guard cannot judge it: UNGUARDED, and its
+    behaviour on silence is exactly what this run measures. It shares the GPU with the being's beats;
+    run it in a quiet window. Model: $SAGE_NATIVE_AUDIO_MODEL (default gemma4:12b)."""
+    name, guarded = "gemma_native_audio", False
+    PROMPT = ("Transcribe exactly the words spoken in this audio. Output only those words, with no "
+              "commentary, quotes or description. If no one speaks, output nothing at all.")
+
+    def load(self):
+        import os
+        self.model = os.environ.get("SAGE_NATIVE_AUDIO_MODEL", "gemma4:12b")
+        self.url = os.environ.get("SAGE_OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/")
+
+    def segments(self, audio, wav_path):
+        import base64
+        import urllib.request
+        req = {"model": self.model, "prompt": self.PROMPT, "stream": False, "think": False,
+               "keep_alive": "-1m", "images": [base64.b64encode(open(wav_path, "rb").read()).decode()],
+               "options": {"temperature": 0, "num_predict": 200}}
+        r = urllib.request.urlopen(urllib.request.Request(
+            self.url + "/api/generate", data=json.dumps(req).encode(),
+            headers={"Content-Type": "application/json"}), timeout=300)
+        text = str(json.loads(r.read()).get("response") or "").strip()
+        return [{"text": text}] if text else []
+
+    def extra_meta(self) -> dict:
+        return {"model": self.model, "via": "ollama /api/generate, WAV in images, temperature 0, think off"}
+
+
 CANDIDATES: Dict[str, Callable[[], Candidate]] = {
     "whisper_ref": WhisperRef, "mlx_whisper": MlxWhisper, "parakeet_mlx": ParakeetMlx,
     "whispercpp_base": WhisperCpp, "whispercpp_tiny": WhisperCppTiny,
     "whispercpp_base_fitctx": WhisperCppBaseFit, "whispercpp_tiny_fitctx": WhisperCppTinyFit,
-    "whisperkit_ane": WhisperKitAne,
+    "whisperkit_ane": WhisperKitAne, "gemma_native_audio": GemmaNativeAudio,
 }
 
 

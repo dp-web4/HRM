@@ -246,6 +246,24 @@ WHERE_HIDDEN = ("with the GPU hidden from it (CUDA_VISIBLE_DEVICES was empty), a
                 "is by default, so code that asks for cuda stops there on every rerun")
 WHERE_GPU = "with the GPU visible to it"
 
+# SAY IT ONLY TO CODE THAT ASKS. Measured on sprout-being 2026-10-14 (seq 256-257): the seat ran
+# a script that called cv2 without importing it; the receipt carried WHERE_HIDDEN as always, and
+# the being concluded "the GPU guard short-circuits everything" and that the NameError came from
+# CUDA_VISIBLE_DEVICES. A clause about a device the code never names is a cause on offer. So the
+# clause rides only when the file mentions a GPU stack, or when the seat chose --gpu. The child
+# still runs with the devices hidden either way (child_env); only the sentence is conditional.
+# The scan reads the requested file, not what it spawns -- a shell script that runs another
+# file's torch code gets no clause; its own traceback still names cuda.
+_GPU_WORDS = re.compile(r"cuda|torch|tensorflow|\bjax\b|cupy|\bgpu\b|nvidia|tensorrt", re.I)
+
+
+def where_clause(gpu: bool, source: str) -> str:
+    """The receipt's GPU clause: WHERE_GPU under --gpu, WHERE_HIDDEN when the code names a GPU
+    stack, and nothing when it does not."""
+    if gpu:
+        return WHERE_GPU
+    return WHERE_HIDDEN if _GPU_WORDS.search(source or "") else ""
+
 
 def child_env(gpu: bool, home: str | None = None) -> dict:
     """The environment the being's code runs under: the seat's own, with CUDA devices hidden
@@ -375,7 +393,9 @@ def cmd_run(args) -> None:
     # outlast a beat, and a file edited mid-run would otherwise be named as the version that ran,
     # and the heartbeat would call code that never ran "unchanged since that run" (sprout's
     # review of SAGE #224). heartbeat.files_and_runs compares this sha with the file now.
-    ran_sha = hashlib.sha256(p.read_bytes()).hexdigest()[:12]
+    source_bytes = p.read_bytes()
+    ran_sha = hashlib.sha256(source_bytes).hexdigest()[:12]
+    where = where_clause(args.gpu, source_bytes.decode("utf-8", "replace"))
     rc, out, err, timed = run_child(interp + [str(p)] + script_args, str(inst), args.timeout, child_env(args.gpu, str(inst)))
 
     def block(name: str, s: str) -> str:
@@ -390,7 +410,8 @@ def cmd_run(args) -> None:
                if timed else f"exit code {rc}")
     print(f"ran {rel}: {verdict}")
     text = "\n".join([
-        f"[request_run] I ran {rel} (sha {ran_sha}) {ran_line(script_args)}, {WHERE_GPU if args.gpu else WHERE_HIDDEN}. {verdict}.",
+        f"[request_run] I ran {rel} (sha {ran_sha}) {ran_line(script_args)}"
+        f"{', ' + where if where else ''}. {verdict}.",
         "",
         block("stdout", out),
         "",

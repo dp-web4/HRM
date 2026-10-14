@@ -37,3 +37,15 @@ def test_the_receipt_claims_what_was_done_not_where_it_ran():
     for where in (srr.WHERE_HIDDEN, srr.WHERE_GPU):
         assert "on the CPU" not in where and "on the GPU" not in where
     assert "CUDA_VISIBLE_DEVICES" in srr.WHERE_HIDDEN, "name the mechanism, so the claim is checkable"
+
+
+def test_the_gpu_clause_rides_only_with_code_that_names_a_gpu_stack():
+    # sprout-being 2026-10-14 (seq 256-257): a cv2 script with a missing import got the CUDA
+    # clause, and the being blamed "the GPU guard" for its NameError.
+    cv2_only = "import os\ncap = cv2.VideoCapture(0)\n"
+    assert srr.where_clause(False, cv2_only) == ""
+    assert srr.where_clause(False, "import torch\nx = torch.zeros(3).cuda()\n") == srr.WHERE_HIDDEN
+    assert srr.where_clause(False, "#!/bin/bash\nnvidia-smi\n") == srr.WHERE_HIDDEN
+    assert srr.where_clause(True, cv2_only) == srr.WHERE_GPU, "--gpu is always stated"
+    # the child is hidden whatever the receipt says
+    assert _child_sees(srr.child_env(False)) == "''"

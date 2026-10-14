@@ -330,7 +330,11 @@ import subprocess
 
 
 def _pw_audio(timeout: float = 4.0) -> Dict:
-    """Audio sinks and sources as pipewire sees them. {} when pipewire is not there."""
+    """Audio sinks and sources as pipewire sees them, or as macOS does on a Mac (platform_av).
+    {} when neither can be read."""
+    from sage.embodiment import platform_av
+    if platform_av.backend() == "avfoundation":
+        return platform_av.mac_audio()
     try:
         out = subprocess.run(["pw-dump"], capture_output=True, text=True, timeout=timeout).stdout
         nodes = json.loads(out)
@@ -442,7 +446,8 @@ def speak_provider(audio: Optional[Dict] = None) -> Dict:
     audio = _pw_audio() if audio is None else audio
     if not (audio or {}).get("sinks"):
         return {"live": False, "why": "no audio output is connected"}
-    for tool in ("espeak-ng", "pw-play"):
+    from sage.embodiment.platform_av import voice_tools
+    for tool in voice_tools():
         if not shutil.which(tool):
             return {"live": False, "why": f"'{tool}' is not installed"}
     if SPEAK_SINK:
@@ -475,7 +480,8 @@ def speak(text: str, timeout: float = SPEAK_TIMEOUT_S) -> Dict:
     # opened after the being speaks; a failed synthesis or playback said nothing, so it opens
     # nothing. Either way the self-mute is lifted at once.
     played = False
-    engine, fallback = "espeak-ng", None
+    from sage.embodiment.platform_av import voice_tools as _voice_tools
+    engine, fallback = _voice_tools()[0], None
     target = (required_sink() or {}).get("node") if SPEAK_SINK else None
     try:
         voice = neural_voice()
@@ -495,10 +501,10 @@ def speak(text: str, timeout: float = SPEAK_TIMEOUT_S) -> Dict:
         if not played:
             with tempfile.NamedTemporaryFile(suffix=".wav") as wav:
                 # argv, never a shell: the words are one argument and cannot become a command
-                subprocess.run(["espeak-ng", "-v", "en-us", "-s", "160", "-w", wav.name, "--", text],
-                               check=True, capture_output=True, timeout=timeout)
-                subprocess.run(["pw-play"] + (["--target", target] if target else []) + [wav.name],
-                               check=True, capture_output=True, timeout=timeout)
+                from sage.embodiment import platform_av
+                platform_av.synth_fallback(text, wav.name, timeout)
+                subprocess.run(platform_av.play_cmd(wav.name, target), check=True,
+                               capture_output=True, timeout=timeout)
                 played = True
     finally:
         end = time.time()

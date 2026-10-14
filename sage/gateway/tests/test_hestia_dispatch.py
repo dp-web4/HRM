@@ -1763,6 +1763,36 @@ def test_an_answered_unchanged_request_wakes_nobody_where_the_instance_opts_in()
     assert "asked and woken" in r.result["note"]
 
 
+def test_an_unchanged_request_the_seat_declined_is_not_called_a_run():
+    """Measured 2026-10-14 (sprout-being, seq 331): six declines of one unchanged file each came
+    back "That run is evidence of what this file does" and "To have it run again anyway ...
+    rerun", and the being asked "with rerun=true to force execution". Nothing had run."""
+    import json as _json
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    d, root = _disp()
+    home = Path(root)
+    (home / "instance.json").write_text(_json.dumps({"answered_run_wake": "skip"}))
+    conv.create(home, "seat", title="seat", participants=["seat", "sprout-being"],
+                writable_by=["seat", "sprout-being"])
+    meta = conv.get_meta(home, "seat"); meta["notify"] = {"seat": "claude-code"}
+    conv._write_meta(home, "seat", meta)
+    (home / "notes").mkdir(exist_ok=True)
+    (home / "notes" / "cam.py").write_text("print('b')\n")
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    conv.append(home, "seat", speaker="seat", via="seat",
+                text=f"[request_run] I did not run notes/cam.py. It opens the eye's sensor.\n\n"
+                     f"Answers your request seq {asked}.")
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got, note = r.result["unchanged"], r.result["note"]
+    assert "it did not run it. Nothing ran." in got and "I did not run notes/cam.py." in got, got
+    assert "That run is evidence" not in got and "What it said" not in got, got
+    assert "already declined" in note and "does not make the file run" in note, note
+    assert "run again anyway" not in note, note
+    assert "rerun set to 'true'" in note and "not a line in your file" in note, note
+
+
 def test_rerun_is_a_listed_argument_and_false_is_not_a_rerun():
     """Measured 2026-10-08 04:03Z: the receipt named rerun=true, the spec did not list it, and
     cbp-being wrote `main(rerun=True)` into its script. The spec lists it now, so a being may

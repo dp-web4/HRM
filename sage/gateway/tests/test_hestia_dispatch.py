@@ -1763,6 +1763,137 @@ def test_an_answered_unchanged_request_wakes_nobody_where_the_instance_opts_in()
     assert "asked and woken" in r.result["note"]
 
 
+def test_an_unchanged_request_the_seat_declined_is_not_called_a_run():
+    """Measured 2026-10-14 (sprout-being, seq 331): six declines of one unchanged file each came
+    back "That run is evidence of what this file does" and "To have it run again anyway ...
+    rerun", and the being asked "with rerun=true to force execution". Nothing had run."""
+    import json as _json
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    d, root = _disp()
+    home = Path(root)
+    (home / "instance.json").write_text(_json.dumps({"answered_run_wake": "skip"}))
+    conv.create(home, "seat", title="seat", participants=["seat", "sprout-being"],
+                writable_by=["seat", "sprout-being"])
+    meta = conv.get_meta(home, "seat"); meta["notify"] = {"seat": "claude-code"}
+    conv._write_meta(home, "seat", meta)
+    (home / "notes").mkdir(exist_ok=True)
+    (home / "notes" / "cam.py").write_text("print('b')\n")
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    conv.append(home, "seat", speaker="seat", via="seat",
+                text=f"[request_run] I did not run notes/cam.py. It opens the eye's sensor.\n\n"
+                     f"Answers your request seq {asked}.")
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got, note = r.result["unchanged"], r.result["note"]
+    assert "it did not run it. Nothing ran." in got and "I did not run notes/cam.py." in got, got
+    assert "That run is evidence" not in got and "What it said" not in got, got
+    assert "already declined" in note and "does not make the file run" in note, note
+    assert "run again anyway" not in note, note
+    assert "rerun set to 'true'" in note and "not a line in your file" in note, note
+
+
+def _seat_for(home):
+    from sage.gateway import conversations as conv
+    conv.create(home, "seat", title="seat", participants=["seat", "sprout-being"],
+                writable_by=["seat", "sprout-being"])
+    meta = conv.get_meta(home, "seat"); meta["notify"] = {"seat": "claude-code"}
+    conv._write_meta(home, "seat", meta)
+    (home / "notes").mkdir(exist_ok=True)
+
+
+def test_a_prose_only_refusal_is_not_evidence_of_a_run():
+    """Nova hold on #447 at 40aa6dc4: an answer naming the request's seq without the run or
+    decline marker (a refusal in prose) was labelled "That run is evidence of what this file
+    does". Naming a seq makes it an answer, not proof that anything executed."""
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    d, root = _disp()
+    home = Path(root)
+    _seat_for(home)
+    (home / "notes" / "cam.py").write_text("print('p')\n")
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    conv.append(home, "seat", speaker="seat", via="seat",
+                text=f"I'm not running this, it opens video1.\n\nAnswers your request seq {asked}.")
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got = r.result["unchanged"]
+    assert "That run is evidence" not in got and "What it said" not in got, got
+    assert "does not say the file ran" in got and "not evidence of what this file does" in got, got
+    assert "it opens video1" in got, "the answer itself is carried: " + got
+    assert r.result["ran"] is False
+
+
+def test_a_verified_run_receipt_is_evidence_and_a_run_of_other_bytes_is_not():
+    """The executed state needs the run marker for this path and, where the receipt names a sha,
+    these bytes."""
+    import hashlib
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    d, root = _disp()
+    home = Path(root)
+    _seat_for(home)
+    body = "print('v')\n"
+    (home / "notes" / "cam.py").write_text(body)
+    sha = hashlib.sha256(body.encode()).hexdigest()[:12]
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    conv.append(home, "seat", speaker="seat", via="seat",
+                text=f"[request_run] I ran notes/cam.py (sha {sha}) with no arguments. exit code 0.\n\n"
+                     f"stdout:\nv\n\nAnswers your request seq {asked}.")
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got = r.result["unchanged"]
+    assert "That run is evidence of what this file does" in got and "What it said" in got, got
+
+    # Same seq answered by a run receipt that names OTHER bytes: not evidence for these.
+    d2, root2 = _disp()
+    home2 = Path(root2)
+    _seat_for(home2)
+    (home2 / "notes" / "cam.py").write_text(body)
+    d2(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked2 = conv.recent(home2, "seat", limit=1)[-1]["seq"]
+    conv.append(home2, "seat", speaker="seat", via="seat",
+                text=f"[request_run] I ran notes/cam.py (sha 000000000000) with no arguments. "
+                     f"exit code 0.\n\nAnswers your request seq {asked2}.")
+    r2 = d2(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got2 = r2.result.get("unchanged", "")
+    assert "That run is evidence" not in got2, got2
+
+
+def test_an_answer_to_the_first_of_two_identical_asks_answers_the_next_one():
+    """Measured 2026-10-14 (sprout-being): seq 387 and 388 asked for the same file and the seat
+    declined it "Answers your request seq 387" (389). The scan held only the latest ask, so the
+    decline counted as answering something older, and every later ask (390, 394, 395) went out
+    new: no UNCHANGED, no reason carried back in-beat."""
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    d, root = _disp()
+    home = Path(root)
+    conv.create(home, "seat", title="seat", participants=["seat", "sprout-being"],
+                writable_by=["seat", "sprout-being"])
+    meta = conv.get_meta(home, "seat"); meta["notify"] = {"seat": "claude-code"}
+    conv._write_meta(home, "seat", meta)
+    (home / "notes").mkdir(exist_ok=True)
+    (home / "notes" / "cam.py").write_text("print('c')\n")
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    first = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "second"}), _ALLOW)
+    conv.append(home, "seat", speaker="seat", via="seat",
+                text=f"[request_run] I did not run notes/cam.py. It opens the eye's sensor.\n\n"
+                     f"Answers your request seq {first}.")
+    answered = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "third"}), _ALLOW)
+    assert "unchanged" in r.result, r.result
+    assert "It opens the eye's sensor." in r.result["unchanged"], r.result["unchanged"]
+    last = conv.recent(home, "seat", limit=1)[-1]["text"]
+    assert f"UNCHANGED since the request at seq {first}; the seat answered at seq {answered}." \
+        in last, "names the ask the seat answered: " + last
+    # A run of OTHER bytes in between is not an answer about these.
+    (home / "notes" / "cam.py").write_text("print('d')\n")
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "changed"}), _ALLOW)
+    assert "unchanged" not in r.result, r.result
+
+
 def test_rerun_is_a_listed_argument_and_false_is_not_a_rerun():
     """Measured 2026-10-08 04:03Z: the receipt named rerun=true, the spec did not list it, and
     cbp-being wrote `main(rerun=True)` into its script. The spec lists it now, so a being may

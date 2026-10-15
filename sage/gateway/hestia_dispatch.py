@@ -3225,6 +3225,7 @@ class HestiaF1aDispatcher:
         unchanged = None  # (seq it asked at, seq the seat answered at)
         answer_text = ""   # what that answer SAID, to hand back rather than point at
         asked_at = None
+        asked_seqs = []    # every earlier request for these bytes and arguments, oldest first
         # WHAT RAN IS (PATH, BYTES, ARGUMENTS), NOT BYTES ALONE. GPT HOLD on #276 at 6d7e98d5:
         # the unsolicited match keyed on the 12-char digest only, so notes/new.py holding
         # print(__file__) was told "running it again will give the same result" with the
@@ -3253,6 +3254,8 @@ class HestiaF1aDispatcher:
                 prior_args = [ln for ln in text.split("\n")[3:] if not ln.startswith("UNCHANGED")]
                 asked_at = (t.get("seq") if f"sha256:{digest}" in text and prior_args == arg_lines
                             else None)
+                if asked_at is not None:
+                    asked_seqs.append(asked_at)
                 continue
             if t.get("from") == self.member:
                 continue
@@ -3272,7 +3275,7 @@ class HestiaF1aDispatcher:
                 # carries its own, is not the same run, so neither counts here.
                 unchanged = (asked_at, t.get("seq"))
                 answer_text = text
-            elif asked_at is not None:
+            elif asked_seqs:
                 # ONLY A TURN BOUND TO THIS REQUEST ANSWERS IT. GPT re-review of #276 at
                 # fef135b7b: any later seat turn counted, so request new.py -> an unrelated
                 # seat message -> re-request came back "the seat answered that at seq N" with
@@ -3286,25 +3289,31 @@ class HestiaF1aDispatcher:
                 # a receipt stating OTHER bytes, or naming only seqs older than this request.
                 seqs = {int(n) for mm in conv._ANSWER_NAMES.finditer(text)
                         for n in re.findall(r"\d+", mm.group(1))}
-                try:
-                    _asked = int(asked_at)
-                except (TypeError, ValueError):
-                    _asked = None
-                if not (_asked is not None and _asked in seqs):
-                    if named is None:
+                # AN ANSWER TO ANY EARLIER ASK FOR THESE BYTES ANSWERS THIS ONE. Measured
+                # 2026-10-14 (sprout-being): seq 387 and 388 asked for the same file, the seat
+                # declined it "Answers your request seq 387" (389), and this scan held only the
+                # LATEST ask (388), so 387 counted as "older" and the decline was skipped. Every
+                # later ask for those bytes (390, 394, 395) went out new and unanswered, and the
+                # being never saw the reason in-beat. conversations._already_answered (the wake
+                # side) already checks every earlier identical request; this now agrees with it.
+                _asked_ints = [int(a) for a in asked_seqs]
+                _hit = [a for a in _asked_ints if a in seqs]
+                if not _hit:
+                    if named is None or asked_at is None:
                         continue
                     _sha = re.search(r"\(sha ([0-9a-f]+)\)", named[2])
                     if _sha and not (digest.startswith(_sha.group(1)) or _sha.group(1).startswith(digest)):
                         continue
-                    if seqs and _asked is not None and _asked > max(seqs):
+                    if seqs and min(_asked_ints) > max(seqs):
                         continue
+                    _hit = [a for a in _asked_ints if not seqs or a <= max(seqs)]
                 # The seat's ANSWER carries the marker. A later remark about that answer does
                 # not, and must not displace it: on 2026-09-22 this pointed at seq 3300, a seat
                 # aside, while the run it was about was seq 3299.
                 if unchanged and answer_text.startswith(_RUN_MARKER) \
                         and not text.startswith(_RUN_MARKER):
                     continue
-                unchanged = (asked_at, t.get("seq"))
+                unchanged = (max(_hit), t.get("seq"))
                 answer_text = text
         lines = [f"[request_run] {rel}",
                  f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
@@ -3328,6 +3337,20 @@ class HestiaF1aDispatcher:
         if not said.ok:
             return ResultEnvelope(ok=False, error=f"could not hand the request to the seat: {said.error}")
         result = {}
+        # What the seat's answer was: its receipt's first line says "I ran" or "I did not run".
+        # THREE STATES, NOT TWO. Nova hold on #447 at 40aa6dc4: everything that was not an
+        # explicit decline was labelled "That run is evidence of what this file does", so a
+        # prose-only refusal ("I'm not running this, it opens video1. Answers your request seq
+        # 387") became evidence of a run that never happened. A turn naming the request's seq
+        # is an ANSWER, not proof of EXECUTION. Executed needs the run marker for this file
+        # (and, where the receipt states a sha, these bytes); declined needs the decline
+        # marker; anything else is an answer whose run status the receipt does not know.
+        _verdict = _SEAT_RUN_LINE.match(answer_text.split("\n", 1)[0]) if unchanged else None
+        declined = bool(_verdict and _verdict.group(1) == "did not run" and unchanged[0] is not None)
+        _ran_sha = re.search(r"\(sha ([0-9a-f]+)\)", answer_text.split("\n", 1)[0]) if _verdict else None
+        executed = bool(_verdict and _verdict.group(1) == "ran"
+                        and (_ran_sha is None or digest.startswith(_ran_sha.group(1))
+                             or _ran_sha.group(1).startswith(digest)))
         if unchanged:
             # CARRY THE ANSWER, DO NOT POINT AT IT. Measured 2026-09-22 over cbp-being's 556
             # beats: an edit receipt that names the defect in its own return value ("Python
@@ -3337,21 +3360,46 @@ class HestiaF1aDispatcher:
             # — no lift at all (Fisher p=7e-5). A seq number is a pointer to a channel that
             # does not move it. So the receipt says what the run said.
             carried = _carry_head_and_tail(answer_text.strip())
-            if unchanged[0] is None:
+            if declined:
+                # A DECLINE IS NOT A RUN. Measured 2026-10-14 (sprout-being, seq 331): after
+                # six declines of one unchanged file, each re-request came back "That run is
+                # evidence of what this file does" over the seat's decline, and the being asked
+                # again "with rerun=true to force execution". Nothing had run to be evidence.
+                result["unchanged"] = (
+                    f"This file is byte-for-byte the one you asked about at seq {unchanged[0]}, and "
+                    f"the seat answered that at seq {unchanged[1]}: it did not run it. Nothing ran. "
+                    f"Its reason:\n"
+                    f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
+                    f"The same file will most likely get the same answer, unless what that reason "
+                    f"rests on has changed. To change what you ask for: memory_edit the lines, or "
+                    f"retire_note the file and then memory_write it anew.")
+            elif unchanged[0] is None:
                 since = (f"This file is byte-for-byte the one the seat ran at seq {unchanged[1]}, "
                          f"on its own, before you asked. ")
             else:
                 since = (f"This file is byte-for-byte the one you asked about at seq {unchanged[0]}, and "
                          f"the seat answered that at seq {unchanged[1]}. ")
-            result["unchanged"] = (
-                since +
-                f"Nothing in it has changed since. That run is evidence of what this file does, "
-                f"not a promise: the same bytes at the same path with the same arguments will "
-                f"most likely say the same again, unless something it reads, the clock or "
-                f"chance differs. What it said:\n"
-                f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
-                f"To change what runs: memory_edit the lines, or retire_note the file and then "
-                f"memory_write it anew.")
+            if not declined and not executed:
+                # Answered, but not by a run receipt for these bytes: say what is known (the seat
+                # answered) and what is not (whether anything ran), and carry the answer itself.
+                result["unchanged"] = (
+                    since +
+                    f"Nothing in it has changed since. That answer does not say the file ran, so "
+                    f"it is not evidence of what this file does; whether it ran is not known from "
+                    f"it. What the seat said:\n"
+                    f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
+                    f"To change what you ask for: memory_edit the lines, or retire_note the file "
+                    f"and then memory_write it anew.")
+            if not declined and executed:
+                result["unchanged"] = (
+                    since +
+                    f"Nothing in it has changed since. That run is evidence of what this file does, "
+                    f"not a promise: the same bytes at the same path with the same arguments will "
+                    f"most likely say the same again, unless something it reads, the clock or "
+                    f"chance differs. What it said:\n"
+                    f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
+                    f"To change what runs: memory_edit the lines, or retire_note the file and then "
+                    f"memory_write it anew.")
         note = ("The seat has been asked and woken. NOTHING HAS RUN YET and this is not "
                 "a result. The seat may run it or decline, and either way it answers in "
                 f"'{seat_conv}'. Nothing is owed by you in the meantime.")
@@ -3364,6 +3412,13 @@ class HestiaF1aDispatcher:
                     "same file, unchanged, and that answer is above. NOTHING HAS RUN. To have it "
                     "run again anyway, call request_run again with its argument rerun set to "
                     "'true', next to path and why. It is not a line in your file.")
+            if declined:
+                note = ("The request was recorded in "
+                        f"'{seat_conv}', but the seat was NOT woken for it: it already declined this "
+                        "same file, unchanged, and its reason is above. NOTHING HAS RUN. Calling "
+                        "request_run again with its argument rerun set to 'true', next to path and "
+                        "why, asks the seat again; it does not make the file run, and the seat "
+                        "still decides. It is not a line in your file.")
         return ResultEnvelope(ok=True, witness_id=said.witness_id, result={
             **result,
             "requested": rel,

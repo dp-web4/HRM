@@ -12,7 +12,7 @@ inventory -- and only the programs change:
   | play a file     | pw-play [--target <node>]      | afplay (the system default output)                   |
   | fallback voice  | espeak-ng -w out.wav -- text   | say -o out.wav -f <text file> (the words never in argv) |
   | inventory       | pw-dump                        | system_profiler -json SPAudioDataType                |
-  | camera frame    | ffmpeg -f v4l2 -i /dev/videoN  | ffmpeg -f avfoundation -i "<camera>:none" (opt-in)   |
+  | camera frame    | ffmpeg -f v4l2 -i /dev/videoN  | ffmpeg -f avfoundation -i "<camera>:none"            |
 
 Chosen like the launchd wake path (SAGE #359): $SAGE_AUDIO_BACKEND ("pipewire" | "avfoundation")
 when set, otherwise avfoundation on Darwin and pipewire everywhere else. Nothing here changes what
@@ -86,8 +86,8 @@ def synth_fallback(text: str, out_wav: str, timeout: float) -> None:
 # THE CAMERA ON A MAC (2026-10-15, McNugget: a UVC camera, "AIRHUG 02"). Linux names a camera by its
 # /dev/video node; AVFoundation names it by its device name. The same AVFoundation list holds the
 # SCREENS ("Capture screen 0"), so the being never picks the device: the seat does, from the cameras
-# alone. The camera is OFF unless the operator declares `camera_source: "avfoundation"` in
-# instance.json; see being_gate_client.camera_command. The sensor needs about a second to settle
+# alone. It is on whenever one is attached; unplugging it is the off switch, and the being sees that
+# as the camera going away (gateway/body.camera_change). The sensor needs about a second to settle
 # (the first frames come out solid green, then underexposed), so the capture discards 1.5 s first.
 CAMERA_WARMUP_S = 1.5
 

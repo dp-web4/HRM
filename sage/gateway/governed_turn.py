@@ -239,7 +239,7 @@ def offered_tools(tools_arg, instance):
     from sage.gateway import toolset
     try:
         from sage.gateway import body as _body
-        reading = _body.reading(camera_source=instance_config(instance).get("camera_source"))
+        reading = _body.reading()
     except Exception:
         reading = None
     return toolset.specs(toolset.unavailable(reading, worktree_for(instance), instance_config(instance)))

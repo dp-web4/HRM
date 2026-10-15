@@ -2194,7 +2194,8 @@ class HestiaF1aDispatcher:
         full_out = os.path.realpath(os.path.join(self.memory_root, out_rel))
         cortex = getattr(self, "camera_source", None) == "cortex"
         # a Mac's camera has no device node: the seat picks it by name (platform_av.mac_camera)
-        mac = getattr(self, "camera_source", None) == "avfoundation"
+        from sage.embodiment import platform_av
+        mac = not cortex and platform_av.backend() == "avfoundation"
         device = "cortex" if cortex else "avfoundation" if mac else intent.args.get("device", "/dev/video0")
 
         try:
@@ -2282,7 +2283,7 @@ class HestiaF1aDispatcher:
             _err = (proc.stderr or b"").decode("utf-8", "replace").strip()
             kind = ("macOS has not given this process the camera (Privacy & Security > Camera)"
                     if "authoriz" in _err.lower() or "permission" in _err.lower()
-                    else "the camera could not be opened or read")
+                    else "the camera could not be opened or read (it may have just been unplugged)")
             return ResultEnvelope(ok=False, witness_id=action_id, result={
                 "device": device, "out_path": out_rel, "exit_code": proc.returncode,
                 "stderr": _err[:300] or "(nothing said)",

@@ -166,16 +166,36 @@ def gaze() -> Dict:
             "chosen_by": g.get("chosen_by"), "ts": g.get("ts"), "words": g.get("words")}
 
 
-def reading(now: Optional[float] = None, camera_source: Optional[str] = None) -> Dict:
+def reading(now: Optional[float] = None) -> Dict:
     """Everything the body block is rendered from, recorded on the beat so the NEXT beat can say
-    what changed since. `camera_source` is the seat's instance.json value (a Mac's camera is off
-    unless it is "avfoundation")."""
+    what changed since."""
     now = time.time() if now is None else now
     heard = _heard_since(now - HEARD_LOOKBACK_S)
     return {"perception": perception(now), "metabolism": metabolism(), "gaze": gaze(),
             "machine": machine_body(),
-            "inventory": inventory(now, camera_source), "heard": heard,
+            "inventory": inventory(now), "heard": heard,
             "heard_until": max([float(h.get("ts", 0)) for h in heard] or [0.0])}
+
+
+def _no_cortex_body() -> bool:
+    from sage.embodiment import platform_av
+    return platform_av.backend() == "avfoundation"
+
+
+def camera_change(inv: Optional[Dict], prev_inv: Optional[Dict]) -> str:
+    """One line when a camera went away or arrived since the last beat, else "". Unplugging the
+    camera is how the operator takes sight away (dp 2026-10-15), so it is said, not just absent."""
+    if not inv or not prev_inv:
+        return ""
+    now, before = set(inv.get("video_devices") or []), set(prev_inv.get("video_devices") or [])
+    gone, came = sorted(before - now), sorted(now - before)
+    out = []
+    if gone:
+        out.append(f"your camera {', '.join(gone)} is no longer attached"
+                   + (" -- `camera` is unavailable until it comes back" if not now else ""))
+    if came:
+        out.append(f"camera {', '.join(came)} is now attached" + (" -- `camera` is available" if not before else ""))
+    return f"- Since your last beat: {'; '.join(out)}." if out else ""
 
 
 def render(cur: Dict, prev: Optional[Dict], name: str = "", proprioception: bool = True) -> str:
@@ -201,7 +221,8 @@ def render(cur: Dict, prev: Optional[Dict], name: str = "", proprioception: bool
         if p.get("salience") is not None:
             lines.append(f"- How much that moment stood out: {float(p['salience']):.2f} of 1"
                          f"; how well your senses agree: {float(p.get('coherence') or 0):.2f} of 1")
-    elif (cur.get("inventory") or {}).get("video_devices") or p.get("age_s"):
+    elif p.get("age_s") or ((cur.get("inventory") or {}).get("video_devices") and not _no_cortex_body()):
+        # "offline" means a cortex that is not running; a Mac body has no cortex, its camera is on demand
         age = p.get("age_s")
         lines.append("- Your senses are offline this beat"
                      + (f" (last reading {int(age // 60)} min ago)" if age else "") + ".")
@@ -233,6 +254,9 @@ def render(cur: Dict, prev: Optional[Dict], name: str = "", proprioception: bool
             lines.append(f"- The last thing you felt came from {m['felt_source']}.")
     else:
         lines.append("- Your daemon's loop is not reporting this beat.")
+    lapse = camera_change(inv, (prev or {}).get("inventory"))
+    if lapse:
+        lines.append(lapse)
     if inv:
         lines.append(render_inventory(inv))
     dev = inv.get("audio_device") or {}
@@ -355,15 +379,15 @@ def _pw_audio(timeout: float = 4.0) -> Dict:
     return {"sinks": sinks, "sources": sources}
 
 
-def inventory(now: Optional[float] = None, camera_source: Optional[str] = None) -> Dict:
+def inventory(now: Optional[float] = None) -> Dict:
     """Measure this machine's body. Every field is observed; absence is reported as absence."""
     now = time.time() if now is None else now
     from sage.embodiment import platform_av
-    # a Mac's cameras are AVFoundation names (screens left out), not /dev/video nodes, and are off
-    # until the seat declares camera_source "avfoundation" (being_gate_client.camera_command)
-    mac = platform_av.backend() == "avfoundation"
-    videos = platform_av.mac_cameras() if mac else sorted(glob.glob("/dev/video*"))
-    camera_off = bool(mac and videos and camera_source != "avfoundation")
+    # a Mac's cameras are AVFoundation names (screens left out), not /dev/video nodes. On whenever
+    # one is attached (dp 2026-10-15): the operator turns it off by unplugging it, which the being
+    # sees as the camera going away (render, "since your last beat").
+    videos = (platform_av.mac_cameras() if platform_av.backend() == "avfoundation"
+              else sorted(glob.glob("/dev/video*")))
     serials = sorted(glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*"))
     p = perception(now)
     m = metabolism()
@@ -373,13 +397,13 @@ def inventory(now: Optional[float] = None, camera_source: Optional[str] = None) 
     dev = audio_device()
     # cameras held by a live cortex (CSI via Argus) cannot be opened by a second process
     return {
-        "video_devices": videos, "camera_off": camera_off,
+        "video_devices": videos,
         "cameras_held_by_cortex": p.get("eyes", 0) if cortex_live else 0,
         "audio_sinks": audio.get("sinks", []), "audio_sources": audio.get("sources", []),
         "serial_devices": serials,
         "cortex_live": cortex_live, "daemon_live": bool(m.get("live")),
         "verbs": (["gaze"] if cortex_live else [])
-                 + (["camera"] if videos and not cortex_live and not camera_off else [])
+                 + (["camera"] if videos and not cortex_live else [])
                  + (["speak"] if can_speak else [])
                  + (["pair_audio"] if dev and not dev.get("connected") else [])
                  + ["say", "peer_ask"],
@@ -397,9 +421,6 @@ def render_inventory(inv: Dict) -> str:
     held = inv.get("cameras_held_by_cortex") or 0
     if held:
         parts.append(f"{held} camera{'s' if held != 1 else ''} run by your cortex, which reports the scene to you in words")
-    elif nv and inv.get("camera_off"):
-        parts.append(f"{nv} camera{'s' if nv != 1 else ''}, off until your operator turns "
-                     f"{'them' if nv != 1 else 'it'} on")
     elif nv:
         parts.append(f"{nv} camera device{'s' if nv != 1 else ''} you can capture from with `camera`")
     mics = inv.get("audio_sources") or []; spk = inv.get("audio_sinks") or []

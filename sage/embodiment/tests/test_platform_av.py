@@ -174,49 +174,48 @@ def test_the_mac_frame_skips_the_warmup_and_is_written_atomically():
     assert argv[-4:] == ["image2", "-atomic_writing", "1", "/h/scratch/camera/last-frame.jpg"]
 
 
-def test_a_mac_camera_is_off_until_the_seat_declares_it(tmp_path=None):
+def test_a_mac_camera_is_on_when_attached_and_never_a_screen(tmp_path=None):
     import shlex
     import tempfile
-    from sage.gateway.being_gate_client import camera_command, CAMERA_OFF_UNTIL_DECLARED
+    from sage.gateway.being_gate_client import camera_command
     home = os.path.realpath(str(tmp_path or tempfile.mkdtemp()))
     ctx = {"worktree": "/wt", "memory_root": home}
     with Backend("avfoundation"), Cameras(["AIRHUG 02"]):
-        try:
-            camera_command({}, ctx)
-            raise AssertionError("an undeclared Mac camera composed a command")
-        except ValueError as e:
-            assert str(e) == CAMERA_OFF_UNTIL_DECLARED
-        cmd = camera_command({"device": "Capture screen 0"}, dict(ctx, camera_source="avfoundation"))
+        cmd = camera_command({"device": "Capture screen 0"}, ctx)
         argv = shlex.split(cmd)
         # the being's device is not used: the seat picks the camera, never a screen
         assert argv[argv.index("-i") + 1] == "AIRHUG 02:none" and "screen" not in cmd
         assert argv[-1] == os.path.join(home, "scratch/camera/last-frame.jpg")
     with Backend("avfoundation"), Cameras([]):
         try:
-            camera_command({}, dict(ctx, camera_source="avfoundation"))
+            camera_command({}, ctx)
             raise AssertionError("no camera, yet a command was composed")
         except ValueError as e:
-            assert "no camera" in str(e)
+            assert "no camera attached" in str(e)
     with Backend("pipewire"):
         assert "-f v4l2 -i /dev/video0" in camera_command({}, ctx)       # Linux unchanged
-        try:
-            camera_command({}, dict(ctx, camera_source="avfoundation"))
-            raise AssertionError("an avfoundation camera composed on Linux")
-        except ValueError as e:
-            assert "not a Mac" in str(e)
 
 
-def test_the_body_says_an_attached_camera_is_off_and_offers_no_verb():
+def test_unplugging_the_camera_is_seen_as_it_going_away():
     from sage.gateway import body, toolset
     with Backend("avfoundation"), Cameras(["AIRHUG 02"]):
-        off = body.inventory(camera_source=None)
-        on = body.inventory(camera_source="avfoundation")
-    assert off["video_devices"] == ["AIRHUG 02"] and off["camera_off"] is True
-    assert "camera" not in off["verbs"] and "off until your operator" in body.render_inventory(off)
-    assert "camera" in on["verbs"] and on["camera_off"] is False
+        on = body.inventory()
+    with Backend("avfoundation"), Cameras([]):
+        off = body.inventory()
+    assert on["video_devices"] == ["AIRHUG 02"] and "camera" in on["verbs"]
     assert "you can capture from with `camera`" in body.render_inventory(on)
-    assert "is off" in toolset.unavailable({"inventory": off}, "/wt").get("camera", "")
     assert "camera" not in toolset.unavailable({"inventory": on}, "/wt")
+    assert "camera" not in off["verbs"] and "no camera" in toolset.unavailable({"inventory": off}, "/wt")["camera"]
+    gone = body.camera_change(off, on)
+    assert "AIRHUG 02 is no longer attached" in gone and "unavailable until it comes back" in gone
+    back = body.camera_change(on, off)
+    assert "AIRHUG 02 is now attached" in back and "`camera` is available" in back
+    assert body.camera_change(on, on) == "" and body.camera_change(on, None) == ""
+    with Backend("avfoundation"):
+        # a Mac body has no cortex: an attached camera is not "senses offline"
+        text = body.render({"inventory": on, "perception": {}, "metabolism": {"live": True}, "gaze": {}},
+                           {"inventory": off})
+    assert "offline" not in text and "is now attached" in text
 
 
 if __name__ == "__main__":

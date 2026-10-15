@@ -190,7 +190,10 @@ def complete_pending(instance: Path, workspace: Optional[str], relayed_by: str) 
             stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             section = _delivered_section(got, f"Copied by {relayed_by} at {stamp}, on a later pass: the post had "
                                               f"not reached this machine when the notice was delivered.")
-            p.write_text(text.replace(f"\n{_NOT_YET}\n", section, 1), encoding="utf-8")
+            # tmp + replace: the being's beat may be reading this envelope through delivered_excerpt
+            tmp = p.with_name(f".{p.name}.tmp")
+            tmp.write_text(text.replace(f"\n{_NOT_YET}\n", section, 1), encoding="utf-8")
+            os.replace(tmp, p)
             out["completed"] += 1
         except Exception as e:
             out["errors"].append(f"complete {p.name}: {type(e).__name__}: {e}")

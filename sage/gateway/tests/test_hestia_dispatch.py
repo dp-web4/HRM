@@ -1793,6 +1793,73 @@ def test_an_unchanged_request_the_seat_declined_is_not_called_a_run():
     assert "rerun set to 'true'" in note and "not a line in your file" in note, note
 
 
+def _seat_for(home):
+    from sage.gateway import conversations as conv
+    conv.create(home, "seat", title="seat", participants=["seat", "sprout-being"],
+                writable_by=["seat", "sprout-being"])
+    meta = conv.get_meta(home, "seat"); meta["notify"] = {"seat": "claude-code"}
+    conv._write_meta(home, "seat", meta)
+    (home / "notes").mkdir(exist_ok=True)
+
+
+def test_a_prose_only_refusal_is_not_evidence_of_a_run():
+    """Nova hold on #447 at 40aa6dc4: an answer naming the request's seq without the run or
+    decline marker (a refusal in prose) was labelled "That run is evidence of what this file
+    does". Naming a seq makes it an answer, not proof that anything executed."""
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    d, root = _disp()
+    home = Path(root)
+    _seat_for(home)
+    (home / "notes" / "cam.py").write_text("print('p')\n")
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    conv.append(home, "seat", speaker="seat", via="seat",
+                text=f"I'm not running this, it opens video1.\n\nAnswers your request seq {asked}.")
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got = r.result["unchanged"]
+    assert "That run is evidence" not in got and "What it said" not in got, got
+    assert "does not say the file ran" in got and "not evidence of what this file does" in got, got
+    assert "it opens video1" in got, "the answer itself is carried: " + got
+    assert r.result["ran"] is False
+
+
+def test_a_verified_run_receipt_is_evidence_and_a_run_of_other_bytes_is_not():
+    """The executed state needs the run marker for this path and, where the receipt names a sha,
+    these bytes."""
+    import hashlib
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    d, root = _disp()
+    home = Path(root)
+    _seat_for(home)
+    body = "print('v')\n"
+    (home / "notes" / "cam.py").write_text(body)
+    sha = hashlib.sha256(body.encode()).hexdigest()[:12]
+    d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
+    conv.append(home, "seat", speaker="seat", via="seat",
+                text=f"[request_run] I ran notes/cam.py (sha {sha}) with no arguments. exit code 0.\n\n"
+                     f"stdout:\nv\n\nAnswers your request seq {asked}.")
+    r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got = r.result["unchanged"]
+    assert "That run is evidence of what this file does" in got and "What it said" in got, got
+
+    # Same seq answered by a run receipt that names OTHER bytes: not evidence for these.
+    d2, root2 = _disp()
+    home2 = Path(root2)
+    _seat_for(home2)
+    (home2 / "notes" / "cam.py").write_text(body)
+    d2(BeingIntent("request_run", {"path": "notes/cam.py", "why": "first"}), _ALLOW)
+    asked2 = conv.recent(home2, "seat", limit=1)[-1]["seq"]
+    conv.append(home2, "seat", speaker="seat", via="seat",
+                text=f"[request_run] I ran notes/cam.py (sha 000000000000) with no arguments. "
+                     f"exit code 0.\n\nAnswers your request seq {asked2}.")
+    r2 = d2(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
+    got2 = r2.result.get("unchanged", "")
+    assert "That run is evidence" not in got2, got2
+
+
 def test_an_answer_to_the_first_of_two_identical_asks_answers_the_next_one():
     """Measured 2026-10-14 (sprout-being): seq 387 and 388 asked for the same file and the seat
     declined it "Answers your request seq 387" (389). The scan held only the latest ask, so the

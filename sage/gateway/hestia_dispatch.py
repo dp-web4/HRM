@@ -3338,8 +3338,19 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=f"could not hand the request to the seat: {said.error}")
         result = {}
         # What the seat's answer was: its receipt's first line says "I ran" or "I did not run".
+        # THREE STATES, NOT TWO. Nova hold on #447 at 40aa6dc4: everything that was not an
+        # explicit decline was labelled "That run is evidence of what this file does", so a
+        # prose-only refusal ("I'm not running this, it opens video1. Answers your request seq
+        # 387") became evidence of a run that never happened. A turn naming the request's seq
+        # is an ANSWER, not proof of EXECUTION. Executed needs the run marker for this file
+        # (and, where the receipt states a sha, these bytes); declined needs the decline
+        # marker; anything else is an answer whose run status the receipt does not know.
         _verdict = _SEAT_RUN_LINE.match(answer_text.split("\n", 1)[0]) if unchanged else None
         declined = bool(_verdict and _verdict.group(1) == "did not run" and unchanged[0] is not None)
+        _ran_sha = re.search(r"\(sha ([0-9a-f]+)\)", answer_text.split("\n", 1)[0]) if _verdict else None
+        executed = bool(_verdict and _verdict.group(1) == "ran"
+                        and (_ran_sha is None or digest.startswith(_ran_sha.group(1))
+                             or _ran_sha.group(1).startswith(digest)))
         if unchanged:
             # CARRY THE ANSWER, DO NOT POINT AT IT. Measured 2026-09-22 over cbp-being's 556
             # beats: an edit receipt that names the defect in its own return value ("Python
@@ -3368,7 +3379,18 @@ class HestiaF1aDispatcher:
             else:
                 since = (f"This file is byte-for-byte the one you asked about at seq {unchanged[0]}, and "
                          f"the seat answered that at seq {unchanged[1]}. ")
-            if not declined:
+            if not declined and not executed:
+                # Answered, but not by a run receipt for these bytes: say what is known (the seat
+                # answered) and what is not (whether anything ran), and carry the answer itself.
+                result["unchanged"] = (
+                    since +
+                    f"Nothing in it has changed since. That answer does not say the file ran, so "
+                    f"it is not evidence of what this file does; whether it ran is not known from "
+                    f"it. What the seat said:\n"
+                    f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
+                    f"To change what you ask for: memory_edit the lines, or retire_note the file "
+                    f"and then memory_write it anew.")
+            if not declined and executed:
                 result["unchanged"] = (
                     since +
                     f"Nothing in it has changed since. That run is evidence of what this file does, "

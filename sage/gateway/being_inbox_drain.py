@@ -168,6 +168,51 @@ def _delivered_section(got: Dict, how: str) -> str:
 # time, and envelopes written before #424 carry no such line, so none of them is touched (dp, no backfill).
 _NOT_YET = "(The courier did not copy what it says: not in this machine's copy of shared-context yet.)"
 _POINTER_LINE = re.compile(r"^pointer: (.*)$", re.M)
+_KIND_LINE = re.compile(r"^kind: (.*)$", re.M)
+
+# A LATE COMPLETION IS NOTIFIED, ONCE (Nova's hold on #452, 2026-10-15). The being may have read the envelope
+# while it still said "not here yet"; filling it in afterwards told nobody, so the words could arrive unseen.
+# Each completed-late envelope is notified through the same channel as the first notice, and only a
+# successful notify writes `completion_notified:` into its front matter: a failed notify is retried on the
+# next pass, a sent one is never repeated.
+_LATE = "on a later pass: the post had not reached this machine when the notice was delivered."
+_NOTIFIED_LINE = re.compile(r"^completion_notified: ", re.M)
+
+
+def _atomic_write(p: Path, text: str) -> None:
+    # tmp + replace: the being's beat may be reading this envelope through delivered_excerpt
+    tmp = p.with_name(f".{p.name}.tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, p)
+
+
+def _front(text: str) -> str:
+    return text.split("\n---\n", 1)[0]
+
+
+def late_unnotified(instance: Path) -> List[Path]:
+    """Envelopes completed on a later pass whose completion the being has not yet been notified of."""
+    inbox = Path(instance) / "notes" / "inbox"
+    if not inbox.is_dir():
+        return []
+    out = []
+    for p in sorted(inbox.glob("*.md")):
+        try:
+            text = p.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        if _LATE in text and not _NOTIFIED_LINE.search(_front(text)):
+            out.append(p)
+    return out
+
+
+def mark_completion_notified(p: Path) -> None:
+    text = p.read_text(encoding="utf-8", errors="replace")
+    head, sep, rest = text.partition("\n---\n")
+    if not sep or _NOTIFIED_LINE.search(head):
+        return
+    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    _atomic_write(p, f"{head}\ncompletion_notified: {stamp}{sep}{rest}")
 
 
 def complete_pending(instance: Path, workspace: Optional[str], relayed_by: str) -> Dict:
@@ -188,12 +233,8 @@ def complete_pending(instance: Path, workspace: Optional[str], relayed_by: str) 
                 out["pending"] += 1
                 continue
             stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-            section = _delivered_section(got, f"Copied by {relayed_by} at {stamp}, on a later pass: the post had "
-                                              f"not reached this machine when the notice was delivered.")
-            # tmp + replace: the being's beat may be reading this envelope through delivered_excerpt
-            tmp = p.with_name(f".{p.name}.tmp")
-            tmp.write_text(text.replace(f"\n{_NOT_YET}\n", section, 1), encoding="utf-8")
-            os.replace(tmp, p)
+            section = _delivered_section(got, f"Copied by {relayed_by} at {stamp}, {_LATE}")
+            _atomic_write(p, text.replace(f"\n{_NOT_YET}\n", section, 1))
             out["completed"] += 1
         except Exception as e:
             out["errors"].append(f"complete {p.name}: {type(e).__name__}: {e}")
@@ -206,8 +247,9 @@ def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, st
     """One drain pass. `fetch` (test seam) defaults to the hub read with the being's key;
     `notify(kind, pointer)` (test seam) defaults to the seat's hestia member_notify to
     `member` — the being whose home `instance` is (its hestia plugin id, e.g. legion-being).
-    Returns {fetched, persisted, notified, skipped, completed, pending, errors[]}; `completed`/`pending` count
-    earlier envelopes whose post has / has not yet reached this machine (complete_pending).
+    Returns {fetched, persisted, notified, skipped, completed, pending, completion_notified, errors[]};
+    `completed`/`pending` count earlier envelopes whose post has / has not yet reached this machine
+    (complete_pending); `completion_notified` counts late completions told to the being on this pass.
 
     Legion 2026-09-05: the first cut hard-coded sprout-being as the notify target and
     sprout-claude as the courier, so the mirror drain on Legion would have persisted a notice
@@ -216,11 +258,34 @@ def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, st
     instance = Path(instance)
     seen_file = instance / "notes" / "inbox" / ".seen"
     seen = set(seen_file.read_text().split()) if seen_file.exists() else set()
-    out = {"fetched": 0, "persisted": 0, "notified": 0, "skipped": 0, "completed": 0, "pending": 0, "errors": []}
+    out = {"fetched": 0, "persisted": 0, "notified": 0, "skipped": 0, "completed": 0, "pending": 0,
+           "completion_notified": 0, "errors": []}
+
+    def _send(kind: str, p: Path) -> bool:
+        ptr = str(p)
+        if workspace and ptr.startswith(str(Path(workspace).resolve()) + "/"):
+            ptr = os.path.relpath(ptr, Path(workspace).resolve().parent)  # sage/instances/...
+        try:
+            r = notify(map_kind(kind), ptr) if notify is not None else _seat_notify(map_kind(kind), ptr, member=member)
+        except Exception as e:
+            out["errors"].append(f"notify: {type(e).__name__}: {e}")
+            return False
+        if not r.get("ok"):
+            out["errors"].append(f"notify: {r.get('error')}")
+        return bool(r.get("ok"))
+
     # earlier envelopes first, and whether or not the hub read below succeeds
     done = complete_pending(instance, workspace, relayed_by)
     out["completed"], out["pending"] = done["completed"], done["pending"]
     out["errors"].extend(done["errors"])
+    for p in late_unnotified(instance):
+        m = _KIND_LINE.search(_front(p.read_text(encoding="utf-8", errors="replace")))
+        if _send(m.group(1).strip() if m else "", p):
+            try:
+                mark_completion_notified(p)
+                out["completion_notified"] += 1
+            except Exception as e:
+                out["errors"].append(f"mark {p.name}: {type(e).__name__}: {e}")
     try:
         notices = fetch() if fetch is not None else fetch_notifications(env_file)
     except Exception as e:
@@ -243,18 +308,8 @@ def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, st
     seen_file.parent.mkdir(parents=True, exist_ok=True)
     seen_file.write_text("\n".join(sorted(seen)) + ("\n" if seen else ""))
     for p, n in files:
-        try:
-            ptr = str(p)
-            if workspace and ptr.startswith(str(Path(workspace).resolve()) + "/"):
-                ptr = os.path.relpath(ptr, Path(workspace).resolve().parent)  # sage/instances/...
-            r = notify(map_kind(n.get("kind", "")), ptr) if notify is not None \
-                else _seat_notify(map_kind(n.get("kind", "")), ptr, member=member)
-            if r.get("ok"):
-                out["notified"] += 1
-            else:
-                out["errors"].append(f"notify: {r.get('error')}")
-        except Exception as e:
-            out["errors"].append(f"notify: {type(e).__name__}: {e}")
+        if _send(n.get("kind", ""), p):
+            out["notified"] += 1
     return out
 
 

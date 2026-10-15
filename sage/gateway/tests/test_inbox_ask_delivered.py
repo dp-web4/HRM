@@ -130,10 +130,13 @@ def test_an_envelope_relayed_before_the_post_arrived_is_completed_on_a_later_pas
     again = d.drain_once(home, "unused", workspace=ws, fetch=lambda: [], notify=lambda k, p: {"ok": True})
     assert again["pending"] == 1 and again["completed"] == 0          # still not here: keeps waiting
     (root / "shared-context/forum/late.md").write_text("cbp-being asks: are you there?")
+    told = []
     later = d.drain_once(home, "unused", workspace=ws, relayed_by="seat",
-                         fetch=lambda: (_ for _ in ()).throw(RuntimeError("hub down")))
+                         fetch=lambda: (_ for _ in ()).throw(RuntimeError("hub down")),
+                         notify=lambda k, p: told.append((k, p)) or {"ok": True})
     t = env.read_text()
     assert later["completed"] == 1 and later["pending"] == 0           # even when the hub read fails
+    assert later["completion_notified"] == 1 and len(told) == 1         # and the being is told again
     assert d.DELIVERED_HEADING in t and "on a later pass" in t and "did not copy" not in t
     assert t.startswith("---\nkind: coordination") and "hub_notice_id: n1" in t   # the same envelope
     assert "are you there?" in hb.delivered_excerpt(home, f"sage/instances/b-being/notes/inbox/{env.name}")
@@ -151,3 +154,59 @@ def test_only_the_not_yet_reason_is_retried_and_pre_424_envelopes_are_left_alone
                             "pointer_uri": "https://github.com/x/y/pull/1"}, "seat", workspace=ws)
     assert d.complete_pending(home, ws, "seat") == {"completed": 0, "pending": 0, "errors": []}
     assert (inbox / "old.md").read_text() == old
+
+
+def _late_envelope(tmp_path):
+    """An envelope relayed before its post arrived, its first notice already sent (and so consumed)."""
+    root, ws, home = _ws(tmp_path)
+    ask = {"id": "n9", "kind": "coordination", "from": "u", "pointer_uri": "shared-context/forum/l9.md"}
+    first = []
+    d.drain_once(home, "unused", workspace=ws, member="b-being", fetch=lambda: [ask],
+                 notify=lambda k, p: first.append((k, p)) or {"ok": True})
+    assert len(first) == 1
+    (root / "shared-context/forum/l9.md").write_text("late words")
+    return root, ws, home, first[0]
+
+
+def test_a_late_completion_is_notified_exactly_once_through_the_first_notices_channel(tmp_path):
+    """Nova's hold on #452: a completion after the first notice was consumed must reach the being."""
+    _, ws, home, first = _late_envelope(tmp_path)
+    told = []
+    rec = lambda k, p: told.append((k, p)) or {"ok": True}  # noqa: E731
+    out = d.drain_once(home, "unused", workspace=ws, member="b-being", fetch=lambda: [], notify=rec)
+    assert out["completed"] == 1 and out["completion_notified"] == 1
+    assert told == [first]                                   # same kind, same envelope pointer
+    env = next((home / "notes/inbox").glob("*.md"))
+    assert "completion_notified: " in env.read_text().split("\n---\n", 1)[0]
+    for _ in range(2):                                       # later passes stay quiet
+        again = d.drain_once(home, "unused", workspace=ws, fetch=lambda: [], notify=rec)
+        assert again["completed"] == 0 and again["completion_notified"] == 0
+    assert len(told) == 1
+    assert "late words" in hb.delivered_excerpt(home, f"sage/instances/b-being/notes/inbox/{env.name}")
+
+
+def test_a_failed_completion_notice_is_retried_and_then_sent_once(tmp_path):
+    _, ws, home, _ = _late_envelope(tmp_path)
+    down = d.drain_once(home, "unused", workspace=ws, fetch=lambda: [],
+                        notify=lambda k, p: {"ok": False, "error": "daemon down"})
+    assert down["completed"] == 1 and down["completion_notified"] == 0
+    env = next((home / "notes/inbox").glob("*.md"))
+    assert "completion_notified: " not in env.read_text()      # not marked: still owed
+    told = []
+    up = d.drain_once(home, "unused", workspace=ws, fetch=lambda: [],
+                      notify=lambda k, p: told.append(p) or {"ok": True})
+    assert up["completed"] == 0 and up["completion_notified"] == 1 and len(told) == 1
+
+
+def test_envelopes_complete_at_relay_time_or_pre_424_get_no_completion_notice(tmp_path):
+    root, ws, home = _ws(tmp_path)
+    (root / "shared-context/forum/here.md").write_text("already here")
+    inbox = home / "notes/inbox"
+    told = []
+    rec = lambda k, p: told.append(p) or {"ok": True}  # noqa: E731
+    d.drain_once(home, "unused", workspace=ws, member="b-being", notify=rec,
+                 fetch=lambda: [{"id": "n3", "kind": "reply", "from": "u", "pointer_uri": "shared-context/forum/here.md"}])
+    (inbox / "old.md").write_text("---\nkind: reply\npointer: shared-context/forum/here.md\n---\n\n# old\n")
+    assert len(told) == 1                                    # the first notice only
+    out = d.drain_once(home, "unused", workspace=ws, fetch=lambda: [], notify=rec)
+    assert out["completion_notified"] == 0 and len(told) == 1

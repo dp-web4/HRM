@@ -117,3 +117,37 @@ def test_the_drain_delivers_the_words_end_to_end(tmp_path):
     assert out["persisted"] == 1 and out["notified"] == 1
     assert "/notes/inbox/" in sent[0]
     assert "hello from cbp-being" in hb.delivered_excerpt(home, sent[0])
+
+
+def test_an_envelope_relayed_before_the_post_arrived_is_completed_on_a_later_pass(tmp_path):
+    """HUB 2026-10-14: 0 of 19 inlined. The notice beat the shared-context pull, the copy ran once and lost."""
+    root, ws, home = _ws(tmp_path)
+    ask = {"id": "n1", "kind": "coordination", "from": "u", "pointer_uri": "shared-context/forum/late.md#thread=t"}
+    out = d.drain_once(home, "unused", workspace=ws, member="b-being", relayed_by="seat",
+                       fetch=lambda: [ask], notify=lambda k, p: {"ok": True})
+    env = next((home / "notes/inbox").glob("*.md"))
+    assert out["persisted"] == 1 and d.DELIVERED_HEADING not in env.read_text()
+    again = d.drain_once(home, "unused", workspace=ws, fetch=lambda: [], notify=lambda k, p: {"ok": True})
+    assert again["pending"] == 1 and again["completed"] == 0          # still not here: keeps waiting
+    (root / "shared-context/forum/late.md").write_text("cbp-being asks: are you there?")
+    later = d.drain_once(home, "unused", workspace=ws, relayed_by="seat",
+                         fetch=lambda: (_ for _ in ()).throw(RuntimeError("hub down")))
+    t = env.read_text()
+    assert later["completed"] == 1 and later["pending"] == 0           # even when the hub read fails
+    assert d.DELIVERED_HEADING in t and "on a later pass" in t and "did not copy" not in t
+    assert t.startswith("---\nkind: coordination") and "hub_notice_id: n1" in t   # the same envelope
+    assert "are you there?" in hb.delivered_excerpt(home, f"sage/instances/b-being/notes/inbox/{env.name}")
+    assert d.complete_pending(home, ws, "seat") == {"completed": 0, "pending": 0, "errors": []}  # once
+
+
+def test_only_the_not_yet_reason_is_retried_and_pre_424_envelopes_are_left_alone(tmp_path):
+    root, ws, home = _ws(tmp_path)
+    inbox = home / "notes/inbox"
+    inbox.mkdir(parents=True)
+    (root / "shared-context/forum/x.md").write_text("words")
+    old = "---\nkind: reply\npointer: shared-context/forum/x.md\n---\n\n# A notice addressed to you on the hub\n"
+    (inbox / "old.md").write_text(old)                                # pre-#424: pointer only, no reason line
+    d.persist_notice(home, {"id": "n2", "kind": "reply", "from": "u",
+                            "pointer_uri": "https://github.com/x/y/pull/1"}, "seat", workspace=ws)
+    assert d.complete_pending(home, ws, "seat") == {"completed": 0, "pending": 0, "errors": []}
+    assert (inbox / "old.md").read_text() == old

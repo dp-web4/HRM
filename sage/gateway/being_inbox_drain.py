@@ -144,15 +144,57 @@ def persist_notice(instance: Path, n: Dict, relayed_by: str, workspace: Optional
             f"If the pointer is a path you hold no reach to, that is where request_scope applies.\n")
     got = delivered_content(str(n.get("pointer_uri", "")), workspace)
     if got.get("text") is not None:
-        more = (f" It is the first {DELIVERED_CHARS} of {got['chars']} characters; memory_read on the pointer "
-                f"has the rest." if got["truncated"] else "")
-        body += (f"\n{DELIVERED_HEADING}\n\nCopied by {relayed_by} when it delivered this notice. These are "
-                 f"the sender's words, as they wrote them -- not your seat's, and not dp's.{more}\n\n"
-                 f"~~~~\n{got['text'].rstrip()}\n~~~~\n")
+        body += _delivered_section(got, f"Copied by {relayed_by} when it delivered this notice.")
     else:
         body += f"\n(The courier did not copy what it says: {got.get('why')}.)\n"
     p.write_text(body, encoding="utf-8")
     return p
+
+
+def _delivered_section(got: Dict, how: str) -> str:
+    more = (f" It is the first {DELIVERED_CHARS} of {got['chars']} characters; memory_read on the pointer "
+            f"has the rest." if got["truncated"] else "")
+    return (f"\n{DELIVERED_HEADING}\n\n{how} These are "
+            f"the sender's words, as they wrote them -- not your seat's, and not dp's.{more}\n\n"
+            f"~~~~\n{got['text'].rstrip()}\n~~~~\n")
+
+
+# THE COPY IS RETRIED UNTIL THE POST ARRIVES (hub-claude, 2026-10-14: 0 of 19 hub-being envelopes inlined,
+# including one relayed after #424). The hub notice moves in seconds; this machine's shared-context pull runs
+# on its own schedule, so a cross-machine ask was almost never here at relay time and the single copy lost
+# the race every time. Each pass now completes envelopes that said "not here yet", in place, once the post
+# is in the checkout -- no network in the drain, and it also covers a post still unpushed when the notice
+# came. Only that reason is retried: the others (outside shared-context, a URL, ...) do not change with
+# time, and envelopes written before #424 carry no such line, so none of them is touched (dp, no backfill).
+_NOT_YET = "(The courier did not copy what it says: not in this machine's copy of shared-context yet.)"
+_POINTER_LINE = re.compile(r"^pointer: (.*)$", re.M)
+
+
+def complete_pending(instance: Path, workspace: Optional[str], relayed_by: str) -> Dict:
+    """Inline what a pointer says into envelopes that were relayed before the post reached this machine.
+    Returns {completed, pending, errors[]}."""
+    out = {"completed": 0, "pending": 0, "errors": []}
+    inbox = Path(instance) / "notes" / "inbox"
+    if not workspace or not inbox.is_dir():
+        return out
+    for p in sorted(inbox.glob("*.md")):
+        try:
+            text = p.read_text(encoding="utf-8", errors="replace")
+            if _NOT_YET not in text or DELIVERED_HEADING in text:
+                continue
+            m = _POINTER_LINE.search(text.split("\n---\n", 1)[0])
+            got = delivered_content(m.group(1).strip() if m else "", workspace)
+            if got.get("text") is None:
+                out["pending"] += 1
+                continue
+            stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            section = _delivered_section(got, f"Copied by {relayed_by} at {stamp}, on a later pass: the post had "
+                                              f"not reached this machine when the notice was delivered.")
+            p.write_text(text.replace(f"\n{_NOT_YET}\n", section, 1), encoding="utf-8")
+            out["completed"] += 1
+        except Exception as e:
+            out["errors"].append(f"complete {p.name}: {type(e).__name__}: {e}")
+    return out
 
 
 def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, str], Dict]] = None,
@@ -161,7 +203,8 @@ def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, st
     """One drain pass. `fetch` (test seam) defaults to the hub read with the being's key;
     `notify(kind, pointer)` (test seam) defaults to the seat's hestia member_notify to
     `member` — the being whose home `instance` is (its hestia plugin id, e.g. legion-being).
-    Returns {fetched, persisted, notified, skipped, errors[]}.
+    Returns {fetched, persisted, notified, skipped, completed, pending, errors[]}; `completed`/`pending` count
+    earlier envelopes whose post has / has not yet reached this machine (complete_pending).
 
     Legion 2026-09-05: the first cut hard-coded sprout-being as the notify target and
     sprout-claude as the courier, so the mirror drain on Legion would have persisted a notice
@@ -170,7 +213,11 @@ def drain_once(instance: Path, env_file: str, notify: Optional[Callable[[str, st
     instance = Path(instance)
     seen_file = instance / "notes" / "inbox" / ".seen"
     seen = set(seen_file.read_text().split()) if seen_file.exists() else set()
-    out = {"fetched": 0, "persisted": 0, "notified": 0, "skipped": 0, "errors": []}
+    out = {"fetched": 0, "persisted": 0, "notified": 0, "skipped": 0, "completed": 0, "pending": 0, "errors": []}
+    # earlier envelopes first, and whether or not the hub read below succeeds
+    done = complete_pending(instance, workspace, relayed_by)
+    out["completed"], out["pending"] = done["completed"], done["pending"]
+    out["errors"].extend(done["errors"])
     try:
         notices = fetch() if fetch is not None else fetch_notifications(env_file)
     except Exception as e:

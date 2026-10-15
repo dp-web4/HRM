@@ -166,14 +166,15 @@ def gaze() -> Dict:
             "chosen_by": g.get("chosen_by"), "ts": g.get("ts"), "words": g.get("words")}
 
 
-def reading(now: Optional[float] = None) -> Dict:
+def reading(now: Optional[float] = None, camera_source: Optional[str] = None) -> Dict:
     """Everything the body block is rendered from, recorded on the beat so the NEXT beat can say
-    what changed since."""
+    what changed since. `camera_source` is the seat's instance.json value (a Mac's camera is off
+    unless it is "avfoundation")."""
     now = time.time() if now is None else now
     heard = _heard_since(now - HEARD_LOOKBACK_S)
     return {"perception": perception(now), "metabolism": metabolism(), "gaze": gaze(),
             "machine": machine_body(),
-            "inventory": inventory(now), "heard": heard,
+            "inventory": inventory(now, camera_source), "heard": heard,
             "heard_until": max([float(h.get("ts", 0)) for h in heard] or [0.0])}
 
 
@@ -354,10 +355,15 @@ def _pw_audio(timeout: float = 4.0) -> Dict:
     return {"sinks": sinks, "sources": sources}
 
 
-def inventory(now: Optional[float] = None) -> Dict:
+def inventory(now: Optional[float] = None, camera_source: Optional[str] = None) -> Dict:
     """Measure this machine's body. Every field is observed; absence is reported as absence."""
     now = time.time() if now is None else now
-    videos = sorted(glob.glob("/dev/video*"))
+    from sage.embodiment import platform_av
+    # a Mac's cameras are AVFoundation names (screens left out), not /dev/video nodes, and are off
+    # until the seat declares camera_source "avfoundation" (being_gate_client.camera_command)
+    mac = platform_av.backend() == "avfoundation"
+    videos = platform_av.mac_cameras() if mac else sorted(glob.glob("/dev/video*"))
+    camera_off = bool(mac and videos and camera_source != "avfoundation")
     serials = sorted(glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*"))
     p = perception(now)
     m = metabolism()
@@ -367,13 +373,13 @@ def inventory(now: Optional[float] = None) -> Dict:
     dev = audio_device()
     # cameras held by a live cortex (CSI via Argus) cannot be opened by a second process
     return {
-        "video_devices": videos,
+        "video_devices": videos, "camera_off": camera_off,
         "cameras_held_by_cortex": p.get("eyes", 0) if cortex_live else 0,
         "audio_sinks": audio.get("sinks", []), "audio_sources": audio.get("sources", []),
         "serial_devices": serials,
         "cortex_live": cortex_live, "daemon_live": bool(m.get("live")),
         "verbs": (["gaze"] if cortex_live else [])
-                 + (["camera"] if videos and not cortex_live else [])
+                 + (["camera"] if videos and not cortex_live and not camera_off else [])
                  + (["speak"] if can_speak else [])
                  + (["pair_audio"] if dev and not dev.get("connected") else [])
                  + ["say", "peer_ask"],
@@ -391,6 +397,9 @@ def render_inventory(inv: Dict) -> str:
     held = inv.get("cameras_held_by_cortex") or 0
     if held:
         parts.append(f"{held} camera{'s' if held != 1 else ''} run by your cortex, which reports the scene to you in words")
+    elif nv and inv.get("camera_off"):
+        parts.append(f"{nv} camera{'s' if nv != 1 else ''}, off until your operator turns "
+                     f"{'them' if nv != 1 else 'it'} on")
     elif nv:
         parts.append(f"{nv} camera device{'s' if nv != 1 else ''} you can capture from with `camera`")
     mics = inv.get("audio_sources") or []; spk = inv.get("audio_sinks") or []

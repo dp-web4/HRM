@@ -80,6 +80,12 @@ def _resolve_hestia_shared() -> Optional[str]:
     return None
 
 
+CAMERA_OFF_UNTIL_DECLARED = (
+    "the camera on this body is off: on a Mac it is turned on by the operator, by declaring "
+    "camera_source \"avfoundation\" for this seat. Nothing you can do turns it on; ask in conversation "
+    "if you want to see.")
+
+
 def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     """The shell command the seat runs for a camera intent, built from validated args.
 
@@ -139,6 +145,20 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     if source == "cortex":
         # the look client publishes by temp + rename itself, like image2's atomic_writing below
         return f"python3 -m sage.embodiment.look {shlex.quote(full)}"
+    # A MAC'S CAMERA IS OFF UNTIL ITS OPERATOR TURNS IT ON (dp 2026-10-15: listening and seeing stay
+    # off by default on McNugget). There is no /dev/video node; the seat picks the camera by name from
+    # the AVFoundation list with the screens removed, so the being's `device` is not used here, and no
+    # spelling of it can reach a screen. See sage/embodiment/platform_av.py.
+    from sage.embodiment import platform_av
+    if platform_av.backend() == "avfoundation" or source == "avfoundation":
+        if source != "avfoundation":
+            raise ValueError(CAMERA_OFF_UNTIL_DECLARED)
+        if platform_av.backend() != "avfoundation":
+            raise ValueError("camera_source 'avfoundation' is a macOS camera, and this body is not a Mac")
+        cam = platform_av.mac_camera()
+        if not cam:
+            raise ValueError("this body has no camera attached (measured: AVFoundation lists none)")
+        return shlex.join(platform_av.mac_camera_cmd(cam, full))
     device = args.get("device", "/dev/video0")
     return (f"ffmpeg -hide_banner -loglevel error -y -f v4l2 -i {shlex.quote(device)} "
             f"-frames:v 1 -qscale:v 3 -f image2 -atomic_writing 1 {shlex.quote(full)}")

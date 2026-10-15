@@ -114,6 +114,10 @@ def unavailable(body_reading: Optional[dict] = None, worktree: Optional[str] = N
             out["camera"] = "availability unknown: this machine's body was not measured this turn"
         elif not inv.get("cortex_live"):
             out["camera"] = "your eyes' organ (the cortex) is not running, so there is no frame to give you (measured)"
+    # A MAC'S CAMERA IS OFF UNTIL THE OPERATOR DECLARES camera_source "avfoundation" (dp 2026-10-15;
+    # body.inventory measures it). Attached but not turned on is said as exactly that, not "no camera".
+    if "camera" in _TOOL_SCHEMAS and (inv or {}).get("camera_off"):
+        out["camera"] = "this machine's camera is off: your operator turns it on for this seat"
     if "game" in _TOOL_SCHEMAS and not (cfg or {}).get("game_stepper"):
         out["game"] = "no game is set up on this seat (instance.json has no game_stepper)"
     return out

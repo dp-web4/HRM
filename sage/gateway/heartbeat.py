@@ -3850,7 +3850,8 @@ def main(argv=None) -> int:
     # the body block in the state, and which body verbs are offered at all (BODY_VERBS).
     try:
         from sage.gateway import body as _bodymod
-        _body_cur = _bodymod.reading()
+        from sage.gateway.governed_turn import instance_config as _icfg
+        _body_cur = _bodymod.reading(camera_source=_icfg(instance).get("camera_source"))
     except Exception as _e:
         _body_cur = {"error": f"{type(_e).__name__}: {_e}"}
     # THE ROOM (room.py): on a body that can speak, heard words become turns in the `room`

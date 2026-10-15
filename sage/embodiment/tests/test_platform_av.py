@@ -125,6 +125,100 @@ def test_audio_reads_no_header_from_a_headerless_capture():
         assert audio._capture_has_header() is True
 
 
+# ffmpeg -f avfoundation -list_devices true -i "" on McNugget, 2026-10-15 (stderr, verbatim)
+REAL_LIST = ("[AVFoundation indev @ 0x9f2c18140] AVFoundation video devices:\n"
+             "[AVFoundation indev @ 0x9f2c18140] [0] AIRHUG 02\n"
+             "[AVFoundation indev @ 0x9f2c18140] [1] Capture screen 0\n"
+             "[AVFoundation indev @ 0x9f2c18140] AVFoundation audio devices:\n"
+             "[AVFoundation indev @ 0x9f2c18140] [0] USB Mic\n"
+             "[in#0 @ 0x9f2c18000] Error opening input: Input/output error\n")
+
+
+class Cameras:
+    """Replace the AVFoundation device list (no ffmpeg runs) and $SAGE_CAMERA_DEVICE."""
+    def __init__(self, names, pinned=None):
+        self.names, self.pinned = names, pinned
+
+    def __enter__(self):
+        self.real, self.saved = pav.mac_cameras, os.environ.pop("SAGE_CAMERA_DEVICE", None)
+        pav.mac_cameras = lambda *a, **k: list(self.names)
+        if self.pinned is not None:
+            os.environ["SAGE_CAMERA_DEVICE"] = self.pinned
+        return self
+
+    def __exit__(self, *a):
+        pav.mac_cameras = self.real
+        os.environ.pop("SAGE_CAMERA_DEVICE", None)
+        if self.saved is not None:
+            os.environ["SAGE_CAMERA_DEVICE"] = self.saved
+
+
+def test_the_mac_camera_list_leaves_the_screens_out():
+    assert pav.mac_cameras(raw=REAL_LIST) == ["AIRHUG 02"]
+    assert pav.mac_cameras(raw="") == []
+
+
+def test_a_pinned_screen_is_not_a_camera():
+    with Cameras(["AIRHUG 02"]):
+        assert pav.mac_camera() == "AIRHUG 02"
+    with Cameras(["AIRHUG 02"], pinned="Capture screen 0"):
+        assert pav.mac_camera() is None
+    with Cameras([]):
+        assert pav.mac_camera() is None
+
+
+def test_the_mac_frame_skips_the_warmup_and_is_written_atomically():
+    argv = pav.mac_camera_cmd("AIRHUG 02", "/h/scratch/camera/last-frame.jpg")
+    assert argv[argv.index("-i") + 1] == "AIRHUG 02:none"
+    assert argv[argv.index("-ss") + 1] == str(pav.CAMERA_WARMUP_S) and argv.index("-ss") > argv.index("-i")
+    assert argv[-4:] == ["image2", "-atomic_writing", "1", "/h/scratch/camera/last-frame.jpg"]
+
+
+def test_a_mac_camera_is_off_until_the_seat_declares_it(tmp_path=None):
+    import shlex
+    import tempfile
+    from sage.gateway.being_gate_client import camera_command, CAMERA_OFF_UNTIL_DECLARED
+    home = os.path.realpath(str(tmp_path or tempfile.mkdtemp()))
+    ctx = {"worktree": "/wt", "memory_root": home}
+    with Backend("avfoundation"), Cameras(["AIRHUG 02"]):
+        try:
+            camera_command({}, ctx)
+            raise AssertionError("an undeclared Mac camera composed a command")
+        except ValueError as e:
+            assert str(e) == CAMERA_OFF_UNTIL_DECLARED
+        cmd = camera_command({"device": "Capture screen 0"}, dict(ctx, camera_source="avfoundation"))
+        argv = shlex.split(cmd)
+        # the being's device is not used: the seat picks the camera, never a screen
+        assert argv[argv.index("-i") + 1] == "AIRHUG 02:none" and "screen" not in cmd
+        assert argv[-1] == os.path.join(home, "scratch/camera/last-frame.jpg")
+    with Backend("avfoundation"), Cameras([]):
+        try:
+            camera_command({}, dict(ctx, camera_source="avfoundation"))
+            raise AssertionError("no camera, yet a command was composed")
+        except ValueError as e:
+            assert "no camera" in str(e)
+    with Backend("pipewire"):
+        assert "-f v4l2 -i /dev/video0" in camera_command({}, ctx)       # Linux unchanged
+        try:
+            camera_command({}, dict(ctx, camera_source="avfoundation"))
+            raise AssertionError("an avfoundation camera composed on Linux")
+        except ValueError as e:
+            assert "not a Mac" in str(e)
+
+
+def test_the_body_says_an_attached_camera_is_off_and_offers_no_verb():
+    from sage.gateway import body, toolset
+    with Backend("avfoundation"), Cameras(["AIRHUG 02"]):
+        off = body.inventory(camera_source=None)
+        on = body.inventory(camera_source="avfoundation")
+    assert off["video_devices"] == ["AIRHUG 02"] and off["camera_off"] is True
+    assert "camera" not in off["verbs"] and "off until your operator" in body.render_inventory(off)
+    assert "camera" in on["verbs"] and on["camera_off"] is False
+    assert "you can capture from with `camera`" in body.render_inventory(on)
+    assert "is off" in toolset.unavailable({"inventory": off}, "/wt").get("camera", "")
+    assert "camera" not in toolset.unavailable({"inventory": on}, "/wt")
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):

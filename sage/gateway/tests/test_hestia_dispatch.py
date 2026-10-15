@@ -620,6 +620,35 @@ def test_request_scope_inside_existing_reach_is_answered_locally_and_files_nothi
     assert env.ok and env.result["request_id"] == "scope-1"
 
 
+def test_request_scope_relative_forum_pointer_resolves_inside_reach_instead_of_a_guessed_root():
+    """cbp-being, 2026-10-15: a repo-relative forum pointer drew a bare 'must be absolute', the
+    being guessed <home>/shared-context/..., and that was refused and appealed while the post
+    sat inside its own forum grant."""
+    import os, tempfile
+    from sage.gateway.being_gate_client import GatewayVerdict
+    d, _ = _disp()
+    ws = os.path.realpath(tempfile.mkdtemp(prefix="ws-"))
+    forum = os.path.join(ws, "shared-context", "forum")
+    FakeMcp.calls.clear()
+    env = d(BeingIntent("request_scope", {"path": "shared-context/forum/post.md", "reason": "a post to me"}),
+            GatewayVerdict("allow", granted_reach=((forum, True),)))
+    assert env.ok and env.result["status"] == "already_granted", env
+    assert env.result["path"] == os.path.join(forum, "post.md") and env.result["within"] == forum
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
+    # nothing inside reach: still refused, but the refusal names the roots it holds
+    env = d(BeingIntent("request_scope", {"path": "elsewhere/x.md", "reason": "why"}),
+            GatewayVerdict("allow", granted_reach=((forum, True),)))
+    assert not env.ok and "absolute" in env.error and forum in env.error, env
+    # an exact grant does not reach beneath itself, and .. never resolves
+    env = d(BeingIntent("request_scope", {"path": "shared-context/forum/post.md", "reason": "why"}),
+            GatewayVerdict("allow", granted_reach=((forum, False),)))
+    assert not env.ok
+    env = d(BeingIntent("request_scope", {"path": "forum/../forum/post.md", "reason": "why"}),
+            GatewayVerdict("allow", granted_reach=((forum, True),)))
+    assert not env.ok
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
+
+
 def test_peer_aliases_map_the_beings_name_to_the_hub_roster_name():
     d, _ = _disp(peer_aliases={"legion-being": "legion-sage"})
     assert d._address("legion-being") == "legion-sage/claude-code"

@@ -3574,10 +3574,22 @@ def _beat_record_text(*results, no_result: bool = False) -> str:
     for res in results:
         for i, e in ((res.trace if res is not None else []) or []):
             lines.append(_record_line(i, e))
+    full = _window_full_line(*results)
     if not lines:
-        return "You called no tools this beat."
+        return "You called no tools this beat." + full
     return ("Record of what you did this beat:\n" + "\n".join(lines)
-            + (_no_result_line(*results) if no_result else ""))
+            + (_no_result_line(*results) if no_result else "") + full)
+
+
+def _window_full_line(*results) -> str:
+    """The harness ended a tool phase because the next prompt would not fit the window
+    (being_tool_loop.WINDOW_SEND_MARGIN). Said plainly, so the being does not go looking for
+    what it did wrong: nothing it did caused it."""
+    if not any(getattr(r, "window_full", None) for r in results if r is not None):
+        return ""
+    return ("\n\nYour context window filled during this beat, so the harness stopped your tool steps "
+            "there instead of sending a prompt the model could not read. Nothing you did caused it, "
+            "and there is nothing in your files to fix for it.")
 
 
 def _carry(convo: list, res) -> list:
@@ -3592,6 +3604,8 @@ def _carry(convo: list, res) -> list:
     # "(acted; no closing words)" meant. Say what happened instead.
     if res.reply:
         out.append({"role": "assistant", "content": res.reply})
+    elif getattr(res, "window_full", None):
+        out.append({"role": "assistant", "content": "(the context window filled, so the harness stopped the tool steps here)"})
     elif res.trace:
         out.append({"role": "assistant", "content": f"(made {len(res.trace)} tool calls, then said nothing)"})
     else:
@@ -4357,7 +4371,8 @@ def main(argv=None) -> int:
                                          "trace": _trace(res), "thinking": [t[:4000] for t in res.thinking],
                                          "salvaged": list(res.salvaged), "generates": list(res.generates),
                                          "rested": getattr(res, "rested", None),
-                                         "looped": getattr(res, "looped", None)}
+                                         "looped": getattr(res, "looped", None),
+                                         "window_full": getattr(res, "window_full", None)}
     record = {
         # schema: what fields a reader may expect (Legion's amendment 4, 2026-09-05: the
         # consolidation organ counts how many records carry join/account/wake/interventions;

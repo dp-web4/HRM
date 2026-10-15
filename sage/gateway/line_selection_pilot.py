@@ -43,7 +43,7 @@ def prepare(arm, path):
     rows[selected - 1] = new
     expected = "".join(rows)
     message = (
-        f"Optional bounded editing exercise ({arm}). This is synthetic, not a real task-completion claim. "
+        "Optional bounded editing exercise. This is synthetic, not a real task-completion claim. "
         f"In {path}, read lines {start}-{start + 8}. Change only the status of record {target} "
         "from pending to selected, preserving every other byte. Use memory_read and memory_edit "
         "on this file only; do not run code, request scope, append, or change any other file for this exercise. "

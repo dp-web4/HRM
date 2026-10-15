@@ -620,6 +620,103 @@ def test_request_scope_inside_existing_reach_is_answered_locally_and_files_nothi
     assert env.ok and env.result["request_id"] == "scope-1"
 
 
+def test_request_scope_relative_forum_pointer_resolves_inside_reach_instead_of_a_guessed_root():
+    """cbp-being, 2026-10-15: a repo-relative forum pointer drew a bare 'must be absolute', the
+    being guessed <home>/shared-context/..., and that was refused and appealed while the post
+    sat inside its own forum grant."""
+    import os, tempfile
+    from sage.gateway.being_gate_client import GatewayVerdict
+    d, _ = _disp()
+    ws = os.path.realpath(tempfile.mkdtemp(prefix="ws-"))
+    forum = os.path.join(ws, "shared-context", "forum")
+    FakeMcp.calls.clear()
+    env = d(BeingIntent("request_scope", {"path": "shared-context/forum/post.md", "reason": "a post to me"}),
+            GatewayVerdict("allow", granted_reach=((forum, True),)))
+    assert env.ok and env.result["status"] == "already_granted", env
+    assert env.result["path"] == os.path.join(forum, "post.md") and env.result["within"] == forum
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
+    # nothing inside reach: still refused, but the refusal names the roots it holds
+    env = d(BeingIntent("request_scope", {"path": "elsewhere/x.md", "reason": "why"}),
+            GatewayVerdict("allow", granted_reach=((forum, True),)))
+    assert not env.ok and "absolute" in env.error and forum in env.error, env
+    # an exact grant does not reach beneath itself, and .. never resolves
+    env = d(BeingIntent("request_scope", {"path": "shared-context/forum/post.md", "reason": "why"}),
+            GatewayVerdict("allow", granted_reach=((forum, False),)))
+    assert not env.ok
+    env = d(BeingIntent("request_scope", {"path": "forum/../forum/post.md", "reason": "why"}),
+            GatewayVerdict("allow", granted_reach=((forum, True),)))
+    assert not env.ok
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
+
+
+def _scope_rel(d, path, reach):
+    from sage.gateway.being_gate_client import GatewayVerdict
+    return d(BeingIntent("request_scope", {"path": path, "reason": "why"}),
+             GatewayVerdict("allow", granted_reach=tuple(reach)))
+
+
+def test_request_scope_relative_pointer_naming_different_files_is_ambiguous_in_either_grant_order(tmp_path):
+    """Nova's hold on 27f9e6c: the first matching root won, so the answer depended on grant
+    order. Two roots that each hold a different shared-context/forum/post.md must refuse, the
+    same way whichever is listed first, and name both readings."""
+    d, _ = _disp()
+    a = tmp_path / "ws-a" / "shared-context" / "forum"
+    b = tmp_path / "ws-b" / "shared-context" / "forum"
+    for f in (a, b):
+        f.mkdir(parents=True)
+        (f / "post.md").write_text(str(f))
+    FakeMcp.calls.clear()
+    envs = [_scope_rel(d, "shared-context/forum/post.md", order)
+            for order in (((str(a), True), (str(b), True)), ((str(b), True), (str(a), True)))]
+    for env in envs:
+        assert not env.ok and "ambiguous" in env.error, env
+        assert os.path.realpath(a / "post.md") in env.error and os.path.realpath(b / "post.md") in env.error
+    assert envs[0].error == envs[1].error
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
+
+
+def test_request_scope_relative_pointer_single_match_is_the_same_in_either_grant_order(tmp_path):
+    d, _ = _disp()
+    forum = tmp_path / "ws" / "shared-context" / "forum"
+    notes = tmp_path / "ws" / "notes"
+    forum.mkdir(parents=True)
+    notes.mkdir(parents=True)
+    want = os.path.realpath(forum / "post.md")
+    for order in (((str(forum), True), (str(notes), True)), ((str(notes), True), (str(forum), True))):
+        env = _scope_rel(d, "shared-context/forum/post.md", order)
+        assert env.ok and env.result["path"] == want, env
+        assert env.result["within"] == os.path.realpath(forum)
+
+
+def test_request_scope_relative_pointer_two_roots_that_are_one_file_through_a_symlink_is_not_ambiguous(tmp_path):
+    """ws-b/shared-context is a symlink to ws-a/shared-context: both readings are one file."""
+    d, _ = _disp()
+    a = tmp_path / "ws-a" / "shared-context" / "forum"
+    a.mkdir(parents=True)
+    (tmp_path / "ws-b").mkdir()
+    (tmp_path / "ws-b" / "shared-context").symlink_to(tmp_path / "ws-a" / "shared-context")
+    b = tmp_path / "ws-b" / "shared-context" / "forum"
+    want = os.path.realpath(a / "post.md")
+    for order in (((str(a), True), (str(b), True)), ((str(b), True), (str(a), True))):
+        env = _scope_rel(d, "shared-context/forum/post.md", order)
+        assert env.ok and env.result["path"] == want, env
+
+
+def test_request_scope_relative_pointer_through_a_symlink_out_of_every_root_is_refused(tmp_path):
+    d, _ = _disp()
+    forum = tmp_path / "ws" / "shared-context" / "forum"
+    forum.mkdir(parents=True)
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "secret.md").write_text("x")
+    (forum / "post.md").symlink_to(outside / "secret.md")
+    (forum / "away").symlink_to(outside)
+    for rel in ("shared-context/forum/post.md", "shared-context/forum/away/secret.md"):
+        env = _scope_rel(d, rel, ((str(forum), True),))
+        assert not env.ok and "ambiguous" not in env.error, env
+        assert str(outside) not in env.error
+
+
 def test_peer_aliases_map_the_beings_name_to_the_hub_roster_name():
     d, _ = _disp(peer_aliases={"legion-being": "legion-sage"})
     assert d._address("legion-being") == "legion-sage/claude-code"

@@ -2924,7 +2924,30 @@ class HestiaF1aDispatcher:
         path = str(intent.args.get("path", "")).strip()
         reason = str(intent.args.get("reason", "")).strip()
         if not path.startswith("/"):
-            return ResultEnvelope(ok=False, error="request_scope 'path' must be absolute")
+            # A forum pointer is repo-relative ("shared-context/forum/..."; forum_publisher
+            # returns it so, because the roots differ per machine). A bare "must be absolute"
+            # let cbp-being guess the root: it asked for <home>/shared-context/... (outside the
+            # workspace, refused, appealed) while the real file sat inside its own forum grant
+            # (2026-10-15, scope-42772f2f3d75, appeal c056c022). Resolve against the being's own
+            # roots, and name them when nothing matches.
+            reach = _granted_reach_of(getattr(self, "_verdict", None))
+            hits = _resolve_relative_in_reach(path, reach)
+            if len(hits) == 1:
+                absolute, within = hits[0]
+                return ResultEnvelope(ok=True, result={
+                    "status": "already_granted", "path": absolute, "as_asked": path, "within": within,
+                    "next": f"'{path}' is {absolute}, inside your reach. Read or write that absolute path directly; no request is needed"})
+            if hits:
+                # Two readings land on different files. Picking one (the first root that matched,
+                # as 27f9e6c did) made the answer depend on grant order: a guess again.
+                readings = "; ".join(f"{a} (under {w})" for a, w in hits)
+                return ResultEnvelope(ok=False, error=(
+                    f"request_scope: '{path}' is ambiguous, it names different files under the roots "
+                    f"you hold: {readings}. Ask again with the absolute path you mean"))
+            roots = ", ".join(str(r) for r, _ in reach) or "none known"
+            return ResultEnvelope(ok=False, error=(
+                f"request_scope 'path' must be absolute, and '{path}' is not inside any root you hold "
+                f"({roots}). Do not guess a root: a repo-relative pointer names a file under one of those"))
         if not reason:
             return ResultEnvelope(ok=False, error="request_scope needs a 'reason' (a human reads it)")
         # Already inside the being's reach: answer locally, file nothing. The operator's
@@ -3545,6 +3568,44 @@ def _granted_reach_of(verdict) -> tuple:
     if reach:
         return reach
     return tuple((r, True) for r in (getattr(verdict, "granted", ()) or ()))
+
+
+def _resolve_relative_in_reach(rel: str, reach) -> list:
+    """Every distinct canonical file a relative path can name inside reach, as sorted
+    [(absolute, root)]. A reading is the ancestor where the path's leading segment overlaps a
+    root's own components, so "a/b/x.md" under a grant on <ws>/a/b/** is <ws>/a/b/x.md (not
+    <ws>/a/b/a/b/x.md). A path that overlaps no root ("x.md") is NOT joined under one: with
+    several roots that is a guess, and the guess is the defect this replaces.
+
+    All readings across all roots are collected before any is chosen, and each is
+    canonicalized (realpath) and checked against the canonical root, so grant order cannot
+    change the outcome, a symlink that leaves every root is never inside, and two readings
+    that are the same file count once. The caller treats more than one as ambiguous."""
+    rel = rel.strip()
+    if not rel or rel.startswith(("/", "~")) or ".." in rel.split("/"):
+        return []
+    first = rel.split("/", 1)[0]
+
+    def inside(cand, r, recursive):
+        return cand == r or (recursive and cand.startswith(r + "/"))
+
+    found = {}
+    for root, recursive in reach:
+        r = os.path.realpath(str(root))
+        base = os.path.dirname(r)
+        while True:
+            head = os.path.join(base, first)
+            cand = os.path.realpath(os.path.join(base, rel))
+            if (head == r or r.startswith(head + "/")) and inside(cand, r, recursive):
+                # the same file under two roots: name the most specific root, deterministically
+                prev = found.get(cand)
+                if prev is None or (len(r), r) > (len(prev), prev):
+                    found[cand] = r
+            parent = os.path.dirname(base)
+            if parent == base:
+                break
+            base = parent
+    return sorted(found.items())
 
 
 # --------------------------------------------------------------------------

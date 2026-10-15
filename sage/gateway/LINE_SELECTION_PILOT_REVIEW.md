@@ -2,7 +2,8 @@
 
 Prepared 2026-10-15. These are planned inputs, not delivery receipts or behavioral
 results. The supervising seat confirmed an existing scratch grant and a scheduling
-window in issue #456; independent review and a fresh pre-delivery check remain due.
+window in issue #456. Independent review identified the scorer issues addressed
+below; confirmation of those fixes and a fresh pre-delivery check remain due.
 
 The ordinary trial precedes the guided trial. Filenames carry neither arm names nor
 target names. The common message prefix does not disclose the arm. The guidance
@@ -27,7 +28,9 @@ python3 -m sage.gateway.line_selection_pilot prepare --arm guided --path scratch
 
 The output is a **seat-only pack containing the oracle**. Only its `fixture` and
 `message` strings are candidates for delivery. Never deliver the pack or oracle.
-Scratch fixtures must stay out of commits, even though scratch is tracked.
+Scratch fixtures must stay out of commits: scratch is not gitignored. Before
+installation, the supervising seat must check whether automatic snapshots could
+capture the fixture or the being's edits, and arrange their exclusion.
 
 ## Pre-delivery observation and proposed timing
 
@@ -49,7 +52,10 @@ full delivered bytes, including any courier wrapper. No fixed delivery timestamp
 has been booked. Deliver ordinary only; consider guided only after the ordinary
 record is complete and its stop conditions have been checked. Count at most two
 actual ordinary beats per trial, including inbox-triggered beats; elapsed time is
-not the beat count. No hidden retries or tutoring.
+not the beat count. No hidden retries or seat tutoring. The dispatcher can supply
+the correct absolute line in a refusal. **Only the first edit is evidence of line
+selection**; recovery after a refusal measures following tool feedback and must
+not be counted as independent line selection.
 
 Separate being selection errors from tool-side refusals, splices and receipt
 misreads. Preserve the first proposal even when refused, every recovery attempt,
@@ -59,5 +65,25 @@ phase, not complete trial safety or attribution. Prompt limits are not runtime
 containment. Stop on out-of-fixture action, scope request, unrelated tool execution,
 context/budget failure or operator interruption, and report deviations.
 
-Validation: all 15 pilot instrument tests pass after removing the message arm
-labels. These are offline tests; no fixture was installed or message delivered.
+## Scorer review follow-up
+
+Observation schema v2 preserves raw `coordinate_arguments`, including aliases,
+types and omitted keys. Thus a relative row, copied read range, absent coordinates
+and other wrong coordinates remain distinguishable without a joined success score.
+
+`matching_preceding_read_observed` is true for a matching bounded window containing
+the target or an exact full-fixture receipt. It is null when a successful same-path
+read cannot be verified and no other read establishes a match; false means no
+matching or unresolved read evidence. `successful_preceding_same_path_read_observed`
+separately distinguishes no successful read from a read whose content differs.
+`preceding_read_forms` records each successful same-path read as `matching_window`,
+`nonmatching_window`, `unwindowed_full_read` or `unverified_read`. Failed reads,
+foreign-path reads and reads after the first edit do not establish grounding.
+
+The old/new line predicates ignore trailing newlines; they are text comparisons,
+not a promise that the dispatcher handles newline variants identically. Receipts
+and independently captured byte effects remain separate evidence.
+
+Validation: all 24 pilot instrument tests pass, including real dispatcher whole-file
+reads for both fixtures, unverified read evidence, and raw coordinate preservation.
+These are offline tests; no fixture was installed or message delivered.

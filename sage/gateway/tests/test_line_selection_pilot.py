@@ -45,7 +45,11 @@ def test_real_dispatcher_oracle_and_real_read_receipt(tmp_path, arm):
     raw = record([read, edit])
     out = score(pack, raw, "explore", before, path.read_bytes())
     assert out["before_matches_fixture"] and out["after_matches_expected"]
-    assert all(v is True for k, v in out["first_memory_edit"].items() if k != "trace_index")
+    first = out["first_memory_edit"]
+    for key in ("path_matches_literal", "absolute_single_line", "old_matches_line", "new_matches_line",
+                "matching_preceding_read_observed", "successful_preceding_same_path_read_observed", "receipt_ok"):
+        assert first[key] is True
+    assert first["preceding_read_forms"] == ["matching_window"]
     assert out["record_sha256"] == hashlib.sha256(raw).hexdigest()
     assert out["observed_other_effectors"] == out["observed_other_path_memory_calls"] == 0
     # Neither the requested message nor the read packet carries the oracle answer.
@@ -103,6 +107,56 @@ def test_read_after_edit_is_not_evidence_for_first_proposal(tmp_path):
     assert not score(pack, record([proposal(pack), read]), "explore")["first_memory_edit"]["matching_preceding_read_observed"]
     read["result"] = read["result"].replace("note synthetic", "note altered")
     assert not score(pack, record([read, proposal(pack)]), "explore")["first_memory_edit"]["matching_preceding_read_observed"]
+
+
+@pytest.mark.parametrize("arm", ["ordinary", "guided"])
+def test_real_whole_file_read_is_grounding_evidence(tmp_path, arm):
+    from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict
+    from sage.gateway.reference_f1a import ReferenceF1aDispatcher
+    pack = prepare(arm, "scratch/trial.md")
+    path = tmp_path / pack["path"]
+    path.parent.mkdir()
+    path.write_bytes(pack["fixture"].encode())
+    args = {"path": pack["path"]}
+    result = ReferenceF1aDispatcher(memory_root=str(tmp_path))(
+        BeingIntent("memory_read", args), GatewayVerdict("allow"))
+    read = {"effector": "memory_read", "args": args, "ok": result.ok, "result": result.result}
+    first = score(pack, record([read, proposal(pack)]), "explore")["first_memory_edit"]
+    assert first["matching_preceding_read_observed"] is True
+    assert first["preceding_read_forms"] == ["unwindowed_full_read"]
+    assert first["successful_preceding_same_path_read_observed"] is True
+
+
+def test_unparsed_read_is_unknown_but_failed_or_foreign_read_is_not_evidence():
+    pack = prepare("ordinary", "scratch/trial.md")
+    read = {"effector": "memory_read", "args": {"path": pack["path"]}, "ok": True,
+            "result": pack["fixture"][:100]}
+    first = score(pack, record([read, proposal(pack)]), "explore")["first_memory_edit"]
+    assert first["matching_preceding_read_observed"] is None
+    assert first["successful_preceding_same_path_read_observed"] is True
+    assert first["preceding_read_forms"] == ["unverified_read"]
+    full = dict(read, result=pack["fixture"])
+    for reads in ([read, full], [full, read]):
+        assert score(pack, record(reads + [proposal(pack)]), "explore")["first_memory_edit"]["matching_preceding_read_observed"] is True
+    for ignored in (dict(full, ok=False), dict(full, effector="memory_edit"),
+                    dict(full, args={"path": "scratch/elsewhere.md"})):
+        first = score(pack, record([ignored, proposal(pack)]), "explore")["first_memory_edit"]
+        assert first["matching_preceding_read_observed"] is False
+        assert first["successful_preceding_same_path_read_observed"] is False
+
+
+@pytest.mark.parametrize("coordinates", [
+    {"start_line": 125, "end_line": 125}, {"start_line": 5, "end_line": 5},
+    {"start_line": 121, "end_line": 129}, {}, {"old_line": "125"},
+    {"start_line": 99, "end_line": None},
+])
+def test_raw_coordinate_arguments_preserve_wrong_ranges_aliases_and_absence(coordinates):
+    pack = prepare("ordinary", "scratch/trial.md")
+    edit = proposal(pack)
+    del edit["args"]["start_line"], edit["args"]["end_line"]
+    edit["args"].update(coordinates)
+    first = score(pack, record([edit]), "explore")["first_memory_edit"]
+    assert first["coordinate_arguments"] == coordinates
 
 
 @pytest.mark.parametrize("path", ["/tmp/x.md", "scratch/../x.md", "notes/x.md", "scratch/a.py",

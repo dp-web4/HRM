@@ -94,12 +94,21 @@ def score(pack, raw_record, phase, before=None, after=None):
         start = _text_arg(args, ("start_line", "line", "old_line"))
         end = args.get("end_line", start)
         grounded = False
+        read_forms = []
         for read in trace[:index]:
-            if not isinstance(read.get("args"), dict) or read["args"].get("path") != pack["path"]:
+            if (read.get("effector") != "memory_read" or read.get("ok") is not True or
+                    not isinstance(read.get("args"), dict) or read["args"].get("path") != pack["path"]):
+                continue
+            if read.get("result") == pack["fixture"]:
+                read_forms.append("unwindowed_full_read")
+                grounded = True
                 continue
             try:
                 text, read_start, total = observed_window(read)
             except (ValueError, TypeError):
+                read_forms.append("unverified_read")
+                if grounded is False:
+                    grounded = None
                 continue
             lines = text.splitlines(keepends=True)
             planned = pack["fixture"].splitlines(keepends=True)
@@ -107,16 +116,22 @@ def score(pack, raw_record, phase, before=None, after=None):
                     read_start <= oracle["selected_line"] < read_start + len(lines) and
                     lines == planned[read_start - 1:read_start - 1 + len(lines)]):
                 grounded = True
+                read_forms.append("matching_window")
+            else:
+                read_forms.append("nonmatching_window")
         first = {
             "trace_index": index,
+            "coordinate_arguments": {k: args[k] for k in ("start_line", "line", "old_line", "end_line") if k in args},
             "path_matches_literal": args.get("path") == pack["path"],
             "absolute_single_line": str(start) == str(end) == str(oracle["selected_line"]),
             "old_matches_line": isinstance(old, str) and old.rstrip("\n") == oracle["old"].rstrip("\n"),
             "new_matches_line": isinstance(new, str) and new.rstrip("\n") == oracle["new"].rstrip("\n"),
             "matching_preceding_read_observed": grounded,
+            "successful_preceding_same_path_read_observed": bool(read_forms),
+            "preceding_read_forms": read_forms,
             "receipt_ok": event.get("ok") if type(event.get("ok")) is bool else None,
         }
-    return {"schema": "line-selection-observation/v1", "arm": pack["arm"],
+    return {"schema": "line-selection-observation/v2", "arm": pack["arm"],
             "record_sha256": sha(raw_record), "planned_message_sha256": pack["message_sha256"],
             "fixture_sha256": pack["fixture_sha256"], "phase": phase,
             "first_memory_edit": first,
@@ -132,7 +147,9 @@ def score(pack, raw_record, phase, before=None, after=None):
             "after_matches_expected": after == expected if after is not None else None,
             "limit": "One selected recorded phase and supplied snapshots, not complete trial coverage, "
                      "authenticated delivery, effect attribution or a causal comparison. "
-                     "An exact-text edit can succeed without demonstrating absolute numbering."}
+                     "An exact-text edit can succeed without demonstrating absolute numbering. "
+                     "Only the first edit is line-selection evidence; recovery after a refusal "
+                     "can follow coordinates supplied by the dispatcher."}
 
 
 def main(argv=None):

@@ -1400,14 +1400,21 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                     # code it meant to write (whole functions), cut before the write. The retry
                     # said "act now" and nothing about the draft, so the next attempt derived it
                     # again from scratch. The draft is kept (keep_empty_thinking); say so.
-                    _where = (f"Your whole deliberation is saved as {_kept} -- memory_read a "
+                    # Provider token counts do not establish how much thinking survived
+                    # in the response. Preserve the returned text without calling it the
+                    # whole deliberation (observed: 6000 tokens, 149 returned characters).
+                    _where = (f"The thinking text returned by the provider is saved as {_kept} -- memory_read a "
                               f"narrow range of it to reuse what you drafted rather than "
                               f"deriving it again, and draft long code in a scratch file "
                               f"(memory_write) rather than in your thinking. "
                               if _kept else "")
+                    _usage = (f"The provider reported {raw['eval_count']} output tokens"
+                              if raw.get("eval_count") is not None else
+                              "The provider did not report an output token count")
                     msgs.append({"role": "user", "content": (
-                        f"[harness] Your previous attempt spent its whole budget deliberating "
-                        f"({raw.get('eval_count')} tokens) {_cut} "
+                        f"[harness] Your previous attempt returned thinking without a reply or tool call "
+                        f"{_cut} {_usage}; "
+                        f"{len(str(msg.get('thinking') or ''))} thinking characters were returned. "
                         f"{_where}Act now: one tool call. The "
                         f"deliberation belongs in journal.md, after the act.")})
                 # A WINDOW CUT IS RETRIED WITH ROOM, OR IT IS THE SAME CUT AGAIN (2026-10-08). This

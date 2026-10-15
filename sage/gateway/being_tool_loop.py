@@ -931,10 +931,21 @@ RETRY_MARGIN = 128   # tokens kept back from the window on a retry (template, to
 # compaction is not sent; the tool phase ends and the beat closes as usual.
 WINDOW_SEND_MARGIN = 256
 
-# A server count far below what was sent is not a measurement of what was sent: it is the count
-# of what survived the server's cut. Stored as one, it anchored the next step's estimate ~8k low
-# (a window retry came back at 8,172 for a list that had just measured 16,349) and compaction
-# was skipped on exactly the step that needed it.
+# THE FIRST STEP HAS NO SERVER COUNT, SO IT IS JUDGED ON A PREFLIGHT ESTIMATE THAT ERRS HIGH.
+# Chars per token for a whole unanchored prompt: _CPT (2.9) sits below every ratio measured on
+# this being's seeds (3.026..3.152 over 60 beats), so it over-counts tokens by ~4-8%. Not lower:
+# Sprout's real step-1 prompts measured up to 14,306 tokens at num_ctx 16,384 (~32k content
+# chars), which 2.9 puts at ~15.5k, under the line; 2.5 would put them at ~18k and refuse beats
+# the heartbeat's own fitter (also 2.9) accepted. So the step-1 guard catches a seed that is
+# grossly over the window, not one that tokenizes denser than 2.9; that residue is what the
+# server_cut path below still catches after the fact.
+PREFLIGHT_CPT = _CPT
+
+# A count far below a server-anchored estimate means the server truncated what was sent: the
+# server's prompt_eval_count is then of what survived its own cut, not of the list we sent.
+# Stored as a measurement, it anchored the next step's estimate ~8k low (a window retry came back
+# at 8,172 for a list whose previous step the server had counted at 16,349) and compaction was
+# skipped on exactly the step that needed it.
 SERVER_CUT_RATIO = 0.75
 
 # The template's own words for a request whose user turn is gone. Re-sending the same list
@@ -1301,8 +1312,9 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 print(f"[tool-loop] on_generate failed: {type(_e).__name__}: {_e}", file=_sys.stderr)
 
     def _window_full(cause: str, est: int, ctx) -> Dict[str, Any]:
-        """End the tool phase without a reply: the next prompt does not fit ("over_window", not
-        sent) or the server already cut its user turn ("server_cut"). No words in the being's name."""
+        """End the tool phase without a reply: the next prompt does not fit ("over_window" on a
+        server-anchored estimate, "preflight" on step 1's high-erring one; either way not sent) or
+        the server already cut its user turn ("server_cut"). No words in the being's name."""
         thoughts.append("")
         _land({"window_full": cause, "estimated_prompt": est, "num_ctx": ctx, "retried": 0,
                "attempts": [dict(a) for a in attempts]})
@@ -1354,13 +1366,17 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             _ctx = int(getattr(llm, "num_ctx", None) or 0)
         except (TypeError, ValueError):
             _ctx = 0
-        # NEVER SEND WHAT THE WINDOW CANNOT HOLD (WINDOW_SEND_MARGIN). Judged only on an estimate the
-        # server anchored: before any count, the estimate is a chars-per-token guess, and no first
-        # step has hit this wall. Not sent means no cut, no 400, and nothing said in the being's name.
-        if _ctx > 0 and measured is not None:
-            _est = _est_tokens(_convo_chars(msgs), measured)
+        # NEVER SEND WHAT THE WINDOW CANNOT HOLD (WINDOW_SEND_MARGIN). From step 2 on, judged on a
+        # server-anchored estimate (the previous step's prompt_eval_count plus the delta); on step 1,
+        # with no count yet, on the PREFLIGHT_CPT estimate, which errs high. Not sent means no cut,
+        # no 400, and nothing said in the being's name.
+        if _ctx > 0:
+            if measured is not None:
+                _est, _cause = _est_tokens(_convo_chars(msgs), measured), "over_window"
+            else:
+                _est, _cause = (_convo_chars(msgs) + _UNCOUNTED_CHARS) / PREFLIGHT_CPT, "preflight"
             if _est > _ctx - WINDOW_SEND_MARGIN:
-                return _window_full("over_window", int(_est), _ctx)
+                return _window_full(_cause, int(_est), _ctx)
         retried = 0
         retry_cause = None
         sent = _sent_budget(llm)          # the num_predict of the reply that stands

@@ -11,7 +11,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 from sage.gateway.being_gate_client import ResultEnvelope  # noqa: E402
 from sage.gateway.being_tool_loop import (run_ollama_tool_turn, WINDOW_SEND_MARGIN,  # noqa: E402
-                                          SERVER_CUT_RATIO)
+                                          SERVER_CUT_RATIO, PREFLIGHT_CPT, _UNCOUNTED_CHARS)
 
 NO_USER_400 = ("[OllamaIRP: Connection error: HTTP Error 400: Bad Request — {\"error\":\"Unable to generate "
                "parser for this template. ... raise_exception('No user query found in messages.') ...\"}]")
@@ -59,12 +59,33 @@ def test_a_prompt_over_the_window_is_not_sent_and_the_turn_ends_with_no_words():
     assert len(r.thinking) == len(r.generates), "one thinking entry per generate, as before"
 
 
-def test_the_first_step_is_never_judged_on_a_guess():
-    # No server count yet: the estimate is a chars-per-token guess, so a large seed is still sent.
-    llm = _LLM([{"content": "done", "tool_calls": [], "raw": {"prompt_eval_count": 15000, "eval_count": 5}}])
+def test_an_oversized_first_step_is_refused_on_the_preflight_estimate():
+    # No server count yet. A 60,000-char seed at num_ctx 16,384 is ~25k tokens on the preflight
+    # estimate: sent, Ollama would cut the front and the only user turn with it. It is not sent.
+    llm = _LLM([{"content": "should not be reached", "tool_calls": []}])
     seed = [{"role": "system", "content": "s" * 60000}, {"role": "user", "content": "go"}]
     r = run_ollama_tool_turn(_Client(), llm, seed, max_steps=2, tools=[])
+    assert llm.sent == [], "the oversized first prompt must not reach the server"
+    assert r.window_full and r.window_full["cause"] == "preflight" and r.window_full["step"] == 0
+    assert r.window_full["estimated_prompt"] > llm.num_ctx - WINDOW_SEND_MARGIN
+    assert r.reply == ""
+
+
+def test_a_seed_the_size_of_a_real_fitted_one_is_still_sent():
+    # Sprout's real step-1 prompts measured up to 14,306 tokens at num_ctx 16,384: at the ~3.14
+    # chars/token measured on its seeds that is ~45k chars, ~32k of them in messages. The
+    # preflight puts that at ~15.5k, under the line, so a beat the heartbeat fitter accepted runs.
+    llm = _LLM([{"content": "done", "tool_calls": [], "raw": {"prompt_eval_count": 14306, "eval_count": 5}}])
+    seed = [{"role": "system", "content": "s" * 31950}, {"role": "user", "content": "go"}]
+    est = (sum(len(m["content"]) for m in seed) + _UNCOUNTED_CHARS) / PREFLIGHT_CPT
+    assert est < llm.num_ctx - WINDOW_SEND_MARGIN
+    r = run_ollama_tool_turn(_Client(), llm, seed, max_steps=2, tools=[])
     assert len(llm.sent) == 1 and r.reply == "done" and r.window_full is None
+
+
+def test_the_preflight_errs_high_against_every_ratio_measured_on_this_being():
+    # 3.026..3.152 chars/token over 60 beats: an estimate at PREFLIGHT_CPT over-counts them all.
+    assert PREFLIGHT_CPT < 3.026
 
 
 def test_no_user_query_400_is_not_retried_and_never_becomes_the_reply():

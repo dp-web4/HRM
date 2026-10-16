@@ -70,6 +70,21 @@ def test_a_handled_or_twice_tried_ask_is_not_offered(tmp_path):
     assert hb.select_ask(ns, set(), None) is None
 
 
+def test_an_asker_at_the_peer_ask_limit_is_skipped_not_spent(tmp_path):
+    """HUB review of #459: a refused peer_ask counted as a try, so an asker the being had already asked
+    3 times in 6 h spent both tries on the limit and was left. Now it is skipped while capped (another
+    asker's ask goes instead) and offered again once the window frees, with no try spent."""
+    other = ASK.replace("from: cbp-being", "from: sprout-being")
+    home, ns = _home(tmp_path, [(1, "coordination", other), (2, "coordination", ASK)])
+    t0 = 1_000_000.0
+    (home / "asks_sent.jsonl").write_text("".join(
+        json.dumps({"t": t0 - 60 * i, "peer": "cbp-being"}) + "\n" for i in range(3)))
+    got = hb.select_ask(ns, set(), home, now=t0)
+    assert (got["id"], got["asker"]) == (1, "sprout-being")
+    assert hb.select_ask(ns, {1}, home, now=t0) is None
+    assert hb.select_ask(ns, {1}, home, now=t0 + 6 * 3600)["id"] == 2
+
+
 def test_an_answer_is_dispatched_as_the_beings_own_peer_ask_to_the_asker(tmp_path):
     home, ns = _home(tmp_path, [(1, "coordination", ASK)])
     ask, client = hb.select_ask(ns, set(), home), Client()

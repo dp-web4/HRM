@@ -1674,11 +1674,34 @@ def _ask_sender(home, pointer: str) -> str:
         return ""
 
 
-def select_ask(notices: list, handled, home, tries: Optional[dict] = None) -> Optional[dict]:
+def _ask_capped(home, asker: str, now: Optional[float] = None) -> bool:
+    """True when the being has already used its peer_ask allowance to `asker` (the gate's count,
+    HestiaF1aDispatcher.ASK_CAP_PER_PEER per ASK_WINDOW_S, from the same asks_sent.jsonl). The ask turn
+    would only be refused, and a refusal is not a decision: offered anyway, it spent both of its
+    ASK_TURN_TRIES on the limit and was left (HUB review of #459, 2026-10-16). Skipped instead, it
+    stays offered for when the window frees."""
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as _D
+    now = time.time() if now is None else now
+    key, n = str(asker or "").split("/", 1)[0].strip().lower(), 0
+    try:
+        for line in (Path(home) / _D.ASKS_LOG).read_text(encoding="utf-8").splitlines():
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if r.get("peer") == key and float(r.get("t", 0)) >= now - _D.ASK_WINDOW_S:
+                n += 1
+    except OSError:
+        return False
+    return n >= _D.ASK_CAP_PER_PEER
+
+
+def select_ask(notices: list, handled, home, tries: Optional[dict] = None,
+               now: Optional[float] = None) -> Optional[dict]:
     """The one ask this beat offers its own turn, newest first, or None: an unhandled reply,
-    coordination or handoff whose words the courier delivered and whose sender named itself, and
-    that has not already been offered ASK_TURN_TRIES times without a decision. Pure but for reading
-    the being's own inbox files."""
+    coordination or handoff whose words the courier delivered and whose sender named itself, that
+    has not already been offered ASK_TURN_TRIES times without a decision, and whose sender the being
+    can still peer_ask this window (_ask_capped). Pure but for reading the being's own files."""
     if not home:
         return None
     handled, tries = set(handled or ()), dict(tries or {})
@@ -1691,7 +1714,7 @@ def select_ask(notices: list, handled, home, tries: Optional[dict] = None) -> Op
         ptr = str(n.get("pointer_uri") or "")
         words = delivered_excerpt(home, ptr, cap=ASK_TURN_CHARS)
         asker = _ask_sender(home, ptr) if words else ""
-        if words and asker:
+        if words and asker and not _ask_capped(home, asker, now):
             return {"id": nid, "asker": asker, "words": words, "pointer": ptr}
     return None
 

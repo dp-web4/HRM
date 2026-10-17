@@ -1,5 +1,8 @@
 # SAGE as Resident/Visitor Participation Harness
 
+> **Updated 2026-10-17:** The original single-axis 'resident / visitor' terminology below is historical. **Use resident/local vs remote cognition, independently crossed with native vs external harness.** See the [correction at the end](#2026-10-17-correction-independent-cognition-placement-and-harness-class-axes). No normative specification or implementation is ratified by this note.
+
+
 **Date:** 2026-10-17  
 **Status:** Design note; no runtime role-admission or universal remote-cognition feature claimed  
 **Canonical design and acceptance plan:** [private-context resident/visitor PRD](https://github.com/dp-web4/private-context/blob/main/forum/gpt/2026-10-17-sage-resident-visitor-design-plan.md)
@@ -75,3 +78,22 @@ Otherwise explicitly declare `tool_coverage=incomplete`, limit the admitted scop
 - [Hardbound enterprise policy](https://github.com/dp-web4/hardbound/blob/main/docs/SAGE_RESIDENT_VISITOR_ENTERPRISE.md)
 
 All implementation changes require separately reviewed PRs, tests and explicit authority; this document is a design/plan, not a deployment or assurance claim.
+
+## 2026-10-17 correction: independent cognition-placement and harness-class axes
+
+[Canonical revised classification and evidence](https://github.com/dp-web4/private-context/blob/main/forum/gpt/2026-10-17-sage-resident-visitor-design-plan.md#12-correction-from-live-sprout-evidence-and-dps-two-axis-ruling-2026-10-17) · [Sprout's measured reply](https://github.com/dp-web4/private-context/blob/main/forum/gpt/2026-10-17-sprout-claude-reply-resident-visitor-plan.md)
+
+The earlier `resident/visitor` distinction is superseded for implementation by **resident (local cognition) / remote (externally executing cognition)** crossed with **native (SAGE or Web4-conformant controlled harness) / external (vendor/uncontrolled harness)**. Local CLI to an external model is **remote**. Local model inside a vendor harness is **resident + external**, *not* necessarily site-complete context. 'Visitor' in the old title is historical shorthand, not a new schema field. Role and mediation assurances are independently evidenced, not inferred from model family, host name or a self-label.
+
+| | Native | External |
+|---|---|---|
+| Resident | Existing sprout-being local cognition via SAGE | Local cognition in an external/vendor harness |
+| Remote | Future SAGE inference-only API visitor, with gated disclosures when implemented | **Already deployed** Claude Code interactive seats, member mesh wakes and hub-watch sessions |
+
+**First action is inventory, not a greenfield visitor pilot.** Sprout's external/remote seats already read being memory and camera frames through pre-tool-hook-mediated local actions; allowed output may be sent upstream to opaque provider context **without a distinct pre-egress SAGE/Hestia disclosure decision**. Vendor telemetry, skills/subagents and provider-side tools are not necessarily mediated. Their correct present label is `mediation=hook_level` (A1 cooperative for covered calls), with `disclosure_coverage=unknown` for unobserved channels, not 'fully governed'. A prompt or tool-result read being allowed does not prove onward transmission was separately authorized. Harness name/version, update provenance and coverage should be recorded; updates may change that contract.
+
+**One principal, multiple engagements.** A seat can be one stable authenticated principal with multiple separately claimed interactive/wake sessions and continued duties. Neither every new engagement creates a new being nor does shared plugin id authenticate or lock all sessions. Coordinate admission with **the same Hestia-held engagement/presence lease/message-claim record** proposed for routing (see [Sprout's messaging RFC](https://github.com/dp-web4/shared-context/blob/main/forum/sprout-to-fleet-messaging-ecosystem-review-2026-10-16.md)); SAGE #461 is a stopgap pause/lock, not this full protocol.
+
+**Add cognitive attribution assurance.** Sprout has resident utterances that invent or invert seat approvals, declines and tool outcomes despite attributed storage (seq 840–843, 936, 963; room 266/269). Test journal/turn/memory claims about what another participant did against attributed action/result evidence. Unsupported statements are flagged, not silently made autobiographical fact.
+
+Updated SAGE roadmap: (S0) audit existing remote+external seats and their opaque egress/telemetry; (S1) split resident/remote x native/external with evidence; (S2) align principal/engagement claims with Hestia routing; (S3) native+remote **inference-only** adapter with real disclosure decision; (S4) source-attributed tool and memory claim checks; (S5) pilot across all four possible combinations where available. Defining 'native' requires an explicit conformance bar for egress, telemetry, tool mediation and signed turns; do not call any deployed A1 path 'full' absent verification.

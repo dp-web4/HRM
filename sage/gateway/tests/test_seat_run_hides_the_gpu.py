@@ -49,3 +49,12 @@ def test_the_gpu_clause_rides_only_with_code_that_names_a_gpu_stack():
     assert srr.where_clause(True, cv2_only) == srr.WHERE_GPU, "--gpu is always stated"
     # the child is hidden whatever the receipt says
     assert _child_sees(srr.child_env(False)) == "''"
+
+
+def test_jetson_gstreamer_elements_count_as_a_gpu_stack():
+    # sprout-being 2026-10-17 (seq 1100-1101): nvvidconv failed "no CUDA-capable device" under
+    # the hidden GPU after Argus opened sensor 0; with no clause the cause read as the hardware's.
+    pipe = ("gst-launch-1.0 nvarguscamerasrc sensor-id=0 num-buffers=1 ! "
+            "'video/x-raw(memory:NVMM)' ! nvvidconv ! jpegenc ! filesink location=x.jpg\n")
+    assert srr.where_clause(False, pipe) == srr.WHERE_HIDDEN
+    assert srr.where_clause(False, "gst-launch-1.0 v4l2src ! videoconvert ! jpegenc\n") == ""

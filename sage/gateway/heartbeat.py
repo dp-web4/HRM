@@ -4352,12 +4352,21 @@ def main(argv=None) -> int:
     # escalation's drain flushed them, and the being had logged "hub's reply still has not
     # landed after >4h"). The sender's own beat is the natural drain.
     egress = None
+    seat_rearm = None
     if not args.gate_only:
         try:
             from sage.gateway import egress_drain
             egress = egress_drain.drain_once(plugin_id=args.member, log=lambda *_: None)
         except Exception as _e:
             egress = {"error": f"{type(_e).__name__}: {_e}"}
+        # A wake withheld by a seat's pause, or one that failed to leave, is sent here once the
+        # pause is gone, rather than on the being's next turn (rearm_owed_wakes).
+        _disp_end = getattr(client, "_dispatcher", None)
+        if _disp_end is not None and hasattr(_disp_end, "rearm_owed_wakes"):
+            try:
+                seat_rearm = _disp_end.rearm_owed_wakes()
+            except Exception as _e:
+                seat_rearm = {"error": f"{type(_e).__name__}: {_e}"}
 
     def _trace(res):
         return [{"effector": i.effector, "args": dict(i.args or {}), "ok": e.ok, "refused": e.refused,
@@ -4442,7 +4451,7 @@ def main(argv=None) -> int:
         **({"killed": killed} if killed else {}),
         "answer": _turn(answer) if answer is not None else None,
         "act_after_answer": _turn(act_after) if act_after is not None else None,
-        "escalations": escalations, "egress": egress,
+        "escalations": escalations, "egress": egress, "seat_rearm": seat_rearm,
     }
     # THE LAST THING A BEAT DOES IS MAKE SURE THERE WILL BE ANOTHER ONE (opt-in; Legion since
     # 2026-09-09/13). A beat that `rest`ed said it was finished: waking it straight back up is the

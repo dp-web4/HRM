@@ -436,9 +436,24 @@ def run_child(argv: list[str], cwd: str, timeout: float, env: dict):
 
 def cmd_run(args) -> None:
     inst = _instance()
-    check_pause_holder(inst, _conv_id())
     with answering_lock(inst, _conv_id()):
+        # Checked UNDER the lock: a session that checked before waiting for it could act after a
+        # seat paused in the meantime (GPT on #461).
+        check_pause_holder(inst, _conv_id())
         _run(args)
+
+
+def require_pending(seqs: list[int], rel, args, verb: str) -> None:
+    """NOTHING PENDING MEANS SOMEONE ALREADY ANSWERED. The lock alone serialized the seq 996/997
+    double run without preventing it (GPT on #461): the second `run` bound nothing, because the
+    first had answered, and executed the file anyway as an unrequested run. Binding happens
+    under the lock, so an empty binding here is the answer already given. A deliberate run of
+    a file nobody asked about is still possible, but only by saying so (--unrequested)."""
+    if seqs or getattr(args, "unrequested", False):
+        return
+    sys.exit(f"refusing: no pending request for {rel}; it was answered already or never asked "
+             f"(`list` shows what is open). Nothing was {verb}. Pass --unrequested to {verb.rstrip('ed')} "
+             f"it anyway.")
 
 
 def _run(args) -> None:
@@ -449,6 +464,7 @@ def _run(args) -> None:
     # Bound BEFORE running, so the answer names the requests that existed when the seat chose
     # to act — not whatever arrived while the script ran.
     seqs = bind(inst, _conv_id(), str(rel), args.seq)
+    require_pending(seqs, rel, args, "run")
     interp = [sys.executable] if p.suffix == ".py" else ["bash"]
     # GPU HIDDEN, BY DEFAULT. The being shares this GPU with its own model. Measured on CBP
     # 2026-09-21: a beat holds the card at ~88-90% of 8 GB, and a model left resident after a
@@ -546,8 +562,8 @@ def decline_text(rel, reason: str, seqs: list[int], closing: str | None = None) 
 
 def cmd_decline(args) -> None:
     inst = _instance()
-    check_pause_holder(inst, _conv_id())
     with answering_lock(inst, _conv_id()):
+        check_pause_holder(inst, _conv_id())
         _decline(args)
 
 
@@ -555,6 +571,7 @@ def _decline(args) -> None:
     inst = _instance()
     rel = _target(inst, args.path).relative_to(inst.resolve())
     seqs = bind(inst, _conv_id(), str(rel), args.seq)
+    require_pending(seqs, rel, args, "declined")
     text = decline_text(rel, args.reason, seqs, decline_closing(inst))
     shown, hidden = as_shown(text)
     if hidden and not args.cut_anyway:
@@ -572,18 +589,34 @@ def _decline(args) -> None:
     _say(text)
 
 
+def _held_exit(e: "conv.PauseHeld", what: str, escape: str) -> None:
+    sys.exit(f"refusing to {what}: the pause on {_conv_id()} is {e}, and this session did not "
+             f"present its token (SEAT_PAUSE_TOKEN). If its holder is gone, {escape}.")
+
+
 def cmd_pause(args) -> None:
     inst, cid = _instance(), _conv_id()
-    pause = conv.pause_wakes(inst, cid, by=_seat_id(), minutes=args.minutes, reason=args.reason or "")
+    try:
+        pause = conv.pause_wakes(inst, cid, by=_seat_id(), minutes=args.minutes, reason=args.reason or "",
+                                 token=os.environ.get("SEAT_PAUSE_TOKEN") or None,
+                                 take_over=args.take_over or "")
+    except conv.PauseHeld as e:
+        _held_exit(e, "pause", 'pass --take-over "<why>" (recorded in the new pause)')
     print(f"wakes paused for {cid} until {pause['until']} (by {pause['by']}).\n"
-          f"Set SEAT_PAUSE_TOKEN={pause['token']} on this session's run/decline calls; other "
-          f"sessions are refused. A notice already queued before the pause can still fire one wake, "
-          f"and that wake is refused here too. `resume` when you are done.")
+          f"Set SEAT_PAUSE_TOKEN={pause['token']} on this session's run/decline/pause/resume calls; "
+          f"other sessions are refused. A notice already queued before the pause can still fire one "
+          f"wake, and that wake is refused here too. `resume` when you are done.")
 
 
 def cmd_resume(args) -> None:
     inst, cid = _instance(), _conv_id()
-    print(f"wakes resumed for {cid}" if conv.resume_wakes(inst, cid) else f"{cid} was not paused")
+    try:
+        held = conv.resume_wakes(inst, cid, token=os.environ.get("SEAT_PAUSE_TOKEN") or None,
+                                 force=args.force or "")
+    except conv.PauseHeld as e:
+        _held_exit(e, "resume", 'pass --force "<why>"')
+    print(f"wakes resumed for {cid}; a wake still owed goes out at the end of the being's next beat"
+          if held else f"{cid} was not paused")
 
 
 def cmd_status(args) -> None:
@@ -603,8 +636,12 @@ def main() -> int:
     pz = sub.add_parser("pause", help="jump in: stop mesh wakes for this conversation while you answer")
     pz.add_argument("--minutes", type=int, default=conv.WAKE_PAUSE_DEFAULT_MINUTES)
     pz.add_argument("--reason", default="")
+    pz.add_argument("--take-over", metavar="WHY",
+                    help="displace a pause held by another session (its holder is gone); recorded")
     pz.set_defaults(fn=cmd_pause)
-    sub.add_parser("resume", help="hand the conversation back to mesh wakes").set_defaults(fn=cmd_resume)
+    rs = sub.add_parser("resume", help="hand the conversation back to mesh wakes (holder's token)")
+    rs.add_argument("--force", metavar="WHY", help="end a pause whose holder is gone")
+    rs.set_defaults(fn=cmd_resume)
     sub.add_parser("status", help="who answers this conversation now").set_defaults(fn=cmd_status)
     r = sub.add_parser("run"); r.add_argument("path"); r.add_argument("--timeout", type=int, default=120)
     r.add_argument("--gpu", action="store_true",
@@ -615,9 +652,13 @@ def main() -> int:
                         "unload the being only for a named project). Requires a reason")
     r.add_argument("--seq", type=int, action="append",
                    help="the request seq this answers (repeatable; default: every pending request for the file)")
+    r.add_argument("--unrequested", action="store_true",
+                   help="run a file no pending request names (refused by default: an empty binding "
+                        "usually means another session already answered it)")
     r.set_defaults(fn=cmd_run)
     d = sub.add_parser("decline"); d.add_argument("path"); d.add_argument("--reason", required=True)
     d.add_argument("--seq", type=int, action="append", help="as for run")
+    d.add_argument("--unrequested", action="store_true", help="as for run")
     d.add_argument("--cut-anyway", action="store_true",
                    help="post a reason longer than the being's per-turn window even though its "
                         "middle will not be shown (the refusal prints exactly what would be seen)")

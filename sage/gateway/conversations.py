@@ -624,7 +624,9 @@ def record_wake(instance: Path, conv_id: str, speaker: str, run_start: int,
 # on purpose (998). Both spoke as the seat. The pause is the one fact both can read: while it
 # holds, `_wake_addressee` sends no notice (the run stays owed, so the wake follows the pause),
 # and the seat's run/decline tool refuses any session that does not hold its token. It expires on
-# its own, so a seat that leaves without resuming cannot silence the being for long.
+# its own, so a seat that leaves without resuming cannot silence the being for long; the being's
+# next beat after a resume or expiry sends the wake still owed (`rearm_owed_wakes`), so the handoff
+# does not wait for the being to speak again.
 WAKE_PAUSE_DEFAULT_MINUTES = 120
 
 
@@ -633,36 +635,58 @@ def wake_pause_path(instance: Path, conv_id: str) -> Path:
     return notify_state_path(instance, conv_id, "_").with_name(f"{conv_id}.wake-pause.json")
 
 
+class PauseHeld(Exception):
+    """Another session holds this conversation's pause; its token was not presented."""
+
+    def __init__(self, pause: dict):
+        super().__init__(f"held by {pause.get('by')} since {pause.get('since')} until {pause.get('until')}")
+        self.pause = pause
+
+
 def pause_wakes(instance: Path, conv_id: str, by: str,
-                minutes: int = WAKE_PAUSE_DEFAULT_MINUTES, reason: str = "") -> dict:
-    """Hold the conversation: no mesh wake for it until `resume_wakes` or the expiry. Re-pausing
-    renews the hold and keeps the holder's token, so a seat extending its own pause stays the
-    holder. Returns the pause, including the token the holder's tools must present."""
+                minutes: int = WAKE_PAUSE_DEFAULT_MINUTES, reason: str = "",
+                token: Optional[str] = None, take_over: str = "") -> dict:
+    """Hold the conversation: no mesh wake for it until `resume_wakes` or the expiry. Returns the
+    pause, including the token the holder's tools must present.
+
+    THE HOLDER IS A SESSION, NOT A SEAT NAME. Every session acting for a seat speaks as the same
+    `by`, so ownership cannot ride on it (GPT on #461: the first version handed the existing token
+    to any process with the same seat id). Renewing a pause in force takes its token. Without it
+    the call raises `PauseHeld`, unless `take_over` names why the holder is being displaced (a
+    session that died holding it); the takeover is recorded in the pause it creates."""
     import secrets
     from datetime import timedelta
     p = wake_pause_path(instance, conv_id)
     p.parent.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc)
     held = wake_pause(instance, conv_id)
-    token = held["token"] if held and held.get("by") == by else secrets.token_hex(8)
-    pause = {"by": by, "token": token, "reason": reason,
-             "since": held["since"] if held and held.get("token") == token else _now(),
+    renew = bool(held and token and token == held.get("token"))
+    if held and not renew and not take_over:
+        raise PauseHeld(held)
+    pause = {"by": by, "token": held["token"] if renew else secrets.token_hex(8), "reason": reason,
+             "since": held["since"] if renew else _now(),
              "until": (now + timedelta(minutes=max(1, int(minutes)))).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    if held and not renew:
+        pause["took_over"] = {"from": held.get("by"), "since": held.get("since"), "why": take_over}
     tmp = p.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(pause, indent=2) + "\n")
     os.replace(tmp, p)
     return pause
 
 
-def resume_wakes(instance: Path, conv_id: str) -> bool:
-    """End the pause. True if one was held."""
+def resume_wakes(instance: Path, conv_id: str, token: Optional[str] = None, force: str = "") -> bool:
+    """End the pause. True if one was held. Only its holder's token ends a pause in force; `force`
+    (a stated reason) is the recovery for a holder that is gone. A wake owed during the pause is
+    not sent from here: the being's next beat sends it (`HestiaF1aDispatcher.rearm_owed_wakes`)."""
     p = wake_pause_path(instance, conv_id)
-    held = wake_pause(instance, conv_id) is not None
+    held = wake_pause(instance, conv_id)
+    if held and token != held.get("token") and not force:
+        raise PauseHeld(held)
     try:
         p.unlink()
     except FileNotFoundError:
         pass
-    return held
+    return held is not None
 
 
 def wake_pause(instance: Path, conv_id: str) -> Optional[dict]:

@@ -1759,8 +1759,16 @@ def ask_turn_json(client, llm, ask: dict, *, name: str, machine: str, member: st
                        if raw.get("done_reason") == "length" else "transport error"
                        if content.startswith("[OllamaIRP") else "reply was not the JSON asked for")
     else:
-        form["answer"] = bool(j.get("answer"))
-        message = str(j.get("message") or "").strip()
+        # A schema-requested answer is an actual JSON boolean, never a truthy string
+        # (e.g. "false") or number. Malformed forms remain retryable; they cannot
+        # silently become a being-authorized peer_ask or a decision to stay quiet.
+        if type(j.get("answer")) is not bool or not isinstance(j.get("message"), str):
+            form["parsed"] = False
+            form["why"] = "answer form needs boolean answer and string message"
+            res.answer_form = form
+            return res
+        form["answer"] = j["answer"]
+        message = j["message"].strip()
         res.reply = message
         if form["answer"] and message:
             intent = BeingIntent("peer_ask", {"to": ask["asker"], "body": message})

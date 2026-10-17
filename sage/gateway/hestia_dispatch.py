@@ -3461,6 +3461,32 @@ class HestiaF1aDispatcher:
         except Exception:
             return False
 
+    def rearm_owed_wakes(self) -> list:
+        """Send each wake still owed to a conversation's notify targets. Called at the end of a beat.
+
+        THE HANDOFF MUST NOT WAIT FOR THE BEING TO SPEAK. `_wake_addressee` runs only on the being's
+        own turn, so a wake withheld by a seat's pause (`conv.pause_wakes`), or one whose notice
+        failed to leave, was sent on its NEXT turn. A being that asked once during the pause and
+        then went quiet was owed a wake nobody would send (GPT on #461). Each beat now settles
+        what is owed: the last turn is the being's, no pause holds, and the run was not already
+        woken (`wake_is_owed`, inside `_wake_addressee`). A run woken before is never woken twice."""
+        from sage.gateway import conversations as conv
+        woke = []
+        for meta in conv.listing(self.memory_root):
+            if self.member not in (meta.get("participants") or []):
+                continue
+            if not (meta.get("notify") or meta.get("notify_watchers")):
+                continue
+            last = conv.recent(self.memory_root, meta["id"], limit=1)
+            if not last or last[-1].get("from") != self.member:
+                continue
+            try:
+                if self._wake_addressee(meta["id"], meta, last[-1]):
+                    woke.append(meta["id"])
+            except Exception:
+                continue           # best-effort, as the turn-time wake is
+        return woke
+
     def _wake_addressee(self, to: str, meta: dict, turn: dict) -> Optional[str]:
         """A turn wakes whoever it is addressed to — the mirror of the seat's own door.
 
@@ -3526,6 +3552,11 @@ class HestiaF1aDispatcher:
                 deduped.append((label, plugin_id))
         targets = deduped
         if not targets:
+            return None
+        # A SEAT HAS JUMPED IN (`conv.pause_wakes`): it is answering here itself, so a mesh wake
+        # would be a second voice speaking as the same seat. Nothing is recorded, so the run is
+        # still owed and the being's next turn after the pause wakes as usual.
+        if conv.wake_pause(self.memory_root, to):
             return None
         run_start = conv.wake_is_owed(self.memory_root, to, self.member,
                                       skip_answered=self._skips_answered_run_wake())

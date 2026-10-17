@@ -112,6 +112,22 @@ def test_silence_is_a_decision_an_unparsed_or_refused_reply_is_not(tmp_path):
     assert (refused["sent"], refused["decided"]) == (False, False) and "3 times" in refused["refused"]
 
 
+
+def test_an_answer_must_be_a_json_boolean_and_message_a_string(tmp_path):
+    """Nonboolean model output cannot authorize peer_ask, even when truthy."""
+    home, ns = _home(tmp_path, [(1, "coordination", ASK)])
+    ask = hb.select_ask(ns, set(), home)
+    for answer in ("false", "true", 1, 0, None, [], {}):
+        client = Client()
+        res = hb.ask_turn_json(client, LLM(json.dumps({"answer": answer, "message": "A reply"})), ask,
+                               name="h", machine="h", member="m")
+        assert client.sent == [], (answer, client.sent)
+        assert res.answer_form["parsed"] is False and not res.answer_form.get("decided"), res.answer_form
+    client = Client()
+    bad_message = hb.ask_turn_json(client, LLM(json.dumps({"answer": True, "message": 42})), ask,
+                                   name="h", machine="h", member="m")
+    assert client.sent == [] and bad_message.answer_form["parsed"] is False
+
 def test_the_ledger_folds_a_decided_ask_and_counts_an_undecided_try(tmp_path):
     ns = [{"id": 1, "kind": "coordination", "pointer_uri": "a", "queued_at": "2026-10-15T00:00:00Z"},
           {"id": 2, "kind": "coordination", "pointer_uri": "b", "queued_at": "2026-10-15T00:00:00Z"}]

@@ -3527,6 +3527,11 @@ class HestiaF1aDispatcher:
         targets = deduped
         if not targets:
             return None
+        # A SEAT HAS JUMPED IN (`conv.pause_wakes`): it is answering here itself, so a mesh wake
+        # would be a second voice speaking as the same seat. Nothing is recorded, so the run is
+        # still owed and the being's next turn after the pause wakes as usual.
+        if conv.wake_pause(self.memory_root, to):
+            return None
         run_start = conv.wake_is_owed(self.memory_root, to, self.member,
                                       skip_answered=self._skips_answered_run_wake())
         if run_start is None:

@@ -617,6 +617,65 @@ def record_wake(instance: Path, conv_id: str, speaker: str, run_start: int,
     os.replace(tmp, p)
 
 
+# A SEAT JUMPING IN PAUSES THE WAKES. Policy, dp 2026-10-16: mesh wakes answer beings by default;
+# a seat that wants to talk to the being directly pauses them while it does. Measured that day on
+# sprout: an interactive seat ran a request (seq 996) and a mesh wake for the same seat, knowing
+# nothing of it, ran the same file again (997) and answered a repeat the seat had left unanswered
+# on purpose (998). Both spoke as the seat. The pause is the one fact both can read: while it
+# holds, `_wake_addressee` sends no notice (the run stays owed, so the wake follows the pause),
+# and the seat's run/decline tool refuses any session that does not hold its token. It expires on
+# its own, so a seat that leaves without resuming cannot silence the being for long.
+WAKE_PAUSE_DEFAULT_MINUTES = 120
+
+
+def wake_pause_path(instance: Path, conv_id: str) -> Path:
+    """Beside the wake ledger, outside the repository, for the same reason (`notify_state_path`)."""
+    return notify_state_path(instance, conv_id, "_").with_name(f"{conv_id}.wake-pause.json")
+
+
+def pause_wakes(instance: Path, conv_id: str, by: str,
+                minutes: int = WAKE_PAUSE_DEFAULT_MINUTES, reason: str = "") -> dict:
+    """Hold the conversation: no mesh wake for it until `resume_wakes` or the expiry. Re-pausing
+    renews the hold and keeps the holder's token, so a seat extending its own pause stays the
+    holder. Returns the pause, including the token the holder's tools must present."""
+    import secrets
+    from datetime import timedelta
+    p = wake_pause_path(instance, conv_id)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    now = datetime.now(timezone.utc)
+    held = wake_pause(instance, conv_id)
+    token = held["token"] if held and held.get("by") == by else secrets.token_hex(8)
+    pause = {"by": by, "token": token, "reason": reason,
+             "since": held["since"] if held and held.get("token") == token else _now(),
+             "until": (now + timedelta(minutes=max(1, int(minutes)))).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    tmp = p.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(pause, indent=2) + "\n")
+    os.replace(tmp, p)
+    return pause
+
+
+def resume_wakes(instance: Path, conv_id: str) -> bool:
+    """End the pause. True if one was held."""
+    p = wake_pause_path(instance, conv_id)
+    held = wake_pause(instance, conv_id) is not None
+    try:
+        p.unlink()
+    except FileNotFoundError:
+        pass
+    return held
+
+
+def wake_pause(instance: Path, conv_id: str) -> Optional[dict]:
+    """The pause in force, or None. An expired or unreadable pause is no pause: the failure that
+    matters is a being nobody answers, so doubt resolves toward waking."""
+    try:
+        pause = json.loads(wake_pause_path(instance, conv_id).read_text())
+        until = datetime.strptime(pause["until"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    return pause if until > datetime.now(timezone.utc) else None
+
+
 def echo_of(instance: Path, conv_id: str, me: str, text: str, lookback: int = 4) -> Optional[dict]:
     """The recent turn by someone ELSE that `text` mostly repeats, or None.
 

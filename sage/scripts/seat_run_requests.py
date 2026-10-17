@@ -16,20 +16,32 @@ auto-runner would be the unconfined capability dp ruled against, with extra step
 
 Usage:
     seat_run_requests.py list
-    seat_run_requests.py run     <path-in-being-home> [--timeout 120] [--seq N ...] [-- <script args>]
+    seat_run_requests.py pause   [--minutes 120] [--reason "..."]   (prints the holder token)
+    seat_run_requests.py resume
+    seat_run_requests.py status
+    seat_run_requests.py run    <path-in-being-home> [--timeout 120] [--seq N ...] [-- <script args>]
       (a long answer is posted whole; the being's beat shows CONV_TURN_CHARS of it, head and tail)
     seat_run_requests.py decline <path-in-being-home> --reason "..." [--seq N ...]
 
 An answer names the requests it answers ("Answers your request seq N."), and only a named
 answer — or a run/decline result for the same file — closes a request.
 
+WHO ANSWERS (dp, 2026-10-16): mesh wakes answer beings by default. A seat that wants to talk to
+the being directly runs `pause`, which stops new wakes for the conversation and makes `run` and
+`decline` refuse any session not holding the printed token (SEAT_PAUSE_TOKEN). `resume` hands the
+conversation back; the pause also expires on its own.
+
 Env: SAGE_INSTANCE (the being's home), SAGE_SEAT_CONV (default cbp-claude),
-     SAGE_DAEMON (default http://127.0.0.1:8760), SEAT_ID (default cbp-claude).
+     SAGE_DAEMON (default http://127.0.0.1:8760), SEAT_ID (default: the seat conversation's id),
+     SEAT_PAUSE_TOKEN (the token `pause` printed; only the pausing seat has it).
 """
 from __future__ import annotations
 
 import argparse
+import contextlib
+import fcntl
 import hashlib
+import time
 import json
 import os
 import re
@@ -67,6 +79,54 @@ def _conv_id() -> str:
     # is the fleet's name for the seat; the literal stays last only so CBP, which may set
     # neither yet, keeps working.
     return (os.environ.get("SAGE_SEAT_CONV") or os.environ.get("SAGE_SEAT") or "cbp-claude").strip()
+
+
+def _seat_id() -> str:
+    """Who the seat speaks as. The default was the literal "cbp-claude" while the conversation id
+    already fell back through SAGE_SEAT_CONV/SAGE_SEAT; on Sprout, with SEAT_ID unset, `pending`
+    counted sprout-claude's own answers as requests and `_say` was refused by `writable_by`. A
+    being's seat conversation is named for its seat, so the seat id falls back to that name."""
+    return (os.environ.get("SEAT_ID") or _conv_id()).strip()
+
+
+# ONE ANSWERER AT A TIME. `list` then `run` was read-then-act with no lock: two seat processes
+# (an interactive seat and a mesh wake, sprout 2026-10-16, seq 996-997) both saw request 995
+# pending and both ran it. Run and decline now hold this lock from binding the request to posting
+# the answer, so the second one binds after the first has answered and finds nothing pending.
+LOCK_WAIT_S = 90.0
+
+
+@contextlib.contextmanager
+def answering_lock(inst: Path, cid: str, wait: float | None = None):
+    path = inst / "conversations" / f".{cid}.answering.lock"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    wait = LOCK_WAIT_S if wait is None else wait
+    with open(path, "a+") as fh:
+        deadline = time.monotonic() + wait
+        while True:
+            try:
+                fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    sys.exit(f"refusing: another seat process has been answering {cid} for over "
+                             f"{wait:.0f}s. Nothing was run or posted; `list` again when it is done.")
+                time.sleep(0.2)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def check_pause_holder(inst: Path, cid: str) -> None:
+    """Refuse a session that is not the one that paused this conversation's wakes."""
+    pause = conv.wake_pause(inst, cid)
+    if pause and os.environ.get("SEAT_PAUSE_TOKEN", "") != pause.get("token"):
+        sys.exit(f"refusing: {pause.get('by')} has paused wakes for {cid} since {pause.get('since')} "
+                 f"(until {pause.get('until')}) and is answering the being itself"
+                 f"{': ' + pause['reason'] if pause.get('reason') else ''}. Nothing was run or "
+                 f"posted. Policy (dp, 2026-10-16): while a seat holds the pause, other sessions "
+                 f"stand down.")
 
 
 def request_path(turn: dict) -> str:
@@ -117,7 +177,7 @@ def pending(inst: Path, cid: str) -> list[dict]:
     same file — a result about a file answers every request for that file made before it,
     except one newer than every seq the result names. Nothing else closes one."""
     turns = conv.recent(inst, cid, limit=400)
-    seat = os.environ.get("SEAT_ID", "cbp-claude")
+    seat = _seat_id()
     out = []
     for i, t in enumerate(turns):
         if t.get("from") == seat or MARKER not in (t.get("text") or ""):
@@ -212,7 +272,7 @@ def as_shown(text: str, cap: int | None = None) -> tuple[str, str]:
 
 
 def _say(text: str) -> None:
-    body = json.dumps({"from": os.environ.get("SEAT_ID", "cbp-claude"), "message": text}).encode()
+    body = json.dumps({"from": _seat_id(), "message": text}).encode()
     url = f"{os.environ.get('SAGE_DAEMON', 'http://127.0.0.1:8760')}/conversations/{_conv_id()}/say"
     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
     try:
@@ -375,6 +435,13 @@ def run_child(argv: list[str], cwd: str, timeout: float, env: dict):
 
 
 def cmd_run(args) -> None:
+    inst = _instance()
+    check_pause_holder(inst, _conv_id())
+    with answering_lock(inst, _conv_id()):
+        _run(args)
+
+
+def _run(args) -> None:
     script_args = list(getattr(args, "script_args", None) or [])
     inst = _instance()
     p = _target(inst, args.path)
@@ -479,6 +546,13 @@ def decline_text(rel, reason: str, seqs: list[int], closing: str | None = None) 
 
 def cmd_decline(args) -> None:
     inst = _instance()
+    check_pause_holder(inst, _conv_id())
+    with answering_lock(inst, _conv_id()):
+        _decline(args)
+
+
+def _decline(args) -> None:
+    inst = _instance()
     rel = _target(inst, args.path).relative_to(inst.resolve())
     seqs = bind(inst, _conv_id(), str(rel), args.seq)
     text = decline_text(rel, args.reason, seqs, decline_closing(inst))
@@ -498,10 +572,40 @@ def cmd_decline(args) -> None:
     _say(text)
 
 
+def cmd_pause(args) -> None:
+    inst, cid = _instance(), _conv_id()
+    pause = conv.pause_wakes(inst, cid, by=_seat_id(), minutes=args.minutes, reason=args.reason or "")
+    print(f"wakes paused for {cid} until {pause['until']} (by {pause['by']}).\n"
+          f"Set SEAT_PAUSE_TOKEN={pause['token']} on this session's run/decline calls; other "
+          f"sessions are refused. A notice already queued before the pause can still fire one wake, "
+          f"and that wake is refused here too. `resume` when you are done.")
+
+
+def cmd_resume(args) -> None:
+    inst, cid = _instance(), _conv_id()
+    print(f"wakes resumed for {cid}" if conv.resume_wakes(inst, cid) else f"{cid} was not paused")
+
+
+def cmd_status(args) -> None:
+    inst, cid = _instance(), _conv_id()
+    pause = conv.wake_pause(inst, cid)
+    if not pause:
+        print(f"{cid}: not paused; mesh wakes answer the being")
+    else:
+        print(f"{cid}: paused by {pause['by']} since {pause['since']} until {pause['until']}"
+              f"{' (' + pause['reason'] + ')' if pause.get('reason') else ''}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("list").set_defaults(fn=cmd_list)
+    pz = sub.add_parser("pause", help="jump in: stop mesh wakes for this conversation while you answer")
+    pz.add_argument("--minutes", type=int, default=conv.WAKE_PAUSE_DEFAULT_MINUTES)
+    pz.add_argument("--reason", default="")
+    pz.set_defaults(fn=cmd_pause)
+    sub.add_parser("resume", help="hand the conversation back to mesh wakes").set_defaults(fn=cmd_resume)
+    sub.add_parser("status", help="who answers this conversation now").set_defaults(fn=cmd_status)
     r = sub.add_parser("run"); r.add_argument("path"); r.add_argument("--timeout", type=int, default=120)
     r.add_argument("--gpu", action="store_true",
                    help="let the script see the GPU (default: CUDA devices hidden — the being's model needs the card). "

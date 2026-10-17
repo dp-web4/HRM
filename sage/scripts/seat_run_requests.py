@@ -254,7 +254,12 @@ WHERE_GPU = "with the GPU visible to it"
 # still runs with the devices hidden either way (child_env); only the sentence is conditional.
 # The scan reads the requested file, not what it spawns -- a shell script that runs another
 # file's torch code gets no clause; its own traceback still names cuda.
-_GPU_WORDS = re.compile(r"cuda|torch|tensorflow|\bjax\b|cupy|\bgpu\b|nvidia|tensorrt", re.I)
+# Jetson's GStreamer elements need CUDA too without the file saying so. Measured on sprout-being
+# 2026-10-17 (seq 1100-1101): nvvidconv under the hidden GPU failed "no CUDA-capable device is
+# detected" after Argus had opened sensor 0, the receipt carried no clause, and the cause read
+# as the hardware's. So the NVMM-path elements count as naming a GPU stack.
+_GPU_WORDS = re.compile(r"cuda|torch|tensorflow|\bjax\b|cupy|\bgpu\b|nvidia|tensorrt"
+                        r"|nvvidconv|nvjpegenc|nvv4l2|nvarguscamerasrc|nvbufsurf|memory:NVMM", re.I)
 
 
 def where_clause(gpu: bool, source: str) -> str:

@@ -2339,7 +2339,9 @@ _TOOL_SCHEMAS = {
             "long run is time you are not answering anyone. If it is stopped, what it printed "
             "before the stop comes back. "
             "This is how a claim becomes testable: before you run it, say what it should print "
-            "if you are right, and what would mean you are wrong.",
+            "if you are right, and what would mean you are wrong. If your code truly needs what "
+            "the sandbox lacks (the network, files that must stay changed, more than an hour, "
+            "the GPU), ask the seat with request_run and say why.",
             {"path": "a .py file in your home, e.g. 'scratch/evaluator.py'",
              "data": "optional: up to 8 more files, named by their SOURCE path — relative to your "
                      "home, or absolute anywhere you can read. Inside the sandbox each one "
@@ -2487,9 +2489,11 @@ _TOOL_SCHEMAS = {
                      "end_line": "the last line to replace (same as start_line for one line)",
                      "new": "what replaces it (empty string deletes)"},
                     ["path", "new"]),
-    "request_run": ("Ask the seat to RUN one of your own files and tell you what happened. "
-                    "You cannot execute anything yourself, so this is the door: you name the "
-                    "file — the only thing it needs — and the seat decides whether to run it and "
+    "request_run": ("Ask the seat to RUN one of your own files OUTSIDE the sandbox, and tell "
+                    "you what happened. Most code you run yourself, with `run`. This is for code "
+                    "that needs what the sandbox does not have: the network, files that must "
+                    "stay changed, more than an hour, or the GPU. Say which, and why, in `why`. "
+                    "You name the file — the only thing it needs — and the seat decides whether to run it and "
                     "answers with the real output: exit code, stdout, stderr. Adding what you "
                     "expect to learn is optional and helps the seat decide. It may decline, and "
                     "it will say why. Nothing runs at the moment you call this; what you get back is a "

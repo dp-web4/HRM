@@ -371,7 +371,7 @@ AFFORDANCES = """## What you have this beat
 - appeal: after a refusal you believe was wrong, appeal it with the deny hash shown on the refusal and a reason. A peer or the operator rules; either way it is witnessed. Not for a refusal you agree with.
 - peer_ask / mesh: reach other beings and seats. These are acts of consequence: they are judged, and may be refused with a reason.{museum}
 
-You can run Python you wrote with `run`, in a sandbox with no network and no home; what it prints comes back. You cannot browse, or open files outside your home unless a grant exists. The seat gives you a digest of what moved in the fleet with absolute paths; if you want to read one of those things, try memory_read on that path and see what the law says.
+You can run Python you wrote with `run`, in a sandbox with no network and no home; what it prints comes back. For code that needs more than the sandbox gives, request_run asks the seat, and you say why. You cannot browse, or open files outside your home unless a grant exists. The seat gives you a digest of what moved in the fleet with absolute paths; if you want to read one of those things, try memory_read on that path and see what the law says.
 
 Acting means calling a tool. A reply with no tool call ends the beat as words only, and words leave no trace in your todo, journal, scratch, or memory."""
 

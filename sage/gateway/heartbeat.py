@@ -371,7 +371,7 @@ AFFORDANCES = """## What you have this beat
 - appeal: after a refusal you believe was wrong, appeal it with the deny hash shown on the refusal and a reason. A peer or the operator rules; either way it is witnessed. Not for a refusal you agree with.
 - peer_ask / mesh: reach other beings and seats. These are acts of consequence: they are judged, and may be refused with a reason.{museum}
 
-You cannot run code, browse, or open files outside your home unless a grant exists. The seat gives you a digest of what moved in the fleet with absolute paths; if you want to read one of those things, try memory_read on that path and see what the law says.
+You can run Python you wrote with `run`, in a sandbox with no network and no home; what it prints comes back. You cannot browse, or open files outside your home unless a grant exists. The seat gives you a digest of what moved in the fleet with absolute paths; if you want to read one of those things, try memory_read on that path and see what the law says.
 
 Acting means calling a tool. A reply with no tool call ends the beat as words only, and words leave no trace in your todo, journal, scratch, or memory."""
 
@@ -1423,7 +1423,8 @@ def _notice_target(uri) -> str:
     return str(uri or "").strip().split("#", 1)[0]
 
 
-def inbox_ledger(last: dict, notices: list, results: list, explore_acted, presented_now) -> dict:
+def inbox_ledger(last: dict, notices: list, results: list, explore_acted, presented_now,
+                 asked_now: Optional[dict] = None) -> dict:
     """WHICH NOTICES ARE HANDLED, by what the being did -- never by how old they are.
 
     The beat only peeks at the inbox (nothing drains it), so without a ledger every notice is
@@ -1434,18 +1435,31 @@ def inbox_ledger(last: dict, notices: list, results: list, explore_acted, presen
     beat crashed before reading it. So a notice is handled only when:
       - "opened": the being memory_read its pointer and the read succeeded (any kind), or
       - "presented": it is an INBOX_INFORMATIONAL kind and was rendered to a beat whose explore
-        turn acted (the rule mark_conversations_after_beat uses for conversation turns).
-    Both sets carry forward from the last beat's record and are pruned to ids still in the
+        turn acted (the rule mark_conversations_after_beat uses for conversation turns), or
+      - "asked": its own ask turn (ask_turn_json, `asked_now` is that turn's form) DECIDED it: a
+        reply was sent, or silence was chosen with the ask's words in view. A turn that decided
+        nothing counts one try in "ask_tries" instead, and select_ask stops offering it at
+        ASK_TURN_TRIES. Kept apart from "opened": answering is not a memory_read.
+    The sets carry forward from the last beat's record and are pruned to ids still in the
     inbox, so the ledger is bounded by the inbox. A notice with no id is never handled."""
     prev = (last or {}).get("inbox") or {}
     if not notices:
         # An inbox that could not be read this beat (or is empty) proves nothing was handled
         # or retired; carry the ledger as it was rather than prune it to nothing.
         return {"opened": list(prev.get("opened") or []),
-                "presented": list(prev.get("presented") or []), "opened_this_beat": []}
+                "presented": list(prev.get("presented") or []), "opened_this_beat": [],
+                "asked": list(prev.get("asked") or []), "ask_tries": dict(prev.get("ask_tries") or {})}
     live = {n.get("id") for n in notices if isinstance(n, dict) and n.get("id") is not None}
     opened = {i for i in (prev.get("opened") or []) if i in live}
     presented = {i for i in (prev.get("presented") or []) if i in live}
+    asked = {i for i in (prev.get("asked") or []) if i in live}
+    tries = {k: v for k, v in (prev.get("ask_tries") or {}).items() if k in {str(i) for i in live}}
+    if asked_now and asked_now.get("notice") in live:
+        if asked_now.get("decided"):
+            asked.add(asked_now["notice"])
+        else:
+            k = str(asked_now["notice"])
+            tries[k] = int(tries.get(k, 0)) + 1
     by_target = {}
     for n in notices:
         if isinstance(n, dict) and n.get("id") is not None and _notice_target(n.get("pointer_uri")):
@@ -1459,7 +1473,7 @@ def inbox_ledger(last: dict, notices: list, results: list, explore_acted, presen
     if explore_acted:
         presented |= {i for i in (presented_now or []) if i in live}
     return {"opened": sorted(opened, key=str), "presented": sorted(presented, key=str),
-            "opened_this_beat": sorted(newly, key=str)}
+            "opened_this_beat": sorted(newly, key=str), "asked": sorted(asked, key=str), "ask_tries": tries}
 
 
 def unopened_asks(notices: list, handled, now) -> dict:
@@ -1487,9 +1501,10 @@ def unopened_asks(notices: list, handled, now) -> dict:
 
 
 def inbox_handled(last: dict) -> set:
-    """The ids the last beat's ledger says are handled (opened, or informational and shown)."""
+    """The ids the last beat's ledger says are handled (opened, informational and shown, or
+    decided in its own ask turn)."""
     prev = (last or {}).get("inbox") or {}
-    return set(prev.get("opened") or []) | set(prev.get("presented") or [])
+    return set(prev.get("opened") or []) | set(prev.get("presented") or []) | set(prev.get("asked") or [])
 
 
 INLINE_ASKS = 2            # unopened asks shown with what they say, newest first
@@ -1601,6 +1616,219 @@ def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None
         shown.extend(n.get("id") for n in rest[:limit]
                      if str(n.get("kind")) in INBOX_INFORMATIONAL and n.get("id") is not None)
     return "\n".join(lines)
+
+
+# AN ASK GETS ITS OWN TURN (option (c), 2026-10-16). #424 put an ask's words in the inbox and #452
+# made the copy arrive; measured on HUB 10-15 23:15Z..10-16 22:20Z (forum/hub-to-sprout-424-valid-now-
+# c-is-on-2026-10-16.md): 10 of 25 envelopes inlined, the model healthy, and hub-being still sent 0 say,
+# 0 peer_ask, 0 memory_read: memory_write 86, remember 43, unopened_asks 24. On granite4:h-tiny with the
+# full tool set, the words being in view does not make an answer. The answer turn already showed what
+# works at this scale (ANSWER_ASK_JSON: 0/8 by tool call, 8/8 as JSON with only the pending turn in
+# view), so an ask gets the same shape: one ask, who sent it, its words, and the JSON {answer, message}.
+# answer=true is dispatched as the being's own peer_ask to the asker, through the gate, so every
+# peer_ask guard (roster, self, "say is the door", the 3-per-6h limit) still applies; answer=false is
+# silence and is recorded as one. Opt-in per instance: instance.json "ask_turn": true.
+ASK_TURN_TRIES = 2         # beats an ask is offered without a decision (unparsed, refused) before it is left
+ASK_TURN_CHARS = 1500      # of the ask's words; the envelope (and memory_read) has the rest
+_ASK_FROM = re.compile(r"^from:\s*([A-Za-z0-9._-]+)\s*$", re.M)
+
+ASK_SYSTEM = """You are {name}, a SAGE being on the {machine} machine, member id {member}.
+Another being has sent you a message. This turn is only for it."""
+
+ASK_TURN_JSON = """{asker} sent you this message:
+
+\"{words}\"
+
+You have not answered it yet. If you want to, answer now: set answer to true and write your
+reply to {asker} in message. Write the message itself, in your own voice — the words you would
+want {asker} to read.
+
+If you would rather not answer, set answer to false and leave message empty. Silence is a real
+choice here and nothing is owed."""
+
+
+def ask_turn_on(instance) -> bool:
+    """Opt-in per instance: instance.json "ask_turn": true."""
+    try:
+        from sage.gateway.governed_turn import instance_config
+        return instance_config(instance).get("ask_turn") is True
+    except Exception:
+        return False
+
+
+def _roster_name_for(member_id: str) -> str:
+    """The roster name of a hub member id (hub-notify's cache, `{"name", "lct_id"}`), or ""."""
+    path = os.path.join(os.path.expanduser(os.environ.get("HUB_MESH_STATE", "~/.local/state/hub-mesh")),
+                        "members.json")
+    try:
+        m = json.load(open(path))
+        ms = m.get("members", m) if isinstance(m, dict) else m
+        for x in ms:
+            if str(x.get("lct_id") or "").strip() == member_id and str(x.get("name") or "").strip():
+                return str(x["name"]).strip()
+    except Exception:
+        pass
+    return ""
+
+
+def _bound_to(claimed: str, authed: str) -> bool:
+    """Whether the name a post claims is the member the hub authenticated it from: the same member
+    (a being is `<machine>-being` to beings and `<machine>-sage` on the hub), or that being's own
+    machine, whose seat carries mail for it (egress_drain's stamped carrier)."""
+    c, a = claimed.strip().lower(), authed.strip().lower()
+    if not c or not a:
+        return False
+    base = lambda n: n[:-len("-being")] if n.endswith("-being") else n[:-len("-sage")] if n.endswith("-sage") else None  # noqa: E731
+    return c == a or (base(c) is not None and (base(c) == base(a) or base(c) == a))
+
+
+def _ask_sender(home, pointer: str) -> str:
+    """Who sent a relayed ask, if the hub vouches for it: the `from:` the sender's own post claims,
+    returned only when it names the member the envelope was authenticated from; "" otherwise.
+
+    THE CLAIM PROPOSES, THE ENVELOPE BINDS (NOVA on #459). The post's front matter is the sender's
+    own text: a message from A that says `from: B` would have sent the being's reply to B. The
+    envelope's `from` (the inbox note's own front matter, a hub member id) is what the hub
+    authenticated, but no peer_ask accepts a member id, and the hestia notice's from_plugin is the
+    relaying seat. So the claimed name is used as the destination only when it is bound to the
+    authenticated member (`_bound_to`); unbound, unknown or unreadable, the ask gets no turn.
+
+    The authenticated member id is read from the drain's seat-owned sender record
+    (`being_inbox_drain.authenticated_sender`), never from the note's own front matter: the note sits
+    in the being's writable home, so its `from:` is an editable field (NOVA's re-review on #459)."""
+    try:
+        from sage.gateway.being_inbox_drain import DELIVERED_HEADING, authenticated_sender
+        p = Path(home) / "notes" / "inbox" / Path(str(pointer).split("#", 1)[0]).name
+        text = p.read_text(encoding="utf-8", errors="replace")
+        sender_id = authenticated_sender(home, p.name)
+        authed = _roster_name_for(sender_id) if sender_id else ""
+        part = text.split(DELIVERED_HEADING, 1)[1]
+        body = part.split("~~~~\n", 1)[1]
+        if not body.startswith("---\n"):
+            return ""
+        m = _ASK_FROM.search(body[4:].split("\n---", 1)[0])
+        claimed = m.group(1) if m else ""
+        return claimed if _bound_to(claimed, authed) else ""
+    except Exception:
+        return ""
+
+
+def _ask_capped(home, asker: str, now: Optional[float] = None) -> bool:
+    """True when the being has already used its peer_ask allowance to `asker` (the gate's count,
+    HestiaF1aDispatcher.ASK_CAP_PER_PEER per ASK_WINDOW_S, from the same asks_sent.jsonl). The ask turn
+    would only be refused, and a refusal is not a decision: offered anyway, it spent both of its
+    ASK_TURN_TRIES on the limit and was left (HUB review of #459, 2026-10-16). Skipped instead, it
+    stays offered for when the window frees."""
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as _D
+    now = time.time() if now is None else now
+    key, n = str(asker or "").split("/", 1)[0].strip().lower(), 0
+    try:
+        for line in (Path(home) / _D.ASKS_LOG).read_text(encoding="utf-8").splitlines():
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if r.get("peer") == key and float(r.get("t", 0)) >= now - _D.ASK_WINDOW_S:
+                n += 1
+    except OSError:
+        return False
+    return n >= _D.ASK_CAP_PER_PEER
+
+
+def select_ask(notices: list, handled, home, tries: Optional[dict] = None,
+               now: Optional[float] = None) -> Optional[dict]:
+    """The one ask this beat offers its own turn, newest first, or None: an unhandled reply,
+    coordination or handoff whose words the courier delivered and whose sender named itself, that
+    has not already been offered ASK_TURN_TRIES times without a decision, and whose sender the being
+    can still peer_ask this window (_ask_capped). Pure but for reading the being's own files."""
+    if not home:
+        return None
+    handled, tries = set(handled or ()), dict(tries or {})
+    for n in sorted([n for n in notices or [] if isinstance(n, dict)], key=lambda n: -int(n.get("id") or 0)):
+        nid = n.get("id")
+        if nid is None or nid in handled or str(n.get("kind")) not in _INLINE_KINDS:
+            continue
+        if int(tries.get(str(nid), 0)) >= ASK_TURN_TRIES:
+            continue
+        ptr = str(n.get("pointer_uri") or "")
+        words = delivered_excerpt(home, ptr, cap=ASK_TURN_CHARS)
+        asker = _ask_sender(home, ptr) if words else ""
+        if words and asker and not _ask_capped(home, asker, now):
+            return {"id": nid, "asker": asker, "words": words, "pointer": ptr}
+    return None
+
+
+def ask_turn_json(client, llm, ask: dict, *, name: str, machine: str, member: str,
+                  on_generate=None, temperature: Optional[float] = None):
+    """The being's reply to one ask, if it chose one, dispatched as its peer_ask to the asker.
+    In view: the asker's name and its words, nothing else (the answer turn's arm C)."""
+    from sage.gateway.being_tool_loop import ToolTurnResult
+    from sage.gateway.being_gate_client import BeingIntent
+    msgs = [{"role": "system", "content": ASK_SYSTEM.format(name=name, machine=machine, member=member)},
+            {"role": "user", "content": ASK_TURN_JSON.format(asker=ask["asker"], words=ask["words"])}]
+    _prior_t = getattr(llm, "temperature", None)
+    if temperature is not None and _prior_t is not None:
+        llm.temperature = float(temperature)
+    try:
+        r, retried, attempts = _answer_generate(llm, msgs, ANSWER_SCHEMA)
+    finally:
+        if temperature is not None and _prior_t is not None:
+            llm.temperature = _prior_t
+    raw = (r or {}).get("raw") or {}
+    content = ((r or {}).get("content") or "").strip()
+    thinking = ((raw.get("message") or {}).get("thinking") or "").strip()
+    gen = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
+           "eval_count": raw.get("eval_count"), "retried": retried,
+           "num_predict": getattr(llm, "resolve_num_predict", lambda: None)(), "attempts": attempts}
+    if on_generate is not None:
+        try:
+            on_generate(dict(gen))
+        except Exception:
+            pass
+    res = ToolTurnResult(reply=content, thinking=[thinking] if thinking else [], generates=[gen])
+    form = {"notice": ask["id"], "to": ask["asker"], "parsed": False, "answer": None, "sent": False,
+            "retried": retried, "done_reason": raw.get("done_reason")}
+    try:
+        j = json.loads(content)
+        form["parsed"] = isinstance(j, dict)
+    except Exception:
+        j = None
+    if not form["parsed"]:
+        form["why"] = ("empty reply" if not content else "cut at the length limit"
+                       if raw.get("done_reason") == "length" else "transport error"
+                       if content.startswith("[OllamaIRP") else "reply was not the JSON asked for")
+    else:
+        # A schema-requested answer is an actual JSON boolean, never a truthy string
+        # (e.g. "false") or number. Malformed forms remain retryable; they cannot
+        # silently become a being-authorized peer_ask or a decision to stay quiet.
+        if type(j.get("answer")) is not bool or not isinstance(j.get("message"), str):
+            form["parsed"] = False
+            form["why"] = "answer form needs boolean answer and string message"
+            res.answer_form = form
+            return res
+        form["answer"] = j["answer"]
+        message = j["message"].strip()
+        res.reply = message
+        if form["answer"] and message:
+            intent = BeingIntent("peer_ask", {"to": ask["asker"], "body": message})
+            env = client.dispatch(intent)
+            res.trace.append((intent, env))
+            res.steps = 1
+            form["sent"] = bool(env.ok)
+            if not env.ok:
+                form["refused"] = (env.error or "")[:160]
+                form["why"] = "the gate refused the peer_ask"
+        elif form["answer"]:
+            form["why"] = "chose to answer but wrote no message"
+        else:
+            form["why"] = "chose silence"
+    # A DECISION folds the ask (sent, or silence chosen with its words in view); anything else is
+    # retried on a later beat, up to ASK_TURN_TRIES.
+    form["decided"] = bool(form["sent"] or form.get("why") == "chose silence")
+    if temperature is not None:
+        form["temperature"] = float(temperature)
+    res.answer_form = form
+    return res
 
 
 # Which of the being's own effectors go through a measured service, so a claim that the
@@ -3574,10 +3802,22 @@ def _beat_record_text(*results, no_result: bool = False) -> str:
     for res in results:
         for i, e in ((res.trace if res is not None else []) or []):
             lines.append(_record_line(i, e))
+    full = _window_full_line(*results)
     if not lines:
-        return "You called no tools this beat."
+        return "You called no tools this beat." + full
     return ("Record of what you did this beat:\n" + "\n".join(lines)
-            + (_no_result_line(*results) if no_result else ""))
+            + (_no_result_line(*results) if no_result else "") + full)
+
+
+def _window_full_line(*results) -> str:
+    """The harness ended a tool phase because the next prompt would not fit the window
+    (being_tool_loop.WINDOW_SEND_MARGIN). Said plainly, so the being does not go looking for
+    what it did wrong: nothing it did caused it."""
+    if not any(getattr(r, "window_full", None) for r in results if r is not None):
+        return ""
+    return ("\n\nYour context window filled during this beat, so the harness stopped your tool steps "
+            "there instead of sending a prompt the model could not read. Nothing you did caused it, "
+            "and there is nothing in your files to fix for it.")
 
 
 def _carry(convo: list, res) -> list:
@@ -3592,6 +3832,8 @@ def _carry(convo: list, res) -> list:
     # "(acted; no closing words)" meant. Say what happened instead.
     if res.reply:
         out.append({"role": "assistant", "content": res.reply})
+    elif getattr(res, "window_full", None):
+        out.append({"role": "assistant", "content": "(the context window filled, so the harness stopped the tool steps here)"})
     elif res.trace:
         out.append({"role": "assistant", "content": f"(made {len(res.trace)} tool calls, then said nothing)"})
     else:
@@ -4016,6 +4258,7 @@ def main(argv=None) -> int:
     global LAST_SELECTION_ERROR
     LAST_SELECTION_ERROR = None
     act_after = None
+    ask = ask_turn = None
     preempted = None
     account = {"present": False, "sha256": None, "reply": "", "generates": []}
     killed = None
@@ -4255,6 +4498,23 @@ def main(argv=None) -> int:
                                              should_yield=_yield_for_a_person,
                                              act_form=explore_turn_mode(instance), retake_bare_placeholder=True)
 
+        # AN ASK'S OWN TURN (option (c); ask_turn_json). After a person: only when this beat answered no one
+        # and was not preempted for someone, so a person waiting is never queued behind a peer. One ask per
+        # beat, and not one the being already wrote to this beat (its peer_ask to the asker in any phase).
+        if ask_turn_on(instance) and answer is None and not preempted:
+            ask = select_ask(_inbox_notices, inbox_handled(last), instance,
+                             ((last or {}).get("inbox") or {}).get("ask_tries"))
+            _asked_already = ask is not None and any(
+                it.effector == "peer_ask" and env.ok
+                and str((it.args or {}).get("to") or "").strip().lower() == ask["asker"].lower()
+                for res in (explore, after, reflect) if res is not None
+                for it, env in (getattr(res, "trace", None) or []))
+            if ask is not None and not _asked_already:
+                _phase("wrap-up", "ask", host_session_id)
+                ask_turn = ask_turn_json(client, llm, ask, name=name, machine=machine, member=args.member,
+                                         on_generate=_on_generate("ask"),
+                                         temperature=answer_temperature(instance))
+
     except BeatKilled as _k:
         killed = str(_k)
         print(f"[heartbeat] KILLED mid-beat: {killed} — writing the record with what completed",
@@ -4271,8 +4531,10 @@ def main(argv=None) -> int:
         interventions.append({"kind": "answer_json", "to": selected.cid if selected else None,
                               "woke_by_turn": bool(selected and selected.woke),
                               **answer.answer_form})
+    if ask_turn is not None and getattr(ask_turn, "answer_form", None) is not None:
+        interventions.append({"kind": "ask_turn", **ask_turn.answer_form})
     for ph, res in (("explore", explore), ("posture", after), ("reflect", reflect), ("answer", answer),
-                    ("act_after_answer", act_after)):
+                    ("act_after_answer", act_after), ("ask", ask_turn)):
         if res is None:
             continue
         for dup in (getattr(res, "duplicates", None) or []):
@@ -4301,13 +4563,15 @@ def main(argv=None) -> int:
         # applies), NOT from its return: that returns explore_acted=None when the being has no
         # conversations, and then nothing informational would ever fold. Found by driving main()
         # with an inbox (test_inbox_ledger_wiring.py); the pure-function tests could not see it.
-        _inbox_record = inbox_ledger(last, _inbox_notices, [explore, after, reflect, answer],
-                                     bool(explore is not None and explore.trace), _inbox_shown)
+        _inbox_record = inbox_ledger(last, _inbox_notices, [explore, after, reflect, answer, ask_turn],
+                                     bool(explore is not None and explore.trace), _inbox_shown,
+                                     asked_now=getattr(ask_turn, "answer_form", None))
     except Exception as _e:
         _inbox_record = {**((last or {}).get("inbox") or {}), "error": f"{type(_e).__name__}: {_e}"}
     _inbox_record = {**_inbox_record, "peek": _inbox_peek,
                      **unopened_asks(_inbox_notices, set(_inbox_record.get("opened") or [])
-                                     | set(_inbox_record.get("presented") or []), now)}
+                                     | set(_inbox_record.get("presented") or [])
+                                     | set(_inbox_record.get("asked") or []), now)}
     # governance escalation wakes it to arbitrate. The beat is where refusals actually
     # happen (Legion: nine consecutive beats of home-scope write refusals, and the being's
     # requests had died with a daemon restart), so the heartbeat must route, not just log.
@@ -4338,12 +4602,21 @@ def main(argv=None) -> int:
     # escalation's drain flushed them, and the being had logged "hub's reply still has not
     # landed after >4h"). The sender's own beat is the natural drain.
     egress = None
+    seat_rearm = None
     if not args.gate_only:
         try:
             from sage.gateway import egress_drain
             egress = egress_drain.drain_once(plugin_id=args.member, log=lambda *_: None)
         except Exception as _e:
             egress = {"error": f"{type(_e).__name__}: {_e}"}
+        # A wake withheld by a seat's pause, or one that failed to leave, is sent here once the
+        # pause is gone, rather than on the being's next turn (rearm_owed_wakes).
+        _disp_end = getattr(client, "_dispatcher", None)
+        if _disp_end is not None and hasattr(_disp_end, "rearm_owed_wakes"):
+            try:
+                seat_rearm = _disp_end.rearm_owed_wakes()
+            except Exception as _e:
+                seat_rearm = {"error": f"{type(_e).__name__}: {_e}"}
 
     def _trace(res):
         return [{"effector": i.effector, "args": dict(i.args or {}), "ok": e.ok, "refused": e.refused,
@@ -4357,7 +4630,8 @@ def main(argv=None) -> int:
                                          "trace": _trace(res), "thinking": [t[:4000] for t in res.thinking],
                                          "salvaged": list(res.salvaged), "generates": list(res.generates),
                                          "rested": getattr(res, "rested", None),
-                                         "looped": getattr(res, "looped", None)}
+                                         "looped": getattr(res, "looped", None),
+                                         "window_full": getattr(res, "window_full", None)}
     record = {
         # schema: what fields a reader may expect (Legion's amendment 4, 2026-09-05: the
         # consolidation organ counts how many records carry join/account/wake/interventions;
@@ -4427,7 +4701,8 @@ def main(argv=None) -> int:
         **({"killed": killed} if killed else {}),
         "answer": _turn(answer) if answer is not None else None,
         "act_after_answer": _turn(act_after) if act_after is not None else None,
-        "escalations": escalations, "egress": egress,
+        "ask_turn": _turn(ask_turn) if ask_turn is not None else None,
+        "escalations": escalations, "egress": egress, "seat_rearm": seat_rearm,
     }
     # THE LAST THING A BEAT DOES IS MAKE SURE THERE WILL BE ANOTHER ONE (opt-in; Legion since
     # 2026-09-09/13). A beat that `rest`ed said it was finished: waking it straight back up is the

@@ -1092,7 +1092,7 @@ def sandbox_available() -> bool:
         # /usr and failed on missing /lib64 — reporting "no sandbox permitted" on a machine
         # where the sandbox works perfectly, which would have refused every check.
         r = subprocess.run([SANDBOX, "--ro-bind", "/usr", "/usr", "--ro-bind", "/lib", "/lib",
-                            "--ro-bind", "/lib64", "/lib64", "--unshare-pid",
+                            "--ro-bind-try", "/lib64", "/lib64", "--unshare-pid",
                             "/usr/bin/true"], capture_output=True, timeout=10)
         return r.returncode == 0
     except Exception:
@@ -1146,6 +1146,347 @@ def sandbox_prefix(worktree: str) -> str:
         " --setenv HOME /tmp --setenv PYTHONUTF8 1 --setenv PYTHONDONTWRITEBYTECODE 1"
         f" --setenv PATH {interp}/bin:/usr/bin:/bin"
         f" --chdir {shlex.quote(worktree)} "
+    )
+
+
+
+def _under(path: str, roots) -> bool:
+    """True iff `path` (already realpath'd) is one of `roots` or inside one."""
+    for r in roots:
+        if path == r or path.startswith(r + os.sep):
+            return True
+    return False
+
+
+def _search_reach(worktree: str, workspace) -> tuple:
+    """How far an ABSOLUTE search path may reach: the fleet repo root, or nothing.
+
+    WHY THE HARNESS DRAWS THIS LINE AND NOT THE LAW. Measured 2026-09-14 against the live
+    daemon with legion-being's real grants: `search` intents naming '/etc' and the
+    operator's dotfile directory were both ALLOWED. That is not a gate defect, it is the
+    gate's documented residual — `command_scope_reach` judges a command by splitting it on
+    the WORKSPACE string, so an absolute path that never names the workspace is never a
+    token it sees ("the engine sandbox, not this check, is the fs boundary"). `search` runs
+    in the seat, not in the being's bwrap sandbox, so there is no sandbox here to be that
+    boundary. Do not assume this check is redundant with the law; it was written because a
+    probe proved it is not.
+
+    The reach is the workspace's PARENT — the directory the fleet's repos are siblings in
+    (~/ai-workspace/{SAGE,hestia,shared-context,...}) and exactly the root dp granted
+    standing recursive. Inside it the law still rules per-member: `command_scope_reach`'s
+    pass 1 does see those paths and denies an ungranted repo. Outside it the answer is no,
+    which keeps credential material out of reach whether or not it happens to be spelled
+    with one of gate 1a's forbidden substrings.
+
+    No workspace in ctx => the worktree alone. That is the OLD behaviour and it fails
+    closed: the dispatcher composing without a workspace would disagree with the client
+    composing with one, and _do_search refuses a judged/executed mismatch rather than
+    running either."""
+    roots = [os.path.realpath(worktree)]
+    if workspace:
+        roots.append(os.path.dirname(os.path.realpath(workspace)))
+    return tuple(dict.fromkeys(r for r in roots if r and r != os.sep))
+
+
+def _reach_refusal(verb: str, path, reach: str) -> str:
+    """Refused for being OUTSIDE the machine's shared tree — with the form that needs no
+    memory at all. The escape refusal has named the relative form since SAGE#90; this one
+    did not, and it is the one a being hits when it guesses at an absolute path (measured
+    2026-09-14: four refusals in one beat, all guesses, none corrected by the refusal)."""
+    return (f"{verb} 'path' is outside anything you can reach: {str(path)!r}. Absolute paths "
+            f"are fine, but only under {reach} — that tree holds the fleet's repos and your "
+            f"own worktree, and what you may read INSIDE it is decided by your granted "
+            f"scope, not by this message. A path elsewhere on this machine is not something "
+            f"to ask scope for; it is not part of your world. If you meant something in your "
+            f"own worktree, a RELATIVE path needs no absolute path at all: "
+            f"'sage/gateway/heartbeat.py' resolves there without your having to hold one.")
+
+
+# run: the being executes code it wrote itself, in a sandbox that holds nothing of ours.
+#
+# WHY IT EXISTS. dp, 2026-09-17, to the being: "exploration has to be off-game. this is what
+# the current leaders are doing - writing solvers, simulators, ways to evaluate solutions
+# without paying the price." The being answered by designing an off-board evaluator and then
+# flagged, honestly, that it could not run one: `memory_write` and `edit` write only inside its
+# home, and `check` executes only its worktree, and _safe_path keeps those two sets disjoint on
+# purpose (see reference_f1a._safe_path: a gated write into a tree a gated execute runs composes
+# into ungated code). So it could author a simulator and never run it.
+#
+# WHY THIS IS SAFE TO ADD, stated as a comparison rather than a promise: `run` is STRICTLY
+# WEAKER than `check`, which the being already has. `check` binds a whole writable worktree into
+# the sandbox and runs pytest, which imports whatever conftest.py it finds. `run` binds ONE
+# seat-staged directory containing a COPY of one file the being named plus copies of the data
+# files it named — no worktree, no home, no network, no seat environment, no vault, no keys, and
+# nothing the being can alter between the staging and the execution. The being's own state
+# (journal, conversations, memories) is not bound, so code it writes cannot corrupt the record of
+# what it did. Anything it wants to keep it must PRINT, and the print is capped and witnessed.
+STAGE_ROOT = "/tmp/sage-run"          # seat-owned staging dirs, one per INVOCATION (run_stage_dir)
+
+
+RUN_MAX_DATA = 8                      # data files copied in beside the script
+
+# WHAT AN HOUR CAN FILL, BOUNDED (legion-claude's review of #470, probed on Legion: a 300 MiB
+# --as cap let 640 MiB into the sandbox's /tmp, because tmpfs pages are not the process's
+# address space). Both writable places in the sandbox are size-limited tmpfs, and every file a
+# run writes, its stdout and stderr files on the host included, is capped by RLIMIT_FSIZE. So a
+# run holds at most the --as cap in heap plus these two in tmpfs, and never touches the disk.
+RUN_TMP_BYTES = 1 << 30               # the sandbox's /tmp
+RUN_WORK_BYTES = 1 << 30              # /work: the staged inputs (read-only) and whatever it writes
+RUN_FSIZE_BYTES = 512 << 20           # any one file the run writes, its output files included
+RUN_MIN_S = 30                        # a beat with less than this left starts no run (Nova)
+
+
+# AN HOUR, NOT 30 s (dp, 2026-10-18: "30 sec limit seems arbitrary for a being that is the
+# priority on the machine. i'd make it an hour at least, unless you can show me a downside").
+# The downsides found are guarded rather than used to shorten it: a run is synchronous, so the
+# beat waits for it (the tool spec says so), and an hour of unbounded allocation could take
+# the machine's memory and the being's own model with it, hence RUN_MEM_FRACTION below.
+RUN_TIMEOUT_S = 3600
+# Address-space cap for a run: half of physical memory, applied with prlimit outside the
+# sandbox. A cap is a containment boundary, not a time budget: it stops one script from
+# starving the inference the being itself runs on.
+RUN_MEM_FRACTION = 0.5
+PRLIMIT = "/usr/bin/prlimit"
+
+
+# A RUN MUST NOT OUTLIVE ITS BEAT. The beat's systemd unit kills the whole beat at its
+# TimeoutStartSec (1500 s in sage-heartbeat.service.example), so an hour-long run inside a
+# 25-minute beat would die with the beat, record and all. A run gets the hour or the time the
+# beat has left minus a margin for writing its record, whichever is less, and the receipt says
+# which. Raising a machine's unit bound is what makes the full hour reachable there.
+_PROCESS_T0 = __import__("time").time()
+RUN_BEAT_MARGIN_S = 180
+
+
+def _beat_timeout_s() -> Optional[float]:
+    """The beat's declared time bound, or None when none is declared. UNKNOWN IS UNKNOWN
+    (legion-claude, #470): this used to assume 1500 s for any heartbeat process, but Legion's unit
+    runs TimeoutStartSec=infinity with 18-54 min beats, and would have been clamped to the floor
+    with a receipt about a bound that does not exist. The unit declares it (SAGE_BEAT_TIMEOUT_S,
+    beside TimeoutStartSec; sage-heartbeat.service.example does), or nothing is assumed."""
+    v = os.getenv("SAGE_BEAT_TIMEOUT_S")
+    if not v or v.strip().lower() in ("infinity", "0"):
+        return None
+    try:
+        return float(v)
+    except ValueError:
+        return None
+
+
+def run_budget_s(now: Optional[float] = None) -> tuple:
+    """(seconds this run may take, why). Never more than RUN_TIMEOUT_S; never past the beat.
+    0 means no run may start: the beat has less than RUN_MIN_S left after its record margin.
+    That was a 30 s floor, which granted a run with no beat budget at all (Nova, #470)."""
+    import time
+    bound = _beat_timeout_s()
+    if bound is None:
+        return RUN_TIMEOUT_S, "the run limit"
+    left = _PROCESS_T0 + bound - (now if now is not None else time.time()) - RUN_BEAT_MARGIN_S
+    if left >= RUN_TIMEOUT_S:
+        return RUN_TIMEOUT_S, "the run limit"
+    if left < RUN_MIN_S:
+        return 0, "the time left in this beat"
+    return int(left), "the time left in this beat"
+
+
+def run_mem_cap_bytes() -> int:
+    import os
+    try:
+        return int(os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") * RUN_MEM_FRACTION)
+    except (ValueError, OSError, AttributeError):
+        return 8 << 30
+
+
+def run_names(args: dict, ctx: Optional[dict] = None) -> List[str]:
+    """The script and data paths of a `run` intent, as the being named them, parsed and checked
+    once. run_command, run_source_paths and the dispatcher's staging all start from this list,
+    so the files judged, the files composed and the files staged are the same files."""
+    import os
+    import re
+    memory_root = (ctx or {}).get("memory_root")
+    member = (ctx or {}).get("member") or ""
+    if not memory_root:
+        raise ValueError("run requires a memory_root context")
+    if not re.fullmatch(r"[A-Za-z0-9._-]{1,64}", member):
+        raise ValueError("run requires a member name of its own; none is configured on this seat")
+    path = str(args.get("path", "")).strip()
+    if not path:
+        raise ValueError("run needs a 'path': a .py file in your home to execute")
+    data = args.get("data") or []
+    if isinstance(data, str):
+        # A LIST ARRIVES AS A STRING AND A STRING ITERATES INTO CHARACTERS. Measured on the
+        # verb's first real use (2026-09-17): the being sent data="m.md" and got "no such file
+        # in your home: m" — four characters read as four filenames — and data='["scratch/
+        # game/moves.md"]' became "you gave 25". game_command already tolerates the JSON-string
+        # form for `probes`; this did not, and three of its calls died on my inconsistency.
+        import json as _json
+        import re as _re
+        try:
+            parsed = _json.loads(data)
+        except ValueError:
+            parsed = None
+        if isinstance(parsed, list):
+            data = parsed
+        else:
+            # A LIST OF PATHS ARRIVES AS PROSE. Measured 2026-09-18 06:46Z: it sent
+            # "a.py, b.jsonl, c.npy" and then "a.py b.jsonl c.npy" and both were refused for
+            # "whitespace" — true of the whole string, useless as a diagnosis, and the third
+            # time this verb's argument shape has cost it calls. Split on commas and runs of
+            # whitespace, then validate each path normally; a path that genuinely contains a
+            # space is still refused, by the per-path check below, where the message is about
+            # that path rather than about the blob.
+            data = [x for x in _re.split(r"[,\s]+", data.strip()) if x]
+    if not isinstance(data, (list, tuple)):
+        raise ValueError(f"run 'data' must be a list of paths in your home, got {type(data).__name__}")
+    names = [path] + [str(d).strip() for d in data]
+    if len(names) - 1 > RUN_MAX_DATA:
+        raise ValueError(f"run takes at most {RUN_MAX_DATA} 'data' files beside the script "
+                         f"(you gave {len(names) - 1}); the sandbox has nothing else in it")
+    reach = _search_reach((ctx or {}).get("worktree") or memory_root, (ctx or {}).get("workspace"))
+    for i, n in enumerate(names):
+        if not n or any(ch.isspace() for ch in n):
+            raise ValueError(f"run path {n!r} may not contain whitespace. Give 'data' as a list "
+                             f"— [\"scratch/a.py\", \"scratch/b.md\"] — or as one path per entry; "
+                             f"a comma- or space-separated string is accepted and split, but a "
+                             f"single path with a space in it is not")
+        if n.startswith("-") or ".." in n.split("/"):
+            raise ValueError(f"run paths are plain paths, got {n!r}")
+        if os.path.isabs(n):
+            # A FILE IT CAN READ IS A FILE ITS CODE CAN READ. 2026-09-18 00:57Z: it wrote a
+            # script to extract a function from ft09.py — a file its own `memory_read` reaches
+            # under a standing grant — and `run` refused because the path was not under its
+            # home. Its only alternative was to pull 64KB through a 24k window by hand. The
+            # seat stages a COPY, read with the seat's own reach, so no authority is added:
+            # same reasoning as the `search` (3fcca0830) and `git_read` widenings. The script
+            # itself still must be the being's own, inside its home — code it executes is code
+            # it wrote.
+            if i == 0:
+                # ITS OWN HOME BY ITS FULL NAME IS ITS HOME. cbp-being's first live runs,
+                # 2026-10-18: after one run by relative path, it named the same script by its
+                # absolute path, inside its home, and was refused twice with "must be a file in
+                # your home", which was false about that file. An absolute script path that
+                # resolves inside the home is accepted, the way _safe_path forgives a being
+                # reaching for its own journal by full path. Anywhere else is still refused.
+                _home = os.path.realpath(memory_root)
+                _full = os.path.realpath(n)
+                if not (_full == _home or _full.startswith(_home + os.sep)):
+                    raise ValueError(
+                        f"run 'path' (the script) must be a file in your home, and {n!r} is not "
+                        f"inside it ({_home}); only 'data' files may come from elsewhere in your "
+                        f"reach. A path relative to your home, like 'scratch/x.py', needs no "
+                        f"prefix at all")
+                continue
+            if not _under(os.path.realpath(n), reach):
+                raise ValueError(_reach_refusal("run", n, reach))
+    if not path.endswith(".py"):
+        raise ValueError(f"run executes a Python file; 'path' must end in .py, got {path!r}")
+    seen = set()
+    for n in names:
+        base = os.path.basename(n)
+        if base in seen:
+            raise ValueError(f"run: two files would arrive as {base!r} in the working directory; "
+                             f"they are placed under their base names, so give files whose names "
+                             f"differ")
+        seen.add(base)
+    return names
+
+
+def run_stage_dir(member: str, names: List[str]) -> str:
+    """The seat-owned staging dir for ONE invocation (Codex, #470: a per-member dir was shared
+    mutable state; a second dispatch for the same member, from the heartbeat or the raising
+    session, removed the first one's files mid-run). Keyed by this process and the named files,
+    so both composition sites in one process derive the same path, and two processes never
+    share one. Nothing in it is the being's choice except base names it already gave."""
+    import hashlib
+    import os
+    h = hashlib.sha256("\0".join(names).encode("utf-8", "surrogateescape")).hexdigest()[:12]
+    return f"{STAGE_ROOT}-{member}-{os.getpid()}-{h}"
+
+
+def run_source_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:
+    """Every file a `run` will read, resolved: the paths the law judges for this act (Codex,
+    #470: the composed command named only the staging dir, so the gate never saw the sources).
+    A relative name is in the home; an absolute one is where it says."""
+    import os
+    root = (ctx or {}).get("memory_root") or ""
+    return [os.path.realpath(n if os.path.isabs(n) else os.path.join(root, n))
+            for n in run_names(args, ctx)]
+
+
+def run_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The sandboxed interpreter invocation for a `run` intent.
+
+    The being names a .py file in its home and optionally data files to place beside it. The
+    SEAT stages copies into a directory it owns (run_stage_dir) and the law judges THIS string,
+    together with the source paths (run_source_paths)."""
+    import os
+    import shlex
+    import sys
+    names = run_names(args, ctx)
+    memory_root = (ctx or {}).get("memory_root")
+    member = (ctx or {}).get("member") or ""
+    path = names[0]
+    if not sandbox_available():
+        raise ValueError(
+            "run needs its sandbox and cannot get one: bubblewrap is missing or not permitted "
+            "to create a user namespace here. Running your code under the seat's own authority "
+            "instead is the one thing this verb exists to prevent, so it is refused rather than "
+            "silently downgraded")
+    interp = os.path.dirname(os.path.dirname(sys.executable))
+    stage = run_stage_dir(member, names)
+    script = os.path.basename(path)
+    # /work IS A SIZE-LIMITED TMPFS (it was a writable bind of the host staging dir with no size
+    # bound: an hour of writes there fills the seat's disk, legion-claude on #470), and each
+    # staged copy is bound into it WRITABLE. It is a sandbox: the run may change, chmod or rewrite
+    # its own copies. They are the seat's throwaway copies, deleted when the run ends; the law
+    # judged the bytes the run STARTS with, and those are what execute. They were read-only for
+    # one commit, which bought no safety and broke scripts that touch their own file (dp,
+    # 2026-10-18: "that cripples a lot of functionality, and it's supposed to be a sandbox").
+    # New files land in the tmpfs (RUN_WORK_BYTES); a write into a copy lands in the seat's
+    # staging dir, bounded per file by RLIMIT_FSIZE.
+    inputs = "".join(
+        f" --bind {shlex.quote(stage + '/' + b)} {shlex.quote('/work/' + b)}"
+        for b in (os.path.basename(n) for n in names))
+    # THE WORKTREE IS IMPORTABLE, READ-ONLY (2026-10-07). legion-being, fixing #360, could not
+    # `from sage.gateway.hestia_dispatch import render_pr` in a scratch script: the sandbox had
+    # no worktree, so it extracted the function with `ast` from a file passed as `data` and its
+    # replica drifted from the real code. The worktree is its own and already readable
+    # (memory_read, git_read, check), and `check` already mounts it read-only in the same
+    # sandbox; mounting it here, read-only, with PYTHONPATH pointing at it, adds no authority.
+    # Nothing in the sandbox can write it: /work stays the only writable mount.
+    worktree = (ctx or {}).get("worktree")
+    wt_bind = wt_env = ""
+    # NEVER THE HOME. The sandbox must not see the being's live home (journal, todo, memory):
+    # test_run_sandbox_denies_the_seat_falsified_from_inside asserts it from inside. A worktree
+    # that IS the home, lies inside it, or contains it is not mounted.
+    _wt = os.path.realpath(worktree) if worktree and os.path.isdir(worktree) else ""
+    _home = os.path.realpath(memory_root)
+    if _wt and (_wt == _home or _wt.startswith(_home + os.sep) or _home.startswith(_wt + os.sep)):
+        _wt = ""
+    if _wt:
+        import shlex as _shlex
+        q = _shlex.quote(_wt)
+        wt_bind = f" --ro-bind {q} {q}"
+        wt_env = f" --setenv PYTHONPATH {q}"
+    return (
+        (f"{PRLIMIT} --as={run_mem_cap_bytes()} --fsize={RUN_FSIZE_BYTES} -- "
+         if os.path.exists(PRLIMIT) else "")
+        + f"{SANDBOX} --clearenv"
+        # --ro-bind-try for /lib64: an aarch64 seat may have none, and a hard bind would make
+        # `run` read as unavailable there (legion-claude, #470)
+        " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind-try /lib64 /lib64 --ro-bind /bin /bin"
+        " --ro-bind /etc/alternatives /etc/alternatives"
+        f" --ro-bind {interp} {interp}"
+        f" --proc /proc --dev /dev --size {RUN_TMP_BYTES} --tmpfs /tmp"
+        f"{wt_bind}"
+        # THE ONLY WRITABLE PLACES IN THERE are these two size-limited tmpfs.
+        f" --size {RUN_WORK_BYTES} --tmpfs /work{inputs}"
+        " --unshare-pid --unshare-net --unshare-ipc --unshare-uts"
+        " --new-session --die-with-parent"
+        " --setenv HOME /tmp --setenv PYTHONUTF8 1 --setenv PYTHONDONTWRITEBYTECODE 1"
+        f"{wt_env}"
+        f" --setenv PATH {interp}/bin:/usr/bin:/bin"
+        f" --chdir /work {interp}/bin/python3 /work/{script}"
     )
 
 
@@ -1771,6 +2112,10 @@ _REGISTRY = {
     # the being never holds a flag. See git_read_command for what it composes with.
     "git_read":       dict(tool="git_read",    path_args=(),       cmd_arg=None,
                            compose=git_read_command),
+    # run: execute code the being wrote, in a sandbox holding nothing of ours. Composed like
+    # check; see run_command for why it is strictly weaker than the check the being already has.
+    "run":            dict(tool="run",         path_args=(),       cmd_arg=None,
+                           compose=run_command, compose_paths=run_source_paths),
     # say: add a turn to a conversation the being is IN. Bounded by construction, like
     # remember: the being names a conversation id, and the dispatcher refuses any id whose
     # meta does not list it as a participant AND as writable. It cannot create a
@@ -1921,7 +2266,8 @@ _CONSEQUENTIAL = frozenset({"peer_ask", "pr_read", "memory_write", "channel_egre
                             "gaze",    # moves the body's own eyes (2026-09-23)
                             "speak",   # makes sound in the room (2026-09-26)
                             "pair_audio",  # moves the body's own hardware link (2026-09-27)
-                            "patch_apply"})   # writes the tree it reasons about (2026-09-25)
+                            "patch_apply",    # writes the tree it reasons about (2026-09-25)
+                            "run"})    # executes the being's own code, sandboxed (legion 09-16)
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
@@ -1994,6 +2340,22 @@ _TOOL_SCHEMAS = {
                 "path": "optional: a path inside your worktree to narrow the search to",
                 "n": "optional: maximum matches per file (default 30)"},
                ["pattern"]),
+    "run": ("RUN a Python file you wrote, in a sandbox on COPIES of your files, and read what "
+            "it printed: nothing it changes is kept, in your home or your worktree. The sandbox "
+            "holds only a Python interpreter, copies of the files you name, and (when you have "
+            "one) your worktree READ-ONLY on the import path. No network, no home, no GPU. "
+            "Nothing it does persists, so PRINT what you want to keep. It may run for up to an "
+            "hour, or the time left in your beat if that is less, and your beat waits for it: a "
+            "long run is time you are not answering anyone. If it is stopped, what it printed "
+            "before the stop comes back. "
+            "This is how a claim becomes testable: before you run it, say what it should print "
+            "if you are right, and what would mean you are wrong.",
+            {"path": "a .py file in your home, e.g. 'scratch/evaluator.py'",
+             "data": "optional: up to 8 more files, named by their SOURCE path — relative to your "
+                     "home, or absolute anywhere you can read. Inside the sandbox each one "
+                     "appears under its base name, so name 'scratch/data/train.npy' here and "
+                     "np.load('train.npy') in your code"},
+            ["path"]),
     "check": ("Run a test suite in your own worktree and read the result. This is how you "
               "find out whether something you believe about your harness is true, instead of "
               "asserting it. A failure is a real answer, not a problem.",

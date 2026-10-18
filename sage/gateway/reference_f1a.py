@@ -766,6 +766,8 @@ RETIRABLE_RECORDS = ("todo.md", "journal.md")
 # record a new inode, and an appender that was waiting on the old one would wake holding a lock
 # on a file no name points at, and append into it.
 HOME_LOCK = ".home.lock"
+# Every verb that changes a file in the home holds the lock for its whole run (see __call__).
+HOME_WRITE_VERBS = ("memory_write", "memory_edit", "retire_note")
 
 
 @contextlib.contextmanager
@@ -856,6 +858,13 @@ class ReferenceF1aDispatcher:
             return ResultEnvelope(ok=False, pending=True,
                                   note=f"'{intent.effector}' awaits hestia F1a (reference runs only witness/memory)")
         try:
+            if intent.effector in HOME_WRITE_VERBS:
+                # The whole verb, read through replace, under one lock: memory_edit reads the
+                # file, validates and os.replaces it, and an append or retire landing in between
+                # would be lost (Nova, 99cfdb61b). Taken here and only here: flock is per open
+                # file, so a second _home_lock inside a handler would wait on itself.
+                with _home_lock(self.memory_root):
+                    return handler(intent)
             return handler(intent)
         except Exception as e:
             return ResultEnvelope(ok=False, error=f"{type(e).__name__}: {e}")
@@ -900,6 +909,13 @@ class ReferenceF1aDispatcher:
                     "with, and it has to stay separable from what you decide. Your own reading "
                     "of it belongs in notes/plan.md, which is entirely yours. Disagree with it "
                     "there, in your journal, or in an appeal; that record is wanted")
+            # Nova, 99cfdb61b: the lock lives in the being's home, and a memory_edit of it
+            # would os.replace its inode, so two writers would hold flocks on different files
+            # and nothing would be serialized. No write verb may touch it.
+            if p.parent == self.memory_root and p.name == HOME_LOCK:
+                raise ValueError(
+                    f"{HOME_LOCK} is not a note: it is the lock that keeps two writes to your home "
+                    "from landing on top of each other, and it holds no text. Nothing was changed")
             if p.parent == self.memory_root / "notes" and p.name in SEAT_OWNED_NOTES:
                 raise ValueError(
                     f"notes/{p.name} is what was said TO you, and it stays as it was said. Your "
@@ -1533,13 +1549,13 @@ class ReferenceF1aDispatcher:
             if not p.exists():
                 return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
             return ResultEnvelope(ok=True, result=f"{p.name} is already retired; nothing changed")
-        with _home_lock(self.memory_root):
-            if not p.exists():
-                return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
-            return self._retire_locked(p, reason, record)
+        if not p.exists():
+            return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
+        return self._retire_locked(p, reason, record)
 
     def _retire_locked(self, p: Path, reason: str, record: bool) -> ResultEnvelope:
-        """The retire itself, under the home lock. Two atomic steps, retired copy first.
+        """The retire itself, under the home lock (taken in __call__). Two atomic steps, retired
+        copy first.
 
         INTERRUPTION LOSES NOTHING, AND THE NEXT RETIRE FINISHES IT (Nova, 0557d9bcf:
         "interrupted retirement also needs recovery"). Each step is a tmp file and os.replace,
@@ -1668,7 +1684,7 @@ class ReferenceF1aDispatcher:
                     f"exactly from memory_read), and new (empty to delete). If this text is a "
                     f"note about what you did or plan to do, memory_write it to journal.md or "
                     f"todo.md instead.") + _python_status(p))
-        with _home_lock(self.memory_root), open(p, "a") as f:     # serialized with retire_note
+        with open(p, "a") as f:     # under the home lock (see __call__)
             f.write(content + ("\n" if not content.endswith("\n") else ""))
         if not existed:
             result = f"created {p.name} with {len(content)} chars"

@@ -172,3 +172,47 @@ def test_an_interrupted_retire_loses_nothing_and_the_next_one_finishes_it():
     assert env.ok and "interrupted" in env.result, env.result
     assert [n for n in os.listdir(root) if n.startswith("todo.retired-")] == copies, "no second copy"
     assert "carried forward" in Path(root, "todo.md").read_text().lower()
+
+
+# -- Nova's review of 99cfdb61b: the lock must not be replaceable; memory_edit is one transaction --
+
+def test_no_write_verb_can_touch_the_home_lock():
+    from sage.gateway.reference_f1a import HOME_LOCK
+    disp, root = _disp()
+    Path(root, "journal.md").write_text("x\n")
+    disp(BeingIntent("memory_write", {"path": "journal.md", "content": "y"}), _ALLOW)   # makes the lock
+    lock = Path(root, HOME_LOCK)
+    ino = lock.stat().st_ino
+    for intent in (BeingIntent("memory_edit", {"path": HOME_LOCK, "old": "", "new": "z"}),
+                   BeingIntent("memory_edit", {"path": HOME_LOCK, "start_line": 1, "end_line": 1, "new": "z"}),
+                   BeingIntent("memory_write", {"path": HOME_LOCK, "content": "z"}),
+                   BeingIntent("retire_note", {"path": HOME_LOCK, "reason": "r"})):
+        env = disp(intent, _ALLOW)
+        assert not env.ok, (intent.effector, env.result)
+    assert lock.stat().st_ino == ino and lock.read_text() == "", "the lock file is untouched"
+
+
+def test_edits_racing_appends_lose_no_entry_and_no_edit():
+    import threading
+    disp, root = _disp()
+    Path(root, "journal.md").write_text("header-a\n")
+    tokens = [f"entry-{i:04d}" for i in range(200)]
+
+    def appender():
+        for t in tokens:
+            assert disp(BeingIntent("memory_write", {"path": "journal.md", "content": t}), _ALLOW).ok
+
+    th = threading.Thread(target=appender)
+    th.start()
+    edits, cur = 0, "a"
+    while th.is_alive():
+        nxt = "b" if cur == "a" else "a"
+        env = disp(BeingIntent("memory_edit", {"path": "journal.md", "old": f"header-{cur}\n",
+                                               "new": f"header-{nxt}\n"}), _ALLOW)
+        assert env.ok, env.error
+        edits, cur = edits + 1, nxt
+    th.join()
+    text = Path(root, "journal.md").read_text()
+    lost = [t for t in tokens if t not in text]
+    assert edits > 1 and not lost, f"{len(lost)} lost across {edits} edits"
+    assert text.startswith(f"header-{cur}\n"), "every edit landed"

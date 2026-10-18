@@ -20,8 +20,11 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 from sage.gateway.being_gate_client import BeingIntent, sandbox_available  # noqa: E402
+from sage.gateway.being_gate_client import run_sandbox_kind as B_run_kind  # noqa: E402
 
 needs_bwrap = pytest.mark.skipif(not sandbox_available(), reason="no usable bubblewrap here")
+# behaviour that must hold under either sandbox `run` uses: bubblewrap, or Seatbelt on a Mac
+needs_sandbox = pytest.mark.skipif(B_run_kind() is None, reason="no usable sandbox here (bubblewrap or Seatbelt)")
 
 
 def _run_dispatcher(tmp_path):
@@ -36,7 +39,7 @@ def _run_dispatcher(tmp_path):
 
 # -- legion's tests -------------------------------------------------------------------------
 
-@needs_bwrap
+@needs_sandbox
 def test_run_executes_the_beings_own_code_and_hands_back_what_it_printed(tmp_path):
     d, home = _run_dispatcher(tmp_path)
     (home / "scratch" / "moves.md").write_text("  80  ACTION6 40,38   9   9 x36-41 y36-41 (36)     38\n")
@@ -55,7 +58,7 @@ def test_run_executes_the_beings_own_code_and_hands_back_what_it_printed(tmp_pat
     assert b.ok and b.result["exit"] != 0 and "my own bug" in b.result["stderr"]
 
 
-@needs_bwrap
+@needs_sandbox
 def test_run_sandbox_denies_the_seat_falsified_from_inside(tmp_path):
     """A sandbox is a claim until something inside it tries. The assertions are on the script's
     OUTPUT, so a sandbox that quietly stopped confining turns this red."""
@@ -83,7 +86,7 @@ def test_run_sandbox_denies_the_seat_falsified_from_inside(tmp_path):
     assert "writable: ['falsify.py']" in out, "only the staged copy is in there: " + out
 
 
-@needs_bwrap
+@needs_sandbox
 def test_run_stages_copies_and_refuses_what_it_cannot_reach(tmp_path):
     d, home = _run_dispatcher(tmp_path)
     (home / "scratch" / "e.py").write_text("print('hi')\n")
@@ -255,7 +258,7 @@ def test_a_spent_beat_starts_no_run_and_touches_nothing(tmp_path, monkeypatch):
     assert calls == [], "no witness row for a run that never started"
 
 
-@needs_bwrap
+@needs_sandbox
 def test_a_stopped_run_keeps_what_it_printed(tmp_path, monkeypatch):
     import sage.gateway.being_gate_client as b
     monkeypatch.setattr(b, "run_budget_s", lambda now=None: (2, "the time left in this beat"))
@@ -327,7 +330,7 @@ def test_both_writable_places_are_size_bounded_from_inside(tmp_path, monkeypatch
     assert "CHANGED-INSIDE" not in (home / "scratch" / "fill.py").read_text()
 
 
-@needs_bwrap
+@needs_sandbox
 def test_output_goes_to_capped_files_and_only_head_and_tail_come_back(tmp_path, monkeypatch):
     """capture_output read everything into the seat (outside every limit) before trimming it."""
     import sage.gateway.being_gate_client as b
@@ -548,7 +551,7 @@ def test_three_actors_cannot_both_hold_the_stage_lock_across_inodes(tmp_path):
     assert not os.path.exists(path), "nothing left behind"
 
 
-@needs_bwrap
+@needs_sandbox
 def test_its_own_script_by_absolute_path_is_its_own_script(tmp_path):
     """cbp-being's first live runs, 2026-10-18: it named its own script by its absolute path, inside
     its home, and was refused twice with "must be a file in your home", which was false."""
@@ -557,9 +560,23 @@ def test_its_own_script_by_absolute_path_is_its_own_script(tmp_path):
     (home / "scratch" / "e.py").write_text("print('ran by full path')\n")
     full = str(home / "scratch" / "e.py")
     cmd = run_command({"path": full}, {"memory_root": str(home), "member": "test-being"})
-    assert cmd.rstrip().endswith("/work/e.py")
+    # bwrap runs the copy as /work/e.py; Seatbelt has no mount namespace, so as <stage>/e.py
+    assert cmd.rstrip().endswith("/work/e.py" if B_run_kind() == "bwrap" else "/e.py"), cmd
     r = d._do_run(BeingIntent("run", {"path": full}))
     assert r.ok and r.result["exit"] == 0 and "ran by full path" in r.result["stdout"], r
     # a script outside the home is still refused, and the refusal says where the home is
     with pytest.raises(ValueError, match="is not inside it"):
         run_command({"path": "/etc/x.py"}, {"memory_root": str(home), "member": "test-being"})
+
+
+def test_run_and_request_run_each_name_the_other_and_neither_says_you_cannot_run():
+    """dp, 2026-10-18: "if the being wants something run outside the sandbox for a good reason, it
+    should still go through the seat." After #470, request_run's text still said "You cannot
+    execute anything yourself, so this is the door" (false), and run's never named the seat."""
+    from sage.gateway.being_gate_client import _TOOL_SCHEMAS
+    from sage.gateway.heartbeat import AFFORDANCES
+    run, req = _TOOL_SCHEMAS["run"][0], _TOOL_SCHEMAS["request_run"][0]
+    assert "request_run" in run and "say why" in run
+    assert "`run`" in req and "OUTSIDE the sandbox" in req and "`why`" in req
+    assert "cannot execute anything yourself" not in req
+    assert "request_run asks the seat" in AFFORDANCES

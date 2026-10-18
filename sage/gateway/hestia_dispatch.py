@@ -2696,6 +2696,44 @@ class HestiaF1aDispatcher:
             staged.append((os.path.basename(n), b"".join(chunks)))
 
         stage = run_stage_dir(getattr(self, "member", "") or "", names)
+        # ONE LIFECYCLE PER STAGE, HELD BY A LOCK (Nova, re-review of #470). The stage is keyed
+        # by process and file NAMES, so two overlapping runs of the same names in one process
+        # (re-entrant, or two threads) derive the same stage, and the second's rmtree would
+        # delete the first's mounted inputs and output. A nonce would have to be carried through
+        # both composition sites and the law's judgment; a lock keeps composition deterministic.
+        # NON-BLOCKING: flock is per open file, so a re-entrant call in the same thread would
+        # wait on itself forever. A second run of the same files is refused until the first
+        # finishes, and nothing of the first's is touched before the lock is held.
+        import fcntl
+        lock_path = stage + ".lock"
+        try:
+            lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR | getattr(os, "O_CLOEXEC", 0), 0o600)
+        except OSError as e:
+            return ResultEnvelope(ok=False, error=f"run could not stage your files: {type(e).__name__}: {e}")
+        try:
+            fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            os.close(lock_fd)
+            return ResultEnvelope(ok=False, error=(
+                "run: a run of these same files is already in progress on this seat, so this one "
+                "was not started and nothing of the other was touched. Ask again when it has "
+                "answered."))
+        try:
+            return self._run_staged(stage, staged, cmd, budget, bound_by)
+        finally:
+            try:
+                os.unlink(lock_path)      # the stage it guarded is already gone
+            except OSError:
+                pass
+            fcntl.flock(lock_fd, fcntl.LOCK_UN)
+            os.close(lock_fd)
+
+    def _run_staged(self, stage, staged, cmd, budget, bound_by) -> ResultEnvelope:
+        """The staged part of `run`, called only with the stage's lock held (see _do_run)."""
+        import os
+        import shlex
+        import shutil
+        import subprocess
         outdir = stage + ".out"           # seat-owned, beside the stage, never bound inside
         try:
             for d in (stage, outdir):

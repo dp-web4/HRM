@@ -483,3 +483,33 @@ def test_an_overlapping_run_does_not_touch_the_first_runs_staging(tmp_path, monk
     r = d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py"}))
     assert r.ok and observed == [True], observed
     assert not os.path.exists(first), "and it is cleaned up after its own run"
+
+
+def test_an_overlapping_run_of_the_same_files_is_refused_and_leaves_the_first_intact(tmp_path, monkeypatch):
+    """Nova's re-review of #470: the stage is keyed by process and file NAMES, so a second run
+    of the same names in the same process (re-entrant here; two threads alike) derives the SAME
+    stage. It must be refused before it touches anything, not rmtree the first run's inputs."""
+    from sage.gateway import being_gate_client as B
+    d, home = _codex_setup(tmp_path, monkeypatch)
+    first = B.run_stage_dir(d.member, ["scratch/probe.py"])
+    observed = []
+
+    def inner():
+        (home / "scratch" / "probe.py").write_text("print('different bytes, same name')\n")
+        r = d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py"}))
+        observed.append((r.ok, r.error or "",
+                         os.path.isfile(os.path.join(first, "probe.py")),
+                         os.path.isdir(first + ".out")))
+
+    _FakePopen.seen, _FakePopen.on_wait = [], inner
+    monkeypatch.setattr("subprocess.Popen", _FakePopen)
+    r = d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py"}))
+    assert r.ok, r.error
+    (ok2, err2, inputs_left, out_left), = observed
+    assert ok2 is False and "already in progress" in err2, err2
+    assert inputs_left and out_left, "the first run's inputs and output survived the second call"
+    assert _FakePopen.seen == [{"probe.py": "print('synthetic')\n"}], "only the first ran"
+    assert not os.path.exists(first) and not os.path.exists(first + ".lock"), "then all cleaned up"
+    # and once the first has answered, the same files run again
+    _FakePopen.seen = []
+    assert d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py"})).ok

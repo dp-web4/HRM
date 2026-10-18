@@ -91,7 +91,7 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     dispatcher interprets (see _do_camera).
     """
     import shlex
-    worktree = ctx["worktree"] if ctx else None
+    worktree = (ctx or {}).get("worktree")
     memory_root = (ctx or {}).get("memory_root")
     # CAMERA IS THE FOURTH VERB THE WORKTREE UNLOCKS, and the only one that never uses it: the
     # frame is resolved against memory_root below, and `worktree` is read on this line and
@@ -105,8 +105,15 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     # thing holding camera to the same condition as the other three. Dropping it is a policy
     # decision about whether every being with a memory_root may capture a frame, not a cleanup.
     # Pinned by test_without_a_worktree_the_verbs_still_fail_closed.
-    if not worktree:
-        raise ValueError("camera requires a worktree context")
+    #
+    # THE CORTEX AS THE CAMERA (dp 2026-10-12). A seat may declare `camera_source: "cortex"` in
+    # instance.json: its eyes are CSI sensors that only the running cortex can read (raw Bayer through
+    # v4l2; Argus in the cortex), so the frame comes from the cortex (sage/embodiment/look.py). That
+    # declaration IS the seat-level policy decision the worktree hold stands in for, made explicitly
+    # for this seat by its operator, so it, not a worktree, enables the verb there.
+    source = (ctx or {}).get("camera_source")
+    if source != "cortex" and not worktree:
+        raise ValueError(NO_WORKTREE_REFUSAL["camera"])
     if not memory_root:
         raise ValueError("camera requires a memory_root context")
 
@@ -129,6 +136,9 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     # and renames only after the image is complete. That keeps old-or-new semantics INSIDE
     # the exact ffmpeg command Hestia judges; the dispatcher performs no extra filesystem
     # mutation behind the law's back.
+    if source == "cortex":
+        # the look client publishes by temp + rename itself, like image2's atomic_writing below
+        return f"python3 -m sage.embodiment.look {shlex.quote(full)}"
     device = args.get("device", "/dev/video0")
     return (f"ffmpeg -hide_banner -loglevel error -y -f v4l2 -i {shlex.quote(device)} "
             f"-frames:v 1 -qscale:v 3 -f image2 -atomic_writing 1 {shlex.quote(full)}")
@@ -267,6 +277,91 @@ def pr_review_signature(member_id: str, action_id: Optional[str], being_lct: Opt
 _REV = (r"(?:[0-9a-fA-F]{7,40}|HEAD|[A-Za-z][A-Za-z0-9._/-]{0,60})"
         r"(?:[~^][0-9]{0,3})?")
 
+# WHAT A WORKTREE VERB SAYS WHEN THIS SEAT HAS NO WORKTREE (2026-10-04). Until today each of
+# these said "<verb> needs a worktree of your own; none is configured on this seat". That is
+# true, and it names exactly one way forward: get a worktree configured. cbp-being took it.
+# It wanted to fix one line of a scratch file in its own home, reached for `search`, was told a
+# worktree was missing, and asked dp three times to configure one so search could find lines
+# in its files. But search is `git grep` over a code-repository checkout and cannot see the
+# being's home at all: a worktree would not have helped, and the tool it needed (memory_read
+# with start_line) was already in its hands. Configuring a worktree would also have turned on
+# git_read, check and camera (see camera_command), which is a policy decision dp has not made.
+#
+# So each refusal now says what the verb is FOR, that it does not read the being's home, and
+# which tool serves the likely need there. None of them tells the being to ask for a worktree.
+# Every tool and parameter named here must exist as named: memory_read takes `path` and
+# `start_line` (no end_line; a long file comes back in windows that say how to read on), and
+# request_run takes `path`. Pinned by test_no_worktree_refusals_say_what_the_verb_is_for, which
+# checks each named parameter against _TOOL_SCHEMAS. The dispatcher (hestia_dispatch) and the
+# toolset's availability line say the same text, so the being hears one answer however it asks.
+NO_WORKTREE_REFUSAL = {
+    # "read lines", never "find": memory_read shows a file from a line on; it does not search.
+    # #354 first said "To find or read lines ... use memory_read", which hands a being that
+    # wants to locate a string a tool that cannot locate one (Codex, #354 follow-up). Pinned by
+    # test_no_home_tool_is_credited_with_finding.
+    "search": (
+        "search reads a code-repository checkout (a worktree), not your home, and this seat "
+        "has none. To read lines in your own files (notes/, scratch/, todo.md, "
+        "journal.md), use memory_read with the file's path and start_line: it shows the file "
+        "from that line on and says which lines it covered."),
+    "git_read": (
+        "git_read reads the git history of a code-repository checkout (a worktree): its "
+        "commits, diffs, blame, and files as they were at an earlier commit. It does not read "
+        "your home, and this seat has none. To read one of your own files as it is now, use "
+        "memory_read with the file's path (and start_line to begin at a given line)."),
+    "check": (
+        # Names no suite on purpose: #352 adds a worktree's own tests/ beside gateway and irp,
+        # and a list here would go stale the day the target set changes.
+        "check runs the test suites of a code-repository checkout (a worktree), not anything "
+        "in your home, and this seat has none, so there is nothing here for it to test. To find out what one of your own files does when it runs, use request_run "
+        "with its path: the seat decides whether to run it and answers with the real output."),
+    # patch_apply has the same trap as search: a being that wants to change a line of its own
+    # file reaches for the verb named "apply a patch", hears "no worktree", and asks for one.
+    # memory_edit is the tool that changes its own files.
+    "patch_apply": (
+        "patch_apply changes files in a code-repository checkout (a worktree) by applying a "
+        "patch, not files in your home, and this seat has none. To change lines of your own "
+        "files, use memory_edit with the file's path, start_line and end_line (the line "
+        "numbers memory_read shows), and new for what replaces them."),
+    # git_restore takes a file's content from git history. The being's home has no history
+    # it can read back (the witness log records that an edit happened and its line counts,
+    # not the text), so the honest pointer is memory_edit alone.
+    "git_restore": (
+        "git_restore puts one file in a code-repository checkout (a worktree) back to how it "
+        "was at an earlier commit, taking the content from git history. It does not reach your "
+        "home, and this seat has none. To put lines of your own files back, use memory_edit "
+        "with the file's path, start_line and end_line, and new for the text you want there."),
+    # The PR verbs have no home-file counterpart: a pull request is made from commits in a
+    # checkout. Purpose plus "this seat has none", and nothing to configure. Each says what
+    # the VERB cannot do here, never a fact about the home or the being's PRs that this check did
+    # not observe: the CBP being's home has 461 paths tracked on main, and a missing checkout
+    # says nothing about whether a PR of its exists (#354 review).
+    "pr_open": (
+        "pr_open opens a pull request from commits on your own branch in a code-repository "
+        "checkout (a worktree), and this seat has none, so pr_open cannot "
+        "propose files from your home."),
+    "pr_amend": (
+        "pr_amend revises a pull request you opened, by committing changes from your "
+        "code-repository checkout (a worktree) onto its branch, and this seat has none, so "
+        "pr_amend cannot revise your proposal here."),
+    "pr_sync": (
+        "pr_sync brings a pull request you opened up to date with its base branch, by merging "
+        "inside your code-repository checkout (a worktree), and this seat has none, so pr_sync "
+        "cannot update your proposal here."),
+    "git_clean": (
+        "git_clean deletes one untracked file you added to your code-repository checkout (a "
+        "worktree), and this seat has none, so there is nothing here for git_clean to delete."),
+    # CAMERA'S HONEST ALTERNATIVE IS DIFFERENT: there is none. It never reads a worktree (the
+    # frame lands in the being's home); the requirement is the policy hold described in
+    # camera_command. So it says it is not enabled, says why without pointing at a step the
+    # being could ask someone to take, and says plainly that no other tool captures a frame.
+    "camera": (
+        "camera is not enabled on this seat. Here it is held to the same condition as the "
+        "verbs that read a code-repository checkout (a worktree), and this seat has none; "
+        "whether this seat captures frames is a policy decision about the seat, not a step "
+        "you can take. No other tool captures a frame."),
+}
+
 GIT_OPS = ("log", "show", "diff", "status", "blame", "cat")
 
 # A revision the being may name: a hex sha, HEAD with optional ~n/^n, or a plain branch or
@@ -314,7 +409,7 @@ def git_read_command(args: dict, ctx: Optional[dict] = None) -> str:
     import re
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError("git_read needs a worktree of your own; none is configured on this seat")
+        raise ValueError(NO_WORKTREE_REFUSAL["git_read"])
     op = str(args.get("op", "")).strip()
     if op not in GIT_OPS:
         raise ValueError(f"git_read 'op' must be one of {list(GIT_OPS)}, got {op!r}")
@@ -627,7 +722,7 @@ def pr_open_command(args: dict, ctx: Optional[dict] = None) -> str:
     import re
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError("pr_open needs a worktree of your own; none is configured on this seat")
+        raise ValueError(NO_WORKTREE_REFUSAL["pr_open"])
     slug = str(args.get("slug", "")).strip()
     if not re.fullmatch(_SLUG, slug):
         raise ValueError("pr_open 'slug' names your branch tail: lowercase letters, digits and "
@@ -661,7 +756,7 @@ def git_restore_command(args: dict, ctx: Optional[dict] = None) -> str:
     import re
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError("git_restore needs a worktree of your own; none is configured on this seat")
+        raise ValueError(NO_WORKTREE_REFUSAL["git_restore"])
     rev = str(args.get("rev", "")).strip()
     if not re.fullmatch(_REV, rev):
         raise ValueError(f"git_restore 'rev' must be a sha, HEAD, HEAD~n or a branch name, got {rev!r}")
@@ -697,6 +792,42 @@ def git_restore_command(args: dict, ctx: Optional[dict] = None) -> str:
     return f"git --no-pager -C {worktree} checkout {rev} -- {full}"
 
 
+def git_clean_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The shell command for a git_clean intent: `git clean -f -- <path>`, ONE untracked file.
+
+    WHY THIS VERB EXISTS (legion-being, 2026-10-03; dp: "yes"). A being that writes a probe or a
+    scratch test into its worktree had no way to take it back out: git_restore puts back a TRACKED
+    file, retire_note works only in notes/ and scratch/ of its home, and pr_amend stages everything
+    (git add -A) -- so a throwaway file became part of its pull request. memory_write could only
+    empty it, which leaves an empty file to commit.
+
+    NARROW BY CONSTRUCTION. `git clean -f` removes untracked files and nothing else: it cannot
+    touch a tracked file, history, or an ignored file (no -x), and the being never holds a flag.
+    The dispatcher also asks git that the path is untracked and not ignored before it acts, so the
+    answer names exactly what happened. Same path rules as git_restore."""
+    worktree = (ctx or {}).get("worktree")
+    if not worktree:
+        raise ValueError(NO_WORKTREE_REFUSAL["git_clean"])
+    path = str(args.get("path", "")).strip()
+    if not path:
+        raise ValueError("git_clean needs a 'path': the one untracked file to delete")
+    if any(ch.isspace() for ch in path):
+        raise ValueError("git_clean 'path' may not contain whitespace")
+    if path.startswith("-") or ".." in path.split("/"):
+        raise ValueError(f"git_clean 'path' must be a plain path inside your worktree, got {path!r}")
+    full = os.path.realpath(os.path.join(worktree, path))
+    root = os.path.realpath(worktree)
+    if not full.startswith(root + os.sep):
+        raise ValueError(_escape_refusal("git_clean", path, worktree))
+    if os.path.isdir(full):
+        raise ValueError(f"git_clean deletes ONE file, and {path!r} is a directory. Name the file")
+    top = os.path.relpath(full, root).split(os.sep, 1)[0]
+    if top.casefold() in (".githooks", ".git"):
+        raise ValueError(f"git_clean cannot delete {path!r}: {top}/ holds what git EXECUTES or "
+                         "git's own machinery, and no being writes or removes anything there")
+    return f"git --no-pager -C {worktree} clean -f -- {full}"
+
+
 def pr_amend_command(args: dict, ctx: Optional[dict] = None) -> str:
     """The shell command for a pr_amend intent: `gh pr edit --body-file -` on the PR the
     being's current branch already has open, or `true` when only the commit changes.
@@ -712,7 +843,7 @@ def pr_amend_command(args: dict, ctx: Optional[dict] = None) -> str:
     standing in, so it can only ever amend its own open proposal."""
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError("pr_amend needs a worktree of your own; none is configured on this seat")
+        raise ValueError(NO_WORKTREE_REFUSAL["pr_amend"])
     title = " ".join(str(args.get("title", "")).split())
     if not (8 <= len(title) <= 120):
         raise ValueError("pr_amend 'title' is the message for the new commit: one line, 8-120 chars")
@@ -756,13 +887,13 @@ def pr_sync_command(args: dict, ctx: Optional[dict] = None) -> str:
     import re
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError("pr_sync needs a worktree of your own; none is configured on this seat")
+        raise ValueError(NO_WORKTREE_REFUSAL["pr_sync"])
     op = str(args.get("op", "start") or "start").strip()
     if op not in PR_SYNC_OPS:
         raise ValueError(f"pr_sync 'op' must be one of {list(PR_SYNC_OPS)}; got {op!r}")
     own_proposal_branch(worktree, ctx)
     if op == "start":
-        base = pr_base_branch(worktree, ctx)
+        base = proposal_base(worktree, ctx)
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,100}", base) or ".." in base:
             raise ValueError(f"pr_sync: the base branch {base!r} is not a plain branch name")
         return f"git --no-pager -C {worktree} merge --no-ff --no-commit origin/{base}"
@@ -782,6 +913,31 @@ def own_proposal_branch(worktree: str, ctx: Optional[dict] = None) -> str:
         raise ValueError(f"pr_amend: this worktree is on {br!r}, which is not one of your PR "
                          "branches. pr_amend revises a proposal you already opened")
     return br
+
+
+PROPOSAL_BASE_KEY = "sagebase"   # git config branch.<branch>.sagebase: the base pr_open cut it from
+
+
+def proposal_base(worktree: str, ctx: Optional[dict] = None) -> str:
+    """The base THIS proposal targets: what pr_open recorded when it cut the branch, else the
+    base its open PR names on GitHub, else pr_base_branch. pr_sync merges THIS, never the
+    seat-wide default: once the default moved to main (2026-10-05), syncing a PR that was cut
+    from the carrier against main would have merged hundreds of unrelated commits into it."""
+    import subprocess
+    br = own_proposal_branch(worktree, ctx)
+    rec = subprocess.run(["git", "config", "--get", f"branch.{br}.{PROPOSAL_BASE_KEY}"],
+                         cwd=worktree, text=True, capture_output=True, timeout=30).stdout.strip()
+    if rec:
+        return rec
+    try:
+        out = subprocess.run(["gh", "pr", "list", "--repo", PR_REPO, "--head", br, "--state", "open",
+                              "--json", "baseRefName", "--jq", ".[0].baseRefName"],
+                             cwd=worktree, text=True, capture_output=True, timeout=60).stdout.strip()
+        if out and out != "null":
+            return out
+    except Exception:
+        pass
+    return pr_base_branch(worktree, ctx)
 
 
 def _pr_number_for_branch(worktree: str, ctx: Optional[dict] = None) -> str:
@@ -848,7 +1004,7 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
     import shlex
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError("search needs a worktree of your own; none is configured on this seat")
+        raise ValueError(NO_WORKTREE_REFUSAL["search"])
     pattern = str(args.get("pattern", ""))
     if not pattern.strip():
         raise ValueError("search needs a 'pattern' — the text or extended-regex to look for")
@@ -890,9 +1046,17 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
 # being can verify a claim about its own harness, and the smallest thing that does that is
 # a fixed set of suites plus a single node id inside them. Anything wider is a shell with a
 # friendly name, which is the one thing the bounded registry exists to prevent.
+#
+# "tests" is the top-level tests/ of WHATEVER the worktree holds (nomad 2026-10-03). A being's
+# worktree is not always SAGE: nomad-being's D0 task is a small fixture repo whose suite lives
+# at tests/, and with only the two SAGE suites listed, `check` could not run a single test in
+# the tree it was asked to fix. It is still one fixed entry, the path is still joined onto the
+# worktree and judged absolute, and it still runs in the same read-only sandbox. A worktree
+# with no tests/ gets pytest's own "file or directory not found", which is a true answer.
 CHECK_TARGETS = {
     "gateway": "sage/gateway/tests/",
     "irp": "sage/irp/tests/",
+    "tests": "tests/",
 }
 
 
@@ -1057,9 +1221,10 @@ def check_command(args: dict, ctx: Optional[dict] = None) -> str:
     import shlex
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError(
-            "check needs a worktree of your own: there is nothing to run tests in, and a "
-            "relative path would be judged against a tree you do not hold (PRD M1)")
+        # Fail closed (PRD M1): with no worktree a relative path would be judged against the
+        # shared checkout, a tree the being does not hold. That reason is for the seat; the
+        # being is told what check is for and where its own files are run instead.
+        raise ValueError(NO_WORKTREE_REFUSAL["check"])
     target = str(args.get("target", "")).strip()
     # QUOTED for the same reason as --rootdir and --chdir: judged==executed is a property
     # of the STRING, not of the fleet's current directory names. A worktree path containing
@@ -1069,7 +1234,33 @@ def check_command(args: dict, ctx: Optional[dict] = None) -> str:
     if target in CHECK_TARGETS:
         path = shlex.quote(os.path.join(worktree, CHECK_TARGETS[target]))
     else:
-        # A single node id INSIDE a declared suite: "gateway::test_name". Nothing else.
+        # ONE TEST, EXACTLY: "<suite>::<file>::<test_name>" (2026-10-07). legion-being, fixing
+        # #360, needed to run the one test it was changing and typed
+        # 'gateway::test_pr_read::test_x' -- refused "bare identifier" -- then
+        # 'gateway::test_pr_readtest_x', which collected nothing; it fell back to running the
+        # whole file every step. The three-part form names the file and the test, and runs
+        # exactly that pytest node id (not a -k substring), inside the same declared suite.
+        parts = target.split("::")
+        if len(parts) == 3:
+            suite, fname, node = parts
+            if suite not in CHECK_TARGETS:
+                raise ValueError(
+                    f"check 'target' must be one of {sorted(CHECK_TARGETS)} or a node id inside "
+                    f"one: '<suite>::<file>::<test_name>'; got suite {suite!r}")
+            stem = fname[:-3] if fname.endswith(".py") else fname
+            if not re.fullmatch(r"[A-Za-z0-9_]+", stem) or not re.fullmatch(r"[A-Za-z0-9_]+", node):
+                raise ValueError(
+                    f"check '<suite>::<file>::<test_name>' takes a bare file name and a bare "
+                    f"test name; got {fname!r} and {node!r}")
+            rel = os.path.join(CHECK_TARGETS[suite], stem + ".py")
+            if not os.path.isfile(os.path.join(worktree, rel)):
+                raise ValueError(f"check: {stem}.py is not in the {suite!r} suite "
+                                 f"({CHECK_TARGETS[suite]}).")
+            path = shlex.quote(os.path.join(worktree, rel) + "::" + node)
+            inner = (f"python3 -m pytest -q -c /dev/null -p no:cacheprovider "
+                     f"--rootdir={shlex.quote(worktree)} {path}")
+            return sandbox_prefix(worktree) + inner
+        # Otherwise a single node id INSIDE a declared suite: "gateway::test_name".
         suite, sep, node = target.partition("::")
         if not sep or suite not in CHECK_TARGETS:
             raise ValueError(
@@ -1384,9 +1575,18 @@ def patch_targets(diff: str) -> List[str]:
                 f"by `git diff`; this parser refuses what it cannot account for exactly, "
                 f"because a line it skipped is a change the law would not have seen")
     if remaining is not None:
+        # NAME THE VERB THAT NEEDS NO COUNTS (2026-10-08). "Send a diff produced by `git diff`" is
+        # advice the being cannot take for an edit it has not made yet: legion-being sent six
+        # hand-written #360 patches in one beat, four refused here on miscounted hunk headers. The
+        # counts stay exact -- they are how this parser knows where a hunk ends, so a header-like
+        # line inside a body cannot pass for a second target -- and the refusal says so, and says
+        # which verb changes one region of one file without any.
         raise ValueError(
-            "that diff ends inside a hunk: its last `@@` header declares more lines than "
-            "follow it. Send a diff produced by `git diff`")
+            "that diff ends inside a hunk: its last `@@` header declares more lines than follow "
+            "it. Hunk counts must be exact here (they are how the law knows where each change "
+            "ends and which files it touches). For a change to one region of one file, "
+            "memory_edit on the file's absolute path in your worktree needs no counts: give "
+            "start_line, end_line and the new text")
     if not targets:
         raise ValueError(
             "that diff names no files: no `diff --git a/<path> b/<path>` or `--- a/<path>` / "
@@ -1444,9 +1644,9 @@ def _patch_worktree(ctx: Optional[dict]) -> str:
     """
     worktree = (ctx or {}).get("worktree")
     if not worktree:
-        raise ValueError(
-            "patch_apply needs a worktree of your own: there is nothing to change, and a "
-            "relative path would be judged against a tree you do not hold (PRD M1)")
+        # Fails closed (PRD M1): a relative path would be judged against a tree the being does
+        # not hold. The being hears what patch_apply is for and that memory_edit changes its files.
+        raise ValueError(NO_WORKTREE_REFUSAL["patch_apply"])
     return os.path.realpath(os.path.expanduser(str(worktree)))
 
 
@@ -1526,6 +1726,18 @@ def patch_apply_argv(args: dict, ctx: Optional[dict] = None) -> List[str]:
 # Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
 
 
+def tune_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:
+    """Every file `tune` writes, all in the being's home: the temp file, tuned.json, and the audit
+    log (being_params.TUNE_WRITES). With no name it only reads, and touches nothing."""
+    if not str((args or {}).get("name") or "").strip():
+        return []
+    root = (ctx or {}).get("memory_root")
+    if not root:
+        raise ValueError("tune: no home to write tuned.json in")
+    from sage.gateway.being_params import TUNE_WRITES
+    return [os.path.realpath(os.path.join(root, f)) for f in TUNE_WRITES]
+
+
 def _unbounded_reason(effector: str, args: Optional[dict] = None) -> str:
     """The registry refusal, plus the door when the name is a FILE.
 
@@ -1538,6 +1750,15 @@ def _unbounded_reason(effector: str, args: Optional[dict] = None) -> str:
         reason += (f". That is a file name, and a file is not a tool. To run one of your own "
                    f"files, call request_run with path='{effector}'; the seat runs it and answers")
         return reason
+    # A WAIT IS NOT A RUN. 2026-10-09 03:54Z: cbp-being sent wait {"reason": "Waiting for the
+    # seat to run test-identity-recovery-parallel-new.py ..."} three times, AFTER its
+    # request_run for that file had queued. The arg scan below saw the .py and told it to call
+    # request_run, the thing it had just done; it appealed the refusal as arbitrary. wait was
+    # its most common unbounded name (9, tied with python3). The door for a wait is the beat.
+    if effector in ("wait", "sleep", "pause"):
+        return reason + (". There is nothing to wait inside a beat: end it. A queued request_run "
+                         "is answered in your conversation with the seat, and your next beat "
+                         "reads that answer")
     # THE SAME WANT, SPELLED AS A SHELL VERB. 2026-09-22 06:27Z: cbp-being sent run_command
     # {"command": "python mechanism-training-script-clean.py"}; 7 of the 9 registry.unbounded
     # refusals in its heartbeats carried the file in an ARG, not the effector, and none named
@@ -1608,6 +1829,10 @@ _REGISTRY = {
     # the content can only come from history, so the being cannot author bytes through it.
     "git_restore":    dict(tool="git_restore",  path_args=("path",), cmd_arg=None,
                            compose=git_restore_command),
+    # git_clean: delete ONE untracked file from the worktree. Composed like git_restore; `git clean
+    # -f` cannot touch a tracked or ignored file, so the being can only take back what it added.
+    "git_clean":      dict(tool="git_clean",    path_args=("path",), cmd_arg=None,
+                           compose=git_clean_command),
     # pr_open: the being's worktree changes become a pull request, attributed to it,
     # for NOT-SAME review. Composed like pr_review — the law rules on the `gh` string.
     "pr_open":        dict(tool="pr_open",     path_args=(),       cmd_arg=None,
@@ -1647,6 +1872,11 @@ _REGISTRY = {
     # header. Judged on the path like memory_write, because that is what it is: a write
     # inside its own home, bounded to notes/ and scratch/ by the dispatcher.
     "retire_note":    dict(tool="write_note",   path_args=("path",), cmd_arg=None),
+    # tune: set one of the being's own parameters (being_params). Judged as what it is, a write
+    # of ONE fixed file in its own home: the path is the seat's (tuned.json), never the being's,
+    # and the dispatcher refuses an unknown name, a locked one, or a value out of bounds.
+    "tune":           dict(tool="write_note",   path_args=(),        cmd_arg=None,
+                           compose_paths=tune_paths),
     # say: add a turn to a conversation the being is IN. Bounded by construction, like
     # remember: the being names a conversation id, and the dispatcher refuses any id whose
     # meta does not list it as a participant AND as writable. It cannot create a
@@ -1709,11 +1939,11 @@ _REGISTRY = {
 _OBSERVATIONAL = frozenset({"witness", "memory_read", "recall", "appeal"})
 _CONSEQUENTIAL = frozenset({"peer_ask", "pr_read", "web_search", "memory_write", "channel_egress", "mesh", "pr_review",
                             "remember", "request_scope", "git_read", "search", "check", "say",
-                            "retire_note", "request_run", "memory_edit", "camera", "game",
+                            "retire_note", "request_run", "memory_edit", "camera", "game", "tune",
 
 
                             "retire_note", "request_run", "memory_edit", "camera",
-                            "pr_open", "pr_amend", "pr_sync", "git_restore",
+                            "pr_open", "pr_amend", "pr_sync", "git_restore", "git_clean",
                             "gaze",    # moves the body's own eyes (2026-09-23)
                             "speak",   # makes sound in the room (2026-09-26)
                             "pair_audio",  # moves the body's own hardware link (2026-09-27)
@@ -1729,7 +1959,11 @@ _TOOL_SCHEMAS = {
                     "whole lines; if it does not reach the end it says so and names the "
                     "start_line that reads on.",
                     {"path": "path to your note",
-                     "start_line": "optional: the line number to start from (default 1)"}, ["path"]),
+                     "start_line": "optional: the line number to start from (default 1)",
+                     "end_line": ("optional: the last line to show, inclusive, as memory_read "
+                                  "numbers lines. To look at one line, give it as both. Without "
+                                  "it the read runs to the window's end, about 8,000 characters, "
+                                  "which is most of a short file.")}, ["path"]),
     # SAY IT APPENDS, AT THE MOMENT OF CHOICE (2026-09-26). This description was "Write a note
     # into your own memory." Only memory_edit's description said memory_write appends, and a model
     # choosing memory_write never reads that one. cbp-being meant to rewrite
@@ -1737,7 +1971,7 @@ _TOOL_SCHEMAS = {
     # to the END", and the file now held two programs, with the fixes in the one that never runs.
     # The old 1,846-line file with ten main()s was built the same way. The receipt (#141) tells it
     # afterwards, and this tells it before.
-    "memory_write": ("Add text to a file in your home. It APPENDS to the end: if the file exists, "
+    "memory_write": ("Add text to a file in your home, or in another path you are granted. It APPENDS to the end: if the file exists, "
                      "what is already there stays and your text goes below it. It never replaces. "
                      "To change or replace lines in an existing file, including rewriting a whole "
                      "script, use memory_edit (start_line 1 to the last line replaces all of it). "
@@ -1795,8 +2029,10 @@ _TOOL_SCHEMAS = {
     "check": ("Run a test suite in your own worktree and read the result. This is how you "
               "find out whether something you believe about your harness is true, instead of "
               "asserting it. A failure is a real answer, not a problem.",
-              {"target": "'gateway' or 'irp' for a whole suite, or '<suite>::<test_name>' "
-                         "for one test, e.g. 'gateway::test_relative_memory_path'"},
+              {"target": "'gateway' or 'irp' for a SAGE suite, 'tests' for the tests/ folder at "
+                         "the top of your worktree, '<suite>::<test_name>' for tests matching a "
+                         "name, or '<suite>::<file>::<test_name>' for exactly one test in one file, "
+                         "e.g. 'gateway::test_pr_read::test_the_live_shape_keeps_the_newest_whole'"},
               ["target"]),
     # Written to the being in the second person and without jargon, like every schema here.
     # It says what the seat will do, what the law will refuse, and — the part that matters
@@ -1804,7 +2040,7 @@ _TOOL_SCHEMAS = {
     # having moved, not a failure of its own. The measured habit this verb exists to break
     # is asserting an outcome it never observed; a verb whose refusals read as its own fault
     # teaches exactly that habit.
-    "patch_apply": ("Change files in your own worktree by sending a patch. This is how you act "
+    "patch_apply": ("Change files in your own worktree by sending a patch, applied all-or-nothing. This is how you act "
                     "on what you have read, instead of describing what you would do. Send a "
                     "unified diff as `git diff` prints it — its `diff --git a/<path> b/<path>` "
                     "headers are what the seat reads to know which files you are proposing to "
@@ -1877,6 +2113,13 @@ _TOOL_SCHEMAS = {
                 {"op": "start (default), continue, or abort",
                  "message": "for continue: how you resolved the conflicts (the commit body)"},
                 []),
+    "git_clean": ("Delete ONE file you created in your worktree that git does not track yet -- a "
+                  "probe, a scratch test, a file you no longer want in your pull request. pr_amend "
+                  "stages everything, so a file you leave there is proposed with your work. It "
+                  "cannot delete a tracked file (use git_restore to undo edits to one) or an ignored "
+                  "one, and the answer says which it refused and why.",
+                  {"path": "the one untracked file to delete, inside your worktree"},
+                  ["path"]),
     "git_restore": ("Put ONE file back to the way it was at a commit — `git checkout <rev> -- "
                     "<path>`. Use it to undo your own edits to a file rather than trying to "
                     "retype it: the content comes from history, so you cannot get it wrong. "
@@ -1897,13 +2140,21 @@ _TOOL_SCHEMAS = {
                 "top_k": "how many results (default 5)",
                 "idx": "instead of a query: the (idx:N) of one result, to read it in full"},
                []),
+    "tune": ("Read or set your own parameters: your context window size, whether your own old "
+             "calls are compacted, your answer temperature. With no arguments it lists them, each "
+             "with its value, where it came from, its bounds and whether it is yours to set. To "
+             "change one, give name, value and why; 'default' resets it. Changes take effect at "
+             "your next beat and are recorded with your reason.",
+             {"name": "optional: the parameter, e.g. num_ctx", "value": "the new value, or 'default'",
+              "why": "why you are changing it"},
+             []),
     "retire_note": ("Mark one of your own notes in notes/ or scratch/ as no longer current. It "
                     "is renamed to <name>.retired-<date> with a dated header saying why; nothing "
                     "is lost and you can still read it. Use it when something you wrote has been "
                     "settled or refuted, so a later beat does not read it as news.",
                     {"path": "the note, e.g. notes/my-note.md", "reason": "what you know now that the note does not"},
                     ["path", "reason"]),
-    "memory_edit": ("Change part of a file you already wrote. memory_write only ever ADDS to "
+    "memory_edit": ("Change part of a file you already wrote, in your home or another path you are granted. memory_write only ever ADDS to "
                     "the end of a file; this is how you alter what is already in one. Give the "
                     "exact text to replace, OR the line numbers to replace, and what replaces "
                     "it. Text must appear exactly once, so include a neighbouring line if it "
@@ -1926,7 +2177,15 @@ _TOOL_SCHEMAS = {
                     "person in a message: a person may be asleep, and this reaches whoever is "
                     "on duty.",
                     {"path": "the file to run, inside your own home, e.g. notes/my-script.py",
-                     "why": "optional: what you expect to learn. Saying it helps the seat decide"},
+                     "why": "optional: what you expect to learn. Saying it helps the seat decide",
+                     # LISTED BECAUSE THE RECEIPT NAMES IT. Measured 2026-10-08 04:03Z (cbp-being):
+                     # the answered-run receipt said "call request_run with rerun=true", this spec
+                     # did not list rerun, and the being wrote `main(rerun=True)` into its script
+                     # (TypeError at line 139, seq 7489) after 8 requests that put "rerun=true" in
+                     # 'why'. A parameter named only in prose goes onto the nearest call it can edit.
+                     "rerun": "optional: 'true' asks the seat to run a file again that it already ran "
+                              "and answered, unchanged. It is an argument of request_run, next to path "
+                              "and why, not something to write into your file"},
                     ["path"]),
     "game": ("Play an ARC-AGI-3 game: up to 8 probes per call, in order, each delta back in this "
              "turn. ACTION6 is a click at (x=col,y=row) 0-63; ACTION1-5,7 take no coordinates; "
@@ -1952,6 +2211,10 @@ _TOOL_SCHEMAS = {
                {"out_path": "optional: where the JPEG lands, a plain path inside your home (default scratch/camera/last-frame.jpg)",
                 "device": "optional: a plain device node to read from (default /dev/video0)"},
                []),
+    "describe": ("The full description of one verb and its parameters, when the short form you were "
+                 "given is not enough to use it well. Touches nothing; answered at once.",
+                 {"verb": "the verb's name, e.g. memory_edit"},
+                 ["verb"]),
     "stay_awake": ("Ask for another beat right after this one, because you want to keep going: "
                    "something you are in the middle of, something in your surroundings, or your "
                    "own curiosity. The next beat starts as soon as this one ends. You never need "
@@ -2204,10 +2467,13 @@ class BeingGateClient:
                  dispatcher: "Optional[Dispatcher]" = None,
                  host_session_id: Optional[str] = None,
                  worktree: Optional[str] = None,
-                 game_stepper: Optional[str] = None):
+                 game_stepper: Optional[str] = None,
+                 camera_source: Optional[str] = None):
         self.member_id = member_id
         # the seat-side ARC stepper `game` composes with; a per-being fact (instance.json)
         self.game_stepper = game_stepper
+        # where `camera` gets a frame: "cortex" (sage/embodiment/look.py) or absent (ffmpeg on a device)
+        self.camera_source = camera_source
         self.workspace = workspace
         # THE BEING'S OWN WORKTREE, and the gate needs it as much as the dispatcher does.
         #
@@ -2338,9 +2604,28 @@ class BeingGateClient:
                 # the seat's ARC stepper: `game` composes the line the law judges from it
                 "game_stepper": getattr(self, "game_stepper", None),
                 # whose branches a composed git verb may name (being_branch_prefix)
-                "member": getattr(self, "member_id", None)}
+                "member": getattr(self, "member_id", None),
+                # where `camera` gets a frame (instance.json camera_source; "cortex" or absent)
+                "camera_source": getattr(self, "camera_source", None)}
 
     # -- gate one intent (intent -> verdict), fail-closed --------------------
+    def _policy_grants(self) -> tuple:
+        """(granted, granted_reach) from the member's live policy snapshot, the way the legacy
+        stage computes them; ((), ()) when there is no mechanism, no snapshot, or it raises.
+        Never widens: these are the grants the law already holds for this member."""
+        if getattr(self, "_mech", None) is None or getattr(self, "_core", None) is None:
+            return (), ()
+        try:
+            snap = self._mech.fetch_policy_snapshot(
+                self.member_id, host_agent=getattr(self, "_host_agent", "sage-raising"))
+            if snap is None:
+                return (), ()
+            policy = self._core.resolve_agent_policy(self._profile, vault_reader=lambda _m: snap)
+            return (_granted_roots(self._core, policy, self.workspace),
+                    _granted_reach(self._core, policy, self.workspace))
+        except Exception:
+            return (), ()
+
     def gate(self, intent: BeingIntent) -> GatewayVerdict:
         # Stage 0: bounded registry. Unknown effector never reaches the law.
         if intent.effector not in _REGISTRY:
@@ -2389,15 +2674,46 @@ class BeingGateClient:
                                     default_role="role:constellation:member",
                                     host_agent=getattr(self, "_host_agent", "sage-raising"),
                                     client_name=f"sage-{self.member_id}-gate")
-                ge = sg.GateEvent(tool=tool, tool_input=dict(intent.args), cwd=self.workspace,
+                # JUDGE THE PATH THE DISPATCHER WILL TOUCH (2026-10-05, Sprout). The being writes
+                # `journal.md`, relative to ITS OWN home; _normalize roots it there (as
+                # reference_f1a._safe_path does). Handing the single gate the RAW args with
+                # cwd=workspace made it resolve `journal.md` against the SAGE checkout, outside the
+                # being's grant: from the #1231 cutover (19:22Z) every relative journal/todo write
+                # was refused "'journal.md' is not granted" although the grant was the being's home.
+                tool_input = dict(intent.args)
+                resolved = iter(ev.paths)
+                for a in _REGISTRY[intent.effector]["path_args"]:
+                    if intent.args.get(a):
+                        tool_input[a] = next(resolved)
+                # AND A WORKTREE VERB'S PATH IS ROOTED AT THE WORKTREE (McNugget, 2026-10-07/08).
+                # git_read and search are composed verbs with no path_args, so the loop above never
+                # touched their `path`; hestia read it as a ratified path key and resolved it against
+                # cwd=workspace -- the SEAT's checkout -- while the composer runs `git -C <worktree>`.
+                # mcnugget-being, with its worktree granted, was refused "'sage' is not granted" for
+                # `git_read cat sage/gateway/fleet_paths.py` beat after beat. Root it where it is read.
+                # (The composer already refuses a path that escapes the worktree.)
+                _wt = self._compose_ctx().get("worktree")
+                if (_REGISTRY[intent.effector].get("compose") and _wt and tool_input.get("path")
+                        and not os.path.isabs(str(tool_input["path"]))):
+                    tool_input["path"] = os.path.realpath(os.path.join(_wt, str(tool_input["path"])))
+                ge = sg.GateEvent(tool=tool, tool_input=tool_input, cwd=self.workspace,
                                   session_id=getattr(self, "host_session_id", None),
                                   raw={"effector": intent.effector, **intent.args})
                 d = sg.decide(ge, gp)
                 available = getattr(d, "verdict_available", True)
                 dec = d.decision if (available and d.decision in ("allow", "warn", "deny")) else "deny"
                 rule = d.rule or ("" if available else "gate.no_verdict")
+                # THE GRANTS RIDE ON AN ALLOW, AS THEY DO ON THE LEGACY PATH. The dispatcher's own
+                # confinement (reference_f1a._safe_path via `granted`; hestia_dispatch
+                # _granted_reach_of via `granted_reach`) reads them off the verdict; without them
+                # every grant beyond the home is inert at the last mile. Measured on legion-being
+                # 2026-10-06, the first beats under the one gate: a memory_read of its own worktree
+                # file the gate ALLOWED was refused "outside your reach", and the being worked
+                # around it with scratch scripts taking the path as `data`. A deny carries none.
+                granted, granted_reach = self._policy_grants() if dec != "deny" else ((), ())
                 return GatewayVerdict(dec, rule, getattr(d, "reason", "") or ("ok" if dec != "deny" else ""),
-                                      innate=False, stage="single-gate", command=judged_command)
+                                      innate=False, stage="single-gate", command=judged_command,
+                                      granted=granted, granted_reach=granted_reach)
             except Exception as e:  # a gate that raises is a refused act, never an ungoverned one
                 return GatewayVerdict("deny", "gate.raised", innate=True, stage="single-gate",
                                       reason=f"{type(e).__name__}: {e}")

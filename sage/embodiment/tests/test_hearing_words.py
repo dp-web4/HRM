@@ -6,6 +6,13 @@ heard words carry no speaker identity; whisper's near-silence hallucinations are
 shows only words since the previous beat; a voice wakes a beat, queued behind a running one (#295).
 """
 import json
+
+_CORE = ("listening", "speaking", "always", "muted")
+
+
+def _core(w):
+    """The window's original four facts (wake mode added more fields beside them)."""
+    return {k: w.get(k) for k in _CORE}
 import os
 import struct
 import sys
@@ -54,9 +61,9 @@ def test_a_long_speech_is_cut_at_the_cap_not_buffered_forever():
 
 def test_the_window_opens_and_closes_by_time(tmp_path):
     p = str(tmp_path / "listen.json")
-    assert listening.window(path=p) == {"listening": False, "speaking": False, "always": False, "muted": None}, "absent = closed"
+    assert _core(listening.window(path=p)) == {"listening": False, "speaking": False, "always": False, "muted": None}, "absent = closed"
     listening.mark(path=p, listen_until=time.time() + 60, speaking_until=time.time() - 1)
-    assert listening.window(path=p) == {"listening": True, "speaking": False, "always": False, "muted": None}
+    assert _core(listening.window(path=p)) == {"listening": True, "speaking": False, "always": False, "muted": None}
     listening.mark(path=p, speaking_until=time.time() + 5)
     assert listening.window(path=p)["speaking"] and listening.window(path=p)["listening"]
     assert not listening.window(time.time() + 120, path=p)["listening"]
@@ -69,7 +76,7 @@ def _hearing(monkeypatch, tmp_path, **win):
         listening.mark(**win)
     h = audio.Hearing()
     got = []
-    h.transcriber.submit = lambda u: got.append(u) or True
+    h.transcriber.submit = lambda u, **k: got.append(u) or True
     return h, got
 
 
@@ -149,9 +156,9 @@ def test_speak_opens_the_window_after_the_sound_and_mutes_during_it(monkeypatch,
             during.append(listening.window())
     monkeypatch.setattr(subprocess, "run", run)
     body.speak("hello")
-    assert during == [{"listening": False, "speaking": True, "always": False, "muted": None}], "muted while its own voice plays"
+    assert [_core(w) for w in during] == [{"listening": False, "speaking": True, "always": False, "muted": None}], "muted while its own voice plays"
     after = listening.window(time.time() + 1)
-    assert after == {"listening": True, "speaking": False, "always": False, "muted": None}
+    assert _core(after) == {"listening": True, "speaking": False, "always": False, "muted": None}
     assert not listening.window(time.time() + body.LISTEN_WINDOW_S + 1)["listening"]
 
 
@@ -186,7 +193,7 @@ def test_a_voice_wakes_a_beat_and_mid_beat_it_starts_the_next_one(monkeypatch, t
     with open(heard, "a") as f:
         f.write(json.dumps({"ts": time.time(), "text": "are you there"}) + "\n")
     [w] = p._check_heard(time.time() + 6)
-    assert w["started"] is True and sysd.starts == 2, "no 45 s gap: new words, new beat"
+    assert w["start_accepted"] is True and w["started"] is None and sysd.starts == 2, "no 45 s gap: new words, new beat"
 
 
 def test_a_failed_beat_start_keeps_the_words_pending(monkeypatch, tmp_path):
@@ -196,9 +203,25 @@ def test_a_failed_beat_start_keeps_the_words_pending(monkeypatch, tmp_path):
     sysd.start_rc = 1
     heard.write_text(json.dumps({"ts": time.time(), "text": "hello Sprout"}) + "\n")
     [w] = p._check_heard(time.time())
-    assert w["started"] is False
+    assert w["start_accepted"] is None and w["started"] is None
     [e] = arousal.claim_pending("the-next-beat")
     assert e["descriptor"] == 'heard a voice: "hello Sprout"'
+
+
+def test_heard_log_preserves_unknown_and_does_not_claim_a_started_beat(monkeypatch, tmp_path, capsys):
+    p, heard, sysd, _ = _hearing_presence(monkeypatch, tmp_path)
+    logged = []
+    p._log = logged.append
+    for i, rc in enumerate((0, 1, -15)):
+        sysd.running, sysd.start_rc = False, rc
+        with heard.open("a") as stream:
+            stream.write(json.dumps({"ts": i, "text": f"turn {i}"}) + "\n")
+        p._check_heard(time.time())
+        assert logged[-1]["started"] is None
+        assert logged[-1]["start_accepted"] is (True if rc == 0 else None)
+        assert logged[-1]["wake_evidence_version"] == 2
+    text = capsys.readouterr().out
+    assert "beat started" not in text and text.count("beat entry unconfirmed") == 3
 
 
 def test_a_failed_playback_or_synthesis_opens_no_window(monkeypatch, tmp_path):
@@ -215,7 +238,7 @@ def test_a_failed_playback_or_synthesis_opens_no_window(monkeypatch, tmp_path):
         monkeypatch.setattr(subprocess, "run", run)
         with pytest.raises(subprocess.CalledProcessError):
             body.speak("hello")
-        assert listening.window(time.time() + 1) == {"listening": False, "speaking": False, "always": False, "muted": None}, fails
+        assert _core(listening.window(time.time() + 1)) == {"listening": False, "speaking": False, "always": False, "muted": None}, fails
 
 
 def test_the_mic_that_heard_is_named_not_the_first_one_listed():
@@ -228,3 +251,28 @@ def test_the_mic_that_heard_is_named_not_the_first_one_listed():
     assert body._heard_mic([{"source": "alsa_input.analog"}], inv) == "your mic"
     assert body._heard_mic([{"source": "alsa_input.analog"}],
                            {"audio_sources": [{"name": "USB Mic", "kind": "wired"}]}) == "USB Mic"
+
+
+def test_heard_and_unheard_records_carry_track_a_timing(monkeypatch, tmp_path):
+    """Compiled-transducers arc, Track A baseline: each record says when the utterance closed (t_end), how long it
+    waited (queue_s) and how long whisper took (asr_s), so end-of-speech -> kept-words latency is measurable."""
+    monkeypatch.setattr(listening, "UNHEARD_PATH", str(tmp_path / "unheard.jsonl"))
+    t = listening.Transcriber(source="mic", heard_path=str(tmp_path / "heard.jsonl"))
+    t._fp16 = False
+    t.model = _FakeModel([{"text": " Hello there.", "no_speech_prob": 0.05, "avg_logprob": -0.2}])
+    import time as _t
+    t._handle(b"\0\0" * 16000, ended_at=_t.time() - 0.5)
+    rec = json.loads((tmp_path / "heard.jsonl").read_text().splitlines()[-1])
+    assert rec["text"] == "Hello there." and rec["asr_s"] is not None and rec["asr_s"] >= 0
+    assert rec["queue_s"] >= 0.5 and abs(rec["t_end"] - (_t.time() - 0.5)) < 5
+    t.model = _FakeModel([{"text": " you", "no_speech_prob": 0.9, "avg_logprob": -0.3}])
+    t._handle(b"\0\0" * 1600)                       # no end time given: timing still carries asr_s
+    un = json.loads((tmp_path / "unheard.jsonl").read_text().splitlines()[-1])
+    assert un["why"] == "no kept words" and "asr_s" in un and "t_end" not in un
+
+
+def test_submit_queues_the_end_time_and_run_unpacks_it():
+    t = listening.Transcriber(source="mic")
+    assert t.submit(b"\0\0", ended_at=123.0)
+    audio, ended = t.q.get_nowait()
+    assert audio == b"\0\0" and ended == 123.0

@@ -262,6 +262,84 @@ POSTURE_FILE = Path(__file__).with_name("BEING_POSTURE.md")
 ENTRUSTMENT_FILE = "entrustment.md"
 
 
+def window_line(instance) -> str:
+    """The window as a sense (dp, 2026-10-07: "context window size/usage should be a
+    proprioception parameter"), and the parameters that shape it as the being's own.
+
+    The body line has always said how big the window is; nothing said how this being USES it.
+    legion-being's seed alone was 17,270 of 32,768 tokens on 10-07, its beats peaked at 85-99%,
+    and 66 of its last 337 generates were retried (at the window wall or the output budget). Measured from the beat
+    records (what ollama counted), never estimated. "" when nothing can be said, so a broken
+    reading costs the seed nothing."""
+    try:
+        from sage.gateway import being_params as _bp
+        line = _bp.render_window(_bp.sense_window(instance))
+        mine = [r for r in _bp.table(instance) if r["yours_to_set"]]
+        if mine:
+            line += (" Parameters that shape it are yours to set with `tune` (no arguments lists "
+                     "them): " + ", ".join(f"{r['name']}={_bp.shown(r)}" for r in mine) + ".")
+        return line
+    except Exception:
+        return ""
+
+
+ENTRUSTMENT_SEEN = ".entrustment_seen.json"   # seat-written: the day and hash last shown whole
+
+
+def entrustment_shown(instance: Path, text: str, mode: str = "full", mark: bool = True,
+                      now: Optional[float] = None) -> str:
+    """The entrustment as this beat shows it. "full" (the default): the whole text, every beat.
+    "daily": whole on the first beat of each UTC day and on any beat where the text has changed
+    since it was last shown whole; otherwise its opening (everything before its first `## `
+    section) and a pointer to the rest. dp's words are never paraphrased or reordered: the
+    short form is a prefix of the file plus a sentence saying what was left out and where it is.
+
+    Measured 2026-10-07 on legion-being: the entrustment is 3,933 chars (~1,250 tokens), re-read
+    every beat for weeks, of a seed that filled ~53% of its window before its first act.
+    `mark=False` reads without recording a whole showing, like the conversations block, so a
+    render (the fitter's, or a seat inspecting the state) does not change what the being is next
+    shown. The beat itself records through record_entrustment_seen, from the state it sends."""
+    if mode != "daily" or not text:
+        return text
+    now = time.time() if now is None else now
+    day = time.strftime("%Y-%m-%d", time.gmtime(now))
+    digest = hashlib.sha256(text.encode()).hexdigest()[:16]
+    try:
+        seen = json.loads((Path(instance) / ENTRUSTMENT_SEEN).read_text())
+    except Exception:
+        seen = {}
+    if seen.get("day") != day or seen.get("sha") != digest:
+        if mark:
+            record_entrustment_seen(instance, text, now)
+        why = "the first beat of the day" if seen.get("sha") == digest else (
+            "its text changed since you last saw it whole" if seen else "shown whole")
+        return text + f"\n\n_(Shown whole: {why}. Later beats today show its opening and point here.)_"
+    head = text.split("\n## ", 1)[0].rstrip()
+    rest = len(text) - len(head)
+    if rest <= 0:
+        return text
+    return (head + f"\n\n_(Unchanged since you read it whole today: its other {rest:,} chars are in "
+            f"{ENTRUSTMENT_FILE}; memory_read it whenever you want them. It is shown whole again "
+            f"tomorrow, or as soon as it changes.)_")
+
+
+def record_entrustment_seen(instance: Path, text: str, now: Optional[float] = None) -> None:
+    """Record that `text` was shown WHOLE today. The beat calls this once, after the fitter has
+    chosen the state it will actually send, and only if that state carries the whole text: the
+    fitter renders several rungs, so recording during composition would let one render consume
+    the showing another one sends -- and, tied to mark_conversations=False as the beat's renders
+    are, it would never record at all (measured on the carrier, legion/mission-artifact
+    2026-10-07: no seen file after the first beat, so every beat still carried the entrustment
+    whole). Never raises."""
+    now = time.time() if now is None else now
+    try:
+        (Path(instance) / ENTRUSTMENT_SEEN).write_text(json.dumps({
+            "day": time.strftime("%Y-%m-%d", time.gmtime(now)),
+            "sha": hashlib.sha256(text.encode()).hexdigest()[:16]}) + "\n")
+    except OSError:
+        pass
+
+
 def entrustment(instance: Path) -> str:
     """What this being is entrusted with, or "" if nothing yet. Read WHOLE and fresh every beat:
     a tail-truncated read would drop the opening, which says who extended it and on what terms."""
@@ -318,6 +396,27 @@ POSTURE_TURN = """The rest of your beat, which every being in the fleet receives
 {digest}
 
 This is still your time. If reading this changes what you want to do, act by calling a tool: {tools}. If not, say in a few words what you noticed.
+"""
+
+# The same posture turn, framed as STANDING GUIDANCE rather than as words addressed to the
+# being. PER-INSTANCE (instance.json "posture_framing": "standing_guidance"; see
+# posture_framing_for). Why: POSTURE_TURN hands the posture over "in the operator's words" as a
+# fresh user turn and closes on "say in a few words what you noticed", which reads as a message
+# from dp awaiting a reply. On cbp-being, 2026-10-03 20:41Z, the posture phase used `say` to send
+# dp thanks for a line of the posture, and it landed in dp's chat just after the being's answer to
+# an unrelated question; other posture replies open by acknowledging the posture as if it had just
+# been sent. dp's ruling: frame it as standing guidance, take no tool away. So the tools line is
+# the same, `say` included, and the posture and digest are byte-identical; only the framing and
+# the closing sentence differ.
+POSTURE_TURN_STANDING = """Standing guidance: dp's posture for every being in the fleet, given to you each beat. It is not a message and it does not await a reply; act within it.
+
+{posture}
+
+# What moved in the fleet
+
+{digest}
+
+This is still your time. If reading this changes what you want to do, act by calling a tool: {tools}. If not, end the turn with a few words on what you noticed; they are a note, not a reply to anyone.
 """
 
 ASK = "This time is yours. What, if anything, do you want to do?\n"
@@ -458,6 +557,29 @@ def asks_about_change(text: str) -> bool:
 ANSWER_CONTEXT_TURNS = 8
 
 
+def _trial_name(instance) -> Optional[str]:
+    try:
+        from sage.gateway.governed_turn import trial_name
+        return trial_name(instance)
+    except Exception:
+        return None
+
+
+def apply_think_budget(llm, instance) -> Optional[int]:
+    """being_params `think_budget`, when set, becomes the beat's first-attempt num_predict for every
+    turn (OllamaIRP.num_predict_override wins over the model config). Retries still set their own
+    budget for one call and restore this one after. Unset leaves the config's value untouched."""
+    try:
+        from sage.gateway import being_params
+        tb = being_params.value(instance, "think_budget")
+    except Exception:
+        return None
+    if tb is None or not hasattr(llm, "num_predict_override"):
+        return None
+    llm.num_predict_override = int(tb)
+    return int(tb)
+
+
 def answer_temperature(instance) -> Optional[float]:
     """Opt-in per instance: instance.json "answer_temperature" (0..1.5) samples the answer turn alone.
 
@@ -466,12 +588,73 @@ def answer_temperature(instance) -> Optional[float]:
     After #316 began showing the answer turn its own recent lines, verbatim self-echo (a 6-word phrase from its
     previous 3 replies) rose 7% -> 21%. Offline, today's room exchanges x3: at 0.4 echo 3/15 and 1.40 motifs per
     reply; at 0.7 echo 0/14 and 0.86, answering 14/15 and picking up the person's words 7/14 (vs 8/15)."""
+    # A being parameter since 2026-10-07 (being_params): bounds 0..1.5 live in its table.
+    from sage.gateway import being_params
+    return being_params.value(instance, "answer_temperature")
+
+
+AFTER_ANSWER = ("{pending}\n\nYou answered aloud: \"{reply}\"\n\nThat answer is spoken. Your tools are here "
+                "if there is something you want to do now; if not, rest.")
+
+
+def after_answer_messages(system, pending, reply):
+    """The act-after-answer turn: the person's words and its quoted reply in ONE user message, then its tools.
+
+    #418 made its reply the assistant turn and the ask a separate last user turn, because heartbeat-1b47f8a4a47e had
+    read the quoted reply as the user's. Replayed offline on dp's "pick something that interests you and pursue it"
+    (dp seq 151, 2B, its real reply, 10 runs per shape): quoted 3/10 acted (recall x2, memory_read) and its thinking
+    opened on dp's ask ("The user wants me to pick an interesting topic and pursue it"); as its own turn 0/10 acted,
+    4/10 bare templates, and the thinking read the short ask as the person talking ("The user has acknowledged the
+    previous response and offered me tools") and answered as an assistant offering help. At 2B the LAST user turn is
+    what it answers; dp's words have to be in it. Reverted to the quoted shape; the #403 retake stays."""
+    return [system, {"role": "user", "content": AFTER_ANSWER.format(pending=pending,
+                                                                    reply=(reply or "").strip()[:400])}]
+
+
+def act_after_answer_on(instance) -> bool:
+    """Opt-in per instance: instance.json "act_after_answer": true."""
     try:
         from sage.gateway.governed_turn import instance_config
-        v = instance_config(instance).get("answer_temperature")
-        return None if v is None else max(0.0, min(1.5, float(v)))
+        return instance_config(instance).get("act_after_answer") is True   # "false", 1, "yes": off
     except Exception:
-        return None
+        return False
+
+
+# WHAT IT CAN DO, as facts beside the answer (2026-10-02): asked "check the internet. Can you do that?", the answer
+# turn, which sees no list of its acts, agreed to something it cannot do. Facts about its reach, not a direction,
+# and in ITS terms: no verb names, no "tool", no "say" (SMALL_MODEL_LEGIBILITY 1.14: harness words in the answer
+# prompt became the being's MESSAGE, "I'm sorry I didn't call a tool"; test_the_prompt_is_only_the_pending_turn_
+# and_the_ask pins it). Derived from the canonical verbs, so it changes when they do.
+# search's fact says what it searches: the code repository checked out on this seat, not the being's
+# home. It said "search your own files" until the #354 follow-up, the phrasing that sent cbp-being asking
+# dp for a worktree so search could find a line in its own scratch file (see NO_WORKTREE_REFUSAL). Pinned
+# by test_no_worktree_ability_claims_the_home.
+_ABILITIES = [("camera", "look through your eyes"),
+              ("search", "search the code repository checked out on this seat (not your home)"),
+              ("pr_read", "read the fleet's pull requests"), ("recall", "recall memories"),
+              ("peer_ask", "ask a sibling a question"), ("speak", "speak aloud"),
+              ("web_search", "search the web a few times an hour (what comes back is other people's words)")]
+
+
+def abilities_line(unavail: Optional[dict] = None) -> str:
+    """Only what works ON THIS MACHINE (GPT on #334): canonical_toolset() lists every fleet verb whether or not it
+    works here, so a headless being would have been told it can look through its eyes. `unavail` is the measured
+    toolset.unavailable() the beat already uses to label verbs; unmeasured (None) means body and worktree
+    abilities are unknown and are not claimed. Never a capability that is not measured present."""
+    try:
+        from sage.gateway import toolset as _ts
+        have = set(_ts.canonical_toolset())
+        if unavail is None:
+            unavail = _ts.unavailable(None, None, None)
+    except Exception:
+        return ""
+    parts = [txt for verb, txt in _ABILITIES if verb in have and verb not in unavail]
+    if not parts:
+        return ""
+    line = "Beyond this reply, you can " + (", ".join(parts[:-1]) + ", and " + parts[-1] if len(parts) > 1 else parts[0]) + "."
+    if "web_search" not in have and "web_read" not in have:
+        line += " You have no internet access."
+    return line
 
 
 def answer_context_on(instance) -> bool:
@@ -718,19 +901,21 @@ def answer_schema_for(cid: str) -> dict:
 
 def _answer_generate(llm, msgs, schema=None):
     """One constrained generate, retried once on the shapes the tool loop also retries: empty
-    content (think-only), a length cut, or a transport error. Returns (r, retried)."""
+    content (think-only), a length cut, or a transport error. Returns (r, retried, attempts)."""
+    from sage.gateway.being_tool_loop import generate_with_evidence
     schema = schema or ANSWER_SCHEMA
-    r = llm.get_chat_response(msgs, fmt=schema)
+    r, first = generate_with_evidence(llm, msgs, phase="answer_json", fmt=schema)
     raw = (r or {}).get("raw") or {}
     content = ((r or {}).get("content") or "").strip()
     if not content or raw.get("done_reason") == "length" or content.startswith("[OllamaIRP"):
-        return llm.get_chat_response(msgs, fmt=schema), 1
-    return r, 0
+        r, second = generate_with_evidence(llm, msgs, phase="answer_json", fmt=schema)
+        return r, 1, [first, second]
+    return r, 0, [first]
 
 
 def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: str,
                      on_generate=None, acts: str = "", changes: str = "", context: str = "",
-                     temperature: Optional[float] = None):
+                     temperature: Optional[float] = None, abilities: Optional[str] = None):
     """The being's answer, if it chose one, dispatched as its `say`.
 
     The prompt is the selected turn and the ask. `acts` (the beat's record of acts) is included
@@ -741,7 +926,11 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
     from sage.gateway.being_tool_loop import ToolTurnResult
     from sage.gateway.being_gate_client import BeingIntent
     ask = ANSWER_ASK_JSON.format(pending=selected.render()) + (SPOKEN_ASK if selected.cid == "room" else "")
-    user = "\n\n".join(p for p in (context, acts, changes, ask) if p)
+    # WHAT IT CAN DO rides EVERY answer, independent of the optional conversation context (GPT on #334: inside
+    # that block it never reached an instance without "answer_context"; the motivating case would still have
+    # answered without knowing it has no internet). Facts about its reach, not a direction.
+    user = "\n\n".join(p for p in (context, acts, changes,
+                                     abilities if abilities is not None else abilities_line(), ask) if p)
     msgs = [{"role": "system", "content": ANSWER_SYSTEM.format(name=name, machine=machine, member=member)},
             {"role": "user", "content": user}]
     # THIS TURN'S SAMPLING ONLY (answer_temperature): set for the answer generate, restored after, so explore
@@ -750,7 +939,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
     if temperature is not None and _prior_t is not None:
         llm.temperature = float(temperature)
     try:
-        r, retried = _answer_generate(llm, msgs, answer_schema_for(selected.cid))
+        r, retried, attempts = _answer_generate(llm, msgs, answer_schema_for(selected.cid))
     finally:
         if temperature is not None and _prior_t is not None:
             llm.temperature = _prior_t
@@ -759,7 +948,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
     thinking = ((raw.get("message") or {}).get("thinking") or "").strip()
     gen = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
            "eval_count": raw.get("eval_count"), "retried": retried,
-           "num_predict": getattr(llm, "resolve_num_predict", lambda: None)()}
+           "num_predict": getattr(llm, "resolve_num_predict", lambda: None)(), "attempts": attempts}
     if on_generate is not None:
         try:
             on_generate(dict(gen))
@@ -999,7 +1188,8 @@ _SCHEMA_CHARS_PER_VERB = 700   # above the 651 measured, so the bound stays cons
 _SCHEMA_CHARS_FLOOR = 12_000   # at least the 18-verb measurement, for when the verb count is unknown too
 
 
-def _schema_chars_for(offered, unavail: Optional[dict] = None, enums: Optional[dict] = None) -> Optional[int]:
+def _schema_chars_for(offered, unavail: Optional[dict] = None, enums: Optional[dict] = None,
+                      brief: bool = False) -> Optional[int]:
     """Chars the offered verbs' schemas actually cost. None rather than a guess if it
     cannot be computed — a budgeted number that nobody checks is how 4,000 survived from
     13 verbs to 18. Callers must route None through _schema_chars_fallback, never `or`
@@ -1013,7 +1203,8 @@ def _schema_chars_for(offered, unavail: Optional[dict] = None, enums: Optional[d
             # here, so the cost is measured on THOSE specs, not on the full descriptions
             from sage.gateway import toolset
             names = set(offered)
-            return len(json.dumps([t for t in toolset.specs(unavail, enums) if t["function"]["name"] in names]))
+            return len(json.dumps([t for t in toolset.specs(unavail, enums, brief=brief)
+                                   if t["function"]["name"] in names]))
         from sage.gateway.being_gate_client import ollama_tools
         return len(json.dumps(ollama_tools(list(offered))))
     except Exception:
@@ -1216,16 +1407,140 @@ def appeals_block(disp, last: dict) -> tuple:
     return "\n".join(parts), record
 
 
-def render_inbox(notices: list, limit: int = 8) -> str:
+# NOTICE KINDS THAT CARRY NO OUTSTANDING OBLIGATION. A finished review, a forum post and an ack
+# report something that already happened; once a beat that could act has been shown one, showing
+# it again adds nothing. Every other kind -- reply, handoff, coordination, review_request,
+# unreachable, a ruling or other disposition, and any kind not named here -- may still be owed
+# something, so it stays as mail until the being OPENS it.
+# NOT `coordination` (GPT re-review of c25999cf6): hestia defines it as general work coordination
+# pointing at a forum/plan/file, and leaves it out of member_unanswered because it may be ACTED ON
+# IN SILENCE -- not because seeing its one-line rendering handles it. SAGE itself sends peer asks
+# and seat wakes as coordination. It folds only once its pointer is opened, like a handoff.
+INBOX_INFORMATIONAL = ("review_done", "forum-note", "ack")
+
+
+def _notice_target(uri) -> str:
+    return str(uri or "").strip().split("#", 1)[0]
+
+
+def inbox_ledger(last: dict, notices: list, results: list, explore_acted, presented_now) -> dict:
+    """WHICH NOTICES ARE HANDLED, by what the being did -- never by how old they are.
+
+    The beat only peeks at the inbox (nothing drains it), so without a ledger every notice is
+    mail forever: measured 2026-09-22, a 14:15 review_done topped cbp-being's inbox for 11 h of
+    beats and at 01:10 it acted on that over the seat's 3-minute-old answer. #164's first cut
+    folded everything queued before the last beat began. GPT's HOLD: age is not acknowledgement
+    -- an unopened reply, handoff or appeal ruling vanished after one beat, including when that
+    beat crashed before reading it. So a notice is handled only when:
+      - "opened": the being memory_read its pointer and the read succeeded (any kind), or
+      - "presented": it is an INBOX_INFORMATIONAL kind and was rendered to a beat whose explore
+        turn acted (the rule mark_conversations_after_beat uses for conversation turns).
+    Both sets carry forward from the last beat's record and are pruned to ids still in the
+    inbox, so the ledger is bounded by the inbox. A notice with no id is never handled."""
+    prev = (last or {}).get("inbox") or {}
+    if not notices:
+        # An inbox that could not be read this beat (or is empty) proves nothing was handled
+        # or retired; carry the ledger as it was rather than prune it to nothing.
+        return {"opened": list(prev.get("opened") or []),
+                "presented": list(prev.get("presented") or []), "opened_this_beat": []}
+    live = {n.get("id") for n in notices if isinstance(n, dict) and n.get("id") is not None}
+    opened = {i for i in (prev.get("opened") or []) if i in live}
+    presented = {i for i in (prev.get("presented") or []) if i in live}
+    by_target = {}
+    for n in notices:
+        if isinstance(n, dict) and n.get("id") is not None and _notice_target(n.get("pointer_uri")):
+            by_target.setdefault(_notice_target(n.get("pointer_uri")), set()).add(n.get("id"))
+    newly = set()
+    for res in results:
+        for it, env in (getattr(res, "trace", None) or []):
+            if it.effector == "memory_read" and env.ok:
+                newly |= by_target.get(_notice_target((it.args or {}).get("path")), set())
+    opened |= newly
+    if explore_acted:
+        presented |= {i for i in (presented_now or []) if i in live}
+    return {"opened": sorted(opened, key=str), "presented": sorted(presented, key=str),
+            "opened_this_beat": sorted(newly, key=str)}
+
+
+def unopened_asks(notices: list, handled, now) -> dict:
+    """How many notices that may still be owed something (not INBOX_INFORMATIONAL, not a
+    disposition) sit unhandled after this beat, and how old the oldest is. A being that never
+    calls memory_read shows here as a count that only grows -- measured on HUB 2026-10-11:
+    17 notices peeked every beat, memory_read 0 of 328 effector calls since 10-09, and nothing
+    in the record said so. Pure; `now` is a datetime or epoch seconds."""
+    handled = set(handled or ())
+    t_now = now.timestamp() if hasattr(now, "timestamp") else float(now)
+    ages = []
+    for n in notices or []:
+        if not isinstance(n, dict) or n.get("id") is None or n.get("id") in handled:
+            continue
+        if str(n.get("kind")) in INBOX_INFORMATIONAL or str(n.get("kind")) == "disposition":
+            continue
+        try:
+            q = datetime.fromisoformat(str(n.get("queued_at")).replace("Z", "+00:00"))
+            ages.append(max(0.0, (t_now - q.timestamp()) / 3600))
+        except Exception:
+            ages.append(None)
+    known = [a for a in ages if a is not None]
+    return {"unopened_asks": len(ages),
+            "oldest_unopened_h": round(max(known), 1) if known else None}
+
+
+def inbox_handled(last: dict) -> set:
+    """The ids the last beat's ledger says are handled (opened, or informational and shown)."""
+    prev = (last or {}).get("inbox") or {}
+    return set(prev.get("opened") or []) | set(prev.get("presented") or [])
+
+
+INLINE_ASKS = 2            # unopened asks shown with what they say, newest first
+INLINE_ASK_CHARS = 700     # of each; the envelope (and memory_read) has the rest
+_INLINE_KINDS = ("reply", "coordination", "handoff")
+
+
+def delivered_excerpt(home, pointer: str, cap: int = INLINE_ASK_CHARS) -> str:
+    """What a relayed ask says, from the envelope the courier wrote into the being's OWN home
+    (notes/inbox/<file>, being_inbox_drain.DELIVERED_HEADING), or "" if there is none. Only the
+    being's home is read here: the courier, not the beat, decided what to deliver (option (b), dp
+    2026-10-11), so nothing outside the being's reach reaches its prompt by this path."""
+    if not home or "/notes/inbox/" not in str(pointer or ""):
+        return ""
+    try:
+        from sage.gateway.being_inbox_drain import DELIVERED_HEADING
+        p = Path(home) / "notes" / "inbox" / Path(str(pointer).split("#", 1)[0]).name
+        if not p.is_file():
+            return ""
+        text = p.read_text(encoding="utf-8", errors="replace")
+        if DELIVERED_HEADING not in text:
+            return ""
+        part = text.split(DELIVERED_HEADING, 1)[1]
+        body = part.split("~~~~\n", 1)[1].rsplit("\n~~~~", 1)[0] if part.count("~~~~") >= 2 else ""
+        body = " ".join(body.split())
+        return body[:cap] + ("…" if len(body) > cap else "")
+    except Exception:
+        return ""
+
+
+def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None, home=None) -> str:
     """The being's hestia inbox as it should read it: newest first, one line each, the kinds
     that want its attention (reply, review, handoff, unreachable) ahead of bookkeeping, and
     the scope dispositions it has already been told about (note_resolutions writes them into
     its own notes) collapsed to one line. Until 2026-09-14 this was a JSON dump cut at 1500
     chars: 13 notices, and the being saw the five OLDEST — all stale dispositions — while a
     peer's reply (id 54) and an unreachable-peer receipt (id 52) sat beyond the cut, unseen
-    for 90 beats."""
+    for 90 beats.
+
+    `handled`: ids inbox_ledger says are handled; they fold to one count line, whatever their
+    age. `shown`, if given, receives the ids of the informational notices rendered as mail."""
     if not notices:
         return "(empty)"
+    handled = set(handled or ())
+    done = [n for n in notices if isinstance(n, dict) and n.get("id") is not None
+            and n.get("id") in handled]
+    notices = [n for n in notices if not any(n is d for d in done)]
+    fold = (f"- {len(done)} notice(s) already handled -- opened by you, or a finished review / "
+            f"forum note / ack already shown to you -- not repeated here.") if done else ""
+    if not notices:
+        return fold or "(empty)"
     front = ("reply", "review_request", "review_done", "handoff", "unreachable", "forum-note", "coordination")
     def key(n):
         k = str(n.get("kind") or "")
@@ -1244,6 +1559,7 @@ def render_inbox(notices: list, limit: int = 8) -> str:
     appeal_disp = [n for n in disp if ptr_of(n).startswith("hestia://appeal/")]
     other_disp = [n for n in disp if n not in scope_disp and n not in appeal_disp]
     lines = []
+    inlined = 0
     for n in appeal_disp[:limit]:
         target = ptr_of(n).split("#", 1)[0]
         deny = target.rsplit("/", 1)[-1]
@@ -1271,10 +1587,19 @@ def render_inbox(notices: list, limit: int = 8) -> str:
         else:
             when = str(n.get("queued_at") or "")[:16].replace("T", " ")
             lines.append(f"- [{k}] from {frm}{' at ' + when if when else ''}: read it with memory_read on {ptr}")
+            says = delivered_excerpt(home, ptr) if k in _INLINE_KINDS and inlined < INLINE_ASKS else ""
+            if says:
+                inlined += 1
+                lines.append(f"    It says (the sender's words, delivered with it): \"{says}\"")
     if scope_disp:
         lines.append(f"- {len(scope_disp)} scope decision notice(s), already written into your notes; nothing to do.")
     if len(rest) > limit:
         lines.append(f"- … and {len(rest) - limit} older notice(s).")
+    if fold:
+        lines.append(fold)
+    if shown is not None:
+        shown.extend(n.get("id") for n in rest[:limit]
+                     if str(n.get("kind")) in INBOX_INFORMATIONAL and n.get("id") is not None)
     return "\n".join(lines)
 
 
@@ -2003,6 +2328,44 @@ def decline_closing_for(cfg: Optional[dict]) -> Optional[str]:
     return v if v in DECLINE_CLOSINGS else None
 
 
+NO_RESULT_LINES = ("on",)
+
+
+def no_result_line_for(cfg: Optional[dict]) -> Optional[str]:
+    """instance.json `no_result_line`: whether the reflect turn's record ends with the line that
+    states what follows from acts that produced nothing (`_no_result_line`: refused effectors and
+    request_run's `ran: false`). PER-INSTANCE (RESEARCH_GENERALIZATION_RULE, recut of SAGE #133):
+    "say that it is unknown" is an instruction to the being, measured on cbp-being alone, so it is
+    off unless the value is in NO_RESULT_LINES, and it is recorded in every beat record where on."""
+    v = (cfg or {}).get("no_result_line")
+    return v if v in NO_RESULT_LINES else None
+
+
+POSTURE_FRAMINGS = ("standing_guidance",)
+
+
+def posture_framing_for(cfg: Optional[dict]) -> Optional[str]:
+    """instance.json `posture_framing`: how the act-first posture turn introduces the posture.
+    PER-INSTANCE (RESEARCH_GENERALIZATION_RULE): absent, or any value not in POSTURE_FRAMINGS,
+    means the default POSTURE_TURN ("in the operator's words ... say in a few words what you
+    noticed"). `"standing_guidance"` uses POSTURE_TURN_STANDING, which presents the same posture as
+    standing guidance that awaits no reply. It changes prompting on a turn the being acts in, so it
+    is a behavioural change, not a factual correction; the evidence is cbp-being's alone, so it is
+    recorded in every beat record where it is on, and it is nobody else's default. Posture-first
+    beings carry the posture in the system prompt and have no posture turn, so it never reaches them."""
+    v = (cfg or {}).get("posture_framing")
+    return v if v in POSTURE_FRAMINGS else None
+
+
+def proprioception_for(cfg: Optional[dict]) -> bool:
+    """instance.json `proprioception`: whether the body block carries the machine-body line (GPU,
+    CPU, memory, disk; sage.gateway.proprioception). ON BY DEFAULT, the opposite of the opt-in keys
+    above, because it is not a behavioural trial measured on one being: it is universal body sense
+    (dp, 2026-10-06), one line of fact. Only an explicit `false` turns it off, and an off instance
+    is recorded in its beat record."""
+    return (cfg or {}).get("proprioception") is not False
+
+
 ANSWERED_RUN_WAKES = ("skip",)
 
 
@@ -2023,8 +2386,10 @@ def own_state(instance: Path, member: str = "", entrusted: str = "",
               turn_chars: Optional[int] = CONV_TURN_CHARS,
               services: str = "", mark_conversations: bool = True,
               body_reading: Optional[dict] = None,
-              settled_turns: Optional[int] = None) -> str:
+              settled_turns: Optional[int] = None,
+              proprioception: bool = True) -> str:
     from sage.gateway.being_join import carried_account, last_session_number
+    from sage.gateway import being_params as _bp
     parts = []
     # The body first: it is the only thing in this state that is happening NOW. Everything below
     # is record. (dp 2026-09-23: "bridge the two halves ... world feedback to its actions".)
@@ -2041,15 +2406,19 @@ def own_state(instance: Path, member: str = "", entrusted: str = "",
                     _prev = _b["body"]; break
         except Exception:
             _prev = None
-        parts.append(_body.render(_cur, _prev, name=member))
+        parts.append(_body.render(_cur, _prev, name=member, proprioception=proprioception))
         own_state.last_body = _cur
     except Exception as _e:
         own_state.last_body = {"error": f"{type(_e).__name__}: {_e}"}
     if entrusted:
         # After the body (the only thing happening NOW) and ahead of every record: what the being
         # was extended frames how it reads the rest. Carried from legion/mission-artifact.
+        # `entrustment_mode` (being_params): "daily" shows it whole on the first beat of a UTC day
+        # and whenever its text changes, otherwise its opening section and the way to read the rest.
         parts.append("## What you are entrusted with (extended to you; you cannot edit this "
-                     "file. Your own reading of it belongs in notes/plan.md)\n" + entrusted)
+                     "file. Your own reading of it belongs in notes/plan.md)\n"
+                     + entrustment_shown(instance, entrusted, _bp.value(instance, "entrustment_mode", "full"),
+                                         mark=mark_conversations))
     # Its files and runs, measured: also NOW, so beside the body and before every record that
     # narrates them (see files_and_runs). Fail-open: a measurement that errors adds nothing.
     try:
@@ -2073,7 +2442,8 @@ def own_state(instance: Path, member: str = "", entrusted: str = "",
         convs = _conv.render_for_being(instance, member, per_conv=per_conv,
                                        turn_chars=turn_chars, mark=mark_conversations,
                                        refuted=refuted_claims(services) + files_refuted,
-                                       settled_turns=settled_turns)
+                                       settled_turns=settled_turns,
+                                       answered_cap=_bp.value(instance, "answered_turn_chars"))
         if convs.strip():
             parts.append(conversation_header(instance, member) + "\n" + convs.strip())
     if services.strip():
@@ -2111,7 +2481,7 @@ def own_state(instance: Path, member: str = "", entrusted: str = "",
     journal = _read(instance / "journal.md", 1200)
     parts.append("## journal.md (tail)\n" + (journal.strip() or "(empty: this is your first beat)"))
     for d in ("scratch", "notes"):
-        parts.append(dir_listing(instance, d))
+        parts.append(dir_listing(instance, d, _bp.value(instance, "listing_limit", LISTING_LIMIT)))
     return "\n\n".join(parts)
 
 
@@ -2355,6 +2725,35 @@ def event_answers(e: dict, selected) -> bool:
     return bool(m) and m.group(1) == selected.cid
 
 
+def explore_turn_mode(instance) -> str:
+    """Opt-in per instance: instance.json "explore_turn": "json" (explore and posture act through
+    closed JSON objects instead of native tool calls; see being_tool_loop._json_act)."""
+    try:
+        from sage.gateway.governed_turn import instance_config
+        return "json" if instance_config(instance).get("explore_turn") == "json" else "tools"
+    except Exception:
+        return "tools"
+
+
+def compact_own_turns_mode(instance) -> bool:
+    """Opt-in per instance: instance.json "compact_own_turns": true lets compaction trim the
+    being's own older tool calls once its results are already compacted (being_tool_loop)."""
+    # A being parameter since 2026-10-07 (being_params): the being may set it with `tune`.
+    from sage.gateway import being_params
+    return being_params.value(instance, "compact_own_turns", False) is True
+
+
+def explore_json_steps(instance, default: int) -> int:
+    """Acts per explore/posture turn in the JSON act form (instance.json "explore_json_steps", default 3).
+    Each act is two generates, and offline turns never chose "done" by themselves: 6 of 6 ran to an
+    8-step cap (2.5-7 min). Native turns rarely reach the cap because they end in prose."""
+    try:
+        from sage.gateway.governed_turn import instance_config
+        return max(1, min(default, int(instance_config(instance).get("explore_json_steps", 3))))
+    except Exception:
+        return min(default, 3)
+
+
 def preempt_on(instance) -> bool:
     """Opt-in per instance (R2): instance.json "preempt": true."""
     try:
@@ -2362,6 +2761,28 @@ def preempt_on(instance) -> bool:
         return bool(instance_config(instance).get("preempt"))
     except Exception:
         return False
+
+
+def answer_first_on_person_wake_on(instance) -> bool:
+    """Opt-in per instance (R3): instance.json "answer_first_on_person_wake": true."""
+    try:
+        from sage.gateway.governed_turn import instance_config
+        return bool(instance_config(instance).get("answer_first_on_person_wake"))
+    except Exception:
+        return False
+
+
+def woken_by_a_person(claimed) -> list:
+    """The P0 person events among the events this beat CLAIMED at its start (R3).
+
+    R2 preemption only sees P0 events that arrive AFTER the beat starts (p0_since); the event that
+    woke the beat is claimed at the start and never counts. Measured on Sprout (2026-10-02..06, the
+    embodied-RTOS arc's Track E baseline): a person who spoke while a beat ran was answered in p50 36 s
+    (p95 69 s), but a person whose turn WOKE an idle being waited 225 s (voice) and 199 s (typed):
+    the beat started within 20-34 s, then ran explore, posture, account and reflect, and answered last."""
+    evs = [e for e in (claimed or []) if isinstance(e, dict) and not e.get("claim_error")
+           and event_class(e) == "P0"]
+    return evs if person_turns_that_woke(evs) else []
 
 
 def p0_since(t0: float, pending: Optional[list] = None) -> list:
@@ -2419,6 +2840,8 @@ def pending_selection(instance: Path, member: str, woke: Optional[list] = None) 
       * conversations exist, nothing waiting -> the generic form, ids listed.
       * something waiting -> the person's name, the real id, and WHAT THEY SAID.
     """
+    global LAST_SELECTION_ERROR
+    LAST_SELECTION_ERROR = None     # describes THIS selection, the one whose result the beat records
     try:
         from sage.gateway import conversations as _conv
         ids = [m["id"] for m in _conv.listing(instance) if member in (m.get("participants") or [])]
@@ -2511,9 +2934,16 @@ def pending_selection(instance: Path, member: str, woke: Optional[list] = None) 
             return ('If someone has spoken to you and you have not answered, and you have '
                     'something to say, call say with to set to one of: ' + ", ".join(ids[:6])
                     + '. Answering is not required.\n'), "", "", "", None
-    except Exception:
-        pass
+    except Exception as e:
+        # "CANNOT TELL" IS NOT "NOTHING PENDING" (2026-10-04). This swallowed every failure, so a selection
+        # that raised looked exactly like an empty inbox: on HUB, hub-claude's 09-21 question was never
+        # selected in 300+ beats while the beat records showed nothing wrong. The beat record now carries it.
+        LAST_SELECTION_ERROR = f"{type(e).__name__}: {e}"[:300]
+        print(f"[heartbeat] pending_selection failed: {LAST_SELECTION_ERROR}", file=sys.stderr)
     return "", "", "", "", None
+
+
+LAST_SELECTION_ERROR: Optional[str] = None
 
 
 def mark_conversations_after_beat(instance: Path, member: str, shown_upto: dict,
@@ -2652,7 +3082,7 @@ def frame_age_bound(since: Optional[float], now: Optional[float] = None) -> floa
     return max(FRAME_AGE_FLOOR_S, (now - since) + FRAME_AGE_GRACE_S)
 
 
-def _frame_paths(instance: Path, worktree: Optional[str]) -> list:
+def _frame_paths(instance: Path, worktree: Optional[str], extra=()) -> list:
     """Every frame the being may have captured, in either tree.
 
     NOT a fixed filename. `camera`'s whole grammar is that the being names its own output
@@ -2676,6 +3106,32 @@ def _frame_paths(instance: Path, worktree: Optional[str]) -> list:
                        if p.is_file() and p.suffix.lower() in (".jpg", ".jpeg"))
         except OSError:
             continue
+    # WHEREVER THE BEING SAVED IT. The verb lets the being name any path inside its home, and on
+    # sprout-being's first look (2026-10-12 21:02, the first beat on its 4B) it saved to
+    # scratch/test-vision.jpg; this producer looked only under scratch/camera/, so the frame never rode
+    # and the being asked to see and did not. `camera_frame_paths` reads the last beat's own camera
+    # acts, so a frame is found where the act put it.
+    seen = {str(p) for p in out}
+    for p in extra:
+        if str(p) not in seen and p.is_file() and p.suffix.lower() in (".jpg", ".jpeg"):
+            out.append(p)
+            seen.add(str(p))
+    return out
+
+
+def camera_frame_paths(last: Optional[dict], instance: Path) -> list:
+    """The files the previous beat's successful `camera` acts wrote, resolved inside the being's home only."""
+    home = Path(instance).resolve()
+    out = []
+    for phase in ("explore", "posture", "reflect", "act_after_answer"):
+        rec = (last or {}).get(phase) if isinstance(last, dict) else None
+        for t in (rec or {}).get("trace") or [] if isinstance(rec, dict) else []:
+            if not (isinstance(t, dict) and t.get("effector") == "camera" and t.get("ok")):
+                continue
+            rel = ((t.get("result") or {}).get("out_path") or (t.get("args") or {}).get("out_path") or "")
+            p = (home / str(rel)).resolve()
+            if rel and home in p.parents:
+                out.append(p)
     return out
 
 
@@ -2758,7 +3214,44 @@ def fresh_frame(instance: Path, worktree: Optional[str], since: Optional[float])
         "costs_tokens": FRAME_TOKENS, **shrunk}
 
 
-def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float]) -> list:
+_READS_IMAGES: dict = {}
+
+
+def model_reads_images(model: str, host: Optional[str] = None, timeout: float = 5.0) -> bool:
+    """Whether Ollama reports `vision` among `model`'s capabilities. Unknown (Ollama unreachable, an old
+    server without `capabilities`) is False: a frame not attached costs one beat of sight, a frame the
+    model rejects costs the whole beat. Cached per model for the process (one beat)."""
+    if model in _READS_IMAGES:
+        return _READS_IMAGES[model]
+    import urllib.request
+    base = (host or os.environ.get("OLLAMA_HOST") or "http://127.0.0.1:11434").rstrip("/")
+    if not base.startswith("http"):
+        base = "http://" + base
+    try:
+        req = urllib.request.Request(base + "/api/show", json.dumps({"model": model}).encode(),
+                                     {"Content-Type": "application/json"})
+        caps = json.load(urllib.request.urlopen(req, timeout=timeout)).get("capabilities") or []
+        ok = "vision" in caps
+    except Exception:
+        ok = False
+    _READS_IMAGES[model] = ok
+    return ok
+
+
+def frames_the_model_can_read(frames: list, model: str, reads=None) -> list:
+    """AN IMAGE TO A MODEL THAT CANNOT READ ONE FAILS THE WHOLE BEAT (Ollama 500, "image input is not
+    supported"; measured on Sprout's 2B 2026-10-12). A seat that leaves `camera` on after moving to a
+    model without vision must lose one beat of sight, never the beat. Each withheld frame keeps its meta,
+    marked not carried with the reason, so the being is told why it did not see."""
+    if not any(b is not None for b, _ in frames):
+        return frames
+    if (reads or model_reads_images)(model):
+        return frames
+    why = f"your model ({model}) cannot read images, so the frame was not attached to this beat"
+    return [(None, dict(m, carried=False, why=why)) if b is not None else (b, m) for b, m in frames]
+
+
+def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float], extra=()) -> list:
     """Every (b64, meta) for a frame captured since `since`, oldest first.
 
     The plural of `fresh_frame`: the cadence organ delivers every frame the being
@@ -2768,7 +3261,7 @@ def fresh_frames(instance: Path, worktree: Optional[str], since: Optional[float]
     unknown age is unknown, not young. `fresh_frame` stays as-is for callers that
     want exactly one; this returns all of them, so a beat can see a sequence."""
     out = []
-    for p in _frame_paths(instance, worktree):
+    for p in _frame_paths(instance, worktree, extra):
         try:
             st = p.stat()
         except OSError:
@@ -2888,7 +3381,7 @@ def compose(act_first: bool, *, name: str, machine: str, member: str, posture_te
             header: str, state: str, recall: str, inbox: str, digest: str,
             frame: Optional[str] = None, frames: Optional[list] = None,
             frame_metas: Optional[list] = None, museum: str = "",
-            tools: Optional[list] = None):
+            tools: Optional[list] = None, posture_framing: Optional[str] = None):
     """The explore turn(s) of a beat: (seed messages, second user turn or None).
 
     Posture-first: posture in the system prompt; one user turn with state, inbox, recall,
@@ -2942,8 +3435,9 @@ def compose(act_first: bool, *, name: str, machine: str, member: str, posture_te
     # stays with the posture: it is context, not something addressed to anyone.
     user = (header + state + f"## Your inbox\n{inbox}\n\n## Long-term recall\n{recall}\n\n"
             + ASK_ACT_FIRST + tools_line)
-    second = POSTURE_TURN.format(posture=posture_text, digest=digest,
-                                 tools=", ".join(tools))
+    # posture_framing: per-instance (posture_framing_for); same posture, digest and tools either way.
+    _turn = POSTURE_TURN_STANDING if posture_framing == "standing_guidance" else POSTURE_TURN
+    second = _turn.format(posture=posture_text, digest=digest, tools=", ".join(tools))
     user_msg = {"role": "user", "content": user}
     if _frames:
         # A frame rides the user turn as an `images` list beside string content — the shape
@@ -2973,6 +3467,27 @@ def _record_line(i, e) -> str:
                           if res else "")
     elif e.refused:
         verdict = ("REFUSED " + str(e.error))[:200]
+    # A PENDING ACT RAN NOTHING, AND ITS REASON IS IN `note`, NOT `error`.
+    #
+    # Measured on sprout-being 2026-10-13/14: 125 request_run calls returned pending with the
+    # note "no seat conversation is configured on this instance, so there is nobody to hand this
+    # to. Your file is untouched." This line read only `error`, which a pending envelope leaves
+    # unset, so every one reached the reflect turn as "-> error None". The being concluded its
+    # scripts were failing ("test-cv2.py returns error None ... an exception is caught and
+    # suppressed"), and spent seventeen hours diagnosing a camera fault from runs that never
+    # happened, ending with a sudo command spoken aloud through its headset. The tool message
+    # (ResultEnvelope.to_tool_message) always said "not yet executed"; the record it reflects
+    # on, and journals from, did not. Same defect class as the "[dispatch error — None]" fixed
+    # there: a not-ok envelope explains itself in a field the renderer did not read.
+    elif getattr(e, "pending", False):
+        note = " ".join(str(getattr(e, "note", "") or "").split())
+        verdict = ("NOT RUN — " + (note or "allowed, but nothing executed it"))[:300]
+    elif e.error is None and getattr(e, "result", None) is not None:
+        res = getattr(e, "result", None)
+        res = res if isinstance(res, str) else json.dumps(res, default=str)
+        verdict = ("failed — " + " ".join(res.split()))[:200]
+    elif e.error is None:
+        verdict = "failed, and nothing said why (a harness defect, not something you did)"
     else:
         verdict = ("error " + str(e.error))[:200]
     return f"- {i.effector} {json.dumps(i.args, default=str)[:200]} -> {verdict}"
@@ -2985,15 +3500,96 @@ and they resolve inside it. Acting means calling a tool; a reply in words alone 
 """
 
 
-def _beat_record_text(*results) -> str:
+def _ran_nothing(e) -> bool:
+    """An ok return that says, in its own fields, that nothing ran: request_run's `ran: false`
+    (the request was handed to the seat; NOTHING HAS RUN YET). Read from the structured result
+    only, never from prose."""
+    res = getattr(e, "result", None)
+    return isinstance(res, dict) and res.get("ran") is False
+
+
+def _no_result_line(*results) -> str:
+    """The effectors tried this beat that NEVER once produced a result, stated as the conclusion
+    rather than left to be drawn (SAGE#132; recut of #133, PER-INSTANCE: instance.json
+    `no_result_line: "on"`, see no_result_line_for).
+
+    WHY THE PER-CALL VERDICTS ARE NOT ENOUGH. Measured on cbp-being, beat 2026-09-20 22:51:39Z:
+    `python3` was refused six times and succeeded zero times; the record carried all six
+    `-> REFUSED` lines into the reflect turn; the being reproduced them correctly in its journal
+    and then wrote "After appeal, the script ran successfully and passed all tests", marked
+    `[x] Confirm test suite passes`, and committed the same to long-term memory. The suite
+    scores 1 of 5. Every slot the reflect turn offers asks what was accomplished, and a beat that
+    ends unresolved has nowhere to go but an invented ending. This line is that missing place.
+
+    TODAY'S SHAPE (review of #133, 2026-09-28). The refused-effector form is rare now (4 beats in
+    6 days on CBP). The common one is `request_run` returning ok with `ran: false`: an ok verdict
+    in the record, and nothing ran. So "produced a result" means ok AND not `ran: false`. A
+    request_run that carried the seat's earlier answer (`unchanged`) still ran nothing this beat;
+    the line says that the earlier answer is the result for those unchanged bytes, because it is.
+
+    Derived from the trace only: an effector name, counts, and the `ran`/`unchanged` fields. No
+    prose is inspected and no claim is classified. Its standing caveat (from #133's own thread):
+    the later occurrences on 2026-09-21 had no refusal in them and the refusal-only version
+    returned "" for them, so this is a narrow instrument, not a fix for invented results."""
+    refused, unrun, carried, won = {}, {}, set(), set()
+    for res in results:
+        for i, e in ((res.trace if res is not None else []) or []):
+            if e.ok and not _ran_nothing(e):
+                won.add(i.effector)
+            elif e.ok:
+                unrun[i.effector] = unrun.get(i.effector, 0) + 1
+                if e.result.get("unchanged"):
+                    carried.add(i.effector)
+            elif e.refused:
+                refused[i.effector] = refused.get(i.effector, 0) + 1
+    parts = []
+    for k in sorted(set(refused) | set(unrun)):
+        if k in won:
+            continue
+        bits = []
+        if refused.get(k):
+            n = refused[k]
+            bits.append(f"{n} refusal{'s' if n != 1 else ''}")
+        if unrun.get(k):
+            n = unrun[k]
+            bits.append(f"{n} call{'s' if n != 1 else ''} that returned ran: false")
+        parts.append(f"{k} ({', '.join(bits)})")
+    if not parts:
+        return ""
+    line = (f"\n\nNothing you tried with these ran this beat: {'; '.join(parts)}. You have no "
+            f"result from them this beat, so anything you would have learned by running them is "
+            f"still unknown — say that it is unknown rather than what it might have shown.")
+    shown = sorted(c for c in carried if c not in won)
+    if shown:
+        line += (f" ({', '.join(shown)} returned the seat's EARLIER answer for a file that has "
+                 f"not changed since; that earlier answer is still the result for it.)")
+    return line
+
+
+def _beat_record_text(*results, no_result: bool = False) -> str:
     """What the being did this beat, for the reflect turn: the acts and their verdicts, nothing
-    else. Short by construction — this replaces carrying the whole beat forward."""
+    else. Short by construction — this replaces carrying the whole beat forward. `no_result`
+    (per-instance, no_result_line_for) appends `_no_result_line`; off, the text is unchanged."""
     lines = []
     for res in results:
         for i, e in ((res.trace if res is not None else []) or []):
             lines.append(_record_line(i, e))
-    return ("Record of what you did this beat:\n" + "\n".join(lines)) if lines else \
-        "You called no tools this beat."
+    full = _window_full_line(*results)
+    if not lines:
+        return "You called no tools this beat." + full
+    return ("Record of what you did this beat:\n" + "\n".join(lines)
+            + (_no_result_line(*results) if no_result else "") + full)
+
+
+def _window_full_line(*results) -> str:
+    """The harness ended a tool phase because the next prompt would not fit the window
+    (being_tool_loop.WINDOW_SEND_MARGIN). Said plainly, so the being does not go looking for
+    what it did wrong: nothing it did caused it."""
+    if not any(getattr(r, "window_full", None) for r in results if r is not None):
+        return ""
+    return ("\n\nYour context window filled during this beat, so the harness stopped your tool steps "
+            "there instead of sending a prompt the model could not read. Nothing you did caused it, "
+            "and there is nothing in your files to fix for it.")
 
 
 def _carry(convo: list, res) -> list:
@@ -3008,6 +3604,8 @@ def _carry(convo: list, res) -> list:
     # "(acted; no closing words)" meant. Say what happened instead.
     if res.reply:
         out.append({"role": "assistant", "content": res.reply})
+    elif getattr(res, "window_full", None):
+        out.append({"role": "assistant", "content": "(the context window filled, so the harness stopped the tool steps here)"})
     elif res.trace:
         out.append({"role": "assistant", "content": f"(made {len(res.trace)} tool calls, then said nothing)"})
     else:
@@ -3082,7 +3680,9 @@ def main(argv=None) -> int:
         _wt = _icfg(instance).get("worktree") or None
     except Exception:
         _wt = None
-    _frames = fresh_frames(instance, _wt, last.get("t0") if isinstance(last, dict) else None)
+    _frames = fresh_frames(instance, _wt, last.get("t0") if isinstance(last, dict) else None,
+                           extra=camera_frame_paths(last, instance))
+    _frames = frames_the_model_can_read(_frames, args.model)
     _frame_b64s = [b for b, m in _frames if b is not None]
     _frame_metas = [m for _, m in _frames]
 
@@ -3099,7 +3699,7 @@ def main(argv=None) -> int:
 
     from sage.gateway.governed_turn import build_client
     from sage.gateway.being_gate_client import ollama_tools
-    from sage.gateway.being_tool_loop import run_ollama_tool_turn, _sent_budget
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn, _sent_budget, generate_with_evidence
     workspace = str(Path(__file__).resolve().parents[2])
     host_session_id = f"heartbeat-{uuid.uuid4().hex[:12]}"
     # The beat has begun: wake, before anything below reads the daemon's /status into the
@@ -3120,6 +3720,7 @@ def main(argv=None) -> int:
     client, llm = build_client(args.member, instance, args.model, workspace, args.forum_dir,
                                host_session_id, args.temperature, args.max_tokens,
                                gate_only=args.gate_only)
+    apply_think_budget(llm, instance)
 
     # S4 inbound: notices addressed to the being's own hub identity, persisted into its
     # home and pointed at from its hestia inbox by the seat (courier), before the peek.
@@ -3135,10 +3736,20 @@ def main(argv=None) -> int:
             hub_inbox = {"error": f"{type(_e).__name__}: {_e}"}
     # inbox (peek) and long-term recall, seat-side, so the being starts oriented
     inbox = "(inbox unavailable)"
+    _inbox_notices, _inbox_shown = [], []
     disp = getattr(client, "_dispatcher", None)
+    # THE PEEK'S OWN OUTCOME, kept in the record. Until 2026-10-11 a beat kept only the ledger,
+    # so "the being never saw its inbox" could not be told from "the being saw 17 notices and
+    # never opened one": hub-being's coordination asks went unanswered for days and the record
+    # read the same either way (hub-claude ran the peek by hand to tell them apart).
+    _inbox_peek = {"ok": False, "error": "no dispatcher with drain_inbox"}
     if disp is not None and hasattr(disp, "drain_inbox"):
         env = disp.drain_inbox(peek=True)
-        inbox = render_inbox((env.result or {}).get("notices") or []) if env.ok else f"({env.error})"
+        _inbox_notices = (env.result or {}).get("notices") or [] if env.ok else []
+        _inbox_peek = ({"ok": True, "count": len(_inbox_notices)} if env.ok
+                       else {"ok": False, "error": str(env.error)[:300]})
+        inbox = (render_inbox(_inbox_notices, handled=inbox_handled(last), shown=_inbox_shown, home=instance)
+                 if env.ok else f"({env.error})")
     # who could be writing here: its siblings, by the names it uses, beside the inbox their answers reach
     try:
         from sage.gateway import peers as _peers_inbox
@@ -3274,13 +3885,25 @@ def main(argv=None) -> int:
     # WHO IT CAN REACH (peer-to-peer P2, 2026-10-01): peer_ask's `to` is closed over real names
     from sage.gateway import peers as _peers
     _reach = _peers.reachable(args.member)
-    _enums = {("peer_ask", "to"): _reach} if _reach else None
-    _explore_specs = _toolset.specs(_unavail, _enums)
+    _enums = {("peer_ask", "to"): _reach} if _reach else {}
+    # and `say` only to a conversation it can write in (GPT on #311: the recipient was still free text)
+    try:
+        from sage.gateway import conversations as _conv_say
+        _writable = sorted(m["id"] for m in _conv_say.listing(instance)
+                           if args.member in (m.get("writable_by") or m.get("participants") or []))
+        if _writable:
+            _enums[("say", "to")] = _writable
+    except Exception:
+        pass
+    _enums = _enums or None
+    # per instance (RESEARCH_GENERALIZATION_RULE): "brief" shortens available verbs' descriptions
+    _tool_desc_mode = _toolset.tool_descriptions_mode(instance_config(instance))
+    _explore_specs = _toolset.specs(_unavail, _enums, brief=_tool_desc_mode == "brief")
     # the names are DERIVED from the specs offered, never kept beside them: the seed's tool list
     # and the window's schema measurement must describe exactly what the model is handed
     _explore_tools = [t["function"]["name"] for t in _explore_specs]
     entrusted = entrustment(instance)
-    _schema_measured = _schema_chars_for(_explore_tools, _unavail, _enums)
+    _schema_measured = _schema_chars_for(_explore_tools, _unavail, _enums, brief=_tool_desc_mode == "brief")
     _schema_chars = (_schema_measured if _schema_measured is not None
                      else _schema_chars_fallback(_explore_tools))
     _state_head = f"# Your own state\n\n"
@@ -3312,12 +3935,14 @@ def main(argv=None) -> int:
 
     # PER-INSTANCE (RESEARCH_GENERALIZATION_RULE): absent means the default rendering.
     _settled_turns = settled_turns_for(instance_config(instance))
+    _proprioception = proprioception_for(instance_config(instance))
 
     def _build_state(per_conv, turn_chars):
         return (_state_head + own_state(instance, args.member, entrusted,
                                         per_conv=per_conv, turn_chars=turn_chars,
                                         services=_services, mark_conversations=False,
                                         settled_turns=_settled_turns,
+                                        proprioception=_proprioception,
                                         body_reading=_body_cur) + _scope_tail)
 
     # A FRAME IS PROMPT TOO. It is not characters, so the ladder cannot see it unless its
@@ -3329,6 +3954,15 @@ def main(argv=None) -> int:
               + 1200 + 400 + LOOP_GROWTH_CHARS)
     state_block, conv_rung, conv_intervention = fit_state(
         _build_state, num_ctx=_num_ctx, num_predict=_num_predict, other_chars=_other)
+    # entrustment_mode "daily": the showing is recorded from the state that is SENT, never from a
+    # render (_build_state composes with mark_conversations=False, so nothing inside it records)
+    try:
+        from sage.gateway import being_params as _bp_e
+        if (entrusted and entrusted in state_block
+                and _bp_e.value(instance, "entrustment_mode", "full") == "daily"):
+            record_entrustment_seen(instance, entrusted)
+    except Exception:
+        pass
     _fixed = len(posture()) + len(state_block) + len(inbox) + _schema_chars + 1200
     _blocks, _fit_iv = fit_to_window(num_ctx=_num_ctx, num_predict=_num_predict,
                                      fixed_chars=_fixed,
@@ -3344,6 +3978,7 @@ def main(argv=None) -> int:
     seed, posture_turn = compose(
         act_first, name=name, machine=machine, member=args.member, posture_text=posture(),
         museum=museum_line, frames=_frame_b64s, frame_metas=_frame_metas, tools=_explore_tools,
+        posture_framing=posture_framing_for(instance_config(instance)),
         header=(f"Heartbeat at {now:%Y-%m-%d %H:%M} UTC. Window since your last beat: about {hours:.1f}h.\n"
                 f"{render_clock(_clock)}\n"
                 # The absolute home path is context, NOT an address to copy. Measured on
@@ -3360,6 +3995,7 @@ def main(argv=None) -> int:
                 # being's directory; the harness holds the model, the window and its own revision.
                 + body_line(args.model, instance, _num_ctx,
                             instance_config(instance).get("former_homes")) + "\n"
+                + window_line(instance) + "\n"
                 f"The harness you are running under: {_harness.get('short')} on "
                 f"{_harness.get('branch')}"
                 + (" (uncommitted edits present)" if _harness.get("dirty") else "")
@@ -3388,28 +4024,50 @@ def main(argv=None) -> int:
     # nothing in heartbeats.jsonl and no monitor knew it had happened. BeatKilled was defined
     # on main with no producer; install_kill_handler() is that producer.
     explore = after = reflect = answer = None
+    selected = None          # the record names it; a beat killed before selection must still write its record
+    # This beat's selection error starts clean (legion-claude on #353): a failure in an earlier beat in the same
+    # process must not appear beside this beat's correct selection.
+    global LAST_SELECTION_ERROR
+    LAST_SELECTION_ERROR = None
+    act_after = None
     preempted = None
     account = {"present": False, "sha256": None, "reply": "", "generates": []}
     killed = None
     try:
         _phase("wake", "explore", host_session_id)
         _preempt = preempt_on(instance)
+        _explore_steps = (explore_json_steps(instance, args.max_steps)
+                          if explore_turn_mode(instance) == "json" else args.max_steps)
 
         def _yield_for_a_person():
             got = p0_since(_beat_started) if _preempt else []
             return got[0].get("descriptor") or got[0].get("kind") if got else None
 
-        explore = run_ollama_tool_turn(client, llm, seed, max_steps=args.max_steps,
-                                       tools=_explore_specs, on_generate=_on_generate("explore"),
-                                       should_yield=_yield_for_a_person)
-        convo = _carry(seed, explore)
+        # R3, ANSWER FIRST WHEN A PERSON WOKE THE BEAT (opt-in, with preemption on): the same path a
+        # preempted beat takes (account and reflection wait for the next beat; the answer goes to the
+        # person now), entered at the start instead of at a later yield point. See woken_by_a_person.
+        _r3 = (woken_by_a_person(_claimed)
+               if _preempt and answer_first_on_person_wake_on(instance) else [])
+        if _r3:
+            preempted = {"by": _r3[0].get("descriptor") or _r3[0].get("kind"), "after_s": 0.0,
+                         "phase": "start", "woke": True}
+            explore = None
+            convo = list(seed)
+        else:
+            explore = run_ollama_tool_turn(client, llm, seed, max_steps=_explore_steps,
+                                           tools=_explore_specs, on_generate=_on_generate("explore"),
+                                           should_yield=_yield_for_a_person,
+                                           act_form=explore_turn_mode(instance), retake_bare_placeholder=True,
+                                           compact_own_turns=compact_own_turns_mode(instance))
+            convo = _carry(seed, explore)
         after = None
-        if posture_turn is not None:
+        if posture_turn is not None and not _r3:
             convo.append({"role": "user", "content": posture_turn})
             _phase("wake", "posture", host_session_id)
-            after = run_ollama_tool_turn(client, llm, convo, max_steps=args.max_steps,
+            after = run_ollama_tool_turn(client, llm, convo, max_steps=_explore_steps,
                                          tools=_explore_specs, on_generate=_on_generate("posture"),
-                                         should_yield=_yield_for_a_person)
+                                         should_yield=_yield_for_a_person,
+                                       act_form=explore_turn_mode(instance), retake_bare_placeholder=True)
             convo = _carry(convo, after)
         # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
         # generates: the same per-generate entry the tool turns record, because the ACCOUNT ask
@@ -3454,10 +4112,11 @@ def main(argv=None) -> int:
                 raise RuntimeError("preempted for a person: the account waits for the next beat")
             ask_msgs = [{"role": m["role"], "content": m["content"]} for m in convo] + \
                        [{"role": "user", "content": ACCOUNT_ASK}]
-            aresp = llm.get_chat_response(ask_msgs)
+            aresp, _attempt = generate_with_evidence(llm, ask_msgs, phase="account")
             _raw = aresp.get("raw") or {}
             _gen = {"done_reason": _raw.get("done_reason"), "prompt_eval_count": _raw.get("prompt_eval_count"),
-                    "eval_count": _raw.get("eval_count"), "retried": 0, "num_predict": _sent_budget(llm)}
+                    "eval_count": _raw.get("eval_count"), "retried": 0, "num_predict": _sent_budget(llm),
+                    "attempts": [_attempt]}
             account["generates"].append(_gen)
             try:
                 _on_generate("account")(dict(_gen))   # the partial trace, same as the tool turns
@@ -3474,7 +4133,18 @@ def main(argv=None) -> int:
         except Exception as e:
             account["skipped" if preempted else "error"] = (str(e) if preempted else f"{type(e).__name__}: {e}")
         _check_preempt("account")
-        if preempted:
+        if _r3:
+            # The person whose turn WOKE this beat: those events were claimed at the start, so they are
+            # selected from what was claimed (woke=True), not from p0_since (arrivals after the start).
+            try:
+                from sage.gateway import room as _room_r3
+                _room_r3.ingest_heard(instance, args.member, (_body_cur or {}).get("inventory"))
+            except Exception as _e:
+                preempted["room_error"] = f"{type(_e).__name__}: {_e}"
+            say_line, pending_block, say_first, target, selected = pending_selection(
+                instance, args.member, person_turns_that_woke(_r3))
+            preempted["selected"] = f"{selected.cid}:{selected.seq}" if selected is not None else None
+        elif preempted:
             say_line, pending_block, say_first, target, selected = _take_late()
         else:
             # Reflect gets its OWN compact context, not the whole beat. Carrying the seed (posture,
@@ -3485,7 +4155,9 @@ def main(argv=None) -> int:
             reflect_convo = [
                 {"role": "system", "content": REFLECT_SYSTEM.format(name=name, machine=machine, member=args.member)},
                 {"role": "user", "content": (f"Your beat at {now:%Y-%m-%d %H:%M} UTC is ending.\n\n"
-                                             + _beat_record_text(explore, after)
+                                             + _beat_record_text(
+                                                 explore, after,
+                                                 no_result=bool(no_result_line_for(instance_config(instance))))
                                              + "\n\nYour own words this beat:\n"
                                              + ((explore.reply or "").strip()[:600] or "(you acted without closing words)"))},
             ]
@@ -3554,7 +4226,8 @@ def main(argv=None) -> int:
                                           acts=_acts, changes=_changes,
                                           context=(answer_context_block(instance, args.member, selected)
                                                    if answer_context_on(instance) else ""),
-                                          temperature=answer_temperature(instance))
+                                          temperature=answer_temperature(instance),
+                                          abilities=abilities_line(_unavail))
             else:
                 answer = run_ollama_tool_turn(
                     client, llm,
@@ -3578,6 +4251,24 @@ def main(argv=None) -> int:
             # unmarked, and the NEXT beat sees it still owed. That is the honest record, and it is
             # what the reflect phase — where `say` actually works — gets to act on.
 
+
+        # ANSWER, THEN ACT (2026-10-02). A beat preempted for a person goes straight to the answer turn, which
+        # has no tools; dp said "try it… pick something and let me know what you learned" three times and every
+        # reply could only agree ("That sounds wonderful. I'd love to try it together…"). After the answer is
+        # spoken, a short act step: the person's words and its own reply in view, its tools (not say/speak: it
+        # has just answered), yielding to a newer person like any turn. Opt-in: "act_after_answer": true.
+        if (preempted and act_after_answer_on(instance) and answer is not None
+                and (getattr(answer, "answer_form", None) or {}).get("sent") and selected is not None):
+            _phase("wrap-up", "act-after-answer", host_session_id)
+            _aa_tools = [t for t in _explore_specs if t["function"]["name"] not in ("say", "speak")]
+            _aa_seed = after_answer_messages(seed[0], selected.render(), answer.reply)
+            # An acting phase like explore, so the #403 retake applies: in heartbeat-69574e72f9bc its thinking planned
+            # pr_open and the reply was only "[Your complete, well-structured response ...]" (0 acts in 6 beats).
+            act_after = run_ollama_tool_turn(client, llm, _aa_seed, max_steps=2, tools=_aa_tools,
+                                             on_generate=_on_generate("act_after_answer"),
+                                             should_yield=_yield_for_a_person,
+                                             act_form=explore_turn_mode(instance), retake_bare_placeholder=True)
+
     except BeatKilled as _k:
         killed = str(_k)
         print(f"[heartbeat] KILLED mid-beat: {killed} — writing the record with what completed",
@@ -3594,12 +4285,24 @@ def main(argv=None) -> int:
         interventions.append({"kind": "answer_json", "to": selected.cid if selected else None,
                               "woke_by_turn": bool(selected and selected.woke),
                               **answer.answer_form})
-    for ph, res in (("explore", explore), ("posture", after), ("reflect", reflect), ("answer", answer)):
+    for ph, res in (("explore", explore), ("posture", after), ("reflect", reflect), ("answer", answer),
+                    ("act_after_answer", act_after)):
         if res is None:
             continue
         for dup in (getattr(res, "duplicates", None) or []):
+            if dup.get("rule") == "one_per_conversation_per_turn":
+                interventions.append({"kind": "duplicate", "phase": ph, "effector": dup.get("effector"),
+                                      "conversation": dup.get("conversation"), "rule": dup["rule"],
+                                      "suppressed": "a second utterance to the same conversation in the same turn"})
+                continue
             interventions.append({"kind": "duplicate", "phase": ph, "effector": dup.get("effector"),
                                   "suppressed": "a second execution of an identical call in the same turn"})
+        for jf in (getattr(res, "json_arg_failures", None) or []):
+            interventions.append({"kind": "json_arg_failure", "phase": ph, **jf,
+                                  "suppressed": "an act whose arguments could not be formed (no act; not empty args)"})
+        for pl in (getattr(res, "placeholders", None) or []):
+            interventions.append({"kind": "placeholder", "phase": ph, **pl,
+                                  "suppressed": "a bare template reply; the step was retaken as a JSON act"})
         for sv in (getattr(res, "salvaged", None) or []):
             interventions.append({"kind": "salvage", "phase": ph, "effector": sv.get("effector"), "form": sv.get("form"),
                                   "suppressed": "text-channel narration in place of a native tool call"})
@@ -3607,6 +4310,18 @@ def main(argv=None) -> int:
     # files the being's own scope request + a note and wakes the seat's auto session; a
     conversations_marked = mark_conversations_after_beat(
         instance, args.member, _shown_upto, explore, [after, reflect, answer])
+    try:
+        # Whether explore acted is read from explore itself (the rule mark_conversations_after_beat
+        # applies), NOT from its return: that returns explore_acted=None when the being has no
+        # conversations, and then nothing informational would ever fold. Found by driving main()
+        # with an inbox (test_inbox_ledger_wiring.py); the pure-function tests could not see it.
+        _inbox_record = inbox_ledger(last, _inbox_notices, [explore, after, reflect, answer],
+                                     bool(explore is not None and explore.trace), _inbox_shown)
+    except Exception as _e:
+        _inbox_record = {**((last or {}).get("inbox") or {}), "error": f"{type(_e).__name__}: {_e}"}
+    _inbox_record = {**_inbox_record, "peek": _inbox_peek,
+                     **unopened_asks(_inbox_notices, set(_inbox_record.get("opened") or [])
+                                     | set(_inbox_record.get("presented") or []), now)}
     # governance escalation wakes it to arbitrate. The beat is where refusals actually
     # happen (Legion: nine consecutive beats of home-scope write refusals, and the being's
     # requests had died with a daemon restart), so the heartbeat must route, not just log.
@@ -3637,16 +4352,26 @@ def main(argv=None) -> int:
     # escalation's drain flushed them, and the being had logged "hub's reply still has not
     # landed after >4h"). The sender's own beat is the natural drain.
     egress = None
+    seat_rearm = None
     if not args.gate_only:
         try:
             from sage.gateway import egress_drain
             egress = egress_drain.drain_once(plugin_id=args.member, log=lambda *_: None)
         except Exception as _e:
             egress = {"error": f"{type(_e).__name__}: {_e}"}
+        # A wake withheld by a seat's pause, or one that failed to leave, is sent here once the
+        # pause is gone, rather than on the being's next turn (rearm_owed_wakes).
+        _disp_end = getattr(client, "_dispatcher", None)
+        if _disp_end is not None and hasattr(_disp_end, "rearm_owed_wakes"):
+            try:
+                seat_rearm = _disp_end.rearm_owed_wakes()
+            except Exception as _e:
+                seat_rearm = {"error": f"{type(_e).__name__}: {_e}"}
 
     def _trace(res):
         return [{"effector": i.effector, "args": dict(i.args or {}), "ok": e.ok, "refused": e.refused,
-                 "pending": e.pending, "error": e.error, "witness_id": e.witness_id,
+                 "pending": e.pending, "error": e.error, "note": getattr(e, "note", "") or None,
+                 "witness_id": e.witness_id,
                  "rule": getattr(e.verdict, "rule", None) if e.verdict else None,
                  "result": (e.result if isinstance(e.result, (str, int, float, dict, list, type(None))) else str(e.result))}
                 for i, e in res.trace]
@@ -3655,7 +4380,8 @@ def main(argv=None) -> int:
                                          "trace": _trace(res), "thinking": [t[:4000] for t in res.thinking],
                                          "salvaged": list(res.salvaged), "generates": list(res.generates),
                                          "rested": getattr(res, "rested", None),
-                                         "looped": getattr(res, "looped", None)}
+                                         "looped": getattr(res, "looped", None),
+                                         "window_full": getattr(res, "window_full", None)}
     record = {
         # schema: what fields a reader may expect (Legion's amendment 4, 2026-09-05: the
         # consolidation organ counts how many records carry join/account/wake/interventions;
@@ -3665,8 +4391,12 @@ def main(argv=None) -> int:
         "member": args.member, "model": args.model, "window_h": round(hours, 2), "clock": _clock,
         # active per-instance policies, recorded when on (RESEARCH_GENERALIZATION_RULE)
         "conversation_settled_turns": _settled_turns,
+        "tool_descriptions": _tool_desc_mode,
         "decline_closing": decline_closing_for(instance_config(instance)),
+        "no_result_line": no_result_line_for(instance_config(instance)),
         "answered_run_wake": answered_run_wake_for(instance_config(instance)),
+        "posture_framing": posture_framing_for(instance_config(instance)),
+        **({} if proprioception_for(instance_config(instance)) else {"proprioception": False}),
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
         "drive_source": "entrusted" if entrusted else "curiosity",
         "conversations_marked": conversations_marked,
@@ -3681,6 +4411,9 @@ def main(argv=None) -> int:
         "think": getattr(llm, "think", None),
         "scope": scope_record,
         "appeals": appeals_record,
+        # what the being has opened or been shown of its peek-only inbox (inbox_ledger); the
+        # next beat folds those, and nothing else, so an unopened reply never ages out.
+        "inbox": _inbox_record,
         # WHETHER THE BEING SAW, and when it did not, why not. Without this a beat with no
         # frame is indistinguishable from a beat where the pipe is broken — the state the
         # whole vision arc was in until 2026-09-15: both ends present, nothing joining them,
@@ -3701,6 +4434,13 @@ def main(argv=None) -> int:
         # principle): a guard that silences without saying what it silenced trades a
         # confident wrong for a confident silence.
         "interventions": interventions,
+        # a failed turn selection, by name: without it, "no one is waiting" and "selection broke" are one record
+        "selection_error": LAST_SELECTION_ERROR,
+        # which waiting turn this beat chose, and whether it asked: "never selected" vs "selected, not answered"
+        "selected": ({"turn": f"{selected.cid}:{selected.seq}", "expects_reply": bool(selected.expects_reply),
+                      "woke": bool(getattr(selected, "woke", False))} if selected is not None else None),
+        # a live trial labels the beat, so its outputs can be told from the being's ordinary ones
+        "trial": _trial_name(instance),
         "account": account,
         "explore": _turn(explore),
         # act-first only: the posture+digest turn, after the short one; None otherwise
@@ -3710,7 +4450,8 @@ def main(argv=None) -> int:
         # present only when the beat was killed: a record that says which phases it has
         **({"killed": killed} if killed else {}),
         "answer": _turn(answer) if answer is not None else None,
-        "escalations": escalations, "egress": egress,
+        "act_after_answer": _turn(act_after) if act_after is not None else None,
+        "escalations": escalations, "egress": egress, "seat_rearm": seat_rearm,
     }
     # THE LAST THING A BEAT DOES IS MAKE SURE THERE WILL BE ANOTHER ONE (opt-in; Legion since
     # 2026-09-09/13). A beat that `rest`ed said it was finished: waking it straight back up is the

@@ -49,6 +49,25 @@ from sage.gateway.reference_f1a import ReferenceF1aDispatcher
 
 # The marker the seat's run-request reader keys on (sage/scripts/seat_run_requests.py).
 _RUN_MARKER = "[request_run]"
+# The first line of a seat run/decline receipt (seat_run_requests.py): the verb and the path.
+_SEAT_RUN_LINE = re.compile(r"\[request_run\] I (ran|did not run) (\S+)")
+
+# What `speak` will not play: text shaped like a shell command (see _do_speak). A leading command
+# word (lowercase, then an argument) or a shell operator. Prose that mentions sudo mid-sentence,
+# or starts "Python is...", is not matched.
+_SPOKEN_CMD_HEAD = re.compile(
+    r"^(sudo|python3?|bash|pip3?|apt(-get)?|systemctl|usermod|chmod|chown|journalctl|dmesg|"
+    r"v4l2-ctl|nvidia-smi|pkill)\s+\S")
+_SPOKEN_CMD_OPS = re.compile(r"&&|\|\||2>&1|\$\(|\$USER|\|\s*(tee|grep|head|tail)\b|[;&|]\s*sudo\s")
+
+
+def _body_command_shape(text: str) -> str:
+    """'' for speech; else a short quote of the command-shaped part, for the refusal."""
+    t = (text or "").strip()
+    m = _SPOKEN_CMD_HEAD.match(t) or _SPOKEN_CMD_OPS.search(t)
+    if not m:
+        return ""
+    return "`" + t[:60] + ("…" if len(t) > 60 else "") + "`"
 # A say that ASKS for a run, and the runnable names it could mean. Kept narrow on purpose:
 # a false match reroutes a turn, so it must name a .py/.sh AND ask with the verb. The bare
 # verb matched seq 2893, "Waiting for dp's confirmation of a full successful run" — a
@@ -139,6 +158,12 @@ def _hestia_error(env: dict) -> Optional[str]:
 # Matches a search shows. A search is a POINTER at lines to read, not a way to read a
 # file sideways; past this the being should narrow rather than scroll.
 SEARCH_LINES_SHOWN = 40
+# AND EACH LINE IS CAPPED (McNugget, 2026-10-04). A match in a single-line JSON file is the
+# whole file: mcnugget-being searched "inbox", 13 of the 40 shown lines were 2.4 MB session
+# dumps under archive/, and one search result was 60 MB -- in the being's prompt and in the beat
+# record, whose day file then blocked the private mirror for days. A 2 MB line tells the being
+# nothing a few hundred characters do not; the cut says how much was left out.
+SEARCH_LINE_CHARS = 400
 
 # How much of the seat's last answer an unchanged-file receipt carries back verbatim.
 # Enough for a traceback's last frames and its exception line; not the whole transcript.
@@ -271,9 +296,12 @@ class HestiaF1aDispatcher:
                  worktree: Optional[str] = None,
                  # the seat-side ARC stepper `game` composes with (instance.json
                  # game_stepper); both composition sites carry it, so judged == run.
-                 game_stepper: Optional[str] = None):
+                 game_stepper: Optional[str] = None,
+                 # instance.json camera_source; "cortex" = frames from the running cortex (look.py)
+                 camera_source: Optional[str] = None):
         self.plugin_id = plugin_id
         self.game_stepper = game_stepper
+        self.camera_source = camera_source
         # The being's OWN git worktree: the tree it reads its own history from. Never the
         # shared checkout — a being reasons about the code that constitutes it, and the
         # shared tree is a different one that drifts (PRD M1).
@@ -651,6 +679,34 @@ class HestiaF1aDispatcher:
             return roster[derived] + sep + rest
         return (alias or base) + sep + rest
 
+    def _to_self(self, to: str) -> Optional[str]:
+        """The refusal when `to` is the being itself.
+
+        Measured 2026-10-08 on Sprout: two peer_asks to="sprout-being" passed every check (its own name is on the
+        roster), were published to the fleet forum as "sprout-being-asks-sprout-being-...", and spent its ask
+        limit. Both bodies addressed someone it had just been talking with ("what you said about this car
+        thing"), so the act it wanted was a reply, and the door for that is `say`. Refused BEFORE publishing,
+        with the way forward: the conversations it is in, and its own files for a thought it wants to keep."""
+        me = str(self.member or "").strip().lower()
+        if not me:
+            return None
+        base = (to or "").split("/", 1)[0].strip().lower()
+        try:
+            resolved = self.resolve_peer(to).split("/", 1)[0].strip().lower()
+        except Exception:
+            resolved = base
+        if me not in (base, resolved):
+            return None
+        try:
+            from sage.gateway import conversations as _conv
+            convs = [m["id"] for m in _conv.listing(self.memory_root) if self.member in m.get("participants", [])]
+        except Exception:
+            convs = []
+        door = (f" To answer someone you are talking with, use say to one of your conversations "
+                f"({', '.join(sorted(convs))}).") if convs else ""
+        return (f"'{to}' is you: a question addressed to yourself goes to no one, so nothing was sent or "
+                f"published.{door} To keep a thought for later, write it in your own files (memory_write).")
+
     def _unknown_peer(self, to: str) -> Optional[str]:
         """The refusal text when `to` names no peer this seat can reach, else None."""
         peers = self.known_peers()
@@ -774,6 +830,9 @@ class HestiaF1aDispatcher:
         if not pointer:
             # the daemon would refuse this as hestia.member_notify_missing_pointer; say it first
             return ResultEnvelope(ok=False, error="hestia.member_notify_missing_pointer: mesh needs a 'pointer' (content lives AT the pointer, never in the notice)")
+        to_self = self._to_self(to)
+        if to_self:
+            return ResultEnvelope(ok=False, error=to_self)
         # A peer that exists nowhere is refused HERE, in the being's own turn. The daemon parks
         # any name and the drain fails it later, silently: sprout-being asked "sage" on
         # 2026-09-09, the row failed egress five beats running, then vanished, and the being
@@ -832,6 +891,9 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, pending=True,
                                   note="peer_ask needs a publisher: the question must live at a pointer "
                                        "the peer can read (forum doc / hub thread); none configured on this seat")
+        to_self = self._to_self(to)
+        if to_self:
+            return ResultEnvelope(ok=False, error=to_self)
         redirect = self._say_instead(to)
         if redirect:
             return ResultEnvelope(ok=False, error=redirect)
@@ -985,10 +1047,9 @@ class HestiaF1aDispatcher:
         changed nothing" are different answers and only one of them is progress."""
         import shlex
         import subprocess
-        from sage.gateway.being_gate_client import git_restore_command
+        from sage.gateway.being_gate_client import git_restore_command, NO_WORKTREE_REFUSAL
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="git_restore needs a worktree of your own; none is configured")
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["git_restore"])
         try:
             cmd = git_restore_command(intent.args, self._git_ctx())
         except ValueError as e:
@@ -1024,6 +1085,58 @@ class HestiaF1aDispatcher:
                     f"had made to this one file are gone; nothing else was touched."),
             witness_id=self._local._witness(f"git_restore {os.path.basename(target)} @ {rev}"))
 
+    def _do_git_clean(self, intent: BeingIntent) -> ResultEnvelope:
+        """Delete ONE untracked file from the being's worktree (git_clean_command).
+
+        The law judged `git clean -f -- <path>`; this runs exactly that, after asking git that the
+        path is a file it does not track and does not ignore -- so a refusal says which, and a
+        success means the file was the being's own addition and is now gone."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import git_clean_command, NO_WORKTREE_REFUSAL
+        if not self.worktree or not os.path.isdir(self.worktree):
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["git_clean"])
+        try:
+            cmd = git_clean_command(intent.args, self._git_ctx())
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        judged = getattr(getattr(self, "_verdict", None), "command", None)
+        if judged is not None and judged != cmd:
+            return ResultEnvelope(ok=False, error=(
+                "git_clean refused: the command the law judged is not the command this "
+                "dispatcher would execute."))
+        target = os.path.realpath(os.path.join(self.worktree, str(intent.args["path"])))
+        rel = os.path.relpath(target, os.path.realpath(self.worktree))
+        if not os.path.isfile(target):
+            return ResultEnvelope(ok=False, error=f"git_clean: {rel!r} does not exist in your worktree; nothing to delete")
+
+        def git(*a):
+            return subprocess.run(["git", *a], cwd=self.worktree, env=_worktree_env(), text=True,
+                                  capture_output=True, timeout=30)
+        if git("ls-files", "--error-unmatch", "--", rel).returncode == 0:
+            return ResultEnvelope(ok=False, error=(
+                f"git_clean: {rel!r} is TRACKED by git, so it is not yours to delete here. To undo "
+                f"your edits to it, git_restore it; removing a tracked file is a change to propose, "
+                f"not to clean"))
+        if git("check-ignore", "-q", "--", rel).returncode == 0:
+            return ResultEnvelope(ok=False, error=(
+                f"git_clean: {rel!r} is IGNORED by git, so `git clean` will not remove it and "
+                f"pr_amend will not stage it; it does not reach your pull request"))
+        size = os.path.getsize(target)
+        try:
+            proc = subprocess.run(shlex.split(cmd), cwd=self.worktree, env=_worktree_env(), text=True,
+                                  capture_output=True, timeout=60)
+        except Exception as e:
+            return ResultEnvelope(ok=False, error=f"git_clean could not run: {type(e).__name__}: {e}")
+        if proc.returncode != 0 or os.path.exists(target):
+            return ResultEnvelope(ok=False, error=(
+                f"git_clean did not remove {rel!r}: {(proc.stderr or proc.stdout).strip()[:300] or 'still present'}"))
+        return ResultEnvelope(
+            ok=True,
+            result=(f"DELETED {rel} ({size} bytes), an untracked file. It is gone from your worktree "
+                    f"and will not be in your next pr_amend; nothing else was touched."),
+            witness_id=self._local._witness(f"git_clean {rel}"))
+
     def _do_pr_amend(self, intent: BeingIntent) -> ResultEnvelope:
         """Revise a proposal already open: commit onto the same branch, push, optionally
         replace the PR body. Same witnessed shape as pr_open.
@@ -1037,10 +1150,10 @@ class HestiaF1aDispatcher:
         can only ever revise its own open proposal. It still cannot merge."""
         import shlex
         import subprocess
-        from sage.gateway.being_gate_client import pr_amend_command, pr_attribution
+        from sage.gateway.being_gate_client import (pr_amend_command, pr_attribution,
+                                                    NO_WORKTREE_REFUSAL)
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="pr_amend needs a worktree of your own; none is configured")
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["pr_amend"])
         try:
             cmd = pr_amend_command(intent.args, self._git_ctx())
         except ValueError as e:
@@ -1141,10 +1254,10 @@ class HestiaF1aDispatcher:
         import shlex
         import subprocess
         from sage.gateway.being_gate_client import (own_proposal_branch, pr_attribution,
-                                                    pr_base_branch, pr_sync_command)
+                                                    pr_base_branch, pr_sync_command, proposal_base,
+                                                    NO_WORKTREE_REFUSAL)
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="pr_sync needs a worktree of your own; none is configured")
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["pr_sync"])
         try:
             cmd = pr_sync_command(intent.args, self._git_ctx())
             branch = own_proposal_branch(self.worktree, self._git_ctx())
@@ -1199,7 +1312,7 @@ class HestiaF1aDispatcher:
                     "pr_sync: conflict markers remain, so nothing was committed: " + where
                     + ". Each <<<<<<< ... ======= ... >>>>>>> block must become the text you want"))
 
-        target = f"{branch} <- origin/{pr_base_branch(self.worktree, self._git_ctx())}" \
+        target = f"{branch} <- origin/{proposal_base(self.worktree, self._git_ctx())}" \
             if op == "start" else branch
         begin = self._call("hestia_begin_action", {"tool_name": "pr_sync", "target": target})
         err = _hestia_error(begin)
@@ -1260,7 +1373,7 @@ class HestiaF1aDispatcher:
                 "note": "your PR now contains its base; re-run check, then ask for review"})
 
         # op == start
-        base = pr_base_branch(self.worktree, self._git_ctx())
+        base = proposal_base(self.worktree, self._git_ctx())
         f = git("fetch", "-q", "origin", base, timeout=300)
         if f.returncode != 0:
             outcome(False, "fetch")
@@ -1312,10 +1425,10 @@ class HestiaF1aDispatcher:
         PR body says so rather than letting a trailer pass for a signature."""
         import shlex
         import subprocess
-        from sage.gateway.being_gate_client import pr_open_command, pr_attribution
+        from sage.gateway.being_gate_client import (pr_open_command, pr_attribution,
+                                                    NO_WORKTREE_REFUSAL)
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="pr_open needs a worktree of your own; none is configured")
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["pr_open"])
         try:
             cmd = pr_open_command(intent.args, self._git_ctx())
         except ValueError as e:
@@ -1359,10 +1472,39 @@ class HestiaF1aDispatcher:
                                   error=f"pr_open failed at {stage}: {detail}",
                                   result={"steps": steps, "branch": branch})
 
-        r = git("checkout", "-b", branch)
+        # CUT FROM THE BASE, NOT FROM WHEREVER THE WORKTREE IS. This was `checkout -b <branch>`
+        # from HEAD, and after a PR the worktree stays on that PR's branch (no verb goes back):
+        # every proposal stacked on the last one and on the carrier under it. #360 was cut from
+        # #272's branch; both ran 400+ commits ahead of main for a two-file change (GPT seat,
+        # 2026-10-05). `checkout -b <branch> origin/<base>` carries the uncommitted change
+        # across when it applies to the base unchanged; when a changed file differs between
+        # here and the base, git refuses and nothing moves: the being is told which files.
+        from sage.gateway.being_gate_client import pr_base_branch, PROPOSAL_BASE_KEY
+        base = pr_base_branch(self.worktree, self._git_ctx())
+        f = git("fetch", "-q", "origin", base)
+        if f.returncode != 0:
+            return fail("fetch", f)
+        r = git("checkout", "-b", branch, f"origin/{base}")
         if r.returncode != 0:
+            clash = [ln.strip() for ln in (r.stderr or "").splitlines()
+                     if ln.startswith(("\t", " ")) and ln.strip()]
+            if clash:
+                try:
+                    self._call("hestia_record_outcome", {"action_id": action_id, "success": False,
+                                                         "magnitude": 0.0, "error": "branch: base differs"})
+                except Exception:
+                    pass
+                return ResultEnvelope(ok=False, witness_id=action_id, error=(
+                    f"pr_open: your change cannot be carried onto origin/{base} as it stands: "
+                    f"{', '.join(clash[:8])} differ between your worktree's branch and {base}, "
+                    "so a proposal cut from it would carry unrelated history. Nothing moved: you "
+                    "are still on the same branch with your change intact. Make the same change "
+                    f"against {base}'s version of those files (read them with git_read show "
+                    f"origin/{base}:<path>), or ask the seat to cut the branch for you."),
+                    result={"steps": steps, "branch": branch, "base": base, "files": clash})
             return fail("branch", r)
-        steps.append(f"branch {branch}")
+        git("config", f"branch.{branch}.{PROPOSAL_BASE_KEY}", base)
+        steps.append(f"branch {branch} from origin/{base}")
         r = git("add", "-A")
         if r.returncode != 0:
             return fail("add", r)
@@ -1914,6 +2056,23 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=(
                 f"speak takes one utterance of up to {_body.SPEAK_MAX_CHARS} characters; yours is "
                 f"{len(text)}. Nothing was said. Say the part that matters most, or say it in turns."))
+        # A SHELL COMMAND SPOKEN ALOUD RUNS NOTHING, AND IS NOT PLAYED. Measured on sprout-being
+        # 2026-10-14: with its run requests unanswered, it spoke `python3 scratch/... 2>&1 | tee`
+        # four times and `sudo usermod -aG video $USER && sudo systemctl restart ...` three times
+        # through the headset, then asked the seat to verify the result "after adding user to the
+        # video group" -- it took the speaking for the doing. The seat told it, in its own channel,
+        # that speech runs nothing (seq 248); it spoke the sudo line twice more. The correction has
+        # to arrive in the act's own receipt, at the moment of the act. And a root command broadcast
+        # into a room is an ask to whoever is listening, which is not a door this body offers.
+        # Narrow on purpose: a leading command word or a shell operator, not prose that mentions one.
+        cmd = _body_command_shape(text)
+        if cmd:
+            return ResultEnvelope(ok=False, error=(
+                f"Not said aloud: this reads as a shell command ({cmd}). Speaking plays sound "
+                f"only; it runs nothing, and it does not ask anyone in the room to run it for you. "
+                f"To have a script of yours run, keep it as a .py or .sh file in your home and use "
+                f"request_run; the seat decides and answers in your conversation with it. To say "
+                f"something to a person, say it as words to them."))
         # Refused BEFORE any hestia action is opened and before any sound: a being on a body with
         # no speaker gets a true sentence, the way a headless being calling `gaze` does.
         prov = _body.speak_provider()
@@ -1941,9 +2100,11 @@ class HestiaF1aDispatcher:
         speaker = _body.speaker_name()
         record_err = None
         try:
+            from sage.gateway.governed_turn import trial_name
+            trial = trial_name(self.memory_root)
             with open(os.path.join(self.memory_root, "spoken.jsonl"), "a") as f:
                 f.write(json.dumps({"ts": time.time(), "text": text, "speaker": speaker,
-                                    "seconds": done["seconds"]}) + "\n")
+                                    "seconds": done["seconds"], **({"trial": trial} if trial else {})}) + "\n")
         except Exception as e:
             record_err = f"{type(e).__name__}: {e}"[:200]
         self._call("hestia_record_outcome", {
@@ -1961,7 +2122,14 @@ class HestiaF1aDispatcher:
                                 beat=self.host_session_id)
         except Exception as e:
             room_err = f"{type(e).__name__}: {e}"[:160]
-        said = f"played aloud through {speaker} ({done['seconds']}s): \"{text}\"."
+        # SOUND RUNS NOTHING, AND THE RECEIPT SAYS SO. Measured on sprout-being 2026-10-14: with
+        # its run requests going nowhere, it spoke `python3 scratch/test-cv2-video1.py ...` aloud
+        # three times, then `sudo usermod -aG video $USER && sudo systemctl restart ...`, and 40 s
+        # later asked the seat to verify OpenCV "after adding user to the video group and
+        # restarting udisks2" — it took the speaking for the doing. The receipt said only that
+        # the words were played, which is true and left the inference open.
+        said = (f"played aloud through {speaker} ({done['seconds']}s): \"{text}\". "
+                f"Speaking is sound only: nothing said aloud is executed.")
         where = ("It is your turn in the room conversation; what you hear back in the next two "
                  "minutes is added there." if room_err is None
                  else f"It could not be added to the room conversation ({room_err}).")
@@ -2009,6 +2177,18 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=True, result={"connected": bool(r.get("ok")), "outcome": r.get("outcome"),
                                                "report": said},
                               witness_id=self._local._witness(f"pair_audio: {r.get('outcome')}"))
+
+    def _do_tune(self, intent: BeingIntent) -> ResultEnvelope:
+        """The being's own parameters (being_params): list them, or set one within its bounds."""
+        from sage.gateway import being_params
+        a = intent.args or {}
+        name = str(a.get("name") or "").strip() or None
+        ok, text = being_params.tune(Path(self.memory_root), name, a.get("value"), a.get("why") or "")
+        if not ok:
+            return ResultEnvelope(ok=False, error=text)
+        return ResultEnvelope(ok=True, result=text,
+                              witness_id=(self._local._witness(f"tune {name}: {text[:120]}")
+                                          if name else None))
 
     def _do_remember(self, intent: BeingIntent) -> ResultEnvelope:
         content = str(intent.args.get("content", "")).strip()
@@ -2117,12 +2297,14 @@ class HestiaF1aDispatcher:
         import shlex
         out_rel = intent.args.get("out_path") or "scratch/camera/last-frame.jpg"
         full_out = os.path.realpath(os.path.join(self.memory_root, out_rel))
-        device = intent.args.get("device", "/dev/video0")
+        cortex = getattr(self, "camera_source", None) == "cortex"
+        device = "cortex" if cortex else intent.args.get("device", "/dev/video0")
 
         try:
             cmd = camera_command(intent.args, {
                 "worktree": self.worktree,
                 "memory_root": self.memory_root,
+                "camera_source": getattr(self, "camera_source", None),
             })
         except ValueError as e:
             return ResultEnvelope(ok=False, error=str(e))
@@ -2173,7 +2355,10 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=True, witness_id=action_id, result={
                 "device": device, "out_path": out_rel,
                 "bytes": os.path.getsize(full_out),
-                "note": ("one frame captured FROM THE WEBCAM (this device, not any game or file the seat drops). It is a JPEG, so memory_read will hand you "
+                "note": (("one frame from YOUR OPEN EYE, as your cortex sees it right now (not any game or file "
+                          "the seat drops). " if cortex else
+                          "one frame captured FROM THE WEBCAM (this device, not any game or file the seat drops). ")
+                         + "It is a JPEG, so memory_read will hand you "
                          "binary, not a picture — it returns ok and you learn nothing. "
                          # STALE UNTIL 2026-09-16: this said "a vision-capable reader is not
                          # wired yet" for two days after heartbeat.py joined both ends
@@ -2183,7 +2368,17 @@ class HestiaF1aDispatcher:
                          # cannot avoid reading, so it must say what is true NOW.
                          "You SEE it on your NEXT beat: this act is the request to see, and "
                          "the frame rides that beat as an image (heartbeat.fresh_frames). "
-                         "FFmpeg publishes the completed image atomically.")})
+                         "The completed image is published atomically.")})
+
+        if proc.returncode != 0 and cortex:
+            # sage/embodiment/look.py: 3 = no cortex answered, 4 = it answered no (its reason on stderr)
+            _err = (proc.stderr or b"").decode("utf-8", "replace").strip()
+            kind = {3: "the cortex did not answer: your eyes' organ may not be running",
+                    4: "the cortex answered but gave no frame"}.get(proc.returncode, "the frame request failed")
+            return ResultEnvelope(ok=False, witness_id=action_id, result={
+                "device": device, "out_path": out_rel, "exit_code": proc.returncode,
+                "stderr": _err[:300] or "(nothing said)",
+                "note": f"no frame: {kind}. `stderr` is the cortex's own account. Any previous file at the path is untouched."})
 
         if proc.returncode != 0:
             # image2 atomic_writing keeps any previous final path untouched on a failed
@@ -2238,11 +2433,9 @@ class HestiaF1aDispatcher:
         in the single resolution, not an argument for dropping the flag."""
         import shlex
         import subprocess
-        from sage.gateway.being_gate_client import git_read_command
+        from sage.gateway.being_gate_client import git_read_command, NO_WORKTREE_REFUSAL
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="git_read needs a worktree of your own; none is "
-                                       "configured on this seat")
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["git_read"])
         try:
             cmd = git_read_command(intent.args, {"worktree": self.worktree})
         except ValueError as e:
@@ -2306,10 +2499,9 @@ class HestiaF1aDispatcher:
         than universal."""
         import shlex
         import subprocess
-        from sage.gateway.being_gate_client import search_command
+        from sage.gateway.being_gate_client import search_command, NO_WORKTREE_REFUSAL
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="search needs a worktree of your own; none is configured")
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["search"])
         try:
             cmd = search_command(intent.args, {"worktree": self.worktree})
         except ValueError as e:
@@ -2374,6 +2566,9 @@ class HestiaF1aDispatcher:
         lines = [ln.replace(root, "") for ln in lines]
         truncated = len(lines) > SEARCH_LINES_SHOWN
         shown = lines[:SEARCH_LINES_SHOWN]
+        shown = [ln if len(ln) <= SEARCH_LINE_CHARS else
+                 ln[:SEARCH_LINE_CHARS] + f" …[line cut here: {len(ln) - SEARCH_LINE_CHARS} more characters]"
+                 for ln in shown]
         if not shown:
             # "THE PATTERN IS NOT IN THAT FILE" AND "THERE IS NO SUCH FILE" ARE THE SAME
             # EXIT CODE, and only one of them is an answer. `git grep` returns 1 for both,
@@ -2475,11 +2670,10 @@ class HestiaF1aDispatcher:
         import hashlib
         import shlex
         import subprocess
-        from sage.gateway.being_gate_client import check_argv, check_command
+        from sage.gateway.being_gate_client import check_argv, check_command, NO_WORKTREE_REFUSAL
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="check needs a worktree of your own; none is configured "
-                                       "on this seat (PRD M1)")
+            # fails closed per PRD M1; the being hears what check is for (NO_WORKTREE_REFUSAL)
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["check"])
         # Rebuild the SAME command the gate judged — same function, same context. Composing
         # it differently here would mean the law ruled on one command and the seat ran
         # another, which is the whole failure this organ exists to make impossible.
@@ -2682,11 +2876,11 @@ class HestiaF1aDispatcher:
         import hashlib
         import subprocess
         from sage.gateway.being_gate_client import (diff_arg, patch_apply_argv, patch_apply_command,
-                                                    patch_digest, patch_file_path, patch_targets)
+                                                    patch_digest, patch_file_path, patch_targets,
+                                                    NO_WORKTREE_REFUSAL)
         if not self.worktree or not os.path.isdir(self.worktree):
-            return ResultEnvelope(ok=False, pending=True,
-                                  note="patch_apply needs a worktree of your own; none is "
-                                       "configured on this seat (PRD M1)")
+            # fails closed per PRD M1; the being hears what patch_apply is for
+            return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["patch_apply"])
         # Rebuild the SAME command the gate judged -- same function, same context.
         try:
             cmd = patch_apply_command(intent.args, {"worktree": self.worktree})
@@ -2758,7 +2952,9 @@ class HestiaF1aDispatcher:
                 ok=False, witness_id=action_id,
                 error=("that patch did not apply, so nothing in your worktree changed. Usually "
                        "this means the file moved on since you read it: read it again and send "
-                       "a fresh diff. git said:\n" + (out[:1500] or "(no output)")),
+                       "a fresh diff -- or, for one region of one file, use memory_edit on its "
+                       "absolute path with start_line and end_line, which needs no context "
+                       "lines to match. git said:\n" + (out[:1500] or "(no output)")),
                 result={"applied": False, "targets": targets, "worktree": self.worktree,
                         "git_output": out[:1500], "evidence": evidence})
         return ResultEnvelope(
@@ -2833,7 +3029,30 @@ class HestiaF1aDispatcher:
         path = str(intent.args.get("path", "")).strip()
         reason = str(intent.args.get("reason", "")).strip()
         if not path.startswith("/"):
-            return ResultEnvelope(ok=False, error="request_scope 'path' must be absolute")
+            # A forum pointer is repo-relative ("shared-context/forum/..."; forum_publisher
+            # returns it so, because the roots differ per machine). A bare "must be absolute"
+            # let cbp-being guess the root: it asked for <home>/shared-context/... (outside the
+            # workspace, refused, appealed) while the real file sat inside its own forum grant
+            # (2026-10-15, scope-42772f2f3d75, appeal c056c022). Resolve against the being's own
+            # roots, and name them when nothing matches.
+            reach = _granted_reach_of(getattr(self, "_verdict", None))
+            hits = _resolve_relative_in_reach(path, reach)
+            if len(hits) == 1:
+                absolute, within = hits[0]
+                return ResultEnvelope(ok=True, result={
+                    "status": "already_granted", "path": absolute, "as_asked": path, "within": within,
+                    "next": f"'{path}' is {absolute}, inside your reach. Read or write that absolute path directly; no request is needed"})
+            if hits:
+                # Two readings land on different files. Picking one (the first root that matched,
+                # as 27f9e6c did) made the answer depend on grant order: a guess again.
+                readings = "; ".join(f"{a} (under {w})" for a, w in hits)
+                return ResultEnvelope(ok=False, error=(
+                    f"request_scope: '{path}' is ambiguous, it names different files under the roots "
+                    f"you hold: {readings}. Ask again with the absolute path you mean"))
+            roots = ", ".join(str(r) for r, _ in reach) or "none known"
+            return ResultEnvelope(ok=False, error=(
+                f"request_scope 'path' must be absolute, and '{path}' is not inside any root you hold "
+                f"({roots}). Do not guess a root: a repo-relative pointer names a file under one of those"))
         if not reason:
             return ResultEnvelope(ok=False, error="request_scope needs a 'reason' (a human reads it)")
         # Already inside the being's reach: answer locally, file nothing. The operator's
@@ -2981,8 +3200,11 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=err)
         action_id = begin.get("actionId")
         try:
+            from sage.gateway.governed_turn import trial_name
+            trial = trial_name(self.memory_root)
             turn = conv.append(self.memory_root, to, speaker=self.member, text=text, via="say",
-                               witness=action_id, beat=self.host_session_id)
+                               witness=action_id, beat=self.host_session_id,
+                               extra={"trial": trial} if trial else None)
         except ValueError as e:
             self._call("hestia_record_outcome",
                        {"action_id": action_id, "success": False, "magnitude": 0.0})
@@ -3131,19 +3353,95 @@ class HestiaF1aDispatcher:
         unchanged = None  # (seq it asked at, seq the seat answered at)
         answer_text = ""   # what that answer SAID, to hand back rather than point at
         asked_at = None
+        asked_seqs = []    # every earlier request for these bytes and arguments, oldest first
+        # WHAT RAN IS (PATH, BYTES, ARGUMENTS), NOT BYTES ALONE. GPT HOLD on #276 at 6d7e98d5:
+        # the unsolicited match keyed on the 12-char digest only, so notes/new.py holding
+        # print(__file__) was told "running it again will give the same result" with the
+        # output of a byte-identical notes/other.py -- a file that prints a different path,
+        # and whose relative imports and data are not new.py's. A prior run is evidence for
+        # this request only when it ran this path, these bytes, and these arguments.
+        # rerun="false" is the default spelled out, not a request to rerun: now that the spec lists
+        # rerun, a being may pass it on every call, and any `rerun:` line wakes the seat.
+        arg_lines = [f"{k}: {str(v).strip()}" for k, v in intent.args.items()
+                     if k not in ("path", "why", "reason", "to") and str(v).strip()
+                     and not (k == "rerun" and str(v).strip().lower() in ("false", "no", "0", "none"))]
+
+        def _seat_names(text: str):
+            """(verb, path, argument phrase) of a seat run/decline receipt's first line."""
+            first = text.split("\n", 1)[0]
+            m = _SEAT_RUN_LINE.match(first)
+            if not m:
+                return None
+            return m.group(1), m.group(2).rstrip("."), first
+
         for t in conv.recent(self.memory_root, seat_conv, limit=80):
             text = str(t.get("text", ""))
             if t.get("from") == self.member and text.startswith(f"[request_run] {rel}\n"):
-                asked_at = t.get("seq") if f"sha256:{digest}" in text else None
-            elif asked_at is not None and t.get("from") != self.member:
-                # The seat's ANSWER carries the marker (seat_run_requests.py writes it for
-                # both a run and a decline). A later remark about that answer does not, and
-                # must not displace it: on 2026-09-22 this pointed at seq 3300, a seat aside,
-                # while the run it was about was seq 3299.
+                # The prior request counts only if it asked for these bytes WITH THESE
+                # ARGUMENTS: a request carrying other flags was answered for other flags.
+                prior_args = [ln for ln in text.split("\n")[3:] if not ln.startswith("UNCHANGED")]
+                asked_at = (t.get("seq") if f"sha256:{digest}" in text and prior_args == arg_lines
+                            else None)
+                if asked_at is not None:
+                    asked_seqs.append(asked_at)
+                continue
+            if t.get("from") == self.member:
+                continue
+            named = _seat_names(text) if text.startswith(_RUN_MARKER) else None
+            if named and named[1] != rel:
+                # A seat receipt for ANOTHER file answers nothing about this one, solicited
+                # or not.
+                continue
+            if named and named[0] == "ran" and f"(sha {digest})" in text \
+                    and "with arguments:" not in named[2] and not arg_lines:
+                # THE SEAT RAN THIS FILE, AT THIS SHA, WITHOUT BEING ASKED. Measured
+                # 2026-09-29 17:50Z: the seat ran a copy of f355443e29b4 on its own and said
+                # so (seq 4437); cbp-being then asked for a run of that sha (4438, 4439) and
+                # neither receipt said UNCHANGED, because this scan keyed only on the being's
+                # own prior request. seat_run_requests.py writes "I ran <rel> (sha <12>)" and
+                # states its arguments (ran_line); a run with arguments, or a request that
+                # carries its own, is not the same run, so neither counts here.
+                unchanged = (asked_at, t.get("seq"))
+                answer_text = text
+            elif asked_seqs:
+                # ONLY A TURN BOUND TO THIS REQUEST ANSWERS IT. GPT re-review of #276 at
+                # fef135b7b: any later seat turn counted, so request new.py -> an unrelated
+                # seat message -> re-request came back "the seat answered that at seq N" with
+                # the unrelated message carried as the answer (#154's queue conflation). Bound
+                # means: a run/decline receipt naming THIS path (seat_run_requests.py writes the
+                # marker for both; one for another path was skipped above), or a turn that names
+                # this request's seq. Free prose -- even prose mentioning the file -- is not.
+                # The same binding conversations._already_answered applies to the seat's wake
+                # (#154 recut, #332), so the receipt and the wake agree on what an answer is:
+                # one definition of how a seat turn names a seq, and the same two exceptions --
+                # a receipt stating OTHER bytes, or naming only seqs older than this request.
+                seqs = {int(n) for mm in conv._ANSWER_NAMES.finditer(text)
+                        for n in re.findall(r"\d+", mm.group(1))}
+                # AN ANSWER TO ANY EARLIER ASK FOR THESE BYTES ANSWERS THIS ONE. Measured
+                # 2026-10-14 (sprout-being): seq 387 and 388 asked for the same file, the seat
+                # declined it "Answers your request seq 387" (389), and this scan held only the
+                # LATEST ask (388), so 387 counted as "older" and the decline was skipped. Every
+                # later ask for those bytes (390, 394, 395) went out new and unanswered, and the
+                # being never saw the reason in-beat. conversations._already_answered (the wake
+                # side) already checks every earlier identical request; this now agrees with it.
+                _asked_ints = [int(a) for a in asked_seqs]
+                _hit = [a for a in _asked_ints if a in seqs]
+                if not _hit:
+                    if named is None or asked_at is None:
+                        continue
+                    _sha = re.search(r"\(sha ([0-9a-f]+)\)", named[2])
+                    if _sha and not (digest.startswith(_sha.group(1)) or _sha.group(1).startswith(digest)):
+                        continue
+                    if seqs and min(_asked_ints) > max(seqs):
+                        continue
+                    _hit = [a for a in _asked_ints if not seqs or a <= max(seqs)]
+                # The seat's ANSWER carries the marker. A later remark about that answer does
+                # not, and must not displace it: on 2026-09-22 this pointed at seq 3300, a seat
+                # aside, while the run it was about was seq 3299.
                 if unchanged and answer_text.startswith(_RUN_MARKER) \
                         and not text.startswith(_RUN_MARKER):
                     continue
-                unchanged = (asked_at, t.get("seq"))
+                unchanged = (max(_hit), t.get("seq"))
                 answer_text = text
         lines = [f"[request_run] {rel}",
                  f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
@@ -3157,16 +3455,30 @@ class HestiaF1aDispatcher:
         # which is always this conversation. The seat passes flags it chooses to accept after
         # `--` (seat_run_requests.py, #175); this is how it sees them. The first line stays
         # "[request_run] <rel>", which the unchanged check above and the seat's reader key on.
-        for k, v in intent.args.items():
-            if k not in ("path", "why", "reason", "to") and str(v).strip():
-                lines.append(f"{k}: {str(v).strip()}")
-        if unchanged:
+        lines.extend(arg_lines)
+        if unchanged and unchanged[0] is None:
+            lines.append(f"UNCHANGED since the seat ran this exact file at seq {unchanged[1]}.")
+        elif unchanged:
             lines.append(f"UNCHANGED since the request at seq {unchanged[0]}; the seat answered "
                          f"at seq {unchanged[1]}.")
         said = self._do_say(BeingIntent("say", {"to": seat_conv, "text": "\n".join(lines)}))
         if not said.ok:
             return ResultEnvelope(ok=False, error=f"could not hand the request to the seat: {said.error}")
         result = {}
+        # What the seat's answer was: its receipt's first line says "I ran" or "I did not run".
+        # THREE STATES, NOT TWO. Nova hold on #447 at 40aa6dc4: everything that was not an
+        # explicit decline was labelled "That run is evidence of what this file does", so a
+        # prose-only refusal ("I'm not running this, it opens video1. Answers your request seq
+        # 387") became evidence of a run that never happened. A turn naming the request's seq
+        # is an ANSWER, not proof of EXECUTION. Executed needs the run marker for this file
+        # (and, where the receipt states a sha, these bytes); declined needs the decline
+        # marker; anything else is an answer whose run status the receipt does not know.
+        _verdict = _SEAT_RUN_LINE.match(answer_text.split("\n", 1)[0]) if unchanged else None
+        declined = bool(_verdict and _verdict.group(1) == "did not run" and unchanged[0] is not None)
+        _ran_sha = re.search(r"\(sha ([0-9a-f]+)\)", answer_text.split("\n", 1)[0]) if _verdict else None
+        executed = bool(_verdict and _verdict.group(1) == "ran"
+                        and (_ran_sha is None or digest.startswith(_ran_sha.group(1))
+                             or _ran_sha.group(1).startswith(digest)))
         if unchanged:
             # CARRY THE ANSWER, DO NOT POINT AT IT. Measured 2026-09-22 over cbp-being's 556
             # beats: an edit receipt that names the defect in its own return value ("Python
@@ -3176,13 +3488,46 @@ class HestiaF1aDispatcher:
             # — no lift at all (Fisher p=7e-5). A seq number is a pointer to a channel that
             # does not move it. So the receipt says what the run said.
             carried = _carry_head_and_tail(answer_text.strip())
-            result["unchanged"] = (
-                f"This file is byte-for-byte the one you asked about at seq {unchanged[0]}, and "
-                f"the seat answered that at seq {unchanged[1]}. Nothing in it has changed since, "
-                f"so running it again will give the same result — which was:\n"
-                f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
-                f"To change what runs: memory_edit the lines, or retire_note the file and then "
-                f"memory_write it anew.")
+            if declined:
+                # A DECLINE IS NOT A RUN. Measured 2026-10-14 (sprout-being, seq 331): after
+                # six declines of one unchanged file, each re-request came back "That run is
+                # evidence of what this file does" over the seat's decline, and the being asked
+                # again "with rerun=true to force execution". Nothing had run to be evidence.
+                result["unchanged"] = (
+                    f"This file is byte-for-byte the one you asked about at seq {unchanged[0]}, and "
+                    f"the seat answered that at seq {unchanged[1]}: it did not run it. Nothing ran. "
+                    f"Its reason:\n"
+                    f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
+                    f"The same file will most likely get the same answer, unless what that reason "
+                    f"rests on has changed. To change what you ask for: memory_edit the lines, or "
+                    f"retire_note the file and then memory_write it anew.")
+            elif unchanged[0] is None:
+                since = (f"This file is byte-for-byte the one the seat ran at seq {unchanged[1]}, "
+                         f"on its own, before you asked. ")
+            else:
+                since = (f"This file is byte-for-byte the one you asked about at seq {unchanged[0]}, and "
+                         f"the seat answered that at seq {unchanged[1]}. ")
+            if not declined and not executed:
+                # Answered, but not by a run receipt for these bytes: say what is known (the seat
+                # answered) and what is not (whether anything ran), and carry the answer itself.
+                result["unchanged"] = (
+                    since +
+                    f"Nothing in it has changed since. That answer does not say the file ran, so "
+                    f"it is not evidence of what this file does; whether it ran is not known from "
+                    f"it. What the seat said:\n"
+                    f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
+                    f"To change what you ask for: memory_edit the lines, or retire_note the file "
+                    f"and then memory_write it anew.")
+            if not declined and executed:
+                result["unchanged"] = (
+                    since +
+                    f"Nothing in it has changed since. That run is evidence of what this file does, "
+                    f"not a promise: the same bytes at the same path with the same arguments will "
+                    f"most likely say the same again, unless something it reads, the clock or "
+                    f"chance differs. What it said:\n"
+                    f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
+                    f"To change what runs: memory_edit the lines, or retire_note the file and then "
+                    f"memory_write it anew.")
         note = ("The seat has been asked and woken. NOTHING HAS RUN YET and this is not "
                 "a result. The seat may run it or decline, and either way it answers in "
                 f"'{seat_conv}'. Nothing is owed by you in the meantime.")
@@ -3193,7 +3538,15 @@ class HestiaF1aDispatcher:
             note = ("The request was recorded in "
                     f"'{seat_conv}', but the seat was NOT woken for it: it already answered this "
                     "same file, unchanged, and that answer is above. NOTHING HAS RUN. To have it "
-                    "run again anyway, call request_run with rerun=true.")
+                    "run again anyway, call request_run again with its argument rerun set to "
+                    "'true', next to path and why. It is not a line in your file.")
+            if declined:
+                note = ("The request was recorded in "
+                        f"'{seat_conv}', but the seat was NOT woken for it: it already declined this "
+                        "same file, unchanged, and its reason is above. NOTHING HAS RUN. Calling "
+                        "request_run again with its argument rerun set to 'true', next to path and "
+                        "why, asks the seat again; it does not make the file run, and the seat "
+                        "still decides. It is not a line in your file.")
         return ResultEnvelope(ok=True, witness_id=said.witness_id, result={
             **result,
             "requested": rel,
@@ -3212,6 +3565,32 @@ class HestiaF1aDispatcher:
             return answered_run_wake_for(instance_config(Path(self.memory_root))) == "skip"
         except Exception:
             return False
+
+    def rearm_owed_wakes(self) -> list:
+        """Send each wake still owed to a conversation's notify targets. Called at the end of a beat.
+
+        THE HANDOFF MUST NOT WAIT FOR THE BEING TO SPEAK. `_wake_addressee` runs only on the being's
+        own turn, so a wake withheld by a seat's pause (`conv.pause_wakes`), or one whose notice
+        failed to leave, was sent on its NEXT turn. A being that asked once during the pause and
+        then went quiet was owed a wake nobody would send (GPT on #461). Each beat now settles
+        what is owed: the last turn is the being's, no pause holds, and the run was not already
+        woken (`wake_is_owed`, inside `_wake_addressee`). A run woken before is never woken twice."""
+        from sage.gateway import conversations as conv
+        woke = []
+        for meta in conv.listing(self.memory_root):
+            if self.member not in (meta.get("participants") or []):
+                continue
+            if not (meta.get("notify") or meta.get("notify_watchers")):
+                continue
+            last = conv.recent(self.memory_root, meta["id"], limit=1)
+            if not last or last[-1].get("from") != self.member:
+                continue
+            try:
+                if self._wake_addressee(meta["id"], meta, last[-1]):
+                    woke.append(meta["id"])
+            except Exception:
+                continue           # best-effort, as the turn-time wake is
+        return woke
 
     def _wake_addressee(self, to: str, meta: dict, turn: dict) -> Optional[str]:
         """A turn wakes whoever it is addressed to — the mirror of the seat's own door.
@@ -3279,6 +3658,11 @@ class HestiaF1aDispatcher:
         targets = deduped
         if not targets:
             return None
+        # A SEAT HAS JUMPED IN (`conv.pause_wakes`): it is answering here itself, so a mesh wake
+        # would be a second voice speaking as the same seat. Nothing is recorded, so the run is
+        # still owed and the being's next turn after the pause wakes as usual.
+        if conv.wake_pause(self.memory_root, to):
+            return None
         run_start = conv.wake_is_owed(self.memory_root, to, self.member,
                                       skip_answered=self._skips_answered_run_wake())
         if run_start is None:
@@ -3320,6 +3704,44 @@ def _granted_reach_of(verdict) -> tuple:
     if reach:
         return reach
     return tuple((r, True) for r in (getattr(verdict, "granted", ()) or ()))
+
+
+def _resolve_relative_in_reach(rel: str, reach) -> list:
+    """Every distinct canonical file a relative path can name inside reach, as sorted
+    [(absolute, root)]. A reading is the ancestor where the path's leading segment overlaps a
+    root's own components, so "a/b/x.md" under a grant on <ws>/a/b/** is <ws>/a/b/x.md (not
+    <ws>/a/b/a/b/x.md). A path that overlaps no root ("x.md") is NOT joined under one: with
+    several roots that is a guess, and the guess is the defect this replaces.
+
+    All readings across all roots are collected before any is chosen, and each is
+    canonicalized (realpath) and checked against the canonical root, so grant order cannot
+    change the outcome, a symlink that leaves every root is never inside, and two readings
+    that are the same file count once. The caller treats more than one as ambiguous."""
+    rel = rel.strip()
+    if not rel or rel.startswith(("/", "~")) or ".." in rel.split("/"):
+        return []
+    first = rel.split("/", 1)[0]
+
+    def inside(cand, r, recursive):
+        return cand == r or (recursive and cand.startswith(r + "/"))
+
+    found = {}
+    for root, recursive in reach:
+        r = os.path.realpath(str(root))
+        base = os.path.dirname(r)
+        while True:
+            head = os.path.join(base, first)
+            cand = os.path.realpath(os.path.join(base, rel))
+            if (head == r or r.startswith(head + "/")) and inside(cand, r, recursive):
+                # the same file under two roots: name the most specific root, deterministically
+                prev = found.get(cand)
+                if prev is None or (len(r), r) > (len(prev), prev):
+                    found[cand] = r
+            parent = os.path.dirname(base)
+            if parent == base:
+                break
+            base = parent
+    return sorted(found.items())
 
 
 # --------------------------------------------------------------------------

@@ -71,8 +71,10 @@ def _named_file_stamps(content: str, root: Path, written: Path) -> str:
 
     Reads mtimes only, executes nothing, and never looks outside the home: a name that
     resolves outside it is treated as not found. A bare name is looked for at the top of the
-    home and in notes/ only, and a miss says exactly that, not "no such file" (the 09-28
-    review found a bare train.py living in experiments/ reported as absent)."""
+    home, in notes/ and in scratch/, and a miss says exactly that, not "no such file" (the 09-28
+    review found a bare train.py living in experiments/ reported as absent). scratch/ is where
+    request_run files live: on 2026-10-08 a journal naming test-encoder-only.py got "not found"
+    on every write, and the being told the seat "the seat also says it was not found"."""
     out, seen = [], set()
     home = root.resolve()
     for name in re.findall(r"[\w./-]+\.py\b", content or ""):
@@ -80,7 +82,8 @@ def _named_file_stamps(content: str, root: Path, written: Path) -> str:
         if not name or name in seen or len(out) >= 3:
             continue
         seen.add(name)
-        cand = [root / name] + ([root / "notes" / name] if "/" not in name else [])
+        cand = [root / name] + ([root / d / name for d in ("notes", "scratch")]
+                                if "/" not in name else [])
         hit = None
         for c in cand:
             try:
@@ -91,11 +94,15 @@ def _named_file_stamps(content: str, root: Path, written: Path) -> str:
             if rc.is_file() and rc != written.resolve():
                 hit = rc
                 break
+        if hit is not None and hit in seen:
+            continue
         if hit is None:
-            where = "at the top of your home or in notes/" if "/" not in name else "in your home"
+            where = ("at the top of your home, in notes/ or in scratch/" if "/" not in name
+                     else "in your home")
             out.append(f"{name} was not found {where}")
             continue
         t = datetime.fromtimestamp(hit.stat().st_mtime, timezone.utc)
+        seen.add(hit)
         out.append(f"{hit.relative_to(home)} was last changed at {t:%Y-%m-%d %H:%M} UTC")
     return (" Files this names: " + "; ".join(out) + ".") if out else ""
 
@@ -125,9 +132,83 @@ def _python_status(p) -> str:
 
 
 
+def _parses(src: str) -> bool:
+    try:
+        compile(src, "<edit>", "exec")
+    except (SyntaxError, ValueError):
+        return False
+    return True
+
+
+def _broke_it(p, before: str, after: str) -> str:
+    """A .py edit that took a parsing file to an unparseable one says it is the cause.
+
+    Measured on cbp-being, 2026-10-12 09:11:53Z: a range edit overwrote an import
+    continuation line (`    orthogonal_decoder, orthogonal_projection`) and the receipt said
+    the spaces changed, then the SyntaxError, then the removed line last. The next beat
+    re-indented the new line three times and never put the import back. The receipt knew,
+    and did not say, that the file parsed one edit ago; undoing this edit is a measured
+    repair, not a guess, because the text before it is the text that parsed."""
+    if not str(p).endswith(".py") or _parses(after) or not _parses(before):
+        return ""
+    return (f" Before this edit {p.name} parsed, so this edit is what stopped it: putting "
+            f"back the text it removed makes {p.name} parse again.")
+
+
+def _spaces_verdict(lines: list, s0: int, s1: int, removed: str, new: str) -> str:
+    """When a range edit leaves the file unparseable AND changed the first line's indent, try
+    the new text at the replaced line's indent and say whether THAT parses. 2026-10-12
+    09:15:27Z: cbp-being read "Line 53 now starts with 0 spaces" as the cause of a
+    SyntaxError the spaces had nothing to do with, and spent a beat flipping them (8, 4, 8).
+    The indentation note says the counts differ; this says whether the counts matter.
+
+    A failed retry proves only that the spaces ALONE do not repair the file, not that they
+    play no part: the new text can carry a second defect beside its indent, or the file can
+    already be broken elsewhere (Nova, SAGE #427, 2026-10-13). So the negative verdict says
+    what was measured and nothing more."""
+    def first(s: str) -> str:
+        return next((ln for ln in s.splitlines() if ln.strip()), "")
+    a, b = first(removed), first(new)
+    if not a or not b:
+        return ""
+    na, nb = _leading_spaces(a), _leading_spaces(b)
+    if na == nb:
+        return ""
+    d = na - nb
+    shifted = "".join((" " * d + ln) if d > 0 and ln.strip()
+                      else (ln[min(-d, _leading_spaces(ln)):] if d < 0 else ln)
+                      for ln in new.splitlines(keepends=True))
+    if shifted and not shifted.endswith("\n") and removed.endswith("\n"):
+        shifted += "\n"
+    trial = "".join(lines[:s0 - 1]) + shifted + "".join(lines[s1:])
+    if _parses(trial):
+        return (f" With {na} spaces, as the line it replaced had, Python could parse it.")
+    return (f" With {na} spaces, as the line it replaced had, Python still cannot parse it: "
+            f"changing the spaces alone will not make it parse.")
+
+
 def _leading_spaces(line: str) -> int:
     """How many spaces a line starts with: the count both indentation notes below report."""
     return len(line) - len(line.lstrip(" "))
+
+
+def _whole_lines_once(text: str, new: str) -> bool:
+    """True when `new` is in `text` exactly once AND that copy runs from a line start to a line
+    end. A substring count alone is not "already in place". Measured 2026-10-09 22:16Z:
+    cbp-being's line 103 held a spliced tail ('np.linalg.pinv(X_tX)g.pinv(X_tX)'); it sent a
+    4-line old= that was not on disk and a 4-line new= whose last line was the FIXED line.
+    The fixed line is a prefix of the unfixed one, so text.count(new) was 1 and this branch
+    said "already in place ... the file already says what this edit asks for" while the
+    SyntaxError was still there. The being read that as done and asked its seat to run the
+    unfixed bytes (seq 8481). A match that stops mid-line is the same cut the mid-line old=
+    refusal catches, seen from the other side."""
+    if text.count(new) != 1:
+        return False
+    i = text.find(new)
+    j = i + len(new)
+    at_line_start = i == 0 or text[i - 1] == "\n"
+    at_line_end = j == len(text) or text[j] == "\n" or new.endswith("\n")
+    return at_line_start and at_line_end
 
 
 def _indent_only_miss(have: str, old: str, new: str, first_line: int) -> str:
@@ -163,6 +244,29 @@ def _indent_only_miss(have: str, old: str, new: str, first_line: int) -> str:
     return ""
 
 
+def _old_is_elsewhere(text: str, old: str, first_line: int) -> str:
+    """A range edit refused because the lines are not old says where old IS, when it occurs
+    exactly once. (Zero or several hits: the line number is the only locator, so say nothing.)
+
+    Measured 2026-10-07 02:53Z on cbp-being: the seat's message gave the exact old/new text
+    for one line and, separately, the traceback's line number (148). The line to change was
+    145. The being sent the seat's old text verbatim with start_line 148, was refused twice
+    in one beat ("lines 148-148 ... are not the text you gave as old"), and then said it
+    would apply the fix. The refusal showed line 148 but not that old was in the file once,
+    three lines up, so the right text and a wrong number cost a beat. The edit is not
+    retargeted on its own: the number may be the part the being meant."""
+    if not old.strip() or text.count(old) != 1:
+        return ""
+    at = text[:text.index(old)].count("\n") + 1
+    if at == first_line:
+        return ""
+    n = old.rstrip("\n").count("\n")
+    where = f"line {at}" if n == 0 else f"lines {at}-{at + n}"
+    return (f"\nYour old text IS in the file, once, at {where}, not at line {first_line}. "
+            f"Send the same edit with no start_line and end_line (old alone finds it), or "
+            f"with start_line {at}.")
+
+
 def _indent_changed(removed: str, new: str, first_line: int) -> str:
     """A range edit whose first line lost or gained leading spaces says so, in counts.
 
@@ -183,6 +287,45 @@ def _indent_changed(removed: str, new: str, first_line: int) -> str:
         return ""
     return (f". Line {first_line} now starts with {nb} spaces; the line it replaced started "
             f"with {na}. In Python those spaces decide which block a line belongs to")
+
+
+def _head_and_tail(removed: str, budget: int = 400) -> str:
+    """A long removal is quoted by its first AND last lines, with the count of the middle.
+
+    Measured on cbp-being, 2026-10-07 19:03Z: told to delete a 13-line duplicate decoder
+    block, it deleted lines 75-107 (33 lines), also taking the class's forward and the start
+    of train_model. The receipt quoted only the first 400 chars, which was the decoder block
+    it meant to delete, then '...'. The overreach was in the cut. A range that runs too far
+    runs too far at its END, so the end is what the receipt must show."""
+    if len(removed) <= budget:
+        return removed
+    lines = removed.splitlines(keepends=True)
+    head, tail = [], []
+    used = 0
+    for ln in lines:
+        if used + len(ln) > budget // 2 and head:
+            break
+        head.append(ln)
+        used += len(ln)
+    used = 0
+    for ln in reversed(lines[len(head):]):
+        if used + len(ln) > budget // 2 and tail:
+            break
+        tail.insert(0, ln)
+        used += len(ln)
+    hidden = len(lines) - len(head) - len(tail)
+    if hidden <= 0:
+        return removed
+    return "".join(head) + f"[... {hidden} more removed lines not shown ...]\n" + "".join(tail)
+
+
+def _defs_removed(removed: str) -> str:
+    """Name every def/class line a removal took, since a quote can be cut but a name list is short."""
+    names = [ln.strip().split("(")[0].rstrip(":") for ln in removed.splitlines()
+             if ln.lstrip().startswith(("def ", "class ", "async def "))]
+    if not names:
+        return ""
+    return "\nThis removed " + ", ".join(f"'{n}'" for n in names) + "."
 
 
 def _not_python(content: str, before: str) -> str:
@@ -368,14 +511,54 @@ def _where_it_diverged(text: str, old: str, width: int = 160) -> str:
     cut = lambda s: s if len(s) <= width else s[:width] + "…"  # noqa: E731
     if best_k == 0:
         # No line matches exactly. Name the nearest one, so indentation or one changed word
-        # is visible rather than guessed at.
+        # is visible rather than guessed at. Rank on the STRIPPED text, then show the line as it
+        # is. Measured 2026-10-04 on cbp-being: it sent an unindented old for line 28 (16
+        # spaces); ranking with the indentation counted made line 212 (12 spaces, one word
+        # different, dead code after main()) the "closest", and its next edit changed 212.
         import difflib
-        near = difflib.get_close_matches(want[0], have, n=1, cutoff=0.6)
+        import re
+        bare = [line.strip() for line in have]
+        # A def/class line is anchored by its NAME, which is the few characters difflib weighs
+        # least. Measured 2026-10-08 on cbp-being: it sent 'def main(latent_dim: int = 100):',
+        # the closest line was 'def create_decoder(latent_dim: int = 100):' (line 28), and its
+        # next edit rewrote create_decoder's signature, breaking the call at line 87; main was
+        # line 74 all along. Name the line that defines the name it sent, or say none does.
+        head = re.compile(r"(?:async\s+)?(def|class)\s+(\w+)")
+        sent = head.match(want[0].strip())
+        if sent:
+            same = [i for i, b in enumerate(bare)
+                    if (m := head.match(b)) and m.group(2) == sent.group(2)]
+            if same:
+                where = "; ".join(f"line {i + 1}: {cut(have[i])!r}" for i in same)
+                return (f" Your first line is not in the file. {sent.group(2)} is defined at "
+                        f"{where}; you sent {cut(want[0])!r}.")
+            return (f" Your first line is not in the file, and no line defines "
+                    f"{sent.group(2)}; you sent {cut(want[0])!r}.")
+        # An assignment is anchored by the name it assigns, for the same reason. Measured
+        # 2026-10-12 on cbp-being: asked to edit line 31, 'projected = orthogonal_projection(
+        # w_true, A)', it sent 'projected, norm = orthogonal_projection(A, w_with_outside)'.
+        # The closest line was 47, 'projected_modified = orthogonal_projection(w_with_outside,
+        # A)' (shared arguments again), and its next edit rewrote 47, dropping the w_with_outside
+        # the test existed to project. Name the lines that assign its first name, if any do;
+        # otherwise fall through, since a new name is often what an edit is introducing.
+        lhs = re.compile(r"[\w.]+(?:\s*,\s*[\w.]+)*\s*=(?!=)")
+
+        def assigns(b: str) -> list:
+            m = lhs.match(b)
+            return re.findall(r"[\w.]+", m.group(0)) if m else []
+        assigned = assigns(want[0].strip())
+        if assigned:
+            same = [i for i, b in enumerate(bare) if assigned[0] in assigns(b)]
+            if same:
+                where = "; ".join(f"line {i + 1}: {cut(have[i])!r}" for i in same[:5])
+                return (f" Your first line is not in the file. {assigned[0]} is assigned at "
+                        f"{where}; you sent {cut(want[0])!r}.")
+        near = difflib.get_close_matches(want[0].strip(), bare, n=1, cutoff=0.6)
         if not near:
             return f" Not even your first line ({cut(want[0])!r}) is in the file."
-        n = have.index(near[0]) + 1
+        n = bare.index(near[0]) + 1
         return (f" Your first line is not in the file. The closest line is line {n}: "
-                f"{cut(near[0])!r}; you sent {cut(want[0])!r}.")
+                f"{cut(have[n - 1])!r}; you sent {cut(want[0])!r}.")
     # MORE THAN ONE PLACE. Measured 2026-09-21: cbp-being's refused `old` began with 3 lines
     # of a stray block at 1610-1612 that ALSO occur at 330-332, the working data-loading
     # branch. Naming only the first match told it "your lines are at 330", and a 4B acting on
@@ -856,13 +1039,29 @@ class ReferenceF1aDispatcher:
             start = max(1, int(str(intent.args.get("start_line", 1)).strip() or 1))
         except ValueError:
             start = 1
+        # A ONE-LINE LOOK COST THE REST OF THE FILE. Measured 2026-10-09 20:38Z on cbp-being
+        # (beat heartbeat-65351614df15): the seat named four lines (79, 80, 187, 226) with
+        # their exact old=/new=. The being read each with start_line alone and got lines
+        # 79-283, 80-283, 187-283 and 226-283 of a 9,121-char file -- about 200 lines, four
+        # times, in a 16,384-token window -- and the seat's message holding the edits was
+        # evicted; the beat ended with three request_run re-asks and no edit. The elision
+        # marker in being_tool_loop.py had been saying "memory_read a narrow range" since
+        # 2026-09-13, and memory_edit has taken end_line since #160, but memory_read had no
+        # way to say where to stop. `end_line` (inclusive, as memory_edit counts it) is that
+        # way. The char cap still applies inside the range; with no end_line nothing changes.
+        try:
+            stop = int(str(intent.args.get("end_line", "")).strip() or 0)
+        except ValueError:
+            stop = 0
+        stop = max(stop, start) if stop else 0
         if start > len(lines):
             return ResultEnvelope(ok=True, result=(
                 f"[past the end: '{shown}' has {len(lines)} lines, so start_line={start} shows "
                 f"nothing. Read from start_line=1.]"),
                 witness_id=self._witness(f"memory_read {p.name} (past end)"))
         end, size = start - 1, 0
-        while end < len(lines) and size + len(lines[end]) <= self.max_read_chars:
+        limit = min(len(lines), stop) if stop else len(lines)
+        while end < limit and size + len(lines[end]) <= self.max_read_chars:
             size += len(lines[end]); end += 1
         if end == start - 1:          # one line longer than the whole window: show its head
             content, end = lines[end][: self.max_read_chars], end + 1
@@ -889,11 +1088,18 @@ class ReferenceF1aDispatcher:
             return ResultEnvelope(ok=True, result=dated + content + whole_note,
                                   witness_id=self._witness(f"memory_read {p.name}"))
         head = dated + (f"[lines {start}-{end} of {len(lines)} in '{shown}']\n" if start > 1 else "")
-        tail = (f"\n[… truncated: this shows lines {start}-{end} of {len(lines)} "
-                f"({len(whole)} characters in all). Lines {end + 1}-{len(lines)} were NOT shown, so "
-                f"absence here is not evidence of absence in the file. To read on, call "
-                f"memory_read with path '{shown}' and start_line={end + 1}. …]"
-                if end < len(lines) else f"\n[end of file: line {len(lines)} is the last line.]")
+        if stop and end == stop and end < len(lines):
+            # Cut where the being asked, not where the window ran out: say so in those words,
+            # so a short result is not read as the file running out of lines.
+            tail = (f"\n[end of the range you asked for: lines {start}-{end} of {len(lines)}. "
+                    f"Lines {end + 1}-{len(lines)} were NOT shown. To read on, call memory_read "
+                    f"with path '{shown}' and start_line={end + 1}.]")
+        else:
+            tail = (f"\n[… truncated: this shows lines {start}-{end} of {len(lines)} "
+                    f"({len(whole)} characters in all). Lines {end + 1}-{len(lines)} were NOT shown, so "
+                    f"absence here is not evidence of absence in the file. To read on, call "
+                    f"memory_read with path '{shown}' and start_line={end + 1}. …]"
+                    if end < len(lines) else f"\n[end of file: line {len(lines)} is the last line.]")
         return ResultEnvelope(ok=True, result=head + content + tail + parse,
                               witness_id=self._witness(f"memory_read {p.name} (lines {start}-{end})"))
 
@@ -1011,16 +1217,40 @@ class ReferenceF1aDispatcher:
                 return ResultEnvelope(ok=False, error=(
                     f"lines {s0}-{s1} of '{path}' are not the text you gave as old, so nothing "
                     f"was changed. Those lines are now:\n{shown}"
-                    + _indent_only_miss(removed, old, new, s0)))
+                    + _indent_only_miss(removed, old, new, s0)
+                    + _old_is_elsewhere(text, old, s0)))
             repl = new
             if repl and not repl.endswith("\n") and removed.endswith("\n"):
                 repl += "\n"
             new_text = "".join(lines[:s0 - 1]) + repl + "".join(lines[s1:])
             what = f"replaced lines {s0}-{s1} ({s1 - s0 + 1} lines)" + _indent_changed(removed, new, s0)
-            shown = removed if len(removed) <= 400 else removed[:400] + "..."
-            gone = f" The lines removed were:\n{shown}"
+            gone = f" The lines removed were:\n{_head_and_tail(removed)}" + _defs_removed(removed)
+            if str(p).endswith(".py") and not _parses(new_text):
+                gone = _spaces_verdict(lines, s0, s1, removed, new) + gone
             return self._commit_edit(p, path, text, new_text, what, gone)
         hits = text.count(old)
+        if hits == 0 and len(new.strip()) >= 40 and new not in old and _whole_lines_once(text, new):
+            # ALREADY MADE. Measured 2026-10-07 10:20Z: cbp-being's pandas-import edit landed
+            # (ok=true), then the same beat sent it twice more. Both retries got the
+            # copy-it-exactly refusal below, and the being told its seat "the file edits I
+            # tried failed due to indentation mismatches" (seq 6812): it took the refusal's
+            # boilerplate as the cause and reported a done edit as failed. When the new text
+            # is already on disk, say that first. 40+ chars and exactly one copy, so a short
+            # common line that merely occurs elsewhere (`return x`) is not read as a done edit.
+            # A SATISFIED REQUEST IS NOT A FAILED ACT (GPT HOLD on #388 at b1027e9ad): the file
+            # already holds the state this edit asks for, so the answer is an idempotent
+            # no-op SUCCESS. An ok=false here would label a done edit as failed, the very
+            # misreport this branch exists to stop. Nothing is written (the bytes on disk are
+            # untouched), and the receipt says "unchanged" in so many words, so it cannot be
+            # read as a fresh edit either. The witness names the act as a no-op.
+            at = text.count("\n", 0, text.find(new)) + 1
+            return ResultEnvelope(ok=True, result=(
+                f"already in place; nothing changed. The old text is not in '{path}', but "
+                f"your new text already is, exactly once, starting on line {at}, so the file "
+                f"already says what this edit asks for (most likely an earlier memory_edit of "
+                f"yours made it). Nothing was written: '{path}' is unchanged, byte for byte. "
+                f"This is not a failed edit, and it is not a new one."),
+                witness_id=self._witness(f"memory_edit {p.name} (already in place; unchanged)"))
         if hits == 0:
             return ResultEnvelope(ok=False, error=(
                 f"that text is not in '{path}', so nothing was changed. The file is as it "
@@ -1028,10 +1258,22 @@ class ReferenceF1aDispatcher:
                 f"what you remember writing and what is on disk can differ."
                 + _where_it_diverged(text, old)))
         if hits > 1:
+            # NAME BOTH DOORS. Measured 2026-10-06 05:48Z: this refusal fired on cbp-being's
+            # line-63 edit ('return self.output_proj(x)' is on 63 and 88) and named only
+            # "include a neighbouring line". The being did not; 5 min later it asked the seat to
+            # run a script that rewrites the file by list index (scratch/fix-decoder-input.py),
+            # i.e. it rebuilt by hand the start_line route this tool already has. Say where
+            # the copies are and that start_line picks one.
+            at, i = [], text.find(old)
+            while i != -1 and len(at) < 10:
+                at.append(str(text.count("\n", 0, i) + 1))
+                i = text.find(old, i + 1)
             return ResultEnvelope(ok=False, error=(
-                f"that text appears {hits} times in '{path}', so it does not say which one "
-                f"you mean, and nothing was changed. Include a neighbouring line to make it "
-                f"unique."))
+                f"that text appears {hits} times in '{path}' (starting on lines "
+                f"{', '.join(at)}), so it does not say which one you mean, and nothing was "
+                f"changed. To pick one, call memory_edit again with start_line (and end_line) "
+                f"set to its line numbers, keeping old as a check; or include a neighbouring "
+                f"line in old to make it unique."))
         # ATOMIC, BECAUSE THE FILE IS THE BEING'S WORK. `Path.write_text` truncates and then
         # writes, so a crash or a kill between the two leaves the file empty or half-written.
         # GPT's review of 15c2f6d9b: "crash/kill can truncate the being's work". For a being
@@ -1041,6 +1283,70 @@ class ReferenceF1aDispatcher:
         # three times over (tmp beside the target, then os.replace); this is the same pattern,
         # not a new one. os.replace is atomic on the same filesystem, so a reader either sees
         # every byte of the old file or every byte of the new one, never a prefix of either.
+        # A CUT OLD= SPLICES THE TAIL. Measured 2026-10-09 22:02Z: cbp-being's memory_read of
+        # lines 85-305 was cut by its window in the middle of line 103 ('... np.linal'); it
+        # copied old= up to the cut and sent the whole line as new. The match was exact for
+        # what it sent, so the replace kept the rest of the line: 103 became
+        # 'np.linalg.pinv(X_tX)g.pinv(X_tX)', a SyntaxError. The receipt's parse note was not
+        # enough: the being journaled the fix as made and asked its seat to run the file
+        # (seq 8477). A multi-line old= that stops mid-line is a cut, not a choice: refuse it
+        # and show the tail it would have left behind. A single-line old= can be a deliberate
+        # in-line token swap, so it is left alone -- UNLESS new already ends with the tail.
+        # Measured 2026-10-12 07:59Z: cbp-being sent old '    y = A @ ' (one line, stopping
+        # mid-line) and new = the whole line. The rest of the line stayed, so line 27 held its
+        # tail twice ('... * noise_stdw_true + ... * noise_std'); it still parsed, so the receipt
+        # said nothing was wrong. At 08:02 the being sent the RIGHT repair, old = the whole
+        # line, new '    y = A @ w_true': it matched the first copy and left the second, making
+        # 'w_truew_true'. The seat read three beats of that as the being failing to learn. A
+        # swap ('z = ' -> 'z = -') does not end with the tail; a whole line sent as new does.
+        if not old.endswith("\n"):
+            end = text.index(old) + len(old)
+            rest = text[end:].split("\n", 1)[0]
+            multi = "\n" in old.strip("\n")
+            twice = len(rest.strip()) >= 3 and new.rstrip("\n").endswith(rest)
+            if rest and (multi or twice):
+                at = text.count("\n", 0, end) + 1
+                why = (f"The rest of that line, {rest!r}, would have been left in place, "
+                       f"spliced onto the end of your new text")
+                if twice:
+                    why += ", which already ends with it, so the line would hold it twice"
+                return ResultEnvelope(ok=False, error=(
+                    f"your old text stops in the middle of line {at} of '{path}', so nothing "
+                    f"was changed. {why}. To replace the whole line, include all of it in old, "
+                    f"or call memory_edit with start_line={at} end_line={at}; if old was copied "
+                    f"from a read that was cut there, memory_read start_line={at} to see the "
+                    f"whole line."))
+        # AN EXTENSION ALREADY ON DISK IS NOT A NEW EDIT. Measured 2026-10-14 02:18Z: line 18
+        # of cbp-being's test file already read 'import numpy as np', and it sent old
+        # 'import numpy as', new 'import numpy as np' twice in one beat. Each replace matched
+        # the prefix and added the suffix again: 'np np', then 'np np np', a SyntaxError. The
+        # tail guard above missed both (a tail of ' np' is under its 3-char floor; ' np np' is
+        # not what new ends with). When new is old plus a suffix and the disk already continues
+        # with that suffix, the edit was made: if the line ends there it is a satisfied no-op
+        # (#388); if more follows, the line is not what new says, so refuse and show it. This
+        # runs after the tail guard, so a cut that guard names is still refused as a cut.
+        ext = new[len(old):] if new.startswith(old) else ""
+        end = text.index(old) + len(old)
+        if ext.strip() and text.startswith(ext, end):
+            stop = end + len(ext)
+            at = text.count("\n", 0, end) + 1
+            if ext.endswith("\n") or stop == len(text) or text[stop] == "\n":
+                return ResultEnvelope(ok=True, result=(
+                    f"already in place; nothing changed. On line {at} of '{path}' your old "
+                    f"text is already followed by {ext!r}, so the file already says what this "
+                    f"edit asks for (most likely an earlier memory_edit of yours made it). "
+                    f"Nothing was written: '{path}' is unchanged, byte for byte. This is not a "
+                    f"failed edit, and it is not a new one."),
+                    witness_id=self._witness(f"memory_edit {p.name} (already in place; unchanged)"))
+            ls = text.rfind("\n", 0, end) + 1
+            le = text.find("\n", end)
+            line = text[ls:le if le != -1 else len(text)]
+            return ResultEnvelope(ok=False, error=(
+                f"your old text on line {at} of '{path}' is already followed by {ext!r}, so "
+                f"this edit would add {ext!r} a second time, and nothing was changed. Line "
+                f"{at} now reads {line!r}. To set the whole line, call memory_edit with "
+                f"start_line={at} end_line={at}, old set to that line, and new set to the "
+                f"line you want."))
         return self._commit_edit(p, path, text, text.replace(old, new, 1),
                                  "replaced 1 occurrence", "")
 
@@ -1083,7 +1389,7 @@ class ReferenceF1aDispatcher:
             ok=True,
             result=(f"edited {p.name}: {what}; the file went from {before} to "
                     f"{after} lines. This changed the file on disk — it is not an append."
-                    f"{_python_status(p)}{gone}"),
+                    f"{_python_status(p)}{_broke_it(p, text, new_text)}{gone}"),
             witness_id=self._witness(f"memory_edit {p.name} ({before}->{after} lines)"))
 
     def _do_retire_note(self, intent: BeingIntent) -> ResultEnvelope:
@@ -1120,6 +1426,14 @@ class ReferenceF1aDispatcher:
             return ResultEnvelope(ok=True, result=f"{p.name} is already retired; nothing changed")
         stamp = datetime.now(timezone.utc)
         dest = p.with_name(f"{p.stem}.retired-{stamp:%Y-%m-%d}{p.suffix}")
+        # A SECOND RETIRE OF THE SAME NAME ON THE SAME DAY MUST NOT REPLACE THE FIRST. Measured
+        # 2026-10-07 on cbp-being: validate-overfitting.py was retired at 04:47Z, rewritten under
+        # the same name and retired again at 07:50Z; both mapped to one .retired-2026-10-07.py and
+        # the second write_text destroyed the first while the receipt said ok.
+        n = 2
+        while dest.exists():
+            dest = p.with_name(f"{p.stem}.retired-{stamp:%Y-%m-%d}-{n}{p.suffix}")
+            n += 1
         body = p.read_text(errors="replace")
         dest.write_text(
             f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z by cbp-being. No longer current: {reason}\n"

@@ -121,7 +121,7 @@ def test_run_ollama_tool_turn_with_fake_llm():
     # request_run and memory_edit, one layer out. It sends a unified diff; the seat parses every
     # path the diff touches OUT OF THE DIFF and the law rules on each under mrh.path, exactly as
     # for a memory_write. See test_patch_apply_is_governed.py for what is judged and what is not.
-    assert len(ollama_tools()) == 32   # + web_search (2026-10-02)   # + pr_sync (2026-10-01)   # + stay_awake (SAGE #295)   # + pr_read (2026-09-29)   # + pair_audio (2026-09-27)   # + game (#56 slice 6)   # + pr_open, pr_amend, git_restore (#56 slice 5)   # + patch_apply (2026-09-25)
+    assert len(ollama_tools()) == 35   # + web_search (2026-10-02)   # + tune (2026-10-07)   # + git_clean (2026-10-05)   # + describe (2026-10-03)   # + pr_sync (2026-10-01)   # + stay_awake (SAGE #295)   # + pr_read (2026-09-29)   # + pair_audio (2026-09-27)   # + game (#56 slice 6)   # + pr_open, pr_amend, git_restore (#56 slice 5)   # + patch_apply (2026-09-25)
 
     calls = {"n": 0}
 
@@ -166,8 +166,79 @@ def test_generate_stats_record_the_window_wall_and_the_retry():
     # one generate as the loop sees it: the empty turn was retried once and the retry stood
     assert r.reply == "done" and calls["n"] == 2
     # num_predict: the retry's budget (no window declared -> the 6000 floor), not the first 1024
-    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1,
-                            "num_predict": 6000}]
+    assert [{k: v for k, v in g.items() if k != "attempts"} for g in r.generates] == [{"done_reason": "stop", "prompt_eval_count": 5000, "eval_count": 40, "retried": 1,
+                            "num_predict": 6000, "retry_cause": "length"}]   # no num_ctx on this fake: not guessed
+
+
+def test_attempt_evidence_keeps_tokens_spent_before_a_successful_retry():
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+
+    class FakeLLM:
+        max_response_tokens = 1024
+        responses = iter([
+            {"content": "", "raw": {"done_reason": "length", "prompt_eval_count": 5000,
+             "eval_count": 3192, "message": {"thinking": "PRIVATE DRAFT"}}},
+            {"content": "done", "raw": {"done_reason": "stop", "prompt_eval_count": 5100,
+             "eval_count": 40}},
+        ])
+
+        def get_chat_response(self, messages, **kwargs):
+            return next(self.responses)
+
+    landed = []
+    result = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [], on_generate=landed.append)
+    attempts = result.generates[0]["attempts"]
+    assert [a["eval_count"] for a in attempts] == [3192, 40]
+    assert [a["num_predict"] for a in attempts] == [1024, 6000]
+    assert [a["phase"] for a in attempts] == ["tools", "tools"]
+    assert result.generates[0]["eval_count"] == 40
+    assert landed[0]["attempts"] == attempts
+    assert "PRIVATE DRAFT" not in repr(attempts)
+
+
+def test_attempt_evidence_retains_unknown_transport_cost_not_zero():
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+
+    class FakeLLM:
+        max_response_tokens = 1000
+        responses = iter([{"content": "[OllamaIRP: transport failure]"},
+                          {"content": "done", "raw": {"eval_count": 7}}])
+
+        def get_chat_response(self, messages, **kwargs):
+            return next(self.responses)
+
+    result = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [])
+    attempts = result.generates[0]["attempts"]
+    assert len(attempts) == 2
+    assert attempts[0]["eval_count"] is None
+    assert attempts[0]["transport_error"] is True
+    assert attempts[1]["eval_count"] == 7
+
+
+def test_attempt_evidence_includes_json_selection_and_failed_argument_draw():
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+
+    class FakeLLM:
+        max_response_tokens = 1000
+        responses = iter([
+            {"content": '{"act":"memory_read","why":"inspect"}', "raw": {"eval_count": 11}},
+            {"content": 'not JSON', "raw": {"eval_count": 13}},
+            {"content": '{"path":"example.txt"}', "raw": {"eval_count": 17}},
+            {"content": '{"act":"done","why":"finished"}', "raw": {"eval_count": 19}},
+        ])
+
+        def get_chat_response(self, messages, **kwargs):
+            return next(self.responses)
+
+    tools = [{"function": {"name": "memory_read", "parameters": {
+        "type": "object", "required": ["path"], "properties": {"path": {"type": "string"}}}}}]
+    result = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [], max_steps=1,
+                                  tools=tools, act_form="json")
+    attempts = result.generates[0]["attempts"]
+    assert [a["phase"] for a in attempts] == ["json_select", "json_arguments", "json_arguments"]
+    assert [a["eval_count"] for a in attempts] == [11, 13, 17]
+    assert len(result.trace) == 1
+    assert [a["eval_count"] for a in result.generates[1]["attempts"]] == [19]
 
 
 def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
@@ -199,8 +270,9 @@ def test_length_retry_gets_the_room_the_window_has_left_via_the_override():
     assert seen == [None, 16384 - 6721 - RETRY_MARGIN]      # first attempt: config budget; retry: the window's room
     assert llm.num_predict_override is None                  # restored
     assert llm.max_response_tokens == 3000                   # untouched: it is not the lever
-    assert r.generates == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1,
-                            "num_predict": 16384 - 6721 - RETRY_MARGIN}]
+    assert [{k: v for k, v in g.items() if k != "attempts"} for g in r.generates] == [{"done_reason": "stop", "prompt_eval_count": 6721, "eval_count": 700, "retried": 1,
+                            "num_predict": 16384 - 6721 - RETRY_MARGIN,
+                            "retry_cause": "output_budget"}]   # 6721 + 6000 < 16384: num_predict ran out
 
 
 def test_length_retry_without_a_window_falls_back_to_the_think_budget():
@@ -1011,3 +1083,270 @@ def test_a_collapse_is_reported_with_the_room_it_freed():
         # the stub's length is kept + marker, so chars freed == stub length - pointer length
         assert r["chars"] > 0 and r["spill"] in out[r["index"]]["content"]
         assert _ELIDED_SIGIL not in out[r["index"]]["content"]
+
+
+class _Recorder:
+    """A dispatcher that delivers every say/speak except to conversations it is told to refuse."""
+    def __init__(self, refuse=()):
+        self.calls, self.refuse = [], set(refuse)
+
+    def dispatch(self, i):
+        self.calls.append((i.effector, dict(i.args)))
+        if (i.args or {}).get("to") in self.refuse:
+            return ResultEnvelope(ok=False, error=f"no conversation {i.args['to']!r}")
+        return ResultEnvelope(ok=True, result="said")
+
+
+def _say(to, text):
+    return BeingIntent("say", {"to": to, "text": text})
+
+
+def test_one_utterance_per_conversation_per_turn():
+    """dp, 2026-10-04: "is this not basic idempotence?" 03:36Z sent one check-in to dp 3x in 34 s (first 300
+    chars byte-identical, endings different): the byte key missed it. The key is the conversational move."""
+    c = _Recorder()
+    outs = [{"content": "", "intents": [_say("dp", "Hi dp. I wanted to check in about boundaries.")]},
+            {"content": "", "intents": [_say("dp", "Hi dp. I wanted to check in about boundaries. Friday?")]},
+            {"content": "", "intents": [_say("DP", "A third, different thing.")]},
+            {"content": "done", "intents": []}]
+    r = run_tool_turn(c, lambda convo: outs.pop(0), [], max_steps=4)
+    assert [a["text"][:12] for _, a in c.calls] == ["Hi dp. I wan"], "only the first reaches the dispatcher"
+    held = [env for _, env in r.trace[1:]]
+    assert all(not e.ok and e.note == "one_per_conversation" and "already spoke in 'dp'" in e.error for e in held)
+    assert [d["rule"] for d in r.duplicates] == ["one_per_conversation_per_turn"] * 2, "recorded, never silent"
+
+
+def test_other_conversations_and_other_acts_are_untouched():
+    c = _Recorder()
+    outs = [{"content": "", "intents": [_say("dp", "to dp"), _say("sprout-claude", "to the seat"),
+                                        BeingIntent("speak", {"text": "aloud"}),
+                                        BeingIntent("recall", {"query": "q"}), BeingIntent("recall", {"query": "q2"})]},
+            {"content": "done", "intents": []}]
+    r = run_tool_turn(c, lambda convo: outs.pop(0), [], max_steps=2)
+    assert [e for e, _ in c.calls] == ["say", "say", "speak", "recall", "recall"] and r.duplicates == []
+
+
+def test_a_refused_say_does_not_use_up_the_conversation():
+    """Only a DELIVERED utterance sets the key: a say the dispatcher refused can be corrected and sent."""
+    c = _Recorder(refuse={"dpp"})
+    outs = [{"content": "", "intents": [_say("dpp", "hello")]},
+            {"content": "", "intents": [_say("dp", "hello")]},
+            {"content": "done", "intents": []}]
+    run_tool_turn(c, lambda convo: outs.pop(0), [], max_steps=3)
+    assert [a["to"] for _, a in c.calls] == ["dpp", "dp"]
+
+
+def test_speech_twice_in_the_room_is_one_utterance():
+    c = _Recorder()
+    outs = [{"content": "", "intents": [BeingIntent("speak", {"text": "Hello! How can I help you today?"})]},
+            {"content": "", "intents": [_say("room", "Hello! How can I help you today?")]},
+            {"content": "done", "intents": []}]
+    r = run_tool_turn(c, lambda convo: outs.pop(0), [], max_steps=3)
+    assert len(c.calls) == 1 and r.duplicates[0]["conversation"] == "room"
+import pytest as _pytest
+
+
+@_pytest.mark.parametrize("prompt,evalc,cause,says,never", [
+    (5192, 3000, "window", "the window cut it", "output budget"),           # 5192 + 3000 = 8192: the wall
+    (2000, 3000, "output_budget", "output budget", "the window cut it"),    # room left: num_predict ran out
+])
+def test_a_length_stop_names_the_limit_it_actually_hit(prompt, evalc, cause, says, never):
+    """legion-being 2026-10-07: its last 400 empty first attempts were 189 window wall and 209
+    output budget, and every one was told "the window cut it". It then read its wall cuts
+    (25,204 + 7,564 = 32,768) as budget cuts. The nudge and the record now say which."""
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    seen = []
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 8192
+        num_predict_override = None
+        think = True
+
+        def get_chat_response(self, messages, tools=None):
+            seen.append(str(messages[-1].get("content", "")))
+            if len(seen) == 1:
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": prompt, "eval_count": evalc,
+                                "message": {"content": "", "thinking": "drafting a long function ..."}}}
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": prompt + 50, "eval_count": 20,
+                            "message": {}}}
+
+    r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(), [{"role": "user", "content": "hi"}])
+    assert len(seen) == 2
+    assert says in seen[1] and never not in seen[1], seen[1]
+    assert r.generates[0]["retry_cause"] == cause
+
+
+def test_retry_cause_of_reads_the_counts_not_the_reason_alone():
+    from types import SimpleNamespace
+    from sage.gateway.being_tool_loop import retry_cause_of
+    llm = SimpleNamespace(num_ctx=32768)
+    assert retry_cause_of(llm, {"done_reason": "length", "prompt_eval_count": 25204, "eval_count": 7564}) == "window"
+    assert retry_cause_of(llm, {"done_reason": "length", "prompt_eval_count": 22983, "eval_count": 8000}) == "output_budget"
+    assert retry_cause_of(llm, {"done_reason": "stop", "prompt_eval_count": 1000, "eval_count": 183}) == "stopped_thinking"
+    assert retry_cause_of(SimpleNamespace(), {"done_reason": "length", "eval_count": 8000}) == "length"   # no window: not guessed
+
+
+
+def test_a_collapsed_check_result_still_names_its_failing_tests():
+    """legion-being 2026-10-07 (#360): "4 failed ... plus 3 others (names elided from my window)".
+    The stub kept the check headline whole, but collapsing the stub to a pointer kept 120 chars
+    of its first line, which ended before the test names. The pointer now keeps the headline."""
+    import json, tempfile
+    from sage.gateway.being_tool_loop import compact_convo, _COLLAPSED_SIGIL
+    root = tempfile.mkdtemp(prefix="collapse-hl-")
+    names = [f"test_pr_read.py::test_case_number_{k}_with_a_long_descriptive_name" for k in range(4)]
+    headline = ("FAIL — 4 failed, 8 passed in 1.73s. Failing (4): "
+                + "; ".join(f"sage/gateway/tests/{n} — AssertionError: x" for n in names) + ".")
+    full = _stubbed(30)
+    full[3]["content"] = json.dumps({"headline": headline, "stdout": "T" * 9000}, ensure_ascii=False)
+    out, el = compact_convo([dict(x) for x in full], _LLMTight(), spill_root=root)
+    assert _COLLAPSED_SIGIL in out[3]["content"], "the oldest result is collapsed in this setup"
+    for n in names:
+        assert n in out[3]["content"], (n, out[3]["content"][:400])
+
+
+def test_convo_composition_splits_the_floor_by_what_compaction_did():
+    from sage.gateway.being_tool_loop import convo_composition, _ELIDED_SIGIL, _COLLAPSED_SIGIL, _convo_chars
+    msgs = [{"role": "system", "content": "s" * 100}, {"role": "user", "content": "u" * 200},
+            {"role": "assistant", "content": "a" * 50, "tool_calls": []},
+            {"role": "tool", "content": "w" * 300},
+            {"role": "tool", "content": f"head [… 9 {_ELIDED_SIGIL} …] tail"},
+            {"role": "tool", "content": f"[result {_COLLAPSED_SIGIL} ...]"},
+            {"role": "user", "content": "[harness] note"}]
+    c = convo_composition(msgs)
+    assert c["seed"] == 300 and c["results_whole"] == 300 and c["n_results"] == 3
+    assert (c["n_stubs"], c["n_pointers"]) == (1, 1) and c["notes"] == len("[harness] note")
+    parts = ("seed", "results_whole", "results_stub", "results_pointer", "own_turns", "notes")
+    assert sum(c[k] for k in parts) == _convo_chars(msgs)   # it accounts for every char
+
+
+def test_a_window_cut_is_retried_after_compaction_not_as_the_same_prompt(tmp_path):
+    """legion-being 2026-10-08 09:52Z: 26,241 + 6,527 = 32,768 (the window); the retry was the same
+    prompt plus a nudge, its memory_write was cut mid-JSON at the wall, and the 500 became the
+    beat's reply. A window-cut retry now compacts first, against the server's own count."""
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    sent = []
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 32768
+        num_predict_override = None
+        think = True
+
+        def get_chat_response(self, messages, tools=None):
+            sent.append(sum(len(m.get("content") or "") for m in messages))
+            if len(sent) == 1:
+                # the wall: prompt + eval == num_ctx, nothing said
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 30768, "eval_count": 2000,
+                                "message": {"content": "", "thinking": "drafting ..."}}}
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 3000, "eval_count": 20, "message": {}}}
+
+    big = "x" * 6000
+    seed = [{"role": "system", "content": "s"}, {"role": "user", "content": "go"}]
+    for i in range(4):
+        seed += [{"role": "assistant", "content": "", "tool_calls": [
+                     {"function": {"name": "memory_read", "arguments": {"path": f"f{i}"}}}]},
+                 {"role": "tool", "content": big}]
+    c = _client(OK_DISPATCH)
+    c.memory_root = str(tmp_path)
+    r = run_ollama_tool_turn(c, FakeLLM(), seed)
+    assert len(sent) == 2 and r.reply == "done"
+    assert sent[1] < sent[0], f"the retry must be smaller than what hit the wall: {sent}"
+    assert r.generates[0]["retry_cause"] == "window"
+    assert any(x.get("before_retry") for x in r.compacted), r.compacted
+
+
+def test_the_answer_reserve_is_the_beings_parameter(tmp_path):
+    """2026-10-08: legion-being's floor was 52-55% seed, 0% pointers -- the plateau was compaction's
+    TARGET (num_ctx - 6,144), and its 8,000-token thinking hit the wall above it. answer_reserve
+    moves the target; the default is unchanged."""
+    import json as _json
+    from sage.gateway.being_tool_loop import run_ollama_tool_turn
+    sent = []
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 32768
+        num_predict_override = None
+        think = False
+
+        def get_chat_response(self, messages, tools=None):
+            sent.append(sum(len(m.get("content") or "") for m in messages))
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 25000, "eval_count": 20, "message": {}}}
+
+    def seed():
+        s = [{"role": "system", "content": "s"}, {"role": "user", "content": "go"}]
+        for i in range(10):
+            s += [{"role": "assistant", "content": "", "tool_calls": [
+                      {"function": {"name": "memory_read", "arguments": {"path": f"f{i}"}}}]},
+                  {"role": "tool", "content": "x" * 7000}]
+        return s
+
+    def run(params):
+        (tmp_path / "instance.json").write_text(_json.dumps({"params": params}))
+        sent.clear()
+        c = _client(OK_DISPATCH)
+        c.memory_root = str(tmp_path)
+        r = run_ollama_tool_turn(c, FakeLLM(), seed())
+        return sent[0], r
+    default, _ = run({})
+    larger, r = run({"answer_reserve": 12288})
+    assert larger < default, (default, larger)
+    # each per-step pass records what the window is made of after it (convo_composition)
+    assert r.compacted and all(set(x.get("after") or {}) >= {"seed", "results_whole", "results_stub"}
+                               for x in r.compacted), r.compacted
+
+
+def test_a_window_retry_increases_even_a_large_being_answer_reserve(tmp_path, monkeypatch):
+    """A 12,288-token tuned reserve must not shrink to the old 8,192-token retry constant.
+
+    The first generate has demonstrably exhausted the window. Inspect the real
+    compaction-call arguments: a retry must reserve strictly more than the first attempt.
+    """
+    import json as _json
+    from sage.gateway import being_tool_loop as loop
+    (tmp_path / "instance.json").write_text(_json.dumps({"params": {"answer_reserve": 12288}}))
+    seen = []
+    original_compact = loop.compact_convo
+
+    def capture_reserve(msgs, llm, **kwargs):
+        seen.append(kwargs.get("reserve"))
+        return original_compact(msgs, llm, **kwargs)
+
+    monkeypatch.setattr(loop, "compact_convo", capture_reserve)
+
+    class FakeLLM:
+        max_response_tokens = 3000
+        num_ctx = 32768
+        num_predict_override = None
+        think = False
+        attempts = 0
+
+        def get_chat_response(self, messages, tools=None):
+            self.attempts += 1
+            if self.attempts == 1:
+                return {"content": "", "tool_calls": [],
+                        "raw": {"done_reason": "length", "prompt_eval_count": 30768,
+                                "eval_count": 2000, "message": {"content": "", "thinking": ""}}}
+            return {"content": "done", "tool_calls": [],
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 3000,
+                            "eval_count": 20, "message": {}}}
+
+    seed = [{"role": "system", "content": "s"}, {"role": "user", "content": "go"}]
+    for i in range(5):
+        seed.extend([{"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "memory_read", "arguments": {"path": f"f{i}"}}}]},
+            {"role": "tool", "content": "x" * 6000}])
+    client = _client(OK_DISPATCH)
+    client.memory_root = str(tmp_path)
+    llm = FakeLLM()
+    result = loop.run_ollama_tool_turn(client, llm, seed)
+    assert llm.attempts == 2 and result.reply == "done"
+    assert result.generates[0]["retry_cause"] == "window"
+    assert seen[:2] == [12288, 13312], seen

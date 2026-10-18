@@ -168,6 +168,13 @@ def test_memory_edit_refuses_an_ambiguous_or_absent_anchor_and_changes_nothing()
     r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "a = 1", "new": "a = 9"}), _ALLOW)
     assert not r.ok and "appears 2 times" in r.error, r.error
     assert (home / "notes" / "s.py").read_text() == before, "an ambiguous edit changed the file"
+    # ...and it names where the copies are and the start_line door, which must then work
+    assert "lines 1, 2" in r.error and "start_line" in r.error, r.error
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "a = 1", "new": "a = 9",
+                                         "start_line": 2}), _ALLOW)
+    assert r.ok, r.error
+    assert (home / "notes" / "s.py").read_text() == before.replace("a = 1\na = 1", "a = 1\na = 9")
+    (home / "notes" / "s.py").write_text(before)
 
     r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "zzz", "new": "q"}), _ALLOW)
     assert not r.ok and "not in" in r.error, r.error
@@ -209,6 +216,36 @@ def test_a_long_read_names_its_window_and_the_start_line_that_reads_on():
     assert disp(BeingIntent("memory_read", {"path": "notes/small.md"}), _ALLOW).result == "a = 1\n"
     r = disp(BeingIntent("memory_read", {"path": "notes/small.md", "start_line": 9}), _ALLOW)
     assert r.ok and r.result.startswith("[past the end:")
+
+
+def test_a_read_stops_at_end_line_and_says_the_cut_was_asked_for():
+    """Measured 2026-10-09 20:38Z on cbp-being: told the exact old=/new= for lines 79, 80, 187
+    and 226, it read each with start_line alone and got the rest of the file four times
+    (~200 lines each) in a 16k window; the seat's edits were evicted and the beat ended in
+    re-asks. memory_edit has taken end_line since #160; memory_read must take the same
+    number, inclusive, and a cut at end_line must not read as the file ending there."""
+    disp, root = _disp()
+    body = "".join(f"line {i:04d}\n" for i in range(1, 301))
+    Path(root, "notes").mkdir(exist_ok=True)
+    Path(root, "notes", "f.py").write_text(body)
+    r = disp(BeingIntent("memory_read", {"path": "notes/f.py", "start_line": 79, "end_line": "80"}), _ALLOW)
+    shown = [l for l in r.result.splitlines() if l.startswith("line ")]
+    assert shown == ["line 0079", "line 0080"], r.result
+    assert r.result.startswith("[lines 79-80 of 300") and "end of the range you asked for" in r.result
+    assert "Lines 81-300 were NOT shown" in r.result and "start_line=81" in r.result
+    assert "truncated" not in r.result and "end of file" not in r.result
+    # one line: the same number twice
+    r = disp(BeingIntent("memory_read", {"path": "notes/f.py", "start_line": 187, "end_line": 187}), _ALLOW)
+    assert [l for l in r.result.splitlines() if l.startswith("line ")] == ["line 0187"]
+    # end_line below start_line reads as start_line alone; past the end reads to the end
+    r = disp(BeingIntent("memory_read", {"path": "notes/f.py", "start_line": 5, "end_line": 2}), _ALLOW)
+    assert [l for l in r.result.splitlines() if l.startswith("line ")] == ["line 0005"]
+    r = disp(BeingIntent("memory_read", {"path": "notes/f.py", "start_line": 298, "end_line": 999}), _ALLOW)
+    assert [l for l in r.result.splitlines() if l.startswith("line ")] == ["line 0298", "line 0299", "line 0300"]
+    assert "end of file: line 300" in r.result
+    # without end_line nothing changes: the window runs to the char cap or the end
+    r = disp(BeingIntent("memory_read", {"path": "notes/f.py", "start_line": 290}), _ALLOW)
+    assert "end of file: line 300" in r.result and "line 0300" in r.result
 
 
 def test_memory_edit_accepts_the_names_other_edit_tools_use():
@@ -507,6 +544,47 @@ def test_a_missed_edit_anchor_says_where_it_stopped_matching():
                                          "new": ""}), _ALLOW)
     assert not r.ok and "closest line is line 1" in r.error, r.error
 
+    # Indentation does not pick the line: unindented old text, measured on cbp-being 2026-10-04.
+    g = Path(root) / "notes" / "m.py"
+    disp(BeingIntent("memory_write", {"path": "notes/m.py", "content":
+        "                layers.append(nn.Linear(hidden_dim, input_dim))\n"
+        "            layers.append(nn.Linear(prev_dim, hidden_dim))\n"}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/m.py",
+                                         "old": "layers.append(nn.Linear(hidden_dim, hidden_dim))",
+                                         "new": "q"}), _ALLOW)
+    assert not r.ok and "closest line is line 1: '                layers" in r.error, r.error
+
+    # A def is found by its name, not its arguments: measured on cbp-being 2026-10-08.
+    h = Path(root) / "notes" / "d.py"
+    disp(BeingIntent("memory_write", {"path": "notes/d.py", "content":
+        "def create_decoder(latent_dim: int = 100):\n    pass\n\n\ndef main():\n    pass\n"}),
+         _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/d.py",
+                                         "old": "def main(latent_dim: int = 100):",
+                                         "new": "def main():"}), _ALLOW)
+    assert not r.ok and "main is defined at line 5: 'def main():'" in r.error, r.error
+    assert "create_decoder" not in r.error, r.error
+    r = disp(BeingIntent("memory_edit", {"path": "notes/d.py",
+                                         "old": "def train(latent_dim: int = 100):",
+                                         "new": "def train():"}), _ALLOW)
+    assert not r.ok and "no line defines train" in r.error, r.error
+
+    # An assignment is found by the name it assigns: measured on cbp-being 2026-10-12.
+    disp(BeingIntent("memory_write", {"path": "notes/a.py", "content":
+        "projected = proj(w_true, A)\nw_with_outside = w_true + v\n"
+        "projected_modified = proj(w_with_outside, A)\n"}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/a.py",
+                                         "old": "projected, norm = proj(A, w_with_outside)",
+                                         "new": "projected = proj(w_true, A)[0]"}), _ALLOW)
+    assert not r.ok and "projected is assigned at line 1: 'projected = proj(w_true, A)'" \
+        in r.error, r.error
+    assert "line 3" not in r.error, r.error
+    # A name no line assigns falls back to the nearest line.
+    r = disp(BeingIntent("memory_edit", {"path": "notes/a.py",
+                                         "old": "fresh = proj(w_with_outside, A)",
+                                         "new": "fresh = 1"}), _ALLOW)
+    assert not r.ok and "The closest line is line 3" in r.error, r.error
+
     r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "zzz", "new": "q"}), _ALLOW)
     assert not r.ok and "Not even your first line" in r.error, r.error
     assert f.read_text() == before
@@ -527,6 +605,26 @@ def test_memory_edit_by_line_number_deletes_the_lines_it_names():
     assert (home / "notes" / "s.py").read_text() == "def main():\n    pass\n\nif __name__ == '__main__':\n    main()\n"
     assert "replaced lines 6-8 (3 lines)" in r.result and "noise=0.1" in r.result, \
         "the receipt must quote what was removed, so the being can see it is the right thing"
+
+
+def test_memory_edit_long_range_receipt_shows_the_end_and_names_removed_defs():
+    """cbp-being 2026-10-07 19:03Z: a delete meant for a 13-line block took 33 lines,
+    including a forward and the start of train_model. The receipt quoted the first 400
+    chars only, which were the intended block; the overreach at the end was cut."""
+    disp, root = _disp()
+    home = Path(root)
+    (home / "notes").mkdir(exist_ok=True)
+    block = "        self.decoder = nn.Sequential(\n" + "            nn.Linear(64, 64),\n" * 20 + "        )\n"
+    rest = ("\n    def forward(self, x):\n        return self.decoder(x)\n\n"
+            "def train_model(model, loader):\n    for epoch in range(3):\n        pass_marker_end = 1\n")
+    (home / "notes" / "s.py").write_text("x = 1\n" + block + rest + "y = 2\n")
+    n = 1 + block.count("\n") + rest.count("\n")
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "start_line": 2, "end_line": n, "new": ""}), _ALLOW)
+    assert r.ok, r.error
+    assert "self.decoder = nn.Sequential(" in r.result, r.result
+    assert "pass_marker_end = 1" in r.result, "the receipt must show where the removal ENDED"
+    assert "more removed lines not shown" in r.result, r.result
+    assert "'def forward'" in r.result and "'def train_model'" in r.result, r.result
 
 
 def test_memory_edit_accepts_the_measured_old_line_spelling():
@@ -1018,12 +1116,20 @@ def test_a_record_write_stamps_when_each_named_code_file_last_changed():
     stamp = dt.datetime.fromtimestamp(old, dt.timezone.utc).strftime("%Y-%m-%d %H:%M")
     assert f"mechanism.py was last changed at {stamp} UTC" in r.result, r.result
     assert "notes/helper.py was last changed at" in r.result, "a bare name found under notes/ says where"
-    assert "ghost.py was not found at the top of your home or in notes/" in r.result, r.result
+    assert "ghost.py was not found at the top of your home, in notes/ or in scratch/" in r.result, r.result
     # the 09-28 review's case: a bare name that lives elsewhere must not be called absent
     r = disp(BeingIntent("memory_write", {"path": "todo.md", "content": "- [done] fix train.py"}), _ALLOW)
-    assert "not a file" not in r.result and "not found at the top of your home or in notes/" in r.result
+    assert "not a file" not in r.result and "not found at the top of your home, in notes/ or in scratch/" in r.result
     r = disp(BeingIntent("memory_write", {"path": "todo.md", "content": "- [done] fix experiments/train.py"}), _ALLOW)
     assert "experiments/train.py was last changed at" in r.result, r.result
+    # 2026-10-08: request_run files live in scratch/; a bare name there was reported absent,
+    # and naming it both ways stamped it once and denied it once in the same receipt
+    (home / "scratch").mkdir(exist_ok=True)
+    (home / "scratch" / "probe.py").write_text("w = 4\n")
+    r = disp(BeingIntent("memory_write", {"path": "todo.md", "content":
+        "- ran scratch/probe.py; next: edit probe.py line 3"}), _ALLOW)
+    assert r.result.count("scratch/probe.py was last changed at") == 1, r.result
+    assert "probe.py was not found" not in r.result, r.result
 
 
 def test_a_record_write_never_stamps_a_file_outside_the_home():
@@ -1100,3 +1206,307 @@ def test_a_missed_anchor_with_one_match_reads_as_before():
     text = "a\nb\nc\nd"
     msg = _where_it_diverged(text, "b\nc\nX")
     assert "match lines 2-3 of the file exactly" in msg and "places" not in msg
+
+
+def test_a_range_edit_whose_old_is_elsewhere_says_where():
+    """cbp-being 2026-10-07 02:53Z: the seat's exact old text sent with the traceback's line
+    number (148) instead of the line it was on (145), refused twice in one beat. The refusal
+    now names the line where old is, when it occurs once."""
+    disp, root = _disp()
+    home = Path(root)
+    (home / "notes").mkdir(exist_ok=True)
+    f = home / "notes" / "s.py"
+    before = "a = 1\nb = f(a)\nc = g(b)\nprint(c)\n"
+    f.write_text(before)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "start_line": 4,
+                                         "old": "b = f(a)", "new": "b = f(a).detach()"}), _ALLOW)
+    assert not r.ok
+    assert "Your old text IS in the file, once, at line 2, not at line 4" in r.error, r.error
+    assert "with start_line 2" in r.error
+    assert f.read_text() == before
+    # multi-line old names its range
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "start_line": 1, "end_line": 2,
+                                         "old": "c = g(b)\nprint(c)", "new": "x"}), _ALLOW)
+    assert not r.ok and "at lines 3-4, not at line 1" in r.error, r.error
+    # old absent, or present more than once: no location is claimed
+    f.write_text(before + "b = f(a)\n")
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "start_line": 4,
+                                         "old": "b = f(a)", "new": "y"}), _ALLOW)
+    assert not r.ok and "IS in the file" not in r.error, r.error
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "start_line": 4,
+                                         "old": "zzz", "new": "y"}), _ALLOW)
+    assert not r.ok and "IS in the file" not in r.error, r.error
+
+
+def test_memory_edit_retry_of_a_made_edit_is_an_idempotent_no_op_success():
+    """cbp-being 2026-10-07 10:20Z: its pandas-import edit landed, the same beat sent it twice
+    more, both got the copy-it-exactly refusal, and it told its seat the edits 'failed due to
+    indentation mismatches' (seq 6812). A retry whose new text is already there is the desired
+    state satisfied: ok=true, an explicit no-op receipt, and the file byte-identical (GPT HOLD
+    on #388: a failed-act label for a satisfied request invites the same misreport)."""
+    disp, root = _disp()
+    home = Path(root)
+    f = home / "notes" / "s.py"
+    src = "import os\nimport sys\nimport pandas as pd\n\nfrom data import load_data\nprint(1)\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": src}), _ALLOW)
+    old = "import os\nimport sys\nimport pandas as pd\n\nfrom data import load_data"
+    new = "import os\nimport sys\n\nfrom data import load_data"
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": old, "new": new}), _ALLOW)
+    assert r.ok, r.error
+    assert "changed the file on disk" in r.result, r.result
+    before, st = f.read_bytes(), f.stat()
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": old, "new": new}), _ALLOW)
+    assert r.ok, r.error
+    assert r.result.startswith("already in place; nothing changed"), r.result
+    assert "unchanged" in r.result and "line 1" in r.result, r.result
+    # the receipt must not read as a fresh edit or as a failure
+    assert "changed the file on disk" not in r.result and "edited " not in r.result, r.result
+    assert "indentation" not in r.result, r.result
+    assert f.read_bytes() == before                      # byte-identical
+    assert f.stat().st_mtime_ns == st.st_mtime_ns        # no write happened at all
+    assert f.stat().st_ino == st.st_ino                  # not even an atomic replace
+    assert not list(f.parent.glob("*.edit.tmp"))
+
+
+def test_memory_edit_old_absent_and_new_absent_is_still_a_failure():
+    disp, root = _disp()
+    f = Path(root) / "notes" / "s.py"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py",
+                                      "content": "import os\nprint(1)\n"}), _ALLOW)
+    before = f.read_bytes()
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py",
+                                         "old": "import sys\nimport pandas as pd\n",
+                                         "new": "import sys\nimport numpy as np  # long enough line\n"}),
+             _ALLOW)
+    assert not r.ok and "not in" in r.error and "already in place" not in r.error, r.error
+    assert f.read_bytes() == before
+    # a short new line that merely occurs elsewhere is NOT read as a made edit
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "zzz", "new": "print(1)"}), _ALLOW)
+    assert not r.ok and "already in place" not in r.error, r.error
+    assert f.read_bytes() == before
+
+
+def test_memory_edit_new_text_that_is_a_prefix_of_a_longer_line_is_not_already_in_place():
+    """Measured 2026-10-09 22:16Z on cbp-being: line 103 held a spliced tail; the being sent a
+    4-line old= not on disk and a 4-line new= whose last line was the fixed line. The fixed
+    line is a prefix of the unfixed one, so a substring count found new once and the editor
+    said 'already in place' while the SyntaxError was still there (the being then asked its
+    seat to run the unfixed bytes). A copy of new that stops mid-line is not the edit made."""
+    disp, root = _disp()
+    f = Path(root) / "notes" / "s.py"
+    src = ("    residual = y - est\n"
+           "    try:\n"
+           "        w_true_est = residual @ np.linalg.pinv(X_tX)\n"
+           "    except np.linalg.LinAlgError:\n"
+           "        w_true_est = residual @ np.linalg.pinv(X_tX)g.pinv(X_tX)\n")
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": src}), _ALLOW)
+    before = f.read_bytes()
+    old = ("    try:\n"
+           "        w_true_est = residual @ np.linalg.pinv(X_tX)g.pinv(X_tX)\n"
+           "    except np.linalg.LinAlgError:\n"
+           "        w_true_est = residual @ np.linalg.pinv(X_tX)g.pinv(X_tX)")
+    new = ("    try:\n"
+           "        w_true_est = residual @ np.linalg.pinv(X_tX)\n"
+           "    except np.linalg.LinAlgError:\n"
+           "        w_true_est = residual @ np.linalg.pinv(X_tX)")
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": old, "new": new}), _ALLOW)
+    assert not r.ok, r.result
+    assert "already in place" not in r.error and "not in" in r.error, r.error
+    assert f.read_bytes() == before
+    # the same new= ending at a line end, once, IS already in place
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "zzz not here either",
+                                         "new": "    residual = y - est\n    try:\n        w_true_est = residual @ np.linalg.pinv(X_tX)\n"}), _ALLOW)
+    assert r.ok and r.result.startswith("already in place"), (r.ok, r.error, r.result)
+    assert f.read_bytes() == before
+
+
+def test_memory_edit_ambiguous_matches_are_still_failures():
+    disp, root = _disp()
+    f = Path(root) / "notes" / "s.py"
+    block = "def helper(x):\n    return x * 2  # the doubled value\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py",
+                                      "content": block + "\n" + block}), _ALLOW)
+    before = f.read_bytes()
+    # old absent, new present TWICE: which copy would be "the edit"? not a satisfied no-op
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "def gone(y):\n",
+                                         "new": block}), _ALLOW)
+    assert not r.ok and "already in place" not in r.error, r.error
+    # old present twice: refused as ambiguous, naming both lines
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": block,
+                                         "new": "def helper(x):\n    return x * 3\n"}), _ALLOW)
+    assert not r.ok and "appears 2 times" in r.error, r.error
+    assert f.read_bytes() == before
+
+
+def test_a_multi_line_old_that_stops_mid_line_is_refused_and_names_the_tail():
+    """Measured 2026-10-09 22:02Z: cbp-being copied old= from a read its window cut at
+    'np.linal' and sent the whole line as new. The replace matched the prefix and kept the
+    rest of the line, so line 103 became 'np.linalg.pinv(X_tX)g.pinv(X_tX)' and the file no
+    longer parsed; the being journaled the fix as made and asked for a run. A multi-line old=
+    that stops mid-line is a cut: refuse, name the tail, leave the file as it was."""
+    disp, root = _disp()
+    home = Path(root)
+    body = "a = 1\ntry:\n    w = f(x)\nexcept E:\n    w = g.pinv(X)\nz = 2\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": body}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "except E:\n    w = g.pi",
+                                         "new": "except E:\n    w = g.pinv(X)"}), _ALLOW)
+    assert not r.ok and "middle of line 5" in r.error and "'nv(X)'" in r.error, r.error
+    assert "start_line=5" in r.error, r.error
+    assert (home / "notes" / "s.py").read_text() == body, "a cut old= changed the file"
+    # the same edit with the whole line in old lands
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "except E:\n    w = g.pinv(X)",
+                                         "new": "except E:\n    w = h(X)"}), _ALLOW)
+    assert r.ok, r.error
+    assert "    w = h(X)\nz = 2\n" in (home / "notes" / "s.py").read_text()
+    # a multi-line old= that ends at a line break is not a cut
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "a = 1\ntry:\n",
+                                         "new": "a = 2\ntry:\n"}), _ALLOW)
+    assert r.ok, r.error
+    # a single-line in-line token swap is still a choice, not a cut
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "z = ", "new": "z = -"}), _ALLOW)
+    assert r.ok, r.error
+    assert (home / "notes" / "s.py").read_text().endswith("z = -2\n")
+
+
+SWEEP = ("from m import a, b, \\\n    c, d\nN = 10\n\ndef f():\n    for s in range(N):\n"
+         "        print(s)\n")
+
+
+def test_an_edit_that_breaks_a_parsing_file_says_it_is_the_cause_and_the_spaces_are_not():
+    """cbp-being 2026-10-12 09:11:53Z: start_line 53 replaced the import continuation
+    `    orthogonal_decoder, orthogonal_projection` with `np.random.seed(seed)`. The receipt
+    said the spaces changed (4 -> 0) ahead of the SyntaxError, and named the removed line last.
+    The next beat (09:15:27Z) re-indented line 53 three times, 0 -> 8 -> 4 -> 8, and never put
+    the import back. Two facts the receipt can check with compile() and did not say: the file
+    parsed before this edit, and no indentation of the new line parses."""
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text(SWEEP)
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "np.random.seed(seed)"}), _ALLOW)
+    assert r.ok and "cannot parse s.py now: SyntaxError at line 2" in r.result, r.result
+    assert "Before this edit s.py parsed, so this edit is what stopped it" in r.result, r.result
+    assert "With 4 spaces, as the line it replaced had, Python still cannot parse it: " \
+           "changing the spaces alone will not make it parse" in r.result, r.result
+    # The already-broken file: each indentation flip is told the spaces alone will not fix it,
+    # and is NOT told it caused the break (it did not).
+    for n in (8, 4, 8):
+        r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                              "new": " " * n + "np.random.seed(seed)"}), _ALLOW)
+        assert r.ok and "cannot parse" in r.result, r.result
+        assert "this edit is what stopped it" not in r.result, r.result
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "np.random.seed(seed)"}), _ALLOW)
+    assert "changing the spaces alone will not make it parse" in r.result, r.result
+
+
+def test_a_dropped_indent_that_breaks_the_file_is_told_the_old_spaces_would_parse():
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text("def g(n):\n    y = n + 1\n    return y\n")
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "y = n + 2"}), _ALLOW)
+    assert r.ok and "IndentationError" in r.result, r.result
+    assert "With 4 spaces, as the line it replaced had, Python could parse it" in r.result, r.result
+    assert "Before this edit s.py parsed" in r.result, r.result
+
+
+def test_an_edit_that_keeps_the_file_parsing_or_is_not_python_adds_no_cause_note():
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text(SWEEP)
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 3, "end_line": 3,
+                                          "new": "N = 5"}), _ALLOW)
+    assert r.ok and "can parse" in r.result and "stopped it" not in r.result, r.result
+    g = Path(root) / "n.md"
+    g.write_text("a\n    b\n")
+    r = disp(BeingIntent("memory_edit", {"path": "n.md", "start_line": 2, "end_line": 2, "new": "b("}), _ALLOW)
+    assert r.ok and "stopped it" not in r.result and "spaces alone" not in r.result, r.result
+
+
+def test_two_defects_the_failed_retry_does_not_say_the_spaces_are_innocent():
+    """Nova, SAGE #427: one re-indent that still fails cannot prove the indent played no part.
+    (1) The new text drops the indent AND opens a paren it never closes: the indent is one of
+    two defects. (2) The file was already broken elsewhere, and the edit drops an indent: the
+    indent is wrong, and the retry fails because of the other defect. Neither receipt may say
+    the spaces are not the cause; both say only that the spaces alone will not fix it."""
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text("def g(n):\n    y = n + 1\n    return y\n")
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 2, "end_line": 2,
+                                          "new": "y = (n + 2"}), _ALLOW)
+    assert r.ok and "cannot parse s.py now" in r.result, r.result
+    assert "not the cause" not in r.result, r.result
+    assert "With 4 spaces, as the line it replaced had, Python still cannot parse it: " \
+           "changing the spaces alone will not make it parse" in r.result, r.result
+    f.write_text("x = f(1))\ndef g(n):\n    y = n + 1\n    return y\n")
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "start_line": 3, "end_line": 3,
+                                          "new": "y = n + 2"}), _ALLOW)
+    assert r.ok and "cannot parse s.py now" in r.result, r.result
+    assert "not the cause" not in r.result and "stopped it" not in r.result, r.result
+    assert "changing the spaces alone will not make it parse" in r.result, r.result
+
+
+def test_a_text_edit_that_breaks_a_parsing_file_says_it_is_the_cause():
+    disp, root = _disp()
+    f = Path(root) / "s.py"
+    f.write_text(SWEEP)
+    r = disp(BeingIntent("memory_edit", {"path": "s.py", "old": "    c, d\n", "new": "x = (\n"}), _ALLOW)
+    assert r.ok and "cannot parse" in r.result, r.result
+    assert "Before this edit s.py parsed, so this edit is what stopped it" in r.result, r.result
+
+
+def test_a_single_line_old_that_stops_mid_line_is_refused_when_new_ends_with_the_tail():
+    """Measured 2026-10-12 07:59Z: cbp-being sent old '    y = A @ ' and the whole line as new.
+    The replace kept the rest of the line, so line 27 held its tail twice and still parsed.
+    Its next, correct edit (old = the whole first copy) then left the second copy behind,
+    making 'w_truew_true'. A single-line old= that stops mid-line, with a new= that already
+    ends with the rest of the line, is a cut: refuse, name the tail and the line-number route."""
+    disp, root = _disp()
+    home = Path(root)
+    body = "def g(A, w):\n    y = A @ w + noise(len(A)) * s\n    return y\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": body}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "    y = A @ ",
+                                         "new": "    y = A @ w + noise(len(A)) * s"}), _ALLOW)
+    assert not r.ok and "middle of line 2" in r.error and "hold it twice" in r.error, r.error
+    assert "start_line=2 end_line=2" in r.error, r.error
+    assert (home / "notes" / "s.py").read_text() == body, "a cut old= changed the file"
+    # the being's real repair, old = the whole line, lands cleanly
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py",
+                                         "old": "    y = A @ w + noise(len(A)) * s",
+                                         "new": "    y = A @ w"}), _ALLOW)
+    assert r.ok, r.error
+    assert "    y = A @ w\n    return y\n" in (home / "notes" / "s.py").read_text()
+    # an in-line swap whose new does not end with the tail is still a choice
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "    y = A @ ",
+                                         "new": "    y = 2 * A @ "}), _ALLOW)
+    assert r.ok, r.error
+    assert "    y = 2 * A @ w\n" in (home / "notes" / "s.py").read_text()
+
+
+def test_an_extension_already_on_disk_is_not_applied_twice():
+    """Measured 2026-10-14 02:18Z: line 18 already read 'import numpy as np'; cbp-being sent
+    old 'import numpy as', new 'import numpy as np' twice, and the line grew to
+    'import numpy as np np np' (a SyntaxError). A line that already ends with the extension
+    is a satisfied no-op; a line where more follows is refused and shown whole."""
+    disp, root = _disp()
+    f = Path(root) / "notes" / "s.py"
+    body = "import numpy as np\nx = np.zeros(3)\n"
+    disp(BeingIntent("memory_write", {"path": "notes/s.py", "content": body}), _ALLOW)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "import numpy as",
+                                         "new": "import numpy as np"}), _ALLOW)
+    assert r.ok and r.result.startswith("already in place"), (r.ok, r.error, r.result)
+    assert f.read_text() == body
+    # the broken state the being reached: the extension is there, and more follows it
+    grown = "import numpy as np np\nx = np.zeros(3)\n"
+    f.write_text(grown)
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "import numpy as",
+                                         "new": "import numpy as np"}), _ALLOW)
+    assert not r.ok and "a second time" in r.error, r.error
+    assert "'import numpy as np np'" in r.error and "start_line=1 end_line=1" in r.error
+    assert f.read_text() == grown
+    # a real extension, not yet on disk, still lands
+    r = disp(BeingIntent("memory_edit", {"path": "notes/s.py", "old": "x = np.zeros(3)",
+                                         "new": "x = np.zeros(3) + 1"}), _ALLOW)
+    assert r.ok, r.error
+    assert "x = np.zeros(3) + 1\n" in f.read_text()

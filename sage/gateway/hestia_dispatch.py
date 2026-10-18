@@ -275,6 +275,10 @@ class HestiaF1aDispatcher:
     """A Dispatcher (being_gate_client.Dispatcher) that runs the bounded registry against the
     live daemon. Wraps ReferenceF1aDispatcher for the local verbs (witness / memory)."""
 
+    # run (legion 09-16). 64 MiB a file, not legion's 1 MiB: a being training a model
+    # needs its data files beside the script, and a copy that size costs nothing.
+    RUN_MAX_FILE_BYTES = 64 << 20
+    RUN_OUTPUT_CHARS = 6000
     GAME_WINDOW_MAX = 2                 # images per call; the stepper renders at most this many
     GAME_WINDOW_MAX_BYTES = 400_000     # a window is ~60 KB; anything far past that is not one
 
@@ -2553,6 +2557,156 @@ class HestiaF1aDispatcher:
 
 
     # -- check: the being runs a test and reads the answer (PRD M0) --------------
+    def _do_run(self, intent: BeingIntent) -> ResultEnvelope:
+        """Stage copies of the being's files into a seat-owned directory and execute the
+        composed sandbox line against them.
+
+        THE STAGING IS THE SECURITY BOUNDARY, not the sandbox alone. Nothing the being can
+        write is bound into the sandbox: the seat READS each named file inside the being's
+        home, refuses anything that is not a regular file it can reach without following a
+        symlink out, and writes a COPY into a directory only the seat touches. So between the
+        law's ruling and the execution there is no window in which the bytes can change, and
+        a symlink planted in its home resolves in the SEAT's read (where it is refused), never
+        inside the sandbox (where it would be an escape).
+        """
+        import os
+        import shlex
+        import shutil
+        import subprocess
+        from sage.gateway.being_gate_client import run_command, STAGE_ROOT, RUN_TIMEOUT_S
+        try:
+            cmd = run_command(intent.args, {"memory_root": self.memory_root,
+                                            "member": getattr(self, "member", None),
+                                            "worktree": getattr(self, "worktree", None),
+                                            "workspace": getattr(self, "workspace", None)})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        judged = getattr(getattr(self, "_verdict", None), "command", None)
+        if judged is not None and judged != cmd:
+            return ResultEnvelope(ok=False, error=(
+                "run refused: the command the law judged is not the command this dispatcher "
+                "would execute."))
+        root = os.path.realpath(self.memory_root)
+        # the composer already normalised the shapes a model emits; mirror it exactly so the
+        # staged set is the set the law judged (run_command: JSON string or bare path -> list)
+        _d = intent.args.get("data") or []
+        if isinstance(_d, str):
+            import json as _json
+            import re as _re
+            try:
+                _p = _json.loads(_d)
+            except ValueError:
+                _p = None
+            _d = _p if isinstance(_p, list) else [x for x in _re.split(r"[,\s]+", _d.strip()) if x]
+        names = [str(intent.args.get("path", "")).strip()] + [str(x).strip() for x in _d]
+        staged, seen = [], set()
+        for n in names:
+            base = os.path.basename(n)
+            if base in seen:
+                return ResultEnvelope(ok=False, error=(
+                    f"run: two files would arrive as {base!r} in the working directory; they are "
+                    f"placed under their base names, so give files whose names differ"))
+            seen.add(base)
+            full = os.path.realpath(n if os.path.isabs(n) else os.path.join(root, n))
+            if not (full == root or full.startswith(root + os.sep)):
+                # outside the home: allowed for DATA files within the granted reach, staged as
+                # a copy the seat reads (run_command judged the same set; see its comment)
+                from sage.gateway.being_gate_client import _search_reach, _under
+                reach = _search_reach(getattr(self, "worktree", None) or root,
+                                      getattr(self, "workspace", None))
+                if n is names[0] or not _under(full, reach):
+                    return ResultEnvelope(ok=False, error=(
+                        f"run: {n!r} resolves outside anything you can reach and will not be copied in"))
+            if not os.path.isfile(full):
+                # NAME WHERE IT IS. 2026-09-18 07:15Z: told that staged files appear under their
+                # base names, it then PASSED base names as the data arguments — two different
+                # things, conflated by my own wording. A refusal that points at the source path
+                # costs it no second call (same remedy-naming rule as memory_read's miss).
+                hint = ""
+                if "/" not in n:
+                    try:
+                        import glob as _glob
+                        cands = [q for q in _glob.glob(os.path.join(root, "**", n), recursive=True)
+                                 if os.path.isfile(q)][:2]
+                        if cands:
+                            rels = [os.path.relpath(q, root) for q in cands]
+                            hint = (f". You gave a base name; name the SOURCE path instead: "
+                                    + ", ".join(rels) +
+                                    " — inside the sandbox it still appears as " + n)
+                        else:
+                            hint = (". You gave a base name with no directory. `data` takes SOURCE "
+                                    "paths (relative to your home, or absolute in your reach); the "
+                                    "base name is only how it appears inside the sandbox")
+                    except Exception:  # noqa: BLE001 — a hint must never turn a miss into a crash
+                        hint = ""
+                return ResultEnvelope(ok=False, error=f"run: no such file in your home: {n}{hint}")
+            # A HARDLINK IS A REGULAR FILE WHOSE realpath IS ITSELF, so the escape check above
+            # passes it while its bytes may be a file from anywhere (hardbound #427's fourth
+            # class, found on Legion; private-context legion/TODO-sandbox-escape-classes.md).
+            # The being has no verb that makes a link, so this is defence in depth.
+            if os.stat(full).st_nlink > 1:
+                return ResultEnvelope(ok=False, error=(
+                    f"run: {n} has more than one name on disk (a hardlink), so its bytes may "
+                    f"belong to a file elsewhere; it is not copied in. Write it out as an "
+                    f"ordinary file and name that"))
+            size = os.path.getsize(full)
+            if size > self.RUN_MAX_FILE_BYTES:
+                return ResultEnvelope(ok=False, error=(
+                    f"run: {n} is {size} bytes; the limit per file is {self.RUN_MAX_FILE_BYTES}"))
+            staged.append((base, full))
+        stage = f"{STAGE_ROOT}-{getattr(self, 'member', '')}"
+        try:
+            shutil.rmtree(stage, ignore_errors=True)
+            os.makedirs(stage, mode=0o700, exist_ok=False)
+            for base, full in staged:
+                with open(full, "rb") as fh:
+                    data = fh.read()
+                with open(os.path.join(stage, base), "wb") as fh:
+                    fh.write(data)
+        except OSError as e:
+            return ResultEnvelope(ok=False, error=f"run could not stage your files: {type(e).__name__}: {e}")
+        begin = self._call("hestia_begin_action", {"tool_name": "run", "target": staged[0][0]})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=(
+                f"run UNVERIFIED: the witness substrate is unreachable ({err[:160]}); "
+                f"your code was not executed"))
+        action_id = begin.get("actionId")
+        try:
+            proc = subprocess.run(shlex.split(cmd), text=True, capture_output=True,
+                                  timeout=RUN_TIMEOUT_S)
+            ran, rc = True, proc.returncode
+            out, errtxt = proc.stdout or "", proc.stderr or ""
+        except subprocess.TimeoutExpired:
+            ran, rc, out, errtxt = True, -9, "", (
+                f"[no output: your code was still running after {RUN_TIMEOUT_S}s and was stopped. "
+                f"That is a real answer about the code, not a failure of the verb]")
+        except Exception as e:
+            ran, rc, out, errtxt = False, -1, "", f"{type(e).__name__}: {e}"
+        try:
+            self._call("hestia_record_outcome", {"action_id": action_id, "success": ran and rc == 0,
+                                                 "magnitude": 0.0})
+        except Exception:
+            pass
+        shutil.rmtree(stage, ignore_errors=True)
+        if not ran:
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"run could not start the sandbox: {errtxt[:400]}")
+
+        def _cap(t):
+            return t if len(t) <= self.RUN_OUTPUT_CHARS else (
+                t[:self.RUN_OUTPUT_CHARS] + f"\n[… truncated: {len(t) - self.RUN_OUTPUT_CHARS} "
+                f"more characters. Print less, or print a summary]")
+        # A NON-ZERO EXIT IS A RESULT. A traceback is the most useful thing this verb can hand
+        # back: it names the line, and the line is one the being wrote.
+        return ResultEnvelope(ok=True, witness_id=action_id, result={
+            "script": staged[0][0], "files": [b for b, _ in staged],
+            "exit": rc, "stdout": _cap(out.strip()), "stderr": _cap(errtxt.strip()),
+            "note": ("Ran in a sandbox with no network and no home (your worktree, if any, read-only); the "
+                     "copies are gone now. Only what you printed survives." if rc == 0 else
+                     "Non-zero exit: read stderr, it names the line in your own file.")})
+
+
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
         """Run a declared test target in the being's OWN worktree and return the result.
 

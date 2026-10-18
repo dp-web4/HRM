@@ -79,11 +79,12 @@ _SANDBOX_HERE: Optional[bool] = None
 
 
 def _sandbox_here() -> bool:
-    """being_gate_client.sandbox_available(), once per process: it starts a real bwrap."""
+    """A sandbox `run` can use (being_gate_client.run_sandbox_kind: bwrap, or Seatbelt on a Mac), once
+    per process: it starts a real one."""
     global _SANDBOX_HERE
     if _SANDBOX_HERE is None:
-        from sage.gateway.being_gate_client import sandbox_available
-        _SANDBOX_HERE = sandbox_available()
+        from sage.gateway.being_gate_client import run_sandbox_kind
+        _SANDBOX_HERE = run_sandbox_kind() is not None
     return _SANDBOX_HERE
 
 
@@ -126,10 +127,10 @@ def unavailable(body_reading: Optional[dict] = None, worktree: Optional[str] = N
             out["camera"] = "availability unknown: this machine's body was not measured this turn"
         elif not inv.get("cortex_live"):
             out["camera"] = "your eyes' organ (the cortex) is not running, so there is no frame to give you (measured)"
-    # run needs bubblewrap able to make a user namespace; without it the verb refuses rather than
-    # run the being's code with the seat's authority, so say so here too.
+    # run needs a sandbox: bubblewrap able to make a user namespace, or Seatbelt on a Mac; without one
+    # the verb refuses rather than run the being's code with the seat's authority, so say so here too.
     if "run" in _TOOL_SCHEMAS and not _sandbox_here():
-        out["run"] = ("this machine has no usable sandbox (bubblewrap missing or not permitted), "
+        out["run"] = ("this machine has no usable sandbox (neither bubblewrap nor macOS Seatbelt), "
                       "and your code is never run outside one; request_run asks the seat instead")
     if "game" in _TOOL_SCHEMAS and not (cfg or {}).get("game_stepper"):
         out["game"] = "no game is set up on this seat (instance.json has no game_stepper)"

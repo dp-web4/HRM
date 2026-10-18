@@ -1425,12 +1425,17 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
     interp = os.path.dirname(os.path.dirname(sys.executable))
     stage = run_stage_dir(member, names)
     script = os.path.basename(path)
-    # /work IS A SIZE-LIMITED TMPFS, and each staged copy is bound into it READ-ONLY (it was a
-    # writable bind of the host staging dir with no size bound: an hour of writes there fills
-    # the seat's disk, legion-claude on #470). The run can write new files beside its inputs,
-    # within RUN_WORK_BYTES; it cannot change the copies the law judged.
+    # /work IS A SIZE-LIMITED TMPFS (it was a writable bind of the host staging dir with no size
+    # bound: an hour of writes there fills the seat's disk, legion-claude on #470), and each
+    # staged copy is bound into it WRITABLE. It is a sandbox: the run may change, chmod or rewrite
+    # its own copies. They are the seat's throwaway copies, deleted when the run ends; the law
+    # judged the bytes the run STARTS with, and those are what execute. They were read-only for
+    # one commit, which bought no safety and broke scripts that touch their own file (dp,
+    # 2026-10-18: "that cripples a lot of functionality, and it's supposed to be a sandbox").
+    # New files land in the tmpfs (RUN_WORK_BYTES); a write into a copy lands in the seat's
+    # staging dir, bounded per file by RLIMIT_FSIZE.
     inputs = "".join(
-        f" --ro-bind {shlex.quote(stage + '/' + b)} {shlex.quote('/work/' + b)}"
+        f" --bind {shlex.quote(stage + '/' + b)} {shlex.quote('/work/' + b)}"
         for b in (os.path.basename(n) for n in names))
     # THE WORKTREE IS IMPORTABLE, READ-ONLY (2026-10-07). legion-being, fixing #360, could not
     # `from sage.gateway.hestia_dispatch import render_pr` in a scratch script: the sandbox had

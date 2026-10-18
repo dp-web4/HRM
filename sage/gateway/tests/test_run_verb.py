@@ -124,12 +124,15 @@ def test_run_command_grammar_and_what_the_sandbox_contains():
     assert stage.startswith(f"/tmp/sage-run-legion-being-{os.getpid()}-")
     assert f" --size {RUN_WORK_BYTES} --tmpfs /work" in cmd
     assert f" --size {RUN_TMP_BYTES} --tmpfs /tmp" in cmd
-    assert f" --ro-bind {stage}/eval.py /work/eval.py" in cmd
-    assert f" --ro-bind {stage}/moves.md /work/moves.md" in cmd
+    assert f" --bind {stage}/eval.py /work/eval.py" in cmd
+    assert f" --bind {stage}/moves.md /work/moves.md" in cmd
     assert cmd.rstrip().endswith("/work/eval.py"), cmd
     assert " --chdir /work " in cmd
     assert "/home/x/inst" not in cmd, "its home is never bound"
-    assert cmd.count("--bind ") == 0, "no host directory is writable from inside"
+    import re as _re
+    binds = _re.findall(r" --bind (\S+) (\S+)", cmd)
+    assert [t for _, t in binds] == ["/work/eval.py", "/work/moves.md"], binds
+    assert all(src.startswith(stage + "/") for src, _ in binds), "only single staged files are writable"
     assert "--ro-bind-try /lib64 /lib64" in cmd, "an aarch64 seat without /lib64 still runs"
     for ro in ("--ro-bind /usr /usr", "--ro-bind /lib /lib"):
         assert ro in cmd
@@ -180,7 +183,7 @@ def test_run_mounts_the_worktree_read_only_on_the_import_path(tmp_path, monkeypa
     real = os.path.realpath(str(wt))
     assert f"--ro-bind {real} {real}" in cmd and f"--setenv PYTHONPATH {real}" in cmd, cmd
     assert f"--bind {real}" not in cmd.replace(f"--ro-bind {real}", "")
-    assert cmd.count(" --bind ") == 0 and " --tmpfs /work" in cmd
+    assert cmd.count(" --bind ") == 1 and " --tmpfs /work" in cmd and "/work/p.py" in cmd
     no_wt = B.run_command({"path": "scratch/p.py"}, dict(ctx, worktree=None))
     assert "PYTHONPATH" not in no_wt and real not in no_wt
 
@@ -310,16 +313,18 @@ def test_both_writable_places_are_size_bounded_from_inside(tmp_path, monkeypatch
         "        return 'denied ' + type(e).__name__\n"
         "print('tmp:', fill('/tmp/big'))\n"
         "print('work:', fill('big'))\n"
-        "try:\n"
-        "    open('fill.py', 'a').write('#')\n"
-        "    print('input: REACHED')\n"
-        "except OSError:\n"
-        "    print('input: read-only')\n")
+        "import os\n"
+        "open('fill.py', 'a').write('# ' + 'CHANGED' + '-INSIDE\\n')\n"
+        "os.chmod('fill.py', 0o755)\n"
+        "print('input: changed')\n")
     r = d._do_run(BeingIntent("run", {"path": "scratch/fill.py"}))
     assert r.ok, r.error
     out = r.result["stdout"]
     assert "tmp: denied" in out and "work: denied" in out, out
-    assert "input: read-only" in out, "the judged copy cannot be changed from inside: " + out
+    # IT IS A SANDBOX: the run may change its own copy (dp, 2026-10-18), and the being's file
+    # outside is untouched, because what it changed was the seat's throwaway copy
+    assert "input: changed" in out, out
+    assert "CHANGED-INSIDE" not in (home / "scratch" / "fill.py").read_text()
 
 
 @needs_bwrap
@@ -541,3 +546,20 @@ def test_three_actors_cannot_both_hold_the_stage_lock_across_inodes(tmp_path):
     assert _lock_opened_stage(path, d) is False
     _release_stage_lock(path, c)
     assert not os.path.exists(path), "nothing left behind"
+
+
+@needs_bwrap
+def test_its_own_script_by_absolute_path_is_its_own_script(tmp_path):
+    """cbp-being's first live runs, 2026-10-18: it named its own script by its absolute path, inside
+    its home, and was refused twice with "must be a file in your home", which was false."""
+    from sage.gateway.being_gate_client import run_command
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "e.py").write_text("print('ran by full path')\n")
+    full = str(home / "scratch" / "e.py")
+    cmd = run_command({"path": full}, {"memory_root": str(home), "member": "test-being"})
+    assert cmd.rstrip().endswith("/work/e.py")
+    r = d._do_run(BeingIntent("run", {"path": full}))
+    assert r.ok and r.result["exit"] == 0 and "ran by full path" in r.result["stdout"], r
+    # a script outside the home is still refused, and the refusal says where the home is
+    with pytest.raises(ValueError, match="is not inside it"):
+        run_command({"path": "/etc/x.py"}, {"memory_root": str(home), "member": "test-being"})

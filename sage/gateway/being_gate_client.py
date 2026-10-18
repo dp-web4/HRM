@@ -1351,8 +1351,21 @@ def run_names(args: dict, ctx: Optional[dict] = None) -> List[str]:
             # itself still must be the being's own, inside its home — code it executes is code
             # it wrote.
             if i == 0:
-                raise ValueError("run 'path' (the script) must be a file in your home; only "
-                                 "'data' files may come from elsewhere in your reach")
+                # ITS OWN HOME BY ITS FULL NAME IS ITS HOME. cbp-being's first live runs,
+                # 2026-10-18: after one run by relative path, it named the same script by its
+                # absolute path, inside its home, and was refused twice with "must be a file in
+                # your home", which was false about that file. An absolute script path that
+                # resolves inside the home is accepted, the way _safe_path forgives a being
+                # reaching for its own journal by full path. Anywhere else is still refused.
+                _home = os.path.realpath(memory_root)
+                _full = os.path.realpath(n)
+                if not (_full == _home or _full.startswith(_home + os.sep)):
+                    raise ValueError(
+                        f"run 'path' (the script) must be a file in your home, and {n!r} is not "
+                        f"inside it ({_home}); only 'data' files may come from elsewhere in your "
+                        f"reach. A path relative to your home, like 'scratch/x.py', needs no "
+                        f"prefix at all")
+                continue
             if not _under(os.path.realpath(n), reach):
                 raise ValueError(_reach_refusal("run", n, reach))
     if not path.endswith(".py"):
@@ -1412,12 +1425,17 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
     interp = os.path.dirname(os.path.dirname(sys.executable))
     stage = run_stage_dir(member, names)
     script = os.path.basename(path)
-    # /work IS A SIZE-LIMITED TMPFS, and each staged copy is bound into it READ-ONLY (it was a
-    # writable bind of the host staging dir with no size bound: an hour of writes there fills
-    # the seat's disk, legion-claude on #470). The run can write new files beside its inputs,
-    # within RUN_WORK_BYTES; it cannot change the copies the law judged.
+    # /work IS A SIZE-LIMITED TMPFS (it was a writable bind of the host staging dir with no size
+    # bound: an hour of writes there fills the seat's disk, legion-claude on #470), and each
+    # staged copy is bound into it WRITABLE. It is a sandbox: the run may change, chmod or rewrite
+    # its own copies. They are the seat's throwaway copies, deleted when the run ends; the law
+    # judged the bytes the run STARTS with, and those are what execute. They were read-only for
+    # one commit, which bought no safety and broke scripts that touch their own file (dp,
+    # 2026-10-18: "that cripples a lot of functionality, and it's supposed to be a sandbox").
+    # New files land in the tmpfs (RUN_WORK_BYTES); a write into a copy lands in the seat's
+    # staging dir, bounded per file by RLIMIT_FSIZE.
     inputs = "".join(
-        f" --ro-bind {shlex.quote(stage + '/' + b)} {shlex.quote('/work/' + b)}"
+        f" --bind {shlex.quote(stage + '/' + b)} {shlex.quote('/work/' + b)}"
         for b in (os.path.basename(n) for n in names))
     # THE WORKTREE IS IMPORTABLE, READ-ONLY (2026-10-07). legion-being, fixing #360, could not
     # `from sage.gateway.hestia_dispatch import render_pr` in a scratch script: the sandbox had

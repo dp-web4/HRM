@@ -563,3 +563,16 @@ def test_its_own_script_by_absolute_path_is_its_own_script(tmp_path):
     # a script outside the home is still refused, and the refusal says where the home is
     with pytest.raises(ValueError, match="is not inside it"):
         run_command({"path": "/etc/x.py"}, {"memory_root": str(home), "member": "test-being"})
+
+
+def test_run_and_request_run_each_name_the_other_and_neither_says_you_cannot_run():
+    """dp, 2026-10-18: "if the being wants something run outside the sandbox for a good reason, it
+    should still go through the seat." After #470, request_run's text still said "You cannot
+    execute anything yourself, so this is the door" (false), and run's never named the seat."""
+    from sage.gateway.being_gate_client import _TOOL_SCHEMAS
+    from sage.gateway.heartbeat import AFFORDANCES
+    run, req = _TOOL_SCHEMAS["run"][0], _TOOL_SCHEMAS["request_run"][0]
+    assert "request_run" in run and "say why" in run
+    assert "`run`" in req and "OUTSIDE the sandbox" in req and "`why`" in req
+    assert "cannot execute anything yourself" not in req
+    assert "request_run asks the seat" in AFFORDANCES

@@ -47,7 +47,7 @@ NO_WORKTREE_HERE = {
     "git_read": ("it reads the git history of a code-repository checkout (a worktree), not "
                  "your home, and this seat has none; to read your own files use memory_read"),
     "check": ("it runs the test suites of a code-repository checkout (a worktree), not your "
-              "home, and this seat has none; to run one of your own files use request_run"),
+              "home, and this seat has none; to run one of your own files use run"),
     "patch_apply": ("it changes files in a code-repository checkout (a worktree), not your "
                     "home, and this seat has none; to change lines of your own files use "
                     "memory_edit"),
@@ -73,6 +73,18 @@ NO_WORKTREE_HERE = {
 # enabled on this seat". Availability now follows the gate's condition, which is unchanged; the
 # no-worktree reason wins over the body reason because it is the one calling the verb returns.
 WORKTREE_HELD_VERBS = ("camera",)
+
+
+_SANDBOX_HERE: Optional[bool] = None
+
+
+def _sandbox_here() -> bool:
+    """being_gate_client.sandbox_available(), once per process: it starts a real bwrap."""
+    global _SANDBOX_HERE
+    if _SANDBOX_HERE is None:
+        from sage.gateway.being_gate_client import sandbox_available
+        _SANDBOX_HERE = sandbox_available()
+    return _SANDBOX_HERE
 
 
 def canonical_toolset() -> List[str]:
@@ -114,6 +126,11 @@ def unavailable(body_reading: Optional[dict] = None, worktree: Optional[str] = N
             out["camera"] = "availability unknown: this machine's body was not measured this turn"
         elif not inv.get("cortex_live"):
             out["camera"] = "your eyes' organ (the cortex) is not running, so there is no frame to give you (measured)"
+    # run needs bubblewrap able to make a user namespace; without it the verb refuses rather than
+    # run the being's code with the seat's authority, so say so here too.
+    if "run" in _TOOL_SCHEMAS and not _sandbox_here():
+        out["run"] = ("this machine has no usable sandbox (bubblewrap missing or not permitted), "
+                      "and your code is never run outside one; request_run asks the seat instead")
     if "game" in _TOOL_SCHEMAS and not (cfg or {}).get("game_stepper"):
         out["game"] = "no game is set up on this seat (instance.json has no game_stepper)"
     return out

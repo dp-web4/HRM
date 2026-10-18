@@ -2664,8 +2664,7 @@ class HestiaF1aDispatcher:
                     f"copied in"))
             try:
                 st = os.fstat(fd)
-                where = (os.path.realpath(f"/proc/self/fd/{fd}")
-                         if os.path.isdir("/proc/self/fd") else full)
+                where = _fd_path(fd, full)
                 if where != full or not _allowed(where, i == 0):
                     return ResultEnvelope(ok=False, error=(
                         f"run: {n} changed while it was being read (it now resolves to "
@@ -2726,22 +2725,41 @@ class HestiaF1aDispatcher:
         import shutil
         import subprocess
         outdir = stage + ".out"           # seat-owned, beside the stage, never bound inside
+        from sage.gateway.being_gate_client import (SEATBELT, run_mem_cap_bytes, RUN_FSIZE_BYTES,
+                                                    RUN_TMP_BYTES, RUN_WORK_BYTES, RUN_USER, SUDO)
+        seatbelt = f" {SEATBELT} -p " in f" {cmd}"
+        # a Seatbelt run's HOME/TMPDIR, beside the stage (being_gate_client._run_command_seatbelt)
+        runhome = os.path.realpath(stage) + ".home" if seatbelt else None
+
+        def _clean():
+            for d in (stage, outdir, runhome):
+                if d:
+                    shutil.rmtree(d, ignore_errors=True)
         try:
-            for d in (stage, outdir):
+            for d in (stage, outdir) + ((runhome,) if runhome else ()):
                 shutil.rmtree(d, ignore_errors=True)   # only ever this invocation's own path
                 os.makedirs(d, mode=0o700, exist_ok=False)
             for base, data in staged:
                 with open(os.path.join(stage, base), "wb") as fh:
                     fh.write(data)
+            if seatbelt:
+                # the run is RUN_USER: it reads and may change its copies, and writes its home; the
+                # output files stay the seat's (it writes them through inherited descriptors). The GROUP
+                # is set, not inherited: on macOS a new entry takes its parent's group, and /private/tmp's
+                # is wheel, so the copies were unreadable to the run (exit 2, measured 2026-10-18).
+                import pwd
+                gid = pwd.getpwnam(RUN_USER).pw_gid
+                for p, mode in [(stage, 0o770), (runhome, 0o770)] + [
+                        (os.path.join(stage, base), 0o660) for base, _ in staged]:
+                    os.chown(p, -1, gid)
+                    os.chmod(p, mode)
         except OSError as e:
-            shutil.rmtree(stage, ignore_errors=True)
-            shutil.rmtree(outdir, ignore_errors=True)
+            _clean()
             return ResultEnvelope(ok=False, error=f"run could not stage your files: {type(e).__name__}: {e}")
         begin = self._call("hestia_begin_action", {"tool_name": "run", "target": staged[0][0]})
         err = _hestia_error(begin)
         if err:
-            shutil.rmtree(stage, ignore_errors=True)
-            shutil.rmtree(outdir, ignore_errors=True)
+            _clean()
             return ResultEnvelope(ok=False, error=(
                 f"run UNVERIFIED: the witness substrate is unreachable ({err[:160]}); "
                 f"your code was not executed"))
@@ -2763,17 +2781,39 @@ class HestiaF1aDispatcher:
         stopped = False
         try:
             o_path, e_path = os.path.join(outdir, "stdout"), os.path.join(outdir, "stderr")
+            why = None
             with open(o_path, "wb") as fo, open(e_path, "wb") as fe:
-                proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL,
-                                        stdout=fo, stderr=fe)
-                try:
-                    rc = proc.wait(timeout=budget)
-                except subprocess.TimeoutExpired:
-                    proc.kill()
-                    proc.wait()
-                    rc, stopped = -9, True
+                if seatbelt:
+                    # Seatbelt has no --as and no sized tmpfs: RLIMIT_FSIZE per file here, memory and
+                    # the stage's size watched by the seat (_wait_contained), the run in its own group
+                    import resource
+
+                    def _limits():
+                        resource.setrlimit(resource.RLIMIT_FSIZE, (RUN_FSIZE_BYTES, RUN_FSIZE_BYTES))
+                    proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL, stdout=fo,
+                                            stderr=fe, cwd=stage, start_new_session=True,
+                                            preexec_fn=_limits)
+                    rc, why = _wait_contained(proc, budget, [stage, runhome], run_mem_cap_bytes(),
+                                              RUN_WORK_BYTES + RUN_TMP_BYTES,
+                                              kill_as=[SUDO, "-n", "-u", RUN_USER])
+                    stopped = why == "time"
+                else:
+                    proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL,
+                                            stdout=fo, stderr=fe)
+                    try:
+                        rc = proc.wait(timeout=budget)
+                    except subprocess.TimeoutExpired:
+                        proc.kill()
+                        proc.wait()
+                        rc, stopped = -9, True
             ran = True
             out, errtxt = _headtail(o_path), _headtail(e_path)
+            if why in ("memory", "disk"):
+                errtxt += ("\n[stopped: your code used more " +
+                           ("memory than half of this machine's" if why == "memory" else
+                            "disk in its working directory than the sandbox allows") +
+                           ". What it printed before that is above. That is a real answer about the "
+                           "code, not a failure of the verb]")
             if stopped:
                 # WHAT IT PRINTED BEFORE THE STOP IS KEPT: at an hour, "no output" would throw
                 # away everything a long run had already said about itself.
@@ -2783,8 +2823,7 @@ class HestiaF1aDispatcher:
         except Exception as e:
             ran, rc, out, errtxt = False, -1, "", f"{type(e).__name__}: {e}"
         finally:
-            shutil.rmtree(stage, ignore_errors=True)
-            shutil.rmtree(outdir, ignore_errors=True)
+            _clean()
         try:
             self._call("hestia_record_outcome", {"action_id": action_id, "success": ran and rc == 0,
                                                  "magnitude": 0.0})
@@ -3841,6 +3880,91 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=False, pending=True,
                               note="channel_egress awaits hestia's send-side tool (hestia_egress_pending is "
                                    "read-only; F5 enforcement gated on rate-governor calibration, PRD §12)")
+
+
+def _fd_path(fd: int, fallback: str) -> str:
+    """Where an open descriptor really is: /proc/self/fd on Linux, fcntl(F_GETPATH) on macOS.
+    A MAC HAS NO /proc (McNugget, 2026-10-18): the check fell back to the judged path itself, so a
+    parent directory swapped for a symlink between judging and opening was copied from wherever it
+    pointed (test_a_parent_directory_swapped_for_a_symlink_at_open_is_refused failed there). The
+    fallback is kept only for a platform with neither."""
+    import os
+    if os.path.isdir("/proc/self/fd"):
+        return os.path.realpath(f"/proc/self/fd/{fd}")
+    import fcntl
+    if hasattr(fcntl, "F_GETPATH"):
+        buf = fcntl.fcntl(fd, fcntl.F_GETPATH, b"\0" * 1024)
+        return os.path.realpath(buf.split(b"\0", 1)[0].decode("utf-8", "surrogateescape"))
+    return fallback
+
+
+def _tree_bytes(root: str) -> int:
+    """Bytes on disk under `root` (allocated blocks, so a sparse file counts what it holds)."""
+    import os
+    total = 0
+    for d, _subdirs, files in os.walk(root):
+        for f in files:
+            try:
+                total += os.lstat(os.path.join(d, f)).st_blocks * 512
+            except OSError:
+                pass
+    return total
+
+
+def _group_rss_bytes(pgid: int) -> int:
+    """Resident memory of every process in a process group, from the seat's own `ps`."""
+    import subprocess
+    try:
+        out = subprocess.run(["ps", "-A", "-o", "pgid=,rss="], capture_output=True, text=True,
+                             timeout=5).stdout
+    except Exception:
+        return 0
+    total = 0
+    for line in out.splitlines():
+        parts = line.split()
+        if len(parts) == 2 and parts[0] == str(pgid):
+            total += int(parts[1]) * 1024
+    return total
+
+
+def _wait_contained(proc, budget: float, dirs, mem_cap: int, disk_cap: int, poll_s: float = 1.0,
+                    kill_as=None):
+    """Wait for a Seatbelt run (its own process group) and stop it at the limits Seatbelt cannot
+    impose itself: the time budget, resident memory past `mem_cap`, its writable dirs past
+    `disk_cap` together. Checked every `poll_s`: a burst of writes inside one interval lands before
+    it is stopped (no sized tmpfs on macOS); RLIMIT_FSIZE still bounds each file.
+    Returns (exit code, why it was stopped or None)."""
+    import os
+    import signal
+    import subprocess
+    import time
+    deadline = time.monotonic() + budget
+    why = None
+    while True:
+        try:
+            return proc.wait(timeout=poll_s), why
+        except subprocess.TimeoutExpired:
+            pass
+        if time.monotonic() >= deadline:
+            why = "time"
+        elif _group_rss_bytes(proc.pid) > mem_cap:
+            why = "memory"
+        elif sum(_tree_bytes(d) for d in dirs if d) > disk_cap:
+            why = "disk"
+        if why:
+            if kill_as:
+                # the run is another user, and sudo (its parent here) is root: the seat cannot signal
+                # either itself. kill as the run user reaches every process of the run's group it owns;
+                # sudo exits when its command does.
+                subprocess.run(kill_as + ["/bin/kill", "-KILL", f"-{proc.pid}"], capture_output=True,
+                               timeout=10)
+            else:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except OSError:
+                    proc.kill()
+            proc.wait()
+            return -9, why
 
 
 def _lock_opened_stage(lock_path: str, fd: int) -> bool:

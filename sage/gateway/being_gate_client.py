@@ -1090,6 +1090,119 @@ def sandbox_available() -> bool:
 
 
 
+# A MAC'S SANDBOX IS SEATBELT (dp, 2026-10-18: "we need macos sandbox functionality"). bwrap is
+# built on Linux user namespaces, which macOS does not have; Seatbelt (sandbox-exec, the kernel
+# sandbox Chrome and Claude Code's own macOS sandbox use) is the native equivalent. `run` uses it
+# where bwrap is unavailable and the platform is darwin. Measured on McNugget from inside a run:
+# the being's home, ~/.ssh, ~/.hestia, the home listing and shared-context unreadable; the
+# worktree readable and importable but not writable; /tmp and home not writable; no TCP (ollama,
+# hestia, external), no DNS, no unix sockets; no signal to anything outside the sandbox. What
+# Seatbelt does NOT give, and the dispatcher makes up for (hestia_dispatch._wait_contained):
+#   * no address-space cap: macOS ignores RLIMIT_AS, so the seat polls the run's resident memory
+#     and stops it past the same cap (run_mem_cap_bytes);
+#   * no size-limited tmpfs: the run writes in its own staging dir, which the seat measures and
+#     stops past RUN_WORK_BYTES + RUN_TMP_BYTES; RLIMIT_FSIZE still caps each file;
+#   * no mount namespace: the run sees its staging dir by its real path (its working directory),
+#     not /work, which the being is not told about anyway: data files "appear under their base names";
+#   * existence is not hidden: a stat() of a path outside succeeds or fails like anywhere else
+#     (contents stay unreadable).
+SEATBELT = "/usr/bin/sandbox-exec"
+# THE RUN IS ANOTHER USER (dp chose it, 2026-10-18). Seatbelt does not govern kern.procargs2: from inside
+# a run, the arguments AND ENVIRONMENT of every process of the seat's own user were readable (measured:
+# the seat's 2836 bytes, Claude Code's variables among them), and neither a sysctl denylist nor an
+# allowlist stopped it. The kernel shows procargs2 only to the same uid or root, so the run executes as
+# a hidden, unprivileged user (primary group staff, to reach the interpreter and worktree under the
+# seat's drwxr-x--- home; Seatbelt stays the file wall). One sudoers rule lets the seat start
+# sandbox-exec, and kill, as that user and nothing else. Setup: sage/gateway/launchd/setup_sagerun.sh.
+# Without it, `run` on a Mac is refused, never run as the seat's own user.
+RUN_USER = "_sagerun"
+SUDO = "/usr/bin/sudo"
+
+
+def seatbelt_available() -> bool:
+    """darwin, sandbox-exec present, the run user set up, and a deny-by-default profile actually runs a
+    program AS that user through the seat's sudo rule (no password: -n)."""
+    import os
+    import pwd
+    import subprocess
+    import sys
+    if sys.platform != "darwin" or not os.path.exists(SEATBELT):
+        return False
+    try:
+        pwd.getpwnam(RUN_USER)
+        r = subprocess.run([SUDO, "-n", "-u", RUN_USER, SEATBELT, "-p", _seatbelt_profile([], "", ""),
+                            "/usr/bin/true"], capture_output=True, timeout=10)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def run_sandbox_kind() -> Optional[str]:
+    """'bwrap' where bubblewrap works (unchanged), else 'seatbelt' on a Mac where it works, else None.
+    None means `run` refuses: the being's code is never run outside a sandbox."""
+    if sandbox_available():
+        return "bwrap"
+    if seatbelt_available():
+        return "seatbelt"
+    return None
+
+
+def _sb_str(p: str) -> str:
+    return '"' + p.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+_SB_SYSTEM_READS = ("/usr", "/bin", "/System", "/Library/Apple", "/opt/homebrew", "/private/etc",
+                    "/private/var/db/timezone")
+
+
+def _seatbelt_profile(read_roots: List[str], worktree: str, stage: str, home: str = "") -> str:
+    """Deny by default. Read: the OS, Homebrew, the interpreter, the worktree, the stage. Write: the
+    stage and the run's own HOME/TMPDIR beside it. No network. Signals and process info only within
+    the sandbox. `(literal "/")` is required: without it even /usr/bin/true aborts (dyld reads the
+    root directory entry).
+
+    EXISTENCE IS CONFINED TOO (test_run_sandbox_denies_the_seat_falsified_from_inside, which asks
+    os.path.isdir of ~/.ssh, the being's home and the seat checkout): stat() is allowed on what may be
+    read plus the directories on the way to it, as bwrap's mount tree has them, and nowhere else."""
+    import os
+    roots = [r for r in read_roots + [worktree, stage, home] if r]
+    reads = "".join(f" (subpath {_sb_str(r)})" for r in roots)
+    system = "".join(f" (subpath {_sb_str(r)})" for r in _SB_SYSTEM_READS)
+    devs = ' (literal "/dev/null") (literal "/dev/urandom") (literal "/dev/random") (literal "/dev/zero")'
+    ancestors = set()
+    for r in roots + list(_SB_SYSTEM_READS):
+        p = os.path.dirname(r.rstrip("/"))
+        while p and p != "/":
+            ancestors.add(p)
+            p = os.path.dirname(p)
+    # the root-level symlinks into /private, so a path spelled /tmp or /var resolves
+    anc = "".join(f" (literal {_sb_str(a)})" for a in sorted(ancestors | {"/tmp", "/var", "/etc", "/private"}))
+    writes = "".join(f" (subpath {_sb_str(w)})" for w in (stage, home) if w)
+    return ("(version 1)(deny default)"
+            "(allow process-fork)(allow process-exec)"
+            "(allow signal (target same-sandbox))(allow process-info* (target same-sandbox))"
+            # AN ALLOWLIST, NOT A DENYLIST. bwrap's --unshare-pid shows a run no other process. With
+            # (allow sysctl-read) and a deny on the "kern.proc" prefix, kern.procargs2 of the seat --
+            # its arguments AND ENVIRONMENT -- was still readable from inside (measured 2026-10-18:
+            # 2836 bytes): it is reached by number, and a name rule never matched it. Only the
+            # machine's facts Python, numpy and multiprocessing read are allowed; anything unnamed or
+            # unlisted, the process table included, is denied. (setuid ps is refused by Seatbelt.)
+            "(allow sysctl-read (sysctl-name-prefix \"hw.\") (sysctl-name-prefix \"machdep.cpu.\")"
+            " (sysctl-name \"kern.osrelease\") (sysctl-name \"kern.ostype\") (sysctl-name \"kern.version\")"
+            " (sysctl-name \"kern.osversion\") (sysctl-name \"kern.osproductversion\")"
+            " (sysctl-name \"kern.argmax\") (sysctl-name \"kern.ngroups\") (sysctl-name \"kern.maxfilesperproc\")"
+            " (sysctl-name \"kern.usrstack64\") (sysctl-name \"kern.boottime\") (sysctl-name \"kern.hostname\")"
+            " (sysctl-name \"kern.secure_kernel\") (sysctl-name \"kern.osvariant_status\")"
+            " (sysctl-name \"vm.footprint_suspend\") (sysctl-name \"sysctl.proc_cputype\"))"
+            "(allow file-read* (literal \"/\")" + system + devs + reads + ")"
+            "(allow file-read-metadata (literal \"/\")" + anc + ")"
+            "(allow file-write* (literal \"/dev/null\")" + writes + ")"
+            # multiprocessing's locks are POSIX semaphores, whose names are machine-wide on macOS (on
+            # Linux they live in the sandbox's own /dev/shm): only multiprocessing's own "/mp-" names
+            "(allow ipc-posix-sem (ipc-posix-name-regex #\"^/mp-\"))"
+            "(deny network*)")
+
+
 def sandbox_prefix(worktree: str) -> str:
     import shlex
     """The bwrap invocation that wraps every executed check, or "" when running unsandboxed
@@ -1403,6 +1516,34 @@ def run_source_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:
             for n in run_names(args, ctx)]
 
 
+def _run_command_seatbelt(interp: str, stage: str, script: str, worktree: Optional[str],
+                          memory_root: str) -> str:
+    """The Seatbelt form of a run: the same inputs, environment and worktree rule as the bwrap form.
+    The dispatcher runs it with the stage as its working directory (staged copies under their base
+    names, as the tool spec says), and <stage>.home -- beside it, so the working directory holds only
+    the staged files -- as HOME and TMPDIR."""
+    import os
+    import shlex
+    import sys
+    st = os.path.realpath(stage)
+    home = st + ".home"
+    # the venv's python resolves into the base interpreter (Homebrew's framework on McNugget)
+    roots = list(dict.fromkeys([os.path.realpath(interp), os.path.realpath(sys.base_prefix)]))
+    _wt = os.path.realpath(worktree) if worktree and os.path.isdir(worktree) else ""
+    _home = os.path.realpath(memory_root)
+    # NEVER THE HOME, as in the bwrap form: a worktree that is, holds or sits in the home is not readable
+    if _wt and (_wt == _home or _wt.startswith(_home + os.sep) or _home.startswith(_wt + os.sep)):
+        _wt = ""
+    env = [f"HOME={home}", f"TMPDIR={home}", "PYTHONUTF8=1", "PYTHONDONTWRITEBYTECODE=1"]
+    if _wt:
+        env.append(f"PYTHONPATH={_wt}")
+    env.append(f"PATH={interp}/bin:/usr/bin:/bin")
+    return " ".join([SUDO, "-n", "-u", RUN_USER, SEATBELT, "-p", shlex.quote(_seatbelt_profile(roots, _wt, st, home)),
+                     "/usr/bin/env", "-i"]
+                    + [shlex.quote(e) for e in env]
+                    + [shlex.quote(f"{interp}/bin/python3"), shlex.quote(f"{st}/{script}")])
+
+
 def run_command(args: dict, ctx: Optional[dict] = None) -> str:
     """The sandboxed interpreter invocation for a `run` intent.
 
@@ -1416,15 +1557,18 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
     memory_root = (ctx or {}).get("memory_root")
     member = (ctx or {}).get("member") or ""
     path = names[0]
-    if not sandbox_available():
+    kind = run_sandbox_kind()
+    if kind is None:
         raise ValueError(
-            "run needs its sandbox and cannot get one: bubblewrap is missing or not permitted "
-            "to create a user namespace here. Running your code under the seat's own authority "
+            "run needs its sandbox and cannot get one: neither bubblewrap (Linux) nor Seatbelt "
+            "(macOS) is usable here. Running your code under the seat's own authority "
             "instead is the one thing this verb exists to prevent, so it is refused rather than "
             "silently downgraded")
     interp = os.path.dirname(os.path.dirname(sys.executable))
     stage = run_stage_dir(member, names)
     script = os.path.basename(path)
+    if kind == "seatbelt":
+        return _run_command_seatbelt(interp, stage, script, (ctx or {}).get("worktree"), memory_root)
     # /work IS A SIZE-LIMITED TMPFS (it was a writable bind of the host staging dir with no size
     # bound: an hour of writes there fills the seat's disk, legion-claude on #470), and each
     # staged copy is bound into it WRITABLE. It is a sandbox: the run may change, chmod or rewrite

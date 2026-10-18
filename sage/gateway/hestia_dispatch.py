@@ -2704,16 +2704,12 @@ class HestiaF1aDispatcher:
         # NON-BLOCKING: flock is per open file, so a re-entrant call in the same thread would
         # wait on itself forever. A second run of the same files is refused until the first
         # finishes, and nothing of the first's is touched before the lock is held.
-        import fcntl
         lock_path = stage + ".lock"
         try:
             lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR | getattr(os, "O_CLOEXEC", 0), 0o600)
         except OSError as e:
             return ResultEnvelope(ok=False, error=f"run could not stage your files: {type(e).__name__}: {e}")
-        try:
-            fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except OSError:
-            os.close(lock_fd)
+        if not _lock_opened_stage(lock_path, lock_fd):
             return ResultEnvelope(ok=False, error=(
                 "run: a run of these same files is already in progress on this seat, so this one "
                 "was not started and nothing of the other was touched. Ask again when it has "
@@ -2721,12 +2717,7 @@ class HestiaF1aDispatcher:
         try:
             return self._run_staged(stage, staged, cmd, budget, bound_by)
         finally:
-            try:
-                os.unlink(lock_path)      # the stage it guarded is already gone
-            except OSError:
-                pass
-            fcntl.flock(lock_fd, fcntl.LOCK_UN)
-            os.close(lock_fd)
+            _release_stage_lock(lock_path, lock_fd)
 
     def _run_staged(self, stage, staged, cmd, budget, bound_by) -> ResultEnvelope:
         """The staged part of `run`, called only with the stage's lock held (see _do_run)."""
@@ -3850,6 +3841,44 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=False, pending=True,
                               note="channel_egress awaits hestia's send-side tool (hestia_egress_pending is "
                                    "read-only; F5 enforcement gated on rate-governor calibration, PRD §12)")
+
+
+def _lock_opened_stage(lock_path: str, fd: int) -> bool:
+    """Take the run stage's lock on an fd already open on lock_path; True only if it is held AND
+    lock_path still names the file it is held on. Closes fd when it returns False.
+
+    THE INODE CHECK IS WHAT MAKES UNLINKING SAFE (Nova, re-review of #470 at 54d592778). The
+    releaser unlinks the lock file, so an opener can hold an fd on the OLD inode: B opens it,
+    pauses, A unlinks and unlocks, C creates a new file and locks it, then B locks the unlinked
+    inode without contention, and B and C both run on one stage. Holding the lock is not enough;
+    the path must still name what is locked. If it does not, the lock is on a dead file, and the
+    stage it guarded belongs to someone else: refuse, never retry onto a stage in use."""
+    import fcntl
+    import os
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        st_fd, st_path = os.fstat(fd), os.stat(lock_path)
+        if (st_fd.st_dev, st_fd.st_ino) == (st_path.st_dev, st_path.st_ino):
+            return True
+    except OSError:
+        pass
+    os.close(fd)                       # closing drops any lock taken on the dead inode
+    return False
+
+
+def _release_stage_lock(lock_path: str, fd: int) -> None:
+    """Unlink, then unlock and close. Unlinking first is safe because every opener verifies the
+    path still names its locked inode (_lock_opened_stage), and it leaves nothing in /tmp."""
+    import fcntl
+    import os
+    try:
+        os.unlink(lock_path)
+    except OSError:
+        pass
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
 
 
 def _granted_reach_of(verdict) -> tuple:

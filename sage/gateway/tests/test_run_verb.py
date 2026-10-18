@@ -513,3 +513,31 @@ def test_an_overlapping_run_of_the_same_files_is_refused_and_leaves_the_first_in
     # and once the first has answered, the same files run again
     _FakePopen.seen = []
     assert d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py"})).ok
+
+
+def test_three_actors_cannot_both_hold_the_stage_lock_across_inodes(tmp_path):
+    """Nova's re-review at 54d592778, the interleaving it named: A holds inode X; B opens X and
+    pauses before flock; A unlinks and unlocks; C creates the path anew (inode Y) and locks it;
+    B then locks the unlinked X without contention. B must be refused: the path no longer names
+    the file B locked, so the stage belongs to C."""
+    from sage.gateway.hestia_dispatch import _lock_opened_stage, _release_stage_lock
+    path = str(tmp_path / "stage.lock")
+    flags = os.O_CREAT | os.O_RDWR
+    a = os.open(path, flags, 0o600)
+    assert _lock_opened_stage(path, a), "A takes the lock"
+    b = os.open(path, flags, 0o600)                  # B opens inode X ... and pauses here
+    x = os.fstat(b).st_ino
+    _release_stage_lock(path, a)                     # A unlinks X, unlocks, closes
+    c = os.open(path, flags, 0o600)
+    assert os.fstat(c).st_ino != x, "C created a new inode at the same path"
+    assert _lock_opened_stage(path, c), "C takes the lock on Y"
+    import fcntl
+    fcntl.flock(b, fcntl.LOCK_EX | fcntl.LOCK_NB)    # THE HAZARD IS REAL: B's flock on X succeeds
+    assert _lock_opened_stage(path, b) is False, "B locked dead inode X: refused, not admitted"
+    with pytest.raises(OSError):
+        os.fstat(b)                                  # and B's fd was closed on refusal
+    # C still holds Y: a fresh opener D is refused by plain contention
+    d = os.open(path, flags, 0o600)
+    assert _lock_opened_stage(path, d) is False
+    _release_stage_lock(path, c)
+    assert not os.path.exists(path), "nothing left behind"

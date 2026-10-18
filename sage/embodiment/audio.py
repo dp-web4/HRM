@@ -59,7 +59,7 @@ class Hearing(threading.Thread):
         try:   # what this ear does, in the body's own file, so the being is told (body.hears_always)
             _listening.mark(always=_listening.always_listening(),
                             mode="wake" if _listening.wake_listening() else "",
-                            keepalive_s=_listening.KEEPALIVE_S)
+                            keepalive_s=_listening.KEEPALIVE_S, wake_say=_listening.WAKE_SAY)
         except Exception:
             pass
 

@@ -77,13 +77,32 @@ def _read_json(path: str) -> Optional[dict]:
         return None
 
 
+def _ear_only(now: float, perception_path: str) -> Dict:
+    """A body with no cortex: the ear's own state (sage/embodiment/ear.py writes ear.json beside where
+    perception.json would be). {} when there is none or it is stale. `ear_live` stands in for the cortex's
+    `live` for the ear only: it says nothing about eyes, so "your senses are offline" is not claimed."""
+    ep = os.path.join(os.path.dirname(perception_path), "ear.json")
+    a = _read_json(ep)
+    if not a:
+        return {}
+    try:
+        fresh = now - os.path.getmtime(ep) <= FRESH_S
+    except OSError:
+        return {}
+    if not fresh:
+        return {}
+    return {"ear_live": True, "audio_ok": bool(a.get("ok")), "audio_level": a.get("level"),
+            "audio_words": a.get("words"), "audio_hearing": a.get("hearing"),
+            "audio_ear": a.get("ear"), "audio_ear_key": a.get("ear_key")}
+
+
 def perception(now: Optional[float] = None, path: Optional[str] = None) -> Dict:
     """The cortex's latest state, or {'live': False, 'age_s': ...}."""
     now = time.time() if now is None else now
     path = path or PERCEPTION_PATH
     d = _read_json(path)
     if not d:
-        return {"live": False, "age_s": None}
+        return dict({"live": False, "age_s": None}, **_ear_only(now, path))
     try:
         age = now - os.path.getmtime(path)
     except OSError:
@@ -273,7 +292,7 @@ def render(cur: Dict, prev: Optional[Dict], name: str = "", proprioception: bool
                      + ", which anyone in the room may hear. What you say aloud is your turn in "
                      "the room conversation, and `say` to room is spoken too. Nothing asks you to."
                      + ("" if ear_known(cur) else
-                        (" Words spoken in the room reach you after someone says your name (\"hey Sprout\"), and "
+                        (f" Words spoken in the room reach you after someone says your name (\"hey {wake_say()}\"), and "
                          "for a little while after each exchange; other speech nearby is noticed, but its words "
                          "are not given to you." if hears_by_name() else
                          " Words spoken in the room are heard through the mic and added to the room "
@@ -620,7 +639,7 @@ def ear_line(cur: Dict, inv: Optional[Dict] = None, now: Optional[float] = None)
     dev = (inv or {}).get("audio_device") or {}
     if not ear_known(cur) and not (dev and not dev.get("connected")):
         return ""
-    if not p.get("live"):
+    if not (p.get("live") or p.get("ear_live")):
         return ("- Your ear for words: unknown this beat (your senses are not reporting). Silence from it is "
                 "not evidence that nobody spoke.")
     hearing, reason, key = bool(p.get("audio_hearing")), str(p.get("audio_ear") or ""), p.get("audio_ear_key")
@@ -658,6 +677,14 @@ def hears_by_name() -> bool:
         return bool(_listening().window().get("wake"))
     except Exception:
         return False
+
+
+def wake_say() -> str:
+    """The name the ear answers to, as the ear recorded it in listen.json (the ear's SAGE_WAKE_SAY)."""
+    try:
+        return str(_listening().window().get("wake_say") or "Sprout")
+    except Exception:
+        return "Sprout"
 
 
 def hears_always() -> bool:

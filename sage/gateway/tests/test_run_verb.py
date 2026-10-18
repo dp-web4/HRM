@@ -103,7 +103,8 @@ def test_run_stages_copies_and_refuses_what_it_cannot_reach(tmp_path):
     assert "still appears as data.md" in b.error
     g = d._do_run(BeingIntent("run", {"path": "scratch/e.py", "data": ["ghost.md"]}))
     assert g.ok is False and "base name with no directory" in g.error
-    assert not os.path.exists("/tmp/sage-run-test-being"), "the staging dir does not survive"
+    import glob
+    assert not glob.glob(f"/tmp/sage-run-test-being-{os.getpid()}-*"), "no staging dir survives"
     # a hardlink passes a realpath check (it IS itself) while its bytes are another file's
     os.link(str(outside), str(home / "scratch" / "hard.md"))
     h = d._do_run(BeingIntent("run", {"path": "scratch/e.py", "data": ["scratch/hard.md"]}))
@@ -116,11 +117,20 @@ def test_run_command_grammar_and_what_the_sandbox_contains():
     ctx = {"memory_root": "/home/x/inst", "member": "legion-being"}
     cmd = run_command({"path": "scratch/eval.py", "data": ["scratch/game/moves.md"]}, ctx)
     assert " --unshare-net " in cmd and " --clearenv " in cmd and " --die-with-parent " in cmd
-    assert " --bind /tmp/sage-run-legion-being /work" in cmd, "one writable dir, seat-owned"
+    # /work is a size-limited tmpfs; each staged copy is bound into it READ-ONLY, from a stage dir
+    # that belongs to this invocation alone (legion-claude and Codex on #470)
+    from sage.gateway.being_gate_client import run_stage_dir, RUN_WORK_BYTES, RUN_TMP_BYTES
+    stage = run_stage_dir("legion-being", ["scratch/eval.py", "scratch/game/moves.md"])
+    assert stage.startswith(f"/tmp/sage-run-legion-being-{os.getpid()}-")
+    assert f" --size {RUN_WORK_BYTES} --tmpfs /work" in cmd
+    assert f" --size {RUN_TMP_BYTES} --tmpfs /tmp" in cmd
+    assert f" --ro-bind {stage}/eval.py /work/eval.py" in cmd
+    assert f" --ro-bind {stage}/moves.md /work/moves.md" in cmd
     assert cmd.rstrip().endswith("/work/eval.py"), cmd
     assert " --chdir /work " in cmd
     assert "/home/x/inst" not in cmd, "its home is never bound"
-    assert cmd.count("--bind ") == 1, "exactly one writable bind"
+    assert cmd.count("--bind ") == 0, "no host directory is writable from inside"
+    assert "--ro-bind-try /lib64 /lib64" in cmd, "an aarch64 seat without /lib64 still runs"
     for ro in ("--ro-bind /usr /usr", "--ro-bind /lib /lib"):
         assert ro in cmd
     assert "--ro-bind /w/t /w/t" in sandbox_prefix("/w/t")
@@ -170,7 +180,7 @@ def test_run_mounts_the_worktree_read_only_on_the_import_path(tmp_path, monkeypa
     real = os.path.realpath(str(wt))
     assert f"--ro-bind {real} {real}" in cmd and f"--setenv PYTHONPATH {real}" in cmd, cmd
     assert f"--bind {real}" not in cmd.replace(f"--ro-bind {real}", "")
-    assert cmd.count(" --bind ") == 1 and " /work" in cmd
+    assert cmd.count(" --bind ") == 0 and " --tmpfs /work" in cmd
     no_wt = B.run_command({"path": "scratch/p.py"}, dict(ctx, worktree=None))
     assert "PYTHONPATH" not in no_wt and real not in no_wt
 
@@ -215,11 +225,31 @@ def test_a_run_never_outlives_its_beat(monkeypatch):
     t0 = b._PROCESS_T0
     budget, why = b.run_budget_s(now=t0 + 100)
     assert budget == 1500 - 100 - b.RUN_BEAT_MARGIN_S and why == "the time left in this beat"
-    assert b.run_budget_s(now=t0 + 1490)[0] == 30, "a floor, never zero or negative"
+    # NOVA'S BOUNDARIES: `left` is what remains after the record margin. Below RUN_MIN_S no run
+    # starts (0); it used to be floored UP to 30 s, a run granted with no beat budget at all.
+    at = lambda left: t0 + 1500 - b.RUN_BEAT_MARGIN_S - left          # noqa: E731
+    for left, want in ((-1, 0), (0, 0), (1, 0), (29, 0), (30, 30)):
+        assert b.run_budget_s(now=at(left))[0] == want, (left, b.run_budget_s(now=at(left)))
     monkeypatch.setenv("SAGE_BEAT_TIMEOUT_S", "7200")
     assert b.run_budget_s(now=t0 + 100) == (3600, "the run limit"), "a long beat allows the hour"
+    # UNKNOWN IS UNKNOWN (legion-claude): no declared bound, no assumed 1500, wherever it runs
     monkeypatch.delenv("SAGE_BEAT_TIMEOUT_S")
-    assert b.run_budget_s(now=t0 + 99999) == (3600, "the run limit"), "outside a timed beat"
+    assert b.run_budget_s(now=t0 + 99999) == (3600, "the run limit"), "no declared bound"
+    monkeypatch.setenv("SAGE_BEAT_TIMEOUT_S", "infinity")
+    assert b.run_budget_s(now=t0 + 99999) == (3600, "the run limit"), "an unbounded unit"
+
+
+def test_a_spent_beat_starts_no_run_and_touches_nothing(tmp_path, monkeypatch):
+    import sage.gateway.being_gate_client as b
+    monkeypatch.setattr(b, "sandbox_available", lambda: True)
+    monkeypatch.setattr(b, "run_budget_s", lambda now=None: (0, "the time left in this beat"))
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "e.py").write_text("print(1)\n")
+    calls = []
+    d._call = lambda name, args: calls.append(name) or {"actionId": "w"}
+    r = d._do_run(BeingIntent("run", {"path": "scratch/e.py"}))
+    assert r.ok is False and "nothing was started" in r.error and "next beat" in r.error
+    assert calls == [], "no witness row for a run that never started"
 
 
 @needs_bwrap
@@ -244,7 +274,9 @@ def test_run_is_held_to_its_memory_cap_from_inside(tmp_path):
     if not os.path.exists(PRLIMIT):
         pytest.skip("no prlimit here")
     ctx = {"memory_root": "/home/x/inst", "member": "b"}
-    assert run_command({"path": "e.py"}, ctx).startswith(f"{PRLIMIT} --as={run_mem_cap_bytes()} -- ")
+    from sage.gateway.being_gate_client import RUN_FSIZE_BYTES
+    assert run_command({"path": "e.py"}, ctx).startswith(
+        f"{PRLIMIT} --as={run_mem_cap_bytes()} --fsize={RUN_FSIZE_BYTES} -- ")
     d, home = _run_dispatcher(tmp_path)
     over = run_mem_cap_bytes() + (1 << 30)
     (home / "scratch" / "hog.py").write_text(
@@ -255,3 +287,199 @@ def test_run_is_held_to_its_memory_cap_from_inside(tmp_path):
         "    print('allocated: denied')\n")
     r = d._do_run(BeingIntent("run", {"path": "scratch/hog.py"}))
     assert r.ok and "allocated: denied" in r.result["stdout"], r.result
+
+
+# -- the review of #470: what an hour can fill (legion-claude) ------------------------------
+
+@needs_bwrap
+def test_both_writable_places_are_size_bounded_from_inside(tmp_path, monkeypatch):
+    """legion-claude probed on Legion: tmpfs pages are not address space, so a 300 MiB --as cap let
+    640 MiB into /tmp. Both tmpfs are now sized; checked from inside with small sizes."""
+    import sage.gateway.being_gate_client as b
+    monkeypatch.setattr(b, "RUN_TMP_BYTES", 4 << 20)
+    monkeypatch.setattr(b, "RUN_WORK_BYTES", 4 << 20)
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "fill.py").write_text(
+        "def fill(p):\n"
+        "    try:\n"
+        "        with open(p, 'wb') as f:\n"
+        "            for _ in range(16):\n"
+        "                f.write(b'x' * (1 << 20))\n"
+        "        return 'REACHED'\n"
+        "    except OSError as e:\n"
+        "        return 'denied ' + type(e).__name__\n"
+        "print('tmp:', fill('/tmp/big'))\n"
+        "print('work:', fill('big'))\n"
+        "try:\n"
+        "    open('fill.py', 'a').write('#')\n"
+        "    print('input: REACHED')\n"
+        "except OSError:\n"
+        "    print('input: read-only')\n")
+    r = d._do_run(BeingIntent("run", {"path": "scratch/fill.py"}))
+    assert r.ok, r.error
+    out = r.result["stdout"]
+    assert "tmp: denied" in out and "work: denied" in out, out
+    assert "input: read-only" in out, "the judged copy cannot be changed from inside: " + out
+
+
+@needs_bwrap
+def test_output_goes_to_capped_files_and_only_head_and_tail_come_back(tmp_path, monkeypatch):
+    """capture_output read everything into the seat (outside every limit) before trimming it."""
+    import sage.gateway.being_gate_client as b
+    monkeypatch.setattr(b, "RUN_FSIZE_BYTES", 1 << 20)
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "loud.py").write_text(
+        "import sys\nprint('FIRST LINE')\n"
+        "for _ in range(64):\n    sys.stdout.write('y' * 65536)\n"
+        "print('LAST LINE')\n")
+    r = d._do_run(BeingIntent("run", {"path": "scratch/loud.py"}))
+    assert r.ok, r.error
+    out = r.result["stdout"]
+    assert out.startswith("FIRST LINE"), out[:80]
+    assert "more bytes not shown" in out and len(out) < d.RUN_OUTPUT_CHARS + 200
+    # 4 MiB against a 1 MiB file cap: the write past the cap kills the run (SIGXFSZ), so the seat
+    # never holds more than the cap, and it says the run did not finish
+    assert r.result["exit"] != 0 and "LAST LINE" not in out
+
+
+# -- the review of #470: staging and authority (Codex, a44126319, inverted) -----------------
+
+def _codex_setup(tmp_path, monkeypatch, granted=None):
+    from sage.gateway import being_gate_client as B
+    home = tmp_path / "workspace" / "project" / "home"
+    (home / "scratch").mkdir(parents=True)
+    (home / "scratch" / "probe.py").write_text("print('synthetic')\n")
+    monkeypatch.setattr(B, "sandbox_available", lambda: True)
+    monkeypatch.setattr(B, "STAGE_ROOT", str(tmp_path / "stage"))
+    monkeypatch.setattr(B, "run_budget_s", lambda now=None: (60, "the run limit"))
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher as D
+    d = D.__new__(D)
+    d.memory_root, d.member = str(home), "review-being"
+    d.worktree, d.workspace = str(home), str(tmp_path / "workspace" / "project")
+    d._call = lambda name, args: {"actionId": "synthetic-action"}
+    g = granted if granted is not None else ((str(home), True),)
+    d._verdict = types.SimpleNamespace(command=None, granted=tuple(r for r, _ in g), granted_reach=g)
+    return d, home
+
+
+class _FakePopen:
+    """Stands in for the sandbox: records what the staged inputs held when it 'ran'."""
+    seen = []
+    on_wait = None
+
+    def __init__(self, argv, **kw):
+        self.argv = argv
+        stage = [a for a in argv if "/work/" not in a and "-review-being-" in a]
+        _FakePopen.seen.append({os.path.basename(p): Path(p).read_text() for p in stage
+                                if os.path.isfile(p)})
+
+    def wait(self, timeout=None):
+        if _FakePopen.on_wait:
+            f, _FakePopen.on_wait = _FakePopen.on_wait, None
+            f()
+        return 0
+
+    def kill(self):
+        pass
+
+
+def test_a_data_file_outside_the_grants_is_judged_and_not_copied(tmp_path, monkeypatch):
+    from sage.gateway import being_gate_client as B
+    d, home = _codex_setup(tmp_path, monkeypatch)
+    d.worktree = str(tmp_path / "workspace" / "project")
+    external = tmp_path / "workspace" / "project" / "ungranted" / "sample.txt"
+    external.parent.mkdir()
+    external.write_text("synthetic outside-grant bytes")
+    intent = B.BeingIntent("run", {"path": "scratch/probe.py", "data": [str(external)]})
+    client = B.BeingGateClient.__new__(B.BeingGateClient)
+    client.memory_root, client.worktree, client.workspace = d.memory_root, d.worktree, d.workspace
+    client.member_id = d.member
+    client._core = types.SimpleNamespace(NormalizedEvent=lambda **kw: types.SimpleNamespace(**kw))
+    ev = client._normalize(intent)
+    assert str(external.resolve()) in ev.paths, "the law sees every source it would read"
+    assert str((home / "scratch" / "probe.py").resolve()) in ev.paths
+    _FakePopen.seen = []
+    monkeypatch.setattr("subprocess.Popen", _FakePopen)
+    r = d._do_run(intent)
+    assert r.ok is False and "granted" in r.error, r
+    assert _FakePopen.seen == [], "nothing ran, nothing was staged"
+    # CONTROL: the same file under a granted root is copied in
+    ext2 = tmp_path / "b" / "workspace" / "project" / "granted" / "sample.txt"
+    ext2.parent.mkdir(parents=True)
+    ext2.write_text("synthetic outside-grant bytes")
+    d2, home2 = _codex_setup(tmp_path / "b", monkeypatch,
+                             granted=((str(tmp_path / "b" / "workspace" / "project" / "home"), True),
+                                      (str(ext2.parent), True)))
+    d2.worktree = str(tmp_path / "b" / "workspace" / "project")
+    _FakePopen.seen = []
+    r2 = d2._do_run(B.BeingIntent("run", {"path": "scratch/probe.py", "data": [str(ext2)]}))
+    assert r2.ok, r2.error
+    assert _FakePopen.seen and _FakePopen.seen[0].get("sample.txt") == "synthetic outside-grant bytes"
+
+
+def test_a_source_swapped_for_a_symlink_at_open_is_refused(tmp_path, monkeypatch):
+    from sage.gateway import being_gate_client as B
+    d, home = _codex_setup(tmp_path, monkeypatch)
+    source = home / "scratch" / "data.txt"
+    source.write_text("initial safe bytes")
+    outside = tmp_path / "outside.txt"
+    outside.write_text("synthetic out-of-reach bytes")
+    real_open = os.open
+
+    def racing_open(path, flags, *a, **kw):
+        if str(path) == str(source.resolve()):
+            repl = home / "scratch" / "replacement"
+            repl.symlink_to(outside)
+            os.replace(repl, source)
+        return real_open(path, flags, *a, **kw)
+
+    _FakePopen.seen = []
+    monkeypatch.setattr(os, "open", racing_open)
+    monkeypatch.setattr("subprocess.Popen", _FakePopen)
+    r = d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py", "data": ["scratch/data.txt"]}))
+    assert r.ok is False and "not copied in" in r.error, r
+    assert all("out-of-reach" not in v for s in _FakePopen.seen for v in s.values())
+
+
+def test_a_parent_directory_swapped_for_a_symlink_at_open_is_refused(tmp_path, monkeypatch):
+    """O_NOFOLLOW guards only the last component; the descriptor's real location catches the rest."""
+    from sage.gateway import being_gate_client as B
+    d, home = _codex_setup(tmp_path, monkeypatch)
+    sub = home / "scratch" / "sub"; sub.mkdir()
+    (sub / "data.txt").write_text("initial safe bytes")
+    elsewhere = tmp_path / "elsewhere"; elsewhere.mkdir()
+    (elsewhere / "data.txt").write_text("synthetic out-of-reach bytes")
+    real_open = os.open
+
+    def racing_open(path, flags, *a, **kw):
+        if str(path) == str((sub / "data.txt").resolve()):
+            os.rename(sub, home / "scratch" / "sub-old")
+            (home / "scratch" / "sub").symlink_to(elsewhere)
+        return real_open(path, flags, *a, **kw)
+
+    _FakePopen.seen = []
+    monkeypatch.setattr(os, "open", racing_open)
+    monkeypatch.setattr("subprocess.Popen", _FakePopen)
+    r = d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py", "data": ["scratch/sub/data.txt"]}))
+    assert r.ok is False and "changed while it was being read" in r.error, r
+    assert _FakePopen.seen == []
+
+
+def test_an_overlapping_run_does_not_touch_the_first_runs_staging(tmp_path, monkeypatch):
+    from sage.gateway import being_gate_client as B
+    d, home = _codex_setup(tmp_path, monkeypatch)
+    (home / "scratch" / "second.py").write_text("print('second')\n")
+    first = B.run_stage_dir(d.member, ["scratch/probe.py"])
+    observed = []
+
+    def inner():
+        assert os.path.isfile(os.path.join(first, "probe.py"))
+        r = d._do_run(B.BeingIntent("run", {"path": "scratch/second.py"}))
+        assert r.ok, r.error
+        observed.append(os.path.isfile(os.path.join(first, "probe.py")))
+
+    _FakePopen.seen, _FakePopen.on_wait = [], inner
+    monkeypatch.setattr("subprocess.Popen", _FakePopen)
+    r = d._do_run(B.BeingIntent("run", {"path": "scratch/probe.py"}))
+    assert r.ok and observed == [True], observed
+    assert not os.path.exists(first), "and it is cleaned up after its own run"

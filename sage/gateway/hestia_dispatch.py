@@ -2562,23 +2562,44 @@ class HestiaF1aDispatcher:
         composed sandbox line against them.
 
         THE STAGING IS THE SECURITY BOUNDARY, not the sandbox alone. Nothing the being can
-        write is bound into the sandbox: the seat READS each named file inside the being's
-        home, refuses anything that is not a regular file it can reach without following a
-        symlink out, and writes a COPY into a directory only the seat touches. So between the
-        law's ruling and the execution there is no window in which the bytes can change, and
-        a symlink planted in its home resolves in the SEAT's read (where it is refused), never
-        inside the sandbox (where it would be an escape).
+        write is bound into the sandbox: the seat READS each named file and writes a COPY into a
+        directory only the seat touches, and the sandbox sees those copies read-only.
+
+        THE READ IS PINNED TO ONE OBJECT (Codex, #470). It used to check a pathname (realpath,
+        isfile, nlink, size) and then open the name again, so a symlink swapped in between was
+        copied from wherever it pointed. Now each file is opened once with O_NOFOLLOW; the
+        checks run on that descriptor (fstat), its real location is read back from
+        /proc/self/fd and must be the path that was judged, and the read stops at the size
+        limit however much the file grows.
+
+        A DATA FILE OUTSIDE THE HOME MUST BE GRANTED (Codex, #470). The check was the broad
+        search reach, so an ungranted file under the workspace was copied because the run command
+        was permitted. Now it must lie under a root this verdict grants (exact or recursive), and
+        the law sees every source path (run_source_paths), not only the staging dir.
+
+        ONE INVOCATION, ONE DIRECTORY (Codex, #470): run_stage_dir is per process and per file
+        set, so a concurrent dispatch for the same member cannot delete this run's inputs.
+
+        OUTPUT GOES TO FILES, NOT THE SEAT'S MEMORY (legion-claude, #470). capture_output read
+        everything a run printed into this process, which sits outside the run's limits, before
+        trimming it; an hour of printing would have grown the seat itself. Output now goes to two
+        files in a seat-owned dir beside the staging dir (never bound into the sandbox), each
+        capped by RLIMIT_FSIZE, and only their head and tail are read back.
         """
         import os
         import shlex
         import shutil
+        import stat
         import subprocess
-        from sage.gateway.being_gate_client import run_command, STAGE_ROOT, run_budget_s
+        from sage.gateway.being_gate_client import (run_command, run_names, run_stage_dir,
+                                                    run_budget_s, RUN_MIN_S)
+        ctx = {"memory_root": self.memory_root,
+               "member": getattr(self, "member", None),
+               "worktree": getattr(self, "worktree", None),
+               "workspace": getattr(self, "workspace", None)}
         try:
-            cmd = run_command(intent.args, {"memory_root": self.memory_root,
-                                            "member": getattr(self, "member", None),
-                                            "worktree": getattr(self, "worktree", None),
-                                            "workspace": getattr(self, "workspace", None)})
+            cmd = run_command(intent.args, ctx)
+            names = run_names(intent.args, ctx)
         except ValueError as e:
             return ResultEnvelope(ok=False, error=str(e))
         judged = getattr(getattr(self, "_verdict", None), "command", None)
@@ -2586,37 +2607,31 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=(
                 "run refused: the command the law judged is not the command this dispatcher "
                 "would execute."))
+        budget, bound_by = run_budget_s()
+        if budget <= 0:
+            return ResultEnvelope(ok=False, error=(
+                f"run: nothing was started. This beat has less than {RUN_MIN_S} s left once its "
+                f"record is written, and a run must not outlive its beat. Ask again next beat; "
+                f"the file is unchanged and nothing of yours was touched."))
         root = os.path.realpath(self.memory_root)
-        # the composer already normalised the shapes a model emits; mirror it exactly so the
-        # staged set is the set the law judged (run_command: JSON string or bare path -> list)
-        _d = intent.args.get("data") or []
-        if isinstance(_d, str):
-            import json as _json
-            import re as _re
-            try:
-                _p = _json.loads(_d)
-            except ValueError:
-                _p = None
-            _d = _p if isinstance(_p, list) else [x for x in _re.split(r"[,\s]+", _d.strip()) if x]
-        names = [str(intent.args.get("path", "")).strip()] + [str(x).strip() for x in _d]
-        staged, seen = [], set()
-        for n in names:
-            base = os.path.basename(n)
-            if base in seen:
-                return ResultEnvelope(ok=False, error=(
-                    f"run: two files would arrive as {base!r} in the working directory; they are "
-                    f"placed under their base names, so give files whose names differ"))
-            seen.add(base)
+        granted = [(os.path.realpath(r), rec) for r, rec in
+                   _granted_reach_of(getattr(self, "_verdict", None))]
+
+        def _allowed(full: str, is_script: bool) -> bool:
+            if full == root or full.startswith(root + os.sep):
+                return True
+            if is_script:                 # code it executes is code it wrote, in its home
+                return False
+            return any(full == r or (rec and full.startswith(r + os.sep)) for r, rec in granted)
+
+        staged = []                       # (base name, bytes)
+        for i, n in enumerate(names):
             full = os.path.realpath(n if os.path.isabs(n) else os.path.join(root, n))
-            if not (full == root or full.startswith(root + os.sep)):
-                # outside the home: allowed for DATA files within the granted reach, staged as
-                # a copy the seat reads (run_command judged the same set; see its comment)
-                from sage.gateway.being_gate_client import _search_reach, _under
-                reach = _search_reach(getattr(self, "worktree", None) or root,
-                                      getattr(self, "workspace", None))
-                if n is names[0] or not _under(full, reach):
-                    return ResultEnvelope(ok=False, error=(
-                        f"run: {n!r} resolves outside anything you can reach and will not be copied in"))
+            if not _allowed(full, i == 0):
+                return ResultEnvelope(ok=False, error=(
+                    f"run: {n!r} resolves outside anything you can reach and will not be copied in"
+                    + ("" if i == 0 else ". A data file outside your home must be under a path "
+                       "you have been granted; request_scope asks for one")))
             if not os.path.isfile(full):
                 # NAME WHERE IT IS. 2026-09-18 07:15Z: told that staged files appear under their
                 # base names, it then PASSED base names as the data arguments — two different
@@ -2640,77 +2655,123 @@ class HestiaF1aDispatcher:
                     except Exception:  # noqa: BLE001 — a hint must never turn a miss into a crash
                         hint = ""
                 return ResultEnvelope(ok=False, error=f"run: no such file in your home: {n}{hint}")
-            # A HARDLINK IS A REGULAR FILE WHOSE realpath IS ITSELF, so the escape check above
-            # passes it while its bytes may be a file from anywhere (hardbound #427's fourth
-            # class, found on Legion; private-context legion/TODO-sandbox-escape-classes.md).
-            # The being has no verb that makes a link, so this is defence in depth.
-            if os.stat(full).st_nlink > 1:
+            try:
+                fd = os.open(full, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+                             | getattr(os, "O_CLOEXEC", 0))
+            except OSError as e:
                 return ResultEnvelope(ok=False, error=(
-                    f"run: {n} has more than one name on disk (a hardlink), so its bytes may "
-                    f"belong to a file elsewhere; it is not copied in. Write it out as an "
-                    f"ordinary file and name that"))
-            size = os.path.getsize(full)
-            if size > self.RUN_MAX_FILE_BYTES:
-                return ResultEnvelope(ok=False, error=(
-                    f"run: {n} is {size} bytes; the limit per file is {self.RUN_MAX_FILE_BYTES}"))
-            staged.append((base, full))
-        stage = f"{STAGE_ROOT}-{getattr(self, 'member', '')}"
+                    f"run: {n} could not be opened as a plain file ({e.strerror}); it is not "
+                    f"copied in"))
+            try:
+                st = os.fstat(fd)
+                where = (os.path.realpath(f"/proc/self/fd/{fd}")
+                         if os.path.isdir("/proc/self/fd") else full)
+                if where != full or not _allowed(where, i == 0):
+                    return ResultEnvelope(ok=False, error=(
+                        f"run: {n} changed while it was being read (it now resolves to "
+                        f"somewhere else); nothing was copied in or run"))
+                if not stat.S_ISREG(st.st_mode):
+                    return ResultEnvelope(ok=False, error=f"run: {n} is not a regular file")
+                # A HARDLINK IS A REGULAR FILE WHOSE realpath IS ITSELF, so a path check passes
+                # it while its bytes may be a file from anywhere (hardbound #427's fourth class,
+                # found on Legion). The being has no verb that makes a link: defence in depth.
+                if st.st_nlink > 1:
+                    return ResultEnvelope(ok=False, error=(
+                        f"run: {n} has more than one name on disk (a hardlink), so its bytes may "
+                        f"belong to a file elsewhere; it is not copied in. Write it out as an "
+                        f"ordinary file and name that"))
+                limit = self.RUN_MAX_FILE_BYTES
+                chunks, total = [], 0
+                while True:
+                    b = os.read(fd, 1 << 20)
+                    if not b:
+                        break
+                    total += len(b)
+                    if total > limit:
+                        return ResultEnvelope(ok=False, error=(
+                            f"run: {n} is more than {limit} bytes; the limit per file is {limit}"))
+                    chunks.append(b)
+            finally:
+                os.close(fd)
+            staged.append((os.path.basename(n), b"".join(chunks)))
+
+        stage = run_stage_dir(getattr(self, "member", "") or "", names)
+        outdir = stage + ".out"           # seat-owned, beside the stage, never bound inside
         try:
-            shutil.rmtree(stage, ignore_errors=True)
-            os.makedirs(stage, mode=0o700, exist_ok=False)
-            for base, full in staged:
-                with open(full, "rb") as fh:
-                    data = fh.read()
+            for d in (stage, outdir):
+                shutil.rmtree(d, ignore_errors=True)   # only ever this invocation's own path
+                os.makedirs(d, mode=0o700, exist_ok=False)
+            for base, data in staged:
                 with open(os.path.join(stage, base), "wb") as fh:
                     fh.write(data)
         except OSError as e:
+            shutil.rmtree(stage, ignore_errors=True)
+            shutil.rmtree(outdir, ignore_errors=True)
             return ResultEnvelope(ok=False, error=f"run could not stage your files: {type(e).__name__}: {e}")
         begin = self._call("hestia_begin_action", {"tool_name": "run", "target": staged[0][0]})
         err = _hestia_error(begin)
         if err:
+            shutil.rmtree(stage, ignore_errors=True)
+            shutil.rmtree(outdir, ignore_errors=True)
             return ResultEnvelope(ok=False, error=(
                 f"run UNVERIFIED: the witness substrate is unreachable ({err[:160]}); "
                 f"your code was not executed"))
         action_id = begin.get("actionId")
-        budget, bound_by = run_budget_s()
+        cap = self.RUN_OUTPUT_CHARS
+
+        def _headtail(p: str) -> str:
+            size = os.path.getsize(p)
+            with open(p, "rb") as fh:
+                if size <= cap:
+                    return fh.read().decode(errors="replace")
+                head = fh.read(cap // 2)
+                fh.seek(size - cap // 2)
+                tail = fh.read()
+            return (head.decode(errors="replace")
+                    + f"\n[… {size - cap} more bytes not shown. Print less, or print a summary …]\n"
+                    + tail.decode(errors="replace"))
+
+        stopped = False
         try:
-            proc = subprocess.run(shlex.split(cmd), text=True, capture_output=True,
-                                  timeout=budget)
-            ran, rc = True, proc.returncode
-            out, errtxt = proc.stdout or "", proc.stderr or ""
-        except subprocess.TimeoutExpired as e:
-            # WHAT IT PRINTED BEFORE THE STOP IS KEPT. At an hour, "no output" would throw away
-            # everything a long run had already said about itself.
-            def _s(x):
-                return x.decode(errors="replace") if isinstance(x, bytes) else (x or "")
-            ran, rc, out = True, -9, _s(e.stdout)
-            errtxt = _s(e.stderr) + (
-                f"\n[stopped: your code was still running after {budget}s ({bound_by}). What it "
-                f"printed before that is above. That is a real answer about the code, not a "
-                f"failure of the verb]")
+            o_path, e_path = os.path.join(outdir, "stdout"), os.path.join(outdir, "stderr")
+            with open(o_path, "wb") as fo, open(e_path, "wb") as fe:
+                proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL,
+                                        stdout=fo, stderr=fe)
+                try:
+                    rc = proc.wait(timeout=budget)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait()
+                    rc, stopped = -9, True
+            ran = True
+            out, errtxt = _headtail(o_path), _headtail(e_path)
+            if stopped:
+                # WHAT IT PRINTED BEFORE THE STOP IS KEPT: at an hour, "no output" would throw
+                # away everything a long run had already said about itself.
+                errtxt += (f"\n[stopped: your code was still running after {budget}s ({bound_by}). "
+                           f"What it printed before that is above. That is a real answer about "
+                           f"the code, not a failure of the verb]")
         except Exception as e:
             ran, rc, out, errtxt = False, -1, "", f"{type(e).__name__}: {e}"
+        finally:
+            shutil.rmtree(stage, ignore_errors=True)
+            shutil.rmtree(outdir, ignore_errors=True)
         try:
             self._call("hestia_record_outcome", {"action_id": action_id, "success": ran and rc == 0,
                                                  "magnitude": 0.0})
         except Exception:
             pass
-        shutil.rmtree(stage, ignore_errors=True)
         if not ran:
             return ResultEnvelope(ok=False, witness_id=action_id,
                                   error=f"run could not start the sandbox: {errtxt[:400]}")
-
-        def _cap(t):
-            return t if len(t) <= self.RUN_OUTPUT_CHARS else (
-                t[:self.RUN_OUTPUT_CHARS] + f"\n[… truncated: {len(t) - self.RUN_OUTPUT_CHARS} "
-                f"more characters. Print less, or print a summary]")
         # A NON-ZERO EXIT IS A RESULT. A traceback is the most useful thing this verb can hand
         # back: it names the line, and the line is one the being wrote.
         return ResultEnvelope(ok=True, witness_id=action_id, result={
             "script": staged[0][0], "files": [b for b, _ in staged],
-            "exit": rc, "stdout": _cap(out.strip()), "stderr": _cap(errtxt.strip()),
-            "note": ("Ran in a sandbox with no network and no home (your worktree, if any, read-only); the "
-                     "copies are gone now. Only what you printed survives." if rc == 0 else
+            "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
+            "note": ("Ran in a sandbox with no network and no home (your worktree, if any, "
+                     "read-only); the copies are gone now. Only what you printed survives."
+                     if rc == 0 else
                      "Non-zero exit: read stderr, it names the line in your own file.")})
 
 

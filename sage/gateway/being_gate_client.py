@@ -1082,7 +1082,7 @@ def sandbox_available() -> bool:
         # /usr and failed on missing /lib64 — reporting "no sandbox permitted" on a machine
         # where the sandbox works perfectly, which would have refused every check.
         r = subprocess.run([SANDBOX, "--ro-bind", "/usr", "/usr", "--ro-bind", "/lib", "/lib",
-                            "--ro-bind", "/lib64", "/lib64", "--unshare-pid",
+                            "--ro-bind-try", "/lib64", "/lib64", "--unshare-pid",
                             "/usr/bin/true"], capture_output=True, timeout=10)
         return r.returncode == 0
     except Exception:
@@ -1210,10 +1210,20 @@ def _reach_refusal(verb: str, path, reach: str) -> str:
 # nothing the being can alter between the staging and the execution. The being's own state
 # (journal, conversations, memories) is not bound, so code it writes cannot corrupt the record of
 # what it did. Anything it wants to keep it must PRINT, and the print is capped and witnessed.
-STAGE_ROOT = "/tmp/sage-run"          # seat-owned staging dir, one per member; never written by the being
+STAGE_ROOT = "/tmp/sage-run"          # seat-owned staging dirs, one per INVOCATION (run_stage_dir)
 
 
 RUN_MAX_DATA = 8                      # data files copied in beside the script
+
+# WHAT AN HOUR CAN FILL, BOUNDED (legion-claude's review of #470, probed on Legion: a 300 MiB
+# --as cap let 640 MiB into the sandbox's /tmp, because tmpfs pages are not the process's
+# address space). Both writable places in the sandbox are size-limited tmpfs, and every file a
+# run writes, its stdout and stderr files on the host included, is capped by RLIMIT_FSIZE. So a
+# run holds at most the --as cap in heap plus these two in tmpfs, and never touches the disk.
+RUN_TMP_BYTES = 1 << 30               # the sandbox's /tmp
+RUN_WORK_BYTES = 1 << 30              # /work: the staged inputs (read-only) and whatever it writes
+RUN_FSIZE_BYTES = 512 << 20           # any one file the run writes, its output files included
+RUN_MIN_S = 30                        # a beat with less than this left starts no run (Nova)
 
 
 # AN HOUR, NOT 30 s (dp, 2026-10-18: "30 sec limit seems arbitrary for a being that is the
@@ -1239,21 +1249,24 @@ RUN_BEAT_MARGIN_S = 180
 
 
 def _beat_timeout_s() -> Optional[float]:
+    """The beat's declared time bound, or None when none is declared. UNKNOWN IS UNKNOWN
+    (legion-claude, #470): this used to assume 1500 s for any heartbeat process, but Legion's unit
+    runs TimeoutStartSec=infinity with 18-54 min beats, and would have been clamped to the floor
+    with a receipt about a bound that does not exist. The unit declares it (SAGE_BEAT_TIMEOUT_S,
+    beside TimeoutStartSec; sage-heartbeat.service.example does), or nothing is assumed."""
     v = os.getenv("SAGE_BEAT_TIMEOUT_S")
-    if v:
-        try:
-            return float(v)
-        except ValueError:
-            return None
-    main = sys.modules.get("__main__")
-    spec = getattr(main, "__spec__", None)
-    if getattr(spec, "name", "") == "sage.gateway.heartbeat" or sys.argv[0].endswith("heartbeat.py"):
-        return 1500.0                       # the example unit's bound (activity.BEAT_TTL_S)
-    return None                             # not a timed beat: nothing kills it
+    if not v or v.strip().lower() in ("infinity", "0"):
+        return None
+    try:
+        return float(v)
+    except ValueError:
+        return None
 
 
 def run_budget_s(now: Optional[float] = None) -> tuple:
-    """(seconds this run may take, why). Never more than RUN_TIMEOUT_S; never past the beat."""
+    """(seconds this run may take, why). Never more than RUN_TIMEOUT_S; never past the beat.
+    0 means no run may start: the beat has less than RUN_MIN_S left after its record margin.
+    That was a 30 s floor, which granted a run with no beat budget at all (Nova, #470)."""
     import time
     bound = _beat_timeout_s()
     if bound is None:
@@ -1261,7 +1274,9 @@ def run_budget_s(now: Optional[float] = None) -> tuple:
     left = _PROCESS_T0 + bound - (now if now is not None else time.time()) - RUN_BEAT_MARGIN_S
     if left >= RUN_TIMEOUT_S:
         return RUN_TIMEOUT_S, "the run limit"
-    return max(int(left), 30), "the time left in this beat"
+    if left < RUN_MIN_S:
+        return 0, "the time left in this beat"
+    return int(left), "the time left in this beat"
 
 
 def run_mem_cap_bytes() -> int:
@@ -1272,16 +1287,12 @@ def run_mem_cap_bytes() -> int:
         return 8 << 30
 
 
-def run_command(args: dict, ctx: Optional[dict] = None) -> str:
-    """The sandboxed interpreter invocation for a `run` intent.
-
-    The being names a .py file in its home and optionally data files to place beside it. The
-    SEAT stages copies into a directory it owns and the law judges THIS string. The staging
-    path is derived from the member name alone, so it is identical at both composition sites
-    and contains nothing the being chose."""
+def run_names(args: dict, ctx: Optional[dict] = None) -> List[str]:
+    """The script and data paths of a `run` intent, as the being named them, parsed and checked
+    once. run_command, run_source_paths and the dispatcher's staging all start from this list,
+    so the files judged, the files composed and the files staged are the same files."""
     import os
     import re
-    import sys
     memory_root = (ctx or {}).get("memory_root")
     member = (ctx or {}).get("member") or ""
     if not memory_root:
@@ -1346,6 +1357,52 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
                 raise ValueError(_reach_refusal("run", n, reach))
     if not path.endswith(".py"):
         raise ValueError(f"run executes a Python file; 'path' must end in .py, got {path!r}")
+    seen = set()
+    for n in names:
+        base = os.path.basename(n)
+        if base in seen:
+            raise ValueError(f"run: two files would arrive as {base!r} in the working directory; "
+                             f"they are placed under their base names, so give files whose names "
+                             f"differ")
+        seen.add(base)
+    return names
+
+
+def run_stage_dir(member: str, names: List[str]) -> str:
+    """The seat-owned staging dir for ONE invocation (Codex, #470: a per-member dir was shared
+    mutable state; a second dispatch for the same member, from the heartbeat or the raising
+    session, removed the first one's files mid-run). Keyed by this process and the named files,
+    so both composition sites in one process derive the same path, and two processes never
+    share one. Nothing in it is the being's choice except base names it already gave."""
+    import hashlib
+    import os
+    h = hashlib.sha256("\0".join(names).encode("utf-8", "surrogateescape")).hexdigest()[:12]
+    return f"{STAGE_ROOT}-{member}-{os.getpid()}-{h}"
+
+
+def run_source_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:
+    """Every file a `run` will read, resolved: the paths the law judges for this act (Codex,
+    #470: the composed command named only the staging dir, so the gate never saw the sources).
+    A relative name is in the home; an absolute one is where it says."""
+    import os
+    root = (ctx or {}).get("memory_root") or ""
+    return [os.path.realpath(n if os.path.isabs(n) else os.path.join(root, n))
+            for n in run_names(args, ctx)]
+
+
+def run_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The sandboxed interpreter invocation for a `run` intent.
+
+    The being names a .py file in its home and optionally data files to place beside it. The
+    SEAT stages copies into a directory it owns (run_stage_dir) and the law judges THIS string,
+    together with the source paths (run_source_paths)."""
+    import os
+    import shlex
+    import sys
+    names = run_names(args, ctx)
+    memory_root = (ctx or {}).get("memory_root")
+    member = (ctx or {}).get("member") or ""
+    path = names[0]
     if not sandbox_available():
         raise ValueError(
             "run needs its sandbox and cannot get one: bubblewrap is missing or not permitted "
@@ -1353,8 +1410,15 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
             "instead is the one thing this verb exists to prevent, so it is refused rather than "
             "silently downgraded")
     interp = os.path.dirname(os.path.dirname(sys.executable))
-    stage = f"{STAGE_ROOT}-{member}"
+    stage = run_stage_dir(member, names)
     script = os.path.basename(path)
+    # /work IS A SIZE-LIMITED TMPFS, and each staged copy is bound into it READ-ONLY (it was a
+    # writable bind of the host staging dir with no size bound: an hour of writes there fills
+    # the seat's disk, legion-claude on #470). The run can write new files beside its inputs,
+    # within RUN_WORK_BYTES; it cannot change the copies the law judged.
+    inputs = "".join(
+        f" --ro-bind {shlex.quote(stage + '/' + b)} {shlex.quote('/work/' + b)}"
+        for b in (os.path.basename(n) for n in names))
     # THE WORKTREE IS IMPORTABLE, READ-ONLY (2026-10-07). legion-being, fixing #360, could not
     # `from sage.gateway.hestia_dispatch import render_pr` in a scratch script: the sandbox had
     # no worktree, so it extracted the function with `ast` from a file passed as `data` and its
@@ -1377,15 +1441,18 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
         wt_bind = f" --ro-bind {q} {q}"
         wt_env = f" --setenv PYTHONPATH {q}"
     return (
-        (f"{PRLIMIT} --as={run_mem_cap_bytes()} -- " if os.path.exists(PRLIMIT) else "")
+        (f"{PRLIMIT} --as={run_mem_cap_bytes()} --fsize={RUN_FSIZE_BYTES} -- "
+         if os.path.exists(PRLIMIT) else "")
         + f"{SANDBOX} --clearenv"
-        " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind /lib64 /lib64 --ro-bind /bin /bin"
+        # --ro-bind-try for /lib64: an aarch64 seat may have none, and a hard bind would make
+        # `run` read as unavailable there (legion-claude, #470)
+        " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind-try /lib64 /lib64 --ro-bind /bin /bin"
         " --ro-bind /etc/alternatives /etc/alternatives"
         f" --ro-bind {interp} {interp}"
-        " --proc /proc --dev /dev --tmpfs /tmp"
+        f" --proc /proc --dev /dev --size {RUN_TMP_BYTES} --tmpfs /tmp"
         f"{wt_bind}"
-        # THE ONLY WRITABLE THING IN THERE, and its contents are copies the seat made.
-        f" --bind {stage} /work"
+        # THE ONLY WRITABLE PLACES IN THERE are these two size-limited tmpfs.
+        f" --size {RUN_WORK_BYTES} --tmpfs /work{inputs}"
         " --unshare-pid --unshare-net --unshare-ipc --unshare-uts"
         " --new-session --die-with-parent"
         " --setenv HOME /tmp --setenv PYTHONUTF8 1 --setenv PYTHONDONTWRITEBYTECODE 1"
@@ -2020,7 +2087,7 @@ _REGISTRY = {
     # run: execute code the being wrote, in a sandbox holding nothing of ours. Composed like
     # check; see run_command for why it is strictly weaker than the check the being already has.
     "run":            dict(tool="run",         path_args=(),       cmd_arg=None,
-                           compose=run_command),
+                           compose=run_command, compose_paths=run_source_paths),
     # say: add a turn to a conversation the being is IN. Bounded by construction, like
     # remember: the being names a conversation id, and the dispatcher refuses any id whose
     # meta does not list it as a participant AND as writable. It cannot create a

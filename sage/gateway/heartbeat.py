@@ -1691,15 +1691,17 @@ def _ask_sender(home, pointer: str) -> str:
     envelope's `from` (the inbox note's own front matter, a hub member id) is what the hub
     authenticated, but no peer_ask accepts a member id, and the hestia notice's from_plugin is the
     relaying seat. So the claimed name is used as the destination only when it is bound to the
-    authenticated member (`_bound_to`); unbound, unknown or unreadable, the ask gets no turn."""
+    authenticated member (`_bound_to`); unbound, unknown or unreadable, the ask gets no turn.
+
+    The authenticated member id is read from the drain's seat-owned sender record
+    (`being_inbox_drain.authenticated_sender`), never from the note's own front matter: the note sits
+    in the being's writable home, so its `from:` is an editable field (NOVA's re-review on #459)."""
     try:
-        from sage.gateway.being_inbox_drain import DELIVERED_HEADING
+        from sage.gateway.being_inbox_drain import DELIVERED_HEADING, authenticated_sender
         p = Path(home) / "notes" / "inbox" / Path(str(pointer).split("#", 1)[0]).name
         text = p.read_text(encoding="utf-8", errors="replace")
-        if not text.startswith("---\n"):
-            return ""
-        env = _ASK_FROM.search(text[4:].split("\n---", 1)[0])
-        authed = _roster_name_for(env.group(1)) if env else ""
+        sender_id = authenticated_sender(home, p.name)
+        authed = _roster_name_for(sender_id) if sender_id else ""
         part = text.split(DELIVERED_HEADING, 1)[1]
         body = part.split("~~~~\n", 1)[1]
         if not body.startswith("---\n"):

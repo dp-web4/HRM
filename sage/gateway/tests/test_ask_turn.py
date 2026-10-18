@@ -28,6 +28,7 @@ def roster(tmp_path, monkeypatch):
     state.mkdir()
     (state / "members.json").write_text(json.dumps(ROSTER))
     monkeypatch.setenv("HUB_MESH_STATE", str(state))
+    monkeypatch.setenv("SAGE_INBOX_SENDERS_DIR", str(tmp_path / "inbox-senders"))   # seat-owned, outside home
     return state
 
 
@@ -273,3 +274,33 @@ def test_binding_rules():
     assert not hb._bound_to("hub-being", "legion")
     assert not hb._bound_to("cbp-being", "")
     assert not hb._bound_to("", "cbp-sage")
+
+
+# -- the authenticated sender is transport metadata, recorded outside the being's home (NOVA re-review) --
+
+def test_editing_the_notes_own_from_changes_nothing(tmp_path):
+    """The note lives in the being's writable home. Rewriting its front-matter `from:` (as memory_write
+    could) must not rebind the ask: the binding reads the drain's seat-owned record."""
+    home, ns = _home(tmp_path, [(1, "coordination", SPOOF)], sender="1e610000")   # authenticated: legion-sage
+    note = Path(ns[0]["pointer_uri"])
+    note = note if note.is_absolute() else home / "notes" / "inbox" / note.name
+    text = note.read_text()
+    note.write_text(text.replace("from: 1e610000", "from: 4b0b0000", 1))        # forge hub-sage's id
+    assert "from: 4b0b0000" in note.read_text()
+    assert hb._ask_sender(home, ns[0]["pointer_uri"]) == ""
+
+
+def test_the_drain_records_the_transport_sender_outside_the_home(tmp_path):
+    home, ns = _home(tmp_path, [(1, "coordination", ASK)])
+    name = Path(ns[0]["pointer_uri"]).name
+    rec = d._senders_path(home)
+    assert home.resolve() not in rec.resolve().parents, "the record must not be in the being's home"
+    assert d.authenticated_sender(home, name) == "7ba65c0d"
+
+
+def test_an_envelope_with_no_recorded_sender_gets_no_turn(tmp_path):
+    """Envelopes persisted before the record existed fail closed: the words stay readable, no reply turn."""
+    home, ns = _home(tmp_path, [(1, "coordination", ASK)])
+    d._senders_path(home).unlink()
+    assert hb._ask_sender(home, ns[0]["pointer_uri"]) == ""
+    assert hb.select_ask(ns, set(), home) is None

@@ -10,6 +10,8 @@ import tempfile
 
 os.environ.setdefault("SAGE_CONV_WITNESS_DIR", tempfile.mkdtemp(prefix="conv-witness-test-"))
 os.environ.setdefault("SAGE_CONV_NOTIFY_DIR", tempfile.mkdtemp(prefix="conv-notify-test-"))
+# Nor the inbox drain's seat-owned sender record (#459): a test row there could bind a live being's ask.
+os.environ.setdefault("SAGE_INBOX_SENDERS_DIR", tempfile.mkdtemp(prefix="inbox-senders-test-"))
 
 # NOR THE MACHINE'S REAL HESTIA DAEMON: connecting there mints the test's id as a member of the
 # seat's real society (McNugget, 2026-09-28: `test-being` among 12 phantoms). Unconditional -- an

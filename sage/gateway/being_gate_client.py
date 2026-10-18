@@ -1229,6 +1229,41 @@ RUN_MEM_FRACTION = 0.5
 PRLIMIT = "/usr/bin/prlimit"
 
 
+# A RUN MUST NOT OUTLIVE ITS BEAT. The beat's systemd unit kills the whole beat at its
+# TimeoutStartSec (1500 s in sage-heartbeat.service.example), so an hour-long run inside a
+# 25-minute beat would die with the beat, record and all. A run gets the hour or the time the
+# beat has left minus a margin for writing its record, whichever is less, and the receipt says
+# which. Raising a machine's unit bound is what makes the full hour reachable there.
+_PROCESS_T0 = __import__("time").time()
+RUN_BEAT_MARGIN_S = 180
+
+
+def _beat_timeout_s() -> Optional[float]:
+    v = os.getenv("SAGE_BEAT_TIMEOUT_S")
+    if v:
+        try:
+            return float(v)
+        except ValueError:
+            return None
+    main = sys.modules.get("__main__")
+    spec = getattr(main, "__spec__", None)
+    if getattr(spec, "name", "") == "sage.gateway.heartbeat" or sys.argv[0].endswith("heartbeat.py"):
+        return 1500.0                       # the example unit's bound (activity.BEAT_TTL_S)
+    return None                             # not a timed beat: nothing kills it
+
+
+def run_budget_s(now: Optional[float] = None) -> tuple:
+    """(seconds this run may take, why). Never more than RUN_TIMEOUT_S; never past the beat."""
+    import time
+    bound = _beat_timeout_s()
+    if bound is None:
+        return RUN_TIMEOUT_S, "the run limit"
+    left = _PROCESS_T0 + bound - (now if now is not None else time.time()) - RUN_BEAT_MARGIN_S
+    if left >= RUN_TIMEOUT_S:
+        return RUN_TIMEOUT_S, "the run limit"
+    return max(int(left), 30), "the time left in this beat"
+
+
 def run_mem_cap_bytes() -> int:
     import os
     try:
@@ -2215,7 +2250,9 @@ _TOOL_SCHEMAS = {
             "holds only a Python interpreter, copies of the files you name, and (when you have "
             "one) your worktree READ-ONLY on the import path. No network, no home, no GPU. "
             "Nothing it does persists, so PRINT what you want to keep. It may run for up to an "
-            "hour, and your beat waits for it: a long run is time you are not answering anyone. "
+            "hour, or the time left in your beat if that is less, and your beat waits for it: a "
+            "long run is time you are not answering anyone. If it is stopped, what it printed "
+            "before the stop comes back. "
             "This is how a claim becomes testable: before you run it, say what it should print "
             "if you are right, and what would mean you are wrong.",
             {"path": "a .py file in your home, e.g. 'scratch/evaluator.py'",

@@ -207,6 +207,34 @@ def test_run_is_on_by_default_with_an_hour_and_says_the_beat_waits():
         assert "run" not in unavailable(None, None, {}), "no instance setting is needed"
 
 
+def test_a_run_never_outlives_its_beat(monkeypatch):
+    """The beat unit kills the whole beat at TimeoutStartSec (1500 s in the example unit), so a
+    run gets the hour or the beat's remaining time minus a margin, whichever is less."""
+    from sage.gateway import being_gate_client as b
+    monkeypatch.setenv("SAGE_BEAT_TIMEOUT_S", "1500")
+    t0 = b._PROCESS_T0
+    budget, why = b.run_budget_s(now=t0 + 100)
+    assert budget == 1500 - 100 - b.RUN_BEAT_MARGIN_S and why == "the time left in this beat"
+    assert b.run_budget_s(now=t0 + 1490)[0] == 30, "a floor, never zero or negative"
+    monkeypatch.setenv("SAGE_BEAT_TIMEOUT_S", "7200")
+    assert b.run_budget_s(now=t0 + 100) == (3600, "the run limit"), "a long beat allows the hour"
+    monkeypatch.delenv("SAGE_BEAT_TIMEOUT_S")
+    assert b.run_budget_s(now=t0 + 99999) == (3600, "the run limit"), "outside a timed beat"
+
+
+@needs_bwrap
+def test_a_stopped_run_keeps_what_it_printed(tmp_path, monkeypatch):
+    import sage.gateway.being_gate_client as b
+    monkeypatch.setattr(b, "run_budget_s", lambda now=None: (2, "the time left in this beat"))
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "slow.py").write_text(
+        "import sys, time\nprint('step 1 done', flush=True)\ntime.sleep(30)\nprint('never')\n")
+    r = d._do_run(BeingIntent("run", {"path": "scratch/slow.py"}))
+    assert r.ok and r.result["exit"] == -9, r.result
+    assert "step 1 done" in r.result["stdout"] and "never" not in r.result["stdout"]
+    assert "after 2s (the time left in this beat)" in r.result["stderr"]
+
+
 @needs_bwrap
 def test_run_is_held_to_its_memory_cap_from_inside(tmp_path):
     """An hour of unbounded allocation could take the machine's memory, and the being's own

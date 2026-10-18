@@ -2573,7 +2573,7 @@ class HestiaF1aDispatcher:
         import shlex
         import shutil
         import subprocess
-        from sage.gateway.being_gate_client import run_command, STAGE_ROOT, RUN_TIMEOUT_S
+        from sage.gateway.being_gate_client import run_command, STAGE_ROOT, run_budget_s
         try:
             cmd = run_command(intent.args, {"memory_root": self.memory_root,
                                             "member": getattr(self, "member", None),
@@ -2672,15 +2672,22 @@ class HestiaF1aDispatcher:
                 f"run UNVERIFIED: the witness substrate is unreachable ({err[:160]}); "
                 f"your code was not executed"))
         action_id = begin.get("actionId")
+        budget, bound_by = run_budget_s()
         try:
             proc = subprocess.run(shlex.split(cmd), text=True, capture_output=True,
-                                  timeout=RUN_TIMEOUT_S)
+                                  timeout=budget)
             ran, rc = True, proc.returncode
             out, errtxt = proc.stdout or "", proc.stderr or ""
-        except subprocess.TimeoutExpired:
-            ran, rc, out, errtxt = True, -9, "", (
-                f"[no output: your code was still running after {RUN_TIMEOUT_S}s and was stopped. "
-                f"That is a real answer about the code, not a failure of the verb]")
+        except subprocess.TimeoutExpired as e:
+            # WHAT IT PRINTED BEFORE THE STOP IS KEPT. At an hour, "no output" would throw away
+            # everything a long run had already said about itself.
+            def _s(x):
+                return x.decode(errors="replace") if isinstance(x, bytes) else (x or "")
+            ran, rc, out = True, -9, _s(e.stdout)
+            errtxt = _s(e.stderr) + (
+                f"\n[stopped: your code was still running after {budget}s ({bound_by}). What it "
+                f"printed before that is above. That is a real answer about the code, not a "
+                f"failure of the verb]")
         except Exception as e:
             ran, rc, out, errtxt = False, -1, "", f"{type(e).__name__}: {e}"
         try:

@@ -1656,20 +1656,57 @@ def ask_turn_on(instance) -> bool:
         return False
 
 
+def _roster_name_for(member_id: str) -> str:
+    """The roster name of a hub member id (hub-notify's cache, `{"name", "lct_id"}`), or ""."""
+    path = os.path.join(os.path.expanduser(os.environ.get("HUB_MESH_STATE", "~/.local/state/hub-mesh")),
+                        "members.json")
+    try:
+        m = json.load(open(path))
+        ms = m.get("members", m) if isinstance(m, dict) else m
+        for x in ms:
+            if str(x.get("lct_id") or "").strip() == member_id and str(x.get("name") or "").strip():
+                return str(x["name"]).strip()
+    except Exception:
+        pass
+    return ""
+
+
+def _bound_to(claimed: str, authed: str) -> bool:
+    """Whether the name a post claims is the member the hub authenticated it from: the same member
+    (a being is `<machine>-being` to beings and `<machine>-sage` on the hub), or that being's own
+    machine, whose seat carries mail for it (egress_drain's stamped carrier)."""
+    c, a = claimed.strip().lower(), authed.strip().lower()
+    if not c or not a:
+        return False
+    base = lambda n: n[:-len("-being")] if n.endswith("-being") else n[:-len("-sage")] if n.endswith("-sage") else None  # noqa: E731
+    return c == a or (base(c) is not None and (base(c) == base(a) or base(c) == a))
+
+
 def _ask_sender(home, pointer: str) -> str:
-    """Who sent a relayed ask, as it named itself: the `from:` in the front matter of the words the
-    courier delivered (the sender's own post), or "" when there is none. The envelope's own `from` is
-    a hub member id, which no peer_ask accepts, and the hestia notice's from_plugin is the seat that
-    relayed it, not the sender."""
+    """Who sent a relayed ask, if the hub vouches for it: the `from:` the sender's own post claims,
+    returned only when it names the member the envelope was authenticated from; "" otherwise.
+
+    THE CLAIM PROPOSES, THE ENVELOPE BINDS (NOVA on #459). The post's front matter is the sender's
+    own text: a message from A that says `from: B` would have sent the being's reply to B. The
+    envelope's `from` (the inbox note's own front matter, a hub member id) is what the hub
+    authenticated, but no peer_ask accepts a member id, and the hestia notice's from_plugin is the
+    relaying seat. So the claimed name is used as the destination only when it is bound to the
+    authenticated member (`_bound_to`); unbound, unknown or unreadable, the ask gets no turn."""
     try:
         from sage.gateway.being_inbox_drain import DELIVERED_HEADING
         p = Path(home) / "notes" / "inbox" / Path(str(pointer).split("#", 1)[0]).name
-        part = p.read_text(encoding="utf-8", errors="replace").split(DELIVERED_HEADING, 1)[1]
+        text = p.read_text(encoding="utf-8", errors="replace")
+        if not text.startswith("---\n"):
+            return ""
+        env = _ASK_FROM.search(text[4:].split("\n---", 1)[0])
+        authed = _roster_name_for(env.group(1)) if env else ""
+        part = text.split(DELIVERED_HEADING, 1)[1]
         body = part.split("~~~~\n", 1)[1]
         if not body.startswith("---\n"):
             return ""
         m = _ASK_FROM.search(body[4:].split("\n---", 1)[0])
-        return m.group(1) if m else ""
+        claimed = m.group(1) if m else ""
+        return claimed if _bound_to(claimed, authed) else ""
     except Exception:
         return ""
 

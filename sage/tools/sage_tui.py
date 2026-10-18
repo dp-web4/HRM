@@ -78,6 +78,12 @@ def _v(d: dict, *keys):
     return d.get("value") if isinstance(d, dict) else None
 
 
+def _same_model(a: str, b: str) -> bool:
+    """The daemon's tag rule (sage-daemon same_model, #433): exact, with a bare name meaning `:latest`."""
+    norm = lambda m: m.strip() if ":" in m else m.strip() + ":latest"  # noqa: E731
+    return bool(a.strip()) and norm(a) == norm(b)
+
+
 def body_lines(body: dict, health: dict, width: int) -> list[str]:
     """The machine's metabolism, as the web console shows it (dp 2026-10-18), memory first.
 
@@ -113,8 +119,12 @@ def body_lines(body: dict, health: dict, width: int) -> list[str]:
             rest.append(" · ".join(keep))
     loaded = health.get("loaded_models")
     if loaded is not None:
-        model = health.get("model") or "?"
-        here = [m for m in loaded if str(m) == model or str(m).split(":")[0] == model.split(":")[0]]
+        # The daemon's own answer (`model_loaded`, #433's same_model) is the contract. Its fallback is the same
+        # rule: exact identity, with only a bare name meaning `:latest` -- never the family before the colon,
+        # which reported qwen:2b as qwen:4b loaded (NOVA on #469).
+        here = health.get("model_loaded")
+        if here is None:
+            here = any(_same_model(str(m), str(health.get("model") or "")) for m in loaded)
         rest.append(f"model {'loaded' if here else 'not loaded'}" + (f" ({', '.join(map(str, loaded))})" if loaded else ""))
     age = body.get("served_age_s")
     rest.append(f"sampled {age:.0f}s ago" if isinstance(age, (int, float)) else "age unknown")

@@ -158,6 +158,26 @@ def test_an_unloaded_model_says_so_and_an_old_daemon_says_nothing():
     assert "model" not in t.body_lines(BODY, {"model": "m:4b"}, 200)[1]   # pre-#433 /health has no field
 
 
+def test_a_same_family_different_tag_is_not_the_loaded_model():
+    """NOVA on #469: matching the text before ':' reported qwen:2b as qwen:4b loaded."""
+    h = {"model": "qwen3.8-distill:4b", "loaded_models": ["qwen3.8-distill:2b"]}
+    assert "model not loaded" in t.body_lines(BODY, h, 200)[1]
+    assert "model not loaded" in t.body_lines(BODY, dict(h, model_loaded=False), 200)[1]
+
+
+def test_the_daemons_own_answer_wins():
+    h = {"model": "m:4b", "loaded_models": ["m:4b"], "model_loaded": False}
+    assert "model not loaded" in t.body_lines(BODY, h, 200)[1]
+    h = {"model": "m:4b", "loaded_models": ["m:4b"], "model_loaded": True}
+    assert "model loaded" in t.body_lines(BODY, h, 200)[1]
+
+
+def test_only_a_bare_name_means_latest():
+    assert t._same_model("m:latest", "m") and t._same_model("m", "m:latest")
+    assert not t._same_model("m:2b", "m:4b") and not t._same_model("m:2b", "m")
+    assert not t._same_model("", "m")
+
+
 def test_an_unsensed_body_is_said_not_drawn_as_zero():
     assert t.body_lines({}, {}, 200) == ["body: not sensed (the daemon did not answer /body)"]
     assert t.body_lines({"unavailable": "sampler starting"}, {}, 200) == ["body: not sensed (sampler starting)"]

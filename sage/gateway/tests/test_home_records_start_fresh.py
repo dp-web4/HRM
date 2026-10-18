@@ -103,3 +103,72 @@ def test_reflect_records_are_required_unless_the_instance_makes_them_optional():
     assert "if you keep a todo" not in j
     both = reflect_prompt(reflect_optional_for({"reflect_optional": "todo"}), **kw)
     assert "if you keep a todo list" in both and "if you keep a journal" not in both
+
+
+# -- Nova's review of 0557d9bcf: item age, concurrent appends, interrupted retires ------------
+
+def test_carried_items_keep_the_date_they_were_opened():
+    from datetime import datetime, timezone
+    from sage.gateway.heartbeat import todo_open
+    disp, root = _disp()
+    log = ("- [ ] an undated item from before any header\n" + _TODO
+           + "2026-10-17 20:00 UTC\nadded:\n- [ ] a recent item\n")
+    Path(root, "todo.md").write_text(log)
+    now = datetime(2026, 10, 18, 6, 0, tzinfo=timezone.utc)
+    before = todo_open(log, now=now)
+    env = disp(BeingIntent("retire_note", {"path": "todo.md", "reason": "obsolete"}), _ALLOW)
+    assert env.ok, env.error
+    fresh = Path(root, "todo.md").read_text()
+    assert todo_open(fresh, now=now) == before, fresh
+    assert before[1] == 2, "the two old items stay counted as old, not pulled back into view"
+
+
+def test_appends_racing_retires_lose_no_entry():
+    import threading
+    disp, root = _disp()
+    Path(root, "journal.md").write_text("2026-10-10 01:00 UTC\nfirst\n")
+    tokens = [f"entry-{i:04d}" for i in range(300)]
+
+    def appender():
+        for t in tokens:
+            env = disp(BeingIntent("memory_write", {"path": "journal.md", "content": t}), _ALLOW)
+            assert env.ok, env.error
+
+    th = threading.Thread(target=appender)
+    th.start()
+    retires = 0
+    while th.is_alive():
+        env = disp(BeingIntent("retire_note", {"path": "journal.md", "reason": "race"}), _ALLOW)
+        retires += env.ok
+    th.join()
+    kept = "".join(Path(root, n).read_text() for n in os.listdir(root) if n.startswith("journal"))
+    lost = [t for t in tokens if t not in kept]
+    assert retires > 1 and not lost, f"{len(lost)} lost across {retires} retires"
+
+
+def test_an_interrupted_retire_loses_nothing_and_the_next_one_finishes_it():
+    import pytest
+    import sage.gateway.reference_f1a as rf
+    disp, root = _disp()
+    Path(root, "todo.md").write_text(_TODO)
+    real, calls = os.replace, []
+
+    def dies_on_the_second_swap(src, dst):
+        calls.append(dst)
+        if len(calls) == 2:
+            raise KeyboardInterrupt("killed between the two steps")
+        real(src, dst)
+
+    rf.os.replace = dies_on_the_second_swap
+    try:
+        with pytest.raises(KeyboardInterrupt):
+            disp(BeingIntent("retire_note", {"path": "todo.md", "reason": "obsolete"}), _ALLOW)
+    finally:
+        rf.os.replace = real
+    assert Path(root, "todo.md").read_text() == _TODO, "the original is untouched"
+    copies = [n for n in os.listdir(root) if n.startswith("todo.retired-")]
+    assert len(copies) == 1 and _TODO in Path(root, copies[0]).read_text()
+    env = disp(BeingIntent("retire_note", {"path": "todo.md", "reason": "obsolete"}), _ALLOW)
+    assert env.ok and "interrupted" in env.result, env.result
+    assert [n for n in os.listdir(root) if n.startswith("todo.retired-")] == copies, "no second copy"
+    assert "carried forward" in Path(root, "todo.md").read_text().lower()

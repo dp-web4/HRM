@@ -2837,10 +2837,7 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=True, witness_id=action_id, result={
             "script": staged[0][0], "files": [b for b, _ in staged],
             "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
-            "note": ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                     "read-only); the copies are gone now. Only what you printed survives."
-                     if rc == 0 else
-                     "Non-zero exit: read stderr, it names the line in your own file.")})
+            "note": _run_note(rc, errtxt, [b for b, _ in staged])})
 
 
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
@@ -4214,3 +4211,24 @@ if __name__ == "__main__":  # live smoke against the local daemon: mesh -> membe
     env = d(BeingIntent("mesh", {"to": to, "kind": kind, "pointer": ptr}), GatewayVerdict("allow"))
     print(json.dumps({"ok": env.ok, "result": env.result, "error": env.error,
                       "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))
+
+
+def _run_note(rc: int, stderr: str, files: list) -> str:
+    """The one line a `run` result says about itself.
+
+    A NON-ZERO EXIT WITH AN EMPTY STDERR NAMES NO LINE. cbp-being, 2026-10-18 23:41Z: its
+    script printed "No data files found in the data directory." and exited 1, stderr empty, and
+    the note told it to "read stderr, it names the line in your own file". There was no line to
+    read: its own code had stopped itself because data/ does not exist in the sandbox, which the
+    note said only on a zero exit. Files arrive flat under their base names, so a script that
+    looks in a subdirectory finds nothing even for a file passed as 'data'."""
+    here = ", ".join(files) or "nothing"
+    if rc == 0:
+        return ("Ran in a sandbox with no network and no home (your worktree, if any, "
+                "read-only); the copies are gone now. Only what you printed survives.")
+    if stderr.strip():
+        return "Non-zero exit: read stderr, it names the line in your own file."
+    return (f"Non-zero exit with nothing on stderr: your own code stopped itself, so stdout says "
+            f"why. The sandbox holds only what you named, flat in the working directory: {here}. "
+            f"No other file from your home is there; a file passed as 'data' arrives under its "
+            f"base name (data/x.npy is x.npy), not in a subdirectory.")

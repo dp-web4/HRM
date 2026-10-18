@@ -580,3 +580,23 @@ def test_run_and_request_run_each_name_the_other_and_neither_says_you_cannot_run
     assert "`run`" in req and "OUTSIDE the sandbox" in req and "`why`" in req
     assert "cannot execute anything yourself" not in req
     assert "request_run asks the seat" in AFFORDANCES
+
+
+@needs_sandbox
+def test_an_empty_stderr_failure_says_where_its_files_are_not_to_read_stderr(tmp_path):
+    # cbp-being 2026-10-18 23:41Z: exit 1, stderr empty, told "read stderr, it names the line"
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "x.npy").write_bytes(b"0000")
+    (home / "scratch" / "look.py").write_text(
+        "import pathlib, sys\n"
+        "if not list(pathlib.Path('data').glob('*.npy')):\n"
+        "    print('No data files found'); sys.exit(1)\n")
+    r = d._do_run(BeingIntent("run", {"path": "scratch/look.py", "data": ["scratch/x.npy"]}))
+    assert r.ok and r.result["exit"] == 1 and not r.result["stderr"], r.result
+    note = r.result["note"]
+    assert "read stderr" not in note and "look.py, x.npy" in note and "base name" in note
+    # a traceback still points at stderr
+    (home / "scratch" / "boom.py").write_text("raise ValueError('mine')\n")
+    b = d._do_run(BeingIntent("run", {"path": "scratch/boom.py"}))
+    assert "read stderr" in b.result["note"]
+

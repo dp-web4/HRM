@@ -1351,8 +1351,21 @@ def run_names(args: dict, ctx: Optional[dict] = None) -> List[str]:
             # itself still must be the being's own, inside its home — code it executes is code
             # it wrote.
             if i == 0:
-                raise ValueError("run 'path' (the script) must be a file in your home; only "
-                                 "'data' files may come from elsewhere in your reach")
+                # ITS OWN HOME BY ITS FULL NAME IS ITS HOME. cbp-being's first live runs,
+                # 2026-10-18: after one run by relative path, it named the same script by its
+                # absolute path, inside its home, and was refused twice with "must be a file in
+                # your home", which was false about that file. An absolute script path that
+                # resolves inside the home is accepted, the way _safe_path forgives a being
+                # reaching for its own journal by full path. Anywhere else is still refused.
+                _home = os.path.realpath(memory_root)
+                _full = os.path.realpath(n)
+                if not (_full == _home or _full.startswith(_home + os.sep)):
+                    raise ValueError(
+                        f"run 'path' (the script) must be a file in your home, and {n!r} is not "
+                        f"inside it ({_home}); only 'data' files may come from elsewhere in your "
+                        f"reach. A path relative to your home, like 'scratch/x.py', needs no "
+                        f"prefix at all")
+                continue
             if not _under(os.path.realpath(n), reach):
                 raise ValueError(_reach_refusal("run", n, reach))
     if not path.endswith(".py"):

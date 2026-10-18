@@ -541,3 +541,20 @@ def test_three_actors_cannot_both_hold_the_stage_lock_across_inodes(tmp_path):
     assert _lock_opened_stage(path, d) is False
     _release_stage_lock(path, c)
     assert not os.path.exists(path), "nothing left behind"
+
+
+@needs_bwrap
+def test_its_own_script_by_absolute_path_is_its_own_script(tmp_path):
+    """cbp-being's first live runs, 2026-10-18: it named its own script by its absolute path, inside
+    its home, and was refused twice with "must be a file in your home", which was false."""
+    from sage.gateway.being_gate_client import run_command
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "e.py").write_text("print('ran by full path')\n")
+    full = str(home / "scratch" / "e.py")
+    cmd = run_command({"path": full}, {"memory_root": str(home), "member": "test-being"})
+    assert cmd.rstrip().endswith("/work/e.py")
+    r = d._do_run(BeingIntent("run", {"path": full}))
+    assert r.ok and r.result["exit"] == 0 and "ran by full path" in r.result["stdout"], r
+    # a script outside the home is still refused, and the refusal says where the home is
+    with pytest.raises(ValueError, match="is not inside it"):
+        run_command({"path": "/etc/x.py"}, {"memory_root": str(home), "member": "test-being"})

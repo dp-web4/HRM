@@ -2109,7 +2109,9 @@ _TOOL_SCHEMAS = {
     "retire_note": ("Mark one of your own notes in notes/ or scratch/ as no longer current. It "
                     "is renamed to <name>.retired-<date> with a dated header saying why; nothing "
                     "is lost and you can still read it. Use it when something you wrote has been "
-                    "settled or refuted, so a later beat does not read it as news.",
+                    "settled or refuted, so a later beat does not read it as news. It also starts "
+                    "your todo.md or journal.md fresh: the old one is kept whole and recall still "
+                    "searches it, and a fresh todo.md keeps every item still open.",
                     {"path": "the note, e.g. notes/my-note.md", "reason": "what you know now that the note does not"},
                     ["path", "reason"]),
     "memory_edit": ("Change part of a file you already wrote, in your home or another path you are granted. memory_write only ever ADDS to "

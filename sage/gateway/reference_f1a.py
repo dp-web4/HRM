@@ -736,6 +736,44 @@ def dated_lines_note(text: str, now: Optional[datetime] = None) -> str:
             f"says what was true on its date; appending to a file does not make its older lines "
             f"current. For what is up now, the measured lines in your state are from this beat.]\n")
 
+
+def _todo_close_door(p: Path) -> str:
+    """On a missed memory_edit of todo.md, the door that needs no exact text. Measured over
+    cbp-being's whole history to 2026-10-17: 523 memory_edits ticking a todo item done, 367 of
+    them refused on old-text mismatch, and 34 of 41 deletions likewise. The beat window closes an
+    item from an appended `done:` line (a fuzzy match), so the edit was never needed."""
+    if p.name != "todo.md":
+        return ""
+    return (" To close a todo item you do not need an edit: memory_write todo.md with the item "
+            "under done: and the window drops it. To start the whole list fresh, retire_note "
+            "todo.md; the items still open are carried forward.")
+
+
+# The being's running records, which retire_note starts fresh (see _do_retire_note).
+RETIRABLE_RECORDS = ("todo.md", "journal.md")
+
+
+def _fresh_record(name: str, body: str, retired_as: str, stamp: datetime):
+    """The fresh file that replaces a retired todo.md or journal.md, and the receipt's words
+    for it. The todo carries forward every item still open by the same reading the beat window
+    uses (heartbeat._todo_items), so a retire never drops an open item and the window shows the
+    same open list before and after."""
+    if name == "todo.md":
+        from sage.gateway.heartbeat import _todo_items  # lazy: heartbeat is the larger module
+        still = [t for t, _ in _todo_items(body).values()]
+        head = f"{stamp:%Y-%m-%d %H:%M} UTC\n"
+        if not still:
+            return (head + "still open: none\n",
+                    "A fresh todo.md is started; nothing was still open, so it starts empty.")
+        return (head + f"still open (carried forward from {retired_as}):\n"
+                + "".join(f"- [ ] {t}\n" for t in still),
+                f"A fresh todo.md is started with the {len(still)} item(s) still open carried "
+                f"forward; everything else stays in {retired_as}.")
+    return (f"{stamp:%Y-%m-%d %H:%M} UTC\nJournal started fresh. Earlier entries are in "
+            f"{retired_as}, and recall still searches them.\n",
+            f"A fresh journal.md is started; recall still searches {retired_as}.")
+
+
 class ReferenceF1aDispatcher:
     """A Dispatcher (see being_gate_client.Dispatcher) for the being's own safe acts."""
 
@@ -1256,7 +1294,7 @@ class ReferenceF1aDispatcher:
                 f"that text is not in '{path}', so nothing was changed. The file is as it "
                 f"was. Read it first and copy the line exactly, including its indentation — "
                 f"what you remember writing and what is on disk can differ."
-                + _where_it_diverged(text, old)))
+                + _where_it_diverged(text, old) + _todo_close_door(p)))
         if hits > 1:
             # NAME BOTH DOORS. Measured 2026-10-06 05:48Z: this refusal fired on cbp-being's
             # line-63 edit ('return self.output_proj(x)' is on 63 and 88) and named only
@@ -1404,22 +1442,33 @@ class ReferenceF1aDispatcher:
         of escalation, because nothing it could do said "this is finished". dp, to the being:
         "renaming and deleting aren't verbs you have yet — we're looking at that."
 
-        Bounded: only inside `notes/` or `scratch/` in its own home. `_safe_path(writing=True)`
-        already refuses the seat-owned notes and the reserved subtrees, and a path outside the
-        home, so this adds only the notes/-or-scratch/ rule. The file keeps its content
-        and gains a header; the name gains `.retired-<date>`, so a reader and a listing both
-        see that it is closed."""
+        Bounded: only inside `notes/` or `scratch/` in its own home, plus its own `todo.md` and
+        `journal.md` (below). `_safe_path(writing=True)` already refuses the seat-owned notes
+        and the reserved subtrees, and a path outside the home, so this adds only that rule.
+        The file keeps its content and gains a header; the name gains `.retired-<date>`, so a
+        reader and a listing both see that it is closed.
+
+        THE JOURNAL AND TODO CAN START FRESH TOO (dp, 2026-10-17: "those are real problems that
+        need to get resolved, and doesn't sound like the being itself has the tools to do it").
+        Both are append-only by design and this verb used to refuse them, so neither could ever
+        shrink: cbp-being's todo.md reached 4,921 lines, and on 10-17 21:00Z it called
+        `retire_note todo.md` to clear obsolete items and was refused. Retiring one
+        keeps it whole at the home root as `<name>.retired-<date>.md`, where recall still
+        searches it, and starts a fresh file: a fresh todo.md carries forward every item still
+        open, so retiring the log never drops an open item; a fresh journal.md says where the
+        earlier entries went."""
         raw = str(intent.args.get("path", "")).strip()
         reason = str(intent.args.get("reason", "")).strip()
         if not raw:
-            return ResultEnvelope(ok=False, error="retire_note needs a 'path' (a note in your own notes/ or scratch/)")
+            return ResultEnvelope(ok=False, error="retire_note needs a 'path' (a note in your own notes/ or scratch/, or todo.md / journal.md)")
         if not reason:
             return ResultEnvelope(ok=False, error="retire_note needs a 'reason': what you know now that the note does not")
         p = self._safe_path(raw, writing=True)
-        if p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root:
+        record = p.parent == self.memory_root and p.name in RETIRABLE_RECORDS
+        if not record and (p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root):
             return ResultEnvelope(ok=False, error=(
                 f"retire_note is for your own notes: '{raw}' is not directly inside your notes/ or "
-                f"scratch/. Your journal and todo are the running record and are not retired this way."))
+                f"scratch/, and it is not your todo.md or journal.md."))
         if not p.exists():
             return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
         if ".retired-" in p.name:
@@ -1439,7 +1488,12 @@ class ReferenceF1aDispatcher:
             f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z by cbp-being. No longer current: {reason}\n"
             f"> Kept whole below, as it was written.\n\n" + body)
         p.unlink()
-        return ResultEnvelope(ok=True, result=f"retired {p.name} -> {dest.name}",
+        result = f"retired {p.name} -> {dest.name}"
+        if record:
+            fresh, said = _fresh_record(p.name, body, dest.name, stamp)
+            p.write_text(fresh)
+            result += f". {said}"
+        return ResultEnvelope(ok=True, result=result,
                               witness_id=self._witness(f"retire_note {p.name} -> {dest.name}: {reason[:120]}"))
 
     def _do_memory_write(self, intent: BeingIntent) -> ResultEnvelope:

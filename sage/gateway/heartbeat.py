@@ -2454,18 +2454,36 @@ def todo_open(text, now=None, window_h=48):
 _TODO_PARSE: dict = {}
 
 
-def _todo_items(text: str) -> dict:
+def _todo_parsed(text: str) -> tuple:
     key = hashlib.sha256(text.encode("utf-8", "surrogateescape")).hexdigest()
     hit = _TODO_PARSE.get(key)
     if hit is None:
-        hit = _parse_todo(text)
+        hit = (_parse_todo(text), list(_LAST_TODO_CLOSURES))
         _TODO_PARSE.clear()
         _TODO_PARSE[key] = hit
     return hit
 
 
-def _parse_todo(text: str) -> dict:
-    """norm -> (item text, since) for every item still open at the end of the log."""
+def _todo_items(text: str) -> dict:
+    return _todo_parsed(text)[0]
+
+
+def todo_closures(text: str) -> list:
+    """[(phrase, n_closed, since)] for every `all:` line in the log, in order (todo_membot)."""
+    return _todo_parsed(text or "")[1]
+
+
+_LAST_TODO_CLOSURES: list = []     # the `all:` closures of the most recent _parse_todo, read by _todo_parsed
+
+
+def _parse_todo(text: str, closures: Optional[list] = None) -> dict:
+    """norm -> (item text, since) for every item still open at the end of the log. `all: <words>` done lines
+    close every open item containing the words (todo_membot); they are listed in `closures` when given, and
+    always in _LAST_TODO_CLOSURES."""
+    from sage.gateway import todo_membot as _tm
+    global _LAST_TODO_CLOSURES
+    closures = [] if closures is None else closures
+    _LAST_TODO_CLOSURES = closures
     items = {}          # norm -> (text, since_dt)
     since = None
     section = None
@@ -2508,6 +2526,10 @@ def _parse_todo(text: str) -> dict:
             if n not in items:
                 items[n] = (body.strip(), since)
         else:
+            swept = _tm.close_all(items, body)
+            if swept is not None:
+                closures.append((swept[0], len(swept[1]), since))
+                continue
             if n in items:
                 del items[n]
             else:
@@ -2529,18 +2551,31 @@ def todo_view(instance: Path, now=None) -> str:
         text = ""
     if not text.strip():
         return "## todo.md\n(empty: you have no todo list yet)"
+    from sage.gateway import todo_membot as _tm
     rec, older = todo_open(text, now=now, window_h=TODO_WINDOW_H)
+    # ONE GOAL IS SHOWN ONCE (todo_membot): items naming the same id fold into one line with a count. On
+    # Sprout 2026-10-19, 19 of 79 open items were differently worded copies of one goal, shown every beat.
+    groups = _tm.group(rec)
     lines = [f"## todo.md: still open ({len(rec)})"]
-    lines += [f"- [ ] {t}" + (f" (since {s:%Y-%m-%d %H:%M} UTC)" if s else "") for t, s in rec[:TODO_SHOWN]]
-    if len(rec) > TODO_SHOWN:
-        lines.append(f"- … and {len(rec) - TODO_SHOWN} more opened in the last {TODO_WINDOW_H} h.")
+    for t, s, n, k in groups[:TODO_SHOWN]:
+        lines.append(f"- [ ] {t}" + (f" (since {s:%Y-%m-%d %H:%M} UTC)" if s else "")
+                     + (f" — and {n - 1} more open item(s) mentioning {k}" if n > 1 else ""))
+    if len(groups) > TODO_SHOWN:
+        rest = sum(g[2] for g in groups[TODO_SHOWN:])
+        lines.append(f"- … and {rest} more opened in the last {TODO_WINDOW_H} h.")
     if not rec:
         lines.append("(nothing open)")
     if older:
         lines.append(f"({older} older item(s) opened more than {TODO_WINDOW_H} h ago were never marked "
                      f"done; they are in todo.md.)")
+    done_all = _tm.closures_line(todo_closures(text))
+    if done_all:
+        lines.append("What your recent `all:` lines closed:")
+        lines += done_all
     lines.append("Built from your whole todo.md: an item stays open until a later line marks it done. "
-                 "To close one, write it under done:. The whole log: memory_read todo.md.")
+                 "To close one, write it under done:. To close every open item that mentions something, "
+                 "write a done item whose text is `all: <words or id>` (under done:, for example "
+                 "`all: scope-0123abcd4567`). The whole log: memory_read todo.md.")
     return "\n".join(lines)
 
 

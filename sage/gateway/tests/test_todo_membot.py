@@ -65,7 +65,7 @@ def test_the_view_shows_one_goal_once_with_a_count(tmp_path):
     (tmp_path / "todo.md").write_text(TODO)
     view = hb.todo_view(tmp_path)
     assert view.count("scope-ef204d003703") <= 2, view            # folded into one line
-    assert "more open item(s) mentioning" in view
+    assert "open items mention scope-ef204d003703; this is the newest of them" in view
     assert "write a poem about the dark sill" in view
     assert "still open (5)" in view, "the header still counts every open item"
 
@@ -79,6 +79,40 @@ def test_grouping_folds_into_the_newest_and_keeps_order():
     items = [("newest scope-aaaaaaaaaaaa", 3), ("other thing", 2), ("older scope-aaaaaaaaaaaa", 1)]
     assert tm.group(items) == [("newest scope-aaaaaaaaaaaa", 3, 2, "scope-aaaaaaaaaaaa"),
                                ("other thing", 2, 1, None)]
+
+
+# ---- scope identity is dominant (NOVA on #486) ----
+A, B = "scope-aaaaaaaaaaaa", "scope-bbbbbbbbbbbb"
+DEV0, DEV1 = "/dev/" + "video0", "/dev/" + "video1"
+
+
+def test_two_scopes_for_the_same_device_never_fold_together():
+    items = [(f"request {A} for {DEV0}", 4), (f"request {B} for {DEV0}", 3),
+             (f"follow up {A} {DEV0}", 2), (f"follow up {B} {DEV0}", 1)]
+    got = tm.group(items)
+    assert [(g[2], g[3]) for g in got] == [(2, A), (2, B)]
+
+
+def test_an_item_naming_two_scopes_bridges_nothing():
+    items = [(f"request {A} {DEV0}", 3), (f"both {A} and {B} on {DEV0}", 2), (f"request {B}", 1)]
+    got = tm.group(items)
+    assert [(g[0][:5], g[2]) for g in got] == [("reque", 1), ("both ", 1), ("reque", 1)]
+
+
+def test_device_only_items_group_only_with_each_other():
+    items = [(f"open {DEV0} directly", 4), (f"{A} for {DEV0}", 3),
+             (f"probe {DEV0} again", 2), (f"probe {DEV1}", 1)]
+    got = tm.group(items)
+    assert [(g[0], g[2], g[3]) for g in got] == [(f"open {DEV0} directly", 2, DEV0),
+                                                 (f"{A} for {DEV0}", 1, A),
+                                                 (f"probe {DEV1}", 1, DEV1)]
+
+
+def test_the_label_does_not_claim_a_shared_state(tmp_path):
+    (tmp_path / "todo.md").write_text(
+        f"2026-10-18 10:00 UTC\n- [ ] {A} refused, nothing to do\n2026-10-18 12:00 UTC\n- [ ] {A} pending, ask dp\n")
+    view = hb.todo_view(tmp_path)
+    assert f"2 open items mention {A}; this is the newest of them" in view
 
 
 def test_the_membot_never_closes_on_its_own():

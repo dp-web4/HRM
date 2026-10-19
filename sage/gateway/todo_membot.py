@@ -52,46 +52,42 @@ def close_all(items: Dict[str, Tuple[str, object]], body: str) -> Optional[Tuple
     return (phrase, closed)
 
 
-def ids(text: str) -> List[str]:
-    return [m.group(0).lower() for m in _ID.finditer(text or "")]
+_SCOPE = re.compile(r"scope-[0-9a-f]{12}", re.I)
+_DEVICE = re.compile(r"/dev/[A-Za-z]+\d*", re.I)
+
+
+def group_key(text: str) -> Optional[str]:
+    """The one id an item is grouped under, or None (shown alone).
+
+    SCOPE IDENTITY IS DOMINANT (NOVA on #486). Two scope requests for the same device are different
+    authorizations, and one may be open while the other was refused, so they must never fold together because the
+    device matches. So:
+    - an item naming exactly one scope request groups under that request, whatever devices it also names;
+    - an item naming two or more scope requests stands alone (it must not bridge them);
+    - only an item naming NO scope request groups by its device, and only with other such items."""
+    scopes = {m.group(0).lower() for m in _SCOPE.finditer(text or "")}
+    if len(scopes) == 1:
+        return next(iter(scopes))
+    if scopes:
+        return None
+    devices = {m.group(0).lower() for m in _DEVICE.finditer(text or "")}
+    return f"device:{next(iter(devices))}" if len(devices) == 1 else None
 
 
 def group(open_items: List[Tuple[str, object]]) -> List[Tuple[str, object, int, Optional[str]]]:
-    """[(shown text, since, count, id)], in the given order (newest first). Items that share ANY id belong to one
-    group (connected through shared ids: "unbind /dev/video0 (scope-x)" joins both the /dev/video0 items and the
-    scope-x items). A group is shown as its newest item, with the id most of its items name."""
-    parent = list(range(len(open_items)))
-
-    def find(i):
-        while parent[i] != i:
-            parent[i] = parent[parent[i]]
-            i = parent[i]
-        return i
-
-    first_with: Dict[str, int] = {}
-    item_ids = [ids(t) for t, _ in open_items]
-    for i, ks in enumerate(item_ids):
-        for k in ks:
-            if k in first_with:
-                a, b = find(first_with[k]), find(i)
-                if a != b:
-                    parent[max(a, b)] = min(a, b)       # the root is always the newest member
-            else:
-                first_with[k] = i
-    members: Dict[int, List[int]] = {}
-    for i in range(len(open_items)):
-        members.setdefault(find(i), []).append(i)
-    out = []
-    for root in sorted(members):
-        idx = members[root]
-        counts: Dict[str, int] = {}
-        for i in idx:
-            for k in set(item_ids[i]):
-                counts[k] = counts.get(k, 0) + 1
-        label = max(sorted(counts), key=lambda k: counts[k]) if counts else None
-        text, since = open_items[root]
-        out.append((text, since, len(idx), label))
-    return out
+    """[(shown text, since, count, id)], in the given order (newest first). Items with the same group_key fold into
+    the newest of them; nothing is joined transitively."""
+    out: List[list] = []
+    where: Dict[str, int] = {}
+    for text, since in open_items:
+        k = group_key(text)
+        if k is not None and k in where:
+            out[where[k]][2] += 1
+            continue
+        if k is not None:
+            where[k] = len(out)
+        out.append([text, since, 1, k.split(":", 1)[1] if k and k.startswith("device:") else k])
+    return [tuple(x) for x in out]
 
 
 def closures_line(closures: List[Tuple[str, int, object]], limit: int = 3) -> List[str]:

@@ -2559,7 +2559,8 @@ def todo_view(instance: Path, now=None) -> str:
     lines = [f"## todo.md: still open ({len(rec)})"]
     for t, s, n, k in groups[:TODO_SHOWN]:
         lines.append(f"- [ ] {t}" + (f" (since {s:%Y-%m-%d %H:%M} UTC)" if s else "")
-                     + (f" — and {n - 1} more open item(s) mentioning {k}" if n > 1 else ""))
+                     # neutral: the shown item is the newest; the others are not claimed to share its state
+                     + (f" — {n} open items mention {k}; this is the newest of them" if n > 1 else ""))
     if len(groups) > TODO_SHOWN:
         rest = sum(g[2] for g in groups[TODO_SHOWN:])
         lines.append(f"- … and {rest} more opened in the last {TODO_WINDOW_H} h.")

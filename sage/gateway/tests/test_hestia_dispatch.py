@@ -1926,7 +1926,7 @@ def test_a_prose_only_refusal_is_not_evidence_of_a_run():
     r = d(BeingIntent("request_run", {"path": "notes/cam.py", "why": "again"}), _ALLOW)
     got = r.result["unchanged"]
     assert "That run is evidence" not in got and "What it said" not in got, got
-    assert "does not say the file ran" in got and "not evidence of what this file does" in got, got
+    assert "does not establish a run" in got and "not evidence of what this file does" in got, got
     assert "it opens video1" in got, "the answer itself is carried: " + got
     assert r.result["ran"] is False
 
@@ -2086,9 +2086,10 @@ def test_an_unchanged_receipt_carries_the_seat_answer_not_a_pointer_to_it():
     (home / "notes" / "train.py").write_text("print('a')\n")
 
     d(BeingIntent("request_run", {"path": "notes/train.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
     conv.append(home, "seat", speaker="seat", via="seat",
                 text="[request_run] I ran notes/train.py. exit code 1.\n\nstderr:\n"
-                     "NameError: name 'model' is not defined\n\nAnswers your request.")
+                     f"NameError: name 'model' is not defined\n\nAnswers your request seq {asked}.")
     ran_at = conv.recent(home, "seat", limit=1)[-1]["seq"]
     conv.append(home, "seat", speaker="seat", via="seat",
                 text="About that run: two ways forward, both yours to pick.")
@@ -2148,9 +2149,10 @@ def test_an_unchanged_receipt_keeps_the_verdict_a_cut_would_drop():
     (home / "notes" / "train.py").write_text("print('a')\n")
 
     d(BeingIntent("request_run", {"path": "notes/train.py", "why": "first"}), _ALLOW)
+    asked = conv.recent(home, "seat", limit=1)[-1]["seq"]
     conv.append(home, "seat", speaker="seat", via="seat",
                 text="[request_run] I did not run notes/train.py. Python still stops at "
-                     + ("y" * 3000) + " the same error as my run at seq 12.\n\nAnswers.")
+                     + ("y" * 3000) + f" the same error as my run at seq 12.\n\nAnswers your request seq {asked}.")
     got = d(BeingIntent("request_run", {"path": "notes/train.py", "why": "again"}),
             _ALLOW).result["unchanged"]
     assert "I did not run notes/train.py." in got, got

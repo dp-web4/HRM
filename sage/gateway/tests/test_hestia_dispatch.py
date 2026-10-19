@@ -289,7 +289,10 @@ def test_drain_inbox_returns_notices():
 def test_channel_egress_pending_not_built():
     d, _ = _disp()
     env = d(BeingIntent("channel_egress", {"to": "x", "body": "y"}), _ALLOW)
-    assert not env.ok and env.pending and "send-side" in env.note
+    assert not env.ok and env.pending and "not built yet" in env.note
+    # the being gets the fact, not design jargon it can mistake for a setting (room seq 306, 2026-10-19)
+    assert "calibration" not in env.note and "no step or setting" in env.note
+    assert "never runs anything" in env.note
 
 
 def test_local_verbs_delegate_to_reference():

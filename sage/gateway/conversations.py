@@ -850,7 +850,8 @@ def drain_new_for(instance: Path, me: str, *, mark: bool = True) -> str:
         pend = awaiting(instance, m["id"], me)
         if not pend:
             continue
-        lines = [f"- **{t['from']}** ({t['ts']}){_provenance_tag(t)}: {t['text']}" for t in pend]
+        lines = [(f"- **the mic picked up** ({t['ts']}): {t['text']}" if t.get("via") == "voice" else
+                  f"- **{t['from']}** ({t['ts']}){_provenance_tag(t)}: {t['text']}") for t in pend]
         out.append(f"### {m['title']}  (id: {m['id']}; reply with say to=\"{m['id']}\")\n"
                    + "\n".join(lines))
         if mark:
@@ -996,19 +997,34 @@ def render_for_being(instance: Path, me: str, per_conv: int = 12,
         # attributed to the seat three appeal hashes the being itself had filed (seq 28) and
         # called them a possible fabrication. Same root as the echo (1.12): the being cannot
         # tell its own voice from another's when both are third-person names.
-        lines = [f"- **{t['from']}{' (you)' if t.get('from') == me else ''}** ({t['ts']})"
-                 + _provenance_tag(t)
+        # A HEARD LINE HAS NO SPEAKER (dp 2026-10-19, "'mic picked up' is good"). Headed `**voice**`, it read
+        # to a 4B as a person named voice, and its unanswered-turn marker asked for replies to TV lines, lyrics
+        # and transcriber noise. It is shown as what it is: something the mic picked up.
+        lines = [(f"- **the mic picked up** ({t['ts']})" if t.get("via") == "voice" else
+                  f"- **{t['from']}{' (you)' if t.get('from') == me else ''}** ({t['ts']})"
+                  + _provenance_tag(t))
                  + (_refuted_mark(t.get("text", ""), refuted) if t.get("from") == me else "")
                  + f": {_shown_text(t, _cap_for(t, me, answered_upto, turn_chars, answered_cap), m['id'])}"
                  for t in turns]
         pend = pend_before
         if turns and mark:
             mark_seen(instance, me, m["id"], max(int(t.get("seq", 0)) for t in turns))
-        if pend:
-            who = ", ".join(sorted({t["from"] for t in pend}))
-            lines.append(f"\n**{len(pend)} turn(s) from {who} since you last spoke here — "
+        heard = [t for t in pend if t.get("via") == "voice"]
+        spoken = [t for t in pend if t.get("via") != "voice"]
+        if heard and not spoken:
+            # Picked-up sound is not a turn owed an answer. Say what arrived and leave relevance to the being.
+            lines.append(f"\n_The mic picked up {len(heard)} line(s) here since you last spoke. Most room sound "
+                         f"is not addressed to you; answer only what is, with `say to=\"{m['id']}\"`._")
+        elif pend:
+            who = ", ".join(sorted({t["from"] for t in spoken}))
+            lines.append(f"\n**{len(spoken)} turn(s) from {who} since you last spoke here — "
                          f"unanswered. Reply with `say to=\"{m['id']}\"` if you have something "
-                         f"to say; saying nothing is also a choice, and it is recorded as one.**")
+                         f"to say; saying nothing is also a choice, and it is recorded as one.**"
+                         + (f" _(The mic also picked up {len(heard)} line(s); most room sound is not "
+                            f"addressed to you.)_" if heard else ""))
+        elif turns and turns[-1].get("via") == "voice":
+            lines.append(f"\n_The last thing here is something the mic picked up (seq {turns[-1].get('seq')}). "
+                         f"Nothing is owed unless it was addressed to you._")
         elif turns and turns[-1].get("from") != me:
             # SEEN is not ANSWERED. dp spoke at 16:30Z 2026-09-08; the turn was shown to the
             # being on eight beats that could not act (window overcommitted), was marked

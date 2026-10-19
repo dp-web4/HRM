@@ -580,3 +580,29 @@ def test_run_and_request_run_each_name_the_other_and_neither_says_you_cannot_run
     assert "`run`" in req and "OUTSIDE the sandbox" in req and "`why`" in req
     assert "cannot execute anything yourself" not in req
     assert "request_run asks the seat" in AFFORDANCES
+
+
+@needs_sandbox
+def test_a_second_run_does_not_see_what_the_first_wrote_and_the_receipt_says_so(tmp_path):
+    """cbp-being, 2026-10-18/19: a generator wrote data/*.npy, then a separate run of the reader
+    found none — eleven times — under a note that said "read stderr" while stderr was empty."""
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "gen.py").write_text(
+        "import os\nos.makedirs('data', exist_ok=True)\nopen('data/a.npy', 'w').write('x')\n"
+        "print('Created: data/a.npy')\n")
+    (home / "scratch" / "read.py").write_text(
+        "import os, sys\nfound = os.listdir('data') if os.path.isdir('data') else []\n"
+        "print('found', len(found))\nsys.exit(0 if found else 1)\n")
+    g = d._do_run(BeingIntent("run", {"path": "scratch/gen.py"}))
+    assert g.ok and g.result["exit"] == 0, g.result
+    assert "held only: gen.py" in g.result["note"] and "Nothing a run writes outlives it" in g.result["note"]
+    r = d._do_run(BeingIntent("run", {"path": "scratch/read.py"}))
+    assert r.ok and r.result["exit"] == 1 and "found 0" in r.result["stdout"], r.result
+    assert r.result["stderr"] == ""
+    note = r.result["note"]
+    assert "read stderr" not in note and "stdout says why" in note
+    assert "held only: read.py" in note and "pass them in 'data'" in note
+    # a traceback still points at stderr
+    (home / "scratch" / "boom.py").write_text("raise ValueError('mine')\n")
+    b = d._do_run(BeingIntent("run", {"path": "scratch/boom.py"}))
+    assert "read stderr" in b.result["note"]

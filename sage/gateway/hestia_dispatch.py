@@ -2851,10 +2851,7 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=True, witness_id=action_id, result={
             "script": staged[0][0], "files": [b for b, _ in staged],
             "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
-            "note": ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                     "read-only); the copies are gone now. Only what you printed survives."
-                     if rc == 0 else
-                     "Non-zero exit: read stderr, it names the line in your own file.")})
+            "note": _run_note(rc, [b for b, _ in staged], errtxt.strip())})
 
 
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
@@ -3979,6 +3976,30 @@ def _wait_contained(proc, budget: float, dirs, mem_cap: int, disk_cap: int, poll
                     proc.kill()
             proc.wait()
             return -9, why
+
+
+def _run_note(rc: int, files: list, stderr: str) -> str:
+    """What a run's receipt says about the sandbox it ran in.
+
+    EVERY RUN STARTS EMPTY, AND THE RECEIPT HAS TO SAY SO. cbp-being, 2026-10-18/19: it ran a
+    generator that wrote data/test-data-00{1..8}.npy, then, as a SEPARATE run, the pipeline that
+    reads data/, and got "No data files found" — eleven times over five beats, regenerating in
+    between. The success note said "the copies are gone now", which it read as true of its copies,
+    not of what the generator wrote; the failure note said "read stderr, it names the line", and
+    stderr was empty: its own code printed the reason to stdout and exited 1. So the note names
+    what /work held, says that nothing a run writes outlives it, and points at stdout when the
+    exit was the code's own choice rather than a traceback."""
+    held = ", ".join(files)
+    tail = (f"This run's working directory held only: {held}. Nothing a run writes outlives it, "
+            f"so files an earlier run created are not here: create them in the same script, or "
+            f"keep them in your home and pass them in 'data'.")
+    if rc == 0:
+        return ("Ran in a sandbox with no network and no home (your worktree, if any, read-only). "
+                + tail + " Only what you printed survives.")
+    if stderr:
+        return "Non-zero exit: read stderr, it names the line in your own file. " + tail
+    return ("Non-zero exit with nothing on stderr: no exception was raised, your own code chose to "
+            "exit, and stdout says why. " + tail)
 
 
 def _lock_opened_stage(lock_path: str, fd: int) -> bool:

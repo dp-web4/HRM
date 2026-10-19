@@ -1683,12 +1683,23 @@ def _roster_name_for(member_id: str) -> str:
 def _bound_to(claimed: str, authed: str) -> bool:
     """Whether the name a post claims is the member the hub authenticated it from: the same member
     (a being is `<machine>-being` to beings and `<machine>-sage` on the hub), or that being's own
-    machine, whose seat carries mail for it (egress_drain's stamped carrier)."""
+    machine, whose seat carries mail for it (egress_drain's stamped carrier). A seat signs
+    `<machine>-claude` (fleet rule, 2026-09-02) and is `<machine>` on the roster; it binds to that
+    member only, never to the machine's being (HUB, 2026-10-19: no seat ask had ever bound)."""
     c, a = claimed.strip().lower(), authed.strip().lower()
     if not c or not a:
         return False
+    if c.endswith("-claude"):
+        return c[:-len("-claude")] == a
     base = lambda n: n[:-len("-being")] if n.endswith("-being") else n[:-len("-sage")] if n.endswith("-sage") else None  # noqa: E731
     return c == a or (base(c) is not None and (base(c) == base(a) or base(c) == a))
+
+
+def _ask_destination(claimed: str, authed: str) -> str:
+    """Where the being's answer goes: the claimed name, unless it is a seat's signature, which no
+    peer_ask reaches (`hub-claude` is not on the roster); then the authenticated roster name. The
+    claimed name stays for beings: a seat carrying its being's mail must not get the being's reply."""
+    return authed if claimed.strip().lower().endswith("-claude") else claimed
 
 
 def _ask_sender(home, pointer: str) -> str:
@@ -1717,7 +1728,7 @@ def _ask_sender(home, pointer: str) -> str:
             return ""
         m = _ASK_FROM.search(body[4:].split("\n---", 1)[0])
         claimed = m.group(1) if m else ""
-        return claimed if _bound_to(claimed, authed) else ""
+        return _ask_destination(claimed, authed) if _bound_to(claimed, authed) else ""
     except Exception:
         return ""
 

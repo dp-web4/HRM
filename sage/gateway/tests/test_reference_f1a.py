@@ -1271,9 +1271,10 @@ def test_memory_read_find_lists_the_line_numbers_where_the_text_is():
     r = disp(BeingIntent("memory_read", {"path": rel, "find": "nn.Linear(", "start_line": 6}),
              _ALLOW)
     assert "line 4:" in r.result and "start_line=6 was ignored" in r.result, r.result
-    # blank find is a plain read
+    # blank find is an explicitly labelled ordinary read
     r = disp(BeingIntent("memory_read", {"path": rel, "find": "  "}), _ALLOW)
-    assert r.result.startswith("import torch.nn"), r.result
+    assert r.result.startswith("[find was blank"), r.result
+    assert "\nimport torch.nn" in r.result, r.result
 
 
 def test_memory_read_find_with_no_match_says_it_is_about_this_file_only():
@@ -1339,6 +1340,59 @@ def test_find_ignores_both_range_bounds_but_blank_find_preserves_them(tmp_path):
         assert "other\n" in read.result
         assert "needle first" not in read.result and "needle last" not in read.result
         assert "end of the range you asked for: lines 2-2" in read.result
+        assert ("find was blank" in read.result) == (blank is not None)
+
+
+def test_multiline_find_labels_first_line_search_without_claiming_full_match(tmp_path):
+    content = "a = 1\n    self.head = nn.Linear(4, 2)\n    return x\n"
+    path = tmp_path / "s.py"
+    path.write_text(content)
+    disp = ReferenceF1aDispatcher(memory_root=tmp_path)
+    for separator in ("\n", "\r\n", "\r", "\u2028"):
+        for ending in ("    return x", "    absent_second_line"):
+            query = separator + "    self.head = nn.Linear(4, 2)" + separator + ending
+            result = disp(BeingIntent("memory_read", {"path": "s.py", "find": query,
+                          "start_line": 99, "end_line": 100}), _ALLOW)
+            assert result.ok and result.witness_id
+            assert result.result.startswith("[find matches within one line.")
+            assert "only its first non-blank line" in result.result
+            assert "do not establish whether the full multi-line text is present" in result.result
+            assert "line 2:     self.head = nn.Linear(4, 2)" in result.result
+            assert "[found 1 line of 3" in result.result
+            assert "start_line=99 was ignored" in result.result
+            assert "end_line=100 was ignored" in result.result
+    miss = disp(BeingIntent("memory_read", {"path": "s.py", "find": "absent\nreturn x"}), _ALLOW)
+    assert miss.ok and miss.result.startswith("[find matches within one line.")
+    assert "contains 'absent'" in miss.result
+    assert "contains 'absent\\nreturn x'" not in miss.result
+    assert path.read_text() == content
+
+
+def test_blank_find_labels_whole_bounded_and_past_end_reads(tmp_path):
+    (tmp_path / "sample.txt").write_text("first\nsecond\nthird\n")
+    disp = ReferenceF1aDispatcher(memory_root=tmp_path, max_read_chars=8)
+    for blank in ("", "  ", "\t", "\n\t\n"):
+        for start in (1, 2, 99):
+            result = disp(BeingIntent("memory_read", {"path": "sample.txt", "find": blank,
+                          "start_line": start}), _ALLOW)
+            assert result.ok and result.result.startswith("[find was blank")
+            assert "ordinary read" in result.result
+            assert "[found" not in result.result
+            if start == 1:
+                assert "first\n" in result.result and "\nsecond\n" not in result.result
+            elif start == 2:
+                assert "second\n" in result.result and "\nthird\n" not in result.result
+            else:
+                assert "[past the end:" in result.result
+
+
+def test_find_null_ranges_are_not_reported_as_ignored(tmp_path):
+    (tmp_path / "sample.txt").write_text("needle\n")
+    disp = ReferenceF1aDispatcher(memory_root=tmp_path)
+    for query in ("needle", "absent", "needle\nother"):
+        result = disp(BeingIntent("memory_read", {"path": "sample.txt", "find": query,
+                      "start_line": None, "end_line": None}), _ALLOW)
+        assert result.ok and "was ignored" not in result.result
 
 
 def test_find_does_not_expand_path_authority(tmp_path):

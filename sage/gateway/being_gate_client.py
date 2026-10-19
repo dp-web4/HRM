@@ -2430,7 +2430,9 @@ _TOOL_SCHEMAS = {
                                   "which is most of a short file."),
                      "find": ("optional: literal, case-sensitive text to locate (not a regex). "
                               "Lists matching line numbers across this one file; ignores "
-                              "start_line and end_line. Blank text keeps ordinary read behavior.")}, ["path"]),
+                              "start_line and end_line. With line breaks, searches only the first "
+                              "non-blank line and says so. Blank text gives an ordinary read "
+                              "with a note explaining the fallback.")}, ["path"]),
     # SAY IT APPENDS, AT THE MOMENT OF CHOICE (2026-09-26). This description was "Write a note
     # into your own memory." Only memory_edit's description said memory_write appends, and a model
     # choosing memory_write never reads that one. cbp-being meant to rewrite

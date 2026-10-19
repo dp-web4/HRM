@@ -1026,6 +1026,9 @@ class ReferenceF1aDispatcher:
         find = str(intent.args.get("find") or "")
         if find.strip():
             return self._memory_read_find(p, shown, whole, find, intent.args)
+        find_note = ("[find was blank (empty or only whitespace), so this is an ordinary read "
+                     "using start_line and end_line, with the usual size limit.]\n"
+                     if intent.args.get("find") is not None else "")
         # A SILENT TRUNCATION IS A LIE THE LENGTH OF A FILE. First found by legion-claude on
         # 2026-09-07 (992443289: marker + cap 4,000 -> 12,000), which landed only on a
         # legion-being branch — main kept the silent 4,000-char slice, while
@@ -1063,7 +1066,7 @@ class ReferenceF1aDispatcher:
         stop = max(stop, start) if stop else 0
         if start > len(lines):
             return ResultEnvelope(ok=True, result=(
-                f"[past the end: '{shown}' has {len(lines)} lines, so start_line={start} shows "
+                find_note + f"[past the end: '{shown}' has {len(lines)} lines, so start_line={start} shows "
                 f"nothing. Read from start_line=1.]"),
                 witness_id=self._witness(f"memory_read {p.name} (past end)"))
         end, size = start - 1, 0
@@ -1092,9 +1095,9 @@ class ReferenceF1aDispatcher:
             # would read as the file's last line and could be copied into an edit anchor.
             # Say where the file ends before saying what Python makes of it.
             whole_note = f"\n[end of file: line {len(lines)} is the last line. {status}]" if status else ""
-            return ResultEnvelope(ok=True, result=dated + content + whole_note,
+            return ResultEnvelope(ok=True, result=find_note + dated + content + whole_note,
                                   witness_id=self._witness(f"memory_read {p.name}"))
-        head = dated + (f"[lines {start}-{end} of {len(lines)} in '{shown}']\n" if start > 1 else "")
+        head = find_note + dated + (f"[lines {start}-{end} of {len(lines)} in '{shown}']\n" if start > 1 else "")
         if stop and end == stop and end < len(lines):
             # Cut where the being asked, not where the window ran out: say so in those words,
             # so a short result is not read as the file running out of lines.
@@ -1124,7 +1127,19 @@ class ReferenceF1aDispatcher:
 
         An empty answer says why it is empty: zero matches is a true answer about THIS file,
         and says that it covers nothing else. A find whose leading or trailing spaces are what
-        kept it from matching says so (a being cannot see the whitespace it sends)."""
+        kept it from matching says so (a being cannot see the whitespace it sends).
+        A query with line breaks explicitly searches only its first non-blank line;
+        the receipt makes no claim about the full multi-line text."""
+        query_lines = find.splitlines()
+        if query_lines != [find]:
+            first = next(line for line in query_lines if line.strip())
+            result = self._memory_read_find(p, shown, whole, first, args)
+            result.result = (
+                "[find matches within one line. Your query contained line breaks, so the "
+                f"results below search only its first non-blank line: {first!r}. "
+                "They do not establish whether the full multi-line text is present. "
+                "Read the matching range to check the remaining lines.]\n" + result.result)
+            return result
         lines = whole.splitlines()
         hits = [(i, ln) for i, ln in enumerate(lines, 1) if find in ln]
         loose = ""
@@ -1133,7 +1148,7 @@ class ReferenceF1aDispatcher:
             hits = [(i, ln) for i, ln in enumerate(lines, 1) if loose in ln]
         ignored = "".join(
             f" {key}={args[key]} was ignored: find looks at every line of the file."
-            for key in ("start_line", "end_line") if key in args
+            for key in ("start_line", "end_line") if args.get(key) is not None
         )
         if not hits:
             return ResultEnvelope(ok=True, result=(

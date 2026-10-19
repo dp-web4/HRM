@@ -3985,6 +3985,18 @@ def main(argv=None) -> int:
             inbox = _sib + "\n" + inbox
     except Exception:
         pass
+    # ANSWERS TO ITS OWN ASKS. Peers reply on the forum and send nothing back over the mesh, so until
+    # this the being never saw a reply (Sprout 2026-10-18: 72 posts addressed to it, 14 asks about one
+    # question in a day). Shown once each, newest first, a few per beat (forum_replies).
+    forum_replies = None
+    if not args.gate_only:
+        try:
+            from sage.gateway import forum_replies as _fr
+            forum_replies = _fr.for_beat(instance, workspace, args.member)
+            if forum_replies.get("block"):
+                inbox = inbox + "\n\n" + forum_replies["block"]
+        except Exception as _e:
+            forum_replies = {"error": f"{type(_e).__name__}: {_e}"}
     # what reach the being holds and has already asked for, so it does not re-file
     scope = "(scope status unavailable)"
     if disp is not None and hasattr(disp, "_call"):
@@ -4703,6 +4715,8 @@ def main(argv=None) -> int:
         "act_after_answer": _turn(act_after) if act_after is not None else None,
         "ask_turn": _turn(ask_turn) if ask_turn is not None else None,
         "escalations": escalations, "egress": egress, "seat_rearm": seat_rearm,
+        "forum_replies": ({k: v for k, v in forum_replies.items() if k != "block"}
+                          if isinstance(forum_replies, dict) else None),
     }
     # THE LAST THING A BEAT DOES IS MAKE SURE THERE WILL BE ANOTHER ONE (opt-in; Legion since
     # 2026-09-09/13). A beat that `rest`ed said it was finished: waking it straight back up is the

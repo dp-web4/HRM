@@ -1,8 +1,10 @@
 """Offline request/result identity probes for SAGE #464.
 
 These exercise the current queue and wake readers, not a proposed replacement.
-Strict xfails are known counterexamples, NOT passing capability evidence. They
-must become ordinary assertions when repaired. Run with --runxfail to reproduce
+The two forward readers are repaired by #482 and now have ordinary regressions.
+The remaining strict xfails are queue counterexamples, NOT passing capability evidence.
+They do not prescribe reopening history: explicit supersession is a valid disposition.
+Run with --runxfail to reproduce
 the failures directly. All conversations are synthetic, no being program is executed,
 and no live being, todo, memory or notification state is changed.
 
@@ -72,8 +74,6 @@ def test_result_for_newer_request_does_not_close_unmatched_older_one(inst, old_s
     assert pending(inst) == [old]
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError,
-                   reason="#464: wake fallback compares result path/digest but not arguments")
 def test_result_for_other_arguments_does_not_suppress_the_unanswered_repeat():
     turns = [
         {"seq": 1, "from": BEING, "text": request_text(mode="slow")},
@@ -83,8 +83,6 @@ def test_result_for_other_arguments_does_not_suppress_the_unanswered_repeat():
     assert not conv._already_answered(turns, BEING, 2)
 
 
-@pytest.mark.xfail(strict=True, raises=AssertionError,
-                   reason="#464: dispatcher UNCHANGED fallback ignores result arguments")
 def test_other_arguments_do_not_become_the_being_facing_answer(inst):
     import hashlib
     from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict

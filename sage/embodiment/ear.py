@@ -46,9 +46,20 @@ def _publisher(hearing, stop: threading.Event) -> None:
         stop.wait(PUBLISH_S)
 
 
+def _exit_on_term(signum, frame):
+    raise SystemExit(0)
+
+
 def main() -> int:
     from sage.embodiment.audio import Hearing
     from sage.embodiment.presence import Presence
+    # STOPPING THE EAR STOPS ITS CAPTURE (McNugget, 2026-10-18). launchd stops a job with SIGTERM, whose
+    # default ends the process without running `finally`, so hearing.stop() never ran and the ffmpeg child
+    # kept the mic: the restarted ear's own capture then received ~30% of the audio (a 20 s recording beside
+    # it got 5.7 s), and every addressed utterance reached whisper as fragments ("Okay." x28, dropped as
+    # silence). SIGTERM is turned into SystemExit, so the finally below runs.
+    import signal
+    signal.signal(signal.SIGTERM, _exit_on_term)
     hearing = Hearing()
     hearing.start()
     stop = threading.Event()

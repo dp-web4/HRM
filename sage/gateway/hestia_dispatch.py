@@ -3882,9 +3882,14 @@ class HestiaF1aDispatcher:
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:
+        # SAY WHAT IT IS, NOT WHAT IT AWAITS. The note named design work ("F5 enforcement gated on rate-governor
+        # calibration, PRD §12"), and sprout-being took it for a setting it could complete and asked dp what
+        # "rate-governor calibration" required (room seq 306, 2026-10-19), having tried to run shell scripts by
+        # egressing them to stdout. The design state stays in this comment; the being gets the fact.
         return ResultEnvelope(ok=False, pending=True,
-                              note="channel_egress awaits hestia's send-side tool (hestia_egress_pending is "
-                                   "read-only; F5 enforcement gated on rate-governor calibration, PRD §12)")
+                              note="channel_egress is not built yet. Nothing was sent, whatever you give it, and "
+                                   "there is no step or setting that makes it work today. It sends messages out; "
+                                   "it never runs anything. To have a script run, request_run asks your seat.")
 
 
 def _fd_path(fd: int, fallback: str) -> str:

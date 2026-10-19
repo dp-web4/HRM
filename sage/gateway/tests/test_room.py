@@ -50,11 +50,36 @@ def test_a_first_run_does_not_replay_the_whole_heard_log():
 
 
 def test_a_voice_turn_says_who_spoke_is_not_known():
+    """Shown as something the mic picked up, with no speaker (dp 2026-10-19)."""
     h = _home()
     room.ingest_heard(h, ME, INV, heard=[_heard(time.time() - 10, "Can you hear me?")])
     shown = conv.drain_new_for(h, ME, mark=False)
-    assert "Can you hear me?" in shown and conv.VOICE_TAG.strip() in shown
+    assert "Can you hear me?" in shown and "**the mic picked up**" in shown
+    assert "**voice**" not in shown
     assert 'reply with say to="room"' in shown
+
+
+def test_the_beat_shows_heard_lines_as_picked_up_and_owed_nothing():
+    h = _home()
+    room.ensure(h, ME)
+    room.ingest_heard(h, ME, INV, heard=[_heard(time.time() - 30, "Two million units, your grace."),
+                                        _heard(time.time() - 20, "I think that's what we're doing with this car.")])
+    shown = conv.render_for_being(h, ME)                      # as the beat renders: new lines are pending
+    room_part = shown.split("### the room")[1]
+    assert "**the mic picked up**" in room_part and "**voice**" not in room_part
+    assert "The mic picked up 2 line(s)" in room_part and "Most room sound is not addressed to you" in room_part
+    assert "unanswered" not in room_part, "picked-up sound is not a turn owed an answer"
+    again = conv.render_for_being(h, ME).split("### the room")[1]   # seen now, still the last thing here
+    assert "The last thing here is something the mic picked up" in again
+    assert "still yours to answer" not in again
+
+
+def test_the_room_says_what_the_mic_is():
+    h = _home()
+    room.ensure(h, ME)
+    s = conv.get_meta(h, "room")["summary"]
+    assert "TV, music and noise" in s and "Most of what the mic picks up is not addressed to you" in s
+    assert "usually dp" not in s
 
 
 def test_a_voice_that_asked_is_a_turn_waiting_on_the_being():

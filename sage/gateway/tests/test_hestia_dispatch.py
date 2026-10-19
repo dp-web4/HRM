@@ -143,6 +143,16 @@ class FakeMembot(FakeMcp):
                            "structuredContent": {"result": text}}}
 
 
+def test_memory_find_and_range_arguments_survive_dispatch(tmp_path):
+    d = HestiaF1aDispatcher("test-being", str(tmp_path), mcp_factory=FakeMcp)
+    (tmp_path / "sample.txt").write_text("first needle\nmiddle\nlast needle\n")
+    r = d(BeingIntent("memory_read", {"path": "sample.txt", "find": "needle",
+                                    "start_line": 2, "end_line": 2}), _ALLOW)
+    assert r.ok and r.witness_id
+    assert "line 1: first needle" in r.result and "line 3: last needle" in r.result
+    assert "end_line=2 was ignored" in r.result
+
+
 def _mdisp(fail=None):
     FakeMcp.calls = []
     root = tempfile.mkdtemp(prefix="hd-")

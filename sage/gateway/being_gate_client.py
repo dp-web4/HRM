@@ -267,21 +267,19 @@ _REV = (r"(?:[0-9a-fA-F]{7,40}|HEAD|[A-Za-z][A-Za-z0-9._/-]{0,60})"
 #
 # So each refusal now says what the verb is FOR, that it does not read the being's home, and
 # which tool serves the likely need there. None of them tells the being to ask for a worktree.
-# Every tool and parameter named here must exist as named: memory_read takes `path` and
-# `start_line` (no end_line; a long file comes back in windows that say how to read on), and
+# Every tool and parameter named here must exist as named: memory_read takes `path`,
+# `start_line`, `end_line` (inclusive), and `find` (literal text in one file), and
 # request_run takes `path`. Pinned by test_no_worktree_refusals_say_what_the_verb_is_for, which
 # checks each named parameter against _TOOL_SCHEMAS. The dispatcher (hestia_dispatch) and the
 # toolset's availability line say the same text, so the being hears one answer however it asks.
 NO_WORKTREE_REFUSAL = {
-    # "read lines", never "find": memory_read shows a file from a line on; it does not search.
-    # #354 first said "To find or read lines ... use memory_read", which hands a being that
-    # wants to locate a string a tool that cannot locate one (Codex, #354 follow-up). Pinned by
-    # test_no_home_tool_is_credited_with_finding.
+    # #357 correctly avoided promising find before the tool could do it. #390 adds literal
+    # per-file find; name its parameter explicitly, without suggesting worktree setup.
     "search": (
-        "search reads a code-repository checkout (a worktree), not your home, and this seat "
-        "has none. To read lines in your own files (notes/, scratch/, todo.md, "
-        "journal.md), use memory_read with the file's path and start_line: it shows the file "
-        "from that line on and says which lines it covered."),
+        "search reads a code-repository checkout (a worktree), not your home. To find a line in "
+        "your own files (notes/, scratch/, todo.md, journal.md), use memory_read with the "
+        "file's path and find: it lists matching line numbers in that file. "
+        "Then memory_read with start_line and end_line reads the range you need."),
     "git_read": (
         "git_read reads the git history of a code-repository checkout (a worktree): its "
         "commits, diffs, blame, and files as they were at an earlier commit. It does not read "
@@ -2419,15 +2417,20 @@ _TOOL_SCHEMAS = {
                  {"to": "the being's name, e.g. 'legion'", "body": "your message"}, ["to", "body"]),
     "witness": ("Record a witnessed note of something you did or noticed.",
                 {"event": "what to witness"}, ["event"]),
-    "memory_read": ("Read one of your own memory notes. A long file comes back in windows of "
+    "memory_read": ("Read one of your own memory notes, or find a line in one. A long file comes back in windows of "
                     "whole lines; if it does not reach the end it says so and names the "
-                    "start_line that reads on.",
+                    "start_line that reads on. Give find to locate literal text across the file "
+                    "instead; start_line and end_line are then ignored. Matching lines are "
+                    "numbered, with output limits stated explicitly.",
                     {"path": "path to your note",
                      "start_line": "optional: the line number to start from (default 1)",
                      "end_line": ("optional: the last line to show, inclusive, as memory_read "
                                   "numbers lines. To look at one line, give it as both. Without "
                                   "it the read runs to the window's end, about 8,000 characters, "
-                                  "which is most of a short file.")}, ["path"]),
+                                  "which is most of a short file."),
+                     "find": ("optional: literal, case-sensitive text to locate (not a regex). "
+                              "Lists matching line numbers across this one file; ignores "
+                              "start_line and end_line. Blank text keeps ordinary read behavior.")}, ["path"]),
     # SAY IT APPENDS, AT THE MOMENT OF CHOICE (2026-09-26). This description was "Write a note
     # into your own memory." Only memory_edit's description said memory_write appends, and a model
     # choosing memory_write never reads that one. cbp-being meant to rewrite

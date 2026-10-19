@@ -44,6 +44,7 @@ def receipt_text(sha=SHA_A, mode="fast", path="notes/sample.py", answers=()):
 def inst(tmp_path, monkeypatch):
     monkeypatch.setenv("SEAT_ID", SEAT)
     (tmp_path / "notes").mkdir()
+    (tmp_path / "notes" / "sample.py").write_text("print('fixture')\n")
     conv.create(tmp_path, CID, title="synthetic identity probe",
                 participants=[BEING, SEAT], writable_by=[BEING, SEAT])
     return tmp_path
@@ -80,6 +81,28 @@ def test_result_for_other_arguments_does_not_suppress_the_unanswered_repeat():
         {"seq": 3, "from": BEING, "text": request_text(mode="slow")},
     ]
     assert not conv._already_answered(turns, BEING, 2)
+
+
+@pytest.mark.xfail(strict=True, raises=AssertionError,
+                   reason="#464: dispatcher UNCHANGED fallback ignores result arguments")
+def test_other_arguments_do_not_become_the_being_facing_answer(inst):
+    import hashlib
+    from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict
+    from sage.gateway.hestia_dispatch import HestiaF1aDispatcher
+    from sage.gateway.tests.test_hestia_dispatch import FakeMcp
+
+    meta = conv.get_meta(inst, CID)
+    meta["notify"] = {SEAT: "test-seat"}
+    conv._write_meta(inst, CID, meta)
+    d = HestiaF1aDispatcher(BEING, str(inst), mcp_factory=FakeMcp)
+    intent = BeingIntent("request_run", {"path": "notes/sample.py", "arguments": "--mode slow"})
+    first = d(intent, GatewayVerdict("allow"))
+    assert first.ok, first.error
+    sha = hashlib.sha256((inst / "notes" / "sample.py").read_bytes()).hexdigest()[:12]
+    append(inst, SEAT, receipt_text(sha, "fast"))
+    second = d(intent, GatewayVerdict("allow"))
+    assert second.ok, second.error
+    assert "unchanged" not in second.result
 
 
 def test_explicit_answer_closes_named_request_without_claiming_execution(inst):

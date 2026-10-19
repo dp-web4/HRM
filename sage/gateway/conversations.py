@@ -477,20 +477,41 @@ def notify_state_path(instance: Path, conv_id: str, speaker: str) -> Path:
     return Path(base) / Path(instance).resolve().name / f"{conv_id}.{speaker}.json"
 
 
+_REQUEST_SOURCE_HEADER = re.compile(r"\([0-9]+ bytes, sha256:([0-9a-f]{6,64}); [^\r\n]*\)")
+
+
+def _request_source(lines: list[str]) -> Optional[tuple[int, str]]:
+    """Locate one canonical source header, never a digest quoted in free text.
+
+    `why` may span lines, so a fixed index is not a boundary. Multiple header-shaped
+    lines (including one quoted in why or an extra field) are ambiguous and cannot
+    establish identity. Malformed header-shaped lines also fail closed.
+    """
+    if len(lines) < 3 or not lines[0].startswith("[request_run] ") \
+            or not lines[1].startswith("why:"):
+        return None
+    candidates = [(i, line) for i, line in enumerate(lines[2:], 2)
+                  if re.match(r"\([0-9]+ bytes, sha256:", line)]
+    if len(candidates) != 1:
+        return None
+    index, line = candidates[0]
+    match = _REQUEST_SOURCE_HEADER.fullmatch(line)
+    return (index, match.group(1)) if match else None
+
+
 def _request_digest(text: str) -> Optional[str]:
     """The bytes a `[request_run]` turn asks about (its `sha256:` tag), or None if it is not one.
     A request with no tag counts as its own bytes: it cannot be shown to repeat anything."""
     if not str(text or "").startswith("[request_run]"):
         return None
-    m = re.search(r"sha256:([0-9a-f]{6,64})", text)
-    return m.group(1) if m else f"untagged:{text}"
+    source = _request_source(str(text or "").splitlines())
+    return source[1] if source else f"untagged:{text}"
 
 
 # How a seat turn names the request it answers (seat_run_requests.py `answers_line`, and the
 # hand-written forms it still recognises). Kept in step with that script's `_NAMES`.
 _ANSWER_NAMES = re.compile(r"\b(?:request seq|answering your seq|about seq|on your seq)\s+"
                            r"(\d+(?:\s*(?:,|and)\s*(?:seq\s+)?\d+)*)", re.I)
-_RESULT_HEAD = re.compile(r"\[request_run\] I (?:ran|did not run) (\S+)(?: \(sha ([0-9a-f]+)\))?")
 
 
 def _request_key(text: str) -> Optional[tuple]:
@@ -501,14 +522,62 @@ def _request_key(text: str) -> Optional[tuple]:
     lines = str(text or "").splitlines()
     if not lines or not lines[0].startswith("[request_run] "):
         return None
-    m = re.search(r"sha256:([0-9a-f]{6,64})", text)
-    if not m:
+    source = _request_source(lines)
+    if source is None:
         return None
-    extra = tuple(sorted(x.strip() for x in lines[3:]
+    header_index, digest = source
+    extra = tuple(sorted(x.strip() for x in lines[header_index + 1:]
                          if x.strip() and not x.startswith("UNCHANGED since")))
     if any(x.lower().startswith("rerun:") for x in extra):
         return None
-    return (lines[0][len("[request_run] "):].strip(), m.group(1), extra)
+    return (lines[0][len("[request_run] "):].strip(), digest, extra)
+
+
+def _run_result_matches_request(text: str, key: Optional[tuple]) -> bool:
+    """Positive legacy run evidence for (path, digest, request argument lines).
+
+    Shared by wake suppression and the being-facing receipt. Unknown is not a
+    match: a decline, missing argument clause, opaque extra fields or a malformed
+    receipt needs explicit request binding instead. This does not predict another
+    run's outcome or identify its inputs/environment. It changes no queue history.
+
+    Only the existing `arguments: <shell-quoted argv>` request spelling is
+    interpreted; other spellings remain opaque. shlex parses words, never runs them.
+    The receipt must use the writer's canonical quoting and a complete verdict.
+    """
+    import shlex
+
+    if key is None:
+        return False
+    path, digest, extra = key
+    if not re.fullmatch(r"[0-9a-f]{12,64}", digest):
+        return False
+    if extra:
+        if len(extra) != 1 or not extra[0].startswith("arguments:"):
+            return False
+        try:
+            argv = shlex.split(extra[0].partition(":")[2].strip())
+        except ValueError:
+            return False
+    else:
+        argv = []
+    first = str(text or "").split("\n", 1)[0]
+    head = re.match(r"\[request_run\] I ran (\S+) \(sha ([0-9a-f]{12,64})\) ", first)
+    if not head or head.group(1) != path:
+        return False
+    ran_digest = head.group(2)
+    if not (digest.startswith(ran_digest) or ran_digest.startswith(digest)):
+        return False
+    phrase = (re.escape("with arguments: " + shlex.join(argv)) if argv else
+              r"with no arguments(?: \(the script's defaults\))?")
+    # Optional environment description emitted by seat_run_requests. It is not
+    # input identity. Recognize only its current grammar, not arbitrary prose.
+    where = (r"(?:, with the GPU (?:visible to it|hidden from it "
+             r"\(CUDA_VISIBLE_DEVICES was empty\), as every seat run is by default, "
+             r"so code that asks for cuda stops there on every rerun))?")
+    verdict = (r"\. (?:exit code -?\d+|timed out after \d+(?:\.\d+)?s "
+               r"— no exit code, so this is not a pass or a fail)\.")
+    return re.fullmatch(phrase + where + verdict, first[head.end():]) is not None
 
 
 def _already_answered(turns: list, speaker: str, idx: int) -> bool:
@@ -517,14 +586,13 @@ def _already_answered(turns: list, speaker: str, idx: int) -> bool:
     Bound to the request, not to "someone spoke since" (GPT's hold on #154: an unrelated seat
     message must not count as the answer). An earlier request with the same path, bytes and
     arguments is answered only by a later non-speaker turn, before this one, that either names
-    its seq ("Answers your request seq N") or is a `[request_run] I ran / I did not run` result
-    for the same path, which is how seat_run_requests.py closes a request. A run result that
-    states a different sha is not an answer about these bytes, and a result naming only seqs
-    older than the request does not answer it (the same exception as that script's pending())."""
+    its seq ("Answers your request seq N") or is a run result matching path, bytes AND
+    arguments. Declines and unknown legacy result identities require explicit binding.
+    A result naming only seqs older than the request does not answer it. This forward
+    wake decision deliberately does not migrate seat_run_requests.pending() history."""
     key = _request_key(turns[idx].get("text"))
     if key is None:
         return False
-    rel, digest = key[0], key[1]
     for i in range(idx):
         r = turns[i]
         if r.get("from") != speaker or _request_key(r.get("text")) != key:
@@ -538,14 +606,10 @@ def _already_answered(turns: list, speaker: str, idx: int) -> bool:
                      for n in re.findall(r"\d+", m.group(1))}
             if rseq in named:
                 return True
-            h = _RESULT_HEAD.match(text)
-            if not h or (named and rseq > max(named)):
+            if named and rseq > max(named):
                 continue
-            if h.group(1).rstrip(".,;:") != rel:
-                continue
-            if h.group(2) and not (digest.startswith(h.group(2)) or h.group(2).startswith(digest)):
-                continue
-            return True
+            if _run_result_matches_request(text, key):
+                return True
     return False
 
 

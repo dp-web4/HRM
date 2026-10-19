@@ -4215,18 +4215,6 @@ def make_forum_publisher(pointer_dir: str, plugin_id: str, push: bool = True) ->
     return publish
 
 
-if __name__ == "__main__":  # live smoke against the local daemon: mesh -> member_notify
-    import sys
-    inst = os.path.expanduser("~/ai-workspace/sage/sage/instances/sprout-qwen3.8-distill-2b")
-    d = HestiaF1aDispatcher("sprout-being", inst)
-    to, kind, ptr = (sys.argv[1:4] + [None, None, None])[:3]
-    if not (to and kind and ptr):
-        print("usage: hestia_dispatch.py <to> <kind> <pointer_uri>"); sys.exit(2)
-    env = d(BeingIntent("mesh", {"to": to, "kind": kind, "pointer": ptr}), GatewayVerdict("allow"))
-    print(json.dumps({"ok": env.ok, "result": env.result, "error": env.error,
-                      "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))
-
-
 def _run_note(rc: int, stderr: str, files: list) -> str:
     """The one line a `run` result says about itself.
 
@@ -4263,3 +4251,15 @@ def _run_note(rc: int, stderr: str, files: list) -> str:
             f"{here}. No other file from your home was there, and nothing an earlier run wrote "
             f"is kept; a file passed as 'data' arrives "
             f"under its base name (data/x.npy is x.npy), not in a subdirectory.")
+
+
+if __name__ == "__main__":  # live smoke against the local daemon: mesh -> member_notify
+    import sys
+    inst = os.path.expanduser("~/ai-workspace/sage/sage/instances/sprout-qwen3.8-distill-2b")
+    d = HestiaF1aDispatcher("sprout-being", inst)
+    to, kind, ptr = (sys.argv[1:4] + [None, None, None])[:3]
+    if not (to and kind and ptr):
+        print("usage: hestia_dispatch.py <to> <kind> <pointer_uri>"); sys.exit(2)
+    env = d(BeingIntent("mesh", {"to": to, "kind": kind, "pointer": ptr}), GatewayVerdict("allow"))
+    print(json.dumps({"ok": env.ok, "result": env.result, "error": env.error,
+                      "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))

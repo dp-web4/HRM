@@ -54,6 +54,10 @@ RESERVED_SUBTREES = ("conversations", "asks_sent.jsonl")
 # A memory_read miss names same-named files one directory away; past this many it names the
 # first ones and says how many more there are, rather than dropping them silently.
 _SAME_NAME_SHOWN = 5
+# memory_read with `find` (#351) lists at most this many matching lines, and cuts a matching line
+# longer than _FIND_LINE_CHARS, saying it did both.
+_FIND_SHOWN = 40
+_FIND_LINE_CHARS = 240
 
 
 def _named_file_stamps(content: str, root: Path, written: Path) -> str:
@@ -1019,6 +1023,12 @@ class ReferenceF1aDispatcher:
         if not whole:
             return ResultEnvelope(ok=True, result=f"[empty file: '{shown}' exists and has no content]",
                                   witness_id=self._witness(f"memory_read {p.name}"))
+        find = str(intent.args.get("find") or "")
+        if find.strip():
+            return self._memory_read_find(p, shown, whole, find, intent.args)
+        find_note = ("[find was blank (empty or only whitespace), so this is an ordinary read "
+                     "using start_line and end_line, with the usual size limit.]\n"
+                     if intent.args.get("find") is not None else "")
         # A SILENT TRUNCATION IS A LIE THE LENGTH OF A FILE. First found by legion-claude on
         # 2026-09-07 (992443289: marker + cap 4,000 -> 12,000), which landed only on a
         # legion-being branch — main kept the silent 4,000-char slice, while
@@ -1056,7 +1066,7 @@ class ReferenceF1aDispatcher:
         stop = max(stop, start) if stop else 0
         if start > len(lines):
             return ResultEnvelope(ok=True, result=(
-                f"[past the end: '{shown}' has {len(lines)} lines, so start_line={start} shows "
+                find_note + f"[past the end: '{shown}' has {len(lines)} lines, so start_line={start} shows "
                 f"nothing. Read from start_line=1.]"),
                 witness_id=self._witness(f"memory_read {p.name} (past end)"))
         end, size = start - 1, 0
@@ -1085,9 +1095,9 @@ class ReferenceF1aDispatcher:
             # would read as the file's last line and could be copied into an edit anchor.
             # Say where the file ends before saying what Python makes of it.
             whole_note = f"\n[end of file: line {len(lines)} is the last line. {status}]" if status else ""
-            return ResultEnvelope(ok=True, result=dated + content + whole_note,
+            return ResultEnvelope(ok=True, result=find_note + dated + content + whole_note,
                                   witness_id=self._witness(f"memory_read {p.name}"))
-        head = dated + (f"[lines {start}-{end} of {len(lines)} in '{shown}']\n" if start > 1 else "")
+        head = find_note + dated + (f"[lines {start}-{end} of {len(lines)} in '{shown}']\n" if start > 1 else "")
         if stop and end == stop and end < len(lines):
             # Cut where the being asked, not where the window ran out: say so in those words,
             # so a short result is not read as the file running out of lines.
@@ -1102,6 +1112,76 @@ class ReferenceF1aDispatcher:
                     if end < len(lines) else f"\n[end of file: line {len(lines)} is the last line.]")
         return ResultEnvelope(ok=True, result=head + content + tail + parse,
                               witness_id=self._witness(f"memory_read {p.name} (lines {start}-{end})"))
+
+    def _memory_read_find(self, p: Path, shown: str, whole: str, find: str,
+                          args: dict) -> ResultEnvelope:
+        """memory_read with `find`: the lines of ONE file that contain a literal string.
+
+        FINDING IS NOT READING (#351). Without a worktree, `search` is refused, and memory_read
+        only showed a file from a start_line on, so a being that wanted to locate one line
+        (`head = nn.Linear` in scratch/train-autoencoder-latent5.py) had no tool that could. It
+        was refused at search 120 times (76 on 2026-10-07 alone) and wrote git-worktree setup
+        scripts to build the missing thing. This answers the question it was asking, in the
+        file it named: literal and case-sensitive (not a regex, so `nn.Linear(` means what it
+        says), every line number the text is on, nothing else read.
+
+        An empty answer says why it is empty: zero matches is a true answer about THIS file,
+        and says that it covers nothing else. A find whose leading or trailing spaces are what
+        kept it from matching says so (a being cannot see the whitespace it sends).
+        A query with line breaks explicitly searches only its first non-blank line;
+        the receipt makes no claim about the full multi-line text."""
+        query_lines = find.splitlines()
+        if query_lines != [find]:
+            first = next(line for line in query_lines if line.strip())
+            result = self._memory_read_find(p, shown, whole, first, args)
+            result.result = (
+                "[find matches within one line. Your query contained line breaks, so the "
+                f"results below search only its first non-blank line: {first!r}. "
+                "They do not establish whether the full multi-line text is present. "
+                "Read the matching range to check the remaining lines.]\n" + result.result)
+            return result
+        lines = whole.splitlines()
+        hits = [(i, ln) for i, ln in enumerate(lines, 1) if find in ln]
+        loose = ""
+        if not hits and find.strip() != find:
+            loose = find.strip()
+            hits = [(i, ln) for i, ln in enumerate(lines, 1) if loose in ln]
+        ignored = "".join(
+            f" {key}={args[key]} was ignored: find looks at every line of the file."
+            for key in ("start_line", "end_line") if args.get(key) is not None
+        )
+        if not hits:
+            return ResultEnvelope(ok=True, result=(
+                f"[found none: no line of '{shown}' contains {find!r} (literal text, "
+                f"case-sensitive; all {len(lines)} lines were looked at). This is a true answer "
+                f"about this one file only: it says nothing about any other file.{ignored}]"),
+                witness_id=self._witness(f"memory_read {p.name} (find: 0 matches)"))
+        shown_hits = hits[:_FIND_SHOWN]
+        cut = False
+        rows = []
+        for i, ln in shown_hits:
+            if len(ln) > _FIND_LINE_CHARS:
+                ln, cut = ln[:_FIND_LINE_CHARS] + "…", True
+            rows.append(f"line {i}: {ln}")
+        n = len(hits)
+        what = repr(loose) if loose else repr(find)
+        head = (f"[found {n} line{'' if n == 1 else 's'} of {len(lines)} in '{shown}' "
+                f"containing {what} (literal text, case-sensitive)]")
+        if loose:
+            head += (f"\n[no line contains {find!r} exactly as sent, with its leading/trailing "
+                     f"spaces; these contain it with those spaces removed]")
+        notes = []
+        if n > len(shown_hits):
+            notes.append(f"…and {n - len(shown_hits)} more matching lines not listed (the first "
+                         f"{len(shown_hits)} are shown); a longer find text narrows it.")
+        if cut:
+            notes.append(f"a line ending in … was cut at {_FIND_LINE_CHARS} characters.")
+        notes.append("line labels and truncation notes are not file text or edit anchors.")
+        notes.append(f"to read a range, memory_read path '{shown}' with start_line and end_line."
+                     + ignored)
+        return ResultEnvelope(
+            ok=True, result=head + "\n" + "\n".join(rows) + "\n[" + " ".join(notes) + "]",
+            witness_id=self._witness(f"memory_read {p.name} (find: {n} matches)"))
 
     def _do_memory_edit(self, intent: BeingIntent) -> ResultEnvelope:
         """Replace an exact span inside one of the being's own files. The missing primitive.

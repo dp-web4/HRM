@@ -28,6 +28,23 @@ def test_one_all_line_closes_every_open_item_that_mentions_it():
     assert hb.todo_closures(text)[-1][:2] == ("scope-ef204d003703", 4)
 
 
+def test_a_note_after_the_words_is_not_part_of_them():
+    """The being's first use, verbatim (Sprout 2026-10-19 08:51Z), closed nothing as one long phrase."""
+    being = "- [x] all: ef204d003703 (channel_egress not built; rate-governor calibration is design work, not a gate)\n"
+    text = TODO + "2026-10-19 08:51 UTC\n" + being
+    assert _open(text) == ["write a poem about the dark sill"]
+    assert hb.todo_closures(text)[-1][:2] == ("ef204d003703", 4)
+    for note in (" [it expired]", " — it expired", " - it expired"):
+        t = TODO + f"- [x] all: scope-ef204d003703{note}\n"
+        assert _open(t) == ["write a poem about the dark sill"], note
+
+
+def test_a_hyphen_inside_the_words_is_kept():
+    """Only a SPACED dash starts a note; ids like scope-ef204d003703 keep their hyphen."""
+    text = TODO + "- [x] all: scope-ef204d003703\n"
+    assert hb.todo_closures(text)[-1][0] == "scope-ef204d003703"
+
+
 def test_under_a_done_section_and_with_done_tag_too():
     for line in ("done:\n- all: scope-ef204d003703\n", "- [done] all: scope-ef204d003703\n"):
         assert _open(TODO + "2026-10-19 07:30 UTC\n" + line) == ["write a poem about the dark sill"], line

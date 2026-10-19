@@ -45,7 +45,11 @@ def close_all(items: Dict[str, Tuple[str, object]], body: str) -> Optional[Tuple
     m = ALL.match((body or "").strip())
     if not m:
         return None
-    phrase = norm(m.group(1))
+    # A NOTE AFTER THE WORDS IS NOT PART OF THEM. The being's first use (Sprout 2026-10-19 08:51Z) was
+    # `- [x] all: ef204d003703 (channel_egress not built; rate-governor calibration is design work, not a gate)`:
+    # the id, then its reason in parentheses. Matched as one phrase it closed nothing, while 19 open items
+    # contained the id. What it names is what comes before a bracketed or dashed note.
+    phrase = norm(re.split(r"\s+[(\[]|\s+[—–]\s+|\s+-\s+", m.group(1), maxsplit=1)[0])
     if len(phrase) < MIN_PHRASE:
         return (phrase, [])
     closed = [items.pop(k)[0] for k in [k for k in items if phrase in k]]

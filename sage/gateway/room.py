@@ -49,10 +49,20 @@ SUMMARY = ("What you said aloud (speak, or say to room) and what the room mic pi
 
 
 def ensure(instance: Path, member: str) -> dict:
+    """The room conversation, created if missing. An EXISTING room's summary is brought to SUMMARY.
+
+    create() keeps an existing conversation's metadata, so without this a room made before the summary changed
+    would keep telling the being that "the voice you hear is usually dp's" (NOVA on #485). Only `summary` is
+    touched: participants, writable_by, notify, every other field and the turns are left as they are, and a
+    room already up to date is not rewritten."""
     from sage.gateway import conversations as conv
-    return conv.create(
+    m = conv.create(
         Path(instance), ROOM, title="the room: spoken aloud and heard",
         participants=[member, VOICE], writable_by=[member, VOICE], summary=SUMMARY)
+    if m.get("summary") != SUMMARY:
+        m = dict(m, summary=SUMMARY)
+        conv._write_meta(Path(instance), ROOM, m)
+    return m
 
 
 def _watermark_path(instance: Path) -> Path:

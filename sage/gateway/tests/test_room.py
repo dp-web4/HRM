@@ -74,6 +74,34 @@ def test_the_beat_shows_heard_lines_as_picked_up_and_owed_nothing():
     assert "still yours to answer" not in again
 
 
+def test_an_existing_room_with_the_old_summary_is_brought_up_to_date():
+    """NOVA on #485: create() keeps existing metadata, so an upgraded room kept the old speaker guidance."""
+    import json
+    h = _home()
+    conv.create(h, "room", title="the room: spoken aloud and heard", participants=[ME, "voice"],
+                writable_by=[ME, "voice"],
+                summary="This machine sits in dp's room, so the voice you hear is usually dp's.")
+    meta = conv.get_meta(h, "room")
+    meta["notify"] = {"someone": "x"}
+    meta["custom_field"] = 7
+    conv._write_meta(h, "room", meta)
+    room.ingest_heard(h, ME, INV, heard=[_heard(time.time() - 10, "hello there")])
+    before_turns = conv.recent(h, "room")
+    before = conv.get_meta(h, "room")
+
+    room.ensure(h, ME)
+    after = conv.get_meta(h, "room")
+    assert after["summary"] == room.SUMMARY and "usually dp" not in after["summary"]
+    assert {k: v for k, v in after.items() if k != "summary"} == {k: v for k, v in before.items() if k != "summary"}
+    assert conv.recent(h, "room") == before_turns, "turn history unchanged"
+
+    meta_file = conv.conv_dir(h) / "room.meta.json"
+    stamp = meta_file.stat().st_mtime_ns
+    room.ensure(h, ME)
+    assert meta_file.stat().st_mtime_ns == stamp, "an up-to-date room is not rewritten"
+    assert json.loads(meta_file.read_text()) == after
+
+
 def test_the_room_says_what_the_mic_is():
     h = _home()
     room.ensure(h, ME)

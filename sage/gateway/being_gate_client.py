@@ -3154,6 +3154,15 @@ class BeingGateClient:
                 if (_REGISTRY[intent.effector].get("compose") and _wt and tool_input.get("path")
                         and not os.path.isabs(str(tool_input["path"]))):
                     tool_input["path"] = os.path.realpath(os.path.join(_wt, str(tool_input["path"])))
+                # A SCOPE REQUEST'S PATH IS WHAT IT ASKS FOR, NOT WHAT IT TOUCHES (2026-10-19, CBP).
+                # The registry gives request_scope path_args=() so the legacy stage never judges it
+                # as reach -- but this branch handed the raw args on, and hestia reads `path` as a
+                # ratified path key (hestia_gate_core.PATH_KEYS). Every request for a path outside
+                # the grant (which is every request) was refused mrh.path before reaching the
+                # daemon: cbp-being, five refusals 13:24-13:35Z for state_lock.rs, then an appeal.
+                # The path stays visible to the law as data, under a key that carries no reach.
+                if intent.effector == "request_scope" and "path" in tool_input:
+                    tool_input["requested_path"] = tool_input.pop("path")
                 ge = sg.GateEvent(tool=tool, tool_input=tool_input, cwd=self.workspace,
                                   session_id=getattr(self, "host_session_id", None),
                                   raw={"effector": intent.effector, **intent.args})

@@ -208,6 +208,17 @@ def test_single_gate_deny_and_no_verdict_map_fail_closed():
     assert v.blocks and v.rule == "gate.raised" and v.innate
 
 
+def test_request_scope_path_reaches_the_single_gate_as_no_reach():
+    """The single-gate twin of test_request_scope_path_is_not_judged_under_mrh_path. hestia's
+    path_targets reads `path` from tool_input, so handing request_scope's raw args on made the
+    requested path a judged target and every request died mrh.path (cbp-being, 2026-10-19)."""
+    c, calls = _sg_client("allow")
+    v = c.gate(BeingIntent("request_scope", {"path": "/etc/somewhere/ungranted", "reason": "why"}))
+    assert not v.blocks, v
+    ti = calls[0][0]["tool_input"]
+    assert "path" not in ti and ti["requested_path"] == "/etc/somewhere/ungranted", ti
+
+
 def test_registry_refusal_precedes_the_single_gate():
     c, calls = _sg_client("allow")
     v = c.gate(BeingIntent("shell", {"command": "rm -rf /"}))

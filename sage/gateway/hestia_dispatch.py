@@ -3561,6 +3561,12 @@ class HestiaF1aDispatcher:
         arg_lines = [f"{k}: {str(v).strip()}" for k, v in intent.args.items()
                      if k not in ("path", "why", "reason", "to") and str(v).strip()
                      and not (k == "rerun" and str(v).strip().lower() in ("false", "no", "0", "none"))]
+        lines = [f"[request_run] {rel}",
+                 f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
+                 f"({p.stat().st_size} bytes, sha256:{digest}; the seat decides whether to run it and answers here)"]
+        # Parse the text we will actually send, including multiline explanations.
+        # A synthetic short why could hide ambiguous source headers from this reader.
+        request_key = conv._request_key("\n".join(lines + arg_lines))
 
         def _seat_names(text: str):
             """(verb, path, argument phrase) of a seat run/decline receipt's first line."""
@@ -3575,8 +3581,8 @@ class HestiaF1aDispatcher:
             if t.get("from") == self.member and text.startswith(f"[request_run] {rel}\n"):
                 # The prior request counts only if it asked for these bytes WITH THESE
                 # ARGUMENTS: a request carrying other flags was answered for other flags.
-                prior_args = [ln for ln in text.split("\n")[3:] if not ln.startswith("UNCHANGED")]
-                asked_at = (t.get("seq") if f"sha256:{digest}" in text and prior_args == arg_lines
+                asked_at = (t.get("seq") if request_key is not None
+                            and conv._request_key(text) == request_key
                             else None)
                 if asked_at is not None:
                     asked_seqs.append(asked_at)
@@ -3588,15 +3594,14 @@ class HestiaF1aDispatcher:
                 # A seat receipt for ANOTHER file answers nothing about this one, solicited
                 # or not.
                 continue
-            if named and named[0] == "ran" and f"(sha {digest})" in text \
-                    and "with arguments:" not in named[2] and not arg_lines:
+            if not asked_seqs and conv._run_result_matches_request(text, request_key):
                 # THE SEAT RAN THIS FILE, AT THIS SHA, WITHOUT BEING ASKED. Measured
                 # 2026-09-29 17:50Z: the seat ran a copy of f355443e29b4 on its own and said
                 # so (seq 4437); cbp-being then asked for a run of that sha (4438, 4439) and
                 # neither receipt said UNCHANGED, because this scan keyed only on the being's
                 # own prior request. seat_run_requests.py writes "I ran <rel> (sha <12>)" and
-                # states its arguments (ran_line); a run with arguments, or a request that
-                # carries its own, is not the same run, so neither counts here.
+                # states its arguments (ran_line). The shared matcher now checks those too;
+                # no argument clause means unknown, not default arguments.
                 unchanged = (asked_at, t.get("seq"))
                 answer_text = text
             elif asked_seqs:
@@ -3604,13 +3609,9 @@ class HestiaF1aDispatcher:
                 # fef135b7b: any later seat turn counted, so request new.py -> an unrelated
                 # seat message -> re-request came back "the seat answered that at seq N" with
                 # the unrelated message carried as the answer (#154's queue conflation). Bound
-                # means: a run/decline receipt naming THIS path (seat_run_requests.py writes the
-                # marker for both; one for another path was skipped above), or a turn that names
-                # this request's seq. Free prose -- even prose mentioning the file -- is not.
-                # The same binding conversations._already_answered applies to the seat's wake
-                # (#154 recut, #332), so the receipt and the wake agree on what an answer is:
-                # one definition of how a seat turn names a seq, and the same two exceptions --
-                # a receipt stating OTHER bytes, or naming only seqs older than this request.
+                # means: an explicitly named request, or positive matching run evidence.
+                # Free prose, unknown arguments and unnamed declines cannot establish the
+                # fallback binding. This is the same matcher used by the wake reader (#464).
                 seqs = {int(n) for mm in conv._ANSWER_NAMES.finditer(text)
                         for n in re.findall(r"\d+", mm.group(1))}
                 # AN ANSWER TO ANY EARLIER ASK FOR THESE BYTES ANSWERS THIS ONE. Measured
@@ -3623,10 +3624,9 @@ class HestiaF1aDispatcher:
                 _asked_ints = [int(a) for a in asked_seqs]
                 _hit = [a for a in _asked_ints if a in seqs]
                 if not _hit:
-                    if named is None or asked_at is None:
+                    if named is None:
                         continue
-                    _sha = re.search(r"\(sha ([0-9a-f]+)\)", named[2])
-                    if _sha and not (digest.startswith(_sha.group(1)) or _sha.group(1).startswith(digest)):
+                    if not conv._run_result_matches_request(text, request_key):
                         continue
                     if seqs and min(_asked_ints) > max(seqs):
                         continue
@@ -3639,9 +3639,6 @@ class HestiaF1aDispatcher:
                     continue
                 unchanged = (max(_hit), t.get("seq"))
                 answer_text = text
-        lines = [f"[request_run] {rel}",
-                 f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
-                 f"({p.stat().st_size} bytes, sha256:{digest}; the seat decides whether to run it and answers here)"]
         # EVERY ARGUMENT THE BEING GAVE REACHES THE SEAT. Measured 2026-09-22 08:3xZ: cbp-being
         # put its flags in 'body' ("Run ... with --input-dim 10 --output-dim 1 ...") and the
         # seat was shown "why: (none given)" and no flags. Across its first 66 request_runs,
@@ -3671,10 +3668,7 @@ class HestiaF1aDispatcher:
         # marker; anything else is an answer whose run status the receipt does not know.
         _verdict = _SEAT_RUN_LINE.match(answer_text.split("\n", 1)[0]) if unchanged else None
         declined = bool(_verdict and _verdict.group(1) == "did not run" and unchanged[0] is not None)
-        _ran_sha = re.search(r"\(sha ([0-9a-f]+)\)", answer_text.split("\n", 1)[0]) if _verdict else None
-        executed = bool(_verdict and _verdict.group(1) == "ran"
-                        and (_ran_sha is None or digest.startswith(_ran_sha.group(1))
-                             or _ran_sha.group(1).startswith(digest)))
+        executed = bool(unchanged and conv._run_result_matches_request(answer_text, request_key))
         if unchanged:
             # CARRY THE ANSWER, DO NOT POINT AT IT. Measured 2026-09-22 over cbp-being's 556
             # beats: an edit receipt that names the defect in its own return value ("Python
@@ -3708,9 +3702,9 @@ class HestiaF1aDispatcher:
                 # answered) and what is not (whether anything ran), and carry the answer itself.
                 result["unchanged"] = (
                     since +
-                    f"Nothing in it has changed since. That answer does not say the file ran, so "
-                    f"it is not evidence of what this file does; whether it ran is not known from "
-                    f"it. What the seat said:\n"
+                    f"Nothing in it has changed since. That answer does not establish a run of "
+                    f"these bytes with these arguments, so it is not evidence of what this file "
+                    f"does under this invocation. What the seat said:\n"
                     f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
                     f"To change what you ask for: memory_edit the lines, or retire_note the file "
                     f"and then memory_write it anew.")
@@ -4215,18 +4209,6 @@ def make_forum_publisher(pointer_dir: str, plugin_id: str, push: bool = True) ->
     return publish
 
 
-if __name__ == "__main__":  # live smoke against the local daemon: mesh -> member_notify
-    import sys
-    inst = os.path.expanduser("~/ai-workspace/sage/sage/instances/sprout-qwen3.8-distill-2b")
-    d = HestiaF1aDispatcher("sprout-being", inst)
-    to, kind, ptr = (sys.argv[1:4] + [None, None, None])[:3]
-    if not (to and kind and ptr):
-        print("usage: hestia_dispatch.py <to> <kind> <pointer_uri>"); sys.exit(2)
-    env = d(BeingIntent("mesh", {"to": to, "kind": kind, "pointer": ptr}), GatewayVerdict("allow"))
-    print(json.dumps({"ok": env.ok, "result": env.result, "error": env.error,
-                      "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))
-
-
 def _run_note(rc: int, stderr: str, files: list) -> str:
     """The one line a `run` result says about itself.
 
@@ -4240,10 +4222,17 @@ def _run_note(rc: int, stderr: str, files: list) -> str:
     is empty, whether it holds a Python traceback. It does not say why the code ended. A bare
     sys.exit(1) leaves both streams empty, a signal leaves no reason anywhere, and stderr text
     like "usage: invalid option" names no line -- a note that guessed would hand the being a
-    cause to believe instead of the output to read."""
+    cause to believe instead of the output to read.
+
+    A RUN'S OWN WRITES DO NOT REACH THE NEXT RUN, AND BOTH NOTES SAY SO. cbp-being, 2026-10-18/19:
+    it ran a generator that wrote data/*.npy, then the reader as a SEPARATE run, eleven times over
+    five beats. "The copies are gone now" read as true of its copies, not of what the generator
+    wrote. That every run starts from only the files named is the sandbox's design, not a guess
+    about this run, so stating it keeps the note evidence-only."""
     if rc == 0:
         return ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                "read-only); the copies are gone now. Only what you printed survives.")
+                "read-only). The copies and every file the run wrote are gone now: the next run "
+                "starts with only the files it names. Only what you printed survives.")
     ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
     if "Traceback (most recent call last)" in stderr:
         return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "
@@ -4253,5 +4242,18 @@ def _run_note(rc: int, stderr: str, files: list) -> str:
     here = ", ".join(files) or "nothing"
     return (f"{ended}, nothing on stderr; stdout is everything the run printed, which may be "
             f"nothing. The sandbox held only what you named, flat in the working directory: "
-            f"{here}. No other file from your home was there; a file passed as 'data' arrives "
+            f"{here}. No other file from your home was there, and nothing an earlier run wrote "
+            f"is kept; a file passed as 'data' arrives "
             f"under its base name (data/x.npy is x.npy), not in a subdirectory.")
+
+
+if __name__ == "__main__":  # live smoke against the local daemon: mesh -> member_notify
+    import sys
+    inst = os.path.expanduser("~/ai-workspace/sage/sage/instances/sprout-qwen3.8-distill-2b")
+    d = HestiaF1aDispatcher("sprout-being", inst)
+    to, kind, ptr = (sys.argv[1:4] + [None, None, None])[:3]
+    if not (to and kind and ptr):
+        print("usage: hestia_dispatch.py <to> <kind> <pointer_uri>"); sys.exit(2)
+    env = d(BeingIntent("mesh", {"to": to, "kind": kind, "pointer": ptr}), GatewayVerdict("allow"))
+    print(json.dumps({"ok": env.ok, "result": env.result, "error": env.error,
+                      "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))

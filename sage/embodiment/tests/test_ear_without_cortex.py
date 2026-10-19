@@ -84,6 +84,49 @@ def test_a_body_with_no_cortex_reports_its_ear_from_ear_json():
     assert body.perception(path=pp) == {"live": False, "age_s": None}          # stale ear: no claim
 
 
+def test_stopping_hearing_kills_a_capture_that_ignores_sigterm():
+    """An AVFoundation capture still waiting for its device ignored SIGTERM and held the mic for 22 min."""
+    import subprocess
+    import types
+    from sage.embodiment import audio
+    proc = subprocess.Popen([sys.executable, "-c",
+                             "import signal, time; signal.signal(signal.SIGTERM, signal.SIG_IGN); "
+                             "print('up', flush=True); time.sleep(60)"], stdout=subprocess.PIPE)
+    proc.stdout.readline()                     # its SIGTERM handler is installed
+    fake = types.SimpleNamespace(running=True, transcriber=types.SimpleNamespace(running=True), proc=proc)
+    t = time.time()
+    audio.Hearing.stop(fake)
+    assert proc.poll() is not None, "the capture outlived stop()"
+    assert time.time() - t < 6
+
+
+def test_sigterm_runs_the_ears_cleanup():
+    """launchd stops the ear with SIGTERM; its finally (hearing.stop) must run, or the capture is orphaned."""
+    import signal
+    import subprocess
+    d = tempfile.mkdtemp()
+    marker = os.path.join(d, "stopped")
+    code = (
+        "import sys, time; sys.path.insert(0, %r)\n"
+        "from sage.embodiment import audio, presence, ear\n"
+        "class H:\n"
+        "    def start(self): pass\n"
+        "    def state(self): return {}\n"
+        "    def stop(self): open(%r, 'w').write('yes')\n"
+        "class P:\n"
+        "    def run(self):\n"
+        "        print('running', flush=True); time.sleep(60)\n"
+        "audio.Hearing = H; presence.Presence = P\n"
+        "ear.main()\n") % (str(Path(__file__).resolve().parents[3]), marker)
+    env = dict(os.environ, SAGE_BODY_DIR=d)
+    p = subprocess.Popen([sys.executable, "-c", code], stdout=subprocess.PIPE, env=env)
+    while b"running" not in p.stdout.readline():
+        pass
+    p.send_signal(signal.SIGTERM)
+    p.wait(timeout=10)
+    assert os.path.exists(marker), "SIGTERM ended the ear without stopping its capture"
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):

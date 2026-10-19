@@ -2851,10 +2851,7 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=True, witness_id=action_id, result={
             "script": staged[0][0], "files": [b for b, _ in staged],
             "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
-            "note": ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                     "read-only); the copies are gone now. Only what you printed survives."
-                     if rc == 0 else
-                     "Non-zero exit: read stderr, it names the line in your own file.")})
+            "note": _run_note(rc, errtxt, [b for b, _ in staged])})
 
 
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
@@ -4228,3 +4225,33 @@ if __name__ == "__main__":  # live smoke against the local daemon: mesh -> membe
     env = d(BeingIntent("mesh", {"to": to, "kind": kind, "pointer": ptr}), GatewayVerdict("allow"))
     print(json.dumps({"ok": env.ok, "result": env.result, "error": env.error,
                       "witness_id": env.witness_id, "pending": env.pending, "note": env.note}, indent=1))
+
+
+def _run_note(rc: int, stderr: str, files: list) -> str:
+    """The one line a `run` result says about itself.
+
+    A NON-ZERO EXIT WITH AN EMPTY STDERR NAMES NO LINE. cbp-being, 2026-10-18 23:41Z: its
+    script printed "No data files found in the data directory." and exited 1, stderr empty, and
+    the note told it to "read stderr, it names the line in your own file". There was no line to
+    read. Files arrive flat under their base names, so a script that looks in a subdirectory
+    finds nothing even for a file passed as 'data'.
+
+    THE NOTE SAYS ONLY WHAT WAS OBSERVED (codex review of #474): the exit code, whether stderr
+    is empty, whether it holds a Python traceback. It does not say why the code ended. A bare
+    sys.exit(1) leaves both streams empty, a signal leaves no reason anywhere, and stderr text
+    like "usage: invalid option" names no line -- a note that guessed would hand the being a
+    cause to believe instead of the output to read."""
+    if rc == 0:
+        return ("Ran in a sandbox with no network and no home (your worktree, if any, "
+                "read-only); the copies are gone now. Only what you printed survives.")
+    ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
+    if "Traceback (most recent call last)" in stderr:
+        return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "
+                f"names the line that raised.")
+    if stderr.strip():
+        return f"{ended}. stderr is not empty: read it and stdout, they are what the run said."
+    here = ", ".join(files) or "nothing"
+    return (f"{ended}, nothing on stderr; stdout is everything the run printed, which may be "
+            f"nothing. The sandbox held only what you named, flat in the working directory: "
+            f"{here}. No other file from your home was there; a file passed as 'data' arrives "
+            f"under its base name (data/x.npy is x.npy), not in a subdirectory.")

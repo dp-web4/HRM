@@ -911,7 +911,8 @@ class HestiaF1aDispatcher:
         limited = self._ask_limit(to)
         if limited:
             return ResultEnvelope(ok=False, error=limited)
-        pointer = self._publish(to, body)
+        annotation = self._ask_provenance(body)
+        pointer = self._publish(to, body + annotation if annotation else body)
         if not pointer:
             return ResultEnvelope(ok=False, error="peer_ask: publisher returned no pointer")
         env = self._do_mesh(BeingIntent("mesh", {"to": to, "kind": "coordination", "pointer": pointer}),
@@ -920,7 +921,116 @@ class HestiaF1aDispatcher:
             self._record_ask(to, "peer_ask", body, env.result.get("queued_id"))
             env.result["question_at"] = pointer
             env.result["answer_via"] = "hestia_member_inbox (drain_inbox)"
+            if annotation:
+                # SAID TO THE SENDER TOO: the peer reads the same lines below its message, and a
+                # note the sender cannot see would make the peer's answer look like a non sequitur.
+                env.result["seat_note_attached"] = annotation.strip()
         return env
+
+    # Files a peer_ask may name: code, data and notes. A token with a slash or one of these endings.
+    _ASK_FILE_TOKEN = re.compile(r"[\w~./-]+")
+    _ASK_FILE_EXT = (".py", ".sh", ".ipynb", ".npy", ".npz", ".pt", ".pth", ".json", ".jsonl",
+                     ".md", ".txt", ".csv", ".yaml", ".yml")
+    _ASK_EXEC = re.compile(r"\b(run|re-run|rerun|execute|exec)\b", re.I)
+
+    def _ask_files(self, body: str) -> list:
+        """Files in the sender's own home that a peer_ask names: [(rel, full)], at most 6."""
+        root = os.path.realpath(self.memory_root or "")
+        if not root or not os.path.isdir(root):
+            return []
+        found, seen = [], set()
+        for tok in self._ASK_FILE_TOKEN.findall(body or ""):
+            tok = tok.strip(".,:;'\"`)(")
+            if not tok or not ("/" in tok or tok.lower().endswith(self._ASK_FILE_EXT)):
+                continue
+            cands = []
+            if "/" in tok:
+                full = os.path.realpath(tok if os.path.isabs(tok) else os.path.join(root, tok))
+                if full.startswith(root + os.sep) and os.path.isfile(full):
+                    cands = [full]
+            else:
+                # a bare name: the being's own file of that name, if exactly one is near the top
+                for dp_, dns, fns in os.walk(root):
+                    if dp_[len(root):].count(os.sep) >= 3:
+                        dns[:] = []
+                    dns[:] = [d for d in dns if not d.startswith(".") and d not in ("__pycache__",)]
+                    if tok in fns:
+                        cands.append(os.path.join(dp_, tok))
+                        if len(cands) > 1:
+                            break
+                cands = cands if len(cands) == 1 else []
+            for full in cands:
+                rel = os.path.relpath(full, root)
+                if rel not in seen:
+                    seen.add(rel)
+                    found.append((rel, full))
+            if len(found) >= 6:
+                break
+        return found
+
+    def _seat_run_receipt(self, rel: str) -> str:
+        """The seat's latest run receipt for `rel` in the being's own seat conversation, as one
+        clause: what the receipt says, not what the being says about it."""
+        try:
+            from sage.gateway import conversations as conv
+            seat_conv = None
+            for m in conv.listing(self.memory_root):
+                if self.member in (m.get("participants") or []) and (m.get("notify") or {}):
+                    seat_conv = m["id"]
+                    break
+            if not seat_conv:
+                return "no seat conversation on record"
+            last = None
+            for t in conv.recent(self.memory_root, seat_conv, limit=400):
+                if t.get("from") == self.member:
+                    continue
+                m = _SEAT_RUN_LINE.match(str(t.get("text", "")).split("\n", 1)[0])
+                if m and m.group(2).rstrip(".") == rel:
+                    last = (t.get("seq"), m.group(1))
+            if last is None:
+                return "no seat run receipt names it"
+            return f"the seat's latest receipt for it (seq {last[0]}) says \"I {last[1]} it\""
+        except Exception:
+            return "the seat's receipts could not be read"
+
+    def _ask_provenance(self, body: str) -> str:
+        """The seat's note under a peer_ask that names the sender's own files.
+
+        WHERE A FILE IS AND WHETHER IT EVER RAN TRAVEL WITH THE ASK. 2026-10-14/16, measured
+        across Sprout and CBP, from both beings' records and the forum:
+        sprout-being asked CBP's seat and cbp-being to "run scratch/test-os-open.py" and later
+        "bash scratch/try-apt-pip.sh", files in ITS home on ITS machine, after its own seat
+        declined; cbp-being took "this machine" as CBP, rebuilt the script in its own home and
+        asked its own seat nine times. Then cbp-being told sprout-being, in delivered asks, that
+        the script "confirmed: Cannot open /dev/video0: [Errno 2]", a result no run ever produced.
+        Every recipient had to work out where the file lived and whether any run backed the
+        claim. The seat knows both. So it says them, evidence only: the machine, the bytes, the
+        seat's latest run receipt (or that none names the file), and, when the ask asks for a
+        run, that the sender's own seat is the one that decides its runs. Nothing is refused:
+        asking a peer is legitimate, and a refusal here would teach the shortest way around it."""
+        files = self._ask_files(body)
+        if not files:
+            return ""
+        import hashlib
+        import socket
+        host = socket.gethostname() or "its own machine"
+        lines = []
+        for rel, full in files:
+            try:
+                with open(full, "rb") as fh:
+                    sha = hashlib.sha256(fh.read()).hexdigest()[:12]
+            except OSError:
+                sha = "unreadable"
+            lines.append(f"- {rel} (sha {sha}): in {self.member}'s home on {host}, not on your "
+                         f"machine; {self._seat_run_receipt(rel)}.")
+        out = ["", "", f"[seat note, attached by {self.member}'s seat, not written by {self.member}]",
+               f"This ask names files from {self.member}'s home:"] + lines
+        if self._ASK_EXEC.search(body or ""):
+            out.append(f"It asks for a run. {self.member} has no execution of its own: its seat "
+                       f"decides its runs (request_run), and a run on your machine would test your "
+                       f"machine, not {host}.")
+        out.append("A result stated above is backed only if a seat receipt holds it.")
+        return "\n".join(out)
 
     def drain_inbox(self, peek: bool = False) -> ResultEnvelope:
         """The answer side of peer_ask: the being's own notices (consume-once unless peek)."""

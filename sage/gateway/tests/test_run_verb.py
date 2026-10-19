@@ -595,8 +595,25 @@ def test_an_empty_stderr_failure_says_where_its_files_are_not_to_read_stderr(tmp
     assert r.ok and r.result["exit"] == 1 and not r.result["stderr"], r.result
     note = r.result["note"]
     assert "read stderr" not in note and "look.py, x.npy" in note and "base name" in note
-    # a traceback still points at stderr
+    # a traceback is named as one, because it is one
     (home / "scratch" / "boom.py").write_text("raise ValueError('mine')\n")
     b = d._do_run(BeingIntent("run", {"path": "scratch/boom.py"}))
-    assert "read stderr" in b.result["note"]
+    assert "traceback" in b.result["note"] and "names the line" in b.result["note"]
+
+
+def test_a_run_note_states_only_what_was_observed():
+    # codex review of #474: the note may not infer a cause, a reason on stdout, or a traceback
+    from sage.gateway.hestia_dispatch import _run_note
+    guesses = ("stopped itself", "says why", "names the line")
+    silent = _run_note(1, "", ["example.py"])            # sys.exit(1), both streams empty
+    assert silent.startswith("Exit 1, nothing on stderr") and "example.py" in silent
+    killed = _run_note(-9, "", ["example.py"])           # signal-killed
+    assert killed.startswith("Ended by signal 9") and "example.py" in killed
+    usage = _run_note(2, "usage: invalid option", ["example.py"])  # stderr, no traceback
+    assert usage.startswith("Exit 2") and "read it" in usage
+    for n in (silent, killed, usage):
+        assert not any(g in n for g in guesses), n
+    tb = _run_note(1, 'Traceback (most recent call last):\n  File "example.py", line 3\nValueError',
+                   ["example.py"])
+    assert "traceback" in tb and "names the line" in tb
 

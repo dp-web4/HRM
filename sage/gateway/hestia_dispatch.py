@@ -4219,16 +4219,25 @@ def _run_note(rc: int, stderr: str, files: list) -> str:
     A NON-ZERO EXIT WITH AN EMPTY STDERR NAMES NO LINE. cbp-being, 2026-10-18 23:41Z: its
     script printed "No data files found in the data directory." and exited 1, stderr empty, and
     the note told it to "read stderr, it names the line in your own file". There was no line to
-    read: its own code had stopped itself because data/ does not exist in the sandbox, which the
-    note said only on a zero exit. Files arrive flat under their base names, so a script that
-    looks in a subdirectory finds nothing even for a file passed as 'data'."""
-    here = ", ".join(files) or "nothing"
+    read. Files arrive flat under their base names, so a script that looks in a subdirectory
+    finds nothing even for a file passed as 'data'.
+
+    THE NOTE SAYS ONLY WHAT WAS OBSERVED (codex review of #474): the exit code, whether stderr
+    is empty, whether it holds a Python traceback. It does not say why the code ended. A bare
+    sys.exit(1) leaves both streams empty, a signal leaves no reason anywhere, and stderr text
+    like "usage: invalid option" names no line -- a note that guessed would hand the being a
+    cause to believe instead of the output to read."""
     if rc == 0:
         return ("Ran in a sandbox with no network and no home (your worktree, if any, "
                 "read-only); the copies are gone now. Only what you printed survives.")
+    ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
+    if "Traceback (most recent call last)" in stderr:
+        return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "
+                f"names the line that raised.")
     if stderr.strip():
-        return "Non-zero exit: read stderr, it names the line in your own file."
-    return (f"Non-zero exit with nothing on stderr: your own code stopped itself, so stdout says "
-            f"why. The sandbox holds only what you named, flat in the working directory: {here}. "
-            f"No other file from your home is there; a file passed as 'data' arrives under its "
-            f"base name (data/x.npy is x.npy), not in a subdirectory.")
+        return f"{ended}. stderr is not empty: read it and stdout, they are what the run said."
+    here = ", ".join(files) or "nothing"
+    return (f"{ended}, nothing on stderr; stdout is everything the run printed, which may be "
+            f"nothing. The sandbox held only what you named, flat in the working directory: "
+            f"{here}. No other file from your home was there; a file passed as 'data' arrives "
+            f"under its base name (data/x.npy is x.npy), not in a subdirectory.")

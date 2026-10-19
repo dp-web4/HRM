@@ -1535,6 +1535,15 @@ def delivered_excerpt(home, pointer: str, cap: int = INLINE_ASK_CHARS) -> str:
         return ""
 
 
+def _fr_delivered(turn, killed) -> bool:
+    """forum_replies.delivered, never raising into the record: doubt means not delivered (offered again)."""
+    try:
+        from sage.gateway.forum_replies import delivered
+        return delivered(turn, killed)
+    except Exception:
+        return False
+
+
 def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None, home=None) -> str:
     """The being's hestia inbox as it should read it: newest first, one line each, the kinds
     that want its attention (reply, review, handoff, unreachable) ahead of bookkeeping, and
@@ -3985,6 +3994,18 @@ def main(argv=None) -> int:
             inbox = _sib + "\n" + inbox
     except Exception:
         pass
+    # ANSWERS TO ITS OWN ASKS. Peers reply on the forum and send nothing back over the mesh, so until
+    # this the being never saw a reply (Sprout 2026-10-18: 72 posts addressed to it, 14 asks about one
+    # question in a day). Shown once each, newest first, a few per beat (forum_replies).
+    forum_replies = None
+    if not args.gate_only:
+        try:
+            from sage.gateway import forum_replies as _fr
+            forum_replies = _fr.for_beat(instance, workspace, args.member)
+            if forum_replies.get("block"):
+                inbox = inbox + "\n\n" + forum_replies["block"]
+        except Exception as _e:
+            forum_replies = {"error": f"{type(_e).__name__}: {_e}"}
     # what reach the being holds and has already asked for, so it does not re-file
     scope = "(scope status unavailable)"
     if disp is not None and hasattr(disp, "_call"):
@@ -4703,6 +4724,9 @@ def main(argv=None) -> int:
         "act_after_answer": _turn(act_after) if act_after is not None else None,
         "ask_turn": _turn(ask_turn) if ask_turn is not None else None,
         "escalations": escalations, "egress": egress, "seat_rearm": seat_rearm,
+        "forum_replies": ({**{k: v for k, v in forum_replies.items() if k != "block"},
+                           "delivered": _fr_delivered(explore, killed)}
+                          if isinstance(forum_replies, dict) else None),
     }
     # THE LAST THING A BEAT DOES IS MAKE SURE THERE WILL BE ANOTHER ONE (opt-in; Legion since
     # 2026-09-09/13). A beat that `rest`ed said it was finished: waking it straight back up is the
@@ -4742,6 +4766,16 @@ def main(argv=None) -> int:
 
     with open(log, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
+    # Replies count as shown only now: the turn that carried them answered and the record is written
+    # (NOVA on #481). A beat killed before here offers them again next time.
+    _fr_rec = record.get("forum_replies") or {}
+    if _fr_rec.get("delivered") and _fr_rec.get("offered"):
+        try:
+            from sage.gateway import forum_replies as _fr_ack
+            _fr_ack.acknowledge(instance, _fr_rec["offered"])
+        except Exception as _e:
+            print(f"[heartbeat] forum replies not acknowledged ({type(_e).__name__}: {_e}); "
+                  f"they will be offered again", file=sys.stderr)
     try:
         from sage.gateway import arousal as _arousal
         _arousal.release_claim(host_session_id)   # what this beat claimed is in its record

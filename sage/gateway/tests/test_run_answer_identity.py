@@ -25,8 +25,10 @@ SHA = hashlib.sha256(BODY.encode()).hexdigest()[:12]
 PATH = "notes/sample.py"
 
 
-def request(extra=()):
-    return f"[request_run] {PATH}\nwhy: check\n(sha256:{SHA})\n" + "\n".join(extra)
+def request(extra=(), *, why="check", sha=SHA):
+    return (f"[request_run] {PATH}\nwhy: {why}\n"
+            f"({len(BODY.encode())} bytes, sha256:{sha}; the seat decides whether to run it "
+            "and answers here)\n" + "\n".join(extra))
 
 
 def receipt(argv=(), sha=SHA, path=PATH, where="", verdict="exit code 0"):
@@ -150,4 +152,64 @@ def test_result_bound_only_to_older_request_does_not_claim_a_newer_one(channel):
                GatewayVerdict("allow"))
     assert result.ok and "unchanged" not in result.result
     turns = conv.recent(home, CID, limit=10)
+    assert not conv._already_answered(turns, BEING, len(turns) - 1)
+
+
+def test_why_quoted_digest_cannot_override_source_or_suppress_new_version():
+    why = "compare to the previous sha256:999999999999"
+    old = request(why=why, sha="a" * 12)
+    new = request(why=why, sha="b" * 12)
+    assert conv._request_key(old)[1] == "a" * 12
+    assert conv._request_digest(new) == "b" * 12
+    turns = [{"seq": 1, "from": BEING, "text": old},
+             {"seq": 2, "from": SEAT, "text": "Deferred. Answers your request seq 1."},
+             {"seq": 3, "from": BEING, "text": new}]
+    assert not conv._already_answered(turns, BEING, 2)
+
+
+@pytest.mark.parametrize("named", [True, False])
+def test_multiline_why_binds_real_dispatcher_request_and_wake(channel, named):
+    home, d = channel
+    why = "compare sha256:999999999999\nwith the last observation\nand report"
+    args = {"path": PATH, "why": why, "arguments": "--mode slow"}
+    first = d(BeingIntent("request_run", args), GatewayVerdict("allow"))
+    assert first.ok, first.error
+    original = conv.recent(home, CID, limit=1)[-1]
+    assert conv._request_key(original["text"]) == (PATH, SHA, ("arguments: --mode slow",))
+    answer = (f"Deferred. Answers your request seq {original['seq']}." if named else
+              receipt(["--mode", "slow"]))
+    conv.append(home, CID, speaker=SEAT, text=answer)
+    result = d(BeingIntent("request_run", args), GatewayVerdict("allow"))
+    assert result.ok and "unchanged" in result.result
+    turns = conv.recent(home, CID, limit=10)
+    assert conv._already_answered(turns, BEING, len(turns) - 1)
+
+
+@pytest.mark.parametrize("text", [
+    f"[request_run] {PATH}\nwhy: cited sha256:{SHA}\n(no source header)",
+    request(why="quote\n(20 bytes, sha256:999999999999; the seat decides)"),
+    request() + f"(20 bytes, sha256:{SHA}; the seat decides)\n",
+    request(sha="a" * 65),
+    request(sha="a" * 12 + "x"),
+])
+def test_missing_malformed_or_ambiguous_source_header_is_unknown(text):
+    assert conv._request_key(text) is None
+    assert conv._request_digest(text).startswith("untagged:")
+
+
+def test_multiline_why_does_not_turn_explanations_into_argument_fields():
+    text = request(("arguments: --mode slow",), why="context\nrerun: true\narguments: --mode fast")
+    assert conv._request_key(text) == (PATH, SHA, ("arguments: --mode slow",))
+
+
+def test_ambiguous_header_in_real_request_stays_unknown_for_both_readers(channel):
+    home, d = channel
+    conv.append(home, CID, speaker=BEING, text=request())
+    conv.append(home, CID, speaker=SEAT, text=receipt())
+    result = d(BeingIntent("request_run", {"path": PATH,
+               "why": "quote\n(20 bytes, sha256:999999999999; the seat decides)"}),
+               GatewayVerdict("allow"))
+    assert result.ok and "unchanged" not in result.result
+    turns = conv.recent(home, CID, limit=10)
+    assert conv._request_key(turns[-1]["text"]) is None
     assert not conv._already_answered(turns, BEING, len(turns) - 1)

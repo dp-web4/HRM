@@ -477,13 +477,35 @@ def notify_state_path(instance: Path, conv_id: str, speaker: str) -> Path:
     return Path(base) / Path(instance).resolve().name / f"{conv_id}.{speaker}.json"
 
 
+_REQUEST_SOURCE_HEADER = re.compile(r"\([0-9]+ bytes, sha256:([0-9a-f]{6,64}); [^\r\n]*\)")
+
+
+def _request_source(lines: list[str]) -> Optional[tuple[int, str]]:
+    """Locate one canonical source header, never a digest quoted in free text.
+
+    `why` may span lines, so a fixed index is not a boundary. Multiple header-shaped
+    lines (including one quoted in why or an extra field) are ambiguous and cannot
+    establish identity. Malformed header-shaped lines also fail closed.
+    """
+    if len(lines) < 3 or not lines[0].startswith("[request_run] ") \
+            or not lines[1].startswith("why:"):
+        return None
+    candidates = [(i, line) for i, line in enumerate(lines[2:], 2)
+                  if re.match(r"\([0-9]+ bytes, sha256:", line)]
+    if len(candidates) != 1:
+        return None
+    index, line = candidates[0]
+    match = _REQUEST_SOURCE_HEADER.fullmatch(line)
+    return (index, match.group(1)) if match else None
+
+
 def _request_digest(text: str) -> Optional[str]:
     """The bytes a `[request_run]` turn asks about (its `sha256:` tag), or None if it is not one.
     A request with no tag counts as its own bytes: it cannot be shown to repeat anything."""
     if not str(text or "").startswith("[request_run]"):
         return None
-    m = re.search(r"sha256:([0-9a-f]{6,64})", text)
-    return m.group(1) if m else f"untagged:{text}"
+    source = _request_source(str(text or "").splitlines())
+    return source[1] if source else f"untagged:{text}"
 
 
 # How a seat turn names the request it answers (seat_run_requests.py `answers_line`, and the
@@ -500,14 +522,15 @@ def _request_key(text: str) -> Optional[tuple]:
     lines = str(text or "").splitlines()
     if not lines or not lines[0].startswith("[request_run] "):
         return None
-    m = re.search(r"sha256:([0-9a-f]{6,64})", text)
-    if not m:
+    source = _request_source(lines)
+    if source is None:
         return None
-    extra = tuple(sorted(x.strip() for x in lines[3:]
+    header_index, digest = source
+    extra = tuple(sorted(x.strip() for x in lines[header_index + 1:]
                          if x.strip() and not x.startswith("UNCHANGED since")))
     if any(x.lower().startswith("rerun:") for x in extra):
         return None
-    return (lines[0][len("[request_run] "):].strip(), m.group(1), extra)
+    return (lines[0][len("[request_run] "):].strip(), digest, extra)
 
 
 def _run_result_matches_request(text: str, key: Optional[tuple]) -> bool:

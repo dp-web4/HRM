@@ -617,3 +617,25 @@ def test_a_run_note_states_only_what_was_observed():
                    ["example.py"])
     assert "traceback" in tb and "names the line" in tb
 
+
+
+@needs_sandbox
+def test_a_second_run_does_not_see_what_the_first_wrote_and_both_notes_say_so(tmp_path):
+    """cbp-being, 2026-10-18/19: a generator wrote data/*.npy, then a separate run of the reader
+    found none, eleven times over five beats."""
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "gen.py").write_text(
+        "import os\nos.makedirs('data', exist_ok=True)\nopen('data/a.npy', 'w').write('x')\n"
+        "print('Created: data/a.npy')\n")
+    (home / "scratch" / "read.py").write_text(
+        "import os, sys\nfound = os.listdir('data') if os.path.isdir('data') else []\n"
+        "print('found', len(found))\nsys.exit(0 if found else 1)\n")
+    g = d._do_run(BeingIntent("run", {"path": "scratch/gen.py"}))
+    assert g.ok and g.result["exit"] == 0, g.result
+    assert "every file the run wrote are gone now" in g.result["note"]
+    assert "the next run starts with only the files it names" in g.result["note"]
+    r = d._do_run(BeingIntent("run", {"path": "scratch/read.py"}))
+    assert r.ok and r.result["exit"] == 1 and "found 0" in r.result["stdout"], r.result
+    assert r.result["stderr"] == ""
+    assert "nothing an earlier run wrote is kept" in r.result["note"]
+    assert "read.py" in r.result["note"]

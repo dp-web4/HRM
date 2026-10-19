@@ -4240,10 +4240,17 @@ def _run_note(rc: int, stderr: str, files: list) -> str:
     is empty, whether it holds a Python traceback. It does not say why the code ended. A bare
     sys.exit(1) leaves both streams empty, a signal leaves no reason anywhere, and stderr text
     like "usage: invalid option" names no line -- a note that guessed would hand the being a
-    cause to believe instead of the output to read."""
+    cause to believe instead of the output to read.
+
+    A RUN'S OWN WRITES DO NOT REACH THE NEXT RUN, AND BOTH NOTES SAY SO. cbp-being, 2026-10-18/19:
+    it ran a generator that wrote data/*.npy, then the reader as a SEPARATE run, eleven times over
+    five beats. "The copies are gone now" read as true of its copies, not of what the generator
+    wrote. That every run starts from only the files named is the sandbox's design, not a guess
+    about this run, so stating it keeps the note evidence-only."""
     if rc == 0:
         return ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                "read-only); the copies are gone now. Only what you printed survives.")
+                "read-only). The copies and every file the run wrote are gone now: the next run "
+                "starts with only the files it names. Only what you printed survives.")
     ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
     if "Traceback (most recent call last)" in stderr:
         return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "
@@ -4253,5 +4260,6 @@ def _run_note(rc: int, stderr: str, files: list) -> str:
     here = ", ".join(files) or "nothing"
     return (f"{ended}, nothing on stderr; stdout is everything the run printed, which may be "
             f"nothing. The sandbox held only what you named, flat in the working directory: "
-            f"{here}. No other file from your home was there; a file passed as 'data' arrives "
+            f"{here}. No other file from your home was there, and nothing an earlier run wrote "
+            f"is kept; a file passed as 'data' arrives "
             f"under its base name (data/x.npy is x.npy), not in a subdirectory.")

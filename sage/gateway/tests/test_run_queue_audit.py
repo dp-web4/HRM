@@ -52,6 +52,7 @@ PARITY_CASES = [
     rows((BEING, ask(path="notes/../notes/example.py")), (SEAT, result())),
     rows((BEING, ask()), (SEAT, result(path="notes/other.py"))),
     rows((BEING, "quoted [request_run] in prose"), (SEAT, "Answers your request seq 1.")),
+    rows((BEING, ask()), (SEAT, "")),
     rows((BEING, ask()), (SEAT, "[request_run] I did not run notes/example.py. Deferred."),
          (SEAT, "Superseded. Answers your request seq 1.")),
 ]
@@ -72,6 +73,18 @@ def test_failed_run_can_bind_without_claiming_success(tmp_path):
     assert report["categories"]["matching_run"] == 1
     assert report["candidate_unresolved"] == 0
     assert "success" not in report["categories"]
+
+
+@pytest.mark.parametrize("separator", ["\r", "\x0b", "\u2028"])
+@pytest.mark.parametrize("after_path", [False, True])
+def test_first_line_boundaries_match_production_pending(tmp_path, monkeypatch, separator, after_path):
+    receipt = ("[request_run] I ran notes/example.py" + separator + "continued"
+               if after_path else "[request_run] I ran " + separator + "notes/example.py")
+    turns = rows((BEING, ask()), (SEAT, receipt))
+    monkeypatch.setenv("SEAT_ID", SEAT)
+    monkeypatch.setattr(a.conv, "recent", lambda home, cid, limit: turns[-limit:])
+    expected = a.srr.pending(tmp_path, "test-channel")
+    assert a.audit(turns, tmp_path, SEAT)["legacy_pending"] == len(expected) == int(not after_path)
 
 
 def test_later_explicit_disposition_supplies_binding(tmp_path):

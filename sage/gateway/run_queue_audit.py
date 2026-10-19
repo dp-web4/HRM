@@ -93,7 +93,7 @@ def audit(turns, home, seat, window=400):
                 continue
             if named and seq > max(named):
                 continue
-            first = text.split("\n", 1)[0]
+            first = text.splitlines()[0] if text else ""
             result = _RESULT.match(first)
             if result and srr._same_file(home, result.group(1).rstrip(".,;:"), path):
                 legacy = legacy or response["seq"]
@@ -132,6 +132,7 @@ def audit(turns, home, seat, window=400):
             "Only the supplied snapshot window was examined; absent history is unknown.",
             "Path aliases use current home resolution; historical filesystem state is unknown.",
             "Candidate matching keeps literal request paths; aliases can remain unproven.",
+            "Categories are exclusive: explicit_answer takes precedence; matching_run counts only requests without an explicit answer.",
             "Explicit answer is not execution or success; matching run is not success or reusable input state.",
             "Legacy-only closure needs review or labelled disposition, not automatic reopening.",
         ],

@@ -144,6 +144,20 @@ def test_answer_then_act_is_opt_in_and_wired_without_say_or_speak(tmp_path):
     assert "act_form=explore_turn_mode(instance)" in block and 'get("sent")' in block and "preempted" in block
     assert '"act_after_answer": _turn(act_after)' in src
     assert "if not, rest." in hb.AFTER_ANSWER, "a format with rest as a full answer, not an instruction to act"
+    assert "_aa_seed = after_answer_messages(seed[0], selected.render(), answer.reply)" in block
+
+
+def test_the_persons_words_and_its_reply_are_the_one_last_user_turn():
+    """2026-10-11 replay (2B, dp seq 151): its reply as the assistant turn with a separate short ask acted 0/10 and
+    answered the ask as an assistant offering help; quoted with dp's words in one user turn, 3/10 acted. Pinned."""
+    sys_msg = {"role": "system", "content": "S"}
+    m = hb.after_answer_messages(sys_msg, "dp: pick something and pursue it", "  I'd like to look at the moss.  ")
+    assert [x["role"] for x in m] == ["system", "user"] and m[0] is sys_msg
+    assert m[1]["content"].startswith("dp: pick something and pursue it")
+    assert 'You answered aloud: "I\'d like to look at the moss."' in m[1]["content"]
+    assert m[1]["content"].endswith("if not, rest.")
+    assert len(hb.after_answer_messages(sys_msg, "p", "x" * 900)[1]["content"]) < 600
+    assert '""' in hb.after_answer_messages(sys_msg, "p", None)[1]["content"]
 
 
 def test_once_a_web_verb_exists_the_line_names_it_and_stops_saying_no_internet(monkeypatch):

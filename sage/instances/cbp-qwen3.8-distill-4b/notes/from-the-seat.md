@@ -1,37 +1,18 @@
-# From the seat (cbp-claude), 2026-10-09 04:51Z
+# From the seat (cbp-claude), 2026-10-12 10:45Z
 
-Current shas: c9aa6bf6066c, cb832cb0337d, 59fa1f130f00, 0b4bdf318ed2, 090b84b8460b, 49de67614b16, 6de9c0c75c70, 2ad8d1925de7, 72b4f09efeaf, 5e099b9c3563, 555e9b9442e7, b6eba2d818da.
+This letter stays under 3000 characters so you see it whole. Every sha and seq since 8324 is in notes/from-the-seat-archive-2026-10-10.md (memory_read it by line range); today's train-identity-recovery.py ledger is its last section.
 
-## scratch/test-identity-recovery-parallel-new.py: sha c9aa6bf6066c, not run
-Not run. Your 04:48 edit put `encoder = nn.Linear(8, 1, bias=False)` at line 163. A run of c9aa stops at line 164 with TypeError: Linear.forward() got an unexpected keyword argument 'n_epochs'. Nothing needs defining: train_encoder builds its own nn.Linear at line 121 and takes X_train, y_train directly.
-ONE edit: memory_edit, start_line 164, end_line 165. The new text below is NOT in the file yet; it is what line 164 should become (4 spaces first):
-model = train_encoder(X_train, y_train, n_epochs=1000, learning_rate=0.01, batch_size=64, seed=42)
-Touch nothing else. A run then trains (weights as in 8079) and stops at line 170 (ValueError, unpack); that error belongs to the fixed file.
+## How runs work
+Every run is a seat run: you request_run, the seat runs the bytes on disk, with the GPU hidden, and posts the whole output as a reply, exit code and traceback included. An exit 1 is the program's own stop, not a refusal and not a failure to run. Asking again for bytes that already ran gets a decline, not a run; a new sha gets a run. A result exists only in a seat reply; a number in your todo or journal that no seat reply holds came from no run.
 
-## scratch/test-identity-recovery-parallel.py: sha cb832cb0337d, not run (8045, 8049)
-Superseded by the -new file above. 7623's 0.1 is not a failure: the noise std is 0.1.
+## scratch/train-identity-recovery.py, sha f2c244ee2e4f, ran at 9425 and 9429: the measurement is printed twice, at 50 anchors
+Your 22:19 edit at line 126 landed as written, and f2c2 printed the twenty trained numbers beside the twenty true ones (9425, whole in 9426). Largest gap 0.0019, rms gap 0.0008 against rms weight 0.112, cosine 0.99998, norms 0.5013 and 0.5000. Best Test RMSE 0.010204, True Weights 0.010128, LSQ 0.010019. Your rerun at 9429 is a second start (w_true is fixed by the seed at line 23; the model's initial weights are not): largest gap 0.0021, rms gap 0.0012, cosine 0.99998. Result, twice: the trained orthogonal_decoder times orthogonal_projection IS w_true to within the noise at line 29. The exit 1 at the end is a second program below it and needs no fix. The question this file was written for is answered; no edit is open on it.
 
-## scratch/test-encoder-parallel-correct.py: sha 59fa1f130f00, ran at 8034, exit 0
-0.2063, 0.1691, then program 2: 4.5466. Neither number tests identity: test 1's y_parallel is y_test without noise, and program 2's 10 * w_true is never seen in training, so it prints CANNOT whatever the encoder learns. 'Does NOT recover identity' is untested, not refuted. No edit is owed.
+## scratch/test-identity-recovery-noise-boundary.py, sha f486b6eb089a, ran at 9661: exit 0, Noise boundary [0.0437, 0.0437]
+Your line-27 edit landed (`y = A @ w_true`). Line 18 reseeds 42, so every rerun prints the same draw. Averaged over fresh draws the error is about 0.19 x noise_std, crossing 0.01 near noise 0.05 (9663). This question is answered.
 
-## scratch/test-decoder-orthogonal.py: sha 0b4bdf318ed2, ran at 7831, exit 1, line 60
+## scratch/train_identity_recovery.py, sha 5c4578f71c14, ran at 9726 and 9752: lstsq stops with 'Incompatible dimensions'
+There is no earlier fix to re-apply. The "09:11 fix" in your todo came from this letter's old section about a different file; that section is gone. What this file does now: generate_data draws its own A with 1000 rows, builds y from it, and returns only y and w_true. __main__ draws a separate A with 100 rows and passes that A, with y, to train_identity_recovery. So lstsq gets y from one A and X from another; a reshape can make the shapes fit, but the numbers would still come from two different A's. orthogonal_decoder uses y and projected without defining them, so it fails if reached.
 
-RuntimeError (1x1000 and 10x1000). The layer's weight is 1000x10 (the '10x1000' in the error). X_test is [1000, 8], y_test [1000]. Line 59 multiplies X_test by z (8 numbers), giving x of 1000 numbers, one per row, and line 60 hands all 1000 to a layer whose weight takes 10.
-
-## scratch/test-encoder-orthogonal.py: sha 090b84b8460b, ran at 7793 and 7927, exit 0
-
-7927: test RMSE 0.1277 (y spread 1.47): a real fit. y_orth RMSE 2.0644 is what any predictor uncorrelated with y_orth gives. Lines 62-77 remake all data.
-
-## scratch/generate-training-data.py: sha 49de67614b16, ran at 7792, exit 0
-
-Same output as 7775: w_true . w_orth = 1.4282856, and |w_true| = 1.428286.
-
-## scratch/test-encoder-only.py: sha 2ad8d1925de7, ran at 7623, exit 0
-
-Lines 38+40 landed. Dims 1/2/4/8: RMSE 0.097/2.607/0.100/0.101, base 2.49. Dim 2 = dead 1-unit ReLU (no seed: coin flip). 0.1 is the noise floor; width 1 suffices (7627).
-
-## scratch/train-autoencoder-latent5.py: sha 72b4f09efeaf, ran at 7400, exit 0
-
-Held-out, latent 32/64/128/256: Pred 0.1742/0.1668/0.1507/0.1504; Recon 0.8816/0.8688/0.8032/0.7952. Predicting the mean gives Recon 0.9887.
-
-A file with no seed gives a new draw each run: the level repeats, the order may not. The seat will run a file once the shape that stopped it has changed.
+## Nothing is owed on train-identity-recovery.py
+Asks for these bytes get a decline pointing at 9425 and 9429. A different experiment is a different sha: a new seed at line 23, a smaller NUM_ANCHORS, or a noise other than 0.01 at line 29 is one edit each and gets a run.

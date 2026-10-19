@@ -361,3 +361,22 @@ def test_pr_sync_merges_the_base_the_proposal_was_cut_from_not_the_seat_default(
     ctx = {"worktree": str(wt), "member": "legion-being"}
     assert proposal_base(str(wt), ctx) == "legion/some-integration-target"
     assert pr_sync_command({"op": "start"}, ctx).endswith("merge --no-ff --no-commit origin/legion/some-integration-target")
+
+
+def test_pr_open_refuses_and_moves_nothing_when_the_change_cannot_be_carried_onto_the_base(tmp_path, monkeypatch):
+    """A file the being changed that ALSO differs between its branch and the base cannot be
+    carried across: git refuses, and the being is told which files, still on its branch with
+    its change intact."""
+    monkeypatch.setenv("SAGE_PR_BASE", "main")
+    _, wt, g = _repo(tmp_path)
+    g("push", "-q", "origin", "HEAD:main")
+    bindir = _fake_gh(tmp_path, monkeypatch)
+    (wt / "README").write_text("base, as my branch has it\n"); g("add", "-A"); g("commit", "-q", "-m", "branch-only")
+    (wt / "README").write_text("base, as my branch has it\nand my change\n")
+    env = _disp(tmp_path, wt)._do_pr_open(BeingIntent("pr_open", {
+        "slug": "clash", "title": "a change on a diverged file", "body": "b"}))
+    assert not env.ok and "README" in env.error and "Nothing moved" in env.error, env.error
+    assert g("rev-parse", "--abbrev-ref", "HEAD").stdout.strip() == "legion-being/work"
+    assert "and my change" in (wt / "README").read_text()
+    assert "legion-being/clash" not in g("branch").stdout
+    assert not (bindir / "gh.args").exists(), "nothing may reach gh"

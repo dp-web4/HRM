@@ -143,8 +143,45 @@ class ParakeetMlx(Candidate):
         return [{"text": str(getattr(r, "text", "") or "")}]
 
 
+class WhisperCpp(Candidate):
+    """The same Whisper models through whisper.cpp on the CPU (sage/embodiment/whispercpp.py): no torch, no
+    GPU memory. Its server reports Whisper's own no_speech_prob / avg_logprob, so it is guarded. The
+    server is a child process, so its memory is reported from the child (`extra_meta`), not this process."""
+    name, model_name, full_ctx = "whispercpp_base", "base.en", True
+
+    def load(self):
+        from sage.embodiment.whispercpp import WhisperCpp as Server
+        self.server = Server(self.model_name, full_ctx=self.full_ctx)
+        self.server.start()
+
+    def segments(self, audio, wav_path):
+        import numpy as np
+        return self.server.segments((np.clip(audio, -1, 1) * 32767).astype("<i2").tobytes())
+
+    def extra_meta(self) -> dict:
+        m = {"server_peak_rss_mb": self.server.peak_rss_mb(), "model": self.model_name,
+             "audio_ctx": "full" if self.full_ctx else "fitted"}
+        self.server.stop()
+        return m
+
+
+class WhisperCppTiny(WhisperCpp):
+    name, model_name = "whispercpp_tiny", "tiny.en"
+
+
+class WhisperCppBaseFit(WhisperCpp):
+    """audio_ctx fitted to the clip: 3-4x faster, and measured to invent words on silence (whispercpp.py)."""
+    name, full_ctx = "whispercpp_base_fitctx", False
+
+
+class WhisperCppTinyFit(WhisperCppTiny):
+    name, full_ctx = "whispercpp_tiny_fitctx", False
+
+
 CANDIDATES: Dict[str, Callable[[], Candidate]] = {
     "whisper_ref": WhisperRef, "mlx_whisper": MlxWhisper, "parakeet_mlx": ParakeetMlx,
+    "whispercpp_base": WhisperCpp, "whispercpp_tiny": WhisperCppTiny,
+    "whispercpp_base_fitctx": WhisperCppBaseFit, "whispercpp_tiny_fitctx": WhisperCppTinyFit,
 }
 
 
@@ -174,8 +211,18 @@ def load_manifest(path: str) -> List[dict]:
 
 def read_wav(path: str):
     import numpy as np
-    import soundfile as sf
-    a, sr = sf.read(path, dtype="float32", always_2d=False)
+    try:
+        import soundfile as sf
+        a, sr = sf.read(path, dtype="float32", always_2d=False)
+    except ImportError:
+        # 16-bit PCM (what build-sample-corpus writes) needs no soundfile: Sprout's ear venv has none.
+        import wave
+        with wave.open(path, "rb") as w:
+            if w.getsampwidth() != 2:
+                raise ValueError(f"{path}: {8 * w.getsampwidth()}-bit; without soundfile the harness reads 16-bit PCM")
+            sr, ch = w.getframerate(), w.getnchannels()
+            a = np.frombuffer(w.readframes(w.getnframes()), "<i2").astype(np.float32) / 32768.0
+            a = a.reshape(-1, ch) if ch > 1 else a
     if getattr(a, "ndim", 1) > 1:
         a = a.mean(axis=1)
     if sr != RATE:
@@ -225,6 +272,7 @@ def run(manifest: str, name: str, out: str, warmup: int = 1) -> dict:
     meta = {"candidate": name, "guarded": cand.guarded, "load_s": load_s, "peak_rss_mb": peak_rss_mb(),
             "n": len(rows), "host": os.uname().nodename, "machine": os.uname().machine,
             "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    meta.update(getattr(cand, "extra_meta", dict)())
     (Path(out) / f"meta_{name}.json").write_text(json.dumps(meta, indent=2) + "\n")
     return meta
 
@@ -262,6 +310,7 @@ def summarize_rows(rows: List[dict], metas: Dict[str, dict], reference: Optional
         out[name] = {
             "n": len(rs), "guarded": m.get("guarded", not any(r["unguarded"] for r in rs)),
             "load_s": m.get("load_s"), "peak_rss_mb": m.get("peak_rss_mb"),
+            "server_peak_rss_mb": m.get("server_peak_rss_mb"),
             "e2e_p50_s": _pct([r["e2e_s"] for r in rs], 0.5), "e2e_p95_s": _pct([r["e2e_s"] for r in rs], 0.95),
             "model_p50_s": _pct([r["model_s"] for r in rs], 0.5),
             "rtf": round(sum(r["e2e_s"] for r in rs) / audio, 4) if audio else None,
@@ -288,7 +337,7 @@ def summarize(out: str, reference: Optional[str] = "whisper_ref") -> dict:
 
 
 def table(s: dict) -> str:
-    cols = ["guarded", "load_s", "peak_rss_mb", "e2e_p50_s", "e2e_p95_s", "rtf", "wer",
+    cols = ["guarded", "load_s", "peak_rss_mb", "server_peak_rss_mb", "e2e_p50_s", "e2e_p95_s", "rtf", "wer",
             "hallucinations", "silent_clips", "segments_dropped", "disagrees_with_reference"]
     lines = ["| candidate | " + " | ".join(cols) + " |", "|---" * (len(cols) + 1) + "|"]
     for name, v in s.items():

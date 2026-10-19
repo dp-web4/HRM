@@ -433,7 +433,21 @@ A negative result is useful: it tells us to keep SAGE's optimization strategy at
     - the LLM is unloaded and reloaded around beats.
   - **Interpretation:** at ~13 ms per call, the detector is not where Sprout's cost lies. This supports alternative explanation 3 ("wrong optimization target") **for this organ on this board**: memory pressure and the rest of the cortex are the binding resources.
   - **Caveat:** no frame had a detection (a dark, still room overnight), so NMS under detections is unmeasured. A daytime window should be added.
-- **Arc state: running.** Track B has a reproducible baseline. Track A's on-body baseline (end of speech → kept words, also #376) is collecting on Sprout.
+- **2026-10-11 (Sprout), Track A: the same Whisper through whisper.cpp on the CPU.** The scarce resource is memory: openai-whisper holds 325 MB (tiny.en) / 511 MB (base.en) of GPU plus 580–700 MB resident, nearly all of it torch's CUDA runtime, and that is what keeps a 4B model with vision from fitting beside the cortex. Harness on the arc's sample corpus (332 clips), on Sprout while the being ran its beats. The reference was run on the CPU, so a beat's model could never be pushed off the GPU.
+
+  | candidate | resident | GPU | e2e p50 / p95 | WER all / clean / quiet / clipped / noisy | words on 40 silent clips |
+  |---|---|---|---|---|---|
+  | openai-whisper base.en (reference, CPU) | 1,152 MB | — | 5.2 / 10.8 s | 14.4 / 8.5 / 8.8 / 8.4 / 31.9% | 0 |
+  | **whisper.cpp base.en** | **309 MB** | **0** | **4.4 / 5.5 s** | **14.6 / 9.0 / 8.0 / 8.8 / 32.6%** | **0** |
+  | whisper.cpp tiny.en | 242 MB | 0 | 2.1 / 2.4 s | 18.3 / 9.8 / 10.1 / 9.4 / 44.0% | 0 |
+  | whisper.cpp base.en, `audio_ctx` fitted to the clip (run before the word-join fix) | 317 MB | 0 | 1.2 / 5.4 s | 20.3 / 15.3 / 15.2 / 11.9 / 38.9% | **39** |
+
+  - **Equivalence:** base.en through whisper.cpp keeps the same words as the reference to within noise. Per utterance it is 26 worse and 24 better. That holds only after one fix: whisper.cpp ends segments mid-word, and the ear's join read "lumin ous"; before the fix it was 39 worse.
+  - **The guard holds**, because the server reports Whisper's own `no_speech_prob` / `avg_logprob`. With a full audio context, no words came through on silence.
+  - **Negative result: fitting `audio_ctx` to the clip is 3–4x faster and breaks the guard.** base.en then says "consequently" or "(water splashing)" on near-silence, with a `no_speech_prob` low enough to pass. This is the Track A failure clause ("damages uncertainty handling") observed. The fitted mode is opt-in only.
+  - **The live GPU ear is contended, not fast.** The #376 on-body records (256 utterances, 10-07 → 10-08) show `asr_s` p50 14.5 s, p95 28.8 s for a median 2.8 s utterance. They are bimodal: 0.2–1 s when the GPU is free, 10–24 s while the being's model holds it. A CPU ear never waits for the GPU.
+  - **Not yet a Track A verdict.** On the sample corpus it improves memory (about 0.9–1.2 GB freed, all of it GPU) with no meaningful increase in hearing errors. But that corpus is clean read speech (LibriSpeech) plus synthetic degradations. The corpus this arc means is the body's own recordings: Sprout's mic, its room, the word "Sprout". That A/B has not been run, and it can't be yet, because Sprout's headset has been unpaired since 10-08 14:36 and the ear has received only silence since. The known cost is CPU latency: ~4.4 s per utterance for base.en, against the GPU ear's 0.2–1 s when uncontended. It is opt-in per body: `SAGE_LISTEN_BACKEND=whispercpp`.
+- **Arc state: running.** Track B has a reproducible baseline. Track A has a sample-corpus A/B on Sprout's hardware. Its on-body latency baseline (#376) holds 256 utterances from 10-07 to 10-08 and has collected nothing since, because the headset is unpaired.
 
 ## Current interpretation
 

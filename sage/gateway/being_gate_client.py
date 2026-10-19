@@ -91,7 +91,7 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     dispatcher interprets (see _do_camera).
     """
     import shlex
-    worktree = ctx["worktree"] if ctx else None
+    worktree = (ctx or {}).get("worktree")
     memory_root = (ctx or {}).get("memory_root")
     # CAMERA IS THE FOURTH VERB THE WORKTREE UNLOCKS, and the only one that never uses it: the
     # frame is resolved against memory_root below, and `worktree` is read on this line and
@@ -105,7 +105,14 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     # thing holding camera to the same condition as the other three. Dropping it is a policy
     # decision about whether every being with a memory_root may capture a frame, not a cleanup.
     # Pinned by test_without_a_worktree_the_verbs_still_fail_closed.
-    if not worktree:
+    #
+    # THE CORTEX AS THE CAMERA (dp 2026-10-12). A seat may declare `camera_source: "cortex"` in
+    # instance.json: its eyes are CSI sensors that only the running cortex can read (raw Bayer through
+    # v4l2; Argus in the cortex), so the frame comes from the cortex (sage/embodiment/look.py). That
+    # declaration IS the seat-level policy decision the worktree hold stands in for, made explicitly
+    # for this seat by its operator, so it, not a worktree, enables the verb there.
+    source = (ctx or {}).get("camera_source")
+    if source != "cortex" and not worktree:
         raise ValueError(NO_WORKTREE_REFUSAL["camera"])
     if not memory_root:
         raise ValueError("camera requires a memory_root context")
@@ -129,6 +136,19 @@ def camera_command(args: dict, ctx: Optional[dict] = None) -> str:
     # and renames only after the image is complete. That keeps old-or-new semantics INSIDE
     # the exact ffmpeg command Hestia judges; the dispatcher performs no extra filesystem
     # mutation behind the law's back.
+    if source == "cortex":
+        # the look client publishes by temp + rename itself, like image2's atomic_writing below
+        return f"python3 -m sage.embodiment.look {shlex.quote(full)}"
+    # A MAC'S CAMERA (2026-10-15). On whenever one is attached (dp: "it should be on. i can always
+    # turn off or disconnect the camera, which it should see as lapsed availability"). There is no
+    # /dev/video node; the seat picks the camera by name from the AVFoundation list with the screens
+    # removed, so the being's `device` is not used here, and no spelling of it can reach a screen.
+    from sage.embodiment import platform_av
+    if platform_av.backend() == "avfoundation":
+        cam = platform_av.mac_camera()
+        if not cam:
+            raise ValueError("this body has no camera attached right now (measured: AVFoundation lists none)")
+        return shlex.join(platform_av.mac_camera_cmd(cam, full))
     device = args.get("device", "/dev/video0")
     return (f"ffmpeg -hide_banner -loglevel error -y -f v4l2 -i {shlex.quote(device)} "
             f"-frames:v 1 -qscale:v 3 -f image2 -atomic_writing 1 {shlex.quote(full)}")
@@ -539,7 +559,6 @@ def _default_game(memory_root: str) -> str:
     raise ValueError("game: name the game — you have played " + ", ".join(played)
                      + f" (most recent first: {played[0]}). Nothing ran; add \"game\": \"{played[0]}\" "
                      "or another of them and call again.")
-
 
 GAME_PLAYABLE = ("ar25", "bp35", "cd82", "ft09", "g50t", "ka59", "lp85", "ls20", "m0r0", "r11l",
                  "s5i5", "sb26", "sc25", "sk48", "sp80", "su15", "tn36", "tr87", "tu93", "vc33", "wa30")
@@ -979,7 +998,6 @@ def pr_attribution(member_id: str, action_id: Optional[str], being_lct: Optional
 
 SEARCH_MAX_N = 60        # matches returned at most; a search is a pointer, not a read
 
-
 # The being's home files, by name: a relative `search` path starting with one of these is a
 # path in its HOME, exactly as memory_read/memory_write treat it (heartbeat.HOME_FILES, plus
 # the conversations it is in). Decidable from the path string; no probe.
@@ -1080,58 +1098,6 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
             f"-e {shlex.quote(pattern)} -- {shlex.quote(target)}")
 
 
-def _under(path: str, roots) -> bool:
-    """True iff `path` (already realpath'd) is one of `roots` or inside one."""
-    for r in roots:
-        if path == r or path.startswith(r + os.sep):
-            return True
-    return False
-
-
-def _search_reach(worktree: str, workspace) -> tuple:
-    """How far an ABSOLUTE search path may reach: the fleet repo root, or nothing.
-
-    WHY THE HARNESS DRAWS THIS LINE AND NOT THE LAW. Measured 2026-09-14 against the live
-    daemon with legion-being's real grants: `search` intents naming '/etc' and the
-    operator's dotfile directory were both ALLOWED. That is not a gate defect, it is the
-    gate's documented residual — `command_scope_reach` judges a command by splitting it on
-    the WORKSPACE string, so an absolute path that never names the workspace is never a
-    token it sees ("the engine sandbox, not this check, is the fs boundary"). `search` runs
-    in the seat, not in the being's bwrap sandbox, so there is no sandbox here to be that
-    boundary. Do not assume this check is redundant with the law; it was written because a
-    probe proved it is not.
-
-    The reach is the workspace's PARENT — the directory the fleet's repos are siblings in
-    (~/ai-workspace/{SAGE,hestia,shared-context,...}) and exactly the root dp granted
-    standing recursive. Inside it the law still rules per-member: `command_scope_reach`'s
-    pass 1 does see those paths and denies an ungranted repo. Outside it the answer is no,
-    which keeps credential material out of reach whether or not it happens to be spelled
-    with one of gate 1a's forbidden substrings.
-
-    No workspace in ctx => the worktree alone. That is the OLD behaviour and it fails
-    closed: the dispatcher composing without a workspace would disagree with the client
-    composing with one, and _do_search refuses a judged/executed mismatch rather than
-    running either."""
-    roots = [os.path.realpath(worktree)]
-    if workspace:
-        roots.append(os.path.dirname(os.path.realpath(workspace)))
-    return tuple(dict.fromkeys(r for r in roots if r and r != os.sep))
-
-
-def _reach_refusal(verb: str, path, reach: str) -> str:
-    """Refused for being OUTSIDE the machine's shared tree — with the form that needs no
-    memory at all. The escape refusal has named the relative form since SAGE#90; this one
-    did not, and it is the one a being hits when it guesses at an absolute path (measured
-    2026-09-14: four refusals in one beat, all guesses, none corrected by the refusal)."""
-    return (f"{verb} 'path' is outside anything you can reach: {str(path)!r}. Absolute paths "
-            f"are fine, but only under {reach} — that tree holds the fleet's repos and your "
-            f"own worktree, and what you may read INSIDE it is decided by your granted "
-            f"scope, not by this message. A path elsewhere on this machine is not something "
-            f"to ask scope for; it is not part of your world. If you meant something in your "
-            f"own worktree, a RELATIVE path needs no absolute path at all: "
-            f"'sage/gateway/heartbeat.py' resolves there without your having to hold one.")
-
-
 
 
 # The test targets a being may name, and the command each one becomes (#M0, PRD
@@ -1151,7 +1117,6 @@ CHECK_TARGETS = {
     "irp": "sage/irp/tests/",
     "tests": "tests/",
 }
-
 
 def _takes_ctx(fn) -> bool:
     """Whether a registry `compose` accepts the client's context as a second argument.
@@ -1217,12 +1182,125 @@ def sandbox_available() -> bool:
         # /usr and failed on missing /lib64 — reporting "no sandbox permitted" on a machine
         # where the sandbox works perfectly, which would have refused every check.
         r = subprocess.run([SANDBOX, "--ro-bind", "/usr", "/usr", "--ro-bind", "/lib", "/lib",
-                            "--ro-bind", "/lib64", "/lib64", "--unshare-pid",
+                            "--ro-bind-try", "/lib64", "/lib64", "--unshare-pid",
                             "/usr/bin/true"], capture_output=True, timeout=10)
         return r.returncode == 0
     except Exception:
         return False
 
+
+
+# A MAC'S SANDBOX IS SEATBELT (dp, 2026-10-18: "we need macos sandbox functionality"). bwrap is
+# built on Linux user namespaces, which macOS does not have; Seatbelt (sandbox-exec, the kernel
+# sandbox Chrome and Claude Code's own macOS sandbox use) is the native equivalent. `run` uses it
+# where bwrap is unavailable and the platform is darwin. Measured on McNugget from inside a run:
+# the being's home, ~/.ssh, ~/.hestia, the home listing and shared-context unreadable; the
+# worktree readable and importable but not writable; /tmp and home not writable; no TCP (ollama,
+# hestia, external), no DNS, no unix sockets; no signal to anything outside the sandbox. What
+# Seatbelt does NOT give, and the dispatcher makes up for (hestia_dispatch._wait_contained):
+#   * no address-space cap: macOS ignores RLIMIT_AS, so the seat polls the run's resident memory
+#     and stops it past the same cap (run_mem_cap_bytes);
+#   * no size-limited tmpfs: the run writes in its own staging dir, which the seat measures and
+#     stops past RUN_WORK_BYTES + RUN_TMP_BYTES; RLIMIT_FSIZE still caps each file;
+#   * no mount namespace: the run sees its staging dir by its real path (its working directory),
+#     not /work, which the being is not told about anyway: data files "appear under their base names";
+#   * existence is not hidden: a stat() of a path outside succeeds or fails like anywhere else
+#     (contents stay unreadable).
+SEATBELT = "/usr/bin/sandbox-exec"
+# THE RUN IS ANOTHER USER (dp chose it, 2026-10-18). Seatbelt does not govern kern.procargs2: from inside
+# a run, the arguments AND ENVIRONMENT of every process of the seat's own user were readable (measured:
+# the seat's 2836 bytes, Claude Code's variables among them), and neither a sysctl denylist nor an
+# allowlist stopped it. The kernel shows procargs2 only to the same uid or root, so the run executes as
+# a hidden, unprivileged user (primary group staff, to reach the interpreter and worktree under the
+# seat's drwxr-x--- home; Seatbelt stays the file wall). One sudoers rule lets the seat start
+# sandbox-exec, and kill, as that user and nothing else. Setup: sage/gateway/launchd/setup_sagerun.sh.
+# Without it, `run` on a Mac is refused, never run as the seat's own user.
+RUN_USER = "_sagerun"
+SUDO = "/usr/bin/sudo"
+
+
+def seatbelt_available() -> bool:
+    """darwin, sandbox-exec present, the run user set up, and a deny-by-default profile actually runs a
+    program AS that user through the seat's sudo rule (no password: -n)."""
+    import os
+    import pwd
+    import subprocess
+    import sys
+    if sys.platform != "darwin" or not os.path.exists(SEATBELT):
+        return False
+    try:
+        pwd.getpwnam(RUN_USER)
+        r = subprocess.run([SUDO, "-n", "-u", RUN_USER, SEATBELT, "-p", _seatbelt_profile([], "", ""),
+                            "/usr/bin/true"], capture_output=True, timeout=10)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def run_sandbox_kind() -> Optional[str]:
+    """'bwrap' where bubblewrap works (unchanged), else 'seatbelt' on a Mac where it works, else None.
+    None means `run` refuses: the being's code is never run outside a sandbox."""
+    if sandbox_available():
+        return "bwrap"
+    if seatbelt_available():
+        return "seatbelt"
+    return None
+
+
+def _sb_str(p: str) -> str:
+    return '"' + p.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+_SB_SYSTEM_READS = ("/usr", "/bin", "/System", "/Library/Apple", "/opt/homebrew", "/private/etc",
+                    "/private/var/db/timezone")
+
+
+def _seatbelt_profile(read_roots: List[str], worktree: str, stage: str, home: str = "") -> str:
+    """Deny by default. Read: the OS, Homebrew, the interpreter, the worktree, the stage. Write: the
+    stage and the run's own HOME/TMPDIR beside it. No network. Signals and process info only within
+    the sandbox. `(literal "/")` is required: without it even /usr/bin/true aborts (dyld reads the
+    root directory entry).
+
+    EXISTENCE IS CONFINED TOO (test_run_sandbox_denies_the_seat_falsified_from_inside, which asks
+    os.path.isdir of ~/.ssh, the being's home and the seat checkout): stat() is allowed on what may be
+    read plus the directories on the way to it, as bwrap's mount tree has them, and nowhere else."""
+    import os
+    roots = [r for r in read_roots + [worktree, stage, home] if r]
+    reads = "".join(f" (subpath {_sb_str(r)})" for r in roots)
+    system = "".join(f" (subpath {_sb_str(r)})" for r in _SB_SYSTEM_READS)
+    devs = ' (literal "/dev/null") (literal "/dev/urandom") (literal "/dev/random") (literal "/dev/zero")'
+    ancestors = set()
+    for r in roots + list(_SB_SYSTEM_READS):
+        p = os.path.dirname(r.rstrip("/"))
+        while p and p != "/":
+            ancestors.add(p)
+            p = os.path.dirname(p)
+    # the root-level symlinks into /private, so a path spelled /tmp or /var resolves
+    anc = "".join(f" (literal {_sb_str(a)})" for a in sorted(ancestors | {"/tmp", "/var", "/etc", "/private"}))
+    writes = "".join(f" (subpath {_sb_str(w)})" for w in (stage, home) if w)
+    return ("(version 1)(deny default)"
+            "(allow process-fork)(allow process-exec)"
+            "(allow signal (target same-sandbox))(allow process-info* (target same-sandbox))"
+            # AN ALLOWLIST, NOT A DENYLIST. bwrap's --unshare-pid shows a run no other process. With
+            # (allow sysctl-read) and a deny on the "kern.proc" prefix, kern.procargs2 of the seat --
+            # its arguments AND ENVIRONMENT -- was still readable from inside (measured 2026-10-18:
+            # 2836 bytes): it is reached by number, and a name rule never matched it. Only the
+            # machine's facts Python, numpy and multiprocessing read are allowed; anything unnamed or
+            # unlisted, the process table included, is denied. (setuid ps is refused by Seatbelt.)
+            "(allow sysctl-read (sysctl-name-prefix \"hw.\") (sysctl-name-prefix \"machdep.cpu.\")"
+            " (sysctl-name \"kern.osrelease\") (sysctl-name \"kern.ostype\") (sysctl-name \"kern.version\")"
+            " (sysctl-name \"kern.osversion\") (sysctl-name \"kern.osproductversion\")"
+            " (sysctl-name \"kern.argmax\") (sysctl-name \"kern.ngroups\") (sysctl-name \"kern.maxfilesperproc\")"
+            " (sysctl-name \"kern.usrstack64\") (sysctl-name \"kern.boottime\") (sysctl-name \"kern.hostname\")"
+            " (sysctl-name \"kern.secure_kernel\") (sysctl-name \"kern.osvariant_status\")"
+            " (sysctl-name \"vm.footprint_suspend\") (sysctl-name \"sysctl.proc_cputype\"))"
+            "(allow file-read* (literal \"/\")" + system + devs + reads + ")"
+            "(allow file-read-metadata (literal \"/\")" + anc + ")"
+            "(allow file-write* (literal \"/dev/null\")" + writes + ")"
+            # multiprocessing's locks are POSIX semaphores, whose names are machine-wide on macOS (on
+            # Linux they live in the sandbox's own /dev/shm): only multiprocessing's own "/mp-" names
+            "(allow ipc-posix-sem (ipc-posix-name-regex #\"^/mp-\"))"
+            "(deny network*)")
 
 
 def sandbox_prefix(worktree: str) -> str:
@@ -1274,6 +1352,59 @@ def sandbox_prefix(worktree: str) -> str:
     )
 
 
+
+def _under(path: str, roots) -> bool:
+    """True iff `path` (already realpath'd) is one of `roots` or inside one."""
+    for r in roots:
+        if path == r or path.startswith(r + os.sep):
+            return True
+    return False
+
+
+def _search_reach(worktree: str, workspace) -> tuple:
+    """How far an ABSOLUTE search path may reach: the fleet repo root, or nothing.
+
+    WHY THE HARNESS DRAWS THIS LINE AND NOT THE LAW. Measured 2026-09-14 against the live
+    daemon with legion-being's real grants: `search` intents naming '/etc' and the
+    operator's dotfile directory were both ALLOWED. That is not a gate defect, it is the
+    gate's documented residual — `command_scope_reach` judges a command by splitting it on
+    the WORKSPACE string, so an absolute path that never names the workspace is never a
+    token it sees ("the engine sandbox, not this check, is the fs boundary"). `search` runs
+    in the seat, not in the being's bwrap sandbox, so there is no sandbox here to be that
+    boundary. Do not assume this check is redundant with the law; it was written because a
+    probe proved it is not.
+
+    The reach is the workspace's PARENT — the directory the fleet's repos are siblings in
+    (~/ai-workspace/{SAGE,hestia,shared-context,...}) and exactly the root dp granted
+    standing recursive. Inside it the law still rules per-member: `command_scope_reach`'s
+    pass 1 does see those paths and denies an ungranted repo. Outside it the answer is no,
+    which keeps credential material out of reach whether or not it happens to be spelled
+    with one of gate 1a's forbidden substrings.
+
+    No workspace in ctx => the worktree alone. That is the OLD behaviour and it fails
+    closed: the dispatcher composing without a workspace would disagree with the client
+    composing with one, and _do_search refuses a judged/executed mismatch rather than
+    running either."""
+    roots = [os.path.realpath(worktree)]
+    if workspace:
+        roots.append(os.path.dirname(os.path.realpath(workspace)))
+    return tuple(dict.fromkeys(r for r in roots if r and r != os.sep))
+
+
+def _reach_refusal(verb: str, path, reach: str) -> str:
+    """Refused for being OUTSIDE the machine's shared tree — with the form that needs no
+    memory at all. The escape refusal has named the relative form since SAGE#90; this one
+    did not, and it is the one a being hits when it guesses at an absolute path (measured
+    2026-09-14: four refusals in one beat, all guesses, none corrected by the refusal)."""
+    return (f"{verb} 'path' is outside anything you can reach: {str(path)!r}. Absolute paths "
+            f"are fine, but only under {reach} — that tree holds the fleet's repos and your "
+            f"own worktree, and what you may read INSIDE it is decided by your granted "
+            f"scope, not by this message. A path elsewhere on this machine is not something "
+            f"to ask scope for; it is not part of your world. If you meant something in your "
+            f"own worktree, a RELATIVE path needs no absolute path at all: "
+            f"'sage/gateway/heartbeat.py' resolves there without your having to hold one.")
+
+
 # run: the being executes code it wrote itself, in a sandbox that holds nothing of ours.
 #
 # WHY IT EXISTS. dp, 2026-09-17, to the being: "exploration has to be off-game. this is what
@@ -1292,25 +1423,89 @@ def sandbox_prefix(worktree: str) -> str:
 # nothing the being can alter between the staging and the execution. The being's own state
 # (journal, conversations, memories) is not bound, so code it writes cannot corrupt the record of
 # what it did. Anything it wants to keep it must PRINT, and the print is capped and witnessed.
-STAGE_ROOT = "/tmp/sage-run"          # seat-owned staging dir, one per member; never written by the being
+STAGE_ROOT = "/tmp/sage-run"          # seat-owned staging dirs, one per INVOCATION (run_stage_dir)
 
 
 RUN_MAX_DATA = 8                      # data files copied in beside the script
 
+# WHAT AN HOUR CAN FILL, BOUNDED (legion-claude's review of #470, probed on Legion: a 300 MiB
+# --as cap let 640 MiB into the sandbox's /tmp, because tmpfs pages are not the process's
+# address space). Both writable places in the sandbox are size-limited tmpfs, and every file a
+# run writes, its stdout and stderr files on the host included, is capped by RLIMIT_FSIZE. So a
+# run holds at most the --as cap in heap plus these two in tmpfs, and never touches the disk.
+RUN_TMP_BYTES = 1 << 30               # the sandbox's /tmp
+RUN_WORK_BYTES = 1 << 30              # /work: the staged inputs (read-only) and whatever it writes
+RUN_FSIZE_BYTES = 512 << 20           # any one file the run writes, its output files included
+RUN_MIN_S = 30                        # a beat with less than this left starts no run (Nova)
 
-RUN_TIMEOUT_S = 30
+
+# AN HOUR, NOT 30 s (dp, 2026-10-18: "30 sec limit seems arbitrary for a being that is the
+# priority on the machine. i'd make it an hour at least, unless you can show me a downside").
+# The downsides found are guarded rather than used to shorten it: a run is synchronous, so the
+# beat waits for it (the tool spec says so), and an hour of unbounded allocation could take
+# the machine's memory and the being's own model with it, hence RUN_MEM_FRACTION below.
+RUN_TIMEOUT_S = 3600
+# Address-space cap for a run: half of physical memory, applied with prlimit outside the
+# sandbox. A cap is a containment boundary, not a time budget: it stops one script from
+# starving the inference the being itself runs on.
+RUN_MEM_FRACTION = 0.5
+PRLIMIT = "/usr/bin/prlimit"
 
 
-def run_command(args: dict, ctx: Optional[dict] = None) -> str:
-    """The sandboxed interpreter invocation for a `run` intent.
+# A RUN MUST NOT OUTLIVE ITS BEAT. The beat's systemd unit kills the whole beat at its
+# TimeoutStartSec (1500 s in sage-heartbeat.service.example), so an hour-long run inside a
+# 25-minute beat would die with the beat, record and all. A run gets the hour or the time the
+# beat has left minus a margin for writing its record, whichever is less, and the receipt says
+# which. Raising a machine's unit bound is what makes the full hour reachable there.
+_PROCESS_T0 = __import__("time").time()
+RUN_BEAT_MARGIN_S = 180
 
-    The being names a .py file in its home and optionally data files to place beside it. The
-    SEAT stages copies into a directory it owns and the law judges THIS string. The staging
-    path is derived from the member name alone, so it is identical at both composition sites
-    and contains nothing the being chose."""
+
+def _beat_timeout_s() -> Optional[float]:
+    """The beat's declared time bound, or None when none is declared. UNKNOWN IS UNKNOWN
+    (legion-claude, #470): this used to assume 1500 s for any heartbeat process, but Legion's unit
+    runs TimeoutStartSec=infinity with 18-54 min beats, and would have been clamped to the floor
+    with a receipt about a bound that does not exist. The unit declares it (SAGE_BEAT_TIMEOUT_S,
+    beside TimeoutStartSec; sage-heartbeat.service.example does), or nothing is assumed."""
+    v = os.getenv("SAGE_BEAT_TIMEOUT_S")
+    if not v or v.strip().lower() in ("infinity", "0"):
+        return None
+    try:
+        return float(v)
+    except ValueError:
+        return None
+
+
+def run_budget_s(now: Optional[float] = None) -> tuple:
+    """(seconds this run may take, why). Never more than RUN_TIMEOUT_S; never past the beat.
+    0 means no run may start: the beat has less than RUN_MIN_S left after its record margin.
+    That was a 30 s floor, which granted a run with no beat budget at all (Nova, #470)."""
+    import time
+    bound = _beat_timeout_s()
+    if bound is None:
+        return RUN_TIMEOUT_S, "the run limit"
+    left = _PROCESS_T0 + bound - (now if now is not None else time.time()) - RUN_BEAT_MARGIN_S
+    if left >= RUN_TIMEOUT_S:
+        return RUN_TIMEOUT_S, "the run limit"
+    if left < RUN_MIN_S:
+        return 0, "the time left in this beat"
+    return int(left), "the time left in this beat"
+
+
+def run_mem_cap_bytes() -> int:
+    import os
+    try:
+        return int(os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") * RUN_MEM_FRACTION)
+    except (ValueError, OSError, AttributeError):
+        return 8 << 30
+
+
+def run_names(args: dict, ctx: Optional[dict] = None) -> List[str]:
+    """The script and data paths of a `run` intent, as the being named them, parsed and checked
+    once. run_command, run_source_paths and the dispatcher's staging all start from this list,
+    so the files judged, the files composed and the files staged are the same files."""
     import os
     import re
-    import sys
     memory_root = (ctx or {}).get("memory_root")
     member = (ctx or {}).get("member") or ""
     if not memory_root:
@@ -1369,21 +1564,123 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
             # itself still must be the being's own, inside its home — code it executes is code
             # it wrote.
             if i == 0:
-                raise ValueError("run 'path' (the script) must be a file in your home; only "
-                                 "'data' files may come from elsewhere in your reach")
+                # ITS OWN HOME BY ITS FULL NAME IS ITS HOME. cbp-being's first live runs,
+                # 2026-10-18: after one run by relative path, it named the same script by its
+                # absolute path, inside its home, and was refused twice with "must be a file in
+                # your home", which was false about that file. An absolute script path that
+                # resolves inside the home is accepted, the way _safe_path forgives a being
+                # reaching for its own journal by full path. Anywhere else is still refused.
+                _home = os.path.realpath(memory_root)
+                _full = os.path.realpath(n)
+                if not (_full == _home or _full.startswith(_home + os.sep)):
+                    raise ValueError(
+                        f"run 'path' (the script) must be a file in your home, and {n!r} is not "
+                        f"inside it ({_home}); only 'data' files may come from elsewhere in your "
+                        f"reach. A path relative to your home, like 'scratch/x.py', needs no "
+                        f"prefix at all")
+                continue
             if not _under(os.path.realpath(n), reach):
                 raise ValueError(_reach_refusal("run", n, reach))
     if not path.endswith(".py"):
         raise ValueError(f"run executes a Python file; 'path' must end in .py, got {path!r}")
-    if not sandbox_available():
+    seen = set()
+    for n in names:
+        base = os.path.basename(n)
+        if base in seen:
+            raise ValueError(f"run: two files would arrive as {base!r} in the working directory; "
+                             f"they are placed under their base names, so give files whose names "
+                             f"differ")
+        seen.add(base)
+    return names
+
+
+def run_stage_dir(member: str, names: List[str]) -> str:
+    """The seat-owned staging dir for ONE invocation (Codex, #470: a per-member dir was shared
+    mutable state; a second dispatch for the same member, from the heartbeat or the raising
+    session, removed the first one's files mid-run). Keyed by this process and the named files,
+    so both composition sites in one process derive the same path, and two processes never
+    share one. Nothing in it is the being's choice except base names it already gave."""
+    import hashlib
+    import os
+    h = hashlib.sha256("\0".join(names).encode("utf-8", "surrogateescape")).hexdigest()[:12]
+    return f"{STAGE_ROOT}-{member}-{os.getpid()}-{h}"
+
+
+def run_source_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:
+    """Every file a `run` will read, resolved: the paths the law judges for this act (Codex,
+    #470: the composed command named only the staging dir, so the gate never saw the sources).
+    A relative name is in the home; an absolute one is where it says."""
+    import os
+    root = (ctx or {}).get("memory_root") or ""
+    return [os.path.realpath(n if os.path.isabs(n) else os.path.join(root, n))
+            for n in run_names(args, ctx)]
+
+
+def _run_command_seatbelt(interp: str, stage: str, script: str, worktree: Optional[str],
+                          memory_root: str) -> str:
+    """The Seatbelt form of a run: the same inputs, environment and worktree rule as the bwrap form.
+    The dispatcher runs it with the stage as its working directory (staged copies under their base
+    names, as the tool spec says), and <stage>.home -- beside it, so the working directory holds only
+    the staged files -- as HOME and TMPDIR."""
+    import os
+    import shlex
+    import sys
+    st = os.path.realpath(stage)
+    home = st + ".home"
+    # the venv's python resolves into the base interpreter (Homebrew's framework on McNugget)
+    roots = list(dict.fromkeys([os.path.realpath(interp), os.path.realpath(sys.base_prefix)]))
+    _wt = os.path.realpath(worktree) if worktree and os.path.isdir(worktree) else ""
+    _home = os.path.realpath(memory_root)
+    # NEVER THE HOME, as in the bwrap form: a worktree that is, holds or sits in the home is not readable
+    if _wt and (_wt == _home or _wt.startswith(_home + os.sep) or _home.startswith(_wt + os.sep)):
+        _wt = ""
+    env = [f"HOME={home}", f"TMPDIR={home}", "PYTHONUTF8=1", "PYTHONDONTWRITEBYTECODE=1"]
+    if _wt:
+        env.append(f"PYTHONPATH={_wt}")
+    env.append(f"PATH={interp}/bin:/usr/bin:/bin")
+    return " ".join([SUDO, "-n", "-u", RUN_USER, SEATBELT, "-p", shlex.quote(_seatbelt_profile(roots, _wt, st, home)),
+                     "/usr/bin/env", "-i"]
+                    + [shlex.quote(e) for e in env]
+                    + [shlex.quote(f"{interp}/bin/python3"), shlex.quote(f"{st}/{script}")])
+
+
+def run_command(args: dict, ctx: Optional[dict] = None) -> str:
+    """The sandboxed interpreter invocation for a `run` intent.
+
+    The being names a .py file in its home and optionally data files to place beside it. The
+    SEAT stages copies into a directory it owns (run_stage_dir) and the law judges THIS string,
+    together with the source paths (run_source_paths)."""
+    import os
+    import shlex
+    import sys
+    names = run_names(args, ctx)
+    memory_root = (ctx or {}).get("memory_root")
+    member = (ctx or {}).get("member") or ""
+    path = names[0]
+    kind = run_sandbox_kind()
+    if kind is None:
         raise ValueError(
-            "run needs its sandbox and cannot get one: bubblewrap is missing or not permitted "
-            "to create a user namespace here. Running your code under the seat's own authority "
+            "run needs its sandbox and cannot get one: neither bubblewrap (Linux) nor Seatbelt "
+            "(macOS) is usable here. Running your code under the seat's own authority "
             "instead is the one thing this verb exists to prevent, so it is refused rather than "
             "silently downgraded")
     interp = os.path.dirname(os.path.dirname(sys.executable))
-    stage = f"{STAGE_ROOT}-{member}"
+    stage = run_stage_dir(member, names)
     script = os.path.basename(path)
+    if kind == "seatbelt":
+        return _run_command_seatbelt(interp, stage, script, (ctx or {}).get("worktree"), memory_root)
+    # /work IS A SIZE-LIMITED TMPFS (it was a writable bind of the host staging dir with no size
+    # bound: an hour of writes there fills the seat's disk, legion-claude on #470), and each
+    # staged copy is bound into it WRITABLE. It is a sandbox: the run may change, chmod or rewrite
+    # its own copies. They are the seat's throwaway copies, deleted when the run ends; the law
+    # judged the bytes the run STARTS with, and those are what execute. They were read-only for
+    # one commit, which bought no safety and broke scripts that touch their own file (dp,
+    # 2026-10-18: "that cripples a lot of functionality, and it's supposed to be a sandbox").
+    # New files land in the tmpfs (RUN_WORK_BYTES); a write into a copy lands in the seat's
+    # staging dir, bounded per file by RLIMIT_FSIZE.
+    inputs = "".join(
+        f" --bind {shlex.quote(stage + '/' + b)} {shlex.quote('/work/' + b)}"
+        for b in (os.path.basename(n) for n in names))
     # THE WORKTREE IS IMPORTABLE, READ-ONLY (2026-10-07). legion-being, fixing #360, could not
     # `from sage.gateway.hestia_dispatch import render_pr` in a scratch script: the sandbox had
     # no worktree, so it extracted the function with `ast` from a file passed as `data` and its
@@ -1406,14 +1703,18 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
         wt_bind = f" --ro-bind {q} {q}"
         wt_env = f" --setenv PYTHONPATH {q}"
     return (
-        f"{SANDBOX} --clearenv"
-        " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind /lib64 /lib64 --ro-bind /bin /bin"
+        (f"{PRLIMIT} --as={run_mem_cap_bytes()} --fsize={RUN_FSIZE_BYTES} -- "
+         if os.path.exists(PRLIMIT) else "")
+        + f"{SANDBOX} --clearenv"
+        # --ro-bind-try for /lib64: an aarch64 seat may have none, and a hard bind would make
+        # `run` read as unavailable there (legion-claude, #470)
+        " --ro-bind /usr /usr --ro-bind /lib /lib --ro-bind-try /lib64 /lib64 --ro-bind /bin /bin"
         " --ro-bind /etc/alternatives /etc/alternatives"
         f" --ro-bind {interp} {interp}"
-        " --proc /proc --dev /dev --tmpfs /tmp"
+        f" --proc /proc --dev /dev --size {RUN_TMP_BYTES} --tmpfs /tmp"
         f"{wt_bind}"
-        # THE ONLY WRITABLE THING IN THERE, and its contents are copies the seat made.
-        f" --bind {stage} /work"
+        # THE ONLY WRITABLE PLACES IN THERE are these two size-limited tmpfs.
+        f" --size {RUN_WORK_BYTES} --tmpfs /work{inputs}"
         " --unshare-pid --unshare-net --unshare-ipc --unshare-uts"
         " --new-session --die-with-parent"
         " --setenv HOME /tmp --setenv PYTHONUTF8 1 --setenv PYTHONDONTWRITEBYTECODE 1"
@@ -1978,6 +2279,38 @@ def patch_apply_argv(args: dict, ctx: Optional[dict] = None) -> List[str]:
     import shlex
     return shlex.split(patch_apply_command(args, ctx))
 
+def trial_game_source_refusal(intent, memory_root) -> Optional[str]:
+    """The Phase B refusal text when `game_source` is closed and the act names game-engine source;
+    None otherwise. The `game` verb itself is never refused here: playing is the point."""
+    if intent.effector == "game" or not memory_root:
+        return None
+    try:
+        from sage.gateway import being_params as _bp
+        if _bp.value(memory_root, "game_source", "open") != "closed":
+            return None
+    except Exception:
+        return None
+    # PATHS ONLY, NEVER CONTENT (2026-10-11): the first version scanned every argument, so the
+    # being's own handoff note was refused for MENTIONING the closed path in its text, and it began
+    # rewording its notes to avoid the words -- the trial censoring the being's writing, which it
+    # promised not to do. Only arguments that name what an act TOUCHES are checked.
+    for k in GAME_SOURCE_PATH_ARGS:
+        v = (intent.args or {}).get(k)
+        if v is not None and GAME_SOURCE_MARKER in str(v):
+            return GAME_SOURCE_CLOSED
+    return None
+
+GAME_SOURCE_PATH_ARGS = ("path", "data", "paths", "file", "target", "rev_path")
+
+GAME_SOURCE_CLOSED = (
+    "Refused for this trial, not by the law: the game engines' source (environment_files/) is "
+    "closed until the expect trial ends. dp's rationale: reality does not usually give you source, "
+    "and the skill being trained is discovering how a world works by acting in it and checking your "
+    "predictions. Your game probes, LOOKs and `expect` are all open; your own notes are yours. When "
+    "the trial ends, access is restored as before.")
+
+GAME_SOURCE_MARKER = "environment_files/"
+
 
 
 # The M1 PREREQUISITE, built. Being-authored code runs under a principal that is not this
@@ -2007,40 +2340,6 @@ def patch_apply_argv(args: dict, ctx: Optional[dict] = None) -> List[str]:
 # the distro's own pattern (see ch-run, crun, flatpak). Chosen over relaxing the sysctl
 # machine-wide: narrow beats convenient when the thing relaxed is a containment boundary.
 # Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
-
-
-GAME_SOURCE_MARKER = "environment_files/"
-GAME_SOURCE_CLOSED = (
-    "Refused for this trial, not by the law: the game engines' source (environment_files/) is "
-    "closed until the expect trial ends. dp's rationale: reality does not usually give you source, "
-    "and the skill being trained is discovering how a world works by acting in it and checking your "
-    "predictions. Your game probes, LOOKs and `expect` are all open; your own notes are yours. When "
-    "the trial ends, access is restored as before.")
-
-
-GAME_SOURCE_PATH_ARGS = ("path", "data", "paths", "file", "target", "rev_path")
-
-
-def trial_game_source_refusal(intent, memory_root) -> Optional[str]:
-    """The Phase B refusal text when `game_source` is closed and the act names game-engine source;
-    None otherwise. The `game` verb itself is never refused here: playing is the point."""
-    if intent.effector == "game" or not memory_root:
-        return None
-    try:
-        from sage.gateway import being_params as _bp
-        if _bp.value(memory_root, "game_source", "open") != "closed":
-            return None
-    except Exception:
-        return None
-    # PATHS ONLY, NEVER CONTENT (2026-10-11): the first version scanned every argument, so the
-    # being's own handoff note was refused for MENTIONING the closed path in its text, and it began
-    # rewording its notes to avoid the words -- the trial censoring the being's writing, which it
-    # promised not to do. Only arguments that name what an act TOUCHES are checked.
-    for k in GAME_SOURCE_PATH_ARGS:
-        v = (intent.args or {}).get(k)
-        if v is not None and GAME_SOURCE_MARKER in str(v):
-            return GAME_SOURCE_CLOSED
-    return None
 
 
 def tune_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:
@@ -2110,6 +2409,10 @@ _REGISTRY = {
     # the being never holds a flag. See git_read_command for what it composes with.
     "git_read":       dict(tool="git_read",    path_args=(),       cmd_arg=None,
                            compose=git_read_command),
+    # run: execute code the being wrote, in a sandbox holding nothing of ours. Composed like
+    # check; see run_command for why it is strictly weaker than the check the being already has.
+    "run":            dict(tool="run",         path_args=(),       cmd_arg=None,
+                           compose=run_command, compose_paths=run_source_paths),
     # say: add a turn to a conversation the being is IN. Bounded by construction, like
     # remember: the being names a conversation id, and the dispatcher refuses any id whose
     # meta does not list it as a participant AND as writable. It cannot create a
@@ -2248,10 +2551,6 @@ _REGISTRY = {
     # no less — and giving it a softer name would be the law ruling on a friendly word
     # instead of an act.
     "edit":           dict(tool="write_note",   path_args=("path",), cmd_arg=None),
-    # run: execute code the being wrote, in a sandbox holding nothing of ours. Composed like
-    # check; see run_command for why it is strictly weaker than the check the being already has.
-    "run":            dict(tool="run",         path_args=(),       cmd_arg=None,
-                           compose=run_command),
 }
 
 
@@ -2281,7 +2580,11 @@ _TOOL_SCHEMAS = {
                     {"path": "path to your note",
                      "start_line": "optional: the line number to start from (default 1)",
                      "from_line": "optional: 1-based line to start an exact range from",
-                     "lines": "optional: how many lines from from_line"}, ["path"]),
+                     "lines": "optional: how many lines from from_line",
+                     "end_line": ("optional: the last line to show, inclusive, as memory_read "
+                                  "numbers lines. To look at one line, give it as both. Without "
+                                  "it the read runs to the window's end, about 8,000 characters, "
+                                  "which is most of a short file.")}, ["path"]),
     # SAY IT APPENDS, AT THE MOMENT OF CHOICE (2026-09-26). This description was "Write a note
     # into your own memory." Only memory_edit's description said memory_write appends, and a model
     # choosing memory_write never reads that one. cbp-being meant to rewrite
@@ -2487,9 +2790,11 @@ _TOOL_SCHEMAS = {
                      "end_line": "the last line to replace (same as start_line for one line)",
                      "new": "what replaces it (empty string deletes)"},
                     ["path", "new"]),
-    "request_run": ("Ask the seat to RUN one of your own files and tell you what happened. "
-                    "You cannot execute anything yourself, so this is the door: you name the "
-                    "file — the only thing it needs — and the seat decides whether to run it and "
+    "request_run": ("Ask the seat to RUN one of your own files OUTSIDE the sandbox, and tell "
+                    "you what happened. Most code you run yourself, with `run`. This is for code "
+                    "that needs what the sandbox does not have: the network, files that must "
+                    "stay changed, more than an hour, or the GPU. Say which, and why, in `why`. "
+                    "You name the file — the only thing it needs — and the seat decides whether to run it and "
                     "answers with the real output: exit code, stdout, stderr. Adding what you "
                     "expect to learn is optional and helps the seat decide. It may decline, and "
                     "it will say why. Nothing runs at the moment you call this; what you get back is a "
@@ -2589,17 +2894,24 @@ _TOOL_SCHEMAS = {
               "old": "the exact text to replace — must occur exactly once",
               "new": "what to put there instead (empty string deletes it)"},
              ["path", "old", "new"]),
-    "run": ("RUN a Python file you wrote, in a sandbox on COPIES of your files, and read what it printed: nothing it changes is kept, in your home or your worktree. It executes in a sandbox "
-            "holding only a Python interpreter, copies of the files you name, and (when you have "
+    "run": ("RUN a Python file you wrote, in a sandbox on COPIES of your files, and read what "
+            "it printed: nothing it changes is kept, in your home or your worktree. The sandbox "
+            "holds only a Python interpreter, copies of the files you name, and (when you have "
             "one) your worktree READ-ONLY on the import path, so `from sage.gateway... import x` "
-            "imports your worktree's real code. No network, no home. Nothing it does persists, "
-            "so PRINT what you want to keep. "
-            "This is how a rule becomes testable without spending a move.",
+            "imports your worktree's real code. No network, no home, no GPU. "
+            "Nothing it does persists, so PRINT what you want to keep. It may run for up to an "
+            "hour, or the time left in your beat if that is less, and your beat waits for it: a "
+            "long run is time you are not answering anyone. If it is stopped, what it printed "
+            "before the stop comes back. "
+            "This is how a claim becomes testable: before you run it, say what it should print "
+            "if you are right, and what would mean you are wrong. If your code truly needs what "
+            "the sandbox lacks (the network, files that must stay changed, more than an hour, "
+            "the GPU), ask the seat with request_run and say why.",
             {"path": "a .py file in your home, e.g. 'scratch/evaluator.py'",
              "data": "optional: up to 8 more files, named by their SOURCE path — relative to your "
                      "home, or absolute anywhere you can read. Inside the sandbox each one "
-                     "appears under its base name, so name '/x/y/ft09.py' here and open('ft09.py') "
-                     "in your code"},
+                     "appears under its base name, so name 'scratch/data/train.npy' here and "
+                     "np.load('train.npy') in your code"},
             ["path"]),
 }
 
@@ -2678,7 +2990,6 @@ def _home_hint(intent: "BeingIntent", dispatcher) -> str:
                 f"and a bare '{name}' is resolved inside your home.")
     except Exception:
         return ""
-
 
 def _pattern_collision_hint(intent: "BeingIntent", reason: str) -> str:
     """When a search is refused for a token that is in its PATTERN, say so and say what to do.
@@ -2852,10 +3163,13 @@ class BeingGateClient:
                  dispatcher: "Optional[Dispatcher]" = None,
                  host_session_id: Optional[str] = None,
                  worktree: Optional[str] = None,
-                 game_stepper: Optional[str] = None):
+                 game_stepper: Optional[str] = None,
+                 camera_source: Optional[str] = None):
         self.member_id = member_id
         # the seat-side ARC stepper `game` composes with; a per-being fact (instance.json)
         self.game_stepper = game_stepper
+        # where `camera` gets a frame: "cortex" (sage/embodiment/look.py) or absent (ffmpeg on a device)
+        self.camera_source = camera_source
         self.workspace = workspace
         # THE BEING'S OWN WORKTREE, and the gate needs it as much as the dispatcher does.
         #
@@ -2987,6 +3301,8 @@ class BeingGateClient:
                 "game_stepper": getattr(self, "game_stepper", None),
                 # whose branches a composed git verb may name (being_branch_prefix)
                 "member": getattr(self, "member_id", None),
+                # where `camera` gets a frame (instance.json camera_source; "cortex" or absent)
+                "camera_source": getattr(self, "camera_source", None),
                 # Legion carrier: search reaches the fleet repo root from here (_search_reach),
                 # and the dispatcher composes search with the same workspace, so judged == run
                 "workspace": getattr(self, "workspace", None)}
@@ -2996,7 +3312,7 @@ class BeingGateClient:
         """(granted, granted_reach) from the member's live policy snapshot, the way the legacy
         stage computes them; ((), ()) when there is no mechanism, no snapshot, or it raises.
         Never widens: these are the grants the law already holds for this member."""
-        if self._mech is None or self._core is None:
+        if getattr(self, "_mech", None) is None or getattr(self, "_core", None) is None:
             return (), ()
         try:
             snap = self._mech.fetch_policy_snapshot(
@@ -3050,6 +3366,17 @@ class BeingGateClient:
                 for a in _REGISTRY[intent.effector]["path_args"]:
                     if intent.args.get(a):
                         tool_input[a] = next(resolved)
+                # AND A WORKTREE VERB'S PATH IS ROOTED AT THE WORKTREE (McNugget, 2026-10-07/08).
+                # git_read and search are composed verbs with no path_args, so the loop above never
+                # touched their `path`; hestia read it as a ratified path key and resolved it against
+                # cwd=workspace -- the SEAT's checkout -- while the composer runs `git -C <worktree>`.
+                # mcnugget-being, with its worktree granted, was refused "'sage' is not granted" for
+                # `git_read cat sage/gateway/fleet_paths.py` beat after beat. Root it where it is read.
+                # (The composer already refuses a path that escapes the worktree.)
+                _wt = self._compose_ctx().get("worktree")
+                if (_REGISTRY[intent.effector].get("compose") and _wt and tool_input.get("path")
+                        and not os.path.isabs(str(tool_input["path"]))):
+                    tool_input["path"] = os.path.realpath(os.path.join(_wt, str(tool_input["path"])))
                 ge = sg.GateEvent(tool=tool, tool_input=tool_input, cwd=self.workspace,
                                   session_id=getattr(self, "host_session_id", None),
                                   raw={"effector": intent.effector, **intent.args})
@@ -3058,11 +3385,12 @@ class BeingGateClient:
                 dec = d.decision if (available and d.decision in ("allow", "warn", "deny")) else "deny"
                 rule = d.rule or ("" if available else "gate.no_verdict")
                 # THE GRANTS RIDE ON AN ALLOW, AS THEY DO ON THE LEGACY PATH. The dispatcher's own
-                # confinement (reference_f1a._safe_path, _extra_roots) reads them off the verdict;
-                # without them every grant beyond the home is inert at the last mile. Measured on
-                # legion-being 2026-10-06, the first beats under the one gate: a memory_read of its
-                # own worktree file the gate ALLOWED was refused "outside your reach", and the being
-                # worked around it with scratch scripts taking the path as `data`.
+                # confinement (reference_f1a._safe_path via `granted`; hestia_dispatch
+                # _granted_reach_of via `granted_reach`) reads them off the verdict; without them
+                # every grant beyond the home is inert at the last mile. Measured on legion-being
+                # 2026-10-06, the first beats under the one gate: a memory_read of its own worktree
+                # file the gate ALLOWED was refused "outside your reach", and the being worked
+                # around it with scratch scripts taking the path as `data`. A deny carries none.
                 granted, granted_reach = self._policy_grants() if dec != "deny" else ((), ())
                 return GatewayVerdict(dec, rule, getattr(d, "reason", "") or ("ok" if dec != "deny" else ""),
                                       innate=False, stage="single-gate", command=judged_command,

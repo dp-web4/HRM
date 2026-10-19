@@ -26,6 +26,25 @@ def test_an_answered_turn_is_capped_at_the_full_rung_only_when_asked():
     assert conv._cap_for(t, me, answered_upto=5, turn_chars=1200, answered_cap=600) == conv.ANSWERED_TURN_CHARS
 
 
+def test_answered_turn_tuned_cap_never_widens_at_any_compaction_rung():
+    """Regression: answered_turn_chars=200/300 must remain binding at each rung.
+
+    Before this fix _cap_for honored it at the full rung, but returned 400
+    at turn_chars=800/1200, which silently expanded an intentionally smaller cap.
+    """
+    me, answered, live = "being", {"seq": 3}, {"seq": 9}
+    for tuned in (200, 300):
+        for rung in (None, 1200, 800, 400, 350, 250, 100):
+            expected = tuned if rung is None else min(conv.ANSWERED_TURN_CHARS, tuned, rung)
+            assert conv._cap_for(answered, me, answered_upto=5, turn_chars=rung,
+                                 answered_cap=tuned) == expected, (tuned, rung)
+            # Never compact an unanswered message based on the answered-turn setting.
+            assert conv._cap_for(live, me, answered_upto=5, turn_chars=rung,
+                                 answered_cap=tuned) == rung
+    assert conv._cap_for(answered, me, answered_upto=5, turn_chars=250) == 250
+    assert conv._cap_for(answered, me, answered_upto=5, turn_chars=1200) == conv.ANSWERED_TURN_CHARS
+
+
 # -- listings --------------------------------------------------------------------------------
 def test_the_listing_limit_is_the_beings_and_says_it_is_partial(tmp_path):
     (tmp_path / "notes").mkdir()
@@ -81,7 +100,7 @@ def test_choice_parameters_are_refused_outside_their_words(tmp_path):
 
 
 def test_the_beat_records_a_whole_showing_from_the_state_it_sends(tmp_path):
-    """e1439e70c tied the record to mark_conversations, which the beat always passes False
+    """The carrier's first daily land (e1439e70c) tied the record to mark_conversations, which the beat always passes False
     (the fitter renders several rungs; a render is not a reading), so it never recorded and
     every beat carried the entrustment whole. The beat now records via record_entrustment_seen
     after fit_state, from the state it sends."""
@@ -103,3 +122,37 @@ def test_main_records_the_showing_after_the_fitter():
     fit = src.index("fit_state(")
     rec = src.index("record_entrustment_seen(instance, entrusted)")
     assert fit < rec, "the showing must be recorded from the state the fitter chose"
+
+
+
+def test_own_state_reads_the_cuts_from_the_beings_parameters(tmp_path):
+    """The helpers above are only the cut; this is the wiring. own_state (what the beat composes)
+    takes listing_limit, entrustment_mode and answered_turn_chars from being_params, and a render
+    with mark_conversations=False (the beat's) records no whole showing."""
+    from sage.gateway.heartbeat import own_state, record_entrustment_seen
+    h = _cfg(tmp_path, listing_limit=8, entrustment_mode="daily", answered_turn_chars=600)
+    (h / "notes").mkdir()
+    for i in range(12):
+        (h / "notes" / f"n{i:02d}.md").write_text("x")
+    conv.create(h, "dp", title="dp and being", participants=["dp", "being"], writable_by=["dp", "being"])
+    conv.append(h, "dp", speaker="dp", text="long answered turn " + "A" * 3000)
+    conv.append(h, "dp", speaker="being", text="my reply")
+
+    def state(home):                                          # the full rung: turn_chars None
+        return own_state(home, "being", TEXT, turn_chars=None, mark_conversations=False, body_reading={})
+    out = state(h)
+    assert "4 older" in out                                   # listing_limit
+    assert "A" * 3000 not in out and "chars omitted from the middle" in out   # answered_turn_chars
+    assert TEXT in out and not (h / ENTRUSTMENT_SEEN).exists()  # a render records nothing
+    record_entrustment_seen(h, TEXT)
+    out = state(h)
+    assert "## The rest" not in out and "memory_read it" in out
+    # the defaults are today's behaviour: entrustment whole every beat, answered turns whole
+    d = tmp_path / "d"
+    d.mkdir()
+    conv.create(d, "dp", title="dp and being", participants=["dp", "being"], writable_by=["dp", "being"])
+    conv.append(d, "dp", speaker="dp", text="long answered turn " + "A" * 3000)
+    conv.append(d, "dp", speaker="being", text="my reply")
+    record_entrustment_seen(d, TEXT)
+    out = state(d)
+    assert TEXT in out and "A" * 3000 in out and "chars omitted from the middle" not in out

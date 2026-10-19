@@ -96,7 +96,9 @@ def test_generate_marks_the_floor_from_the_servers_own_count(tmp_path):
         def get_chat_response(self, messages, tools=None):
             seen.append(len(messages))
             return {"content": "", "tool_calls": [{"function": {"name": "witness", "arguments": {"event": f"x{len(seen)}"}}}],
-                    "raw": {"done_reason": "stop", "prompt_eval_count": btl._ANSWER_RESERVE + 1990,
+                    # past the floor (more than num_ctx - reserve) but still sendable: main's
+                    # WINDOW_SEND_MARGIN refuses to send a prompt with ~10 tokens left at all
+                    "raw": {"done_reason": "stop", "prompt_eval_count": 3000,
                             "eval_count": 5, "message": {}}}
     c = _client(OK_DISPATCH)
     c.memory_root = str(tmp_path)

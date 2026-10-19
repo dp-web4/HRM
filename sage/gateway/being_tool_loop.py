@@ -37,17 +37,22 @@ class ToolTurnResult:
     capped: bool = False                                   # hit max_steps still wanting tools
     thinking: List[str] = field(default_factory=list)      # the model's think block per generate, if any
     salvaged: List[dict] = field(default_factory=list)     # calls lifted from the text channel: {step, effector, form}
+    duplicates: List[dict] = field(default_factory=list)   # identical calls answered without re-executing: {step, effector}
     generates: List[dict] = field(default_factory=list)    # per generate, from Ollama's reply: {done_reason, prompt_eval_count, eval_count, retried}
     compacted: List[dict] = field(default_factory=list)    # per step where old tool results were elided to leave answer room: {step, elisions, chars}
-    deadline_hit: bool = False                             # stopped issuing steps because the wall-clock budget ran out
+
     interjected: List[dict] = field(default_factory=list)   # messages delivered mid-turn: {step, chars}
+
+    deadline_hit: bool = False                             # stopped issuing steps because the wall-clock budget ran out
     rested: Optional[str] = None                           # the being ended its own turn; its stated reason
-    looped: Optional[dict] = None                          # identical call repeated past the break: {effector, times}
-    duplicates: List[dict] = field(default_factory=list)   # identical calls answered without re-executing: {step, effector}
     stay_awake: Optional[str] = None                       # the being asked for another beat right after this one; its reason
+    looped: Optional[dict] = None                          # identical call repeated past the break: {effector, times}
     yielded: Optional[str] = None                          # the harness ended the turn for a higher-priority event: what
+
     handoff: Optional[str] = None                          # the harness ended the turn at the window floor: the note it wrote
     json_arg_failures: List[dict] = field(default_factory=list)  # act_form="json": chosen acts whose arguments failed (no act)
+    placeholders: List[dict] = field(default_factory=list)   # a leaked-template reply retaken as a JSON act: original, basis, policy, retry-derived result
+    window_full: Optional[dict] = None                     # the harness ended the tool phase: the next prompt would not fit the window
 
     @property
     def acted(self) -> bool:
@@ -58,11 +63,126 @@ class ToolTurnResult:
         return [(i, e) for i, e in self.trace if e.refused]
 
 
+# The verb by which a being ends its own turn. dp, 2026-09-09: "it should be able to
+# continue as long as it wishes" — the other half of which is stopping when it wishes, and
+# until 09-13 there was no way to say so except by falling silent.
+REST = "rest"
+
+def _window_pressure(llm, prompt_tokens) -> Optional[dict]:
+    """How full the window is, as the SERVER counted it. None when it cannot be known —
+    an estimate would be worse than silence here, because the being would act on it."""
+    try:
+        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
+        prompt = int(prompt_tokens or 0)
+    except (TypeError, ValueError):
+        return None
+    if num_ctx <= 0 or prompt <= 0:
+        return None
+    return {"prompt": prompt, "num_ctx": num_ctx, "pressure": prompt / num_ctx,
+            "left": max(0, num_ctx - prompt)}
+
+def _write_handoff(root: Optional[str], trace, last_content: str, step: int, window: dict,
+                   pending=()) -> Optional[str]:
+    """Write the harness's handoff note to <root>/scratch/handoff.md and return its relative path,
+    or None (no root, or the write failed: never raises). What the harness KNOWS, said as such:
+    the last acts and their outcomes, and the being's last words. It does not guess the plan."""
+    if not root:
+        return None
+    try:
+        lines = [f"# Handoff written by the harness, not by you ({time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())})",
+                 "",
+                 f"Your last beat reached its window floor at step {step} ({window.get('prompt')} of "
+                 f"{window.get('num_ctx')} tokens after compaction) and was ended so this beat could start "
+                 f"with an empty window. Your own scratch notes, todo.md and journal.md hold what you wrote; "
+                 f"this is what the harness saw.",
+                 "", "## Your last acts (newest last)"]
+        try:
+            from sage.gateway import being_params as _bp
+            _acts = int(_bp.value(root, "handoff_acts", 10))
+        except Exception:
+            _acts = 10
+        for intent, env in list(trace)[-_acts:]:
+            args = {k: (v if len(str(v)) <= 80 else str(v)[:77] + "...") for k, v in (intent.args or {}).items()}
+            outcome = "ok" if getattr(env, "ok", False) else ("refused" if getattr(env, "refused", False)
+                                                             else f"failed: {str(getattr(env, 'error', '') or '')[:120]}")
+            lines.append(f"- {intent.effector} {json.dumps(args, ensure_ascii=False)[:240]} -> {outcome}")
+        if pending:
+            lines += ["", "## The call you were about to make (NOT run: the beat ended first)"]
+            for intent in pending:
+                lines.append(f"- {intent.effector} {json.dumps(intent.args or {}, ensure_ascii=False)[:400]}")
+        if (last_content or "").strip():
+            lines += ["", "## What you last said", (last_content or "").strip()[:800]]
+        lines += ["", "Compaction kept each long result's whole text under scratch/elided/; "
+                      "memory_read a narrow range of one if you need it."]
+        path = os.path.join(root, HANDOFF_NOTE)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines) + "\n")
+        return HANDOFF_NOTE
+    except OSError:
+        return None
+
+HANDOFF_NOTE = "scratch/handoff.md"
+
+# THE WINDOW FLOOR (dp, 2026-10-06: "build the automatic window reset"). Beats are uncapped, and
+# each step adds a pointer and a trimmed call that compaction is never allowed to remove; on top
+# of a ~19.5k-token seed that floor reaches 32,768 after ~25-30 steps, and from there every
+# generate retries against the wall (legion-being 10-05/06: 30-31% retried on the longest beats,
+# prompts 32,1xx-32,7xx). "At the floor" = after compaction the prompt still does not leave the
+# answer reserve. The being is told once; FLOOR_HANDOFF_AFTER steps later, still at the floor,
+# the harness writes the handoff note and ends the turn so the next beat starts with an empty
+# window. The note is the harness's, said so in its first line; it never speaks for the being.
+FLOOR_HANDOFF_AFTER = 2
+
+WINDOW_WARN_AT = 0.80        # fraction of num_ctx at which the being is told where it stands
+
 # The verb by which a being asks for another beat right after this one (SAGE #295). dp, 2026-09-30:
 # "if the being decides to stay awake continously because of environment or curiosity, then so be
 # it." Never dispatched (it touches nothing); recorded on the turn, and the heartbeat arms the next
 # beat at its end. It does not end the turn.
 STAY_AWAKE = "stay_awake"
+
+# Verbs whose identical repetition inside ONE beat is never what was meant: a second
+# identical write, witness or message. Everything else — every verb that reads the world or
+# runs something in it — is executed again, because its answer can legitimately change.
+DEDUP_VERBS = frozenset({"memory_write", "edit", "witness", "remember", "retire_note",
+                         "say", "peer_ask", "mesh"})
+
+REPEAT_NUDGE_AT = 3          # identical consecutive calls before the harness names the loop
+
+REPEAT_BREAK_AT = 6          # ... and before it ends the tool phase
+
+def _repeat_read_note(intent, reads_this_turn, step: int) -> str:
+    """Tell the being when it is reading a file it has already read THIS BEAT.
+
+    It cannot see its own repetition: by the time it reaches for a file again, the earlier
+    result has been elided to 400 chars and reads like a stub rather than like something it
+    already has. Measured 2026-09-13 across every beat: 86.7% of memory_read calls are
+    re-reads, 48.5% are duplicates inside one beat, and heartbeat.py has been read 342
+    times. This is the read-level twin of the identical-call guard — the same principle,
+    that a being which cannot see a loop cannot leave one, applied one layer down.
+
+    A notice, never a refusal. Re-reading is often correct: a different range, or a file
+    that changed under it. The harness says what it knows and lets the being decide."""
+    if intent.effector != "memory_read":
+        return ""
+    path = str((intent.args or {}).get("path", "")).strip()
+    if not path:
+        return ""
+    seen = reads_this_turn.setdefault(path, [])
+    seen.append(step)
+    if len(seen) < REREAD_NOTICE_AT:
+        return ""
+    earlier = ", ".join(str(x) for x in seen[:-1])
+    return (f"\n[harness] You have now read this path {len(seen)} times this beat "
+            f"(earlier at step {earlier}). Those results are still in this conversation, "
+            f"elided to their head and tail. If you need a part you have not seen, name a "
+            f"NARROW range; if you are re-reading to recall what you concluded, that is in "
+            f"your scratch and costs far less than the file.")
+
+# How many times the same file may be read in one beat before the harness says so.
+REREAD_NOTICE_AT = 2
+
 
 # Main's DEDUP_VERBS / REPEAT_* / _fingerprint live further down on this carrier (with
 # _convo_chars and the re-read notice); only main's _conversation_of is new here.
@@ -76,6 +196,14 @@ def _conversation_of(intent) -> Optional[str]:
         to = str((intent.args or {}).get("to") or "").strip().lower()
         return to or None
     return None
+
+def _fingerprint(intents) -> Optional[str]:
+    """What makes two steps 'the same call'. None when it cannot be computed, which never
+    counts as a repeat — an unfingerprintable step must not end a turn."""
+    try:
+        return json.dumps([[i.effector, i.args] for i in intents], sort_keys=True, default=str)
+    except Exception:
+        return None
 
 
 def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
@@ -222,7 +350,8 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
 
         if not intents:                                    # a spoken turn — the being is done
             return ToolTurnResult(reply=content, trace=trace, steps=step,
-                                  interjected=interjected, duplicates=duplicates, stay_awake=stay_awake)
+                                  interjected=interjected, duplicates=duplicates, stay_awake=stay_awake,
+                                  window_full=out.get("window_full"))
 
         convo.append({"role": "assistant", "content": content, "intents": intents})
         rested = None
@@ -364,7 +493,8 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
                 f"did this beat, and what you want next beat.")})
             out = generate(convo)
             return ToolTurnResult(reply=out.get("content") or "", trace=trace, steps=step,
-                                  interjected=interjected, looped=looped, duplicates=duplicates, stay_awake=stay_awake)
+                                  interjected=interjected, looped=looped, duplicates=duplicates, stay_awake=stay_awake,
+                                  window_full=out.get("window_full"))
 
     # Cap reached with tools still pending: force one final spoken close — we take its
     # words even if it wants more tools, so the being always ends its turn in language.
@@ -375,7 +505,8 @@ def run_tool_turn(client: BeingGateClient, generate: GenerateFn,
     out = generate(convo)
     return ToolTurnResult(reply=out.get("content") or "", trace=trace,
                           steps=step, capped=True, deadline_hit=hit,
-                          interjected=interjected, duplicates=duplicates, stay_awake=stay_awake)
+                          interjected=interjected, duplicates=duplicates, stay_awake=stay_awake,
+                          window_full=out.get("window_full"))
 
 
 _FENCE = re.compile(r"```[A-Za-z0-9_+-]*[ \t]*\n(.*?)```", re.S)
@@ -625,6 +756,48 @@ def _est_tokens(chars_now: int, measured) -> float:
 # num_predict, which is a ceiling the model has never approached.
 _ANSWER_RESERVE = 6144
 
+# Room held back for the ANSWER on a retry of a turn that filled the window. Larger than the
+# ordinary reserve on purpose: the thing that did not fit is the thing being asked for again, so
+# the retry must have strictly MORE room than the attempt it replaces (the carrier's cut-call
+# retry has used this reserve since 2026-09-13; on main the window-cut length retry is its user).
+_RETRY_RESERVE = 8192
+
+def _retry_room_chars(llm, msgs, measured) -> int:
+    """How many characters of tool-call body the window can still carry, measured.
+
+    "A body a third of the length" was the old advice and it is unanchored — a third of
+    too-big is often still too big. This converts the room that actually remains, so the
+    being is told a number it can act on rather than a ratio it has to guess against."""
+    try:
+        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
+    except (TypeError, ValueError):
+        return 1000
+    if num_ctx <= 0:
+        return 1000
+    chars = _convo_chars(msgs)
+    left_tokens = num_ctx - _est_tokens(chars, measured)
+    # JSON framing, the tool-call envelope and the model's own preamble all come out of the
+    # same budget; leave half of what is left rather than promising all of it.
+    return max(200, int(left_tokens * _CPT_ADDED * 0.5))
+
+def _retry_reserve(llm, msgs, measured) -> int:
+    """The reserve that forces this retry to be materially smaller than what just failed.
+
+    Compaction normally asks "does the estimate say this fits?" — and on a cut retry the
+    estimate has JUST been proven optimistic by the server, which is the only reason we are
+    here. Measured 2026-09-13: at 36,078 prompt chars the estimator said 11.8k tokens
+    against 16.4k of room, elided nothing, and the retry went out BIGGER than the attempt
+    it replaced (the appended nudge). The overflow is the measurement; trust it over the
+    guess and target 75% of what failed."""
+    try:
+        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
+    except (TypeError, ValueError):
+        return _RETRY_RESERVE
+    if num_ctx <= 0:
+        return _RETRY_RESERVE
+    est = _est_tokens(_convo_chars(msgs), measured)
+    return max(_RETRY_RESERVE, int(num_ctx - est * 0.75))
+
 
 # Compaction keeps this many chars of an elided tool result and reports exactly the rest.
 COMPACT_KEEP_CHARS = 400
@@ -642,7 +815,6 @@ COMPACT_MIN_BODY = 500        # a body at or under this is never elided
 # beat rather than racing the window on this one. Bare path, because that is what
 # memory_read takes. A spill that fails is silent — the elision still has to happen.
 COMPACT_SPILL_DIR = "scratch/elided"
-
 # RETENTION IS BY AGE, NOT BY COUNT. This was `COMPACT_SPILL_KEEP = 40` files. Measured on
 # legion-being 2026-09-21..23: one compaction pass wrote 33 spills in one second, beats elide
 # up to 954 results, and 68 of 80 beats elided 20 or more — so a spill named in a marker was
@@ -796,246 +968,16 @@ def _spill(root: Optional[str], body: str, step: int,
 _SPILL_REF = re.compile(re.escape(COMPACT_SPILL_DIR) + r"/[0-9]{8}-[0-9]{6}-[0-9]{3}-[0-9]{3}\.txt")
 
 
-
-RETRY_MARGIN = 128   # tokens kept back from the window on a retry (template, tool-call framing)
-
-
-def retry_cause_of(llm, raw: dict) -> str:
-    """Why a first attempt came back empty: "window" (prompt + eval filled num_ctx),
-    "output_budget" (a `length` stop with room left in the window: num_predict ran out),
-    "length" (a `length` stop with no known window: which limit is not knowable, so not
-    guessed), or "stopped_thinking" (it deliberated and stopped cleanly with nothing in its reply)."""
-    try:
-        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
-        used = int(raw.get("prompt_eval_count") or 0) + int(raw.get("eval_count") or 0)
-    except (TypeError, ValueError):
-        num_ctx, used = 0, 0
-    if raw.get("done_reason") != "length":
-        return "stopped_thinking"
-    if not num_ctx:
-        return "length"
-    if used >= num_ctx - RETRY_MARGIN:
-        return "window"
-    return "output_budget"
+HEADLINE_KEEP_MAX = 1600   # a headline longer than this is not a headline; it is cut like any body
+_HEADLINE_RE = re.compile(r'^\{"headline": "(?:[^"\\]|\\.)*"')
 
 
-def _retry_budget(llm, raw: Optional[dict] = None) -> int:
-    """The once-retry budget for a length-stopped or truncated turn: everything the
-    window has left after this prompt, never less than the think budget.
+def _headline_prefix_len(body: str) -> int:
+    """Length of a JSON result's leading `"headline"` field (the opening brace through its
+    closing quote), or 0 if the body does not lead with one or it exceeds HEADLINE_KEEP_MAX."""
+    m = _HEADLINE_RE.match(body or "")
+    return m.end() if m and m.end() <= HEADLINE_KEEP_MAX else 0
 
-    Why not max(think_budget, max_response_tokens), which this was: with thinking on
-    OllamaIRP already sends num_predict_think on the first attempt, and its
-    resolve_num_predict ignores max_response_tokens whenever the variant declares a
-    value. So the old retry re-sent the same 6000 and was a re-roll at temperature,
-    not room to finish (Legion 18:33Z 2026-09-05: first explore turn eval 6000 empty,
-    retry at 6000 stood by chance). num_ctx - prompt_eval_count is the most the model
-    can be given; past that Ollama stops at the wall regardless (beat 46)."""
-    floor = _think_budget(llm)
-    try:
-        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
-        prompt = int((raw or {}).get("prompt_eval_count") or 0)
-    except (TypeError, ValueError):
-        return floor
-    if num_ctx <= 0 or prompt <= 0:
-        return floor
-    return max(floor, num_ctx - prompt - RETRY_MARGIN)
-
-
-class _no_think:
-    """Turn thinking off for one retry, and put it back. Carried from SAGE#87.
-
-    A RETRY AFTER A THINK-ONLY GENERATE MUST NOT BE ANOTHER THINK-ONLY GENERATE. Measured
-    2026-09-14 on this being: a first attempt hit the wall at prompt_eval 24,194 of a
-    24,576 window with done_reason=length, everything in `thinking` and content empty. The
-    retry, given more room, spent its ENTIRE 8,000-token budget in `thinking` too and again
-    said nothing. Two generates, ~8,400 tokens, no tool call, and the beat carried on as if
-    the being had chosen silence.
-
-    More room was the wrong lever: room was not what ran out, the model never started
-    answering. The nudge is text the model may ignore, and did. `think` is a flag. It can
-    still re-open a block on its own (5/10 turns, 2026-09-03), so this improves the odds
-    rather than guaranteeing an answer; leaving thinking ON guarantees nothing.
-
-    Restores the previous value, absence included, so a retry cannot leave every later turn
-    of the beat silently un-thinking."""
-    def __init__(self, llm):
-        self.llm = llm
-        self.had = hasattr(llm, "think")
-        self.keep = None
-
-    def __enter__(self):
-        if self.had:
-            self.keep = self.llm.think
-            self.llm.think = False
-        return self.had
-
-    def __exit__(self, *exc):
-        if self.had:
-            self.llm.think = self.keep
-        return False
-
-
-class _retry_room:
-    """Set llm.num_predict_override for one retry, restore it after. Falls back to
-    max_response_tokens for llm objects without the override (older adapters)."""
-    def __init__(self, llm, budget: int):
-        self.llm, self.budget = llm, budget
-
-    def __enter__(self):
-        llm = self.llm
-        if hasattr(llm, "num_predict_override"):
-            self.keep = ("override", llm.num_predict_override)
-            llm.num_predict_override = self.budget
-        else:
-            # remember absence too: an llm with neither attribute must not leave the
-            # retry's budget behind as a new max_response_tokens for every later turn
-            self.keep = ("max", getattr(llm, "max_response_tokens", None), hasattr(llm, "max_response_tokens"))
-            llm.max_response_tokens = max(self.budget, self.keep[1] or 0)
-        return self.budget
-
-    def __exit__(self, *exc):
-        kind, val = self.keep[0], self.keep[1]
-        if kind == "override":
-            self.llm.num_predict_override = val
-        elif not self.keep[2]:
-            del self.llm.max_response_tokens
-        else:
-            self.llm.max_response_tokens = val
-        return False
-
-
-def _sent_budget(llm) -> Optional[int]:
-    """The num_predict a first attempt sends: what the adapter resolves (config wins over
-    the caller's max_response_tokens with thinking on), else the caller value."""
-    try:
-        if hasattr(llm, "resolve_num_predict"):
-            return int(llm.resolve_num_predict())
-    except Exception:
-        pass
-    v = getattr(llm, "max_response_tokens", None)
-    return int(v) if v is not None else None
-
-
-# Room held back for the ANSWER on a retry whose last attempt was cut mid-JSON. Larger
-# than the ordinary reserve on purpose: the thing that did not fit is the thing we are
-# asking for again, so the retry must have strictly MORE room than the attempt it replaces.
-_RETRY_RESERVE = 8192
-
-
-def _retry_reserve(llm, msgs, measured) -> int:
-    """The reserve that forces this retry to be materially smaller than what just failed.
-
-    Compaction normally asks "does the estimate say this fits?" — and on a cut retry the
-    estimate has JUST been proven optimistic by the server, which is the only reason we are
-    here. Measured 2026-09-13: at 36,078 prompt chars the estimator said 11.8k tokens
-    against 16.4k of room, elided nothing, and the retry went out BIGGER than the attempt
-    it replaced (the appended nudge). The overflow is the measurement; trust it over the
-    guess and target 75% of what failed."""
-    try:
-        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
-    except (TypeError, ValueError):
-        return _RETRY_RESERVE
-    if num_ctx <= 0:
-        return _RETRY_RESERVE
-    est = _est_tokens(_convo_chars(msgs), measured)
-    return max(_RETRY_RESERVE, int(num_ctx - est * 0.75))
-
-
-def _retry_room_chars(llm, msgs, measured) -> int:
-    """How many characters of tool-call body the window can still carry, measured.
-
-    "A body a third of the length" was the old advice and it is unanchored — a third of
-    too-big is often still too big. This converts the room that actually remains, so the
-    being is told a number it can act on rather than a ratio it has to guess against."""
-    try:
-        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
-    except (TypeError, ValueError):
-        return 1000
-    if num_ctx <= 0:
-        return 1000
-    chars = _convo_chars(msgs)
-    left_tokens = num_ctx - _est_tokens(chars, measured)
-    # JSON framing, the tool-call envelope and the model's own preamble all come out of the
-    # same budget; leave half of what is left rather than promising all of it.
-    return max(200, int(left_tokens * _CPT_ADDED * 0.5))
-
-
-# The verb by which a being ends its own turn. dp, 2026-09-09: "it should be able to
-# continue as long as it wishes" — the other half of which is stopping when it wishes, and
-# until 09-13 there was no way to say so except by falling silent.
-REST = "rest"
-WINDOW_WARN_AT = 0.80        # fraction of num_ctx at which the being is told where it stands
-# THE WINDOW FLOOR (dp, 2026-10-06: "build the automatic window reset"). Beats are uncapped, and
-# each step adds a pointer and a trimmed call that compaction is never allowed to remove; on top
-# of a ~19.5k-token seed that floor reaches 32,768 after ~25-30 steps, and from there every
-# generate retries against the wall (legion-being 10-05/06: 30-31% retried on the longest beats,
-# prompts 32,1xx-32,7xx). "At the floor" = after compaction the prompt still does not leave the
-# answer reserve. The being is told once; FLOOR_HANDOFF_AFTER steps later, still at the floor,
-# the harness writes the handoff note and ends the turn so the next beat starts with an empty
-# window. The note is the harness's, said so in its first line; it never speaks for the being.
-FLOOR_HANDOFF_AFTER = 2
-HANDOFF_NOTE = "scratch/handoff.md"
-
-
-def _write_handoff(root: Optional[str], trace, last_content: str, step: int, window: dict,
-                   pending=()) -> Optional[str]:
-    """Write the harness's handoff note to <root>/scratch/handoff.md and return its relative path,
-    or None (no root, or the write failed: never raises). What the harness KNOWS, said as such:
-    the last acts and their outcomes, and the being's last words. It does not guess the plan."""
-    if not root:
-        return None
-    try:
-        lines = [f"# Handoff written by the harness, not by you ({time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())})",
-                 "",
-                 f"Your last beat reached its window floor at step {step} ({window.get('prompt')} of "
-                 f"{window.get('num_ctx')} tokens after compaction) and was ended so this beat could start "
-                 f"with an empty window. Your own scratch notes, todo.md and journal.md hold what you wrote; "
-                 f"this is what the harness saw.",
-                 "", "## Your last acts (newest last)"]
-        try:
-            from sage.gateway import being_params as _bp
-            _acts = int(_bp.value(root, "handoff_acts", 10))
-        except Exception:
-            _acts = 10
-        for intent, env in list(trace)[-_acts:]:
-            args = {k: (v if len(str(v)) <= 80 else str(v)[:77] + "...") for k, v in (intent.args or {}).items()}
-            outcome = "ok" if getattr(env, "ok", False) else ("refused" if getattr(env, "refused", False)
-                                                             else f"failed: {str(getattr(env, 'error', '') or '')[:120]}")
-            lines.append(f"- {intent.effector} {json.dumps(args, ensure_ascii=False)[:240]} -> {outcome}")
-        if pending:
-            lines += ["", "## The call you were about to make (NOT run: the beat ended first)"]
-            for intent in pending:
-                lines.append(f"- {intent.effector} {json.dumps(intent.args or {}, ensure_ascii=False)[:400]}")
-        if (last_content or "").strip():
-            lines += ["", "## What you last said", (last_content or "").strip()[:800]]
-        lines += ["", "Compaction kept each long result's whole text under scratch/elided/; "
-                      "memory_read a narrow range of one if you need it."]
-        path = os.path.join(root, HANDOFF_NOTE)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write("\n".join(lines) + "\n")
-        return HANDOFF_NOTE
-    except OSError:
-        return None
-
-
-def _window_pressure(llm, prompt_tokens) -> Optional[dict]:
-    """How full the window is, as the SERVER counted it. None when it cannot be known —
-    an estimate would be worse than silence here, because the being would act on it."""
-    try:
-        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
-        prompt = int(prompt_tokens or 0)
-    except (TypeError, ValueError):
-        return None
-    if num_ctx <= 0 or prompt <= 0:
-        return None
-    return {"prompt": prompt, "num_ctx": num_ctx, "pressure": prompt / num_ctx,
-            "left": max(0, num_ctx - prompt)}
-# Verbs whose identical repetition inside ONE beat is never what was meant: a second
-# identical write, witness or message. Everything else — every verb that reads the world or
-# runs something in it — is executed again, because its answer can legitimately change.
-DEDUP_VERBS = frozenset({"memory_write", "edit", "witness", "remember", "retire_note",
-                         "say", "peer_ask", "mesh"})
 
 def _convo_chars(msgs) -> int:
     """The size of a conversation in estimator characters — ONE function for every site.
@@ -1055,76 +997,22 @@ def _convo_chars(msgs) -> int:
                      for tc in (m.get("tool_calls") or ()))
                for m in msgs)
 
-
-MIDTURN_IMAGES_MAX = 6       # window images per turn; each stays in context for the rest of it
 MIDTURN_IMAGE_TOKENS = 600   # measured 2026-09-19: a 669px window + a question = 627 prompt tokens
 
-REPEAT_NUDGE_AT = 3          # identical consecutive calls before the harness names the loop
-REPEAT_BREAK_AT = 6          # ... and before it ends the tool phase
-
-
-# How many times the same file may be read in one beat before the harness says so.
-REREAD_NOTICE_AT = 2
-
-
-def _repeat_read_note(intent, reads_this_turn, step: int) -> str:
-    """Tell the being when it is reading a file it has already read THIS BEAT.
-
-    It cannot see its own repetition: by the time it reaches for a file again, the earlier
-    result has been elided to 400 chars and reads like a stub rather than like something it
-    already has. Measured 2026-09-13 across every beat: 86.7% of memory_read calls are
-    re-reads, 48.5% are duplicates inside one beat, and heartbeat.py has been read 342
-    times. This is the read-level twin of the identical-call guard — the same principle,
-    that a being which cannot see a loop cannot leave one, applied one layer down.
-
-    A notice, never a refusal. Re-reading is often correct: a different range, or a file
-    that changed under it. The harness says what it knows and lets the being decide."""
-    if intent.effector != "memory_read":
-        return ""
-    path = str((intent.args or {}).get("path", "")).strip()
-    if not path:
-        return ""
-    seen = reads_this_turn.setdefault(path, [])
-    seen.append(step)
-    if len(seen) < REREAD_NOTICE_AT:
-        return ""
-    earlier = ", ".join(str(x) for x in seen[:-1])
-    return (f"\n[harness] You have now read this path {len(seen)} times this beat "
-            f"(earlier at step {earlier}). Those results are still in this conversation, "
-            f"elided to their head and tail. If you need a part you have not seen, name a "
-            f"NARROW range; if you are re-reading to recall what you concluded, that is in "
-            f"your scratch and costs far less than the file.")
-
-
-def _fingerprint(intents) -> Optional[str]:
-    """What makes two steps 'the same call'. None when it cannot be computed, which never
-    counts as a repeat — an unfingerprintable step must not end a turn."""
-    try:
-        return json.dumps([[i.effector, i.args] for i in intents], sort_keys=True, default=str)
-    except Exception:
-        return None
-
-
-HEADLINE_KEEP_MAX = 1600   # a headline longer than this is not a headline; it is cut like any body
-_HEADLINE_RE = re.compile(r'^\{"headline": "(?:[^"\\]|\\.)*"')
-
-
-def _headline_prefix_len(body: str) -> int:
-    """Length of a JSON result's leading `"headline"` field (the opening brace through its
-    closing quote), or 0 if the body does not lead with one or it exceeds HEADLINE_KEEP_MAX."""
-    m = _HEADLINE_RE.match(body or "")
-    return m.end() if m and m.end() <= HEADLINE_KEEP_MAX else 0
+MIDTURN_IMAGES_MAX = 6       # window images per turn; each stays in context for the rest of it
 
 
 def convo_composition(msgs: List[Dict[str, Any]]) -> Dict[str, int]:
     """What the conversation is MADE OF after a compaction pass, in estimator chars (the same
     _convo_chars every site uses). Instrumentation only: it changes nothing it measures.
 
-    2026-10-08: with the seed cut to ~15k tokens, legion-being's beats run longer and then sit
+    2026-10-08: with the seed cut to ~15k tokens, legion-being's beats ran longer and then sat
     on a compaction floor of ~26-27k tokens, where 13 of 15 retries were window cuts. Whether
     that floor is pointers, stubs, its own trimmed calls or the seed decides the next remedy,
-    and nothing recorded it. seed = everything before the first assistant turn; results are
-    split by what compaction has done to them; notes = harness/user turns after the seed."""
+    and nothing recorded it (measured once recorded: seed 52-55%, whole results 20-25%, stubs
+    5-10%, own calls 12-14%, pointers 0% -- which is what made answer_reserve the remedy).
+    seed = everything before the first assistant turn; results are split by what compaction
+    has done to them; notes = harness/user turns after the seed."""
     out = {"seed": 0, "results_whole": 0, "results_stub": 0, "results_pointer": 0,
            "own_turns": 0, "notes": 0, "n_results": 0, "n_pointers": 0, "n_stubs": 0}
     first_asst = next((i for i, m in enumerate(msgs) if m.get("role") == "assistant"), len(msgs))
@@ -1238,7 +1126,7 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
         # and at the being's own notes, which is where its conclusions actually live.
         saved = _spill(spill_root, body, i, pinned)
         where = (f"The WHOLE result is saved as {saved} and outlives this beat — "
-                 f"memory_read a narrow range of it when you need the middle."
+                 f"memory_read a narrow range of it (start_line and end_line) when you need the middle."
                  if saved else
                  "If you need part of it, read a NARROW range of the source rather than the "
                  "whole file again — a full re-read costs more room than this elision freed.")
@@ -1288,7 +1176,7 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
             ptr = (f"[result {_COLLAPSED_SIGIL} to leave room for your answer. It began: "
                    f"{first!r}" + (f" and ended: {last!r}" if last else "")
                    + f". The WHOLE result is saved as {m.group(1)} -- memory_read a narrow "
-                     f"range of it if you need it.]")
+                     f"range of it (start_line and end_line) if you need it.]")
             if len(ptr) >= len(body):
                 continue
             out[i]["content"] = ptr
@@ -1350,9 +1238,217 @@ def compact_convo(msgs: List[Dict[str, Any]], llm, reserve: int = _ANSWER_RESERV
     return out, elided
 
 
+RETRY_MARGIN = 128   # tokens kept back from the window on a retry (template, tool-call framing)
+
+# NEVER SEND WHAT THE WINDOW CANNOT HOLD (2026-10-15). Compaction only elides tool results; the
+# system prompt and the first user turn are never touched. On Sprout (num_ctx 16,384) those two
+# alone measured ~14k tokens, against a compaction target of 16,384 - 6,144 = 10,240, so an
+# explore loop grew past the window a step at a time. Ollama then dropped messages off the FRONT
+# of the request, the only user turn with them, and the qwen chat template raised "No user query
+# found in messages": an HTTP 400 whose text became the beat's reply. About 16 beats since 09-06,
+# every one at step 2-8 of an explore loop, never step 1. A prompt still over the window after
+# compaction is not sent; the tool phase ends and the beat closes as usual.
+WINDOW_SEND_MARGIN = 256
+
+# THE FIRST STEP HAS NO SERVER COUNT, SO IT IS JUDGED ON A PREFLIGHT ESTIMATE THAT ERRS HIGH.
+# Chars per token for a whole unanchored prompt: _CPT (2.9) sits below every ratio measured on
+# this being's seeds (3.026..3.152 over 60 beats), so it over-counts tokens by ~4-8%. Not lower:
+# Sprout's real step-1 prompts measured up to 14,306 tokens at num_ctx 16,384 (~32k content
+# chars), which 2.9 puts at ~15.5k, under the line; 2.5 would put them at ~18k and refuse beats
+# the heartbeat's own fitter (also 2.9) accepted. So the step-1 guard catches a seed that is
+# grossly over the window, not one that tokenizes denser than 2.9; that residue is what the
+# server_cut path below still catches after the fact.
+PREFLIGHT_CPT = _CPT
+
+# A count far below a server-anchored estimate means the server truncated what was sent: the
+# server's prompt_eval_count is then of what survived its own cut, not of the list we sent.
+# Stored as a measurement, it anchored the next step's estimate ~8k low (a window retry came back
+# at 8,172 for a list whose previous step the server had counted at 16,349) and compaction was
+# skipped on exactly the step that needed it.
+SERVER_CUT_RATIO = 0.75
+
+# The template's own words for a request whose user turn is gone. Re-sending the same list
+# cannot succeed, so this is never retried as a transport error.
+NO_USER_QUERY = "No user query found"
+
+
+def retry_cause_of(llm, raw: dict) -> str:
+    """Why a first attempt came back empty: "window" (prompt + eval filled num_ctx),
+    "output_budget" (a `length` stop with room left in the window: num_predict ran out),
+    "length" (a `length` stop with no known window: which limit is not knowable, so not
+    guessed), or "stopped_thinking" (it deliberated and stopped cleanly with nothing in its reply)."""
+    try:
+        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
+        used = int(raw.get("prompt_eval_count") or 0) + int(raw.get("eval_count") or 0)
+    except (TypeError, ValueError):
+        num_ctx, used = 0, 0
+    if raw.get("done_reason") != "length":
+        return "stopped_thinking"
+    if not num_ctx:
+        return "length"
+    if used >= num_ctx - RETRY_MARGIN:
+        return "window"
+    return "output_budget"
+
+
+def _retry_budget(llm, raw: Optional[dict] = None) -> int:
+    """The once-retry budget for a length-stopped or truncated turn: everything the
+    window has left after this prompt, never less than the think budget.
+
+    Why not max(think_budget, max_response_tokens), which this was: with thinking on
+    OllamaIRP already sends num_predict_think on the first attempt, and its
+    resolve_num_predict ignores max_response_tokens whenever the variant declares a
+    value. So the old retry re-sent the same 6000 and was a re-roll at temperature,
+    not room to finish (Legion 18:33Z 2026-09-05: first explore turn eval 6000 empty,
+    retry at 6000 stood by chance). num_ctx - prompt_eval_count is the most the model
+    can be given; past that Ollama stops at the wall regardless (beat 46)."""
+    floor = _think_budget(llm)
+    try:
+        num_ctx = int(getattr(llm, "num_ctx", None) or 0)
+        prompt = int((raw or {}).get("prompt_eval_count") or 0)
+    except (TypeError, ValueError):
+        return floor
+    if num_ctx <= 0 or prompt <= 0:
+        return floor
+    return max(floor, num_ctx - prompt - RETRY_MARGIN)
+
+
+class _no_think:
+    """Turn thinking off for one retry, and put it back.
+
+    A RETRY AFTER A THINK-ONLY GENERATE MUST NOT BE ANOTHER THINK-ONLY GENERATE. Measured
+    2026-09-14 on legion-being: a first attempt hit the wall at prompt_eval 24,194 of a
+    24,576 window with done_reason=length, everything in `thinking` and content empty. The
+    retry, given more room, then spent its ENTIRE 8,000-token budget in `thinking` as well
+    and again said nothing. Two generates, roughly 8,400 tokens, no tool call, and the beat
+    carried on as if the being had chosen silence.
+
+    More room was the wrong lever, because room was not what ran out — the model never
+    started answering. A nudge in the prompt is text the model may ignore, and did. `think`
+    is a flag it cannot ignore in the same way. It can still re-open a block on its own
+    (measured 5/10 turns, 2026-09-03), so this improves the odds rather than guaranteeing an
+    answer; leaving thinking ON for the retry guarantees nothing at all, which is exactly
+    what the measurement above shows.
+
+    Restores the previous value, including when the attribute was absent, so a retry cannot
+    leave every later turn of the beat silently un-thinking."""
+    def __init__(self, llm):
+        self.llm = llm
+        self.had = hasattr(llm, "think")
+        self.keep = None
+
+    def __enter__(self):
+        if self.had:
+            self.keep = self.llm.think
+            self.llm.think = False
+        return self.had
+
+    def __exit__(self, *exc):
+        if self.had:
+            self.llm.think = self.keep
+        return False
+
+
+class _retry_room:
+    """Set llm.num_predict_override for one retry, restore it after. Falls back to
+    max_response_tokens for llm objects without the override (older adapters)."""
+    def __init__(self, llm, budget: int):
+        self.llm, self.budget = llm, budget
+
+    def __enter__(self):
+        llm = self.llm
+        if hasattr(llm, "num_predict_override"):
+            self.keep = ("override", llm.num_predict_override)
+            llm.num_predict_override = self.budget
+        else:
+            # remember absence too: an llm with neither attribute must not leave the
+            # retry's budget behind as a new max_response_tokens for every later turn
+            self.keep = ("max", getattr(llm, "max_response_tokens", None), hasattr(llm, "max_response_tokens"))
+            llm.max_response_tokens = max(self.budget, self.keep[1] or 0)
+        return self.budget
+
+    def __exit__(self, *exc):
+        kind, val = self.keep[0], self.keep[1]
+        if kind == "override":
+            self.llm.num_predict_override = val
+        elif not self.keep[2]:
+            del self.llm.max_response_tokens
+        else:
+            self.llm.max_response_tokens = val
+        return False
+
+
+def _sent_budget(llm) -> Optional[int]:
+    """The num_predict a first attempt sends: what the adapter resolves (config wins over
+    the caller's max_response_tokens with thinking on), else the caller value."""
+    try:
+        if hasattr(llm, "resolve_num_predict"):
+            return int(llm.resolve_num_predict())
+    except Exception:
+        pass
+    v = getattr(llm, "max_response_tokens", None)
+    return int(v) if v is not None else None
+
+
+def generate_with_evidence(llm, messages, *, phase: str, **kwargs):
+    """Return (response, attempt metadata) for ONE provider call, without changing it.
+
+    Generate-level counters describe the final reply: use attempt rows INSTEAD for
+    totals, not in addition. Missing counts stay unknown, never zero. No prompts,
+    arguments or deliberation are stored here. This is not a crash-durable journal:
+    exceptions/process death before return or before publication leave no row.
+    JSON phases name the provider operation, not why it ran; placeholder-retake
+    attribution still requires the enclosing generate's placeholders/step record.
+    """
+    budget = _sent_budget(llm)
+    response = llm.get_chat_response(messages, **kwargs)
+    raw = (response or {}).get("raw") or {}
+    attempt = {
+        "phase": phase, "num_predict": budget,
+        "done_reason": raw.get("done_reason"),
+        "prompt_eval_count": raw.get("prompt_eval_count"),
+        "eval_count": raw.get("eval_count"),
+        "transport_error": bool(((response or {}).get("content") or "").startswith("[OllamaIRP:")
+                                and not (response or {}).get("tool_calls")),
+    }
+    return response, attempt
+
+
 # Outward acts whose slots a JSON turn cannot ground in this turn's state (GPT on #311): not offered there.
 JSON_ACT_EXCLUDE = frozenset({"channel_egress", "mesh", "pr_review", "pr_open", "pr_amend", "patch_apply",
                               "request_scope", "appeal", "request_run", "git_restore"})
+# WHAT MAKES A BRACKETED REPLY A LEAKED TEMPLATE, NOT AN EXPRESSION (GPT on #403; explorations/2026-10-08-nonverbal-
+# intent-modality-selection-action-truth.md). Shape alone is weak evidence: "[nods silently]" can be the being's real
+# nonverbal act. What leaked on Sprout DESCRIBES or INSTRUCTS a reply rather than being one. Measured on its beat log
+# (explore/posture, 2026-09-03..10-08): 1,068 bare-bracket replies that were not transport errors; these features
+# classify 1,011 (95%) as templates ("[Your complete, well-structured response ...]", "[Clear statement of what was
+# done ...]", "[Analyze the situation ...]", "[Tool call 1]") and leave 57 alone, among them every first-person note
+# ("[Internal note: ...]", "[Beat ending. A small note ...]"). Stage directions ("[nods]", "[no response]", "[pauses]")
+# match none of them. Left alone means the native path, unchanged: the safe direction.
+_TPL_ADJ = r"(complete|well-structured|clear|concise|brief|final|closing|natural|warm|friendly|thoughtful|full|short|own|direct|honest|single|one)"
+_TPL_KIND = r"(response|reply|message|answer|statement|entry|summary|reflection|beat|note|poem|confirmation|text|words|output)"
+_TEMPLATE_FEATURES = (
+    ("describes_a_reply", re.compile(rf"^\[\s*(your\s+)?({_TPL_ADJ}[,\s]+)+(\S+\s+)?{_TPL_KIND}\b", re.I)),
+    ("addresses_the_writer", re.compile(r"^\[\s*your\b", re.I)),
+    ("instructs_the_writer", re.compile(r"^\[\s*(analy[sz]e|understand|identify|plan|choose|continue|take|describe|write|"
+                                        r"insert|provide|summari[sz]e|break down|say your|call \w+|make|end this|keep|"
+                                        r"respond|reply)\b[^\]]*\s\w+", re.I)),
+    ("names_a_tool_call", re.compile(r"^\[\s*(one\s+[\w\s,-]*)?tool call", re.I)),
+)
+_BARE_BRACKETS = re.compile(r"^\s*\[[^\[\]]{4,}\]\s*$", re.S)
+_FIRST_PERSON = re.compile(r"^\[\s*(i|i'm|i am|we)\b", re.I)
+
+
+def template_evidence(content: str) -> List[str]:
+    """Why this whole reply reads as a leaked template, as named features; [] when it does not. Bare brackets are
+    never enough on their own: a content feature must hold. A transport error and first-person text are never one."""
+    c = (content or "").strip()
+    if not _BARE_BRACKETS.match(c) or c.startswith("[OllamaIRP") or _FIRST_PERSON.match(c):
+        return []
+    found = [name for name, rx in _TEMPLATE_FEATURES if rx.match(c)]
+    return ["bare_brackets"] + found if found else []
+
+
 _PLACEHOLDER = re.compile(r"^\s*[\[<{].*[\]>}]\s*$|\[(name|topic|path|id|line[^\]]*)\]|placeholder", re.I)
 
 
@@ -1413,11 +1509,12 @@ ACT_ASK_JSON = ('Reply as JSON: {"act": ..., "why": "one short sentence"}. "act"
 
 def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[str, Any]],
                          max_steps: int = 2, tools: Optional[List[dict]] = None,
-                         on_generate: Optional[Callable[[dict], None]] = None,
                          deadline: Optional[float] = None,
                          interject: "Optional[Callable[[], str]]" = None,
                          should_yield: Optional[Callable[[], Optional[str]]] = None,
                          act_form: str = "tools",
+                         retake_bare_placeholder: bool = False,
+                         on_generate: Optional[Callable[[dict], None]] = None,
                          compact_own_turns: bool = False,
                          window_warn_at: Optional[float] = None,
                          floor_handoff_after: Optional[int] = None) -> ToolTurnResult:
@@ -1437,6 +1534,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     # compaction target sat at 26,624 of 32,768 and any turn that thought past ~6k hit the wall
     # (measured 10-08: the floor was 52-55% seed, 20-25% whole results, 0% pointers -- the
     # plateau was the TARGET, not an irreducible floor). More reserve = less held, more room.
+    # On the carrier, 8,704 took legion-being's window retries from 4-13 a beat to 0.
     try:
         from sage.gateway import being_params as _bp
         _root = getattr(client, "memory_root", None)
@@ -1451,9 +1549,16 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     generates: List[dict] = []
     compacted: List[dict] = []
     json_arg_failures: List[dict] = []     # act_form="json": arguments that could not be formed (no act)
+    placeholders: List[dict] = []          # native replies that were only a template, retaken as a JSON act
     # (prompt_eval_count, chars at that prompt) from the last generate the server counted.
     # Compaction is anchored on this, so only the DELTA rides a chars-per-token estimate.
     measured = None
+    attempts: List[dict] = []
+
+    def _model_call(phase: str, messages, **kwargs):
+        response, attempt = generate_with_evidence(llm, messages, phase=phase, **kwargs)
+        attempts.append(attempt)
+        return response
 
     def _json_act(msgs: List[Dict[str, Any]]) -> Dict[str, Any]:
         """One act as two closed JSON objects (act_form="json"), returned in the native reply's shape.
@@ -1473,7 +1578,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                        for c in (m.get("tool_calls") or [])]
         ask = {"role": "user", "content": ACT_ASK_JSON + (
             f" This turn you have already done: {', '.join(done_so_far)}." if done_so_far else "")}
-        r1 = llm.get_chat_response(msgs + [ask], fmt={
+        r1 = _model_call("json_select", msgs + [ask], fmt={
             "type": "object", "required": ["act", "why"],
             "properties": {"act": {"type": "string", "enum": ["done"] + names}, "why": {"type": "string"}}})
         c1 = r1.get("content", "") or ""
@@ -1503,7 +1608,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         # `fmt`); `problem` goes only to telemetry (json_arg_failures) if that draw fails too.
         problem, r2, args = None, None, None
         for attempt in range(2):
-            r2 = llm.get_chat_response(arg_msgs, fmt=spec[act])
+            r2 = _model_call("json_arguments", arg_msgs, fmt=spec[act])
             args, problem = _check_args(r2.get("content", "") or "", spec[act])
             if problem is None:
                 break
@@ -1518,10 +1623,30 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         """ONE attempt in this turn's act form, for the first try AND every retry (GPT on #322: both retries
         fell back to native tool calling, so a JSON-mode step could switch arms mid-step after a transport
         error or a think-only reply). The retries' budget and think handling still wrap this call."""
-        return _json_act(msgs) if act_form == "json" else llm.get_chat_response(msgs, tools=tools)
+        return _json_act(msgs) if act_form == "json" else _model_call("tools", msgs, tools=tools)
+
+    def _land(entry: dict) -> None:
+        generates.append(entry)
+        if on_generate is not None:
+            try:
+                on_generate(dict(entry))
+            except Exception as _e:
+                import sys as _sys
+                print(f"[tool-loop] on_generate failed: {type(_e).__name__}: {_e}", file=_sys.stderr)
+
+    def _window_full(cause: str, est: int, ctx) -> Dict[str, Any]:
+        """End the tool phase without a reply: the next prompt does not fit ("over_window" on a
+        server-anchored estimate, "preflight" on step 1's high-erring one; either way not sent) or
+        the server already cut its user turn ("server_cut"). No words in the being's name."""
+        thoughts.append("")
+        _land({"window_full": cause, "estimated_prompt": est, "num_ctx": ctx, "retried": 0,
+               "attempts": [dict(a) for a in attempts]})
+        return {"content": "", "intents": [],
+                "window_full": {"step": len(thoughts) - 1, "cause": cause, "estimated_prompt": est, "num_ctx": ctx}}
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
         nonlocal measured
+        attempts.clear()
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
         # turn that emitted intents MUST keep them as tool_calls: Qwen's chat template
         # raises on a tool message that follows an assistant message without tool_calls,
@@ -1561,6 +1686,21 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                               "chars": sum(e["chars"] for e in _elided),
                               "after": convo_composition(msgs)})
         try:
+            _ctx = int(getattr(llm, "num_ctx", None) or 0)
+        except (TypeError, ValueError):
+            _ctx = 0
+        # NEVER SEND WHAT THE WINDOW CANNOT HOLD (WINDOW_SEND_MARGIN). From step 2 on, judged on a
+        # server-anchored estimate (the previous step's prompt_eval_count plus the delta); on step 1,
+        # with no count yet, on the PREFLIGHT_CPT estimate, which errs high. Not sent means no cut,
+        # no 400, and nothing said in the being's name.
+        if _ctx > 0:
+            if measured is not None:
+                _est, _cause = _est_tokens(_convo_chars(msgs), measured), "over_window"
+            else:
+                _est, _cause = (_convo_chars(msgs) + _UNCOUNTED_CHARS) / PREFLIGHT_CPT, "preflight"
+            if _est > _ctx - WINDOW_SEND_MARGIN:
+                return _window_full(_cause, int(_est), _ctx)
+        try:
             _room = int(getattr(llm, "num_ctx", 0) or 0) - reserve
             at_floor = bool(measured) and _room > 0 and _est_tokens(_convo_chars(msgs), measured) > _room
         except (TypeError, ValueError):
@@ -1568,11 +1708,17 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         retried = 0
         nudged = False
         retry_cause = None
-        chars_sent = _convo_chars(msgs)
         sent = _sent_budget(llm)          # the num_predict of the reply that stands
         resp = _once(msgs)
         content = resp.get("content", "") or ""
         calls = resp.get("tool_calls", []) or []
+        if content.startswith("[OllamaIRP:") and NO_USER_QUERY in content and not calls:
+            # The server cut the user turn off the front (WINDOW_SEND_MARGIN). The same list cannot
+            # succeed again, and the 400's text is not the being's reply: the window is full.
+            import sys as _sys
+            print(f"[tool-loop] the server cut this prompt's user turn; window full, not retried: "
+                  f"{content[:200]}", file=_sys.stderr)
+            return _window_full("server_cut", int(_est_tokens(_convo_chars(msgs), measured)), _ctx or None)
         if content.startswith("[OllamaIRP:") and not calls:
             # a transport failure is not the being's turn: retry once with a bigger budget,
             # then let the failure through as the visible reply rather than pretending.
@@ -1656,6 +1802,9 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             if (raw.get("done_reason") == "length" or thought_only) and (
                     hasattr(llm, "max_response_tokens") or hasattr(llm, "num_predict_override")):
                 retry_cause = retry_cause_of(llm, raw)
+                # the server's count of what failed, against the list it counted (before any nudge)
+                _failed = ((int(raw["prompt_eval_count"]), _convo_chars(msgs))
+                           if raw.get("prompt_eval_count") else None)
                 if thought_only:
                     # NOT the same prompt again: the retry has to change something the model
                     # can see. Measured 2026-09-08, five beats running, an identical prompt
@@ -1681,14 +1830,21 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                     # code it meant to write (whole functions), cut before the write. The retry
                     # said "act now" and nothing about the draft, so the next attempt derived it
                     # again from scratch. The draft is kept (keep_empty_thinking); say so.
-                    _where = (f"Your whole deliberation is saved as {_kept} -- memory_read a "
+                    # Provider token counts do not establish how much thinking survived
+                    # in the response. Preserve the returned text without calling it the
+                    # whole deliberation (observed: 6000 tokens, 149 returned characters).
+                    _where = (f"The thinking text returned by the provider is saved as {_kept} -- memory_read a "
                               f"narrow range of it to reuse what you drafted rather than "
                               f"deriving it again, and draft long code in a scratch file "
                               f"(memory_write) rather than in your thinking. "
                               if _kept else "")
+                    _usage = (f"The provider reported {raw['eval_count']} output tokens"
+                              if raw.get("eval_count") is not None else
+                              "The provider did not report an output token count")
                     msgs.append({"role": "user", "content": (
-                        f"[harness] Your previous attempt spent its whole budget deliberating "
-                        f"({raw.get('eval_count')} tokens) {_cut} "
+                        f"[harness] Your previous attempt returned thinking without a reply or tool call "
+                        f"{_cut} {_usage}; "
+                        f"{len(str(msg.get('thinking') or ''))} thinking characters were returned. "
                         f"{_where}Act now: one tool call. The "
                         f"deliberation belongs in journal.md, after the act.")})
                 else:
@@ -1701,31 +1857,34 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                         f"delivered. Say or call the SHORTEST form of what you were doing; what you "
                         f"leave out can go in the next beat.")})
                 nudged = True
-                # A WINDOW CUT IS RETRIED WITH ROOM, OR IT IS THE SAME CUT AGAIN (2026-10-08). The
-                # cut-call retry above compacts first; this one never did, so a turn that filled the
-                # window was re-sent as the same prompt plus a nudge. legion-being 09:52Z: 26,241 +
-                # 6,527 = 32,768, retried at "num_predict=8000" with ~6.4k actually left; thinking off,
-                # it wrote its #360 code into memory_write, the call was cut mid-JSON at the wall,
-                # llama-server returned 500, and that error became the beat's last reply (6 generates).
-                # So: compact against the server's own count of what failed, to leave the retry the
-                # standard retry reserve, and size the retry from what is left after that.
+                # A WINDOW CUT IS RETRIED WITH ROOM, OR IT IS THE SAME CUT AGAIN (2026-10-08). This
+                # retry never compacted, so a turn that filled the window was re-sent as the same
+                # prompt (plus a nudge when it only thought). legion-being 09:52Z, on the carrier:
+                # 26,241 + 6,527 = 32,768, retried at "num_predict=8000" with ~6.4k actually left;
+                # thinking off, it wrote its #360 code into memory_write, the call was cut mid-JSON
+                # at the wall, llama-server returned 500, and that error became the beat's last reply
+                # (6 generates). So: compact against the server's own count of what failed, to leave
+                # the retry _RETRY_RESERVE, and size the retry from what is left after that.
+                # Output-budget and stopped-thinking retries are unchanged: the window had room.
                 _budget_raw = raw
-                if retry_cause == "window" and raw.get("prompt_eval_count"):
-                    _anchor = (int(raw["prompt_eval_count"]), _convo_chars(msgs))
-                    msgs, _re = compact_convo(msgs, llm, reserve=_RETRY_RESERVE, measured=_anchor,
+                if retry_cause == "window" and _failed:
+                    # A being may already reserve MORE than the historic retry default.
+                    # A window-cut retake must increase, never relax, that chosen headroom.
+                    retry_reserve = max(_RETRY_RESERVE, reserve + 1024)
+                    msgs, _re = compact_convo(msgs, llm, reserve=retry_reserve, measured=_failed,
                                               spill_root=getattr(client, "memory_root", None),
                                               own_turns=compact_own_turns)
                     if _re:
                         compacted.append({"step": len(thoughts), "elisions": len(_re),
                                           "chars": sum(e["chars"] for e in _re), "before_retry": True,
                                           "after": convo_composition(msgs)})
-                    _budget_raw = dict(raw, prompt_eval_count=_est_tokens(_convo_chars(msgs), _anchor))
+                    _budget_raw = dict(raw, prompt_eval_count=int(_est_tokens(_convo_chars(msgs), _failed)))
                 from contextlib import ExitStack
                 with ExitStack() as _stack:
                     budget = _stack.enter_context(_retry_room(llm, _retry_budget(llm, _budget_raw)))
-                    _unthought = bool(thought_only and _stack.enter_context(_no_think(llm)))
-                    print(f"[tool-loop] retrying once with num_predict={budget}, a nudge"
-                          f"{' and thinking OFF' if _unthought else ''} "
+                    unthought = bool(thought_only and _stack.enter_context(_no_think(llm)))
+                    print(f"[tool-loop] retrying once with num_predict={budget}"
+                          f"{' , thinking OFF and a nudge' if unthought else ''} "
                           f"(num_ctx={getattr(llm, 'num_ctx', None)} prompt_eval={raw.get('prompt_eval_count')})",
                           file=_sys.stderr)
                     resp = _once(msgs)
@@ -1733,6 +1892,34 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                     sent = budget
                     content = resp.get("content", "") or ""
                     calls = resp.get("tool_calls", []) or []
+        _evidence = (template_evidence(content) if retake_bare_placeholder and not calls and act_form != "json"
+                     else [])
+        if _evidence and not salvage_tool_calls(content, tools):
+            # A TEMPLATE IS NOT A REPLY (2026-10-08) -- IN THE CALLERS THAT OPT IN, which are only explore and
+            # posture, where it was measured (GPT on #403: this loop also runs answer, governed and raising turns).
+            # On Sprout since 09-29, 30-60% of explore replies a day were only "[Your complete, well-structured
+            # response following all constraints]" with no call, while the thinking had planned an act; acted ~25%.
+            # Offline on its real seed: native 0/10 acts, 7/10 this template; the JSON act form made 6/6 (E11), and
+            # the answer turn's identical failure was fixed the same way (#237). So THIS step, once, is retaken in
+            # that form; words, calls and expressions keep the native path.
+            # INTERPRETED INTENT MUST NOT SILENTLY REPLACE EXPRESSED INTENT (the exploration's invariant): the record
+            # keeps the original output and its thinking, the evidence that classified it, the policy, and the
+            # retry-derived result, marked as such. The template is not shown back to the being as its words.
+            _orig = resp
+            _orig_thinking = str(((_orig.get("raw") or {}).get("message") or {}).get("thinking") or "")
+            _offered = {t["function"]["name"] for t in tools}
+            _basis = ["opted_in_phase", "no_native_call", "nothing_salvageable"] + _evidence + (
+                ["thinking_named_a_tool"] if any(re.search(rf"\b{re.escape(n)}\b", _orig_thinking) for n in _offered)
+                else [])
+            resp = _json_act(msgs)
+            content = resp.get("content", "") or ""
+            calls = resp.get("tool_calls", []) or []
+            _act = calls[0]["function"] if calls else None
+            placeholders.append({
+                "step": len(thoughts), "original": (_orig.get("content") or "")[:1000],
+                "original_thinking": _orig_thinking[:1500], "basis": _basis, "policy": "json_act_once",
+                "retry_derived": True, "act": _act["name"] if _act else None,
+                "result": ({"act": _act["name"], "args": _act.get("arguments")} if _act else {"reply": content[:500]})})
         thoughts.append(str(((resp.get("raw") or {}).get("message") or {}).get("thinking") or ""))
         # What the window did this generate, from the reply that stood (after any retry):
         # prompt_eval_count + eval_count == num_ctx with done_reason "length" is the wall
@@ -1741,11 +1928,20 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         # "did the retry have more room than the first attempt" reads from the file, not
         # from stderr (SAGE #45 sends the room; this says what it was).
         raw = resp.get("raw") or {}
+        _server_cut = None
         if raw.get("prompt_eval_count"):
             # re-measure from the list AS SENT: any nudge appended above is inside this count
-            measured = (int(raw["prompt_eval_count"]), _convo_chars(msgs))
+            _now = (int(raw["prompt_eval_count"]), _convo_chars(msgs))
+            # ... unless the count is of what survived a server cut (SERVER_CUT_RATIO): then the
+            # previous anchor stands, and the cut is recorded instead of believed.
+            _expected = _est_tokens(_now[1], measured) if measured is not None else None
+            if _expected and _now[0] < SERVER_CUT_RATIO * _expected:
+                _server_cut = {"counted": _now[0], "expected": int(_expected)}
+            else:
+                measured = _now
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
-                 "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent}
+                 "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent,
+                 "attempts": [dict(a) for a in attempts]}
         window = _window_pressure(llm, raw.get("prompt_eval_count"))
         if nudged:
             entry["nudged"] = True   # only when it happened: exact-compare callers stay exact
@@ -1755,13 +1951,9 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         # would break every caller that compares the entry exactly
         if compacted and compacted[-1]["step"] == len(thoughts) - 1:
             entry["compacted"] = compacted[-1]
-        generates.append(entry)
-        if on_generate is not None:
-            try:
-                on_generate(dict(entry))
-            except Exception as _e:
-                import sys as _sys
-                print(f"[tool-loop] on_generate failed: {type(_e).__name__}: {_e}", file=_sys.stderr)
+        if _server_cut:
+            entry["server_cut"] = _server_cut
+        _land(entry)
         if not calls and content:
             # the call in the wrong channel: lift it, gate it as normal, record that it was lifted
             calls = salvage_tool_calls(content, tools)
@@ -1784,5 +1976,6 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     # the beat record (GPT review of #82: a list nobody returns is not an instrument).
     result.compacted = list(compacted)
     result.json_arg_failures = list(json_arg_failures)
+    result.placeholders = list(placeholders)
 
     return result

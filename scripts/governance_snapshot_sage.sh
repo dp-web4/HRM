@@ -14,11 +14,15 @@
 # reads only. Public SAGE only: never point this at dev-SAGE.
 #
 # Usage: governance_snapshot_sage.sh [sage_checkout] [dest]
-#   defaults: /home/dp/ai-workspace/SAGE  /home/dp/ai-workspace/governance/sage
+#   defaults: the SAGE checkout this script is in  <workspace>/governance/sage
 # Idempotent: rebuilds into a temp dir, swaps it in, records the commit in dest/SNAPSHOT.
 set -eu
-SRC="${1:-/home/dp/ai-workspace/SAGE}"
-DEST="${2:-/home/dp/ai-workspace/governance/sage}"
+# THE WORKSPACE IS WHERE THIS SCRIPT LIVES, never a literal path (fleet directive: no hardcoded paths).
+# scripts/ sits in the SAGE checkout, which sits in the workspace: ai-workspace on most boxes, ai-agents on
+# nomad. HESTIA_WORKSPACE overrides, as it does for the gate.
+WS="${HESTIA_WORKSPACE:-$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)}"
+SRC="${1:-$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)}"
+DEST="${2:-$WS/governance/sage}"
 SUB="sage/gateway"
 REV="$(git -C "$SRC" rev-parse HEAD)"
 BRANCH="$(git -C "$SRC" rev-parse --abbrev-ref HEAD)"

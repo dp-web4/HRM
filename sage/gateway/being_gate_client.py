@@ -2331,7 +2331,7 @@ _REGISTRY = {
     "remember":       dict(tool="remember",     path_args=(),       cmd_arg=None),
     # retire_note: rename one of the being's OWN notes to `.retired-<date>` with a dated
     # header. Judged on the path like memory_write, because that is what it is: a write
-    # inside its own home, bounded to notes/ and scratch/ by the dispatcher.
+    # inside its own home, bounded to notes/, scratch/ and its todo.md by the dispatcher.
     "retire_note":    dict(tool="write_note",   path_args=("path",), cmd_arg=None),
     # tune: set one of the being's own parameters (being_params). Judged as what it is, a write
     # of ONE fixed file in its own home: the path is the seat's (tuned.json), never the being's,

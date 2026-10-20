@@ -1484,9 +1484,16 @@ class ReferenceF1aDispatcher:
         of escalation, because nothing it could do said "this is finished". dp, to the being:
         "renaming and deleting aren't verbs you have yet — we're looking at that."
 
-        Bounded: only inside `notes/` or `scratch/` in its own home. `_safe_path(writing=True)`
-        already refuses the seat-owned notes and the reserved subtrees, and a path outside the
-        home, so this adds only the notes/-or-scratch/ rule. The file keeps its content
+        Bounded: only inside `notes/` or `scratch/` in its own home, or its own `todo.md`.
+        `_safe_path(writing=True)` already refuses the seat-owned notes and the reserved subtrees,
+        and a path outside the home, so this adds only the notes/-or-scratch/-or-todo rule.
+
+        TODO.MD TOO (dp, 2026-10-20). The todo is an append log whose open items the window
+        recomputes every beat, and differently worded copies of one task never close. dp asked
+        cbp-being to retire old items; it had no tool that removes anything, so it appended ~100
+        "[x] retiring" lines and the file grew from 2865 to 2964 lines. Retiring the whole todo
+        keeps it intact under `todo.retired-<date>.md` (readable) and the being writes back only
+        what is still open. The journal stays excluded: it is the record of what happened. The file keeps its content
         and gains a header; the name gains `.retired-<date>`, so a reader and a listing both
         see that it is closed."""
         raw = str(intent.args.get("path", "")).strip()
@@ -1496,10 +1503,12 @@ class ReferenceF1aDispatcher:
         if not reason:
             return ResultEnvelope(ok=False, error="retire_note needs a 'reason': what you know now that the note does not")
         p = self._safe_path(raw, writing=True)
-        if p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root:
+        is_todo = p == Path(self.memory_root) / "todo.md"
+        if not is_todo and (p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root):
             return ResultEnvelope(ok=False, error=(
-                f"retire_note is for your own notes: '{raw}' is not directly inside your notes/ or "
-                f"scratch/. Your journal and todo are the running record and are not retired this way."))
+                f"retire_note is for your own notes and your todo.md: '{raw}' is not directly inside "
+                f"your notes/ or scratch/. Your journal is the record of what happened and is not "
+                f"retired this way."))
         if not p.exists():
             return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
         if ".retired-" in p.name:
@@ -1519,7 +1528,11 @@ class ReferenceF1aDispatcher:
             f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z by cbp-being. No longer current: {reason}\n"
             f"> Kept whole below, as it was written.\n\n" + body)
         p.unlink()
-        return ResultEnvelope(ok=True, result=f"retired {p.name} -> {dest.name}",
+        result = f"retired {p.name} -> {dest.name}"
+        if is_todo:
+            result += (f". Your todo.md is now empty. memory_write it with only the items still open; "
+                       f"the old list stays readable at {dest.name}.")
+        return ResultEnvelope(ok=True, result=result,
                               witness_id=self._witness(f"retire_note {p.name} -> {dest.name}: {reason[:120]}"))
 
     def _do_memory_write(self, intent: BeingIntent) -> ResultEnvelope:
@@ -1612,6 +1625,9 @@ class ReferenceF1aDispatcher:
             if p.parent.name in ("notes", "scratch") and p.parent.parent == self.memory_root:
                 result += (f" To start {p.name} fresh, retire_note it first, then memory_write "
                            f"the whole new version.")
+            elif p == Path(self.memory_root) / "todo.md":
+                result += (" To clear out old or finished items, retire_note todo.md (it is kept "
+                           "whole as todo.retired-<date>.md), then memory_write only what is still open.")
             elif p.suffix == ".py" and _is_second_program(content, _before_text):
                 # 2026-09-24 15:19Z: cbp-being decided on "a new file", then memory_write-d the new
                 # program twice to the OLD file's name. Both landed below 3666 broken lines, and

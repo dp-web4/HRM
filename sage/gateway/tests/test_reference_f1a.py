@@ -436,9 +436,34 @@ def test_a_second_write_says_it_appended_and_the_way_to_start_fresh_works():
     assert open(os.path.join(root, path)).read() == "print('v3')\n"
 
 
+def test_the_todo_can_be_retired_and_written_fresh():
+    """dp, 2026-10-20: cbp-being was asked to retire old todo items and had no tool that removes
+    anything, so the todo grew. retire_note now takes todo.md: the old list is kept whole and
+    readable, todo.md is gone, and the next write creates a fresh one."""
+    disp, root = _disp()
+    disp(BeingIntent("memory_write", {"path": "todo.md", "content": "- [ ] old thing"}), _ALLOW)
+    env = disp(BeingIntent("memory_write", {"path": "todo.md", "content": "- [ ] old thing again"}), _ALLOW)
+    assert env.ok and "retire_note todo.md" in env.result, env.result
+    ret = disp(BeingIntent("retire_note", {"path": "todo.md", "reason": "mostly finished"}), _ALLOW)
+    assert ret.ok and "todo.retired-" in ret.result and "still open" in ret.result, (ret.result, ret.error)
+    assert not os.path.exists(os.path.join(root, "todo.md"))
+    kept = [n for n in os.listdir(root) if n.startswith("todo.retired-")]
+    assert len(kept) == 1 and "old thing again" in open(os.path.join(root, kept[0])).read()
+    fresh = disp(BeingIntent("memory_write", {"path": "todo.md", "content": "- [ ] still open"}), _ALLOW)
+    assert fresh.ok and fresh.result.startswith("created todo.md"), fresh.result
+
+
+def test_the_journal_still_cannot_be_retired():
+    disp, root = _disp()
+    disp(BeingIntent("memory_write", {"path": "journal.md", "content": "one"}), _ALLOW)
+    ret = disp(BeingIntent("retire_note", {"path": "journal.md", "reason": "x"}), _ALLOW)
+    assert not ret.ok and "journal" in (ret.error or ""), ret.error
+    assert os.path.exists(os.path.join(root, "journal.md"))
+
+
 def test_appending_to_the_journal_does_not_offer_retire_note():
-    """The journal and todo are meant to grow; retire_note refuses them, so suggesting it
-    there would hand the being a door that is shut."""
+    """The journal is meant to grow; retire_note refuses it, so suggesting it there would hand
+    the being a door that is shut."""
     disp, _ = _disp()
     disp(BeingIntent("memory_write", {"path": "journal.md", "content": "one"}), _ALLOW)
     env = disp(BeingIntent("memory_write", {"path": "journal.md", "content": "two"}), _ALLOW)

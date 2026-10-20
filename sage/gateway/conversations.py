@@ -800,6 +800,42 @@ def _provenance_tag(turn: dict) -> str:
     return UNSIGNED_TAG if via in UNSIGNED_VIA else ""
 
 
+# MUSIC THE TRANSCRIBER MARKED, SAID WHERE IT IS (dp 2026-10-19, "the music still confuses it"). The transcriber
+# writes `[Music]`, `[MUSIC PLAYING]`, `(upbeat music)` or `♪ … ♪` when it hears music, and nothing tied those marks
+# to the lines around them: room 315 ("No single voice could hold the need", 5 s after a `[Music]` at 314) came back
+# as the being's own opening line. The note says what the transcriber recorded, not what a line is. On the record,
+# dp's "Are you waking yourself up?" (room 272) came 7 s before a `[MUSIC PLAYING]`, so a person speaking over the
+# music is named as a possibility too. Shown at render time; the record is not changed.
+MUSIC_MARK = re.compile(r"[\[(][^\])]*\bmusic\b[^\])]*[\])]|[♪♫]", re.I)
+MUSIC_WINDOW_S = 60
+
+
+def _ts_seconds(turn: dict) -> Optional[float]:
+    try:
+        return datetime.fromisoformat(str(turn.get("ts", "")).replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return None
+
+
+def _music_notes(turns: list) -> dict:
+    """seq -> note, for picked-up lines the transcriber marked as music or that came within MUSIC_WINDOW_S of one."""
+    heard = [(t, _ts_seconds(t)) for t in turns if t.get("via") == "voice"]
+    marks = [(t, s) for t, s in heard if s is not None and MUSIC_MARK.search(str(t.get("text") or ""))]
+    notes = {}
+    for t, s in heard:
+        if s is None:
+            continue
+        if any(m is t for m, _ in marks):
+            notes[t.get("seq")] = " _(the transcriber marked music here)_"
+            continue
+        near = [m for m, ms in marks if abs(ms - s) <= MUSIC_WINDOW_S]
+        if near:
+            notes[t.get("seq")] = (f" _(music was playing within a minute: the transcriber marked it at seq "
+                                   f"{near[0].get('seq')}. This line may be song lyrics, or someone speaking over "
+                                   f"the music)_")
+    return notes
+
+
 def _shown_text(turn: dict, turn_chars: Optional[int], conv_id: str) -> str:
     """A turn's text as the beat shows it. Capped when asked, and the cap says where the
     rest is — by SEQ, which is the raw line number, so a ranged memory_read reaches it.
@@ -850,7 +886,9 @@ def drain_new_for(instance: Path, me: str, *, mark: bool = True) -> str:
         pend = awaiting(instance, m["id"], me)
         if not pend:
             continue
-        lines = [(f"- **the mic picked up** ({t['ts']}): {t['text']}" if t.get("via") == "voice" else
+        music = _music_notes(pend)
+        lines = [(f"- **the mic picked up** ({t['ts']}){music.get(t.get('seq'), '')}: {t['text']}"
+                  if t.get("via") == "voice" else
                   f"- **{t['from']}** ({t['ts']}){_provenance_tag(t)}: {t['text']}") for t in pend]
         out.append(f"### {m['title']}  (id: {m['id']}; reply with say to=\"{m['id']}\")\n"
                    + "\n".join(lines))
@@ -1000,7 +1038,8 @@ def render_for_being(instance: Path, me: str, per_conv: int = 12,
         # A HEARD LINE HAS NO SPEAKER (dp 2026-10-19, "'mic picked up' is good"). Headed `**voice**`, it read
         # to a 4B as a person named voice, and its unanswered-turn marker asked for replies to TV lines, lyrics
         # and transcriber noise. It is shown as what it is: something the mic picked up.
-        lines = [(f"- **the mic picked up** ({t['ts']})" if t.get("via") == "voice" else
+        music = _music_notes(turns)
+        lines = [(f"- **the mic picked up** ({t['ts']}){music.get(t.get('seq'), '')}" if t.get("via") == "voice" else
                   f"- **{t['from']}{' (you)' if t.get('from') == me else ''}** ({t['ts']})"
                   + _provenance_tag(t))
                  + (_refuted_mark(t.get("text", ""), refuted) if t.get("from") == me else "")

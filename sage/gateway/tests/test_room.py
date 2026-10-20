@@ -74,6 +74,34 @@ def test_the_beat_shows_heard_lines_as_picked_up_and_owed_nothing():
     assert "still yours to answer" not in again
 
 
+def test_music_the_transcriber_marked_is_said_beside_the_lines_near_it():
+    """Room 314-315 (2026-10-19): `[Music]`, then a lyric 5 s later the being took up as its own opening line."""
+    h = _home()
+    room.ensure(h, ME)
+    t = time.time() - 300
+    room.ingest_heard(h, ME, INV, heard=[_heard(t, "It's between Bar and Gond."),
+                                        _heard(t + 21, "[Music]"),
+                                        _heard(t + 26, "No single voice could hold the need."),
+                                        _heard(t + 200, "Can you hear me?")])
+    def line_with(shown, words):
+        return next(ln for ln in shown.splitlines() if words in ln)
+
+    for shown in (conv.drain_new_for(h, ME, mark=False), conv.render_for_being(h, ME).split("### the room")[1]):
+        assert "the transcriber marked music here" in line_with(shown, "[Music]")
+        lyric = line_with(shown, "No single voice")
+        assert "music was playing within a minute" in lyric
+        assert "song lyrics, or someone speaking over the music" in lyric, "a person over the music stays possible"
+        assert "music was playing within a minute" in line_with(shown, "Bar and Gond"), "before a mark counts too"
+        assert "music" not in line_with(shown, "Can you hear me?"), "minutes from any mark: no note"
+
+
+def test_music_marks_the_transcriber_writes_are_all_recognised():
+    for text in ("[Music]", "[MUSIC PLAYING]", "(upbeat music)", "♪ Where you are ♪"):
+        assert conv.MUSIC_MARK.search(text), text
+    for text in ("[water splashing]", "[BLANK_AUDIO]", "Musical chairs are fun", "(knocking)"):
+        assert not conv.MUSIC_MARK.search(text), text
+
+
 def test_an_existing_room_with_the_old_summary_is_brought_up_to_date():
     """NOVA on #485: create() keeps existing metadata, so an upgraded room kept the old speaker guidance."""
     import json

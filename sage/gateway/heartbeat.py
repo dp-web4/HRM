@@ -996,7 +996,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
 
 REFLECT = """The beat is ending. Call these tools, then stop:
 {say_first}1. memory_write path "journal.md": one entry starting with the date {date}: what you did, what you noticed, what was refused and why you think so, what you want next time.
-2. memory_write path "todo.md": only the delta as a dated block: added / done / still open (it appends; it replaces nothing).
+2. memory_write path "todo.md": your message to your future self, as a dated block: added / done / still open (it appends; it replaces nothing).
 3. remember: one sentence a future you would want to FIND by searching (what you learned, decided, or noticed), only if there is one. Your journal is searchable by recall now; remember is for the line that should outlast it.
 {say_line}Call the tools now; a reply in words alone writes nothing.
 """

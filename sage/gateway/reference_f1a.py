@@ -1058,10 +1058,15 @@ class ReferenceF1aDispatcher:
             # got the same first 50 names each time, and then read the first-listed (oldest)
             # note instead of any file holding the text. Say that find did not run and why.
             find = str(intent.args.get("find") or "")
+            # Outside the home, `search` reads a granted directory by absolute path (SAGE #505),
+            # so name it with the path filled in; inside the home, one file with find is the way.
+            in_home = p == self.memory_root or self.memory_root in p.parents
+            how = ("To search, memory_read one file's path with find." if in_home else
+                   f"To find which file under it holds the text: search {{\"pattern\": "
+                   f"\"{find.strip()[:80]}\", \"path\": \"{p}\"}}.")
             unrun = (f"\n[find was NOT run: find looks inside ONE file, and '{shown}' is a "
                      f"directory. Nothing was searched, so nothing is known yet about which file "
-                     f"holds '{find.strip()[:80]}'. To search, memory_read one file's path with "
-                     f"find.]") if find.strip() else ""
+                     f"holds '{find.strip()[:80]}'. {how}]") if find.strip() else ""
             return ResultEnvelope(
                 ok=True,
                 result=(f"[directory: '{shown}' holds {len(names)} entr{'y' if len(names) == 1 else 'ies'}]\n"

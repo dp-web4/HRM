@@ -1343,8 +1343,18 @@ def test_memory_read_find_with_no_match_says_it_is_about_this_file_only():
     assert r.result.startswith("[directory:"), r.result
     # ...and say the find was not run, rather than letting the listing pass as its answer
     assert "find was NOT run" in r.result and "'scratch' is a directory" in r.result, r.result
+    assert "memory_read one file's path with find" in r.result and "search {" not in r.result
     r = disp(BeingIntent("memory_read", {"path": "scratch"}), _ALLOW)
     assert "find was NOT run" not in r.result, r.result
+    # a granted directory OUTSIDE the home: search reads it by absolute path (#505), so the
+    # notice names that call with the path filled in
+    other = tempfile.mkdtemp(prefix="ref-f1a-dirfind-")
+    os.makedirs(os.path.join(other, "plugins"))
+    r = disp(BeingIntent("memory_read", {"path": other, "find": "GateDecision"}),
+             GatewayVerdict("allow", granted=(other,)))
+    assert "find was NOT run" in r.result, r.result
+    real = os.path.realpath(other)
+    assert f'search {{"pattern": "GateDecision", "path": "{real}"}}' in r.result, r.result
     _scratch(root, "", "empty.py")
     r = disp(BeingIntent("memory_read", {"path": "scratch/empty.py", "find": "x"}), _ALLOW)
     assert r.result.startswith("[empty file:"), r.result

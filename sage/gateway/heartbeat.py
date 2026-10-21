@@ -630,7 +630,8 @@ def act_after_answer_on(instance) -> bool:
 # dp for a worktree so search could find a line in its own scratch file (see NO_WORKTREE_REFUSAL). Pinned
 # by test_no_worktree_ability_claims_the_home.
 _ABILITIES = [("camera", "look through your eyes"),
-              ("search", "search the code repository checked out on this seat (not your home)"),
+              ("search", "search the code repository checked out on this seat, or with none a "
+                         "folder you hold a grant for outside your home (not your home)"),
               ("pr_read", "read the fleet's pull requests"), ("recall", "recall memories"),
               ("peer_ask", "ask a sibling a question"), ("speak", "speak aloud"),
               ("web_search", "search the web a few times an hour (what comes back is other people's words)")]

@@ -40,8 +40,13 @@ WORKTREE_VERBS = ("git_read", "search", "check", "patch_apply", "git_restore", "
 # for a worktree so `search` could find lines in its own scratch file, which search can never
 # read. Each line says what the verb reads and which tool serves the being's own files. The
 # full refusal the verb itself returns is being_gate_client.NO_WORKTREE_REFUSAL.
+#: Worktree verbs that still work with no worktree, on another target, so they are NOT marked
+#: unavailable there. search reads a grant outside the home by absolute path (CBP, 2026-10-21:
+#: 15 refused searches in 12 beats on the governance snapshot it holds read grants for).
+REACH_VERBS = ("search",)
 NO_WORKTREE_HERE = {
-    "search": ("it searches a code-repository checkout (a worktree), not your home; to find a "
+    "search": ("it searches a code-repository checkout (a worktree), or with none a folder outside "
+               "your home that you hold a grant for, by absolute path; not your home: to find a "
                "line in your own files use memory_read with path and find"),
     "git_read": ("it reads the git history of a code-repository checkout (a worktree), not "
                  "your home, and this seat has none; to read your own files use memory_read"),
@@ -114,7 +119,7 @@ def unavailable(body_reading: Optional[dict] = None, worktree: Optional[str] = N
             out[v] = f"this machine's body has no {part} (measured)"
     if not worktree:
         for v in WORKTREE_VERBS + WORKTREE_HELD_VERBS:
-            if v in _TOOL_SCHEMAS:
+            if v in _TOOL_SCHEMAS and v not in REACH_VERBS:
                 out[v] = NO_WORKTREE_HERE.get(
                     v, "it works in a code-repository checkout (a worktree), and this seat has none")
     # A CORTEX-SOURCED CAMERA (instance.json camera_source "cortex", sage/embodiment/look.py) needs no

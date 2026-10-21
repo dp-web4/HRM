@@ -275,8 +275,13 @@ _REV = (r"(?:[0-9a-fA-F]{7,40}|HEAD|[A-Za-z][A-Za-z0-9._/-]{0,60})"
 NO_WORKTREE_REFUSAL = {
     # #357 correctly avoided promising find before the tool could do it. #390 adds literal
     # per-file find; name its parameter explicitly, without suggesting worktree setup.
+    # Reached only with no path given (a path takes search to a grant outside the home, see
+    # _reach_search_command). It names where search DOES read here, so the next call can work.
     "search": (
-        "search reads a code-repository checkout (a worktree), not your home. To find a line in "
+        "search reads code, not your home: a code-repository checkout (a worktree) when you have "
+        "one, and otherwise a folder or file OUTSIDE your home that you hold a grant for. Give "
+        "that folder's absolute path as path (your grants are listed under 'Reach you hold' in "
+        "your state), and search lists file:line:text for each match inside it. To find a line in "
         "your own files (notes/, scratch/, todo.md, journal.md), use memory_read with the "
         "file's path and find: it lists matching line numbers in that file. "
         "Then memory_read with start_line and end_line reads the range you need."),
@@ -338,7 +343,12 @@ NO_WORKTREE_REFUSAL = {
         "you can take. No other tool captures a frame."),
 }
 
-GIT_OPS = ("log", "show", "diff", "status", "blame", "cat")
+# What a reach search says when pointed at the home: the home's own finder, by its real call.
+_SEARCH_HOME_POINTER = (
+    "To find a line in your own files (notes/, scratch/, todo.md, journal.md), use memory_read "
+    "with the file's path and find: it lists matching line numbers in that file.")
+
+GIT_OPS =("log", "show", "diff", "status", "blame", "cat")
 
 # A revision the being may name: a hex sha, HEAD with optional ~n/^n, or a plain branch or
 # tag name. Deliberately excludes anything containing a flag, a space, or a path separator
@@ -979,7 +989,7 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
     import os
     import shlex
     worktree = (ctx or {}).get("worktree")
-    if not worktree:
+    if not worktree and not str(args.get("path", "")).strip():
         raise ValueError(NO_WORKTREE_REFUSAL["search"])
     pattern = str(args.get("pattern", ""))
     if not pattern.strip():
@@ -993,6 +1003,8 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
     except (TypeError, ValueError):
         raise ValueError(f"search 'n' must be a number, got {args.get('n')!r}")
     n = max(1, min(n, SEARCH_MAX_N))
+    if not worktree:
+        return _reach_search_command(pattern, n, str(args.get("path", "")).strip(), ctx or {})
 
     path = str(args.get("path", "")).strip()
     target = os.path.realpath(worktree)
@@ -1012,6 +1024,54 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
     # and the law would have judged a command that is not the one executed (GPT review of
     # #83). Fleet paths are simple today; the invariant must not depend on that staying true.
     return (f"git --no-pager -C {shlex.quote(worktree)} grep -n -I -E --max-count={n} "
+            f"-e {shlex.quote(pattern)} -- {shlex.quote(target)}")
+
+
+def reach_search_target(cmd: str) -> Optional[str]:
+    """The one path a reach search reads: the argv element after `--` of a command
+    _reach_search_command composed (None for any other shape). The dispatcher confines on this,
+    taken from the string the law judged rather than recomposed."""
+    import shlex
+    argv = shlex.split(cmd)
+    if not argv or argv[0] != "grep" or "--" not in argv:
+        return None
+    rest = argv[argv.index("--") + 1:]
+    return rest[0] if len(rest) == 1 else None
+
+
+def _reach_search_command(pattern: str, n: int, path: str, ctx: dict) -> str:
+    """SEARCH WITH NO WORKTREE READS A GRANT OUTSIDE THE HOME (CBP, 2026-10-21).
+
+    cbp-being holds read grants on the governance snapshot and has no worktree, so `search` had
+    nothing to run on: 15 refusals in 12 beats (GateDecision( across governance/hestia,
+    StateGuard across its plugins), each costing an explore step, while memory_read find can only
+    look inside one file it already knows. Here the target is an ABSOLUTE path outside the home
+    (the home stays memory_read find's: search does not read the being's own files), and the
+    command is a fixed read-only grep over it. The law judges this string as it judges git grep:
+    the target token against the member's granted prefixes, so a path outside the grants is
+    refused by the gate, not by this function; the dispatcher confines on the verdict's reach too.
+    """
+    import os
+    import shlex
+    if any(ch.isspace() for ch in path):
+        raise ValueError("search 'path' may not contain whitespace")
+    raw = os.path.expanduser(path)
+    if not os.path.isabs(raw) or path.startswith("-") or ".." in raw.split("/"):
+        raise ValueError(
+            f"search 'path' {path!r} is not an absolute path. With no worktree here, search reads "
+            f"a folder or file OUTSIDE your home that you hold a grant for, named by its absolute "
+            f"path (your grants are listed under 'Reach you hold' in your state). " + _SEARCH_HOME_POINTER)
+    target = os.path.realpath(raw)
+    home = (ctx or {}).get("memory_root")
+    if home:
+        h = os.path.realpath(str(home))
+        if target == h or target.startswith(h + os.sep):
+            raise ValueError(
+                f"search does not read your home ({path!r} is inside it). " + _SEARCH_HOME_POINTER)
+    if not os.path.exists(target):
+        raise ValueError(f"search 'path' {path!r} does not exist, so there is nothing there to "
+                         f"search. Name a folder or file that exists, by its absolute path.")
+    return (f"grep -r -n -I -E -s --max-count={n} --exclude-dir=.git "
             f"-e {shlex.quote(pattern)} -- {shlex.quote(target)}")
 
 
@@ -2486,7 +2546,9 @@ _TOOL_SCHEMAS = {
                "long file in ranges costs you the earlier ranges, because your window is "
                "smaller than the file. Search first, then read the lines it points at.",
                {"pattern": "the text or extended-regex to look for, e.g. 'def compose(' ",
-                "path": "optional: a path inside your worktree to narrow the search to",
+                "path": ("a path inside your worktree to narrow the search to; with no worktree, "
+                         "required: the absolute path of a folder or file outside your home "
+                         "that you hold a grant for"),
                 "n": "optional: maximum matches per file (default 30)"},
                ["pattern"]),
     "run": ("RUN a Python file you wrote, in a sandbox on COPIES of your files, and read what "

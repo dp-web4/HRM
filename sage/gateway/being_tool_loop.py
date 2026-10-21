@@ -47,6 +47,7 @@ class ToolTurnResult:
     json_arg_failures: List[dict] = field(default_factory=list)  # act_form="json": chosen acts whose arguments failed (no act)
     placeholders: List[dict] = field(default_factory=list)   # a leaked-template reply retaken as a JSON act: original, basis, policy, retry-derived result
     window_full: Optional[dict] = None                     # the harness ended the tool phase: the next prompt would not fit the window
+    seed_measured: Optional[tuple] = None                  # (prompt_eval_count, chars) of the first prompt the server counted whole: the next phase's anchor
 
     @property
     def acted(self) -> bool:
@@ -1194,7 +1195,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                          act_form: str = "tools",
                          retake_bare_placeholder: bool = False,
                          on_generate: Optional[Callable[[dict], None]] = None,
-                         compact_own_turns: bool = False) -> ToolTurnResult:
+                         compact_own_turns: bool = False,
+                         anchor: Optional[tuple] = None) -> ToolTurnResult:
     """Run a gated tool turn using an OllamaIRP-like `llm` exposing
     get_chat_response(messages, tools=...) -> {"content", "tool_calls"}.
 
@@ -1203,6 +1205,9 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     `tools` narrows what is offered for this turn (default: the whole registry).
     `on_generate` sees each generates[] entry as it lands, so a caller can write a trace
     a killed beat still leaves (the record itself is written at beat end).
+    `anchor` is a previous phase's `seed_measured` over a PREFIX of `seed_messages`, sent with the
+    same `tools`: step 1 is then judged on the server's count instead of the preflight guess, and
+    a step-1 count far below it is caught as a server cut (posture after explore, CBP 2026-10-21).
     """
     from sage.gateway.being_gate_client import ollama_tools, parse_tool_calls
     # THE ANSWER RESERVE IS PER BEING (being_params `answer_reserve`, 2026-10-08). It is what
@@ -1229,7 +1234,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     placeholders: List[dict] = []          # native replies that were only a template, retaken as a JSON act
     # (prompt_eval_count, chars at that prompt) from the last generate the server counted.
     # Compaction is anchored on this, so only the DELTA rides a chars-per-token estimate.
-    measured = None
+    measured = tuple(anchor) if anchor else None
+    first_measured = None    # this phase's own first whole count: what the next phase anchors on
     attempts: List[dict] = []
 
     def _model_call(phase: str, messages, **kwargs):
@@ -1322,7 +1328,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 "window_full": {"step": len(thoughts) - 1, "cause": cause, "estimated_prompt": est, "num_ctx": ctx}}
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
-        nonlocal measured
+        nonlocal measured, first_measured
         attempts.clear()
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
         # turn that emitted intents MUST keep them as tool_calls: Qwen's chat template
@@ -1575,6 +1581,8 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 _server_cut = {"counted": _now[0], "expected": int(_expected)}
             else:
                 measured = _now
+                if first_measured is None:
+                    first_measured = _now
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
                  "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent,
                  "attempts": [dict(a) for a in attempts]}
@@ -1582,7 +1590,17 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             entry["retry_cause"] = retry_cause   # what the FIRST attempt hit; the counts above are the retry's
         if _server_cut:
             entry["server_cut"] = _server_cut
+            entry["window_full"] = "server_cut"
         _land(entry)
+        if _server_cut:
+            # A REPLY TO A CUT PROMPT IS NOT THE BEING'S ACT. The server dropped part of what was
+            # sent (CBP 2026-10-21: posture counted 8,260 after explore's 16,150 -- its prompt holds
+            # the whole seed, so about half was gone), and the model answered without it. Its calls
+            # are not run and its words are not kept; the phase ends as a full window.
+            return {"content": "", "intents": [],
+                    "window_full": {"step": len(thoughts) - 1, "cause": "server_cut",
+                                    "estimated_prompt": _server_cut["expected"],
+                                    "num_ctx": getattr(llm, "num_ctx", None)}}
         if not calls and content:
             # the call in the wrong channel: lift it, gate it as normal, record that it was lifted
             calls = salvage_tool_calls(content, tools)
@@ -1601,5 +1619,6 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     result.compacted = list(compacted)
     result.json_arg_failures = list(json_arg_failures)
     result.placeholders = list(placeholders)
+    result.seed_measured = first_measured
 
     return result

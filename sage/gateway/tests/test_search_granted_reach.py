@@ -50,6 +50,13 @@ def _cmd(args, t):
     return B.search_command(args, {"worktree": None, "memory_root": t.home})
 
 
+def _search(d, t, args):
+    """Dispatch as the real path does: the verdict carries the exact command the gate composed
+    and judged for these args (being_gate_client composes with the same home)."""
+    d._verdict.command = _cmd(args, t)
+    return d._do_search(BeingIntent("search", args))
+
+
 def test_with_no_worktree_and_a_granted_absolute_path_the_seat_composes_a_read_only_grep(tree):
     cmd = _cmd({"pattern": r"GateDecision\(", "path": tree.gov}, tree)
     assert cmd.startswith("grep -r -n -I -E -s --max-count=30 --exclude-dir=.git -e ")
@@ -88,20 +95,46 @@ def test_a_path_that_does_not_exist_is_said_so_not_searched(tree):
 
 
 def test_the_dispatcher_runs_the_judged_grep_inside_the_grant(tree):
-    cmd = _cmd({"pattern": r"GateDecision\(", "path": tree.gov}, tree)
-    d = _disp(tree, [(os.path.realpath(tree.gov), True)], command=cmd)
-    r = d._do_search(BeingIntent("search", {"pattern": r"GateDecision\(", "path": tree.gov}))
+    d = _disp(tree, [(os.path.realpath(tree.gov), True)])
+    r = _search(d, tree, {"pattern": r"GateDecision\(", "path": tree.gov})
     assert r.ok and r.witness_id == "act-r"
     assert r.result["matches"] == 1
     assert r.result["lines"][0].endswith("single_gate.py:3:d = GateDecision(verdict_available=False)")
     assert not any(".git" in ln for ln in r.result["lines"]), ".git is skipped"
 
 
-def test_a_target_outside_the_verdicts_reach_is_refused_and_nothing_runs(tree):
+def _recording(d):
     calls = []
-    d = _disp(tree, [(os.path.realpath(tree.gov), True)])
     d._call = lambda name, args: calls.append(name) or {"actionId": "x"}
-    r = d._do_search(BeingIntent("search", {"pattern": "GateDecision", "path": tree.other}))
+    return calls
+
+
+def test_a_verdict_with_no_command_authorizes_nothing_even_inside_the_reach(tree):
+    # Review hold on #505: `judged is not None and judged != cmd` let a command-less verdict
+    # through, so a matching reach grant alone ran a freshly composed grep.
+    d = _disp(tree, [(os.path.realpath(tree.gov), True)], command=None)
+    calls = _recording(d)
+    r = d._do_search(BeingIntent("search", {"pattern": "GateDecision", "path": tree.gov}))
+    assert not r.ok and "nothing authorized this search" in r.error
+    assert calls == [], "no witness opened, no grep run"
+    d._verdict.command = ""
+    r = d._do_search(BeingIntent("search", {"pattern": "GateDecision", "path": tree.gov}))
+    assert not r.ok and "nothing authorized this search" in r.error and calls == []
+
+
+def test_no_verdict_at_all_authorizes_nothing(tree):
+    d = _disp(tree, [(os.path.realpath(tree.gov), True)])
+    del d._verdict
+    calls = _recording(d)
+    r = d._do_search(BeingIntent("search", {"pattern": "GateDecision", "path": tree.gov}))
+    assert not r.ok and "nothing authorized this search" in r.error and calls == []
+
+
+def test_a_target_outside_the_verdicts_reach_is_refused_and_nothing_runs(tree):
+    # judged == executed holds here (the law, by hypothesis, allowed it); the reach still refuses
+    d = _disp(tree, [(os.path.realpath(tree.gov), True)])
+    calls = _recording(d)
+    r = _search(d, tree, {"pattern": "GateDecision", "path": tree.other})
     assert not r.ok and "outside the reach you hold" in r.error
     assert calls == [], "no witness opened, no grep run"
 
@@ -109,23 +142,24 @@ def test_a_target_outside_the_verdicts_reach_is_refused_and_nothing_runs(tree):
 def test_an_exact_grant_covers_itself_only(tree):
     f = os.path.join(tree.gov, "_shared", "single_gate.py")
     d = _disp(tree, [(os.path.realpath(f), False)])
-    ok = d._do_search(BeingIntent("search", {"pattern": "class", "path": f}))
+    ok = _search(d, tree, {"pattern": "class", "path": f})
     assert ok.ok and ok.result["matches"] == 1
-    no = d._do_search(BeingIntent("search", {"pattern": "class", "path": tree.gov}))
+    no = _search(d, tree, {"pattern": "class", "path": tree.gov})
     assert not no.ok and "outside the reach" in no.error
 
 
 def test_a_judged_command_that_differs_is_refused(tree):
     d = _disp(tree, [(os.path.realpath(tree.gov), True)], command="grep -r -e x -- /")
+    calls = _recording(d)
     r = d._do_search(BeingIntent("search", {"pattern": "x", "path": tree.gov}))
-    assert not r.ok and "law judged is not the command" in r.error
+    assert not r.ok and "law judged is not the command" in r.error and calls == []
 
 
 def test_no_match_is_a_bounded_absence_and_a_bad_regex_is_never_one(tree):
     d = _disp(tree, [(os.path.realpath(tree.gov), True)])
-    miss = d._do_search(BeingIntent("search", {"pattern": "zzz_absent", "path": tree.gov}))
+    miss = _search(d, tree, {"pattern": "zzz_absent", "path": tree.gov})
     assert miss.ok and miss.result["matches"] == 0 and "WHAT WAS SEARCHED" in miss.result["note"]
-    bad = d._do_search(BeingIntent("search", {"pattern": "a(", "path": tree.gov}))
+    bad = _search(d, tree, {"pattern": "a(", "path": tree.gov})
     assert not bad.ok and "not an absence" in bad.error
 
 

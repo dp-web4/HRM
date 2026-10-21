@@ -2432,11 +2432,16 @@ class HestiaF1aDispatcher:
             cmd = search_command(intent.args, {"worktree": None, "memory_root": self.memory_root})
         except ValueError as e:
             return ResultEnvelope(ok=False, error=str(e))
+        # FAIL-CLOSED ON THE AUTHORIZATION, not only on a mismatch (review hold on #505): a verdict
+        # with no command, or no verdict at all, authorized no grep. A matching reach grant is
+        # necessary but is not a substitute for the law having judged THIS string.
         judged = getattr(getattr(self, "_verdict", None), "command", None)
-        if judged is not None and judged != cmd:
+        if not judged or judged != cmd:
             return ResultEnvelope(ok=False, error=(
                 "search refused: the command the law judged is not the command this "
-                "dispatcher would execute."))
+                "dispatcher would execute." if judged else
+                "search refused: no judged command reached the dispatcher, so nothing "
+                "authorized this search."))
         # THE DISPATCHER CONFINES TOO, on the verdict's own reach (as memory_read does): the law
         # allowed this target, and a target no grant covers is refused here even if it did not.
         target = reach_search_target(cmd)

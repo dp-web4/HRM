@@ -949,6 +949,23 @@ PREFLIGHT_CPT = _CPT
 # skipped on exactly the step that needed it.
 SERVER_CUT_RATIO = 0.75
 
+# SOME TEMPLATES SEND THE TOOLS ONLY WHEN THE LAST MESSAGE IS A USER TURN. Ollama's llama3.1
+# template renders the schemas inside the last user message ({{ if and $.Tools $last }}), so once
+# a tool result is last they are gone from the prompt. Measured on pub-being, 2026-10-21: step 1
+# counted ~10.0k, step 2 ~5.6k for a LONGER list (the ~4.3k of schemas gone). Judged against the
+# step-1 anchor that read as a server cut, and since the cut ends the phase, every explore and
+# reflect from 08:13Z ran exactly one act. Such a model (capabilities `tools_on_last_user_only`)
+# keeps one anchor per tail kind, and a count is called a cut only against its own kind.
+_TAIL_USER = "user"
+
+
+def _tail_kind(llm, msgs) -> Optional[str]:
+    """None for a template whose prompt has the same parts whatever comes last (one anchor, as
+    before); else whether the last message is a user turn (tools sent) or not (tools dropped)."""
+    if not getattr(llm, "tools_on_last_user_only", False):
+        return None
+    return _TAIL_USER if msgs and msgs[-1].get("role") == "user" else "after_turn"
+
 # The template's own words for a request whose user turn is gone. Re-sending the same list
 # cannot succeed, so this is never retried as a transport error.
 NO_USER_QUERY = "No user query found"
@@ -1232,9 +1249,12 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
     compacted: List[dict] = []
     json_arg_failures: List[dict] = []     # act_form="json": arguments that could not be formed (no act)
     placeholders: List[dict] = []          # native replies that were only a template, retaken as a JSON act
-    # (prompt_eval_count, chars at that prompt) from the last generate the server counted.
+    # (prompt_eval_count, chars at that prompt) from the last generate the server counted, per
+    # TAIL KIND (_tail_kind: one kind unless the template drops the tools after a tool turn).
     # Compaction is anchored on this, so only the DELTA rides a chars-per-token estimate.
-    measured = tuple(anchor) if anchor else None
+    anchors: Dict[Optional[str], tuple] = {}
+    if anchor:
+        anchors[_tail_kind(llm, [{"role": "user"}])] = tuple(anchor)   # a seed count: its tail is a user turn
     first_measured = None    # this phase's own first whole count: what the next phase anchors on
     attempts: List[dict] = []
 
@@ -1328,7 +1348,7 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 "window_full": {"step": len(thoughts) - 1, "cause": cause, "estimated_prompt": est, "num_ctx": ctx}}
 
     def generate(convo: List[Dict[str, Any]]) -> Dict[str, Any]:
-        nonlocal measured, first_measured
+        nonlocal first_measured
         attempts.clear()
         # Flatten the loop's convo (carries extra keys) to chat messages. An assistant
         # turn that emitted intents MUST keep them as tool_calls: Qwen's chat template
@@ -1355,6 +1375,14 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
                 out["tool_calls"] = [{"function": {"name": i.effector, "arguments": dict(i.args or {})}}
                                      for i in m["intents"]]
             msgs.append(out)
+        # The anchor for THIS prompt is a count of the same tail kind. With none yet (the first
+        # step after a tool turn, on a template that drops the tools there), the other kind's
+        # count stands in for the window arithmetic, but it is not a basis for calling a cut.
+        _tail = _tail_kind(llm, msgs)
+        measured = anchors.get(_tail)
+        _same_tail = measured is not None
+        if not _same_tail and anchors:
+            measured = next(iter(anchors.values()))
         # LEAVE ROOM FOR THE ANSWER BEFORE ASKING FOR ONE. Every tool result is appended,
         # so the prompt the loop ENDS on is not the seed it started from. Without this it
         # grows until the server cuts the generate mid-sentence: measured on Legion, 27 of
@@ -1379,6 +1407,9 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
         if _ctx > 0:
             if measured is not None:
                 _est, _cause = _est_tokens(_convo_chars(msgs), measured), "over_window"
+                if not _same_tail and _tail == _TAIL_USER:
+                    # anchored on a count made WITHOUT the tool schemas, which this prompt carries
+                    _est = max(_est, (_convo_chars(msgs) + _UNCOUNTED_CHARS) / PREFLIGHT_CPT)
             else:
                 _est, _cause = (_convo_chars(msgs) + _UNCOUNTED_CHARS) / PREFLIGHT_CPT, "preflight"
             if _est > _ctx - WINDOW_SEND_MARGIN:
@@ -1576,12 +1607,12 @@ def run_ollama_tool_turn(client: BeingGateClient, llm, seed_messages: List[Dict[
             _now = (int(raw["prompt_eval_count"]), _convo_chars(msgs))
             # ... unless the count is of what survived a server cut (SERVER_CUT_RATIO): then the
             # previous anchor stands, and the cut is recorded instead of believed.
-            _expected = _est_tokens(_now[1], measured) if measured is not None else None
+            _expected = _est_tokens(_now[1], measured) if _same_tail else None
             if _expected and _now[0] < SERVER_CUT_RATIO * _expected:
                 _server_cut = {"counted": _now[0], "expected": int(_expected)}
             else:
-                measured = _now
-                if first_measured is None:
+                anchors[_tail] = _now
+                if first_measured is None and _tail in (None, _TAIL_USER):
                     first_measured = _now
         entry = {"done_reason": raw.get("done_reason"), "prompt_eval_count": raw.get("prompt_eval_count"),
                  "eval_count": raw.get("eval_count"), "retried": retried, "num_predict": sent,

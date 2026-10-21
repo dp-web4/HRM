@@ -182,3 +182,51 @@ def test_the_beat_record_says_the_window_filled_and_that_nothing_the_being_did_c
         "You called no tools this beat."
     carried = H._carry([], res)
     assert carried[-1]["role"] == "assistant" and "context window filled" in carried[-1]["content"]
+
+
+class _LlamaLLM(_LLM):
+    """Ollama's llama3.1 template: the tool schemas ride only on a prompt whose last message is a
+    user turn, so a step after a tool result counts thousands of tokens fewer (pub, 2026-10-21)."""
+    num_ctx = 12288
+    tools_on_last_user_only = True
+
+
+def test_a_template_that_drops_the_tools_after_a_tool_turn_is_not_read_as_a_cut():
+    # pub-being's shape: step 1 counted 10,006 with the schemas, step 2 5,580 without them. Judged
+    # against step 1 that is a "cut", and every explore from 2026-10-21 08:13Z ended after one act.
+    client = _Client()
+    llm = _LlamaLLM([{"content": "", "tool_calls": _call(1), "raw": {"prompt_eval_count": 10006, "eval_count": 18}},
+                     {"content": "", "tool_calls": _call(2), "raw": {"prompt_eval_count": 5580, "eval_count": 17}},
+                     {"content": "done", "tool_calls": [], "raw": {"prompt_eval_count": 5760, "eval_count": 5}}])
+    r = run_ollama_tool_turn(client, llm, [{"role": "user", "content": "go"}], max_steps=5)
+    assert not any(g.get("server_cut") for g in r.generates)
+    assert client.calls == ["witness", "witness"], "step 2's call runs"
+    assert r.window_full is None and r.reply == "done"
+    assert r.seed_measured[0] == 10006, "the anchor handed on is the count WITH the schemas"
+
+
+def test_on_that_template_a_real_cut_is_still_caught_against_its_own_kind():
+    client = _Client()
+    llm = _LlamaLLM([{"content": "", "tool_calls": _call(1), "raw": {"prompt_eval_count": 10006, "eval_count": 18}},
+                     {"content": "", "tool_calls": _call(2), "raw": {"prompt_eval_count": 5580, "eval_count": 17}},
+                     {"content": "", "tool_calls": _call(3), "raw": {"prompt_eval_count": 2500, "eval_count": 17}}])
+    r = run_ollama_tool_turn(client, llm, [{"role": "user", "content": "go"}], max_steps=5)
+    assert r.generates[2]["server_cut"]["counted"] == 2500
+    assert client.calls == ["witness", "witness"], "the cut step's call does not run"
+    assert r.window_full and r.window_full["cause"] == "server_cut"
+
+
+def test_on_that_template_an_anchored_step_one_is_still_judged():
+    # posture after explore: its prompt ends in a user turn, the same kind as explore's seed count
+    seed = _seed(31950)
+    client = _Client()
+    llm = _LlamaLLM([{"content": "", "tool_calls": _call(1), "raw": {"prompt_eval_count": 5000, "eval_count": 20}}])
+    r = run_ollama_tool_turn(client, llm, seed + [{"role": "user", "content": "posture"}], max_steps=2,
+                             anchor=(10006, sum(len(m["content"]) for m in seed)))
+    assert client.calls == [] and r.window_full and r.window_full["cause"] == "server_cut"
+
+
+def test_the_llama31_config_declares_it_and_others_do_not():
+    from sage.irp.adapters.model_capabilities import load_capabilities
+    assert load_capabilities("llama3.1:8b").tools_on_last_user_only is True
+    assert load_capabilities("qwen3.5:27b").tools_on_last_user_only is False

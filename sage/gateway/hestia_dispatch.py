@@ -279,6 +279,8 @@ class HestiaF1aDispatcher:
     # needs its data files beside the script, and a copy that size costs nothing.
     RUN_MAX_FILE_BYTES = 64 << 20
     RUN_OUTPUT_CHARS = 6000
+    # one frame: a warm USB camera answers in ~2 s, a cortex frame request in its own look timeout
+    CAMERA_TIMEOUT_S = 60
     GAME_WINDOW_MAX = 2                 # images per call; the stepper renders at most this many
     GAME_WINDOW_MAX_BYTES = 400_000     # a window is ~60 KB; anything far past that is not one
 
@@ -2233,7 +2235,23 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=(
                 f"camera cannot write to {out_rel!r}: its directory could not be created "
                 f"({wdir_err}). The device was not opened."))
-        proc = subprocess.run(shlex.split(cmd), capture_output=True)
+        # A CAPTURE THAT NEVER ANSWERS MUST NOT HOLD THE BEAT (McNugget, 2026-10-19): with no timeout, an
+        # AVFoundation capture waiting on macOS camera permission for the heartbeat's own process (a launchd
+        # job cannot show the prompt) blocked the beat for 5 h 43 min, and launchd started no other beat
+        # meanwhile: the being was frozen. subprocess.run kills the child (SIGKILL) on timeout.
+        try:
+            proc = subprocess.run(shlex.split(cmd), capture_output=True, timeout=self.CAMERA_TIMEOUT_S)
+        except subprocess.TimeoutExpired:
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False, "magnitude": 0.0})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id, result={
+                "device": device, "out_path": out_rel, "exit_code": None,
+                "note": (f"no frame: the camera did not answer within {self.CAMERA_TIMEOUT_S} s, so the capture "
+                         f"was stopped. On a Mac this is usually the operating system waiting for camera "
+                         f"permission for this process, which only the operator can give; it is not something "
+                         f"you did. Any previous file at the path is untouched.")})
 
         # camera_command asks image2 for atomic_writing=1, so ffmpeg itself owns the
         # temp+rename transaction. The dispatcher must not publish a second, ungoverned

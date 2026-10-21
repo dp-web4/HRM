@@ -131,6 +131,30 @@ def test_do_camera_success(tmp_path):
     assert Path(out_path).read_bytes() == b"\xff\xd8\xffNEW\xff\xd9"
 
 
+def test_a_capture_that_never_answers_is_stopped_not_waited_on(tmp_path):
+    """McNugget 2026-10-19: a capture waiting on macOS camera permission held a beat for 5 h 43 min, and no
+    other beat could start. The capture is now bounded: a hung one is killed and said as such."""
+    import subprocess as _sp
+    import time as _time
+    wt = str(tmp_path)
+    d = _dispatcher(wt)
+    d.CAMERA_TIMEOUT_S = 1
+    import sage.gateway.hestia_dispatch as hd
+    orig_run = hd.subprocess.run
+
+    def hanging_run(cmd, **kwargs):          # a real child that never answers, under the caller's timeout
+        return orig_run(["sleep", "30"], **kwargs)
+    hd.subprocess.run = hanging_run
+    t = _time.time()
+    try:
+        env = d._do_camera(BeingIntent("camera", {"out_path": "scratch/camera/last-frame.jpg"}))
+    finally:
+        hd.subprocess.run = orig_run
+    assert _time.time() - t < 10, "the beat waited on a capture that never answered"
+    assert env.ok is False and "did not answer within 1 s" in env.result["note"], env
+    assert "not something you did" in env.result["note"]
+
+
 def test_do_camera_device_busy(tmp_path):
     """Device busy: ffmpeg exits non-zero with a recognizable stderr. The envelope
     must be ok=False and the result must carry a checkable meaning (not just an error)."""

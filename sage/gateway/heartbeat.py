@@ -4361,10 +4361,14 @@ def main(argv=None) -> int:
         if posture_turn is not None and not _r3:
             convo.append({"role": "user", "content": posture_turn})
             _phase("wake", "posture", host_session_id)
+            # ANCHORED ON EXPLORE'S COUNT OF THE SAME SEED, same tools: posture's step 1 was judged on
+            # the preflight guess, so a prompt the server then cut in half (CBP 2026-10-21, 8 of 24
+            # beats counted ~8k after a ~15k seed) was not seen as cut and its reply was acted on.
             after = run_ollama_tool_turn(client, llm, convo, max_steps=_explore_steps,
                                          tools=_explore_specs, on_generate=_on_generate("posture"),
                                          should_yield=_yield_for_a_person,
-                                       act_form=explore_turn_mode(instance), retake_bare_placeholder=True)
+                                       act_form=explore_turn_mode(instance), retake_bare_placeholder=True,
+                                         anchor=getattr(explore, "seed_measured", None))
             convo = _carry(convo, after)
         # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
         # generates: the same per-generate entry the tool turns record, because the ACCOUNT ask

@@ -1052,10 +1052,20 @@ class ReferenceF1aDispatcher:
             names = sorted(x.name + ("/" if x.is_dir() else "") for x in p.iterdir())
             listing = "\n".join(f"- {n}" for n in names[:50])
             more = f"\n…and {len(names) - 50} more" if len(names) > 50 else ""
+            # A find on a directory used to be dropped without a word: the listing came back as
+            # if it were the answer. cbp-being sent memory_read {path: "notes", find: ...} three
+            # times in one beat (2026-10-21 07:51Z) and once on the governance snapshot root,
+            # got the same first 50 names each time, and then read the first-listed (oldest)
+            # note instead of any file holding the text. Say that find did not run and why.
+            find = str(intent.args.get("find") or "")
+            unrun = (f"\n[find was NOT run: find looks inside ONE file, and '{shown}' is a "
+                     f"directory. Nothing was searched, so nothing is known yet about which file "
+                     f"holds '{find.strip()[:80]}'. To search, memory_read one file's path with "
+                     f"find.]") if find.strip() else ""
             return ResultEnvelope(
                 ok=True,
                 result=(f"[directory: '{shown}' holds {len(names)} entr{'y' if len(names) == 1 else 'ies'}]\n"
-                        + (listing + more if names else "(empty directory)")),
+                        + (listing + more if names else "(empty directory)") + unrun),
                 witness_id=self._witness(f"memory_read {p.name}/ (directory)"))
         whole = p.read_text(errors="replace")
         if not whole:

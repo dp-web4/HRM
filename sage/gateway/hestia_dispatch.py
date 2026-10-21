@@ -2248,10 +2248,16 @@ class HestiaF1aDispatcher:
                 pass
             return ResultEnvelope(ok=False, witness_id=action_id, result={
                 "device": device, "out_path": out_rel, "exit_code": None,
-                "note": (f"no frame: the camera did not answer within {self.CAMERA_TIMEOUT_S} s, so the capture "
-                         f"was stopped. On a Mac this is usually the operating system waiting for camera "
-                         f"permission for this process, which only the operator can give; it is not something "
-                         f"you did. Any previous file at the path is untouched.")})
+                "capture_status": "timed_out", "output_status": "unverified",
+                # Atomic publication is not rollback: the child may have renamed its
+                # frame before hanging. Timeout alone proves neither absence nor freshness.
+                "note": (f"the camera did not answer within {self.CAMERA_TIMEOUT_S} s, so the capture "
+                         "was stopped. The output was not verified: a previous file may remain, or the "
+                         "capture may have replaced it before timing out. A file at this path is "
+                         "not a confirmed fresh frame from this request."
+                         + (" On macOS, camera permission for this process is one possible cause; "
+                            "only the operator can grant it. The timeout does not establish the cause."
+                            if mac else ""))})
 
         # camera_command asks image2 for atomic_writing=1, so ffmpeg itself owns the
         # temp+rename transaction. The dispatcher must not publish a second, ungoverned
@@ -2962,7 +2968,7 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=True, witness_id=action_id, result={
             "script": staged[0][0], "files": [b for b, _ in staged],
             "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
-            "note": _run_note(rc, errtxt, [b for b, _ in staged])})
+            "note": _run_note(rc, errtxt, [b for b, _ in staged], out)})
 
 
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
@@ -4325,7 +4331,33 @@ def make_forum_publisher(pointer_dir: str, plugin_id: str, push: bool = True) ->
     return publish
 
 
-def _run_note(rc: int, stderr: str, files: list) -> str:
+# The nodes bwrap's `--dev /dev` creates; any other /dev path named in a run's output is hardware the
+# sandbox does not have.
+_SANDBOX_DEV = r"(?:null|zero|full|random|urandom|tty|ptmx|pts|shm|fd|stdin|stdout|stderr|console|core)\b"
+_HARDWARE_DEV = re.compile(r"/dev/(?!" + _SANDBOX_DEV + r")[A-Za-z]")
+
+
+def _run_note(rc: int, stderr: str, files: list, stdout: str = "") -> str:
+    """The run's note, plus one fact when its output names a hardware device (_device_note)."""
+    note = _run_note_core(rc, stderr, files)
+    if _HARDWARE_DEV.search(f"{stdout}\n{stderr}"):
+        note += " " + _device_note()
+    return note
+
+
+def _device_note() -> str:
+    """A DEVICE NAMED IN THE OUTPUT IS NOT IN THE SANDBOX, AND NO GRANT PUTS IT THERE. sprout-being,
+    2026-10-21: 24 runs of one v4l2 probe, every one "Cannot open device /dev/video0", and it read the
+    failure as a permission it lacked ("the grant gets revoked mid-execution") although its grant was
+    standing. The note said the sandbox held only the files it named; it never said the sandbox has no
+    hardware devices. That is the sandbox's design, not a guess about this run, so saying it keeps the
+    note evidence-only."""
+    return ("The sandbox's /dev holds only null, zero, random, urandom and tty: no hardware device (a "
+            "camera, a serial port, a GPU) exists inside it, by design, and no scope grant adds one. A "
+            "device you are granted is used through the verb made for it (camera for frames), not from run.")
+
+
+def _run_note_core(rc: int, stderr: str, files: list) -> str:
     """The one line a `run` result says about itself.
 
     A NON-ZERO EXIT WITH AN EMPTY STDERR NAMES NO LINE. cbp-being, 2026-10-18 23:41Z: its

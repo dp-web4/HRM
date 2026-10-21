@@ -52,10 +52,20 @@ mkdir -p "$DEST/heartbeats"
 # mirror itself, heartbeats/ survives, run reports "no change".
 rsync -a --delete --delete-excluded --filter="protect heartbeats/" \
   --exclude 'identity.sealed*' --exclude 'heartbeat.log' --exclude 'heartbeats.jsonl' \
-  --exclude 'atp_shadow.jsonl*' \
+  --exclude 'atp_shadow.jsonl*' --exclude 'heartbeat.partial.jsonl' \
   --exclude 'heartbeats/' --exclude '__pycache__/' --exclude '*.tmp' --exclude '.git' \
   "$INSTANCE/" "$DEST/" || die "rsync"
 mkdir -p "$DEST/heartbeats"   # excluded above, so --delete leaves it alone
+
+# heartbeat.partial.jsonl (heartbeat.py: one row per generate, kept so a beat killed by the unit
+# timeout still leaves its trace) is APPEND-ONLY and nothing rotates it. Legion's crossed the 9MB
+# guard below on 2026-10-21 (9.54MB, 30,877 rows since 09-05) and every mirror run failed from
+# 06:27 on; sprout-being's was 7.0MB the same day. It goes gzipped: 9.54MB -> 0.67MB. `-n` keeps
+# the bytes identical when the file has not grown, so an idle run still reports "no change".
+# rsync --delete removes this .gz each run (it is not in the instance); it is rewritten here.
+if [ -f "$INSTANCE/heartbeat.partial.jsonl" ]; then
+  gzip -9 -n -c "$INSTANCE/heartbeat.partial.jsonl" > "$DEST/heartbeat.partial.jsonl.gz" || die "partial gzip"
+fi
 
 # heartbeats.jsonl -> heartbeats/YYYY-MM-DD.jsonl.gz ; only days whose content changed are rewritten
 python3 - "$INSTANCE/heartbeats.jsonl" "$DEST/heartbeats" <<'PY' || die "heartbeat split"

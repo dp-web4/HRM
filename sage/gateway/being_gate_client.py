@@ -1124,6 +1124,7 @@ CHECK_TARGETS = {
 # the distro's own pattern (see ch-run, crun, flatpak). Chosen over relaxing the sysctl
 # machine-wide: narrow beats convenient when the thing relaxed is a containment boundary.
 # Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
+# scripts/enable_bwrap_userns.sh installs that profile (operator, sudo; Sprout 2026-10-20).
 SANDBOX = "/usr/bin/bwrap"
 # Fail CLOSED by default: a check that silently ran unsandboxed would be the seat quietly
 # handing back the authority the sandbox exists to remove, and nothing in the result would
@@ -2245,6 +2246,7 @@ def patch_apply_argv(args: dict, ctx: Optional[dict] = None) -> List[str]:
 # the distro's own pattern (see ch-run, crun, flatpak). Chosen over relaxing the sysctl
 # machine-wide: narrow beats convenient when the thing relaxed is a containment boundary.
 # Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
+# scripts/enable_bwrap_userns.sh installs that profile (operator, sudo; Sprout 2026-10-20).
 
 
 def tune_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:

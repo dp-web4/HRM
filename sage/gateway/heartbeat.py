@@ -3039,6 +3039,25 @@ def explore_json_steps(instance, default: int) -> int:
         return min(default, 3)
 
 
+def explore_native_steps(instance, default: int) -> int:
+    """Tool rounds for explore in the NATIVE tool form (instance.json "explore_steps"; absent = the
+    default, unchanged). Opt-in per instance (RESEARCH_GENERALIZATION_RULE).
+
+    Measured on cbp-being 2026-10-21 (num_ctx 16,384, seed ~12.7k with brief descriptions): explore
+    took all 8 rounds in every beat from 08:27Z, several on refused calls, and posture -- the phase
+    that acts on what explore read, answers, and fixes the todo -- was over the window every beat.
+    A correction from the seat was then absorbed by reflect while explore kept running the old plan
+    in the same beat. Capping explore leaves posture its room; posture is not capped by this."""
+    try:
+        from sage.gateway.governed_turn import instance_config
+        v = instance_config(instance).get("explore_steps")
+        if v is None:
+            return default
+        return max(1, min(default, int(v)))
+    except Exception:
+        return default
+
+
 def preempt_on(instance) -> bool:
     """Opt-in per instance (R2): instance.json "preempt": true."""
     try:
@@ -4334,8 +4353,12 @@ def main(argv=None) -> int:
     try:
         _phase("wake", "explore", host_session_id)
         _preempt = preempt_on(instance)
+        _json_form = explore_turn_mode(instance) == "json"
         _explore_steps = (explore_json_steps(instance, args.max_steps)
-                          if explore_turn_mode(instance) == "json" else args.max_steps)
+                          if _json_form else explore_native_steps(instance, args.max_steps))
+        # posture keeps the full budget in the native form: it is the phase the explore cap
+        # exists to leave room for (the JSON form is unchanged: one cap for both, as before)
+        _posture_steps = _explore_steps if _json_form else args.max_steps
 
         def _yield_for_a_person():
             got = p0_since(_beat_started) if _preempt else []
@@ -4365,7 +4388,7 @@ def main(argv=None) -> int:
             # ANCHORED ON EXPLORE'S COUNT OF THE SAME SEED, same tools: posture's step 1 was judged on
             # the preflight guess, so a prompt the server then cut in half (CBP 2026-10-21, 8 of 24
             # beats counted ~8k after a ~15k seed) was not seen as cut and its reply was acted on.
-            after = run_ollama_tool_turn(client, llm, convo, max_steps=_explore_steps,
+            after = run_ollama_tool_turn(client, llm, convo, max_steps=_posture_steps,
                                          tools=_explore_specs, on_generate=_on_generate("posture"),
                                          should_yield=_yield_for_a_person,
                                        act_form=explore_turn_mode(instance), retake_bare_placeholder=True,

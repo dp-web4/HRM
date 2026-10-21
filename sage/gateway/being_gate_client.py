@@ -3154,6 +3154,16 @@ class BeingGateClient:
                 if (_REGISTRY[intent.effector].get("compose") and _wt and tool_input.get("path")
                         and not os.path.isabs(str(tool_input["path"]))):
                     tool_input["path"] = os.path.realpath(os.path.join(_wt, str(tool_input["path"])))
+                # AND A RUN'S SCRIPT IS IN THE HOME (Sprout, 2026-10-20/21). run is composed with no
+                # path_args, so its `path` reached hestia raw and was resolved against cwd=workspace:
+                # `run scratch/test-v4l2-access.py` was refused "'scratch' is not granted" beat after
+                # beat, each refusal opening a scope request for sage/scratch/..., a file that does not
+                # exist, while run_names stages the script from the being's home. Root it there.
+                if (intent.effector == "run" and tool_input.get("path")
+                        and getattr(self, "memory_root", None)):
+                    _p = os.path.expanduser(str(tool_input["path"]).strip())
+                    if not os.path.isabs(_p):
+                        tool_input["path"] = os.path.realpath(os.path.join(self.memory_root, _p))
                 # A SCOPE REQUEST'S PATH IS WHAT IT ASKS FOR, NOT WHAT IT TOUCHES (2026-10-19, CBP).
                 # The registry gives request_scope path_args=() so the legacy stage never judges it
                 # as reach -- but this branch handed the raw args on, and hestia reads `path` as a

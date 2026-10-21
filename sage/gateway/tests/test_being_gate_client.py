@@ -818,6 +818,24 @@ def test_single_gate_judges_a_worktree_verbs_path_at_the_worktree(tmp_path=None)
     assert "path" not in calls[-1][0]["tool_input"], "no path given, none invented"
 
 
+def test_single_gate_judges_a_runs_script_in_the_home():
+    """Sprout, 2026-10-20/21: run has no path_args, so `run scratch/test-v4l2-access.py` reached the
+    single gate raw and hestia resolved it against the seat's checkout -- refused "'scratch' is not
+    granted", with a scope request for a file that does not exist. The script is staged from the
+    being's home (run_names), so that is where the gate must judge it. Absolute paths are left alone."""
+    c, calls = _sg_client("allow")
+    c.memory_root = "/tmp/being-home"
+    c.member_id = "test-being"
+    c._core = SimpleNamespace(NormalizedEvent=lambda **kw: SimpleNamespace(**kw))
+    c.gate(BeingIntent("run", {"path": "scratch/t.py"}))
+    ev, _ = calls[-1]
+    assert ev["tool_input"]["path"] == os.path.realpath("/tmp/being-home/scratch/t.py"), ev["tool_input"]
+    assert ev["raw"]["path"] == "scratch/t.py", "raw keeps what the being said"
+    assert ev["cwd"] == "/tmp/ws"
+    c.gate(BeingIntent("run", {"path": "/tmp/being-home/scratch/t.py"}))
+    assert calls[-1][0]["tool_input"]["path"] == os.path.realpath("/tmp/being-home/scratch/t.py")
+
+
 def test_a_relative_write_is_never_redirected_to_a_granted_file():
     """A relative write the home lacks is a create in the home, not an edit of a granted file."""
     import tempfile

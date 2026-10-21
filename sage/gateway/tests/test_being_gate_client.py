@@ -310,6 +310,54 @@ def test_a_refusal_is_witnessed_and_names_its_appeal_handle():
     assert env.refused and env.witness_id is None and "cannot be appealed yet" in env.error
 
 
+def test_a_relative_path_resolves_to_an_existing_granted_file_before_the_gate():
+    """dp, 2026-10-21: "the harness should resolve relative paths to granted ones when they
+    exist." cbp-being asked for `governance/hestia/.../hestia_single_gate.py`, which is rooted at
+    its home, and was told the file did not exist, though it sat under its grant. The gate and
+    the dispatcher must both see the one resolved path; the home still wins; nothing ungranted
+    is reached; the receipt says what happened."""
+    import tempfile
+    from sage.gateway.being_gate_client import GatewayVerdict, ResultEnvelope
+    ws = os.path.realpath(tempfile.mkdtemp(prefix="ws-"))
+    home = os.path.join(ws, "SAGE", "sage", "instances", "b")
+    os.makedirs(home)
+    os.makedirs(os.path.join(ws, "governance", "hestia"))
+    os.makedirs(os.path.join(ws, "private"))
+    gate_src = os.path.join(ws, "governance", "hestia", "gate.py")
+    for f in (gate_src, os.path.join(ws, "private", "s.txt"), os.path.join(home, "todo.md"),
+              os.path.join(ws, "todo.md")):
+        open(f, "w").write("x")
+    judged, touched = [], []
+
+    def gate(intent):
+        judged.append(intent.args["path"])
+        return GatewayVerdict("allow", "", "ok", stage="single-gate")
+
+    def disp(intent, verdict):
+        touched.append(intent.args["path"])
+        return ResultEnvelope(ok=True, result="body")
+
+    c = BeingGateClient.__new__(BeingGateClient)
+    c.memory_root, c.workspace, c._dispatcher, c.gate = home, ws, disp, gate
+    c._policy_grants = lambda: ((), ((os.path.join(ws, "governance"), True),))
+    env = c.dispatch(BeingIntent("memory_read", {"path": "governance/hestia/gate.py"}))
+    assert judged[-1] == touched[-1] == gate_src, (judged, touched)
+    assert env.result.startswith("[") and gate_src in env.result and env.result.endswith("body")
+    # ungranted: left as asked (rooted at home), never reached
+    c.dispatch(BeingIntent("memory_read", {"path": "private/s.txt"}))
+    assert judged[-1] == touched[-1] == "private/s.txt"
+    # the home wins when the file is there
+    c.dispatch(BeingIntent("memory_read", {"path": "todo.md"}))
+    assert touched[-1] == "todo.md"
+    # an exact grant matches only itself
+    c._policy_grants = lambda: ((), ((gate_src, False),))
+    c.dispatch(BeingIntent("memory_read", {"path": "governance/hestia/gate.py"}))
+    assert touched[-1] == gate_src
+    c._policy_grants = lambda: ((), ((os.path.join(ws, "governance"), False),))
+    c.dispatch(BeingIntent("memory_read", {"path": "governance/hestia/gate.py"}))
+    assert touched[-1] == "governance/hestia/gate.py"
+
+
 def test_granted_roots_come_from_the_policy_scope():
     from sage.gateway.being_gate_client import _granted_roots, GatewayVerdict
     class Pol: scope = ("path:/tmp/being-home", "repo:sage", "path:~/nope-not-real")
@@ -768,3 +816,23 @@ def test_single_gate_judges_a_worktree_verbs_path_at_the_worktree(tmp_path=None)
     assert calls[-1][0]["tool_input"]["path"] == os.path.join(wt, "sage")
     c.gate(BeingIntent("git_read", {"op": "log"}))
     assert "path" not in calls[-1][0]["tool_input"], "no path given, none invented"
+
+
+def test_a_relative_write_is_never_redirected_to_a_granted_file():
+    """A relative write the home lacks is a create in the home, not an edit of a granted file."""
+    import tempfile
+    from sage.gateway.being_gate_client import GatewayVerdict, ResultEnvelope
+    ws = os.path.realpath(tempfile.mkdtemp(prefix="ws-"))
+    home = os.path.join(ws, "h")
+    os.makedirs(home)
+    os.makedirs(os.path.join(ws, "g"))
+    open(os.path.join(ws, "g", "f.md"), "w").write("theirs")
+    touched = []
+    c = BeingGateClient.__new__(BeingGateClient)
+    c.memory_root, c.workspace = home, ws
+    c.gate = lambda i: GatewayVerdict("allow", "", "ok", stage="single-gate")
+    c._dispatcher = lambda i, v: (touched.append(i.args["path"]), ResultEnvelope(ok=True, result="w"))[1]
+    c._policy_grants = lambda: ((), ((os.path.join(ws, "g"), True),))
+    for eff in ("memory_write", "memory_edit", "retire_note"):
+        c.dispatch(BeingIntent(eff, {"path": "g/f.md", "content": "mine", "old": "a", "new": "b"}))
+        assert touched[-1] == "g/f.md", (eff, touched)

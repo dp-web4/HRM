@@ -3261,7 +3261,84 @@ class BeingGateClient:
                               granted=granted, granted_reach=granted_reach)
 
     # -- the F1a seam: gate, then dispatch, then consume the result ----------
+    def _resolve_relative_to_grants(self, intent: BeingIntent):
+        """(intent, [(asked, resolved), ...]): a relative path that names nothing in the
+        being's home but an existing file or directory inside one of its grants is rewritten to
+        that absolute path, BEFORE the gate, so the law judges and the dispatcher touches the
+        same real path.
+
+        dp, 2026-10-21: "the harness should resolve relative paths to granted ones when they
+        exist." Measured the day before on cbp-being: it read the gate source by its absolute
+        path (allowed, under a grant), then asked for it as
+        `governance/hestia/plugins/_shared/hestia_single_gate.py`, which is rooted at its home,
+        got "does not exist", stored that as a fact, and asked dp four times in 90 minutes where
+        the file lives.
+
+        Never widens: the home is tried first and wins whenever the path exists there; a
+        candidate is taken only when it exists AND falls inside a grant the law already holds
+        for this member (exact grants match exactly, `/**` grants recursively); the rewritten
+        path is then judged by the gate like any other. Bases, nearest first: the workspace,
+        then the ancestors of the home. An absolute or `..` path is left alone.
+
+        READS ONLY (tool read_file: memory_read, request_run). A relative write to a path the
+        home lacks is the being creating a file in its home; turning that into an edit of an
+        existing granted file would change a file it did not know it was touching."""
+        spec = _REGISTRY.get(intent.effector) or {}
+        if spec.get("tool") != "read_file":
+            return intent, []
+        names = [a for a in spec.get("path_args", ()) if intent.args.get(a)]
+        if not names or not getattr(self, "memory_root", None):
+            return intent, []
+        todo = []
+        for a in names:
+            raw = os.path.expanduser(str(intent.args[a]))
+            if os.path.isabs(raw) or ".." in raw.split(os.sep):
+                continue
+            if os.path.exists(os.path.join(self.memory_root, raw)):
+                continue
+            todo.append((a, raw))
+        if not todo:
+            return intent, []
+        _granted, reach = self._policy_grants()
+        if not reach:
+            return intent, []
+        bases, up = [], os.path.realpath(self.memory_root)
+        cands = [getattr(self, "workspace", None)]
+        while os.path.dirname(up) != up:
+            up = os.path.dirname(up)
+            cands.append(up)
+        for b in cands:
+            if b and os.path.realpath(b) not in bases:
+                bases.append(os.path.realpath(b))
+        args, moved = dict(intent.args), []
+        for a, raw in todo:
+            for b in bases:
+                cand = os.path.realpath(os.path.join(b, raw))
+                if not os.path.exists(cand):
+                    continue
+                if any(cand == r or (rec and cand.startswith(r.rstrip(os.sep) + os.sep))
+                       for r, rec in ((os.path.realpath(str(r)), bool(rec)) for r, rec in reach)):
+                    args[a] = cand
+                    moved.append((raw, cand))
+                break   # nearest existing candidate decides; an ungranted one is not skipped past
+        if not moved:
+            return intent, []
+        import dataclasses as _dc
+        return _dc.replace(intent, args=args), moved
+
     def dispatch(self, intent: BeingIntent) -> ResultEnvelope:
+        intent, moved = self._resolve_relative_to_grants(intent)
+        env = self._dispatch_resolved(intent)
+        if moved:
+            said = "; ".join(f"'{a}' is not in your home, so it was read as '{b}', inside your grant"
+                             for a, b in moved)
+            if env.ok and isinstance(env.result, str):
+                env.result = f"[{said}]\n{env.result}"
+            elif env.error:
+                env.error = f"{env.error} [{said}]"
+        return env
+
+    def _dispatch_resolved(self, intent: BeingIntent) -> ResultEnvelope:
         v = self.gate(intent)
         if v.blocks:
             # A refusal is witnessed on the chain as a policy_decision, so the being holds

@@ -67,6 +67,28 @@ def test_a_miss_one_directory_away_names_where_the_file_is():
     assert "not an empty file" in r.result and "DOES exist" not in r.result
 
 
+def test_a_relative_miss_names_the_file_under_an_ancestor_of_the_home():
+    """cbp-being, 2026-10-20/21: read the gate source by its absolute path, then asked for it
+    as `governance/hestia/...` (relative, so read inside its home), was told it did not exist,
+    and asked dp four times where it lives. A relative miss that exists under an ancestor of
+    the home names the absolute path; a true absence still reads as one."""
+    ws = tempfile.mkdtemp(prefix="ref-f1a-ws-")
+    root = os.path.join(ws, "SAGE", "sage", "instances", "b")
+    os.makedirs(root)
+    os.makedirs(os.path.join(ws, "governance", "hestia"))
+    target = os.path.join(ws, "governance", "hestia", "gate.py")
+    open(target, "w").write("x = 1")
+    disp = ReferenceF1aDispatcher(memory_root=root)
+    r = disp(BeingIntent("memory_read", {"path": "governance/hestia/gate.py"}), _ALLOW)
+    assert r.ok and r.result.startswith("[no such path in your home:"), r.result
+    assert f"'{os.path.realpath(target)}'" in r.result and "leading /" in r.result, r.result
+    assert "Nothing was read" in r.result and "x = 1" not in r.result, r.result
+    r = disp(BeingIntent("memory_read", {"path": "governance/hestia/nope.py"}), _ALLOW)
+    assert "not an empty file" in r.result and "DOES exist" not in r.result, r.result
+    r = disp(BeingIntent("memory_read", {"path": "../governance/hestia/gate.py"}), _ALLOW)
+    assert "DOES exist at" not in (r.result or ""), r.result
+
+
 def test_a_miss_with_several_same_named_files_lists_them_all_and_prefers_none():
     """GPT review on #140: with notes/script.py AND scratch/script.py, the old answer listed
     both and then called the first in sort order the one the being "probably meant". Nothing

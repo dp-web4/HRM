@@ -699,3 +699,72 @@ def test_no_sage_code_runs_the_userns_setup():
         if "enable_bwrap_userns" in t or "apparmor_parser" in t:
             hits.append(str(p.relative_to(root)))
     assert hits == [], hits
+
+
+# ---- the operator's setup script (Nova on #508): its rollback fails closed and it touches only its own profile ----
+
+MARK = "# written by SAGE scripts/enable_bwrap_userns.sh"
+OURS = MARK + "\nprofile bwrap /usr/bin/bwrap flags=(unconfined) { userns, }\n"
+THEIRS = "profile bwrap /usr/bin/bwrap flags=(unconfined) { userns, }\n"
+
+
+def _setup_script(d, parser_rc=0, parser_unloads=True, profile=None):
+    """The real script with only its three path constants pointed into d, and fake `id` (root) and
+    `apparmor_parser` first on PATH. The fake parser logs each call; -R exits parser_rc and, if
+    parser_unloads, drops bwrap from the fake kernel profile list."""
+    import os
+    import stat
+    d.mkdir()
+    src = Path(__file__).resolve().parents[3] / "scripts" / "enable_bwrap_userns.sh"
+    prof, lst, bw, log = (d / n for n in ("bwrap.profile", "profiles", "bwrap-bin", "parser.log"))
+    text = src.read_text()
+    for const, val in (("PROFILE", prof), ("LOADED", lst), ("BWRAP", bw)):
+        line = next(l for l in text.splitlines() if l.startswith(f"{const}="))
+        text = text.replace(line, f"{const}={val}", 1)
+    script = d / "setup.sh"
+    script.write_text(text)
+    lst.write_text("bwrap (unconfined)\nother (enforce)\n")
+    bw.write_text("#!/bin/sh\nexit 0\n")
+    if profile is not None:
+        prof.write_text(profile)
+    fake = d / "fakebin"
+    fake.mkdir()
+    (fake / "id").write_text("#!/bin/sh\necho 0\n")
+    drop = f"sed -i '/^bwrap /d' {lst}" if parser_unloads else ":"
+    (fake / "apparmor_parser").write_text(
+        f"#!/bin/sh\necho \"$@\" >> {log}\n"
+        f"if [ \"$1\" = -R ]; then {drop}; exit {parser_rc}; fi\nexit 0\n")
+    for p in (bw, fake / "id", fake / "apparmor_parser"):
+        p.chmod(p.stat().st_mode | stat.S_IXUSR)
+    child = dict(os.environ, PATH=f"{fake}:{os.environ['PATH']}", SUDO_USER="nobody")
+    return script, prof, log, child
+
+
+def _sh(script, child, *args):
+    import subprocess
+    return subprocess.run(["bash", str(script), *args], env=child, capture_output=True, text=True)
+
+
+def test_bwrap_setup_remove_keeps_the_profile_when_unload_fails(tmp_path):
+    # unload exits non-zero: the file stays for a retry, exit 3, and no claim of success
+    script, prof, log, child = _setup_script(tmp_path / "a", parser_rc=1, parser_unloads=False, profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 3 and prof.exists(), (r.returncode, r.stdout)
+    assert "still active" in r.stdout and "restricted again" not in r.stdout
+    # unload exits 0 but the kernel still lists the profile: the file stays, exit 3
+    script, prof, log, child = _setup_script(tmp_path / "b", parser_rc=0, parser_unloads=False, profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 3 and prof.exists() and "still holds" in r.stdout, r.stdout
+    # a real unload: checked gone, then the file is deleted
+    script, prof, log, child = _setup_script(tmp_path / "c", profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 0 and not prof.exists() and "restricted again" in r.stdout, r.stdout
+
+
+def test_bwrap_setup_never_loads_or_removes_a_profile_it_did_not_write(tmp_path):
+    for args in ((), ("--remove",)):
+        script, prof, log, child = _setup_script(tmp_path / ("remove" if args else "setup"), profile=THEIRS)
+        r = _sh(script, child, *args)
+        assert r.returncode == 1 and prof.read_text() == THEIRS, (args, r.stdout)
+        assert not log.exists(), f"apparmor_parser was called for an unmanaged profile: {log.read_text()}"
+        assert "not written by this script" in r.stdout

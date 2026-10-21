@@ -14,8 +14,15 @@
 # namespaces, as on distributions without the restriction (Ubuntu ships the same pattern for
 # flatpak, crun and ch-run). The profile is unconfined apart from that: it adds no other permission.
 #
+# ONLY ITS OWN PROFILE. A profile this script wrote carries the marker line below. One without it
+# (the distro's, or another tool's) is refused by both setup and --remove: neither loads, replaces,
+# unloads nor deletes it. To hand such a profile to this script, delete it first (that is the
+# operator's decision, made explicitly), then run setup.
+#
 # REVERSAL: sudo bash enable_bwrap_userns.sh --remove
-# It unloads and deletes the profile, only if this script wrote it. After that, `run` on this box
+# Unloads the profile, checks the kernel no longer holds it, and only then deletes the file. If the
+# unload fails the file stays, so the rollback can be retried, and it exits non-zero
+# (test_bwrap_setup_remove_keeps_the_profile_when_unload_fails). After removal `run` on this box
 # refuses again ("run needs its sandbox and cannot get one"); it never falls back to running
 # unsandboxed (test_run_fails_closed_when_no_sandbox_is_usable).
 #
@@ -23,17 +30,30 @@
 set -euo pipefail
 
 PROFILE=/etc/apparmor.d/bwrap
+LOADED=/sys/kernel/security/apparmor/profiles
 BWRAP=/usr/bin/bwrap
 MARK="# written by SAGE scripts/enable_bwrap_userns.sh"
 
 [ "$(id -u)" -eq 0 ] || { echo "run with sudo"; exit 1; }
 
+is_loaded() { grep -q "^bwrap " "$LOADED" 2>/dev/null; }
+ours() { grep -qxF "$MARK" "$PROFILE"; }
+
 if [ "${1:-}" = "--remove" ]; then
   [ -e "$PROFILE" ] || { echo "$PROFILE is not there; nothing to remove"; exit 0; }
-  grep -qxF "$MARK" "$PROFILE" || { echo "$PROFILE was not written by this script; leaving it"; exit 1; }
-  apparmor_parser -R "$PROFILE" || true
+  ours || { echo "$PROFILE was not written by this script; leaving it (loaded and on disk) as it is"; exit 1; }
+  if is_loaded; then
+    if ! apparmor_parser -R "$PROFILE"; then
+      echo "could not unload the bwrap profile; it is still active and $PROFILE is kept so this can be retried"
+      exit 3
+    fi
+    if is_loaded; then
+      echo "the kernel still holds the bwrap profile after unload; $PROFILE is kept so this can be retried"
+      exit 3
+    fi
+  fi
   rm -f "$PROFILE"
-  echo "removed $PROFILE; bwrap user namespaces are restricted again"
+  echo "unloaded and removed $PROFILE; bwrap user namespaces are restricted again"
   exit 0
 fi
 
@@ -43,8 +63,9 @@ fi
 echo "restrict_unprivileged_userns = $(cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns 2>/dev/null || echo n/a)"
 
 if [ -e "$PROFILE" ]; then
-  echo "$PROFILE already exists; leaving it as is:"
-  cat "$PROFILE"
+  ours || { echo "$PROFILE exists and was not written by this script; not loading or replacing it."
+            echo "If it should be replaced, delete it yourself first, then run this again."; exit 1; }
+  echo "$PROFILE (written by this script) already exists; reloading it"
 else
   cat > "$PROFILE" <<EOF
 $MARK

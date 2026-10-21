@@ -3,10 +3,26 @@
 Measured on Sprout 2026-10-19: 19 of 79 open items were differently worded copies of one finished goal, and the
 being's "cross-check camera grant off" closed none of them.
 """
+from datetime import datetime, timezone
 from pathlib import Path
+
+import pytest
 
 from sage.gateway import heartbeat as hb
 from sage.gateway import todo_membot as tm
+
+
+class _Oct19(datetime):
+    @classmethod
+    def now(cls, tz=None):
+        return datetime(2026, 10, 19, 12, 0, tzinfo=timezone.utc)
+
+
+@pytest.fixture(autouse=True)
+def _clock_on_the_day_the_items_were_written(monkeypatch):
+    """The items below are dated 10-18/10-19 and todo_open keeps a 48 h window: read on the
+    wall clock, every test here started failing on 10-21 (Sprout deploy, 2026-10-21 07:35Z)."""
+    monkeypatch.setattr(hb, "datetime", _Oct19)
 
 TODO = """2026-10-18 10:00 UTC
 - [ ] Camera scope grant (scope-ef204d003703 for /dev/video0) pending ~36 hours

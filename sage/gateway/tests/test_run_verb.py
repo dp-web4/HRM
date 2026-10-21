@@ -618,6 +618,24 @@ def test_a_run_note_states_only_what_was_observed():
     assert "traceback" in tb and "names the line" in tb
 
 
+def test_a_run_that_names_a_hardware_device_is_told_the_sandbox_has_none():
+    """sprout-being, 2026-10-21: 24 runs of a v4l2 probe printed "Cannot open device /dev/video0" on
+    stdout and exited 1, and it read the failure as a permission it lacked. The note now says the
+    sandbox has no hardware devices, on stdout or stderr, whatever the exit code; the nodes the sandbox
+    does have (/dev/null, /dev/urandom) never trigger it."""
+    from sage.gateway.hestia_dispatch import _run_note
+    dev0 = "/dev/" + "video0"
+    said = "no hardware device"
+    on_stdout = _run_note(1, "", ["t.py"], f"FAILED: v4l2-ctl returned exit code 1\nCannot open device {dev0}")
+    assert on_stdout.startswith("Exit 1, nothing on stderr") and said in on_stdout
+    assert "no scope grant adds one" in on_stdout and "camera" in on_stdout
+    assert said in _run_note(1, f"cannot open {'/dev/' + 'ttyUSB0'}", ["t.py"])
+    assert said in _run_note(0, "", ["t.py"], f"{dev0} not found")
+    for benign in ("wrote to /dev/null", "read /dev/urandom", "/dev/shm full", "/dev/stdout"):
+        assert said not in _run_note(0, "", ["t.py"], benign), benign
+    assert said not in _run_note(1, "", ["t.py"], "no devices mentioned")
+
+
 
 @needs_sandbox
 def test_a_second_run_does_not_see_what_the_first_wrote_and_both_notes_say_so(tmp_path):

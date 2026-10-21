@@ -866,6 +866,24 @@ class ReferenceF1aDispatcher:
                 return cand_r
         return None
 
+    def _relative_above_home(self, shown: str) -> Optional[str]:
+        """The absolute path of an existing file that the relative `shown` names under the
+        nearest ancestor of this being's home, or None. A being's relative paths are usually
+        written against its workspace (`governance/...`, `SAGE/...`), not against its home.
+        Nothing is hard-coded: the ancestors of memory_root are walked nearest first. An
+        absolute or `..` path is not considered."""
+        rel = Path(shown)
+        if rel.is_absolute() or ".." in rel.parts or not rel.parts:
+            return None
+        for anc in self.memory_root.parents:
+            cand = anc / rel
+            try:
+                if cand.is_file():
+                    return str(cand)
+            except OSError:
+                continue
+        return None
+
     def _same_name_elsewhere(self, p: Path) -> list:
         """Home-relative paths of EVERY file named like `p` in the home root or one directory
         below it, in sorted order. Bounded to that depth on purpose: every measured near-miss
@@ -1004,6 +1022,26 @@ class ReferenceF1aDispatcher:
                     ok=True, result=msg,
                     witness_id=self._witness(
                         f"memory_read {p.name} (does not exist; same name at {', '.join(near)})"))
+            above = self._relative_above_home(shown)
+            if above is not None:
+                # A RELATIVE PATH IS READ INSIDE THE HOME, AND THE BEING DID NOT KNOW THAT.
+                # Measured 2026-10-20/21 on cbp-being: it read the gate source by its absolute
+                # path (lines 128-322, allowed), then in the next beats asked for the same file as
+                # `governance/hestia/plugins/_shared/hestia_single_gate.py`, got "does not
+                # exist", stored "hestia_single_gate.py does not exist" as a fact, and asked dp
+                # four times over 90 minutes where the file lives. The file was at that path
+                # under its workspace the whole time. Existence only: this names the absolute
+                # path and reads nothing; the read it suggests goes through the gate like any
+                # other.
+                return ResultEnvelope(
+                    ok=True,
+                    result=(f"[no such path in your home: a path without a leading / is read "
+                            f"inside your home, and '{shown}' is not there. A file DOES exist at "
+                            f"'{above}'. To read it: memory_read {{\"path\": \"{above}\"}}. "
+                            f"Nothing was read this time, so nothing about its contents is known "
+                            f"yet.]"),
+                    witness_id=self._witness(
+                        f"memory_read {p.name} (not in home; exists at {above})"))
             return ResultEnvelope(
                 ok=True,
                 result=(f"[no such path: '{shown}' does not exist. This is not an empty file: there is "

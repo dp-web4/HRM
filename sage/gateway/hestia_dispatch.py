@@ -2248,10 +2248,16 @@ class HestiaF1aDispatcher:
                 pass
             return ResultEnvelope(ok=False, witness_id=action_id, result={
                 "device": device, "out_path": out_rel, "exit_code": None,
-                "note": (f"no frame: the camera did not answer within {self.CAMERA_TIMEOUT_S} s, so the capture "
-                         f"was stopped. On a Mac this is usually the operating system waiting for camera "
-                         f"permission for this process, which only the operator can give; it is not something "
-                         f"you did. Any previous file at the path is untouched.")})
+                "capture_status": "timed_out", "output_status": "unverified",
+                # Atomic publication is not rollback: the child may have renamed its
+                # frame before hanging. Timeout alone proves neither absence nor freshness.
+                "note": (f"the camera did not answer within {self.CAMERA_TIMEOUT_S} s, so the capture "
+                         "was stopped. The output was not verified: a previous file may remain, or the "
+                         "capture may have replaced it before timing out. A file at this path is "
+                         "not a confirmed fresh frame from this request."
+                         + (" On macOS, camera permission for this process is one possible cause; "
+                            "only the operator can grant it. The timeout does not establish the cause."
+                            if mac else ""))})
 
         # camera_command asks image2 for atomic_writing=1, so ffmpeg itself owns the
         # temp+rename transaction. The dispatcher must not publish a second, ungoverned

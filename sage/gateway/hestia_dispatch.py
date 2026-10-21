@@ -2420,6 +2420,97 @@ class HestiaF1aDispatcher:
 
 
     # -- search: find a symbol without reading the file it is in -----------------
+    def _do_reach_search(self, intent: BeingIntent) -> ResultEnvelope:
+        """search with no worktree: a read-only grep over a grant outside the home
+        (being_gate_client._reach_search_command). Same contract as the worktree search: the
+        string the law judged is the string that runs, the act is witnessed, rc>1 with no match
+        is a failure and never an absence, and absence names what was searched."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import search_command, reach_search_target
+        try:
+            cmd = search_command(intent.args, {"worktree": None, "memory_root": self.memory_root})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        # FAIL-CLOSED ON THE AUTHORIZATION, not only on a mismatch (review hold on #505): a verdict
+        # with no command, or no verdict at all, authorized no grep. A matching reach grant is
+        # necessary but is not a substitute for the law having judged THIS string.
+        judged = getattr(getattr(self, "_verdict", None), "command", None)
+        if not judged or judged != cmd:
+            return ResultEnvelope(ok=False, error=(
+                "search refused: the command the law judged is not the command this "
+                "dispatcher would execute." if judged else
+                "search refused: no judged command reached the dispatcher, so nothing "
+                "authorized this search."))
+        # THE DISPATCHER CONFINES TOO, on the verdict's own reach (as memory_read does): the law
+        # allowed this target, and a target no grant covers is refused here even if it did not.
+        target = reach_search_target(cmd)
+        reach = _granted_reach_of(getattr(self, "_verdict", None))
+        inside = target is not None and any(
+            target == os.path.realpath(r) or (rec and target.startswith(os.path.realpath(r) + os.sep))
+            for r, rec in reach)
+        if not inside:
+            return ResultEnvelope(ok=False, error=(
+                f"search refused: {target or 'that path'} is outside the reach you hold. "
+                f"Your grants are listed under 'Reach you hold' in your state; search a folder "
+                f"inside one of them."))
+        pattern = str(intent.args.get("pattern", ""))
+        begin = self._call("hestia_begin_action", {"tool_name": "search", "target": pattern[:80]})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=f"search UNVERIFIED: the witness substrate "
+                                                  f"is unreachable ({str(err)[:160]})")
+        action_id = begin.get("actionId")
+        try:
+            proc = subprocess.run(shlex.split(cmd), cwd=self.memory_root or "/", text=True,
+                                  capture_output=True, timeout=60)
+        except Exception as e:
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False, "magnitude": 0.0})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"search could not run: {type(e).__name__}: {e}")
+        lines = [ln for ln in (proc.stdout or "").splitlines() if ln.strip()]
+        # grep: 0 matched, 1 searched and found nothing, 2 an error. With -s an unreadable file is
+        # not reported but still makes it 2, so matches beside a 2 are an answer (said so below),
+        # and a 2 with no match is a failure -- a bad regex must never read as an absence.
+        answered = proc.returncode in (0, 1) or (proc.returncode == 2 and lines)
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": bool(answered), "magnitude": 0.0})
+        except Exception:
+            pass
+        if not answered:
+            stderr_first = ((proc.stderr or "").strip().splitlines() or ["no stderr"])[0]
+            return ResultEnvelope(ok=False, witness_id=action_id, error=(
+                f"search FAILED and this is not an absence: grep exited {proc.returncode}, so "
+                f"{pattern!r} was never applied to {target}. grep said: {stderr_first[:200]}. "
+                f"The pattern is an EXTENDED regex — ( ) | + ? {{ }} are operators, and matching "
+                f"one literally needs a backslash. Fix the pattern and search again; do not "
+                f"conclude the text is absent."))
+        if not lines:
+            return ResultEnvelope(ok=True, witness_id=action_id, result={
+                "pattern": pattern, "searched": target, "matches": 0,
+                "searched_a_real_file": True,
+                "note": (f"no line matches {pattern!r} in {target} (text files only, .git "
+                         f"skipped). The path exists and was searched, so this is a real absence "
+                         f"— but an answer about WHAT WAS SEARCHED: widen the path, or check the "
+                         f"pattern (it is an extended regex, so ( ) | + are special — searching "
+                         f"for a literal one needs a backslash)")})
+        truncated = len(lines) > SEARCH_LINES_SHOWN
+        shown = [ln if len(ln) <= SEARCH_LINE_CHARS else
+                 ln[:SEARCH_LINE_CHARS] + f" …[line cut here: {len(ln) - SEARCH_LINE_CHARS} more characters]"
+                 for ln in lines[:SEARCH_LINES_SHOWN]]
+        return ResultEnvelope(ok=True, witness_id=action_id, result={
+            "pattern": pattern, "searched": target, "matches": len(lines),
+            "shown": len(shown),
+            "truncated": (f"{len(lines) - len(shown)} further matches not shown; narrow the "
+                          f"path or the pattern" if truncated else None),
+            "skipped_unreadable": proc.returncode == 2 or None,
+            "lines": shown,
+            "next": "read the lines around a match with memory_read, its absolute path and start_line"})
+
     def _do_search(self, intent: BeingIntent) -> ResultEnvelope:
         """Run the composed `git grep` and return file:line:text.
 
@@ -2432,6 +2523,8 @@ class HestiaF1aDispatcher:
         import subprocess
         from sage.gateway.being_gate_client import search_command, NO_WORKTREE_REFUSAL
         if not self.worktree or not os.path.isdir(self.worktree):
+            if str(intent.args.get("path", "") or "").strip():
+                return self._do_reach_search(intent)
             return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["search"])
         try:
             cmd = search_command(intent.args, {"worktree": self.worktree})

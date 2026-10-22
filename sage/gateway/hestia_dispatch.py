@@ -38,6 +38,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import subprocess
 from pathlib import Path
 import time
@@ -932,6 +933,30 @@ class HestiaF1aDispatcher:
     _ASK_FILE_EXT = (".py", ".sh", ".ipynb", ".npy", ".npz", ".pt", ".pth", ".json", ".jsonl",
                      ".md", ".txt", ".csv", ".yaml", ".yml")
     _ASK_EXEC = re.compile(r"\b(run|re-run|rerun|execute|exec)\b", re.I)
+    # BOUNDED, BECAUSE THE NOTE RIDES ON A MESSAGE THAT MUST STILL GO (Codex/Nova HOLD on #484 at
+    # b8e157bf8). The bare-name walk had no budget and the digest read the whole file, so a large
+    # home or a large file made an otherwise legitimate ask slow; the note says what it skipped.
+    _ASK_WALK_BUDGET = 2000          # directory entries the bare-name search may look at
+    _ASK_HASH_MAX = 8 * 1024 * 1024  # bytes hashed per file; a larger file is named, not hashed
+    _ASK_RECEIPT_WINDOW = 400        # seat-conversation turns searched for a receipt
+
+    def _ask_candidate(self, root: str, path: str) -> Optional[str]:
+        """`path` resolved, if it is a REGULAR file inside `root`; else None.
+
+        THE SAME CHECK FOR EVERY CANDIDATE (HOLD on #484, P1 x2). Only the slash branch checked
+        containment, and neither branch refused special files: a bare `report.txt` symlinked
+        outside the home had its outside bytes hashed into the note as a local file, and a bare
+        `pending.txt` FIFO was accepted, so the open that followed would wait for a writer.
+        stat() never opens the object, so a FIFO is refused here without blocking."""
+        try:
+            full = os.path.realpath(path)
+            if not full.startswith(root + os.sep):
+                return None
+            if not stat.S_ISREG(os.stat(full).st_mode):
+                return None
+            return full
+        except OSError:
+            return None
 
     def _ask_files(self, body: str) -> list:
         """Files in the sender's own home that a peer_ask names: [(rel, full)], at most 6."""
@@ -939,23 +964,32 @@ class HestiaF1aDispatcher:
         if not root or not os.path.isdir(root):
             return []
         found, seen = [], set()
+        budget = self._ASK_WALK_BUDGET
         for tok in self._ASK_FILE_TOKEN.findall(body or ""):
             tok = tok.strip(".,:;'\"`)(")
             if not tok or not ("/" in tok or tok.lower().endswith(self._ASK_FILE_EXT)):
                 continue
             cands = []
             if "/" in tok:
-                full = os.path.realpath(tok if os.path.isabs(tok) else os.path.join(root, tok))
-                if full.startswith(root + os.sep) and os.path.isfile(full):
+                full = self._ask_candidate(root, tok if os.path.isabs(tok) else os.path.join(root, tok))
+                if full:
                     cands = [full]
-            else:
-                # a bare name: the being's own file of that name, if exactly one is near the top
+            elif budget > 0:
+                # a bare name: the being's own file of that name, if exactly one is near the top.
+                # Directory symlinks are not followed (os.walk's default); a file entry is
+                # admitted only through the same check as an explicit path.
                 for dp_, dns, fns in os.walk(root):
+                    budget -= len(dns) + len(fns)
+                    if budget <= 0:
+                        cands = []
+                        break
                     if dp_[len(root):].count(os.sep) >= 3:
                         dns[:] = []
                     dns[:] = [d for d in dns if not d.startswith(".") and d not in ("__pycache__",)]
                     if tok in fns:
-                        cands.append(os.path.join(dp_, tok))
+                        full = self._ask_candidate(root, os.path.join(dp_, tok))
+                        if full:
+                            cands.append(full)
                         if len(cands) > 1:
                             break
                 cands = cands if len(cands) == 1 else []
@@ -968,28 +1002,101 @@ class HestiaF1aDispatcher:
                 break
         return found
 
+    def _ask_digest(self, root: str, full: str) -> str:
+        """sha256 prefix of the bytes at `full`, read from the object that was checked.
+
+        Opened O_NOFOLLOW|O_NONBLOCK, so a final component swapped for a symlink or a FIFO since
+        `_ask_candidate` fails instead of following or waiting. The open descriptor must still be
+        a regular file and the same inode as the in-home path, and only that descriptor is read,
+        so a name replaced between the check and the open cannot substitute other bytes. Never
+        raises and never blocks: what could not be established is said, not guessed."""
+        import hashlib
+        flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+        try:
+            fd = os.open(full, flags)
+        except OSError:
+            return "unreadable, not hashed"
+        try:
+            st = os.fstat(fd)
+            if not stat.S_ISREG(st.st_mode):
+                return "not a regular file, not hashed"
+            now = self._ask_candidate(root, full)
+            if not now:
+                return "changed while being checked, not hashed"
+            at = os.stat(now)
+            if (at.st_dev, at.st_ino) != (st.st_dev, st.st_ino):
+                return "changed while being checked, not hashed"
+            if st.st_size > self._ASK_HASH_MAX:
+                return f"{st.st_size} bytes, over the {self._ASK_HASH_MAX}-byte hashing cap, not hashed"
+            h = hashlib.sha256()
+            left = self._ASK_HASH_MAX
+            while left > 0:
+                chunk = os.read(fd, min(65536, left))
+                if not chunk:
+                    break
+                h.update(chunk)
+                left -= len(chunk)
+            if left <= 0 and os.read(fd, 1):
+                return f"grew past the {self._ASK_HASH_MAX}-byte hashing cap while read, not hashed"
+            return "sha " + h.hexdigest()[:12]
+        except OSError:
+            return "unreadable, not hashed"
+        finally:
+            os.close(fd)
+
+    def _seat_conversation(self) -> Optional[str]:
+        """The id of the being's conversation with ITS SEAT, or None when none is identifiable.
+
+        BOUND TO THE SEAT, NOT TO "ANY CONVERSATION WITH A WAKE ROUTE" (HOLD on #484, P1): the
+        first conversation holding the sender and a nonempty `notify` was taken as the seat's, so
+        a peer thread with a notification route was searched and a peer's line was reported as
+        the seat's receipt. A seat conversation is named for its seat (seat_run_requests:
+        `cbp-claude` on CBP, `legion-claude` on Legion) and holds exactly the seat and the being,
+        in seat-owned meta the being cannot write. When the seat names its conversation
+        (SAGE_SEAT_CONV, else SAGE_SEAT, as seat_run_requests reads them) only that one counts.
+        Two candidates and no configured name is ambiguous, and ambiguity is answered with None."""
+        from sage.gateway import conversations as conv
+        want = (os.environ.get("SAGE_SEAT_CONV") or os.environ.get("SAGE_SEAT") or "").strip()
+        found = []
+        for m in conv.listing(self.memory_root):
+            cid = m.get("id")
+            parts = list(m.get("participants") or [])
+            if not cid or cid == self.member or not (m.get("notify") or {}):
+                continue
+            if sorted(parts) != sorted({cid, self.member}) or len(parts) != 2:
+                continue
+            if want and cid != want:
+                continue
+            found.append(cid)
+        return found[0] if len(found) == 1 else None
+
     def _seat_run_receipt(self, rel: str) -> str:
-        """The seat's latest run receipt for `rel` in the being's own seat conversation, as one
-        clause: what the receipt says, not what the being says about it."""
+        """The latest run receipt for `rel` that THE SEAT spoke in the seat conversation, as one
+        clause: what the receipt says, not what the being says about it.
+
+        A RECEIPT NAMES A PATH, NOT BYTES (review of #484, 2026-10-19). seat_run_requests writes
+        "I ran <path>" with no digest of what ran, so a match is historical and path-only: the file
+        may have changed since (try-apt-pip.sh did). The clause says so, beside the current digest
+        rather than bound to it. And a search of the last N turns that finds nothing says exactly
+        that, never that the file was not run."""
         try:
             from sage.gateway import conversations as conv
-            seat_conv = None
-            for m in conv.listing(self.memory_root):
-                if self.member in (m.get("participants") or []) and (m.get("notify") or {}):
-                    seat_conv = m["id"]
-                    break
+            seat_conv = self._seat_conversation()
             if not seat_conv:
-                return "no seat conversation on record"
+                return "no seat conversation could be identified, so no seat receipt was checked"
             last = None
-            for t in conv.recent(self.memory_root, seat_conv, limit=400):
-                if t.get("from") == self.member:
-                    continue
+            for t in conv.recent(self.memory_root, seat_conv, limit=self._ASK_RECEIPT_WINDOW):
+                if t.get("from") != seat_conv:
+                    continue          # only the seat's own turns are the seat's receipts
                 m = _SEAT_RUN_LINE.match(str(t.get("text", "")).split("\n", 1)[0])
                 if m and m.group(2).rstrip(".") == rel:
                     last = (t.get("seq"), m.group(1))
             if last is None:
-                return "no seat run receipt names it"
-            return f"the seat's latest receipt for it (seq {last[0]}) says \"I {last[1]} it\""
+                return (f"no seat run receipt names it in the last {self._ASK_RECEIPT_WINDOW} turns "
+                        f"of the seat conversation (older turns were not checked)")
+            return (f"the seat's latest receipt naming this path (seq {last[0]}) says \"I {last[1]} it\": "
+                    f"a historical, path-only record that does not say which bytes ran, so it is not "
+                    f"evidence about the bytes above")
         except Exception:
             return "the seat's receipts could not be read"
 
@@ -1004,31 +1111,32 @@ class HestiaF1aDispatcher:
         asked its own seat nine times. Then cbp-being told sprout-being, in delivered asks, that
         the script "confirmed: Cannot open /dev/video0: [Errno 2]", a result no run ever produced.
         Every recipient had to work out where the file lived and whether any run backed the
-        claim. The seat knows both. So it says them, evidence only: the machine, the bytes, the
-        seat's latest run receipt (or that none names the file), and, when the ask asks for a
-        run, that the sender's own seat is the one that decides its runs. Nothing is refused:
-        asking a peer is legitimate, and a refusal here would teach the shortest way around it."""
+        claim. The seat knows both. So it says them, evidence only: that the path is the
+        sender's, the current bytes, the seat's latest run receipt naming the path (or that none
+        was found in the window searched), and, when the ask asks for a run, how the sender's own
+        runs are made. Nothing is refused: asking a peer is legitimate, and a refusal here would
+        teach the shortest way around it.
+
+        WHAT THE NOTE IS NOT (review of #484): plain forum text under the message, not an
+        authenticated authorization or execution receipt. It names no host (sender-relative
+        wording is enough to say the path is not a portable reference) and does not claim the
+        recipient lacks a copy: it cannot know that."""
         files = self._ask_files(body)
         if not files:
             return ""
-        import hashlib
-        import socket
-        host = socket.gethostname() or "its own machine"
+        root = os.path.realpath(self.memory_root or "")
         lines = []
         for rel, full in files:
-            try:
-                with open(full, "rb") as fh:
-                    sha = hashlib.sha256(fh.read()).hexdigest()[:12]
-            except OSError:
-                sha = "unreadable"
-            lines.append(f"- {rel} (sha {sha}): in {self.member}'s home on {host}, not on your "
-                         f"machine; {self._seat_run_receipt(rel)}.")
-        out = ["", "", f"[seat note, attached by {self.member}'s seat, not written by {self.member}]",
+            lines.append(f"- {rel} ({self._ask_digest(root, full)}): a path in {self.member}'s home on "
+                         f"{self.member}'s machine. Whether your machine has a file at that path, and what "
+                         f"it holds, is not known here; {self._seat_run_receipt(rel)}.")
+        out = ["", "", f"[seat note, attached by {self.member}'s seat, not written by {self.member}; "
+                       f"plain text, not an authorization or an execution receipt]",
                f"This ask names files from {self.member}'s home:"] + lines
         if self._ASK_EXEC.search(body or ""):
-            out.append(f"It asks for a run. {self.member} has no execution of its own: its seat "
-                       f"decides its runs (request_run), and a run on your machine would test your "
-                       f"machine, not {host}.")
+            out.append(f"It asks for a run. {self.member} runs its own code with `run` (a sandbox on "
+                       f"copies of its files) or asks its seat with request_run for what the sandbox "
+                       f"lacks; a run on your machine would test your machine, not {self.member}'s.")
         out.append("A result stated above is backed only if a seat receipt holds it.")
         return "\n".join(out)
 

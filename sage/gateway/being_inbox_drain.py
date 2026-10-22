@@ -124,6 +124,47 @@ def delivered_content(pointer: str, workspace: Optional[str]) -> Dict:
     return {"text": text[:DELIVERED_CHARS], "chars": len(text), "truncated": len(text) > DELIVERED_CHARS}
 
 
+def _senders_path(instance: Path) -> Path:
+    """Where the drain records who each envelope came from: SEAT-OWNED, outside the being's home.
+
+    THE ENVELOPE'S `from` IS TRANSPORT METADATA, AND IT STAYS THAT (NOVA on #459). It arrives in the hub's
+    `notifications` reply over the channel this seat opens with the being's own key, as the member id the
+    hub delivered the notice from. The note this module writes into notes/inbox/ carries the same value in
+    its front matter, but that file sits in the being's writable home, where memory_write can change it. A
+    sender read back from there is an author-editable field. So the value is also recorded HERE, keyed by
+    the note's file name, in a file the being's verbs cannot reach (the reason the web_search rate ledger
+    lives outside the home: a record the limited actor can write is not a record of anything)."""
+    base = os.environ.get("SAGE_INBOX_SENDERS_DIR") or os.path.expanduser("~/.local/state/sage/inbox-senders")
+    return Path(base) / f"{Path(instance).resolve().name}.jsonl"
+
+
+def record_sender(instance: Path, note_name: str, hub_notice_id: str, sender: str) -> None:
+    """Append one (note, notice id, authenticated sender) row. Raises on failure: the caller decides."""
+    p = _senders_path(instance)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(json.dumps({"note": note_name, "hub_notice_id": hub_notice_id, "from": sender}) + "\n")
+        f.flush()
+        os.fsync(f.fileno())
+
+
+def authenticated_sender(instance: Path, note_name: str) -> str:
+    """The member id the hub delivered this note's envelope from, as the drain recorded it at delivery; ""
+    when there is no record (an envelope persisted before the record existed, or none at all). Never read
+    from the note itself."""
+    try:
+        for line in _senders_path(instance).read_text(encoding="utf-8").splitlines():
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if r.get("note") == note_name:
+                return str(r.get("from") or "")
+    except OSError:
+        pass
+    return ""
+
+
 def persist_notice(instance: Path, n: Dict, relayed_by: str, workspace: Optional[str] = None) -> Path:
     """Write one notice into the being's home with provenance (and, where the courier may, what it says);
     return the file."""
@@ -148,6 +189,11 @@ def persist_notice(instance: Path, n: Dict, relayed_by: str, workspace: Optional
     else:
         body += f"\n(The courier did not copy what it says: {got.get('why')}.)\n"
     p.write_text(body, encoding="utf-8")
+    try:
+        record_sender(instance, p.name, nid, str(n.get("from") or ""))
+    except Exception as e:  # the mail is still delivered; without the record its ask simply gets no turn
+        import sys as _sys
+        print(f"[inbox-drain] sender not recorded for {p.name}: {type(e).__name__}: {e}", file=_sys.stderr)
     return p
 
 

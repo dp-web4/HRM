@@ -2876,16 +2876,44 @@ def _home_hint(intent: "BeingIntent", dispatcher) -> str:
         return ""
 
 
+def _repo_name_roots(core, scopes, workspace: str) -> tuple:
+    """``<workspace>/<name>`` for every bare repo-NAME scope, each a whole-repo (recursive) root.
+
+    A RECURSIVE GRANT ON A DIRECTORY DIRECTLY UNDER THE WORKSPACE IS NOT A `path:` SCOPE.
+    hestia's snapshot maps it to the bare name (hestia_gate_mechanism._scope_entry_for_grant:
+    `/ws/governance/**` -> `governance`), the only form the core's segment-keyed model admits,
+    and the core admits that whole directory. `_scope_parts` files the name under repos, so a
+    path-roots-only reading dropped it: the gate ALLOWED the act and the dispatcher refused it
+    "outside your reach" with a reach list that omitted the grant. Measured on cbp-being
+    2026-10-22: dp widened its grant from governance/hestia/** to governance/** at 18:43Z,
+    and every memory_read of the closure it had been reading since was refused (~80 refusals
+    over 3.5 h, then a request_run to read it another way). The widening removed the reach.
+
+    Only bare names, the form that mapping produces; a declarative `repo:x` entry is not
+    a directory name and is left alone."""
+    parts = getattr(core, "_scope_parts", None)
+    if parts is None:
+        return ()
+    ws = os.path.realpath(os.path.expanduser(workspace))
+    out = []
+    for name in parts(scopes, workspace)[0]:
+        if (isinstance(name, str) and name and name not in (".", "..")
+                and ":" not in name and "/" not in name and "\\" not in name):
+            out.append(os.path.realpath(os.path.join(ws, name)))
+    return tuple(out)
+
+
 def _granted_roots(core, policy, workspace: str) -> tuple:
-    """The absolute path roots a resolved policy grants ("path:<abs>" scopes), via the
-    core's own resolver when it has one. () when there is no policy or no path scope."""
+    """The absolute path roots a resolved policy grants ("path:<abs>" scopes, and the
+    whole-directory root of every bare repo-name scope), via the core's own resolver when it
+    has one. () when there is no policy or no path scope."""
     if policy is None:
         return ()
     try:
         scopes = list(getattr(policy, "scope", ()) or ())
         parts = getattr(core, "_scope_parts", None)
         if parts is not None:
-            return tuple(parts(scopes, workspace)[1])
+            return tuple(parts(scopes, workspace)[1]) + _repo_name_roots(core, scopes, workspace)
         roots = []
         for sc in scopes:
             if isinstance(sc, str) and sc.startswith("path:"):
@@ -2897,7 +2925,8 @@ def _granted_roots(core, policy, workspace: str) -> tuple:
 
 def _granted_reach(core, policy, workspace: str) -> tuple:
     """``((root, recursive), ...)`` for every path grant, via the core's own reach resolver
-    (hestia_gate_core._scope_roots_with_reach, since #1002: exact unless spelled `/**`).
+    (hestia_gate_core._scope_roots_with_reach, since #1002: exact unless spelled `/**`),
+    plus every bare repo-name scope as a recursive root (see `_repo_name_roots`).
     An older core has no reach resolver and matches every grant as a prefix, so its roots
     are reported recursive — the reach that gate actually enforces, not a guess."""
     if policy is None:
@@ -2905,7 +2934,9 @@ def _granted_reach(core, policy, workspace: str) -> tuple:
     try:
         reach = getattr(core, "_scope_roots_with_reach", None)
         if reach is not None:
-            return tuple((str(r), bool(rec)) for r, rec in reach(list(getattr(policy, "scope", ()) or ()), workspace))
+            scopes = list(getattr(policy, "scope", ()) or ())
+            return (tuple((str(r), bool(rec)) for r, rec in reach(scopes, workspace))
+                    + tuple((r, True) for r in _repo_name_roots(core, scopes, workspace)))
         return tuple((r, True) for r in _granted_roots(core, policy, workspace))
     except Exception:
         return ()

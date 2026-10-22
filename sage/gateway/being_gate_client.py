@@ -2876,8 +2876,8 @@ def _home_hint(intent: "BeingIntent", dispatcher) -> str:
         return ""
 
 
-def _repo_name_roots(core, scopes, workspace: str) -> tuple:
-    """``<workspace>/<name>`` for every bare repo-NAME scope, each a whole-repo (recursive) root.
+def _repo_name_roots(core, scopes, workspace: str, granted_paths=()) -> tuple:
+    """``<workspace>/<name>`` for a bare repo-NAME scope that IS an operator's recursive grant.
 
     A RECURSIVE GRANT ON A DIRECTORY DIRECTLY UNDER THE WORKSPACE IS NOT A `path:` SCOPE.
     hestia's snapshot maps it to the bare name (hestia_gate_mechanism._scope_entry_for_grant:
@@ -2889,31 +2889,59 @@ def _repo_name_roots(core, scopes, workspace: str) -> tuple:
     and every memory_read of the closure it had been reading since was refused (~80 refusals
     over 3.5 h, then a request_run to read it another way). The widening removed the reach.
 
-    Only bare names, the form that mapping produces; a declarative `repo:x` entry is not
-    a directory name and is left alone."""
+    ONLY A NAME THE SNAPSHOT SAYS WAS GRANTED (Nova's hold at 77f7137c). A bare name is also the
+    spelling of a declarative repo scope, and reach here is read AND write, so turning every bare
+    name into a root would let a role's repo scope widen the dispatcher's file surface. A name
+    counts only when `granted_paths` (the snapshot's `scope_grants`: the paths the daemon minted
+    or the operator promoted) holds a grant that resolves to exactly `<workspace>/<name>`. With
+    no grant paths, no bare name contributes: a policy from any other source fails narrow.
+
+    And never through a symlink: `<workspace>/<name>` must be a real directory whose realpath is
+    itself. A link there would make the root its target, wherever that is, while hestia's mapping
+    realpaths the grant path first and so never produces a bare name for one."""
     parts = getattr(core, "_scope_parts", None)
-    if parts is None:
+    if parts is None or not granted_paths:
         return ()
     ws = os.path.realpath(os.path.expanduser(workspace))
+    granted = set()
+    for g in granted_paths:
+        if isinstance(g, str) and g.strip():
+            g = g.strip()
+            if g.endswith("/**"):
+                g = g[:-3]
+            granted.add(os.path.realpath(os.path.expanduser(g)))
     out = []
     for name in parts(scopes, workspace)[0]:
-        if (isinstance(name, str) and name and name not in (".", "..")
+        if not (isinstance(name, str) and name and name not in (".", "..")
                 and ":" not in name and "/" not in name and "\\" not in name):
-            out.append(os.path.realpath(os.path.join(ws, name)))
+            continue
+        lexical = os.path.join(ws, name)
+        if (lexical in granted and not os.path.islink(lexical) and os.path.isdir(lexical)
+                and os.path.realpath(lexical) == lexical):
+            out.append(lexical)
     return tuple(out)
 
 
-def _granted_roots(core, policy, workspace: str) -> tuple:
+def _snapshot_grant_paths(snap) -> tuple:
+    """The paths a policy snapshot says were GRANTED (live and standing: `scope_grants`), as
+    distinct from its `in_scope` spellings. () for anything that is not a snapshot dict."""
+    got = snap.get("scope_grants") if isinstance(snap, dict) else None
+    return tuple(g for g in got if isinstance(g, str)) if isinstance(got, list) else ()
+
+
+def _granted_roots(core, policy, workspace: str, granted_paths=()) -> tuple:
     """The absolute path roots a resolved policy grants ("path:<abs>" scopes, and the
-    whole-directory root of every bare repo-name scope), via the core's own resolver when it
-    has one. () when there is no policy or no path scope."""
+    whole-directory root of a bare repo-name scope that `granted_paths` shows was granted; see
+    `_repo_name_roots`), via the core's own resolver when it has one. () when there is no policy
+    or no path scope."""
     if policy is None:
         return ()
     try:
         scopes = list(getattr(policy, "scope", ()) or ())
         parts = getattr(core, "_scope_parts", None)
         if parts is not None:
-            return tuple(parts(scopes, workspace)[1]) + _repo_name_roots(core, scopes, workspace)
+            return (tuple(parts(scopes, workspace)[1])
+                    + _repo_name_roots(core, scopes, workspace, granted_paths))
         roots = []
         for sc in scopes:
             if isinstance(sc, str) and sc.startswith("path:"):
@@ -2923,10 +2951,11 @@ def _granted_roots(core, policy, workspace: str) -> tuple:
         return ()
 
 
-def _granted_reach(core, policy, workspace: str) -> tuple:
+def _granted_reach(core, policy, workspace: str, granted_paths=()) -> tuple:
     """``((root, recursive), ...)`` for every path grant, via the core's own reach resolver
     (hestia_gate_core._scope_roots_with_reach, since #1002: exact unless spelled `/**`),
-    plus every bare repo-name scope as a recursive root (see `_repo_name_roots`).
+    plus each bare repo-name scope `granted_paths` shows was granted, as a recursive root
+    (see `_repo_name_roots`).
     An older core has no reach resolver and matches every grant as a prefix, so its roots
     are reported recursive — the reach that gate actually enforces, not a guess."""
     if policy is None:
@@ -2936,8 +2965,8 @@ def _granted_reach(core, policy, workspace: str) -> tuple:
         if reach is not None:
             scopes = list(getattr(policy, "scope", ()) or ())
             return (tuple((str(r), bool(rec)) for r, rec in reach(scopes, workspace))
-                    + tuple((r, True) for r in _repo_name_roots(core, scopes, workspace)))
-        return tuple((r, True) for r in _granted_roots(core, policy, workspace))
+                    + tuple((r, True) for r in _repo_name_roots(core, scopes, workspace, granted_paths)))
+        return tuple((r, True) for r in _granted_roots(core, policy, workspace, granted_paths))
     except Exception:
         return ()
 
@@ -3199,8 +3228,9 @@ class BeingGateClient:
             if snap is None:
                 return (), ()
             policy = self._core.resolve_agent_policy(self._profile, vault_reader=lambda _m: snap)
-            return (_granted_roots(self._core, policy, self.workspace),
-                    _granted_reach(self._core, policy, self.workspace))
+            minted = _snapshot_grant_paths(snap)
+            return (_granted_roots(self._core, policy, self.workspace, minted),
+                    _granted_reach(self._core, policy, self.workspace, minted))
         except Exception:
             return (), ()
 
@@ -3304,6 +3334,7 @@ class BeingGateClient:
             # and memory_write still denied mrh.path). No snapshot => degrade to policy=None
             # (the core's own fail-closed path), never a manufactured grant.
             policy = None
+            minted = ()
             if self._mech is not None:
                 try:
                     snap = self._mech.fetch_policy_snapshot(
@@ -3311,11 +3342,12 @@ class BeingGateClient:
                     if snap is not None:
                         policy = self._core.resolve_agent_policy(self._profile,
                                                                  vault_reader=lambda _m: snap)
+                        minted = _snapshot_grant_paths(snap)
                 except Exception:
-                    policy = None
+                    policy, minted = None, ()
             v = self._core.evaluate(ev, self._profile, self.workspace, policy=policy)
-            granted = _granted_roots(self._core, policy, self.workspace)
-            granted_reach = _granted_reach(self._core, policy, self.workspace)
+            granted = _granted_roots(self._core, policy, self.workspace, minted)
+            granted_reach = _granted_reach(self._core, policy, self.workspace, minted)
         except Exception as e:
             return GatewayVerdict("deny", "gate.raised", innate=True, stage="local-law",
                                   reason=f"{type(e).__name__}: {e}")

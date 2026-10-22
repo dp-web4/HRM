@@ -27,11 +27,17 @@ import json
 import os
 import re
 import textwrap
+import contextlib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable, Optional
 
 from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEnvelope
+
+try:
+    import fcntl
+except ImportError:             # not POSIX: _home_lock does not serialize there
+    fcntl = None
 
 
 # What was SAID TO the being is not the being's to edit. notes/from-dp.md is the operator's
@@ -740,6 +746,104 @@ def dated_lines_note(text: str, now: Optional[datetime] = None) -> str:
             f"says what was true on its date; appending to a file does not make its older lines "
             f"current. For what is up now, the measured lines in your state are from this beat.]\n")
 
+
+def _todo_close_door(p: Path) -> str:
+    """On a missed memory_edit of todo.md, the door that needs no exact text. Measured over
+    cbp-being's whole history to 2026-10-17: 523 memory_edits ticking a todo item done, 367 of
+    them refused on old-text mismatch, and 34 of 41 deletions likewise. The beat window closes an
+    item from an appended `done:` line (a fuzzy match), so the edit was never needed."""
+    if p.name != "todo.md":
+        return ""
+    return (" To close a todo item you do not need an edit: memory_write todo.md with the item "
+            "under done: and the window drops it. To start the whole list fresh, retire_note "
+            "todo.md; the items still open are carried forward.")
+
+
+# The being's running records, which retire_note starts fresh (see _do_retire_note).
+RETIRABLE_RECORDS = ("todo.md", "journal.md")
+
+# ONE LOCK PER HOME FOR APPENDS AND RETIRES. Nova's review of 0557d9bcf: "retirement can
+# unlink/recreate a live journal or todo while memory_write appends, risking lost entries".
+# Two processes act in one home (the heartbeat's dispatcher and the raising session's), so an
+# append landing between retire's read and its swap would be in neither the retired copy nor
+# the fresh file. The lock is a separate file, not the record itself: os.replace gives the
+# record a new inode, and an appender that was waiting on the old one would wake holding a lock
+# on a file no name points at, and append into it.
+HOME_LOCK = ".home.lock"
+# Every verb that changes a file in the home holds the lock for its whole run (see __call__).
+HOME_WRITE_VERBS = ("memory_write", "memory_edit", "retire_note")
+
+
+@contextlib.contextmanager
+def _home_lock(root: Path):
+    if fcntl is None:           # no flock on this platform: the old, unserialized behaviour
+        yield
+        return
+    with open(root / HOME_LOCK, "a") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(f, fcntl.LOCK_UN)
+
+
+_RETIRED_KEPT = "> Kept whole below, as it was written.\n\n"
+
+
+def _retired_header(stamp: datetime, reason: str) -> str:
+    # NO ACTOR IS NAMED. Nova's hold at dcc5c630b: this read "by cbp-being" in every resident's
+    # home, so another being's retired journal would carry a false attribution in its own record.
+    # The dispatcher is built from a home and holds no bound identity to name, and the copy sits
+    # in that resident's home already; the verb is what is known, so the verb is what is said.
+    return (f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z with retire_note. No longer current: {reason}\n"
+            + _RETIRED_KEPT)
+
+
+def _write_atomic(p: Path, text: str) -> None:
+    """Write text to p whole or not at all: a tmp beside it, synced, then os.replace."""
+    tmp = p.with_name(f".{p.name}.tmp")
+    with open(tmp, "w") as f:
+        f.write(text)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, p)
+
+
+def _fresh_record(name: str, body: str, retired_as: str, stamp: datetime):
+    """The fresh file that replaces a retired todo.md or journal.md, and the receipt's words
+    for it. The todo carries forward every item still open by the same reading the beat window
+    uses (heartbeat._todo_items), so a retire never drops an open item and the window shows the
+    same open list before and after.
+
+    EACH ITEM KEEPS THE DATE IT WAS OPENED. Nova's review of 0557d9bcf: carrying every item
+    under one header dated today "changes their age and age-based selection" -- todo_open shows
+    items opened in the last 48 h and only counts older ones, so a retire would have pulled every
+    stale item back into view as new. The items are written under their original dated headers
+    (the parser dates an item by the block above it), undated ones first with no header, so
+    todo_open reads the same (item, since) list from the fresh file as from the old one."""
+    if name == "todo.md":
+        from sage.gateway.heartbeat import _todo_items  # lazy: heartbeat is the larger module
+        still = list(_todo_items(body).values())
+        if not still:
+            return (f"{stamp:%Y-%m-%d %H:%M} UTC\nstill open: none\n",
+                    "A fresh todo.md is started; nothing was still open, so it starts empty.")
+        out = [f"Carried forward from {retired_as} on {stamp:%Y-%m-%d %H:%M} UTC: every item "
+               f"still open, each under the date it was opened.\n"]
+        last = None
+        for t, since in sorted(still, key=lambda x: (x[1] is not None, x[1] or stamp)):
+            if since is not None and since != last:
+                out.append(f"{since:%Y-%m-%d %H:%M} UTC\n")
+                last = since
+            out.append(f"- [ ] {t}\n")
+        return ("".join(out),
+                f"A fresh todo.md is started with the {len(still)} item(s) still open carried "
+                f"forward, each keeping the date it was opened; everything else stays in "
+                f"{retired_as}.")
+    return (f"{stamp:%Y-%m-%d %H:%M} UTC\nJournal started fresh. Earlier entries are in "
+            f"{retired_as}, and recall still searches them.\n",
+            f"A fresh journal.md is started; recall still searches {retired_as}.")
+
+
 class ReferenceF1aDispatcher:
     """A Dispatcher (see being_gate_client.Dispatcher) for the being's own safe acts."""
 
@@ -762,6 +866,13 @@ class ReferenceF1aDispatcher:
             return ResultEnvelope(ok=False, pending=True,
                                   note=f"'{intent.effector}' awaits hestia F1a (reference runs only witness/memory)")
         try:
+            if intent.effector in HOME_WRITE_VERBS:
+                # The whole verb, read through replace, under one lock: memory_edit reads the
+                # file, validates and os.replaces it, and an append or retire landing in between
+                # would be lost (Nova, 99cfdb61b). Taken here and only here: flock is per open
+                # file, so a second _home_lock inside a handler would wait on itself.
+                with _home_lock(self.memory_root):
+                    return handler(intent)
             return handler(intent)
         except Exception as e:
             return ResultEnvelope(ok=False, error=f"{type(e).__name__}: {e}")
@@ -806,6 +917,13 @@ class ReferenceF1aDispatcher:
                     "with, and it has to stay separable from what you decide. Your own reading "
                     "of it belongs in notes/plan.md, which is entirely yours. Disagree with it "
                     "there, in your journal, or in an appeal; that record is wanted")
+            # Nova, 99cfdb61b: the lock lives in the being's home, and a memory_edit of it
+            # would os.replace its inode, so two writers would hold flocks on different files
+            # and nothing would be serialized. No write verb may touch it.
+            if p.parent == self.memory_root and p.name == HOME_LOCK:
+                raise ValueError(
+                    f"{HOME_LOCK} is not a note: it is the lock that keeps two writes to your home "
+                    "from landing on top of each other, and it holds no text. Nothing was changed")
             if p.parent == self.memory_root / "notes" and p.name in SEAT_OWNED_NOTES:
                 raise ValueError(
                     f"notes/{p.name} is what was said TO you, and it stays as it was said. Your "
@@ -1389,7 +1507,7 @@ class ReferenceF1aDispatcher:
                 f"that text is not in '{path}', so nothing was changed. The file is as it "
                 f"was. Read it first and copy the line exactly, including its indentation — "
                 f"what you remember writing and what is on disk can differ."
-                + _where_it_diverged(text, old)))
+                + _where_it_diverged(text, old) + _todo_close_door(p)))
         if hits > 1:
             # NAME BOTH DOORS. Measured 2026-10-06 05:48Z: this refusal fired on cbp-being's
             # line-63 edit ('return self.output_proj(x)' is on 63 and 88) and named only
@@ -1537,36 +1655,65 @@ class ReferenceF1aDispatcher:
         of escalation, because nothing it could do said "this is finished". dp, to the being:
         "renaming and deleting aren't verbs you have yet — we're looking at that."
 
-        Bounded: only inside `notes/` or `scratch/` in its own home, or its own `todo.md`.
-        `_safe_path(writing=True)` already refuses the seat-owned notes and the reserved subtrees,
-        and a path outside the home, so this adds only the notes/-or-scratch/-or-todo rule.
+        Bounded: only inside `notes/` or `scratch/` in its own home, plus its own `todo.md` and
+        `journal.md` (below). `_safe_path(writing=True)` already refuses the seat-owned notes
+        and the reserved subtrees, and a path outside the home, so this adds only that rule.
+        The file keeps its content and gains a header; the name gains `.retired-<date>`, so a
+        reader and a listing both see that it is closed.
 
-        TODO.MD TOO (dp, 2026-10-20). The todo is an append log whose open items the window
-        recomputes every beat, and differently worded copies of one task never close. dp asked
-        cbp-being to retire old items; it had no tool that removes anything, so it appended ~100
-        "[x] retiring" lines and the file grew from 2865 to 2964 lines. Retiring the whole todo
-        keeps it intact under `todo.retired-<date>.md` (readable) and the being writes back only
-        what is still open. The journal stays excluded: it is the record of what happened. The file keeps its content
-        and gains a header; the name gains `.retired-<date>`, so a reader and a listing both
-        see that it is closed."""
+        THE JOURNAL AND TODO CAN START FRESH TOO (dp, 2026-10-17: "those are real problems that
+        need to get resolved, and doesn't sound like the being itself has the tools to do it").
+        Both are append-only by design and this verb used to refuse them, so neither could ever
+        shrink: cbp-being's todo.md reached 4,921 lines, and on 10-17 21:00Z it called
+        `retire_note todo.md` to clear obsolete items and was refused. Retiring one
+        keeps it whole at the home root as `<name>.retired-<date>.md`, where recall still
+        searches it, and starts a fresh file: a fresh todo.md carries forward every item still
+        open, so retiring the log never drops an open item; a fresh journal.md says where the
+        earlier entries went."""
         raw = str(intent.args.get("path", "")).strip()
         reason = str(intent.args.get("reason", "")).strip()
         if not raw:
-            return ResultEnvelope(ok=False, error="retire_note needs a 'path' (a note in your own notes/ or scratch/)")
+            return ResultEnvelope(ok=False, error="retire_note needs a 'path' (a note in your own notes/ or scratch/, or todo.md / journal.md)")
         if not reason:
             return ResultEnvelope(ok=False, error="retire_note needs a 'reason': what you know now that the note does not")
         p = self._safe_path(raw, writing=True)
-        is_todo = p == Path(self.memory_root) / "todo.md"
-        if not is_todo and (p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root):
+        record = p.parent == self.memory_root and p.name in RETIRABLE_RECORDS
+        if not record and (p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root):
             return ResultEnvelope(ok=False, error=(
-                f"retire_note is for your own notes and your todo.md: '{raw}' is not directly inside "
-                f"your notes/ or scratch/. Your journal is the record of what happened and is not "
-                f"retired this way."))
+                f"retire_note is for your own notes: '{raw}' is not directly inside your notes/ or "
+                f"scratch/, and it is not your todo.md or journal.md."))
+        if ".retired-" in p.name:
+            if not p.exists():
+                return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
+            return ResultEnvelope(ok=True, result=f"{p.name} is already retired; nothing changed")
         if not p.exists():
             return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
-        if ".retired-" in p.name:
-            return ResultEnvelope(ok=True, result=f"{p.name} is already retired; nothing changed")
+        return self._retire_locked(p, reason, record)
+
+    def _retire_locked(self, p: Path, reason: str, record: bool) -> ResultEnvelope:
+        """The retire itself, under the home lock (taken in __call__). Two atomic steps, retired
+        copy first.
+
+        INTERRUPTION LOSES NOTHING, AND THE NEXT RETIRE FINISHES IT (Nova, 0557d9bcf:
+        "interrupted retirement also needs recovery"). Each step is a tmp file and os.replace,
+        so a kill leaves every file whole: before step 1, nothing has changed; between the steps,
+        the retired copy exists AND the original is still in place, untouched. In that state the
+        newest retired copy holds exactly the current text, so a retire of a record that finds it
+        reuses that copy and only starts the fresh file, rather than writing the same log out a
+        second time. If the being appended in between, the texts differ and a new copy is made:
+        the old log is then kept twice, but nothing is lost."""
+        body = p.read_text(errors="replace")
         stamp = datetime.now(timezone.utc)
+        if record:
+            done = self._unfinished_retire(p, body)
+            if done is not None:
+                fresh, said = _fresh_record(p.name, body, done.name, stamp)
+                _write_atomic(p, fresh)
+                return ResultEnvelope(
+                    ok=True,
+                    result=(f"retired {p.name} -> {done.name} (finishing an earlier retire that "
+                            f"was interrupted; that copy already held this text). {said}"),
+                    witness_id=self._witness(f"retire_note {p.name} -> {done.name}: {reason[:120]}"))
         dest = p.with_name(f"{p.stem}.retired-{stamp:%Y-%m-%d}{p.suffix}")
         # A SECOND RETIRE OF THE SAME NAME ON THE SAME DAY MUST NOT REPLACE THE FIRST. Measured
         # 2026-10-07 on cbp-being: validate-overfitting.py was retired at 04:47Z, rewritten under
@@ -1576,17 +1723,26 @@ class ReferenceF1aDispatcher:
         while dest.exists():
             dest = p.with_name(f"{p.stem}.retired-{stamp:%Y-%m-%d}-{n}{p.suffix}")
             n += 1
-        body = p.read_text(errors="replace")
-        dest.write_text(
-            f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z by cbp-being. No longer current: {reason}\n"
-            f"> Kept whole below, as it was written.\n\n" + body)
-        p.unlink()
+        _write_atomic(dest, _retired_header(stamp, reason) + body)
         result = f"retired {p.name} -> {dest.name}"
-        if is_todo:
-            result += (f". Your todo.md is now empty. memory_write it with only the items still open; "
-                       f"the old list stays readable at {dest.name}.")
+        if record:
+            fresh, said = _fresh_record(p.name, body, dest.name, stamp)
+            _write_atomic(p, fresh)
+            result += f". {said}"
+        else:
+            p.unlink()
         return ResultEnvelope(ok=True, result=result,
                               witness_id=self._witness(f"retire_note {p.name} -> {dest.name}: {reason[:120]}"))
+
+    def _unfinished_retire(self, p: Path, body: str) -> Optional[Path]:
+        """The newest retired copy of record p, if it holds exactly p's current text: a retire
+        that wrote its copy and was stopped before it started the fresh file."""
+        copies = sorted(p.parent.glob(f"{p.stem}.retired-*{p.suffix}"),
+                        key=lambda c: c.stat().st_mtime)
+        if not copies:
+            return None
+        kept = copies[-1].read_text(errors="replace").split(_RETIRED_KEPT, 1)
+        return copies[-1] if len(kept) == 2 and kept[1] == body else None
 
     def _do_memory_write(self, intent: BeingIntent) -> ResultEnvelope:
         # A WRITE OF NOTHING IS REFUSED, NOT REPORTED. Measured 2026-09-25 (hub-claude, all 164
@@ -1665,7 +1821,7 @@ class ReferenceF1aDispatcher:
                     f"exactly from memory_read), and new (empty to delete). If this text is a "
                     f"note about what you did or plan to do, memory_write it to journal.md or "
                     f"todo.md instead.") + _python_status(p))
-        with open(p, "a") as f:
+        with open(p, "a") as f:     # under the home lock (see __call__)
             f.write(content + ("\n" if not content.endswith("\n") else ""))
         if not existed:
             result = f"created {p.name} with {len(content)} chars"
@@ -1679,8 +1835,9 @@ class ReferenceF1aDispatcher:
                 result += (f" To start {p.name} fresh, retire_note it first, then memory_write "
                            f"the whole new version.")
             elif p == Path(self.memory_root) / "todo.md":
-                result += (" To clear out old or finished items, retire_note todo.md (it is kept "
-                           "whole as todo.retired-<date>.md), then memory_write only what is still open.")
+                result += (" To clear out old or finished items, retire_note todo.md: it is kept "
+                           "whole as todo.retired-<date>.md, and the fresh todo.md already carries "
+                           "every item still open, so do not write them again.")
             elif p.suffix == ".py" and _is_second_program(content, _before_text):
                 # 2026-09-24 15:19Z: cbp-being decided on "a new file", then memory_write-d the new
                 # program twice to the OLD file's name. Both landed below 3666 broken lines, and

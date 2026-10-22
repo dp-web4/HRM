@@ -2524,7 +2524,14 @@ _CONSEQUENTIAL = frozenset({"peer_ask", "pr_read", "web_search", "memory_write",
 
 # Native-tool schema for the bounded registry — what the being is offered.
 _TOOL_SCHEMAS = {
-    "peer_ask": ("Ask another being in the fleet a question through the hub.",
+    # EACH PEER IS ON ITS OWN MACHINE, SAID WHERE THE ASK IS CHOSEN (2026-10-19). sprout-being asked
+    # CBP's seat and cbp-being to run files in its own home; cbp-being took "this machine" as CBP
+    # and asked for Sprout's path here. Neither had a
+    # sentence saying a peer's files, devices and runs are not its own.
+    "peer_ask": ("Ask another being in the fleet a question through the hub. Each peer is on its own "
+                 "machine: files in your home are not on its machine, its files and devices are not "
+                 "on yours, and a run there would test its machine, not yours. To get your own code "
+                 "run, use run, or request_run for your own seat.",
                  {"to": "the being's name, e.g. 'legion'", "body": "your message"}, ["to", "body"]),
     "witness": ("Record a witnessed note of something you did or noticed.",
                 {"event": "what to witness"}, ["event"]),

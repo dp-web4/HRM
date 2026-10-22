@@ -657,3 +657,114 @@ def test_a_second_run_does_not_see_what_the_first_wrote_and_both_notes_say_so(tm
     assert r.result["stderr"] == ""
     assert "nothing an earlier run wrote is kept" in r.result["note"]
     assert "read.py" in r.result["note"]
+
+
+def test_run_fails_closed_when_no_sandbox_is_usable(tmp_path, monkeypatch):
+    """Nova on #508: with bwrap unusable (no AppArmor userns profile, or the profile removed) and no
+    Seatbelt, `run` refuses; it never runs the being's code unsandboxed. SANDBOX_REQUIRED (the check
+    verb's switch) does not loosen it either. The dispatcher starts no process at all."""
+    import subprocess
+    from sage.gateway import being_gate_client as B
+    from sage.gateway import hestia_dispatch as H
+    monkeypatch.setattr(B, "sandbox_available", lambda: False)
+    monkeypatch.setattr(B, "seatbelt_available", lambda: False)
+    monkeypatch.setattr(B, "SANDBOX_REQUIRED", False)
+    started = []
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: started.append(a) or (_ for _ in ()).throw(AssertionError("ran")))
+    monkeypatch.setattr(subprocess, "Popen", lambda *a, **k: started.append(a) or (_ for _ in ()).throw(AssertionError("ran")))
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "x.py").write_text("print('should never run')\n")
+    ctx = {"memory_root": str(home), "member": "test-being"}
+    with pytest.raises(ValueError, match="cannot get one"):
+        B.run_command({"path": "scratch/x.py"}, ctx)
+    env = d._do_run(BeingIntent("run", {"path": "scratch/x.py"}))
+    assert not env.ok and "cannot get one" in (env.error or ""), env
+    assert started == [], "no process was started"
+
+
+def test_no_sage_code_runs_the_userns_setup():
+    """Nova on #508: the AppArmor change is an operator step by hand. No SAGE source, unit or script
+    other than the setup script itself names it or calls apparmor_parser."""
+    root = Path(__file__).resolve().parents[3]
+    hits = []
+    for p in list((root / "sage").rglob("*")) + list((root / "scripts").rglob("*")):
+        if not p.is_file() or p.suffix not in (".py", ".sh", ".service", ".timer", ".json", ".yaml") \
+                or p.name == "enable_bwrap_userns.sh" or p.resolve() == Path(__file__).resolve():
+            continue
+        try:
+            t = p.read_text(errors="replace")
+        except OSError:
+            continue
+        t = "\n".join(l for l in t.splitlines() if not l.lstrip().startswith("#"))  # a pointer comment is not a call
+        if "enable_bwrap_userns" in t or "apparmor_parser" in t:
+            hits.append(str(p.relative_to(root)))
+    assert hits == [], hits
+
+
+# ---- the operator's setup script (Nova on #508): its rollback fails closed and it touches only its own profile ----
+
+MARK = "# written by SAGE scripts/enable_bwrap_userns.sh"
+OURS = MARK + "\nprofile bwrap /usr/bin/bwrap flags=(unconfined) { userns, }\n"
+THEIRS = "profile bwrap /usr/bin/bwrap flags=(unconfined) { userns, }\n"
+
+
+def _setup_script(d, parser_rc=0, parser_unloads=True, profile=None):
+    """The real script with only its three path constants pointed into d, and fake `id` (root) and
+    `apparmor_parser` first on PATH. The fake parser logs each call; -R exits parser_rc and, if
+    parser_unloads, drops bwrap from the fake kernel profile list."""
+    import os
+    import stat
+    d.mkdir()
+    src = Path(__file__).resolve().parents[3] / "scripts" / "enable_bwrap_userns.sh"
+    prof, lst, bw, log = (d / n for n in ("bwrap.profile", "profiles", "bwrap-bin", "parser.log"))
+    text = src.read_text()
+    for const, val in (("PROFILE", prof), ("LOADED", lst), ("BWRAP", bw)):
+        line = next(l for l in text.splitlines() if l.startswith(f"{const}="))
+        text = text.replace(line, f"{const}={val}", 1)
+    script = d / "setup.sh"
+    script.write_text(text)
+    lst.write_text("bwrap (unconfined)\nother (enforce)\n")
+    bw.write_text("#!/bin/sh\nexit 0\n")
+    if profile is not None:
+        prof.write_text(profile)
+    fake = d / "fakebin"
+    fake.mkdir()
+    (fake / "id").write_text("#!/bin/sh\necho 0\n")
+    drop = f"sed -i '/^bwrap /d' {lst}" if parser_unloads else ":"
+    (fake / "apparmor_parser").write_text(
+        f"#!/bin/sh\necho \"$@\" >> {log}\n"
+        f"if [ \"$1\" = -R ]; then {drop}; exit {parser_rc}; fi\nexit 0\n")
+    for p in (bw, fake / "id", fake / "apparmor_parser"):
+        p.chmod(p.stat().st_mode | stat.S_IXUSR)
+    child = dict(os.environ, PATH=f"{fake}:{os.environ['PATH']}", SUDO_USER="nobody")
+    return script, prof, log, child
+
+
+def _sh(script, child, *args):
+    import subprocess
+    return subprocess.run(["bash", str(script), *args], env=child, capture_output=True, text=True)
+
+
+def test_bwrap_setup_remove_keeps_the_profile_when_unload_fails(tmp_path):
+    # unload exits non-zero: the file stays for a retry, exit 3, and no claim of success
+    script, prof, log, child = _setup_script(tmp_path / "a", parser_rc=1, parser_unloads=False, profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 3 and prof.exists(), (r.returncode, r.stdout)
+    assert "still active" in r.stdout and "restricted again" not in r.stdout
+    # unload exits 0 but the kernel still lists the profile: the file stays, exit 3
+    script, prof, log, child = _setup_script(tmp_path / "b", parser_rc=0, parser_unloads=False, profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 3 and prof.exists() and "still holds" in r.stdout, r.stdout
+    # a real unload: checked gone, then the file is deleted
+    script, prof, log, child = _setup_script(tmp_path / "c", profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 0 and not prof.exists() and "restricted again" in r.stdout, r.stdout
+
+
+def test_bwrap_setup_never_loads_or_removes_a_profile_it_did_not_write(tmp_path):
+    for args in ((), ("--remove",)):
+        script, prof, log, child = _setup_script(tmp_path / ("remove" if args else "setup"), profile=THEIRS)
+        r = _sh(script, child, *args)
+        assert r.returncode == 1 and prof.read_text() == THEIRS, (args, r.stdout)
+        assert not log.exists(), f"apparmor_parser was called for an unmanaged profile: {log.read_text()}"
+        assert "not written by this script" in r.stdout

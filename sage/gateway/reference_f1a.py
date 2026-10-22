@@ -787,7 +787,11 @@ _RETIRED_KEPT = "> Kept whole below, as it was written.\n\n"
 
 
 def _retired_header(stamp: datetime, reason: str) -> str:
-    return (f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z by cbp-being. No longer current: {reason}\n"
+    # NO ACTOR IS NAMED. Nova's hold at dcc5c630b: this read "by cbp-being" in every resident's
+    # home, so another being's retired journal would carry a false attribution in its own record.
+    # The dispatcher is built from a home and holds no bound identity to name, and the copy sits
+    # in that resident's home already; the verb is what is known, so the verb is what is said.
+    return (f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z with retire_note. No longer current: {reason}\n"
             + _RETIRED_KEPT)
 
 

@@ -216,3 +216,26 @@ def test_edits_racing_appends_lose_no_entry_and_no_edit():
     lost = [t for t in tokens if t not in text]
     assert edits > 1 and not lost, f"{len(lost)} lost across {edits} edits"
     assert text.startswith(f"header-{cur}\n"), "every edit landed"
+
+
+def test_a_retired_record_names_no_resident_it_cannot_verify():
+    """Nova's hold at dcc5c630b: the header read "by cbp-being" in every resident's home, so a
+    retire in another being's home wrote a false attribution into its own record. The dispatcher
+    holds no bound identity, so no actor is named at all: not cbp-being, and not a guess."""
+    d = Path(tempfile.mkdtemp(prefix="home-records-")) / "sprout-qwen3.5-0.8b"
+    d.mkdir()
+    disp = ReferenceF1aDispatcher(memory_root=str(d))
+    (d / "journal.md").write_text("2026-10-10 01:00 UTC\nold entry\n")
+    (d / "todo.md").write_text(_TODO)
+    (d / "notes").mkdir()
+    (d / "notes" / "draft.md").write_text("a draft\n")
+    for path in ("journal.md", "todo.md", "notes/draft.md"):
+        env = disp(BeingIntent("retire_note", {"path": path, "reason": "fresh start"}), _ALLOW)
+        assert env.ok, env.error
+    written = [p for p in d.rglob("*") if p.is_file() and not p.name.startswith(".")]
+    assert len(written) >= 5, written  # three retired copies, fresh journal and todo
+    for p in written:
+        text = p.read_text()
+        assert "cbp-being" not in text and " by " not in text.split("\n", 1)[0], (p.name, text[:160])
+    copy = next(p for p in written if p.name.startswith("journal.retired-"))
+    assert copy.read_text().startswith("> RETIRED ") and "with retire_note" in copy.read_text()

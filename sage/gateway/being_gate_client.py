@@ -198,9 +198,22 @@ PR_READ_LAST_MAX = 30
 WEB_SEARCH_MAX = 5
 
 
-# Verbs whose arguments are text that LEAVES the machine: swept by the innate denylist before any law path,
-# never path- or command-scoped (BeingGateClient.gate; hestia #1201 would make this a shared NormalizedEvent field).
+# Verbs whose arguments are text that LEAVES the machine. They ride the law's own `egress` field (hestia #1201,
+# landed as #1339/#1351): Gate 1a sweeps it for the innate egress.secret tokens, Gate 1b never scopes it as a path.
 _EGRESS_ARGS = {"web_search": ("query",)}
+
+
+def _law_sweeps_egress(core, sg=None) -> bool:
+    """Does the INSTALLED law carry and sweep a declared `egress` field (hestia #1201)?
+
+    The fixed core has `egress_unsweepable_deny` (the NOVA HOLD at 7a6e410b: a bare string swept one character at
+    a time); a single gate, when present, must carry the field too, or it would drop the declaration before the core
+    sees it. A law without it cannot judge the text, so the act is refused (egress.unswept), never sent unswept."""
+    def has(cls):
+        return "egress" in (getattr(cls, "__dataclass_fields__", None) or {})
+    if core is None or not hasattr(core, "egress_unsweepable_deny") or not has(getattr(core, "NormalizedEvent", None)):
+        return False
+    return sg is None or has(getattr(sg, "GateEvent", None))
 
 
 def _egress_text(intent) -> list:
@@ -3174,9 +3187,13 @@ class BeingGateClient:
             # turns that into a deny (gate.raised), never a silent pass. The being never
             # fills a command; the registry never carries a cmd_arg for a composed verb.
             command = compose(intent.args, self._compose_ctx())
+        # Text that leaves the machine rides the law's `egress` field (hestia #1201), only when there is some: an
+        # event that declares none is built exactly as before, so a pre-#1201 core still judges every other verb.
+        egress = _egress_text(intent)
         return self._core.NormalizedEvent(
             tool=spec["tool"], paths=paths, command=command,
             cwd=self.workspace, raw={"effector": intent.effector, **intent.args},
+            **({"egress": egress} if egress else {}),
         )
 
     def _compose_ctx(self) -> dict:
@@ -3220,31 +3237,19 @@ class BeingGateClient:
         if intent.effector not in _REGISTRY:
             return GatewayVerdict("deny", "registry.unbounded", stage="registry",
                                   reason=_unbounded_reason(intent.effector, intent.args))
-        # EGRESS TEXT IS SWEPT BEFORE ANY LAW PATH (GPT on #335). Text that leaves the machine (web_search's
-        # query) is natural language: composing it as a command made mrh.command read its words as paths, and
-        # uncomposed it rides only in `raw`, which hestia's Gate 1a does not scan. Measured on Sprout's live gate
-        # 2026-10-02: a query naming an ssh private key was ALLOWED. Until hestia carries a shared `egress`
-        # field (hestia #1201), the innate sweep runs here with hestia's own forbidden_tokens(), read-only,
-        # as the gemini shim does for its web tools. No core or no token list -> refused, never unswept.
-        egress = _egress_text(intent)
-        if egress:
-            core = getattr(self, "_core", None)
-            toks = None
-            try:
-                toks = core.forbidden_tokens(self._profile) if core is not None else None
-            except Exception:
-                toks = None
-            if not toks:
-                return GatewayVerdict("deny", "egress.unswept", innate=True, stage="egress",
-                                      reason=f"'{intent.effector}' sends text off this machine and the innate "
-                                             f"sweep is not available here, so nothing was sent")
-            for blob in egress:
-                low = blob.lower()
-                for f in toks:
-                    if f in low:
-                        return GatewayVerdict("deny", "egress.secret", innate=True, stage="egress",
-                                              reason=f"'{intent.effector}' would send a forbidden token off this "
-                                                     f"machine (a credential or private-repo name): '{f}'")
+        # EGRESS TEXT IS THE LAW'S TO SWEEP (hestia #1201). Text that leaves the machine (web_search's query) is
+        # natural language: composed as a command, mrh.command read its words as paths; uncomposed, it rode only in
+        # `raw`, which Gate 1a does not scan (measured on Sprout's live gate 2026-10-02: a query naming an ssh
+        # private key was ALLOWED). It is now declared as `egress` on the event (both law paths below), and the
+        # shared core sweeps it with its own token list, in degraded mode too. The client-local copy of that sweep
+        # is gone. What stays here is the one check the law cannot make about itself: if the INSTALLED law
+        # predates the field, the act is refused rather than sent with its text unjudged.
+        if _egress_text(intent) and not _law_sweeps_egress(getattr(self, "_core", None),
+                                                           getattr(self, "_single_gate", None)):
+            return GatewayVerdict("deny", "egress.unswept", innate=True, stage="egress",
+                                  reason=f"'{intent.effector}' sends text off this machine and the installed "
+                                         f"hestia law cannot judge it yet (it predates the egress field, hestia "
+                                         f"#1201), so nothing was sent. This is the seat's to update, not yours.")
         # THE COMMAND THE LAW IS HANDED, bound once per call and reported on every verdict
         # below. `getattr` rather than `ev.command`: the field is Optional by declaration, a
         # core may build a partial event (the test fakes do, deliberately), and a gate that
@@ -3306,7 +3311,8 @@ class BeingGateClient:
                     tool_input["requested_path"] = tool_input.pop("path")
                 ge = sg.GateEvent(tool=tool, tool_input=tool_input, cwd=self.workspace,
                                   session_id=getattr(self, "host_session_id", None),
-                                  raw={"effector": intent.effector, **intent.args})
+                                  raw={"effector": intent.effector, **intent.args},
+                                  **({"egress": list(ev.egress)} if getattr(ev, "egress", None) else {}))
                 d = sg.decide(ge, gp)
                 available = getattr(d, "verdict_available", True)
                 dec = d.decision if (available and d.decision in ("allow", "warn", "deny")) else "deny"

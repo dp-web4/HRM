@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 import time
+from dataclasses import dataclass, field
 from types import SimpleNamespace
 
 import pytest
@@ -168,31 +169,109 @@ KEY = "." + "ssh/id_" + "ed25519"     # built at runtime: a credential-shaped to
 
 
 class _Core:
-    """A law core that allows everything, so only the egress stage can deny."""
-    def forbidden_tokens(self, profile):
-        return ("/." + "ssh",)
+    """A law core with the #1201 `egress` field that allows everything: it records the event it was handed."""
+    seen: list = []
 
-    def NormalizedEvent(self, **kw):
-        return SimpleNamespace(**kw)
+    @dataclass
+    class NormalizedEvent:
+        tool: str
+        paths: list = field(default_factory=list)
+        command: object = None
+        cwd: object = None
+        raw: dict = field(default_factory=dict)
+        egress: list = field(default_factory=list)
+
+    def egress_unsweepable_deny(self, ev):
+        return None
+
+    def evaluate(self, ev, prof, ws, policy=None):
+        _Core.seen.append(ev)
+        return SimpleNamespace(decision="allow", rule="", reason="ok", innate=False)
+
+
+class _OldCore:
+    """A law that predates hestia #1201: no `egress` field, no sweep of it."""
+    @dataclass
+    class NormalizedEvent:
+        tool: str
+        paths: list = field(default_factory=list)
+        command: object = None
+        cwd: object = None
+        raw: dict = field(default_factory=dict)
 
     def evaluate(self, ev, prof, ws, policy=None):
         return SimpleNamespace(decision="allow", rule="", reason="ok", innate=False)
 
 
-def _gate(core):
+def _gate(core, sg=None):
     c = bgc.BeingGateClient.__new__(bgc.BeingGateClient)
     c.member_id, c.workspace, c._import_error, c._profile = "test-being", "/tmp/ws", "", object()
-    c._core, c._dispatcher, c._single_gate = core, None, None
+    c._core, c._dispatcher, c._single_gate = core, None, sg
     c._mech = SimpleNamespace(query_society_safety=lambda raw: SimpleNamespace(decision="allow"))
     return c
 
 
-def test_the_query_is_swept_for_forbidden_tokens_before_any_law_path():
-    """Measured on Sprout's live gate before this fix: a query naming a private key file was ALLOWED."""
-    v = _gate(_Core()).gate(BeingIntent("web_search", {"query": f"how to copy ~/{KEY} to a server"}))
-    assert v.decision == "deny" and v.rule == "egress.secret" and v.innate and v.stage == "egress"
+def test_the_query_rides_the_laws_egress_field():
+    """hestia #1201: the query is DECLARED as egress, so the law sweeps it; the client no longer sweeps it itself."""
+    _Core.seen.clear()
+    v = _gate(_Core()).gate(BeingIntent("web_search", {"query": "small models learn"}))
+    assert v.stage != "egress" and not v.rule.startswith("egress"), v     # past the egress stage, to the law
+    assert _Core.seen[-1].egress == ["small models learn"]
+    assert not hasattr(bgc.BeingGateClient, "_sweep") and "forbidden_tokens" not in bgc.BeingGateClient.gate.__code__.co_names
 
 
-def test_no_sweep_available_means_nothing_is_sent():
-    v = _gate(None).gate(BeingIntent("web_search", {"query": "benign words"}))
-    assert v.decision == "deny" and v.rule == "egress.unswept"
+def test_a_verb_with_no_egress_is_built_as_before():
+    """Only an egress verb sets the field, so a pre-#1201 core still judges every other verb."""
+    _Core.seen.clear()
+    _gate(_Core()).gate(BeingIntent("witness", {"note": "x"}))
+    assert _Core.seen and _Core.seen[-1].egress == []
+    v = _gate(_OldCore()).gate(BeingIntent("witness", {"note": "x"}))
+    assert v.rule != "egress.unswept"
+
+
+def test_a_law_that_predates_the_field_refuses_and_sends_nothing():
+    for core in (None, _OldCore()):
+        v = _gate(core).gate(BeingIntent("web_search", {"query": "benign words"}))
+        assert v.decision == "deny" and v.rule == "egress.unswept" and v.innate and v.stage == "egress", v
+
+
+def test_a_single_gate_that_predates_the_field_refuses_too():
+    """A single gate without GateEvent.egress would drop the declaration before the core saw it."""
+    @dataclass
+    class GateEvent:
+        tool: str
+        tool_input: dict = field(default_factory=dict)
+    v = _gate(_Core(), sg=SimpleNamespace(GateEvent=GateEvent)).gate(BeingIntent("web_search", {"query": "benign"}))
+    assert v.decision == "deny" and v.rule == "egress.unswept", v
+
+
+def _real_law():
+    """The shared law this client would import, when it carries #1201; else the skip reason."""
+    from sage.gateway.tests._gate_core import gate_core_importable
+    if not gate_core_importable():
+        return None, "the hestia gate law is not importable here"
+    import hestia_gate_core as core
+    try:
+        import hestia_single_gate as sg
+    except Exception:
+        sg = None
+    if not bgc._law_sweeps_egress(core, sg):
+        return None, "the hestia law on this box predates the egress field (hestia #1201)"
+    return (core, sg), None
+
+
+@pytest.mark.parametrize("path", ["local-law", "single-gate"])
+def test_the_real_law_denies_a_secret_in_the_query(path):
+    """Measured on Sprout's live gate 2026-10-02, before the sweep: a query naming a private key was ALLOWED."""
+    law, why = _real_law()
+    if law is None:
+        pytest.skip(why)
+    core, sg = law
+    if path == "single-gate" and sg is None:
+        pytest.skip("no single gate in this law")
+    c = bgc.BeingGateClient(member_id="test-being", identity_path="/tmp/ws/test-being/identity.json",
+                            workspace="/tmp/ws")
+    if path == "local-law":
+        c._single_gate = None
+    v = c.gate(BeingIntent("web_search", {"query": f"how to copy ~/{KEY} to a server"}))
+    assert v.decision == "deny" and v.rule == "egress.secret", v

@@ -312,21 +312,24 @@ _REV = (r"(?:[0-9a-fA-F]{7,40}|HEAD|[A-Za-z][A-Za-z0-9._/-]{0,60})"
 #
 # So each refusal now says what the verb is FOR, that it does not read the being's home, and
 # which tool serves the likely need there. None of them tells the being to ask for a worktree.
-# Every tool and parameter named here must exist as named: memory_read takes `path` and
-# `start_line` (no end_line; a long file comes back in windows that say how to read on), and
+# Every tool and parameter named here must exist as named: memory_read takes `path`,
+# `start_line`, `end_line` (inclusive), and `find` (literal text in one file), and
 # request_run takes `path`. Pinned by test_no_worktree_refusals_say_what_the_verb_is_for, which
 # checks each named parameter against _TOOL_SCHEMAS. The dispatcher (hestia_dispatch) and the
 # toolset's availability line say the same text, so the being hears one answer however it asks.
 NO_WORKTREE_REFUSAL = {
-    # "read lines", never "find": memory_read shows a file from a line on; it does not search.
-    # #354 first said "To find or read lines ... use memory_read", which hands a being that
-    # wants to locate a string a tool that cannot locate one (Codex, #354 follow-up). Pinned by
-    # test_no_home_tool_is_credited_with_finding.
+    # #357 correctly avoided promising find before the tool could do it. #390 adds literal
+    # per-file find; name its parameter explicitly, without suggesting worktree setup.
+    # Reached only with no path given (a path takes search to a grant outside the home, see
+    # _reach_search_command). It names where search DOES read here, so the next call can work.
     "search": (
-        "search reads a code-repository checkout (a worktree), not your home, and this seat "
-        "has none. To read lines in your own files (notes/, scratch/, todo.md, "
-        "journal.md), use memory_read with the file's path and start_line: it shows the file "
-        "from that line on and says which lines it covered."),
+        "search reads code, not your home: a code-repository checkout (a worktree) when you have "
+        "one, and otherwise a folder or file OUTSIDE your home that you hold a grant for. Give "
+        "that folder's absolute path as path (your grants are listed under 'Reach you hold' in "
+        "your state), and search lists file:line:text for each match inside it. To find a line in "
+        "your own files (notes/, scratch/, todo.md, journal.md), use memory_read with the "
+        "file's path and find: it lists matching line numbers in that file. "
+        "Then memory_read with start_line and end_line reads the range you need."),
     "git_read": (
         "git_read reads the git history of a code-repository checkout (a worktree): its "
         "commits, diffs, blame, and files as they were at an earlier commit. It does not read "
@@ -385,7 +388,12 @@ NO_WORKTREE_REFUSAL = {
         "you can take. No other tool captures a frame."),
 }
 
-GIT_OPS = ("log", "show", "diff", "status", "blame", "cat")
+# What a reach search says when pointed at the home: the home's own finder, by its real call.
+_SEARCH_HOME_POINTER = (
+    "To find a line in your own files (notes/, scratch/, todo.md, journal.md), use memory_read "
+    "with the file's path and find: it lists matching line numbers in that file.")
+
+GIT_OPS =("log", "show", "diff", "status", "blame", "cat")
 
 # A revision the being may name: a hex sha, HEAD with optional ~n/^n, or a plain branch or
 # tag name. Deliberately excludes anything containing a flag, a space, or a path separator
@@ -1070,7 +1078,7 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
     import os
     import shlex
     worktree = (ctx or {}).get("worktree")
-    if not worktree:
+    if not worktree and not str(args.get("path", "")).strip():
         raise ValueError(NO_WORKTREE_REFUSAL["search"])
     pattern = str(args.get("pattern", ""))
     if not pattern.strip():
@@ -1084,6 +1092,8 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
     except (TypeError, ValueError):
         raise ValueError(f"search 'n' must be a number, got {args.get('n')!r}")
     n = max(1, min(n, SEARCH_MAX_N))
+    if not worktree:
+        return _reach_search_command(pattern, n, str(args.get("path", "")).strip(), ctx or {})
 
     path = str(args.get("path", "")).strip()
     root = os.path.realpath(worktree)
@@ -1140,6 +1150,54 @@ def search_command(args: dict, ctx: Optional[dict] = None) -> str:
         return (f"grep -rn -I -E --max-count={n} --exclude-dir=.git "
                 f"-e {shlex.quote(pattern)} -- {shlex.quote(target)}")
     return (f"git --no-pager -C {shlex.quote(worktree)} grep -n -I -E --max-count={n} "
+            f"-e {shlex.quote(pattern)} -- {shlex.quote(target)}")
+
+
+def reach_search_target(cmd: str) -> Optional[str]:
+    """The one path a reach search reads: the argv element after `--` of a command
+    _reach_search_command composed (None for any other shape). The dispatcher confines on this,
+    taken from the string the law judged rather than recomposed."""
+    import shlex
+    argv = shlex.split(cmd)
+    if not argv or argv[0] != "grep" or "--" not in argv:
+        return None
+    rest = argv[argv.index("--") + 1:]
+    return rest[0] if len(rest) == 1 else None
+
+
+def _reach_search_command(pattern: str, n: int, path: str, ctx: dict) -> str:
+    """SEARCH WITH NO WORKTREE READS A GRANT OUTSIDE THE HOME (CBP, 2026-10-21).
+
+    cbp-being holds read grants on the governance snapshot and has no worktree, so `search` had
+    nothing to run on: 15 refusals in 12 beats (GateDecision( across governance/hestia,
+    StateGuard across its plugins), each costing an explore step, while memory_read find can only
+    look inside one file it already knows. Here the target is an ABSOLUTE path outside the home
+    (the home stays memory_read find's: search does not read the being's own files), and the
+    command is a fixed read-only grep over it. The law judges this string as it judges git grep:
+    the target token against the member's granted prefixes, so a path outside the grants is
+    refused by the gate, not by this function; the dispatcher confines on the verdict's reach too.
+    """
+    import os
+    import shlex
+    if any(ch.isspace() for ch in path):
+        raise ValueError("search 'path' may not contain whitespace")
+    raw = os.path.expanduser(path)
+    if not os.path.isabs(raw) or path.startswith("-") or ".." in raw.split("/"):
+        raise ValueError(
+            f"search 'path' {path!r} is not an absolute path. With no worktree here, search reads "
+            f"a folder or file OUTSIDE your home that you hold a grant for, named by its absolute "
+            f"path (your grants are listed under 'Reach you hold' in your state). " + _SEARCH_HOME_POINTER)
+    target = os.path.realpath(raw)
+    home = (ctx or {}).get("memory_root")
+    if home:
+        h = os.path.realpath(str(home))
+        if target == h or target.startswith(h + os.sep):
+            raise ValueError(
+                f"search does not read your home ({path!r} is inside it). " + _SEARCH_HOME_POINTER)
+    if not os.path.exists(target):
+        raise ValueError(f"search 'path' {path!r} does not exist, so there is nothing there to "
+                         f"search. Name a folder or file that exists, by its absolute path.")
+    return (f"grep -r -n -I -E -s --max-count={n} --exclude-dir=.git "
             f"-e {shlex.quote(pattern)} -- {shlex.quote(target)}")
 
 
@@ -1201,6 +1259,7 @@ def _takes_ctx(fn) -> bool:
 # the distro's own pattern (see ch-run, crun, flatpak). Chosen over relaxing the sysctl
 # machine-wide: narrow beats convenient when the thing relaxed is a containment boundary.
 # Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
+# scripts/enable_bwrap_userns.sh installs that profile (operator, sudo; Sprout 2026-10-20).
 SANDBOX = "/usr/bin/bwrap"
 # Fail CLOSED by default: a check that silently ran unsandboxed would be the seat quietly
 # handing back the authority the sandbox exists to remove, and nothing in the result would
@@ -2385,6 +2444,7 @@ GAME_SOURCE_MARKER = "environment_files/"
 # the distro's own pattern (see ch-run, crun, flatpak). Chosen over relaxing the sysctl
 # machine-wide: narrow beats convenient when the thing relaxed is a containment boundary.
 # Where the profile is absent, SANDBOX_REQUIRED decides whether to refuse or degrade.
+# scripts/enable_bwrap_userns.sh installs that profile (operator, sudo; Sprout 2026-10-20).
 
 
 def tune_paths(args: dict, ctx: Optional[dict] = None) -> List[str]:
@@ -2535,7 +2595,7 @@ _REGISTRY = {
     "remember":       dict(tool="remember",     path_args=(),       cmd_arg=None),
     # retire_note: rename one of the being's OWN notes to `.retired-<date>` with a dated
     # header. Judged on the path like memory_write, because that is what it is: a write
-    # inside its own home, bounded to notes/ and scratch/ by the dispatcher.
+    # inside its own home, bounded to notes/, scratch/ and its todo.md by the dispatcher.
     "retire_note":    dict(tool="write_note",   path_args=("path",), cmd_arg=None),
     # tune: set one of the being's own parameters (being_params). Judged as what it is, a write
     # of ONE fixed file in its own home: the path is the seat's (tuned.json), never the being's,
@@ -2623,9 +2683,11 @@ _TOOL_SCHEMAS = {
                  {"to": "the being's name, e.g. 'legion'", "body": "your message"}, ["to", "body"]),
     "witness": ("Record a witnessed note of something you did or noticed.",
                 {"event": "what to witness"}, ["event"]),
-    "memory_read": ("Read one of your own memory notes. A long file comes back in windows of "
+    "memory_read": ("Read one of your own memory notes, or find a line in one. A long file comes back in windows of "
                     "whole lines; if it does not reach the end it says so and names the "
-                    "start_line that reads on. For an exact range, from_line + lines.",
+                    "start_line that reads on. For an exact range, from_line + lines. Give find to locate "
+                    "literal text across the file instead; start_line, end_line, from_line and lines are "
+                    "then ignored. Matching lines are numbered, with output limits stated explicitly.",
                     {"path": "path to your note",
                      "start_line": "optional: the line number to start from (default 1)",
                      "from_line": "optional: 1-based line to start an exact range from",
@@ -2633,7 +2695,12 @@ _TOOL_SCHEMAS = {
                      "end_line": ("optional: the last line to show, inclusive, as memory_read "
                                   "numbers lines. To look at one line, give it as both. Without "
                                   "it the read runs to the window's end, about 8,000 characters, "
-                                  "which is most of a short file.")}, ["path"]),
+                                  "which is most of a short file."),
+                     "find": ("optional: literal, case-sensitive text to locate (not a regex). "
+                              "Lists matching line numbers across this one file; ignores "
+                              "start_line and end_line. With line breaks, searches only the first "
+                              "non-blank line and says so. Blank text gives an ordinary read "
+                              "with a note explaining the fallback.")}, ["path"]),
     # SAY IT APPENDS, AT THE MOMENT OF CHOICE (2026-09-26). This description was "Write a note
     # into your own memory." Only memory_edit's description said memory_write appends, and a model
     # choosing memory_write never reads that one. cbp-being meant to rewrite
@@ -2700,7 +2767,9 @@ _TOOL_SCHEMAS = {
                "long file in ranges costs you the earlier ranges, because your window is "
                "smaller than the file. Search first, then read the lines it points at.",
                {"pattern": "the text or extended-regex to look for, e.g. 'def compose(' ",
-                "path": "optional: a path inside your worktree to narrow the search to",
+                "path": ("a path inside your worktree to narrow the search to; with no worktree, "
+                         "required: the absolute path of a folder or file outside your home "
+                         "that you hold a grant for"),
                 "n": "optional: maximum matches per file (default 30)"},
                ["pattern"]),
     "check": ("Run a test suite in your own worktree and read the result. This is how you "
@@ -3449,6 +3518,25 @@ class BeingGateClient:
                 if (_REGISTRY[intent.effector].get("compose") and _wt and tool_input.get("path")
                         and not os.path.isabs(str(tool_input["path"]))):
                     tool_input["path"] = os.path.realpath(os.path.join(_wt, str(tool_input["path"])))
+                # AND A RUN'S SCRIPT IS IN THE HOME (Sprout, 2026-10-20/21). run is composed with no
+                # path_args, so its `path` reached hestia raw and was resolved against cwd=workspace:
+                # `run scratch/test-v4l2-access.py` was refused "'scratch' is not granted" beat after
+                # beat, each refusal opening a scope request for sage/scratch/..., a file that does not
+                # exist, while run_names stages the script from the being's home. Root it there.
+                if (intent.effector == "run" and tool_input.get("path")
+                        and getattr(self, "memory_root", None)):
+                    _p = os.path.expanduser(str(tool_input["path"]).strip())
+                    if not os.path.isabs(_p):
+                        tool_input["path"] = os.path.realpath(os.path.join(self.memory_root, _p))
+                # A SCOPE REQUEST'S PATH IS WHAT IT ASKS FOR, NOT WHAT IT TOUCHES (2026-10-19, CBP).
+                # The registry gives request_scope path_args=() so the legacy stage never judges it
+                # as reach -- but this branch handed the raw args on, and hestia reads `path` as a
+                # ratified path key (hestia_gate_core.PATH_KEYS). Every request for a path outside
+                # the grant (which is every request) was refused mrh.path before reaching the
+                # daemon: cbp-being, five refusals 13:24-13:35Z for state_lock.rs, then an appeal.
+                # The path stays visible to the law as data, under a key that carries no reach.
+                if intent.effector == "request_scope" and "path" in tool_input:
+                    tool_input["requested_path"] = tool_input.pop("path")
                 ge = sg.GateEvent(tool=tool, tool_input=tool_input, cwd=self.workspace,
                                   session_id=getattr(self, "host_session_id", None),
                                   raw={"effector": intent.effector, **intent.args},
@@ -3548,7 +3636,84 @@ class BeingGateClient:
                               granted=granted, granted_reach=granted_reach)
 
     # -- the F1a seam: gate, then dispatch, then consume the result ----------
+    def _resolve_relative_to_grants(self, intent: BeingIntent):
+        """(intent, [(asked, resolved), ...]): a relative path that names nothing in the
+        being's home but an existing file or directory inside one of its grants is rewritten to
+        that absolute path, BEFORE the gate, so the law judges and the dispatcher touches the
+        same real path.
+
+        dp, 2026-10-21: "the harness should resolve relative paths to granted ones when they
+        exist." Measured the day before on cbp-being: it read the gate source by its absolute
+        path (allowed, under a grant), then asked for it as
+        `governance/hestia/plugins/_shared/hestia_single_gate.py`, which is rooted at its home,
+        got "does not exist", stored that as a fact, and asked dp four times in 90 minutes where
+        the file lives.
+
+        Never widens: the home is tried first and wins whenever the path exists there; a
+        candidate is taken only when it exists AND falls inside a grant the law already holds
+        for this member (exact grants match exactly, `/**` grants recursively); the rewritten
+        path is then judged by the gate like any other. Bases, nearest first: the workspace,
+        then the ancestors of the home. An absolute or `..` path is left alone.
+
+        READS ONLY (tool read_file: memory_read, request_run). A relative write to a path the
+        home lacks is the being creating a file in its home; turning that into an edit of an
+        existing granted file would change a file it did not know it was touching."""
+        spec = _REGISTRY.get(intent.effector) or {}
+        if spec.get("tool") != "read_file":
+            return intent, []
+        names = [a for a in spec.get("path_args", ()) if intent.args.get(a)]
+        if not names or not getattr(self, "memory_root", None):
+            return intent, []
+        todo = []
+        for a in names:
+            raw = os.path.expanduser(str(intent.args[a]))
+            if os.path.isabs(raw) or ".." in raw.split(os.sep):
+                continue
+            if os.path.exists(os.path.join(self.memory_root, raw)):
+                continue
+            todo.append((a, raw))
+        if not todo:
+            return intent, []
+        _granted, reach = self._policy_grants()
+        if not reach:
+            return intent, []
+        bases, up = [], os.path.realpath(self.memory_root)
+        cands = [getattr(self, "workspace", None)]
+        while os.path.dirname(up) != up:
+            up = os.path.dirname(up)
+            cands.append(up)
+        for b in cands:
+            if b and os.path.realpath(b) not in bases:
+                bases.append(os.path.realpath(b))
+        args, moved = dict(intent.args), []
+        for a, raw in todo:
+            for b in bases:
+                cand = os.path.realpath(os.path.join(b, raw))
+                if not os.path.exists(cand):
+                    continue
+                if any(cand == r or (rec and cand.startswith(r.rstrip(os.sep) + os.sep))
+                       for r, rec in ((os.path.realpath(str(r)), bool(rec)) for r, rec in reach)):
+                    args[a] = cand
+                    moved.append((raw, cand))
+                break   # nearest existing candidate decides; an ungranted one is not skipped past
+        if not moved:
+            return intent, []
+        import dataclasses as _dc
+        return _dc.replace(intent, args=args), moved
+
     def dispatch(self, intent: BeingIntent) -> ResultEnvelope:
+        intent, moved = self._resolve_relative_to_grants(intent)
+        env = self._dispatch_resolved(intent)
+        if moved:
+            said = "; ".join(f"'{a}' is not in your home, so it was read as '{b}', inside your grant"
+                             for a, b in moved)
+            if env.ok and isinstance(env.result, str):
+                env.result = f"[{said}]\n{env.result}"
+            elif env.error:
+                env.error = f"{env.error} [{said}]"
+        return env
+
+    def _dispatch_resolved(self, intent: BeingIntent) -> ResultEnvelope:
         v = self.gate(intent)
         if v.blocks:
             # A refusal is witnessed on the chain as a policy_decision, so the being holds

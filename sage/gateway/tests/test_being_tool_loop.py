@@ -1271,9 +1271,13 @@ def test_images_ride_on_the_message_and_survive_the_flattening():
     class FakeLLM:
         num_ctx = 24576
         def get_chat_response(self, messages, tools=None):
-            seen["messages"] = messages
+            seen.setdefault("messages", messages)
+            # The count GROWS with what is sent, as a real model's does: on the Legion carrier the
+            # vision nudge adds a second generate, and a constant count would read as main's
+            # server cut (a count far below what was sent) and drop the reply (merge 2026-10-23).
+            grown = sum(len(str(m.get("content") or "")) for m in messages[1:]) // 2
             return {"content": "ok", "tool_calls": [],
-                    "raw": {"prompt_eval_count": 10, "eval_count": 1}}
+                    "raw": {"prompt_eval_count": 10 + grown, "eval_count": 1}}
 
     r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(),
                              [{"role": "user", "content": "look", "images": ["QUJD"]}],
@@ -1419,9 +1423,13 @@ def test_images_ride_on_the_message_and_survive_the_flattening():
     class FakeLLM:
         num_ctx = 24576
         def get_chat_response(self, messages, tools=None):
-            seen["messages"] = messages
+            seen.setdefault("messages", messages)
+            # The count GROWS with what is sent, as a real model's does: on the Legion carrier the
+            # vision nudge adds a second generate, and a constant count would read as main's
+            # server cut (a count far below what was sent) and drop the reply (merge 2026-10-23).
+            grown = sum(len(str(m.get("content") or "")) for m in messages[1:]) // 2
             return {"content": "ok", "tool_calls": [],
-                    "raw": {"prompt_eval_count": 10, "eval_count": 1}}
+                    "raw": {"prompt_eval_count": 10 + grown, "eval_count": 1}}
 
     r = run_ollama_tool_turn(_client(OK_DISPATCH), FakeLLM(),
                              [{"role": "user", "content": "look", "images": ["QUJD"]}],

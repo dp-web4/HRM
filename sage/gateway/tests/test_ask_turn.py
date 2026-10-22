@@ -276,6 +276,29 @@ def test_binding_rules():
     assert not hb._bound_to("", "cbp-sage")
 
 
+SEAT_ASK = ASK.replace("from: cbp-being", "from: cbp-claude", 1)
+
+
+def test_a_seat_ask_binds_to_its_machine_and_is_answered_there(tmp_path):
+    """HUB, 2026-10-19: hub-claude's ask to hub-being (roster `hub`) got no turn in 45 beats. A seat signs
+    `<machine>-claude`; the answer goes to the roster name, since no peer_ask reaches `cbp-claude`."""
+    home, ns = _home(tmp_path, [(1, "coordination", SEAT_ASK)], sender="c0ffee01")  # cbp
+    assert hb._ask_sender(home, ns[0]["pointer_uri"]) == "cbp"
+    assert hb.select_ask(ns, set(), home)["asker"] == "cbp"
+
+
+def test_a_seat_signature_binds_only_to_its_own_machine():
+    assert hb._bound_to("hub-claude", "hub") and hb._bound_to("Hub-Claude", "hub")
+    assert not hb._bound_to("legion-claude", "hub")
+    assert not hb._bound_to("hub-claude", "hub-sage")     # a being cannot sign as its seat
+    assert not hb._bound_to("hub-claude", "")
+
+
+def test_a_being_carried_by_its_seat_keeps_its_own_name_as_destination():
+    assert hb._ask_destination("cbp-being", "cbp") == "cbp-being"
+    assert hb._ask_destination("hub-claude", "hub") == "hub"
+
+
 # -- the authenticated sender is transport metadata, recorded outside the being's home (NOVA re-review) --
 
 def test_editing_the_notes_own_from_changes_nothing(tmp_path):

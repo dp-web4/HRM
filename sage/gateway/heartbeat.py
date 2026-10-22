@@ -694,7 +694,8 @@ def act_after_answer_on(instance) -> bool:
 # dp for a worktree so search could find a line in its own scratch file (see NO_WORKTREE_REFUSAL). Pinned
 # by test_no_worktree_ability_claims_the_home.
 _ABILITIES = [("camera", "look through your eyes"),
-              ("search", "search the code repository checked out on this seat (not your home)"),
+              ("search", "search the code repository checked out on this seat, or with none a "
+                         "folder you hold a grant for outside your home (not your home)"),
               ("pr_read", "read the fleet's pull requests"), ("recall", "recall memories"),
               ("peer_ask", "ask a sibling a question"), ("speak", "speak aloud"),
               ("web_search", "search the web a few times an hour (what comes back is other people's words)")]
@@ -1060,7 +1061,7 @@ def answer_turn_json(client, llm, selected, *, name: str, machine: str, member: 
 
 REFLECT = """The beat is ending. Call these tools, then stop:
 {say_first}1. memory_write path "journal.md": one entry starting with the date {date}: what you did, what you noticed, what was refused and why you think so, what you want next time.
-2. memory_write path "todo.md": only the delta as a dated block: added / done / still open (it appends; it replaces nothing).
+2. memory_write path "todo.md": your message to your future self, as a dated block: added / done / still open (it appends; it replaces nothing).
 3. remember: one sentence a future you would want to FIND by searching (what you learned, decided, or noticed), only if there is one. Your journal is searchable by recall now; remember is for the line that should outlast it.
 {say_line}Call the tools now; a reply in words alone writes nothing.
 """
@@ -1599,6 +1600,15 @@ def delivered_excerpt(home, pointer: str, cap: int = INLINE_ASK_CHARS) -> str:
         return ""
 
 
+def _fr_delivered(turn, killed) -> bool:
+    """forum_replies.delivered, never raising into the record: doubt means not delivered (offered again)."""
+    try:
+        from sage.gateway.forum_replies import delivered
+        return delivered(turn, killed)
+    except Exception:
+        return False
+
+
 def render_inbox(notices: list, limit: int = 8, handled=None, shown: list = None, home=None) -> str:
     """The being's hestia inbox as it should read it: newest first, one line each, the kinds
     that want its attention (reply, review, handoff, unreachable) ahead of bookkeeping, and
@@ -1738,12 +1748,23 @@ def _roster_name_for(member_id: str) -> str:
 def _bound_to(claimed: str, authed: str) -> bool:
     """Whether the name a post claims is the member the hub authenticated it from: the same member
     (a being is `<machine>-being` to beings and `<machine>-sage` on the hub), or that being's own
-    machine, whose seat carries mail for it (egress_drain's stamped carrier)."""
+    machine, whose seat carries mail for it (egress_drain's stamped carrier). A seat signs
+    `<machine>-claude` (fleet rule, 2026-09-02) and is `<machine>` on the roster; it binds to that
+    member only, never to the machine's being (HUB, 2026-10-19: no seat ask had ever bound)."""
     c, a = claimed.strip().lower(), authed.strip().lower()
     if not c or not a:
         return False
+    if c.endswith("-claude"):
+        return c[:-len("-claude")] == a
     base = lambda n: n[:-len("-being")] if n.endswith("-being") else n[:-len("-sage")] if n.endswith("-sage") else None  # noqa: E731
     return c == a or (base(c) is not None and (base(c) == base(a) or base(c) == a))
+
+
+def _ask_destination(claimed: str, authed: str) -> str:
+    """Where the being's answer goes: the claimed name, unless it is a seat's signature, which no
+    peer_ask reaches (`hub-claude` is not on the roster); then the authenticated roster name. The
+    claimed name stays for beings: a seat carrying its being's mail must not get the being's reply."""
+    return authed if claimed.strip().lower().endswith("-claude") else claimed
 
 
 def _ask_sender(home, pointer: str) -> str:
@@ -1772,7 +1793,7 @@ def _ask_sender(home, pointer: str) -> str:
             return ""
         m = _ASK_FROM.search(body[4:].split("\n---", 1)[0])
         claimed = m.group(1) if m else ""
-        return claimed if _bound_to(claimed, authed) else ""
+        return _ask_destination(claimed, authed) if _bound_to(claimed, authed) else ""
     except Exception:
         return ""
 
@@ -2509,18 +2530,36 @@ def todo_open(text, now=None, window_h=48):
 _TODO_PARSE: dict = {}
 
 
-def _todo_items(text: str) -> dict:
+def _todo_parsed(text: str) -> tuple:
     key = hashlib.sha256(text.encode("utf-8", "surrogateescape")).hexdigest()
     hit = _TODO_PARSE.get(key)
     if hit is None:
-        hit = _parse_todo(text)
+        hit = (_parse_todo(text), list(_LAST_TODO_CLOSURES))
         _TODO_PARSE.clear()
         _TODO_PARSE[key] = hit
     return hit
 
 
-def _parse_todo(text: str) -> dict:
-    """norm -> (item text, since) for every item still open at the end of the log."""
+def _todo_items(text: str) -> dict:
+    return _todo_parsed(text)[0]
+
+
+def todo_closures(text: str) -> list:
+    """[(phrase, n_closed, since)] for every `all:` line in the log, in order (todo_membot)."""
+    return _todo_parsed(text or "")[1]
+
+
+_LAST_TODO_CLOSURES: list = []     # the `all:` closures of the most recent _parse_todo, read by _todo_parsed
+
+
+def _parse_todo(text: str, closures: Optional[list] = None) -> dict:
+    """norm -> (item text, since) for every item still open at the end of the log. `all: <words>` done lines
+    close every open item containing the words (todo_membot); they are listed in `closures` when given, and
+    always in _LAST_TODO_CLOSURES."""
+    from sage.gateway import todo_membot as _tm
+    global _LAST_TODO_CLOSURES
+    closures = [] if closures is None else closures
+    _LAST_TODO_CLOSURES = closures
     items = {}          # norm -> (text, since_dt)
     since = None
     section = None
@@ -2563,6 +2602,10 @@ def _parse_todo(text: str) -> dict:
             if n not in items:
                 items[n] = (body.strip(), since)
         else:
+            swept = _tm.close_all(items, body)
+            if swept is not None:
+                closures.append((swept[0], len(swept[1]), since))
+                continue
             if n in items:
                 del items[n]
             else:
@@ -2584,18 +2627,32 @@ def todo_view(instance: Path, now=None) -> str:
         text = ""
     if not text.strip():
         return "## todo.md\n(empty: you have no todo list yet)"
+    from sage.gateway import todo_membot as _tm
     rec, older = todo_open(text, now=now, window_h=TODO_WINDOW_H)
+    # ONE GOAL IS SHOWN ONCE (todo_membot): items naming the same id fold into one line with a count. On
+    # Sprout 2026-10-19, 19 of 79 open items were differently worded copies of one goal, shown every beat.
+    groups = _tm.group(rec)
     lines = [f"## todo.md: still open ({len(rec)})"]
-    lines += [f"- [ ] {t}" + (f" (since {s:%Y-%m-%d %H:%M} UTC)" if s else "") for t, s in rec[:TODO_SHOWN]]
-    if len(rec) > TODO_SHOWN:
-        lines.append(f"- … and {len(rec) - TODO_SHOWN} more opened in the last {TODO_WINDOW_H} h.")
+    for t, s, n, k in groups[:TODO_SHOWN]:
+        lines.append(f"- [ ] {t}" + (f" (since {s:%Y-%m-%d %H:%M} UTC)" if s else "")
+                     # neutral: the shown item is the newest; the others are not claimed to share its state
+                     + (f" — {n} open items mention {k}; this is the newest of them" if n > 1 else ""))
+    if len(groups) > TODO_SHOWN:
+        rest = sum(g[2] for g in groups[TODO_SHOWN:])
+        lines.append(f"- … and {rest} more opened in the last {TODO_WINDOW_H} h.")
     if not rec:
         lines.append("(nothing open)")
     if older:
         lines.append(f"({older} older item(s) opened more than {TODO_WINDOW_H} h ago were never marked "
                      f"done; they are in todo.md.)")
+    done_all = _tm.closures_line(todo_closures(text))
+    if done_all:
+        lines.append("What your recent `all:` lines closed:")
+        lines += done_all
     lines.append("Built from your whole todo.md: an item stays open until a later line marks it done. "
-                 "To close one, write it under done:. The whole log: memory_read todo.md.")
+                 "To close one, write it under done:. To close every open item that mentions something, "
+                 "write a done item whose text is `all: <words or id>` (under done:, for example "
+                 "`all: scope-0123abcd4567`). The whole log: memory_read todo.md.")
     return "\n".join(lines)
 
 
@@ -3069,6 +3126,25 @@ def explore_json_steps(instance, default: int) -> int:
         return max(1, min(default, int(instance_config(instance).get("explore_json_steps", 3))))
     except Exception:
         return min(default, 3)
+
+
+def explore_native_steps(instance, default: int) -> int:
+    """Tool rounds for explore in the NATIVE tool form (instance.json "explore_steps"; absent = the
+    default, unchanged). Opt-in per instance (RESEARCH_GENERALIZATION_RULE).
+
+    Measured on cbp-being 2026-10-21 (num_ctx 16,384, seed ~12.7k with brief descriptions): explore
+    took all 8 rounds in every beat from 08:27Z, several on refused calls, and posture -- the phase
+    that acts on what explore read, answers, and fixes the todo -- was over the window every beat.
+    A correction from the seat was then absorbed by reflect while explore kept running the old plan
+    in the same beat. Capping explore leaves posture its room; posture is not capped by this."""
+    try:
+        from sage.gateway.governed_turn import instance_config
+        v = instance_config(instance).get("explore_steps")
+        if v is None:
+            return default
+        return max(1, min(default, int(v)))
+    except Exception:
+        return default
 
 
 def preempt_on(instance) -> bool:
@@ -4100,6 +4176,18 @@ def main(argv=None) -> int:
             inbox = _sib + "\n" + inbox
     except Exception:
         pass
+    # ANSWERS TO ITS OWN ASKS. Peers reply on the forum and send nothing back over the mesh, so until
+    # this the being never saw a reply (Sprout 2026-10-18: 72 posts addressed to it, 14 asks about one
+    # question in a day). Shown once each, newest first, a few per beat (forum_replies).
+    forum_replies = None
+    if not args.gate_only:
+        try:
+            from sage.gateway import forum_replies as _fr
+            forum_replies = _fr.for_beat(instance, workspace, args.member)
+            if forum_replies.get("block"):
+                inbox = inbox + "\n\n" + forum_replies["block"]
+        except Exception as _e:
+            forum_replies = {"error": f"{type(_e).__name__}: {_e}"}
     # what reach the being holds and has already asked for, so it does not re-file
     scope = "(scope status unavailable)"
     if disp is not None and hasattr(disp, "_call"):
@@ -4440,8 +4528,12 @@ def main(argv=None) -> int:
         _phase("wake", "explore", host_session_id)
         _preempt = preempt_on(instance)
         from sage.gateway import being_params as _bp
+        _json_form = explore_turn_mode(instance) == "json"
         _explore_steps = (explore_json_steps(instance, args.max_steps)
-                          if explore_turn_mode(instance) == "json" else args.max_steps)
+                          if _json_form else explore_native_steps(instance, args.max_steps))
+        # posture keeps the full budget in the native form: it is the phase the explore cap
+        # exists to leave room for (the JSON form is unchanged: one cap for both, as before)
+        _posture_steps = _explore_steps if _json_form else args.max_steps
 
         def _yield_for_a_person():
             got = p0_since(_beat_started) if _preempt else []
@@ -4471,11 +4563,16 @@ def main(argv=None) -> int:
         if posture_turn is not None and not _r3:
             convo.append({"role": "user", "content": posture_turn})
             _phase("wake", "posture", host_session_id)
-            after = run_ollama_tool_turn(client, llm, convo, max_steps=_explore_steps,
-                                         tools=_explore_specs, on_generate=_on_generate("posture"), retake_bare_placeholder=True,
+            # ANCHORED ON EXPLORE'S COUNT OF THE SAME SEED, same tools: posture's step 1 was judged on
+            # the preflight guess, so a prompt the server then cut in half (CBP 2026-10-21, 8 of 24
+            # beats counted ~8k after a ~15k seed) was not seen as cut and its reply was acted on.
+            after = run_ollama_tool_turn(client, llm, convo, max_steps=_posture_steps,
+                                         tools=_explore_specs, on_generate=_on_generate("posture"),
+                                         retake_bare_placeholder=True,
                                          deadline=explore_deadline, interject=_interject,
                                          should_yield=_yield_for_a_person,
-                                         act_form=explore_turn_mode(instance))
+                                         act_form=explore_turn_mode(instance),
+                                         anchor=getattr(explore, "seed_measured", None))
             convo = _carry(convo, after)
         # S1 own account: ASK, DO NOT OFFER. A plain turn (no tools), verbatim kept.
         # generates: the same per-generate entry the tool turns record, because the ACCOUNT ask
@@ -4905,6 +5002,9 @@ def main(argv=None) -> int:
         "act_after_answer": _turn(act_after) if act_after is not None else None,
         "ask_turn": _turn(ask_turn) if ask_turn is not None else None,
         "escalations": escalations, "egress": egress, "seat_rearm": seat_rearm,
+        "forum_replies": ({**{k: v for k, v in forum_replies.items() if k != "block"},
+                           "delivered": _fr_delivered(explore, killed)}
+                          if isinstance(forum_replies, dict) else None),
     }
     # The last thing a beat does is make sure there will be another one — and how soon
     # depends on how THIS one ended, which is the only signal about whether there is more
@@ -4973,6 +5073,16 @@ def main(argv=None) -> int:
 
     with open(log, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
+    # Replies count as shown only now: the turn that carried them answered and the record is written
+    # (NOVA on #481). A beat killed before here offers them again next time.
+    _fr_rec = record.get("forum_replies") or {}
+    if _fr_rec.get("delivered") and _fr_rec.get("offered"):
+        try:
+            from sage.gateway import forum_replies as _fr_ack
+            _fr_ack.acknowledge(instance, _fr_rec["offered"])
+        except Exception as _e:
+            print(f"[heartbeat] forum replies not acknowledged ({type(_e).__name__}: {_e}); "
+                  f"they will be offered again", file=sys.stderr)
     try:
         from sage.gateway import arousal as _arousal
         _arousal.release_claim(host_session_id)   # what this beat claimed is in its record

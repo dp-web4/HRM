@@ -580,3 +580,191 @@ def test_run_and_request_run_each_name_the_other_and_neither_says_you_cannot_run
     assert "`run`" in req and "OUTSIDE the sandbox" in req and "`why`" in req
     assert "cannot execute anything yourself" not in req
     assert "request_run asks the seat" in AFFORDANCES
+
+
+@needs_sandbox
+def test_an_empty_stderr_failure_says_where_its_files_are_not_to_read_stderr(tmp_path):
+    # cbp-being 2026-10-18 23:41Z: exit 1, stderr empty, told "read stderr, it names the line"
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "x.npy").write_bytes(b"0000")
+    (home / "scratch" / "look.py").write_text(
+        "import pathlib, sys\n"
+        "if not list(pathlib.Path('data').glob('*.npy')):\n"
+        "    print('No data files found'); sys.exit(1)\n")
+    r = d._do_run(BeingIntent("run", {"path": "scratch/look.py", "data": ["scratch/x.npy"]}))
+    assert r.ok and r.result["exit"] == 1 and not r.result["stderr"], r.result
+    note = r.result["note"]
+    assert "read stderr" not in note and "look.py, x.npy" in note and "base name" in note
+    # a traceback is named as one, because it is one
+    (home / "scratch" / "boom.py").write_text("raise ValueError('mine')\n")
+    b = d._do_run(BeingIntent("run", {"path": "scratch/boom.py"}))
+    assert "traceback" in b.result["note"] and "names the line" in b.result["note"]
+
+
+def test_a_run_note_states_only_what_was_observed():
+    # codex review of #474: the note may not infer a cause, a reason on stdout, or a traceback
+    from sage.gateway.hestia_dispatch import _run_note
+    guesses = ("stopped itself", "says why", "names the line")
+    silent = _run_note(1, "", ["example.py"])            # sys.exit(1), both streams empty
+    assert silent.startswith("Exit 1, nothing on stderr") and "example.py" in silent
+    killed = _run_note(-9, "", ["example.py"])           # signal-killed
+    assert killed.startswith("Ended by signal 9") and "example.py" in killed
+    usage = _run_note(2, "usage: invalid option", ["example.py"])  # stderr, no traceback
+    assert usage.startswith("Exit 2") and "read it" in usage
+    for n in (silent, killed, usage):
+        assert not any(g in n for g in guesses), n
+    tb = _run_note(1, 'Traceback (most recent call last):\n  File "example.py", line 3\nValueError',
+                   ["example.py"])
+    assert "traceback" in tb and "names the line" in tb
+
+
+def test_a_run_that_names_a_hardware_device_is_told_the_sandbox_has_none():
+    """sprout-being, 2026-10-21: 24 runs of a v4l2 probe printed "Cannot open device /dev/video0" on
+    stdout and exited 1, and it read the failure as a permission it lacked. The note now says the
+    sandbox has no hardware devices, on stdout or stderr, whatever the exit code; the nodes the sandbox
+    does have (/dev/null, /dev/urandom) never trigger it."""
+    from sage.gateway.hestia_dispatch import _run_note
+    dev0 = "/dev/" + "video0"
+    said = "no hardware device"
+    on_stdout = _run_note(1, "", ["t.py"], f"FAILED: v4l2-ctl returned exit code 1\nCannot open device {dev0}")
+    assert on_stdout.startswith("Exit 1, nothing on stderr") and said in on_stdout
+    assert "no scope grant adds one" in on_stdout and "camera" in on_stdout
+    assert said in _run_note(1, f"cannot open {'/dev/' + 'ttyUSB0'}", ["t.py"])
+    assert said in _run_note(0, "", ["t.py"], f"{dev0} not found")
+    for benign in ("wrote to /dev/null", "read /dev/urandom", "/dev/shm full", "/dev/stdout"):
+        assert said not in _run_note(0, "", ["t.py"], benign), benign
+    assert said not in _run_note(1, "", ["t.py"], "no devices mentioned")
+
+
+
+@needs_sandbox
+def test_a_second_run_does_not_see_what_the_first_wrote_and_both_notes_say_so(tmp_path):
+    """cbp-being, 2026-10-18/19: a generator wrote data/*.npy, then a separate run of the reader
+    found none, eleven times over five beats."""
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "gen.py").write_text(
+        "import os\nos.makedirs('data', exist_ok=True)\nopen('data/a.npy', 'w').write('x')\n"
+        "print('Created: data/a.npy')\n")
+    (home / "scratch" / "read.py").write_text(
+        "import os, sys\nfound = os.listdir('data') if os.path.isdir('data') else []\n"
+        "print('found', len(found))\nsys.exit(0 if found else 1)\n")
+    g = d._do_run(BeingIntent("run", {"path": "scratch/gen.py"}))
+    assert g.ok and g.result["exit"] == 0, g.result
+    assert "every file the run wrote are gone now" in g.result["note"]
+    assert "the next run starts with only the files it names" in g.result["note"]
+    r = d._do_run(BeingIntent("run", {"path": "scratch/read.py"}))
+    assert r.ok and r.result["exit"] == 1 and "found 0" in r.result["stdout"], r.result
+    assert r.result["stderr"] == ""
+    assert "nothing an earlier run wrote is kept" in r.result["note"]
+    assert "read.py" in r.result["note"]
+
+
+def test_run_fails_closed_when_no_sandbox_is_usable(tmp_path, monkeypatch):
+    """Nova on #508: with bwrap unusable (no AppArmor userns profile, or the profile removed) and no
+    Seatbelt, `run` refuses; it never runs the being's code unsandboxed. SANDBOX_REQUIRED (the check
+    verb's switch) does not loosen it either. The dispatcher starts no process at all."""
+    import subprocess
+    from sage.gateway import being_gate_client as B
+    from sage.gateway import hestia_dispatch as H
+    monkeypatch.setattr(B, "sandbox_available", lambda: False)
+    monkeypatch.setattr(B, "seatbelt_available", lambda: False)
+    monkeypatch.setattr(B, "SANDBOX_REQUIRED", False)
+    started = []
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: started.append(a) or (_ for _ in ()).throw(AssertionError("ran")))
+    monkeypatch.setattr(subprocess, "Popen", lambda *a, **k: started.append(a) or (_ for _ in ()).throw(AssertionError("ran")))
+    d, home = _run_dispatcher(tmp_path)
+    (home / "scratch" / "x.py").write_text("print('should never run')\n")
+    ctx = {"memory_root": str(home), "member": "test-being"}
+    with pytest.raises(ValueError, match="cannot get one"):
+        B.run_command({"path": "scratch/x.py"}, ctx)
+    env = d._do_run(BeingIntent("run", {"path": "scratch/x.py"}))
+    assert not env.ok and "cannot get one" in (env.error or ""), env
+    assert started == [], "no process was started"
+
+
+def test_no_sage_code_runs_the_userns_setup():
+    """Nova on #508: the AppArmor change is an operator step by hand. No SAGE source, unit or script
+    other than the setup script itself names it or calls apparmor_parser."""
+    root = Path(__file__).resolve().parents[3]
+    hits = []
+    for p in list((root / "sage").rglob("*")) + list((root / "scripts").rglob("*")):
+        if not p.is_file() or p.suffix not in (".py", ".sh", ".service", ".timer", ".json", ".yaml") \
+                or p.name == "enable_bwrap_userns.sh" or p.resolve() == Path(__file__).resolve():
+            continue
+        try:
+            t = p.read_text(errors="replace")
+        except OSError:
+            continue
+        t = "\n".join(l for l in t.splitlines() if not l.lstrip().startswith("#"))  # a pointer comment is not a call
+        if "enable_bwrap_userns" in t or "apparmor_parser" in t:
+            hits.append(str(p.relative_to(root)))
+    assert hits == [], hits
+
+
+# ---- the operator's setup script (Nova on #508): its rollback fails closed and it touches only its own profile ----
+
+MARK = "# written by SAGE scripts/enable_bwrap_userns.sh"
+OURS = MARK + "\nprofile bwrap /usr/bin/bwrap flags=(unconfined) { userns, }\n"
+THEIRS = "profile bwrap /usr/bin/bwrap flags=(unconfined) { userns, }\n"
+
+
+def _setup_script(d, parser_rc=0, parser_unloads=True, profile=None):
+    """The real script with only its three path constants pointed into d, and fake `id` (root) and
+    `apparmor_parser` first on PATH. The fake parser logs each call; -R exits parser_rc and, if
+    parser_unloads, drops bwrap from the fake kernel profile list."""
+    import os
+    import stat
+    d.mkdir()
+    src = Path(__file__).resolve().parents[3] / "scripts" / "enable_bwrap_userns.sh"
+    prof, lst, bw, log = (d / n for n in ("bwrap.profile", "profiles", "bwrap-bin", "parser.log"))
+    text = src.read_text()
+    for const, val in (("PROFILE", prof), ("LOADED", lst), ("BWRAP", bw)):
+        line = next(l for l in text.splitlines() if l.startswith(f"{const}="))
+        text = text.replace(line, f"{const}={val}", 1)
+    script = d / "setup.sh"
+    script.write_text(text)
+    lst.write_text("bwrap (unconfined)\nother (enforce)\n")
+    bw.write_text("#!/bin/sh\nexit 0\n")
+    if profile is not None:
+        prof.write_text(profile)
+    fake = d / "fakebin"
+    fake.mkdir()
+    (fake / "id").write_text("#!/bin/sh\necho 0\n")
+    drop = f"sed -i '/^bwrap /d' {lst}" if parser_unloads else ":"
+    (fake / "apparmor_parser").write_text(
+        f"#!/bin/sh\necho \"$@\" >> {log}\n"
+        f"if [ \"$1\" = -R ]; then {drop}; exit {parser_rc}; fi\nexit 0\n")
+    for p in (bw, fake / "id", fake / "apparmor_parser"):
+        p.chmod(p.stat().st_mode | stat.S_IXUSR)
+    child = dict(os.environ, PATH=f"{fake}:{os.environ['PATH']}", SUDO_USER="nobody")
+    return script, prof, log, child
+
+
+def _sh(script, child, *args):
+    import subprocess
+    return subprocess.run(["bash", str(script), *args], env=child, capture_output=True, text=True)
+
+
+def test_bwrap_setup_remove_keeps_the_profile_when_unload_fails(tmp_path):
+    # unload exits non-zero: the file stays for a retry, exit 3, and no claim of success
+    script, prof, log, child = _setup_script(tmp_path / "a", parser_rc=1, parser_unloads=False, profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 3 and prof.exists(), (r.returncode, r.stdout)
+    assert "still active" in r.stdout and "restricted again" not in r.stdout
+    # unload exits 0 but the kernel still lists the profile: the file stays, exit 3
+    script, prof, log, child = _setup_script(tmp_path / "b", parser_rc=0, parser_unloads=False, profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 3 and prof.exists() and "still holds" in r.stdout, r.stdout
+    # a real unload: checked gone, then the file is deleted
+    script, prof, log, child = _setup_script(tmp_path / "c", profile=OURS)
+    r = _sh(script, child, "--remove")
+    assert r.returncode == 0 and not prof.exists() and "restricted again" in r.stdout, r.stdout
+
+
+def test_bwrap_setup_never_loads_or_removes_a_profile_it_did_not_write(tmp_path):
+    for args in ((), ("--remove",)):
+        script, prof, log, child = _setup_script(tmp_path / ("remove" if args else "setup"), profile=THEIRS)
+        r = _sh(script, child, *args)
+        assert r.returncode == 1 and prof.read_text() == THEIRS, (args, r.stdout)
+        assert not log.exists(), f"apparmor_parser was called for an unmanaged profile: {log.read_text()}"
+        assert "not written by this script" in r.stdout

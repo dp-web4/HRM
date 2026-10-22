@@ -173,7 +173,16 @@ class Hearing(threading.Thread):
         self.running = False
         self.transcriber.running = False
         time.sleep(0.05)
+        # terminate, then KILL: an AVFoundation capture still waiting for its device ignored SIGTERM on
+        # McNugget (2026-10-18) and held the mic for 22 minutes after the ear that started it was gone
         try:
             self.proc.terminate()
+            self.proc.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            try:
+                self.proc.kill()
+                self.proc.wait(timeout=2)
+            except Exception:
+                pass
         except Exception:
             pass

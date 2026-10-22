@@ -408,6 +408,8 @@ class HestiaF1aDispatcher:
     # needs its data files beside the script, and a copy that size costs nothing.
     RUN_MAX_FILE_BYTES = 64 << 20
     RUN_OUTPUT_CHARS = 6000
+    # one frame: a warm USB camera answers in ~2 s, a cortex frame request in its own look timeout
+    CAMERA_TIMEOUT_S = 60
     GAME_WINDOW_MAX = 2                 # images per call; the stepper renders at most this many
     GAME_WINDOW_MAX_BYTES = 400_000     # a window is ~60 KB; anything far past that is not one
 
@@ -2568,7 +2570,29 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=(
                 f"camera cannot write to {out_rel!r}: its directory could not be created "
                 f"({wdir_err}). The device was not opened."))
-        proc = subprocess.run(shlex.split(cmd), capture_output=True)
+        # A CAPTURE THAT NEVER ANSWERS MUST NOT HOLD THE BEAT (McNugget, 2026-10-19): with no timeout, an
+        # AVFoundation capture waiting on macOS camera permission for the heartbeat's own process (a launchd
+        # job cannot show the prompt) blocked the beat for 5 h 43 min, and launchd started no other beat
+        # meanwhile: the being was frozen. subprocess.run kills the child (SIGKILL) on timeout.
+        try:
+            proc = subprocess.run(shlex.split(cmd), capture_output=True, timeout=self.CAMERA_TIMEOUT_S)
+        except subprocess.TimeoutExpired:
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False, "magnitude": 0.0})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id, result={
+                "device": device, "out_path": out_rel, "exit_code": None,
+                "capture_status": "timed_out", "output_status": "unverified",
+                # Atomic publication is not rollback: the child may have renamed its
+                # frame before hanging. Timeout alone proves neither absence nor freshness.
+                "note": (f"the camera did not answer within {self.CAMERA_TIMEOUT_S} s, so the capture "
+                         "was stopped. The output was not verified: a previous file may remain, or the "
+                         "capture may have replaced it before timing out. A file at this path is "
+                         "not a confirmed fresh frame from this request."
+                         + (" On macOS, camera permission for this process is one possible cause; "
+                            "only the operator can grant it. The timeout does not establish the cause."
+                            if mac else ""))})
 
         # camera_command asks image2 for atomic_writing=1, so ffmpeg itself owns the
         # temp+rename transaction. The dispatcher must not publish a second, ungoverned
@@ -2738,6 +2762,97 @@ class HestiaF1aDispatcher:
 
 
     # -- search: find a symbol without reading the file it is in -----------------
+    def _do_reach_search(self, intent: BeingIntent) -> ResultEnvelope:
+        """search with no worktree: a read-only grep over a grant outside the home
+        (being_gate_client._reach_search_command). Same contract as the worktree search: the
+        string the law judged is the string that runs, the act is witnessed, rc>1 with no match
+        is a failure and never an absence, and absence names what was searched."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import search_command, reach_search_target
+        try:
+            cmd = search_command(intent.args, {"worktree": None, "memory_root": self.memory_root})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        # FAIL-CLOSED ON THE AUTHORIZATION, not only on a mismatch (review hold on #505): a verdict
+        # with no command, or no verdict at all, authorized no grep. A matching reach grant is
+        # necessary but is not a substitute for the law having judged THIS string.
+        judged = getattr(getattr(self, "_verdict", None), "command", None)
+        if not judged or judged != cmd:
+            return ResultEnvelope(ok=False, error=(
+                "search refused: the command the law judged is not the command this "
+                "dispatcher would execute." if judged else
+                "search refused: no judged command reached the dispatcher, so nothing "
+                "authorized this search."))
+        # THE DISPATCHER CONFINES TOO, on the verdict's own reach (as memory_read does): the law
+        # allowed this target, and a target no grant covers is refused here even if it did not.
+        target = reach_search_target(cmd)
+        reach = _granted_reach_of(getattr(self, "_verdict", None))
+        inside = target is not None and any(
+            target == os.path.realpath(r) or (rec and target.startswith(os.path.realpath(r) + os.sep))
+            for r, rec in reach)
+        if not inside:
+            return ResultEnvelope(ok=False, error=(
+                f"search refused: {target or 'that path'} is outside the reach you hold. "
+                f"Your grants are listed under 'Reach you hold' in your state; search a folder "
+                f"inside one of them."))
+        pattern = str(intent.args.get("pattern", ""))
+        begin = self._call("hestia_begin_action", {"tool_name": "search", "target": pattern[:80]})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=f"search UNVERIFIED: the witness substrate "
+                                                  f"is unreachable ({str(err)[:160]})")
+        action_id = begin.get("actionId")
+        try:
+            proc = subprocess.run(shlex.split(cmd), cwd=self.memory_root or "/", text=True,
+                                  capture_output=True, timeout=60)
+        except Exception as e:
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False, "magnitude": 0.0})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"search could not run: {type(e).__name__}: {e}")
+        lines = [ln for ln in (proc.stdout or "").splitlines() if ln.strip()]
+        # grep: 0 matched, 1 searched and found nothing, 2 an error. With -s an unreadable file is
+        # not reported but still makes it 2, so matches beside a 2 are an answer (said so below),
+        # and a 2 with no match is a failure -- a bad regex must never read as an absence.
+        answered = proc.returncode in (0, 1) or (proc.returncode == 2 and lines)
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": bool(answered), "magnitude": 0.0})
+        except Exception:
+            pass
+        if not answered:
+            stderr_first = ((proc.stderr or "").strip().splitlines() or ["no stderr"])[0]
+            return ResultEnvelope(ok=False, witness_id=action_id, error=(
+                f"search FAILED and this is not an absence: grep exited {proc.returncode}, so "
+                f"{pattern!r} was never applied to {target}. grep said: {stderr_first[:200]}. "
+                f"The pattern is an EXTENDED regex — ( ) | + ? {{ }} are operators, and matching "
+                f"one literally needs a backslash. Fix the pattern and search again; do not "
+                f"conclude the text is absent."))
+        if not lines:
+            return ResultEnvelope(ok=True, witness_id=action_id, result={
+                "pattern": pattern, "searched": target, "matches": 0,
+                "searched_a_real_file": True,
+                "note": (f"no line matches {pattern!r} in {target} (text files only, .git "
+                         f"skipped). The path exists and was searched, so this is a real absence "
+                         f"— but an answer about WHAT WAS SEARCHED: widen the path, or check the "
+                         f"pattern (it is an extended regex, so ( ) | + are special — searching "
+                         f"for a literal one needs a backslash)")})
+        truncated = len(lines) > SEARCH_LINES_SHOWN
+        shown = [ln if len(ln) <= SEARCH_LINE_CHARS else
+                 ln[:SEARCH_LINE_CHARS] + f" …[line cut here: {len(ln) - SEARCH_LINE_CHARS} more characters]"
+                 for ln in lines[:SEARCH_LINES_SHOWN]]
+        return ResultEnvelope(ok=True, witness_id=action_id, result={
+            "pattern": pattern, "searched": target, "matches": len(lines),
+            "shown": len(shown),
+            "truncated": (f"{len(lines) - len(shown)} further matches not shown; narrow the "
+                          f"path or the pattern" if truncated else None),
+            "skipped_unreadable": proc.returncode == 2 or None,
+            "lines": shown,
+            "next": "read the lines around a match with memory_read, its absolute path and start_line"})
+
     def _do_search(self, intent: BeingIntent) -> ResultEnvelope:
         """Run the composed `git grep` and return file:line:text.
 
@@ -2750,6 +2865,8 @@ class HestiaF1aDispatcher:
         import subprocess
         from sage.gateway.being_gate_client import search_command, NO_WORKTREE_REFUSAL
         if not self.worktree or not os.path.isdir(self.worktree):
+            if str(intent.args.get("path", "") or "").strip():
+                return self._do_reach_search(intent)
             return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["search"])
         try:
             # getattr, not attribute access: this method is reached on dispatchers built by
@@ -3198,10 +3315,7 @@ class HestiaF1aDispatcher:
         return ResultEnvelope(ok=True, witness_id=action_id, result={
             "script": staged[0][0], "files": [b for b, _ in staged],
             "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
-            "note": ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                     "read-only); the copies are gone now. Only what you printed survives."
-                     if rc == 0 else
-                     "Non-zero exit: read stderr, it names the line in your own file.")})
+            "note": _run_note(rc, errtxt, [b for b, _ in staged], out)})
 
 
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
@@ -3959,6 +4073,12 @@ class HestiaF1aDispatcher:
         arg_lines = [f"{k}: {str(v).strip()}" for k, v in intent.args.items()
                      if k not in ("path", "why", "reason", "to") and str(v).strip()
                      and not (k == "rerun" and str(v).strip().lower() in ("false", "no", "0", "none"))]
+        lines = [f"[request_run] {rel}",
+                 f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
+                 f"({p.stat().st_size} bytes, sha256:{digest}; the seat decides whether to run it and answers here)"]
+        # Parse the text we will actually send, including multiline explanations.
+        # A synthetic short why could hide ambiguous source headers from this reader.
+        request_key = conv._request_key("\n".join(lines + arg_lines))
 
         def _seat_names(text: str):
             """(verb, path, argument phrase) of a seat run/decline receipt's first line."""
@@ -3973,8 +4093,8 @@ class HestiaF1aDispatcher:
             if t.get("from") == self.member and text.startswith(f"[request_run] {rel}\n"):
                 # The prior request counts only if it asked for these bytes WITH THESE
                 # ARGUMENTS: a request carrying other flags was answered for other flags.
-                prior_args = [ln for ln in text.split("\n")[3:] if not ln.startswith("UNCHANGED")]
-                asked_at = (t.get("seq") if f"sha256:{digest}" in text and prior_args == arg_lines
+                asked_at = (t.get("seq") if request_key is not None
+                            and conv._request_key(text) == request_key
                             else None)
                 if asked_at is not None:
                     asked_seqs.append(asked_at)
@@ -3986,15 +4106,14 @@ class HestiaF1aDispatcher:
                 # A seat receipt for ANOTHER file answers nothing about this one, solicited
                 # or not.
                 continue
-            if named and named[0] == "ran" and f"(sha {digest})" in text \
-                    and "with arguments:" not in named[2] and not arg_lines:
+            if not asked_seqs and conv._run_result_matches_request(text, request_key):
                 # THE SEAT RAN THIS FILE, AT THIS SHA, WITHOUT BEING ASKED. Measured
                 # 2026-09-29 17:50Z: the seat ran a copy of f355443e29b4 on its own and said
                 # so (seq 4437); cbp-being then asked for a run of that sha (4438, 4439) and
                 # neither receipt said UNCHANGED, because this scan keyed only on the being's
                 # own prior request. seat_run_requests.py writes "I ran <rel> (sha <12>)" and
-                # states its arguments (ran_line); a run with arguments, or a request that
-                # carries its own, is not the same run, so neither counts here.
+                # states its arguments (ran_line). The shared matcher now checks those too;
+                # no argument clause means unknown, not default arguments.
                 unchanged = (asked_at, t.get("seq"))
                 answer_text = text
             elif asked_seqs:
@@ -4002,13 +4121,9 @@ class HestiaF1aDispatcher:
                 # fef135b7b: any later seat turn counted, so request new.py -> an unrelated
                 # seat message -> re-request came back "the seat answered that at seq N" with
                 # the unrelated message carried as the answer (#154's queue conflation). Bound
-                # means: a run/decline receipt naming THIS path (seat_run_requests.py writes the
-                # marker for both; one for another path was skipped above), or a turn that names
-                # this request's seq. Free prose -- even prose mentioning the file -- is not.
-                # The same binding conversations._already_answered applies to the seat's wake
-                # (#154 recut, #332), so the receipt and the wake agree on what an answer is:
-                # one definition of how a seat turn names a seq, and the same two exceptions --
-                # a receipt stating OTHER bytes, or naming only seqs older than this request.
+                # means: an explicitly named request, or positive matching run evidence.
+                # Free prose, unknown arguments and unnamed declines cannot establish the
+                # fallback binding. This is the same matcher used by the wake reader (#464).
                 seqs = {int(n) for mm in conv._ANSWER_NAMES.finditer(text)
                         for n in re.findall(r"\d+", mm.group(1))}
                 # AN ANSWER TO ANY EARLIER ASK FOR THESE BYTES ANSWERS THIS ONE. Measured
@@ -4021,10 +4136,9 @@ class HestiaF1aDispatcher:
                 _asked_ints = [int(a) for a in asked_seqs]
                 _hit = [a for a in _asked_ints if a in seqs]
                 if not _hit:
-                    if named is None or asked_at is None:
+                    if named is None:
                         continue
-                    _sha = re.search(r"\(sha ([0-9a-f]+)\)", named[2])
-                    if _sha and not (digest.startswith(_sha.group(1)) or _sha.group(1).startswith(digest)):
+                    if not conv._run_result_matches_request(text, request_key):
                         continue
                     if seqs and min(_asked_ints) > max(seqs):
                         continue
@@ -4037,9 +4151,6 @@ class HestiaF1aDispatcher:
                     continue
                 unchanged = (max(_hit), t.get("seq"))
                 answer_text = text
-        lines = [f"[request_run] {rel}",
-                 f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
-                 f"({p.stat().st_size} bytes, sha256:{digest}; the seat decides whether to run it and answers here)"]
         # EVERY ARGUMENT THE BEING GAVE REACHES THE SEAT. Measured 2026-09-22 08:3xZ: cbp-being
         # put its flags in 'body' ("Run ... with --input-dim 10 --output-dim 1 ...") and the
         # seat was shown "why: (none given)" and no flags. Across its first 66 request_runs,
@@ -4069,10 +4180,7 @@ class HestiaF1aDispatcher:
         # marker; anything else is an answer whose run status the receipt does not know.
         _verdict = _SEAT_RUN_LINE.match(answer_text.split("\n", 1)[0]) if unchanged else None
         declined = bool(_verdict and _verdict.group(1) == "did not run" and unchanged[0] is not None)
-        _ran_sha = re.search(r"\(sha ([0-9a-f]+)\)", answer_text.split("\n", 1)[0]) if _verdict else None
-        executed = bool(_verdict and _verdict.group(1) == "ran"
-                        and (_ran_sha is None or digest.startswith(_ran_sha.group(1))
-                             or _ran_sha.group(1).startswith(digest)))
+        executed = bool(unchanged and conv._run_result_matches_request(answer_text, request_key))
         if unchanged:
             # CARRY THE ANSWER, DO NOT POINT AT IT. Measured 2026-09-22 over cbp-being's 556
             # beats: an edit receipt that names the defect in its own return value ("Python
@@ -4106,9 +4214,9 @@ class HestiaF1aDispatcher:
                 # answered) and what is not (whether anything ran), and carry the answer itself.
                 result["unchanged"] = (
                     since +
-                    f"Nothing in it has changed since. That answer does not say the file ran, so "
-                    f"it is not evidence of what this file does; whether it ran is not known from "
-                    f"it. What the seat said:\n"
+                    f"Nothing in it has changed since. That answer does not establish a run of "
+                    f"these bytes with these arguments, so it is not evidence of what this file "
+                    f"does under this invocation. What the seat said:\n"
                     f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
                     f"To change what you ask for: memory_edit the lines, or retire_note the file "
                     f"and then memory_write it anew.")
@@ -4286,9 +4394,14 @@ class HestiaF1aDispatcher:
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:
+        # SAY WHAT IT IS, NOT WHAT IT AWAITS. The note named design work ("F5 enforcement gated on rate-governor
+        # calibration, PRD §12"), and sprout-being took it for a setting it could complete and asked dp what
+        # "rate-governor calibration" required (room seq 306, 2026-10-19), having tried to run shell scripts by
+        # egressing them to stdout. The design state stays in this comment; the being gets the fact.
         return ResultEnvelope(ok=False, pending=True,
-                              note="channel_egress awaits hestia's send-side tool (hestia_egress_pending is "
-                                   "read-only; F5 enforcement gated on rate-governor calibration, PRD §12)")
+                              note="channel_egress is not built yet. Nothing was sent, whatever you give it, and "
+                                   "there is no step or setting that makes it work today. It sends messages out; "
+                                   "it never runs anything. To have a script run, request_run asks your seat.")
 
 
 def _fd_path(fd: int, fallback: str) -> str:
@@ -4620,6 +4733,70 @@ def make_forum_publisher(pointer_dir: str, plugin_id: str, push: bool = True) ->
         sp = str(p); i = sp.find("shared-context/")
         return sp[i:] if i >= 0 else sp
     return publish
+
+
+# The nodes bwrap's `--dev /dev` creates; any other /dev path named in a run's output is hardware the
+# sandbox does not have.
+_SANDBOX_DEV = r"(?:null|zero|full|random|urandom|tty|ptmx|pts|shm|fd|stdin|stdout|stderr|console|core)\b"
+_HARDWARE_DEV = re.compile(r"/dev/(?!" + _SANDBOX_DEV + r")[A-Za-z]")
+
+
+def _run_note(rc: int, stderr: str, files: list, stdout: str = "") -> str:
+    """The run's note, plus one fact when its output names a hardware device (_device_note)."""
+    note = _run_note_core(rc, stderr, files)
+    if _HARDWARE_DEV.search(f"{stdout}\n{stderr}"):
+        note += " " + _device_note()
+    return note
+
+
+def _device_note() -> str:
+    """A DEVICE NAMED IN THE OUTPUT IS NOT IN THE SANDBOX, AND NO GRANT PUTS IT THERE. sprout-being,
+    2026-10-21: 24 runs of one v4l2 probe, every one "Cannot open device /dev/video0", and it read the
+    failure as a permission it lacked ("the grant gets revoked mid-execution") although its grant was
+    standing. The note said the sandbox held only the files it named; it never said the sandbox has no
+    hardware devices. That is the sandbox's design, not a guess about this run, so saying it keeps the
+    note evidence-only."""
+    return ("The sandbox's /dev holds only null, zero, random, urandom and tty: no hardware device (a "
+            "camera, a serial port, a GPU) exists inside it, by design, and no scope grant adds one. A "
+            "device you are granted is used through the verb made for it (camera for frames), not from run.")
+
+
+def _run_note_core(rc: int, stderr: str, files: list) -> str:
+    """The one line a `run` result says about itself.
+
+    A NON-ZERO EXIT WITH AN EMPTY STDERR NAMES NO LINE. cbp-being, 2026-10-18 23:41Z: its
+    script printed "No data files found in the data directory." and exited 1, stderr empty, and
+    the note told it to "read stderr, it names the line in your own file". There was no line to
+    read. Files arrive flat under their base names, so a script that looks in a subdirectory
+    finds nothing even for a file passed as 'data'.
+
+    THE NOTE SAYS ONLY WHAT WAS OBSERVED (codex review of #474): the exit code, whether stderr
+    is empty, whether it holds a Python traceback. It does not say why the code ended. A bare
+    sys.exit(1) leaves both streams empty, a signal leaves no reason anywhere, and stderr text
+    like "usage: invalid option" names no line -- a note that guessed would hand the being a
+    cause to believe instead of the output to read.
+
+    A RUN'S OWN WRITES DO NOT REACH THE NEXT RUN, AND BOTH NOTES SAY SO. cbp-being, 2026-10-18/19:
+    it ran a generator that wrote data/*.npy, then the reader as a SEPARATE run, eleven times over
+    five beats. "The copies are gone now" read as true of its copies, not of what the generator
+    wrote. That every run starts from only the files named is the sandbox's design, not a guess
+    about this run, so stating it keeps the note evidence-only."""
+    if rc == 0:
+        return ("Ran in a sandbox with no network and no home (your worktree, if any, "
+                "read-only). The copies and every file the run wrote are gone now: the next run "
+                "starts with only the files it names. Only what you printed survives.")
+    ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
+    if "Traceback (most recent call last)" in stderr:
+        return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "
+                f"names the line that raised.")
+    if stderr.strip():
+        return f"{ended}. stderr is not empty: read it and stdout, they are what the run said."
+    here = ", ".join(files) or "nothing"
+    return (f"{ended}, nothing on stderr; stdout is everything the run printed, which may be "
+            f"nothing. The sandbox held only what you named, flat in the working directory: "
+            f"{here}. No other file from your home was there, and nothing an earlier run wrote "
+            f"is kept; a file passed as 'data' arrives "
+            f"under its base name (data/x.npy is x.npy), not in a subdirectory.")
 
 
 if __name__ == "__main__":  # live smoke against the local daemon: mesh -> member_notify

@@ -275,6 +275,12 @@ class HestiaF1aDispatcher:
     """A Dispatcher (being_gate_client.Dispatcher) that runs the bounded registry against the
     live daemon. Wraps ReferenceF1aDispatcher for the local verbs (witness / memory)."""
 
+    # run (legion 09-16). 64 MiB a file, not legion's 1 MiB: a being training a model
+    # needs its data files beside the script, and a copy that size costs nothing.
+    RUN_MAX_FILE_BYTES = 64 << 20
+    RUN_OUTPUT_CHARS = 6000
+    # one frame: a warm USB camera answers in ~2 s, a cortex frame request in its own look timeout
+    CAMERA_TIMEOUT_S = 60
     GAME_WINDOW_MAX = 2                 # images per call; the stepper renders at most this many
     GAME_WINDOW_MAX_BYTES = 400_000     # a window is ~60 KB; anything far past that is not one
 
@@ -2298,7 +2304,10 @@ class HestiaF1aDispatcher:
         out_rel = intent.args.get("out_path") or "scratch/camera/last-frame.jpg"
         full_out = os.path.realpath(os.path.join(self.memory_root, out_rel))
         cortex = getattr(self, "camera_source", None) == "cortex"
-        device = "cortex" if cortex else intent.args.get("device", "/dev/video0")
+        # a Mac's camera has no device node: the seat picks it by name (platform_av.mac_camera)
+        from sage.embodiment import platform_av
+        mac = not cortex and platform_av.backend() == "avfoundation"
+        device = "cortex" if cortex else "avfoundation" if mac else intent.args.get("device", "/dev/video0")
 
         try:
             cmd = camera_command(intent.args, {
@@ -2331,7 +2340,29 @@ class HestiaF1aDispatcher:
             return ResultEnvelope(ok=False, error=(
                 f"camera cannot write to {out_rel!r}: its directory could not be created "
                 f"({wdir_err}). The device was not opened."))
-        proc = subprocess.run(shlex.split(cmd), capture_output=True)
+        # A CAPTURE THAT NEVER ANSWERS MUST NOT HOLD THE BEAT (McNugget, 2026-10-19): with no timeout, an
+        # AVFoundation capture waiting on macOS camera permission for the heartbeat's own process (a launchd
+        # job cannot show the prompt) blocked the beat for 5 h 43 min, and launchd started no other beat
+        # meanwhile: the being was frozen. subprocess.run kills the child (SIGKILL) on timeout.
+        try:
+            proc = subprocess.run(shlex.split(cmd), capture_output=True, timeout=self.CAMERA_TIMEOUT_S)
+        except subprocess.TimeoutExpired:
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False, "magnitude": 0.0})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id, result={
+                "device": device, "out_path": out_rel, "exit_code": None,
+                "capture_status": "timed_out", "output_status": "unverified",
+                # Atomic publication is not rollback: the child may have renamed its
+                # frame before hanging. Timeout alone proves neither absence nor freshness.
+                "note": (f"the camera did not answer within {self.CAMERA_TIMEOUT_S} s, so the capture "
+                         "was stopped. The output was not verified: a previous file may remain, or the "
+                         "capture may have replaced it before timing out. A file at this path is "
+                         "not a confirmed fresh frame from this request."
+                         + (" On macOS, camera permission for this process is one possible cause; "
+                            "only the operator can grant it. The timeout does not establish the cause."
+                            if mac else ""))})
 
         # camera_command asks image2 for atomic_writing=1, so ffmpeg itself owns the
         # temp+rename transaction. The dispatcher must not publish a second, ungoverned
@@ -2379,6 +2410,17 @@ class HestiaF1aDispatcher:
                 "device": device, "out_path": out_rel, "exit_code": proc.returncode,
                 "stderr": _err[:300] or "(nothing said)",
                 "note": f"no frame: {kind}. `stderr` is the cortex's own account. Any previous file at the path is untouched."})
+
+        if proc.returncode != 0 and mac:
+            # no node to test for existence; macOS refuses an unapproved process at the camera (TCC)
+            _err = (proc.stderr or b"").decode("utf-8", "replace").strip()
+            kind = ("macOS has not given this process the camera (Privacy & Security > Camera)"
+                    if "authoriz" in _err.lower() or "permission" in _err.lower()
+                    else "the camera could not be opened or read (it may have just been unplugged)")
+            return ResultEnvelope(ok=False, witness_id=action_id, result={
+                "device": device, "out_path": out_rel, "exit_code": proc.returncode,
+                "stderr": _err[:300] or "(nothing said)",
+                "note": f"no frame: {kind}. Any previous file at the path is untouched."})
 
         if proc.returncode != 0:
             # image2 atomic_writing keeps any previous final path untouched on a failed
@@ -2489,6 +2531,97 @@ class HestiaF1aDispatcher:
 
 
     # -- search: find a symbol without reading the file it is in -----------------
+    def _do_reach_search(self, intent: BeingIntent) -> ResultEnvelope:
+        """search with no worktree: a read-only grep over a grant outside the home
+        (being_gate_client._reach_search_command). Same contract as the worktree search: the
+        string the law judged is the string that runs, the act is witnessed, rc>1 with no match
+        is a failure and never an absence, and absence names what was searched."""
+        import shlex
+        import subprocess
+        from sage.gateway.being_gate_client import search_command, reach_search_target
+        try:
+            cmd = search_command(intent.args, {"worktree": None, "memory_root": self.memory_root})
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        # FAIL-CLOSED ON THE AUTHORIZATION, not only on a mismatch (review hold on #505): a verdict
+        # with no command, or no verdict at all, authorized no grep. A matching reach grant is
+        # necessary but is not a substitute for the law having judged THIS string.
+        judged = getattr(getattr(self, "_verdict", None), "command", None)
+        if not judged or judged != cmd:
+            return ResultEnvelope(ok=False, error=(
+                "search refused: the command the law judged is not the command this "
+                "dispatcher would execute." if judged else
+                "search refused: no judged command reached the dispatcher, so nothing "
+                "authorized this search."))
+        # THE DISPATCHER CONFINES TOO, on the verdict's own reach (as memory_read does): the law
+        # allowed this target, and a target no grant covers is refused here even if it did not.
+        target = reach_search_target(cmd)
+        reach = _granted_reach_of(getattr(self, "_verdict", None))
+        inside = target is not None and any(
+            target == os.path.realpath(r) or (rec and target.startswith(os.path.realpath(r) + os.sep))
+            for r, rec in reach)
+        if not inside:
+            return ResultEnvelope(ok=False, error=(
+                f"search refused: {target or 'that path'} is outside the reach you hold. "
+                f"Your grants are listed under 'Reach you hold' in your state; search a folder "
+                f"inside one of them."))
+        pattern = str(intent.args.get("pattern", ""))
+        begin = self._call("hestia_begin_action", {"tool_name": "search", "target": pattern[:80]})
+        err = _hestia_error(begin)
+        if err:
+            return ResultEnvelope(ok=False, error=f"search UNVERIFIED: the witness substrate "
+                                                  f"is unreachable ({str(err)[:160]})")
+        action_id = begin.get("actionId")
+        try:
+            proc = subprocess.run(shlex.split(cmd), cwd=self.memory_root or "/", text=True,
+                                  capture_output=True, timeout=60)
+        except Exception as e:
+            try:
+                self._call("hestia_record_outcome", {"action_id": action_id, "success": False, "magnitude": 0.0})
+            except Exception:
+                pass
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"search could not run: {type(e).__name__}: {e}")
+        lines = [ln for ln in (proc.stdout or "").splitlines() if ln.strip()]
+        # grep: 0 matched, 1 searched and found nothing, 2 an error. With -s an unreadable file is
+        # not reported but still makes it 2, so matches beside a 2 are an answer (said so below),
+        # and a 2 with no match is a failure -- a bad regex must never read as an absence.
+        answered = proc.returncode in (0, 1) or (proc.returncode == 2 and lines)
+        try:
+            self._call("hestia_record_outcome",
+                       {"action_id": action_id, "success": bool(answered), "magnitude": 0.0})
+        except Exception:
+            pass
+        if not answered:
+            stderr_first = ((proc.stderr or "").strip().splitlines() or ["no stderr"])[0]
+            return ResultEnvelope(ok=False, witness_id=action_id, error=(
+                f"search FAILED and this is not an absence: grep exited {proc.returncode}, so "
+                f"{pattern!r} was never applied to {target}. grep said: {stderr_first[:200]}. "
+                f"The pattern is an EXTENDED regex — ( ) | + ? {{ }} are operators, and matching "
+                f"one literally needs a backslash. Fix the pattern and search again; do not "
+                f"conclude the text is absent."))
+        if not lines:
+            return ResultEnvelope(ok=True, witness_id=action_id, result={
+                "pattern": pattern, "searched": target, "matches": 0,
+                "searched_a_real_file": True,
+                "note": (f"no line matches {pattern!r} in {target} (text files only, .git "
+                         f"skipped). The path exists and was searched, so this is a real absence "
+                         f"— but an answer about WHAT WAS SEARCHED: widen the path, or check the "
+                         f"pattern (it is an extended regex, so ( ) | + are special — searching "
+                         f"for a literal one needs a backslash)")})
+        truncated = len(lines) > SEARCH_LINES_SHOWN
+        shown = [ln if len(ln) <= SEARCH_LINE_CHARS else
+                 ln[:SEARCH_LINE_CHARS] + f" …[line cut here: {len(ln) - SEARCH_LINE_CHARS} more characters]"
+                 for ln in lines[:SEARCH_LINES_SHOWN]]
+        return ResultEnvelope(ok=True, witness_id=action_id, result={
+            "pattern": pattern, "searched": target, "matches": len(lines),
+            "shown": len(shown),
+            "truncated": (f"{len(lines) - len(shown)} further matches not shown; narrow the "
+                          f"path or the pattern" if truncated else None),
+            "skipped_unreadable": proc.returncode == 2 or None,
+            "lines": shown,
+            "next": "read the lines around a match with memory_read, its absolute path and start_line"})
+
     def _do_search(self, intent: BeingIntent) -> ResultEnvelope:
         """Run the composed `git grep` and return file:line:text.
 
@@ -2501,6 +2634,8 @@ class HestiaF1aDispatcher:
         import subprocess
         from sage.gateway.being_gate_client import search_command, NO_WORKTREE_REFUSAL
         if not self.worktree or not os.path.isdir(self.worktree):
+            if str(intent.args.get("path", "") or "").strip():
+                return self._do_reach_search(intent)
             return ResultEnvelope(ok=False, pending=True, note=NO_WORKTREE_REFUSAL["search"])
         try:
             cmd = search_command(intent.args, {"worktree": self.worktree})
@@ -2658,6 +2793,289 @@ class HestiaF1aDispatcher:
 
 
     # -- check: the being runs a test and reads the answer (PRD M0) --------------
+    def _do_run(self, intent: BeingIntent) -> ResultEnvelope:
+        """Stage copies of the being's files into a seat-owned directory and execute the
+        composed sandbox line against them.
+
+        THE STAGING IS THE SECURITY BOUNDARY, not the sandbox alone. Nothing the being can
+        write is bound into the sandbox: the seat READS each named file and writes a COPY into a
+        directory only the seat touches, and the sandbox sees those copies read-only.
+
+        THE READ IS PINNED TO ONE OBJECT (Codex, #470). It used to check a pathname (realpath,
+        isfile, nlink, size) and then open the name again, so a symlink swapped in between was
+        copied from wherever it pointed. Now each file is opened once with O_NOFOLLOW; the
+        checks run on that descriptor (fstat), its real location is read back from
+        /proc/self/fd and must be the path that was judged, and the read stops at the size
+        limit however much the file grows.
+
+        A DATA FILE OUTSIDE THE HOME MUST BE GRANTED (Codex, #470). The check was the broad
+        search reach, so an ungranted file under the workspace was copied because the run command
+        was permitted. Now it must lie under a root this verdict grants (exact or recursive), and
+        the law sees every source path (run_source_paths), not only the staging dir.
+
+        ONE INVOCATION, ONE DIRECTORY (Codex, #470): run_stage_dir is per process and per file
+        set, so a concurrent dispatch for the same member cannot delete this run's inputs.
+
+        OUTPUT GOES TO FILES, NOT THE SEAT'S MEMORY (legion-claude, #470). capture_output read
+        everything a run printed into this process, which sits outside the run's limits, before
+        trimming it; an hour of printing would have grown the seat itself. Output now goes to two
+        files in a seat-owned dir beside the staging dir (never bound into the sandbox), each
+        capped by RLIMIT_FSIZE, and only their head and tail are read back.
+        """
+        import os
+        import shlex
+        import shutil
+        import stat
+        import subprocess
+        from sage.gateway.being_gate_client import (run_command, run_names, run_stage_dir,
+                                                    run_budget_s, RUN_MIN_S)
+        ctx = {"memory_root": self.memory_root,
+               "member": getattr(self, "member", None),
+               "worktree": getattr(self, "worktree", None),
+               "workspace": getattr(self, "workspace", None)}
+        try:
+            cmd = run_command(intent.args, ctx)
+            names = run_names(intent.args, ctx)
+        except ValueError as e:
+            return ResultEnvelope(ok=False, error=str(e))
+        judged = getattr(getattr(self, "_verdict", None), "command", None)
+        if judged is not None and judged != cmd:
+            return ResultEnvelope(ok=False, error=(
+                "run refused: the command the law judged is not the command this dispatcher "
+                "would execute."))
+        budget, bound_by = run_budget_s()
+        if budget <= 0:
+            return ResultEnvelope(ok=False, error=(
+                f"run: nothing was started. This beat has less than {RUN_MIN_S} s left once its "
+                f"record is written, and a run must not outlive its beat. Ask again next beat; "
+                f"the file is unchanged and nothing of yours was touched."))
+        root = os.path.realpath(self.memory_root)
+        granted = [(os.path.realpath(r), rec) for r, rec in
+                   _granted_reach_of(getattr(self, "_verdict", None))]
+
+        def _allowed(full: str, is_script: bool) -> bool:
+            if full == root or full.startswith(root + os.sep):
+                return True
+            if is_script:                 # code it executes is code it wrote, in its home
+                return False
+            return any(full == r or (rec and full.startswith(r + os.sep)) for r, rec in granted)
+
+        staged = []                       # (base name, bytes)
+        for i, n in enumerate(names):
+            full = os.path.realpath(n if os.path.isabs(n) else os.path.join(root, n))
+            if not _allowed(full, i == 0):
+                return ResultEnvelope(ok=False, error=(
+                    f"run: {n!r} resolves outside anything you can reach and will not be copied in"
+                    + ("" if i == 0 else ". A data file outside your home must be under a path "
+                       "you have been granted; request_scope asks for one")))
+            if not os.path.isfile(full):
+                # NAME WHERE IT IS. 2026-09-18 07:15Z: told that staged files appear under their
+                # base names, it then PASSED base names as the data arguments — two different
+                # things, conflated by my own wording. A refusal that points at the source path
+                # costs it no second call (same remedy-naming rule as memory_read's miss).
+                hint = ""
+                if "/" not in n:
+                    try:
+                        import glob as _glob
+                        cands = [q for q in _glob.glob(os.path.join(root, "**", n), recursive=True)
+                                 if os.path.isfile(q)][:2]
+                        if cands:
+                            rels = [os.path.relpath(q, root) for q in cands]
+                            hint = (f". You gave a base name; name the SOURCE path instead: "
+                                    + ", ".join(rels) +
+                                    " — inside the sandbox it still appears as " + n)
+                        else:
+                            hint = (". You gave a base name with no directory. `data` takes SOURCE "
+                                    "paths (relative to your home, or absolute in your reach); the "
+                                    "base name is only how it appears inside the sandbox")
+                    except Exception:  # noqa: BLE001 — a hint must never turn a miss into a crash
+                        hint = ""
+                return ResultEnvelope(ok=False, error=f"run: no such file in your home: {n}{hint}")
+            try:
+                fd = os.open(full, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+                             | getattr(os, "O_CLOEXEC", 0))
+            except OSError as e:
+                return ResultEnvelope(ok=False, error=(
+                    f"run: {n} could not be opened as a plain file ({e.strerror}); it is not "
+                    f"copied in"))
+            try:
+                st = os.fstat(fd)
+                where = _fd_path(fd, full)
+                if where != full or not _allowed(where, i == 0):
+                    return ResultEnvelope(ok=False, error=(
+                        f"run: {n} changed while it was being read (it now resolves to "
+                        f"somewhere else); nothing was copied in or run"))
+                if not stat.S_ISREG(st.st_mode):
+                    return ResultEnvelope(ok=False, error=f"run: {n} is not a regular file")
+                # A HARDLINK IS A REGULAR FILE WHOSE realpath IS ITSELF, so a path check passes
+                # it while its bytes may be a file from anywhere (hardbound #427's fourth class,
+                # found on Legion). The being has no verb that makes a link: defence in depth.
+                if st.st_nlink > 1:
+                    return ResultEnvelope(ok=False, error=(
+                        f"run: {n} has more than one name on disk (a hardlink), so its bytes may "
+                        f"belong to a file elsewhere; it is not copied in. Write it out as an "
+                        f"ordinary file and name that"))
+                limit = self.RUN_MAX_FILE_BYTES
+                chunks, total = [], 0
+                while True:
+                    b = os.read(fd, 1 << 20)
+                    if not b:
+                        break
+                    total += len(b)
+                    if total > limit:
+                        return ResultEnvelope(ok=False, error=(
+                            f"run: {n} is more than {limit} bytes; the limit per file is {limit}"))
+                    chunks.append(b)
+            finally:
+                os.close(fd)
+            staged.append((os.path.basename(n), b"".join(chunks)))
+
+        stage = run_stage_dir(getattr(self, "member", "") or "", names)
+        # ONE LIFECYCLE PER STAGE, HELD BY A LOCK (Nova, re-review of #470). The stage is keyed
+        # by process and file NAMES, so two overlapping runs of the same names in one process
+        # (re-entrant, or two threads) derive the same stage, and the second's rmtree would
+        # delete the first's mounted inputs and output. A nonce would have to be carried through
+        # both composition sites and the law's judgment; a lock keeps composition deterministic.
+        # NON-BLOCKING: flock is per open file, so a re-entrant call in the same thread would
+        # wait on itself forever. A second run of the same files is refused until the first
+        # finishes, and nothing of the first's is touched before the lock is held.
+        lock_path = stage + ".lock"
+        try:
+            lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR | getattr(os, "O_CLOEXEC", 0), 0o600)
+        except OSError as e:
+            return ResultEnvelope(ok=False, error=f"run could not stage your files: {type(e).__name__}: {e}")
+        if not _lock_opened_stage(lock_path, lock_fd):
+            return ResultEnvelope(ok=False, error=(
+                "run: a run of these same files is already in progress on this seat, so this one "
+                "was not started and nothing of the other was touched. Ask again when it has "
+                "answered."))
+        try:
+            return self._run_staged(stage, staged, cmd, budget, bound_by)
+        finally:
+            _release_stage_lock(lock_path, lock_fd)
+
+    def _run_staged(self, stage, staged, cmd, budget, bound_by) -> ResultEnvelope:
+        """The staged part of `run`, called only with the stage's lock held (see _do_run)."""
+        import os
+        import shlex
+        import shutil
+        import subprocess
+        outdir = stage + ".out"           # seat-owned, beside the stage, never bound inside
+        from sage.gateway.being_gate_client import (SEATBELT, run_mem_cap_bytes, RUN_FSIZE_BYTES,
+                                                    RUN_TMP_BYTES, RUN_WORK_BYTES, RUN_USER, SUDO)
+        seatbelt = f" {SEATBELT} -p " in f" {cmd}"
+        # a Seatbelt run's HOME/TMPDIR, beside the stage (being_gate_client._run_command_seatbelt)
+        runhome = os.path.realpath(stage) + ".home" if seatbelt else None
+
+        def _clean():
+            for d in (stage, outdir, runhome):
+                if d:
+                    shutil.rmtree(d, ignore_errors=True)
+        try:
+            for d in (stage, outdir) + ((runhome,) if runhome else ()):
+                shutil.rmtree(d, ignore_errors=True)   # only ever this invocation's own path
+                os.makedirs(d, mode=0o700, exist_ok=False)
+            for base, data in staged:
+                with open(os.path.join(stage, base), "wb") as fh:
+                    fh.write(data)
+            if seatbelt:
+                # the run is RUN_USER: it reads and may change its copies, and writes its home; the
+                # output files stay the seat's (it writes them through inherited descriptors). The GROUP
+                # is set, not inherited: on macOS a new entry takes its parent's group, and /private/tmp's
+                # is wheel, so the copies were unreadable to the run (exit 2, measured 2026-10-18).
+                import pwd
+                gid = pwd.getpwnam(RUN_USER).pw_gid
+                for p, mode in [(stage, 0o770), (runhome, 0o770)] + [
+                        (os.path.join(stage, base), 0o660) for base, _ in staged]:
+                    os.chown(p, -1, gid)
+                    os.chmod(p, mode)
+        except OSError as e:
+            _clean()
+            return ResultEnvelope(ok=False, error=f"run could not stage your files: {type(e).__name__}: {e}")
+        begin = self._call("hestia_begin_action", {"tool_name": "run", "target": staged[0][0]})
+        err = _hestia_error(begin)
+        if err:
+            _clean()
+            return ResultEnvelope(ok=False, error=(
+                f"run UNVERIFIED: the witness substrate is unreachable ({err[:160]}); "
+                f"your code was not executed"))
+        action_id = begin.get("actionId")
+        cap = self.RUN_OUTPUT_CHARS
+
+        def _headtail(p: str) -> str:
+            size = os.path.getsize(p)
+            with open(p, "rb") as fh:
+                if size <= cap:
+                    return fh.read().decode(errors="replace")
+                head = fh.read(cap // 2)
+                fh.seek(size - cap // 2)
+                tail = fh.read()
+            return (head.decode(errors="replace")
+                    + f"\n[… {size - cap} more bytes not shown. Print less, or print a summary …]\n"
+                    + tail.decode(errors="replace"))
+
+        stopped = False
+        try:
+            o_path, e_path = os.path.join(outdir, "stdout"), os.path.join(outdir, "stderr")
+            why = None
+            with open(o_path, "wb") as fo, open(e_path, "wb") as fe:
+                if seatbelt:
+                    # Seatbelt has no --as and no sized tmpfs: RLIMIT_FSIZE per file here, memory and
+                    # the stage's size watched by the seat (_wait_contained), the run in its own group
+                    import resource
+
+                    def _limits():
+                        resource.setrlimit(resource.RLIMIT_FSIZE, (RUN_FSIZE_BYTES, RUN_FSIZE_BYTES))
+                    proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL, stdout=fo,
+                                            stderr=fe, cwd=stage, start_new_session=True,
+                                            preexec_fn=_limits)
+                    rc, why = _wait_contained(proc, budget, [stage, runhome], run_mem_cap_bytes(),
+                                              RUN_WORK_BYTES + RUN_TMP_BYTES,
+                                              kill_as=[SUDO, "-n", "-u", RUN_USER])
+                    stopped = why == "time"
+                else:
+                    proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL,
+                                            stdout=fo, stderr=fe)
+                    try:
+                        rc = proc.wait(timeout=budget)
+                    except subprocess.TimeoutExpired:
+                        proc.kill()
+                        proc.wait()
+                        rc, stopped = -9, True
+            ran = True
+            out, errtxt = _headtail(o_path), _headtail(e_path)
+            if why in ("memory", "disk"):
+                errtxt += ("\n[stopped: your code used more " +
+                           ("memory than half of this machine's" if why == "memory" else
+                            "disk in its working directory than the sandbox allows") +
+                           ". What it printed before that is above. That is a real answer about the "
+                           "code, not a failure of the verb]")
+            if stopped:
+                # WHAT IT PRINTED BEFORE THE STOP IS KEPT: at an hour, "no output" would throw
+                # away everything a long run had already said about itself.
+                errtxt += (f"\n[stopped: your code was still running after {budget}s ({bound_by}). "
+                           f"What it printed before that is above. That is a real answer about "
+                           f"the code, not a failure of the verb]")
+        except Exception as e:
+            ran, rc, out, errtxt = False, -1, "", f"{type(e).__name__}: {e}"
+        finally:
+            _clean()
+        try:
+            self._call("hestia_record_outcome", {"action_id": action_id, "success": ran and rc == 0,
+                                                 "magnitude": 0.0})
+        except Exception:
+            pass
+        if not ran:
+            return ResultEnvelope(ok=False, witness_id=action_id,
+                                  error=f"run could not start the sandbox: {errtxt[:400]}")
+        # A NON-ZERO EXIT IS A RESULT. A traceback is the most useful thing this verb can hand
+        # back: it names the line, and the line is one the being wrote.
+        return ResultEnvelope(ok=True, witness_id=action_id, result={
+            "script": staged[0][0], "files": [b for b, _ in staged],
+            "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
+            "note": _run_note(rc, errtxt, [b for b, _ in staged], out)})
+
+
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
         """Run a declared test target in the being's OWN worktree and return the result.
 
@@ -3365,6 +3783,12 @@ class HestiaF1aDispatcher:
         arg_lines = [f"{k}: {str(v).strip()}" for k, v in intent.args.items()
                      if k not in ("path", "why", "reason", "to") and str(v).strip()
                      and not (k == "rerun" and str(v).strip().lower() in ("false", "no", "0", "none"))]
+        lines = [f"[request_run] {rel}",
+                 f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
+                 f"({p.stat().st_size} bytes, sha256:{digest}; the seat decides whether to run it and answers here)"]
+        # Parse the text we will actually send, including multiline explanations.
+        # A synthetic short why could hide ambiguous source headers from this reader.
+        request_key = conv._request_key("\n".join(lines + arg_lines))
 
         def _seat_names(text: str):
             """(verb, path, argument phrase) of a seat run/decline receipt's first line."""
@@ -3379,8 +3803,8 @@ class HestiaF1aDispatcher:
             if t.get("from") == self.member and text.startswith(f"[request_run] {rel}\n"):
                 # The prior request counts only if it asked for these bytes WITH THESE
                 # ARGUMENTS: a request carrying other flags was answered for other flags.
-                prior_args = [ln for ln in text.split("\n")[3:] if not ln.startswith("UNCHANGED")]
-                asked_at = (t.get("seq") if f"sha256:{digest}" in text and prior_args == arg_lines
+                asked_at = (t.get("seq") if request_key is not None
+                            and conv._request_key(text) == request_key
                             else None)
                 if asked_at is not None:
                     asked_seqs.append(asked_at)
@@ -3392,15 +3816,14 @@ class HestiaF1aDispatcher:
                 # A seat receipt for ANOTHER file answers nothing about this one, solicited
                 # or not.
                 continue
-            if named and named[0] == "ran" and f"(sha {digest})" in text \
-                    and "with arguments:" not in named[2] and not arg_lines:
+            if not asked_seqs and conv._run_result_matches_request(text, request_key):
                 # THE SEAT RAN THIS FILE, AT THIS SHA, WITHOUT BEING ASKED. Measured
                 # 2026-09-29 17:50Z: the seat ran a copy of f355443e29b4 on its own and said
                 # so (seq 4437); cbp-being then asked for a run of that sha (4438, 4439) and
                 # neither receipt said UNCHANGED, because this scan keyed only on the being's
                 # own prior request. seat_run_requests.py writes "I ran <rel> (sha <12>)" and
-                # states its arguments (ran_line); a run with arguments, or a request that
-                # carries its own, is not the same run, so neither counts here.
+                # states its arguments (ran_line). The shared matcher now checks those too;
+                # no argument clause means unknown, not default arguments.
                 unchanged = (asked_at, t.get("seq"))
                 answer_text = text
             elif asked_seqs:
@@ -3408,13 +3831,9 @@ class HestiaF1aDispatcher:
                 # fef135b7b: any later seat turn counted, so request new.py -> an unrelated
                 # seat message -> re-request came back "the seat answered that at seq N" with
                 # the unrelated message carried as the answer (#154's queue conflation). Bound
-                # means: a run/decline receipt naming THIS path (seat_run_requests.py writes the
-                # marker for both; one for another path was skipped above), or a turn that names
-                # this request's seq. Free prose -- even prose mentioning the file -- is not.
-                # The same binding conversations._already_answered applies to the seat's wake
-                # (#154 recut, #332), so the receipt and the wake agree on what an answer is:
-                # one definition of how a seat turn names a seq, and the same two exceptions --
-                # a receipt stating OTHER bytes, or naming only seqs older than this request.
+                # means: an explicitly named request, or positive matching run evidence.
+                # Free prose, unknown arguments and unnamed declines cannot establish the
+                # fallback binding. This is the same matcher used by the wake reader (#464).
                 seqs = {int(n) for mm in conv._ANSWER_NAMES.finditer(text)
                         for n in re.findall(r"\d+", mm.group(1))}
                 # AN ANSWER TO ANY EARLIER ASK FOR THESE BYTES ANSWERS THIS ONE. Measured
@@ -3427,10 +3846,9 @@ class HestiaF1aDispatcher:
                 _asked_ints = [int(a) for a in asked_seqs]
                 _hit = [a for a in _asked_ints if a in seqs]
                 if not _hit:
-                    if named is None or asked_at is None:
+                    if named is None:
                         continue
-                    _sha = re.search(r"\(sha ([0-9a-f]+)\)", named[2])
-                    if _sha and not (digest.startswith(_sha.group(1)) or _sha.group(1).startswith(digest)):
+                    if not conv._run_result_matches_request(text, request_key):
                         continue
                     if seqs and min(_asked_ints) > max(seqs):
                         continue
@@ -3443,9 +3861,6 @@ class HestiaF1aDispatcher:
                     continue
                 unchanged = (max(_hit), t.get("seq"))
                 answer_text = text
-        lines = [f"[request_run] {rel}",
-                 f"why: {why}" if why else "why: (none given — the being did not say what it expects to learn)",
-                 f"({p.stat().st_size} bytes, sha256:{digest}; the seat decides whether to run it and answers here)"]
         # EVERY ARGUMENT THE BEING GAVE REACHES THE SEAT. Measured 2026-09-22 08:3xZ: cbp-being
         # put its flags in 'body' ("Run ... with --input-dim 10 --output-dim 1 ...") and the
         # seat was shown "why: (none given)" and no flags. Across its first 66 request_runs,
@@ -3475,10 +3890,7 @@ class HestiaF1aDispatcher:
         # marker; anything else is an answer whose run status the receipt does not know.
         _verdict = _SEAT_RUN_LINE.match(answer_text.split("\n", 1)[0]) if unchanged else None
         declined = bool(_verdict and _verdict.group(1) == "did not run" and unchanged[0] is not None)
-        _ran_sha = re.search(r"\(sha ([0-9a-f]+)\)", answer_text.split("\n", 1)[0]) if _verdict else None
-        executed = bool(_verdict and _verdict.group(1) == "ran"
-                        and (_ran_sha is None or digest.startswith(_ran_sha.group(1))
-                             or _ran_sha.group(1).startswith(digest)))
+        executed = bool(unchanged and conv._run_result_matches_request(answer_text, request_key))
         if unchanged:
             # CARRY THE ANSWER, DO NOT POINT AT IT. Measured 2026-09-22 over cbp-being's 556
             # beats: an edit receipt that names the defect in its own return value ("Python
@@ -3512,9 +3924,9 @@ class HestiaF1aDispatcher:
                 # answered) and what is not (whether anything ran), and carry the answer itself.
                 result["unchanged"] = (
                     since +
-                    f"Nothing in it has changed since. That answer does not say the file ran, so "
-                    f"it is not evidence of what this file does; whether it ran is not known from "
-                    f"it. What the seat said:\n"
+                    f"Nothing in it has changed since. That answer does not establish a run of "
+                    f"these bytes with these arguments, so it is not evidence of what this file "
+                    f"does under this invocation. What the seat said:\n"
                     f"--- seq {unchanged[1]} ---\n{carried}\n--- end ---\n"
                     f"To change what you ask for: memory_edit the lines, or retire_note the file "
                     f"and then memory_write it anew.")
@@ -3692,9 +4104,137 @@ class HestiaF1aDispatcher:
 
     # -- channel_egress: not built on the daemon ----------------------------
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:
+        # SAY WHAT IT IS, NOT WHAT IT AWAITS. The note named design work ("F5 enforcement gated on rate-governor
+        # calibration, PRD §12"), and sprout-being took it for a setting it could complete and asked dp what
+        # "rate-governor calibration" required (room seq 306, 2026-10-19), having tried to run shell scripts by
+        # egressing them to stdout. The design state stays in this comment; the being gets the fact.
         return ResultEnvelope(ok=False, pending=True,
-                              note="channel_egress awaits hestia's send-side tool (hestia_egress_pending is "
-                                   "read-only; F5 enforcement gated on rate-governor calibration, PRD §12)")
+                              note="channel_egress is not built yet. Nothing was sent, whatever you give it, and "
+                                   "there is no step or setting that makes it work today. It sends messages out; "
+                                   "it never runs anything. To have a script run, request_run asks your seat.")
+
+
+def _fd_path(fd: int, fallback: str) -> str:
+    """Where an open descriptor really is: /proc/self/fd on Linux, fcntl(F_GETPATH) on macOS.
+    A MAC HAS NO /proc (McNugget, 2026-10-18): the check fell back to the judged path itself, so a
+    parent directory swapped for a symlink between judging and opening was copied from wherever it
+    pointed (test_a_parent_directory_swapped_for_a_symlink_at_open_is_refused failed there). The
+    fallback is kept only for a platform with neither."""
+    import os
+    if os.path.isdir("/proc/self/fd"):
+        return os.path.realpath(f"/proc/self/fd/{fd}")
+    import fcntl
+    if hasattr(fcntl, "F_GETPATH"):
+        buf = fcntl.fcntl(fd, fcntl.F_GETPATH, b"\0" * 1024)
+        return os.path.realpath(buf.split(b"\0", 1)[0].decode("utf-8", "surrogateescape"))
+    return fallback
+
+
+def _tree_bytes(root: str) -> int:
+    """Bytes on disk under `root` (allocated blocks, so a sparse file counts what it holds)."""
+    import os
+    total = 0
+    for d, _subdirs, files in os.walk(root):
+        for f in files:
+            try:
+                total += os.lstat(os.path.join(d, f)).st_blocks * 512
+            except OSError:
+                pass
+    return total
+
+
+def _group_rss_bytes(pgid: int) -> int:
+    """Resident memory of every process in a process group, from the seat's own `ps`."""
+    import subprocess
+    try:
+        out = subprocess.run(["ps", "-A", "-o", "pgid=,rss="], capture_output=True, text=True,
+                             timeout=5).stdout
+    except Exception:
+        return 0
+    total = 0
+    for line in out.splitlines():
+        parts = line.split()
+        if len(parts) == 2 and parts[0] == str(pgid):
+            total += int(parts[1]) * 1024
+    return total
+
+
+def _wait_contained(proc, budget: float, dirs, mem_cap: int, disk_cap: int, poll_s: float = 1.0,
+                    kill_as=None):
+    """Wait for a Seatbelt run (its own process group) and stop it at the limits Seatbelt cannot
+    impose itself: the time budget, resident memory past `mem_cap`, its writable dirs past
+    `disk_cap` together. Checked every `poll_s`: a burst of writes inside one interval lands before
+    it is stopped (no sized tmpfs on macOS); RLIMIT_FSIZE still bounds each file.
+    Returns (exit code, why it was stopped or None)."""
+    import os
+    import signal
+    import subprocess
+    import time
+    deadline = time.monotonic() + budget
+    why = None
+    while True:
+        try:
+            return proc.wait(timeout=poll_s), why
+        except subprocess.TimeoutExpired:
+            pass
+        if time.monotonic() >= deadline:
+            why = "time"
+        elif _group_rss_bytes(proc.pid) > mem_cap:
+            why = "memory"
+        elif sum(_tree_bytes(d) for d in dirs if d) > disk_cap:
+            why = "disk"
+        if why:
+            if kill_as:
+                # the run is another user, and sudo (its parent here) is root: the seat cannot signal
+                # either itself. kill as the run user reaches every process of the run's group it owns;
+                # sudo exits when its command does.
+                subprocess.run(kill_as + ["/bin/kill", "-KILL", f"-{proc.pid}"], capture_output=True,
+                               timeout=10)
+            else:
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                except OSError:
+                    proc.kill()
+            proc.wait()
+            return -9, why
+
+
+def _lock_opened_stage(lock_path: str, fd: int) -> bool:
+    """Take the run stage's lock on an fd already open on lock_path; True only if it is held AND
+    lock_path still names the file it is held on. Closes fd when it returns False.
+
+    THE INODE CHECK IS WHAT MAKES UNLINKING SAFE (Nova, re-review of #470 at 54d592778). The
+    releaser unlinks the lock file, so an opener can hold an fd on the OLD inode: B opens it,
+    pauses, A unlinks and unlocks, C creates a new file and locks it, then B locks the unlinked
+    inode without contention, and B and C both run on one stage. Holding the lock is not enough;
+    the path must still name what is locked. If it does not, the lock is on a dead file, and the
+    stage it guarded belongs to someone else: refuse, never retry onto a stage in use."""
+    import fcntl
+    import os
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        st_fd, st_path = os.fstat(fd), os.stat(lock_path)
+        if (st_fd.st_dev, st_fd.st_ino) == (st_path.st_dev, st_path.st_ino):
+            return True
+    except OSError:
+        pass
+    os.close(fd)                       # closing drops any lock taken on the dead inode
+    return False
+
+
+def _release_stage_lock(lock_path: str, fd: int) -> None:
+    """Unlink, then unlock and close. Unlinking first is safe because every opener verifies the
+    path still names its locked inode (_lock_opened_stage), and it leaves nothing in /tmp."""
+    import fcntl
+    import os
+    try:
+        os.unlink(lock_path)
+    except OSError:
+        pass
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
 
 
 def _granted_reach_of(verdict) -> tuple:
@@ -3894,6 +4434,70 @@ def make_forum_publisher(pointer_dir: str, plugin_id: str, push: bool = True) ->
         sp = str(p); i = sp.find("shared-context/")
         return sp[i:] if i >= 0 else sp
     return publish
+
+
+# The nodes bwrap's `--dev /dev` creates; any other /dev path named in a run's output is hardware the
+# sandbox does not have.
+_SANDBOX_DEV = r"(?:null|zero|full|random|urandom|tty|ptmx|pts|shm|fd|stdin|stdout|stderr|console|core)\b"
+_HARDWARE_DEV = re.compile(r"/dev/(?!" + _SANDBOX_DEV + r")[A-Za-z]")
+
+
+def _run_note(rc: int, stderr: str, files: list, stdout: str = "") -> str:
+    """The run's note, plus one fact when its output names a hardware device (_device_note)."""
+    note = _run_note_core(rc, stderr, files)
+    if _HARDWARE_DEV.search(f"{stdout}\n{stderr}"):
+        note += " " + _device_note()
+    return note
+
+
+def _device_note() -> str:
+    """A DEVICE NAMED IN THE OUTPUT IS NOT IN THE SANDBOX, AND NO GRANT PUTS IT THERE. sprout-being,
+    2026-10-21: 24 runs of one v4l2 probe, every one "Cannot open device /dev/video0", and it read the
+    failure as a permission it lacked ("the grant gets revoked mid-execution") although its grant was
+    standing. The note said the sandbox held only the files it named; it never said the sandbox has no
+    hardware devices. That is the sandbox's design, not a guess about this run, so saying it keeps the
+    note evidence-only."""
+    return ("The sandbox's /dev holds only null, zero, random, urandom and tty: no hardware device (a "
+            "camera, a serial port, a GPU) exists inside it, by design, and no scope grant adds one. A "
+            "device you are granted is used through the verb made for it (camera for frames), not from run.")
+
+
+def _run_note_core(rc: int, stderr: str, files: list) -> str:
+    """The one line a `run` result says about itself.
+
+    A NON-ZERO EXIT WITH AN EMPTY STDERR NAMES NO LINE. cbp-being, 2026-10-18 23:41Z: its
+    script printed "No data files found in the data directory." and exited 1, stderr empty, and
+    the note told it to "read stderr, it names the line in your own file". There was no line to
+    read. Files arrive flat under their base names, so a script that looks in a subdirectory
+    finds nothing even for a file passed as 'data'.
+
+    THE NOTE SAYS ONLY WHAT WAS OBSERVED (codex review of #474): the exit code, whether stderr
+    is empty, whether it holds a Python traceback. It does not say why the code ended. A bare
+    sys.exit(1) leaves both streams empty, a signal leaves no reason anywhere, and stderr text
+    like "usage: invalid option" names no line -- a note that guessed would hand the being a
+    cause to believe instead of the output to read.
+
+    A RUN'S OWN WRITES DO NOT REACH THE NEXT RUN, AND BOTH NOTES SAY SO. cbp-being, 2026-10-18/19:
+    it ran a generator that wrote data/*.npy, then the reader as a SEPARATE run, eleven times over
+    five beats. "The copies are gone now" read as true of its copies, not of what the generator
+    wrote. That every run starts from only the files named is the sandbox's design, not a guess
+    about this run, so stating it keeps the note evidence-only."""
+    if rc == 0:
+        return ("Ran in a sandbox with no network and no home (your worktree, if any, "
+                "read-only). The copies and every file the run wrote are gone now: the next run "
+                "starts with only the files it names. Only what you printed survives.")
+    ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
+    if "Traceback (most recent call last)" in stderr:
+        return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "
+                f"names the line that raised.")
+    if stderr.strip():
+        return f"{ended}. stderr is not empty: read it and stdout, they are what the run said."
+    here = ", ".join(files) or "nothing"
+    return (f"{ended}, nothing on stderr; stdout is everything the run printed, which may be "
+            f"nothing. The sandbox held only what you named, flat in the working directory: "
+            f"{here}. No other file from your home was there, and nothing an earlier run wrote "
+            f"is kept; a file passed as 'data' arrives "
+            f"under its base name (data/x.npy is x.npy), not in a subdirectory.")
 
 
 if __name__ == "__main__":  # live smoke against the local daemon: mesh -> member_notify

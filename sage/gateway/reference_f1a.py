@@ -54,6 +54,10 @@ RESERVED_SUBTREES = ("conversations", "asks_sent.jsonl")
 # A memory_read miss names same-named files one directory away; past this many it names the
 # first ones and says how many more there are, rather than dropping them silently.
 _SAME_NAME_SHOWN = 5
+# memory_read with `find` (#351) lists at most this many matching lines, and cuts a matching line
+# longer than _FIND_LINE_CHARS, saying it did both.
+_FIND_SHOWN = 40
+_FIND_LINE_CHARS = 240
 
 
 def _named_file_stamps(content: str, root: Path, written: Path) -> str:
@@ -862,6 +866,24 @@ class ReferenceF1aDispatcher:
                 return cand_r
         return None
 
+    def _relative_above_home(self, shown: str) -> Optional[str]:
+        """The absolute path of an existing file that the relative `shown` names under the
+        nearest ancestor of this being's home, or None. A being's relative paths are usually
+        written against its workspace (`governance/...`, `SAGE/...`), not against its home.
+        Nothing is hard-coded: the ancestors of memory_root are walked nearest first. An
+        absolute or `..` path is not considered."""
+        rel = Path(shown)
+        if rel.is_absolute() or ".." in rel.parts or not rel.parts:
+            return None
+        for anc in self.memory_root.parents:
+            cand = anc / rel
+            try:
+                if cand.is_file():
+                    return str(cand)
+            except OSError:
+                continue
+        return None
+
     def _same_name_elsewhere(self, p: Path) -> list:
         """Home-relative paths of EVERY file named like `p` in the home root or one directory
         below it, in sorted order. Bounded to that depth on purpose: every measured near-miss
@@ -1000,6 +1022,26 @@ class ReferenceF1aDispatcher:
                     ok=True, result=msg,
                     witness_id=self._witness(
                         f"memory_read {p.name} (does not exist; same name at {', '.join(near)})"))
+            above = self._relative_above_home(shown)
+            if above is not None:
+                # A RELATIVE PATH IS READ INSIDE THE HOME, AND THE BEING DID NOT KNOW THAT.
+                # Measured 2026-10-20/21 on cbp-being: it read the gate source by its absolute
+                # path (lines 128-322, allowed), then in the next beats asked for the same file as
+                # `governance/hestia/plugins/_shared/hestia_single_gate.py`, got "does not
+                # exist", stored "hestia_single_gate.py does not exist" as a fact, and asked dp
+                # four times over 90 minutes where the file lives. The file was at that path
+                # under its workspace the whole time. Existence only: this names the absolute
+                # path and reads nothing; the read it suggests goes through the gate like any
+                # other.
+                return ResultEnvelope(
+                    ok=True,
+                    result=(f"[no such path in your home: a path without a leading / is read "
+                            f"inside your home, and '{shown}' is not there. A file DOES exist at "
+                            f"'{above}'. To read it: memory_read {{\"path\": \"{above}\"}}. "
+                            f"Nothing was read this time, so nothing about its contents is known "
+                            f"yet.]"),
+                    witness_id=self._witness(
+                        f"memory_read {p.name} (not in home; exists at {above})"))
             return ResultEnvelope(
                 ok=True,
                 result=(f"[no such path: '{shown}' does not exist. This is not an empty file: there is "
@@ -1010,15 +1052,36 @@ class ReferenceF1aDispatcher:
             names = sorted(x.name + ("/" if x.is_dir() else "") for x in p.iterdir())
             listing = "\n".join(f"- {n}" for n in names[:50])
             more = f"\n…and {len(names) - 50} more" if len(names) > 50 else ""
+            # A find on a directory used to be dropped without a word: the listing came back as
+            # if it were the answer. cbp-being sent memory_read {path: "notes", find: ...} three
+            # times in one beat (2026-10-21 07:51Z) and once on the governance snapshot root,
+            # got the same first 50 names each time, and then read the first-listed (oldest)
+            # note instead of any file holding the text. Say that find did not run and why.
+            find = str(intent.args.get("find") or "")
+            # Outside the home, `search` reads a granted directory by absolute path (SAGE #505),
+            # so name it with the path filled in; inside the home, one file with find is the way.
+            in_home = p == self.memory_root or self.memory_root in p.parents
+            how = ("To search, memory_read one file's path with find." if in_home else
+                   f"To find which file under it holds the text: search {{\"pattern\": "
+                   f"\"{find.strip()[:80]}\", \"path\": \"{p}\"}}.")
+            unrun = (f"\n[find was NOT run: find looks inside ONE file, and '{shown}' is a "
+                     f"directory. Nothing was searched, so nothing is known yet about which file "
+                     f"holds '{find.strip()[:80]}'. {how}]") if find.strip() else ""
             return ResultEnvelope(
                 ok=True,
                 result=(f"[directory: '{shown}' holds {len(names)} entr{'y' if len(names) == 1 else 'ies'}]\n"
-                        + (listing + more if names else "(empty directory)")),
+                        + (listing + more if names else "(empty directory)") + unrun),
                 witness_id=self._witness(f"memory_read {p.name}/ (directory)"))
         whole = p.read_text(errors="replace")
         if not whole:
             return ResultEnvelope(ok=True, result=f"[empty file: '{shown}' exists and has no content]",
                                   witness_id=self._witness(f"memory_read {p.name}"))
+        find = str(intent.args.get("find") or "")
+        if find.strip():
+            return self._memory_read_find(p, shown, whole, find, intent.args)
+        find_note = ("[find was blank (empty or only whitespace), so this is an ordinary read "
+                     "using start_line and end_line, with the usual size limit.]\n"
+                     if intent.args.get("find") is not None else "")
         # A SILENT TRUNCATION IS A LIE THE LENGTH OF A FILE. First found by legion-claude on
         # 2026-09-07 (992443289: marker + cap 4,000 -> 12,000), which landed only on a
         # legion-being branch — main kept the silent 4,000-char slice, while
@@ -1056,7 +1119,7 @@ class ReferenceF1aDispatcher:
         stop = max(stop, start) if stop else 0
         if start > len(lines):
             return ResultEnvelope(ok=True, result=(
-                f"[past the end: '{shown}' has {len(lines)} lines, so start_line={start} shows "
+                find_note + f"[past the end: '{shown}' has {len(lines)} lines, so start_line={start} shows "
                 f"nothing. Read from start_line=1.]"),
                 witness_id=self._witness(f"memory_read {p.name} (past end)"))
         end, size = start - 1, 0
@@ -1085,9 +1148,9 @@ class ReferenceF1aDispatcher:
             # would read as the file's last line and could be copied into an edit anchor.
             # Say where the file ends before saying what Python makes of it.
             whole_note = f"\n[end of file: line {len(lines)} is the last line. {status}]" if status else ""
-            return ResultEnvelope(ok=True, result=dated + content + whole_note,
+            return ResultEnvelope(ok=True, result=find_note + dated + content + whole_note,
                                   witness_id=self._witness(f"memory_read {p.name}"))
-        head = dated + (f"[lines {start}-{end} of {len(lines)} in '{shown}']\n" if start > 1 else "")
+        head = find_note + dated + (f"[lines {start}-{end} of {len(lines)} in '{shown}']\n" if start > 1 else "")
         if stop and end == stop and end < len(lines):
             # Cut where the being asked, not where the window ran out: say so in those words,
             # so a short result is not read as the file running out of lines.
@@ -1102,6 +1165,76 @@ class ReferenceF1aDispatcher:
                     if end < len(lines) else f"\n[end of file: line {len(lines)} is the last line.]")
         return ResultEnvelope(ok=True, result=head + content + tail + parse,
                               witness_id=self._witness(f"memory_read {p.name} (lines {start}-{end})"))
+
+    def _memory_read_find(self, p: Path, shown: str, whole: str, find: str,
+                          args: dict) -> ResultEnvelope:
+        """memory_read with `find`: the lines of ONE file that contain a literal string.
+
+        FINDING IS NOT READING (#351). Without a worktree, `search` is refused, and memory_read
+        only showed a file from a start_line on, so a being that wanted to locate one line
+        (`head = nn.Linear` in scratch/train-autoencoder-latent5.py) had no tool that could. It
+        was refused at search 120 times (76 on 2026-10-07 alone) and wrote git-worktree setup
+        scripts to build the missing thing. This answers the question it was asking, in the
+        file it named: literal and case-sensitive (not a regex, so `nn.Linear(` means what it
+        says), every line number the text is on, nothing else read.
+
+        An empty answer says why it is empty: zero matches is a true answer about THIS file,
+        and says that it covers nothing else. A find whose leading or trailing spaces are what
+        kept it from matching says so (a being cannot see the whitespace it sends).
+        A query with line breaks explicitly searches only its first non-blank line;
+        the receipt makes no claim about the full multi-line text."""
+        query_lines = find.splitlines()
+        if query_lines != [find]:
+            first = next(line for line in query_lines if line.strip())
+            result = self._memory_read_find(p, shown, whole, first, args)
+            result.result = (
+                "[find matches within one line. Your query contained line breaks, so the "
+                f"results below search only its first non-blank line: {first!r}. "
+                "They do not establish whether the full multi-line text is present. "
+                "Read the matching range to check the remaining lines.]\n" + result.result)
+            return result
+        lines = whole.splitlines()
+        hits = [(i, ln) for i, ln in enumerate(lines, 1) if find in ln]
+        loose = ""
+        if not hits and find.strip() != find:
+            loose = find.strip()
+            hits = [(i, ln) for i, ln in enumerate(lines, 1) if loose in ln]
+        ignored = "".join(
+            f" {key}={args[key]} was ignored: find looks at every line of the file."
+            for key in ("start_line", "end_line") if args.get(key) is not None
+        )
+        if not hits:
+            return ResultEnvelope(ok=True, result=(
+                f"[found none: no line of '{shown}' contains {find!r} (literal text, "
+                f"case-sensitive; all {len(lines)} lines were looked at). This is a true answer "
+                f"about this one file only: it says nothing about any other file.{ignored}]"),
+                witness_id=self._witness(f"memory_read {p.name} (find: 0 matches)"))
+        shown_hits = hits[:_FIND_SHOWN]
+        cut = False
+        rows = []
+        for i, ln in shown_hits:
+            if len(ln) > _FIND_LINE_CHARS:
+                ln, cut = ln[:_FIND_LINE_CHARS] + "…", True
+            rows.append(f"line {i}: {ln}")
+        n = len(hits)
+        what = repr(loose) if loose else repr(find)
+        head = (f"[found {n} line{'' if n == 1 else 's'} of {len(lines)} in '{shown}' "
+                f"containing {what} (literal text, case-sensitive)]")
+        if loose:
+            head += (f"\n[no line contains {find!r} exactly as sent, with its leading/trailing "
+                     f"spaces; these contain it with those spaces removed]")
+        notes = []
+        if n > len(shown_hits):
+            notes.append(f"…and {n - len(shown_hits)} more matching lines not listed (the first "
+                         f"{len(shown_hits)} are shown); a longer find text narrows it.")
+        if cut:
+            notes.append(f"a line ending in … was cut at {_FIND_LINE_CHARS} characters.")
+        notes.append("line labels and truncation notes are not file text or edit anchors.")
+        notes.append(f"to read a range, memory_read path '{shown}' with start_line and end_line."
+                     + ignored)
+        return ResultEnvelope(
+            ok=True, result=head + "\n" + "\n".join(rows) + "\n[" + " ".join(notes) + "]",
+            witness_id=self._witness(f"memory_read {p.name} (find: {n} matches)"))
 
     def _do_memory_edit(self, intent: BeingIntent) -> ResultEnvelope:
         """Replace an exact span inside one of the being's own files. The missing primitive.
@@ -1404,9 +1537,16 @@ class ReferenceF1aDispatcher:
         of escalation, because nothing it could do said "this is finished". dp, to the being:
         "renaming and deleting aren't verbs you have yet — we're looking at that."
 
-        Bounded: only inside `notes/` or `scratch/` in its own home. `_safe_path(writing=True)`
-        already refuses the seat-owned notes and the reserved subtrees, and a path outside the
-        home, so this adds only the notes/-or-scratch/ rule. The file keeps its content
+        Bounded: only inside `notes/` or `scratch/` in its own home, or its own `todo.md`.
+        `_safe_path(writing=True)` already refuses the seat-owned notes and the reserved subtrees,
+        and a path outside the home, so this adds only the notes/-or-scratch/-or-todo rule.
+
+        TODO.MD TOO (dp, 2026-10-20). The todo is an append log whose open items the window
+        recomputes every beat, and differently worded copies of one task never close. dp asked
+        cbp-being to retire old items; it had no tool that removes anything, so it appended ~100
+        "[x] retiring" lines and the file grew from 2865 to 2964 lines. Retiring the whole todo
+        keeps it intact under `todo.retired-<date>.md` (readable) and the being writes back only
+        what is still open. The journal stays excluded: it is the record of what happened. The file keeps its content
         and gains a header; the name gains `.retired-<date>`, so a reader and a listing both
         see that it is closed."""
         raw = str(intent.args.get("path", "")).strip()
@@ -1416,10 +1556,12 @@ class ReferenceF1aDispatcher:
         if not reason:
             return ResultEnvelope(ok=False, error="retire_note needs a 'reason': what you know now that the note does not")
         p = self._safe_path(raw, writing=True)
-        if p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root:
+        is_todo = p == Path(self.memory_root) / "todo.md"
+        if not is_todo and (p.parent.name not in ("notes", "scratch") or p.parent.parent != self.memory_root):
             return ResultEnvelope(ok=False, error=(
-                f"retire_note is for your own notes: '{raw}' is not directly inside your notes/ or "
-                f"scratch/. Your journal and todo are the running record and are not retired this way."))
+                f"retire_note is for your own notes and your todo.md: '{raw}' is not directly inside "
+                f"your notes/ or scratch/. Your journal is the record of what happened and is not "
+                f"retired this way."))
         if not p.exists():
             return ResultEnvelope(ok=False, error=f"no such note: '{raw}' does not exist, so there is nothing to retire")
         if ".retired-" in p.name:
@@ -1439,7 +1581,11 @@ class ReferenceF1aDispatcher:
             f"> RETIRED {stamp:%Y-%m-%d %H:%M}Z by cbp-being. No longer current: {reason}\n"
             f"> Kept whole below, as it was written.\n\n" + body)
         p.unlink()
-        return ResultEnvelope(ok=True, result=f"retired {p.name} -> {dest.name}",
+        result = f"retired {p.name} -> {dest.name}"
+        if is_todo:
+            result += (f". Your todo.md is now empty. memory_write it with only the items still open; "
+                       f"the old list stays readable at {dest.name}.")
+        return ResultEnvelope(ok=True, result=result,
                               witness_id=self._witness(f"retire_note {p.name} -> {dest.name}: {reason[:120]}"))
 
     def _do_memory_write(self, intent: BeingIntent) -> ResultEnvelope:
@@ -1532,6 +1678,9 @@ class ReferenceF1aDispatcher:
             if p.parent.name in ("notes", "scratch") and p.parent.parent == self.memory_root:
                 result += (f" To start {p.name} fresh, retire_note it first, then memory_write "
                            f"the whole new version.")
+            elif p == Path(self.memory_root) / "todo.md":
+                result += (" To clear out old or finished items, retire_note todo.md (it is kept "
+                           "whole as todo.retired-<date>.md), then memory_write only what is still open.")
             elif p.suffix == ".py" and _is_second_program(content, _before_text):
                 # 2026-09-24 15:19Z: cbp-being decided on "a new file", then memory_write-d the new
                 # program twice to the OLD file's name. Both landed below 3666 broken lines, and

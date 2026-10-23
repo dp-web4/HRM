@@ -3081,11 +3081,14 @@ class HestiaF1aDispatcher:
         import stat
         import subprocess
         from sage.gateway.being_gate_client import (run_command, run_names, run_stage_dir,
-                                                    run_budget_s, RUN_MIN_S)
+                                                    run_budget_s, RUN_MIN_S, run_grant_mounts)
         ctx = {"memory_root": self.memory_root,
                "member": getattr(self, "member", None),
                "worktree": getattr(self, "worktree", None),
-               "workspace": getattr(self, "workspace", None)}
+               "workspace": getattr(self, "workspace", None),
+               # the grants this verdict carries: run_grant_mounts composes the same mounts the
+               # law judged from the gate's copy of them, or the line differs and nothing runs
+               "granted_reach": _granted_reach_of(getattr(self, "_verdict", None))}
         try:
             cmd = run_command(intent.args, ctx)
             names = run_names(intent.args, ctx)
@@ -3203,12 +3206,15 @@ class HestiaF1aDispatcher:
                 "was not started and nothing of the other was touched. Ask again when it has "
                 "answered."))
         try:
-            return self._run_staged(stage, staged, cmd, budget, bound_by)
+            return self._run_staged(stage, staged, cmd, budget, bound_by,
+                                    grant_mounts=run_grant_mounts(ctx))
         finally:
             _release_stage_lock(lock_path, lock_fd)
 
-    def _run_staged(self, stage, staged, cmd, budget, bound_by) -> ResultEnvelope:
-        """The staged part of `run`, called only with the stage's lock held (see _do_run)."""
+    def _run_staged(self, stage, staged, cmd, budget, bound_by,
+                    grant_mounts=((), (), False)) -> ResultEnvelope:
+        """The staged part of `run`, called only with the stage's lock held (see _do_run).
+        `grant_mounts` is run_grant_mounts' answer for the line in `cmd`, for the receipt."""
         import os
         import shlex
         import shutil
@@ -3287,6 +3293,7 @@ class HestiaF1aDispatcher:
                                               kill_as=[SUDO, "-n", "-u", RUN_USER])
                     stopped = why == "time"
                 else:
+                    started = time.time()
                     proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL,
                                             stdout=fo, stderr=fe)
                     try:
@@ -3323,10 +3330,20 @@ class HestiaF1aDispatcher:
                                   error=f"run could not start the sandbox: {errtxt[:400]}")
         # A NON-ZERO EXIT IS A RESULT. A traceback is the most useful thing this verb can hand
         # back: it names the line, and the line is one the being wrote.
-        return ResultEnvelope(ok=True, witness_id=action_id, result={
+        result = {
             "script": staged[0][0], "files": [b for b, _ in staged],
             "exit": rc, "stdout": out.strip(), "stderr": errtxt.strip(),
-            "note": _run_note(rc, errtxt, [b for b, _ in staged], out)})
+            "note": _run_note(rc, errtxt, [b for b, _ in staged], out)}
+        if not seatbelt:
+            mounts, skipped, _mask = grant_mounts
+            result["note"] += _run_reach_note(mounts, skipped)
+            if mounts:
+                changed, complete = _changed_since([p for p, _k in mounts], started)
+                result["changed_in_your_grants"] = changed
+                if not complete:
+                    result["changed_in_your_grants_scan"] = (
+                        f"stopped after {RUN_SCAN_MAX_ENTRIES} entries; later changes are not listed")
+        return ResultEnvelope(ok=True, witness_id=action_id, result=result)
 
 
     def _do_check(self, intent: BeingIntent) -> ResultEnvelope:
@@ -4719,6 +4736,69 @@ def _named_scope_fact(rid: str, row) -> str:
     return f"{rid}: {status}{by} (path {row.get('path')})"
 
 
+#: How many entries a run's post-run scan of the grants it could write will stat, at most.
+RUN_SCAN_MAX_ENTRIES = 50000
+#: How many changed paths a run receipt lists.
+RUN_CHANGED_SHOWN = 25
+
+
+def _changed_since(roots: list, since: float) -> tuple:
+    """([path, ...], complete): files and directories under `roots` whose mtime or ctime is at
+    or after `since`, without following links, stopping after RUN_SCAN_MAX_ENTRIES entries.
+
+    A WRITE THROUGH A GRANT IS A WRITE, AND THE RECEIPT NAMES IT. memory_write leaves a receipt
+    per file; a run that writes the same files through its mounts would leave none, and the
+    being's file history is read from its receipts. One second of slack for coarse mtimes. A
+    deletion leaves no entry to stat, so the parent directory's change is what shows it."""
+    import os
+    since -= 1.0
+    out, seen, complete = [], 0, True
+    stack = list(roots)
+    while stack:
+        p = stack.pop()
+        try:
+            st = os.lstat(p)
+        except OSError:
+            continue
+        seen += 1
+        if seen > RUN_SCAN_MAX_ENTRIES:
+            complete = False
+            break
+        if max(st.st_mtime, st.st_ctime) >= since:
+            out.append(p)
+        if os.path.isdir(p) and not os.path.islink(p):
+            try:
+                stack.extend(os.path.join(p, n) for n in os.listdir(p))
+            except OSError:
+                pass
+    out.sort()
+    if len(out) > RUN_CHANGED_SHOWN:
+        out = out[:RUN_CHANGED_SHOWN] + [f"... and {len(out) - RUN_CHANGED_SHOWN} more"]
+    return out, complete
+
+
+def _run_reach_note(mounts: list, skipped: list) -> str:
+    """What the run could see beyond its own copies, said where it reads its result.
+
+    A PATH THE SANDBOX CANNOT SEE READS AS ABSENT, AND THE NOTE SAYS SO. cbp-being, 2026-10-23:
+    its check_file.py printed "File exists: False" for a file it had been reading with
+    memory_read all morning, and it trusted the run. os.path.exists() inside a run answers about
+    the sandbox, never about the disk."""
+    seen = ", ".join(p + ("/" if k == "dir" else "") for p, k in mounts)
+    text = (" Inside the run, besides your copies in /work, you could see only "
+            + (f"what your grants reach, at the same paths: {seen}. Writes there are real and "
+               "stay, wherever file permissions allow them (a read-only tree stays read-only); "
+               "changed_in_your_grants lists what changed. "
+               if mounts else "the system's own files: no grant of yours reaches a path a run "
+                              "can mount. ")
+            + "Any other path, your home included, does not exist in there, so a check like "
+              "os.path.exists() is False for it whatever is on disk; memory_read answers about "
+              "the disk.")
+    if skipped:
+        text += " Not mounted: " + "; ".join(f"{p} ({why})" for p, why in skipped) + "."
+    return text
+
+
 def _run_note(rc: int, stderr: str, files: list, stdout: str = "") -> str:
     """The run's note, plus one fact when its output names a hardware device (_device_note)."""
     note = _run_note_core(rc, stderr, files)
@@ -4761,8 +4841,9 @@ def _run_note_core(rc: int, stderr: str, files: list) -> str:
     about this run, so stating it keeps the note evidence-only."""
     if rc == 0:
         return ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                "read-only). The copies and every file the run wrote are gone now: the next run "
-                "starts with only the files it names. Only what you printed survives.")
+                "read-only unless a grant of yours covers it). The copies and every file the run "
+                "wrote are gone now, except what it wrote through your grants: the next run "
+                "starts with only the files it names. What you printed survives.")
     ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
     if "Traceback (most recent call last)" in stderr:
         return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "

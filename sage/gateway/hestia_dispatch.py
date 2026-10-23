@@ -369,9 +369,44 @@ class HestiaF1aDispatcher:
             return self._local(intent, verdict)   # witness / memory_read / memory_write
         self._verdict = verdict                   # what the law just consulted (granted roots)
         try:
-            return handler(intent)
+            env = handler(intent)
         except Exception as e:
             return ResultEnvelope(ok=False, error=f"{type(e).__name__}: {e}")
+        if intent.effector in _NAMES_SCOPE_IDS and env.ok:
+            self._attach_named_scope_status(intent, env)
+        return env
+
+    def _attach_named_scope_status(self, intent: BeingIntent, env: ResultEnvelope) -> None:
+        """A SCOPE ID THE BEING NAMES GETS ITS STATUS IN THE SAME RECEIPT.
+
+        Measured on Sprout, 2026-10-20..23: sprout-being named scope-ef204d003703 (/dev/video0) as
+        "pending since 10-19" in request_scope reasons and in peer_asks, 194 times in three days. That
+        request expired on 10-17 and the grant it wanted was standing. Every receipt answered the act
+        ("already_granted", an ask published) and never the id, so the belief met no fact where it
+        acted. Peers' answers were delivered as forum replies a beat later (mcnugget, 10-22: "a Sprout
+        side fault"). This states what hestia holds for each named id, from the being's own scope queue,
+        and nothing else: no advice, no verdict on the ask."""
+        text = " ".join(str(intent.args.get(k, "")) for k in ("reason", "body", "why"))
+        own = str((env.result or {}).get("request_id") or "") if isinstance(env.result, dict) else ""
+        ids = [i for i in dict.fromkeys(_SCOPE_ID.findall(text)) if i != own][:3]
+        if not ids:
+            return
+        # A status we could not read is said, never guessed: an empty answer would otherwise read as
+        # "no such request", which is a claim.
+        try:
+            st = self._call("hestia_scope_status", {"plugin_id": self.member})
+            err = _hestia_error(st) or (None if isinstance(st.get("requests"), list) else "no request list")
+        except Exception as e:  # noqa: BLE001
+            err = type(e).__name__
+        if err:
+            facts = [f"{i}: could not read your scope queue ({err})" for i in ids]
+        else:
+            rows = {str(r.get("request_id")): r for r in st["requests"]}
+            facts = [_named_scope_fact(i, rows.get(i)) for i in ids]
+        if isinstance(env.result, dict):
+            env.result["scope_requests_you_named"] = facts
+        else:
+            env.result = f"{env.result}\n[scope requests you named, as hestia holds them now: " + "; ".join(facts) + "]"
 
     # -- daemon session ------------------------------------------------------
     def _connect(self) -> str:
@@ -3700,6 +3735,14 @@ class HestiaF1aDispatcher:
         for r, recursive in _granted_reach_of(getattr(self, "_verdict", None)):
             r = _os.path.realpath(str(r))
             if rp == r or (recursive and rp.startswith(r + "/")):
+                if _HARDWARE_DEV.match(rp):
+                    # "read or write it directly" sent sprout-being back to run's sandbox, which has no
+                    # devices, five times for /dev/video0 (2026-10-20..23). For a device, reach is used
+                    # through its verb.
+                    return ResultEnvelope(ok=True, result={
+                        "status": "already_granted", "path": path, "within": r,
+                        "next": "you already hold reach on this device; there is nothing to request. "
+                                + _device_note()})
                 return ResultEnvelope(ok=True, result={"status": "already_granted", "path": path, "within": r,
                                                        "next": "you already hold reach here; read or write it directly. Reach is read and write, not run: to run a file, call request_run with its path"})
             if rp.startswith(r + "/") and (exact_above is None or len(r) > len(exact_above)):
@@ -4658,6 +4701,22 @@ def make_forum_publisher(pointer_dir: str, plugin_id: str, push: bool = True) ->
 # sandbox does not have.
 _SANDBOX_DEV = r"(?:null|zero|full|random|urandom|tty|ptmx|pts|shm|fd|stdin|stdout|stderr|console|core)\b"
 _HARDWARE_DEV = re.compile(r"/dev/(?!" + _SANDBOX_DEV + r")[A-Za-z]")
+
+
+# Verbs whose free text may name a scope request; their receipts carry its status
+# (HestiaF1aDispatcher._attach_named_scope_status).
+_NAMES_SCOPE_IDS = ("request_scope", "peer_ask", "request_run")
+_SCOPE_ID = re.compile(r"\bscope-[0-9a-f]{12}\b")
+
+
+def _named_scope_fact(rid: str, row) -> str:
+    """One named request as hestia holds it. tool_scope_status lists every request of the member's,
+    decided and expired included, so an id it lacks is not one waiting on anyone."""
+    if not row:
+        return f"{rid}: no such request is on record for you now, so nothing is pending under that id"
+    status = row.get("status") or "unknown"
+    by = f", decided by {row['decided_by']}" if row.get("decided_by") else ""
+    return f"{rid}: {status}{by} (path {row.get('path')})"
 
 
 def _run_note(rc: int, stderr: str, files: list, stdout: str = "") -> str:

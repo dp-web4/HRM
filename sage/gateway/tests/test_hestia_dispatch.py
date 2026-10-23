@@ -2548,3 +2548,74 @@ def test_any_other_transport_failure_is_not_retried():
     env = d(BeingIntent("mesh", {"to": "legion", "kind": "reply", "pointer": "p"}), _ALLOW)
     assert not env.ok and "HTTP 500" in env.error
     assert sum(1 for n, _ in FakeMcp.calls if n == "hestia_connect") == 1
+
+
+class _WithScopeQueue(FakeMcp):
+    """The daemon's tool_scope_status: every request of the member's, decided and expired included."""
+    def call(self, name, args):
+        if name == "hestia_scope_status" and "hestia_scope_status" not in FakeMcp.fail:
+            FakeMcp.calls.append((name, args))
+            return {"result": {"structuredContent": {"requests": [
+                {"request_id": "scope-ef204d003703", "path": "/dev/video0", "status": "expired",
+                 "decided_by": None},
+                {"request_id": "scope-0fefb5f67e46", "path": "/home/dp/ai-workspace/sage", "status": "pending",
+                 "decided_by": None},
+                {"request_id": "scope-aaaaaaaaaaaa", "path": "/srv/x", "status": "granted",
+                 "decided_by": "peer:mcnugget"}]}}}
+        return super().call(name, args)
+
+
+def _qdisp():
+    FakeMcp.calls, FakeMcp.fail = [], {}
+    root = tempfile.mkdtemp(prefix="hd-")
+    return HestiaF1aDispatcher("sprout-being", root, mcp_factory=lambda ep, pid: _WithScopeQueue(ep, pid)), root
+
+
+def test_a_scope_id_the_being_names_comes_back_with_its_status_in_the_same_receipt():
+    """sprout-being, 2026-10-20..23: 'scope-ef204d003703 pending since 10-19' 194 times in three days, in
+    request_scope reasons and peer_asks. It expired 10-17; no receipt ever said so."""
+    d, _ = _qdisp()
+    env = d(BeingIntent("request_scope", {"path": "/srv/elsewhere/x", "reason":
+            "scope-ef204d003703 has been pending since 10-19; also scope-aaaaaaaaaaaa and scope-123456789abc"}), _ALLOW)
+    assert env.ok and env.result["request_id"] == "scope-1"
+    facts = env.result["scope_requests_you_named"]
+    assert facts[0].startswith("scope-ef204d003703: expired") and "/dev/video0" in facts[0]
+    assert facts[1] == "scope-aaaaaaaaaaaa: granted, decided by peer:mcnugget (path /srv/x)"
+    assert facts[2].startswith("scope-123456789abc: no such request is on record") and "nothing is pending" in facts[2]
+    assert len(_mb_calls("hestia_scope_status")) == 1          # one read for all named ids
+    # the same facts ride on a peer_ask's text receipt (the ask itself is untouched)
+    d._publish = lambda *a, **k: "shared-context/forum/x.md"
+    env = d(BeingIntent("peer_ask", {"to": "mcnugget", "body": "is scope-0fefb5f67e46 still waiting?"}), _ALLOW)
+    assert env.ok and env.result["question_at"] == "shared-context/forum/x.md", env
+    assert "scope-0fefb5f67e46: pending" in env.to_tool_message()
+
+
+def test_naming_no_scope_id_reads_nothing_and_adds_nothing():
+    d, _ = _qdisp()
+    env = d(BeingIntent("request_scope", {"path": "/srv/elsewhere/x", "reason": "to read a peer's note"}), _ALLOW)
+    assert env.ok and "scope_requests_you_named" not in env.result
+    assert _mb_calls("hestia_scope_status") == []
+
+
+def test_an_unreadable_scope_queue_is_said_never_read_as_no_such_request():
+    d, _ = _qdisp()
+    FakeMcp.fail = {"hestia_scope_status": "down"}
+    env = d(BeingIntent("request_scope", {"path": "/srv/elsewhere/x", "reason": "scope-ef204d003703 again"}), _ALLOW)
+    (fact,) = env.result["scope_requests_you_named"]
+    assert "could not read your scope queue" in fact and "no such request" not in fact, fact
+    FakeMcp.fail = {}
+
+
+def test_already_granted_on_a_device_names_the_verb_not_a_direct_read():
+    """'read or write it directly' sent sprout-being back to run's sandbox for /dev/video0 five times."""
+    from sage.gateway.being_gate_client import GatewayVerdict
+    d, root = _qdisp()
+    env = d(BeingIntent("request_scope", {"path": "/dev/video0", "reason": "persistent camera access"}),
+            GatewayVerdict("allow", granted=(root, "/dev/video0")))
+    assert env.ok and env.result["status"] == "already_granted"
+    assert "camera for frames" in env.result["next"] and "directly" not in env.result["next"], env.result
+    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
+    # an ordinary path keeps its answer
+    env = d(BeingIntent("request_scope", {"path": root + "/config.json", "reason": "my config"}),
+            GatewayVerdict("allow", granted=(root,)))
+    assert "read or write it directly" in env.result["next"]

@@ -69,6 +69,34 @@ for repo in "$DEV_SAGE" "$SAGE_DIR" "$SHARED" "$PRIVATE" "$MEMORY" "$HESTIA"; do
 done
 echo "[McNugget-Supervisor] Repos synced"
 
+# === 2. GOVERNANCE SNAPSHOTS ===
+# dp, 2026-10-21 (private-context supervisor/CLAUDE.md): the governed read their law from
+# <workspace>/governance/{hestia,sage}, read-only copies of the deployed hestia build and of the running
+# SAGE gateway. Nothing else refreshes them, and a copy older than the deployed build sends readers to wrong
+# line numbers, so every run refreshes both. Skipped where there is no governance/ (no governed members).
+# The scripts are idempotent and are the only writers inside governance/.
+GOV_LINE=""
+if [ -d "$(dirname "$SAGE_DIR")/governance" ]; then
+    GOV_H="$(bash "$SAGE_DIR/scripts/governance_snapshot.sh" 2>&1 | tail -1)"
+    GOV_S="$(bash "$SAGE_DIR/scripts/governance_snapshot_sage.sh" 2>&1 | tail -1)"
+    echo "[McNugget-Supervisor] governance: $GOV_H"
+    echo "[McNugget-Supervisor] governance: $GOV_S"
+    # the commits only, for the fleet-visible log line
+    GOV_LINE="; governance hestia $(printf '%s' "$GOV_H" | grep -oE '[0-9a-f]{40}' | cut -c1-8), sage $(printf '%s' "$GOV_S" | grep -oE '[0-9a-f]{40}' | cut -c1-9)"
+fi
+
+# === 2a. THE BEING'S WORKTREE ===
+# Keeping it current is the seat's job (being_gate_client.pr_base_branch: "it sets the upstream
+# when it syncs your worktree"). Nothing on McNugget did: the worktree sat on a detached HEAD from
+# 2026-10-03 until 10-23, so the being's git_read and search showed three-week-old code. Fast-forward
+# only; the being's modified files or an open PR branch stop it (scripts/sync_being_worktree.sh).
+BEING_WT="$(dirname "$SAGE_DIR")/being-worktrees/mcnugget-being"
+if [ -d "$BEING_WT" ]; then
+    WT_OUT="$(bash "$SAGE_DIR/scripts/sync_being_worktree.sh" "$BEING_WT" main mcnugget-being 2>&1 | tail -1)"
+    echo "[McNugget-Supervisor] being worktree: $WT_OUT"
+    GOV_LINE="${GOV_LINE}; being worktree: $(printf '%s' "$WT_OUT" | cut -c1-60)"
+fi
+
 # === 3. READ FORUMS ===
 cd "$SHARED"
 RECENT_FORUM=$(find forum/ -name "*.md" -mtime -1 -type f 2>/dev/null | wc -l | tr -d ' ')
@@ -104,7 +132,7 @@ EVID="$PRIVATE/supervisor/log_mcnugget.md"
 # which is local. A UTC header future-dates the entry after ~17:00 PDT and the tool then
 # reports a nonsensical "-1d ago". Timestamps inside the line stay UTC and are labelled.
 TODAY=$(date +'%Y-%m-%d')
-ENTRY="- $(date -u +'%H:%M UTC') — repos synced; ${RECENT_FORUM:-0} forum posts/24h; inbox: ${INBOX_N:-0}"
+ENTRY="- $(date -u +'%H:%M UTC') — repos synced; ${RECENT_FORUM:-0} forum posts/24h; inbox: ${INBOX_N:-0}${GOV_LINE}"
 mkdir -p "$(dirname "$EVID")"
 EVID="$EVID" TODAY="$TODAY" ENTRY="$ENTRY" python3 - <<'PY'
 import os, re

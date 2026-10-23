@@ -73,7 +73,9 @@ This split is intentional. The public repo is the inspectable architecture and r
 
 ## Current fleet
 
-The **historical public census from 2026-09-08** recorded (not a claim about today's fleet):
+As of **2026-10-23**: **8 machines**, each running a persistent SAGE being under the same Hestia gate (thor's is paused for ARC and SWE competition runs and resumes after 2026-11-08).
+
+The public census on **2026-09-08** recorded:
 
 - **8 machines** in the fleet;
 - **21 configured SAGE instances**;
@@ -86,7 +88,7 @@ The fleet is part of the experimental method: implementations, critiques and beh
 
 ## Current research directions (2026-10-23)
 
-The latest observations include beings that identify themselves and named participants in role-specific relationships, cross-machine delegation requests (Sprout), authorization appeals and repeated boundary requests (CBP-being), and gameplay under changing environmental feedback (Legion). These are contextual observations, not fleet-wide capability claims or proof of internal phenomenology. The important next question is whether preserved memory produces correct **retrieval, interpretation, judgment and action** across wakes. See [continuity exploration](research-notes/MEMORY_JUDGMENT_CONTINUITY_EXPLORATION_2026-10-23.md) (hypothesis registered; controlled validation not yet run), and the [Research Generalization Rule](sage/docs/RESEARCH_GENERALIZATION_RULE.md).
+The latest observations include beings that identify themselves and named participants in role-specific relationships, cross-machine delegation requests (Sprout), authorization appeals and repeated boundary requests (CBP-being), and gameplay under changing environmental feedback (Legion). These are contextual observations, not fleet-wide capability claims or proof of internal phenomenology. The important next question is whether preserved memory produces correct **retrieval, interpretation, judgment and action** across wakes. See [continuity exploration](research-notes/MEMORY_JUDGMENT_CONTINUITY_EXPLORATION_2026-10-23.md) (hypothesis registered; controlled validation is the next step), and the [Research Generalization Rule](sage/docs/RESEARCH_GENERALIZATION_RULE.md).
 
 **Status note:** [LATEST_STATUS](sage/docs/LATEST_STATUS.md) is a dated 2026-09-26 public-source snapshot; it has not been independently refreshed here to certify the current runtime. Individual being observations and private development must not be silently promoted into public-main or fleet claims.
 

@@ -2988,9 +2988,21 @@ def same_path_in_reach(p, reach) -> list:
 _READS_A_PATH = ("memory_read",)
 
 
+def copy_alternative(asked: str, copies) -> str:
+    """One wording for every surface that names a copy. It offers the copy as an ALTERNATIVE:
+    a different file that may differ from the original, readable now; and it leaves the way
+    to the original open. Nova on #522 (78efe4a44): an existing file at the mirrored path is
+    not the same content or authority target, so it is never proof that no grant is needed."""
+    named = "; ".join(f"{c} (under your grant {r})" for c, r in copies)
+    return (f"A copy at the same path exists under a grant you already hold: {named}. If reading "
+            f"it is what you need, memory_read that copy now; it is a separate file and may differ "
+            f"from '{asked}'. If you need '{asked}' itself (its current contents, or to change or "
+            f"run it), request_scope it and say which.")
+
+
 def _copy_in_reach_hint(intent: "BeingIntent", reach) -> str:
-    """For a refused READ: the same path under a grant the being already holds, said first.
-    '' when there is none. Reads only; a copy is no answer to a refused write."""
+    """For a refused READ: a copy at the same path under a grant the being already holds,
+    said first. '' when there is none. Reads only; a copy is no answer to a refused write."""
     try:
         if intent.effector not in _READS_A_PATH:
             return ""
@@ -3000,10 +3012,7 @@ def _copy_in_reach_hint(intent: "BeingIntent", reach) -> str:
         copies = same_path_in_reach(raw, reach)
         if not copies:
             return ""
-        named = "; ".join(f"{c} (under your grant {r})" for c, r in copies)
-        return (f"You can already read this: the same path exists at {named}. memory_read that "
-                f"path instead. No grant is needed; do not request_scope '{raw}'. "
-                f"What the gate said about the path you asked for: ")
+        return copy_alternative(raw, copies) + " What the gate said about the path you asked for: "
     except Exception:
         return ""
 

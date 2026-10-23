@@ -11,7 +11,10 @@ while its standing grant on `<ws>/governance/**` held the same file at
   pointing it AT the editable tree;
 - request_scope: filed, for a human or a peer to refuse.
 
-Each of those surfaces now names the copy first, and request_scope files nothing.
+Each of those surfaces now names the copy first, as an ALTERNATIVE: a separate file that may
+differ. request_scope still files (Nova on 78efe4a44: a copy is not the same content or
+authority target, and the being may need the original's current bytes, or to change or run it),
+and its result carries the copy alongside.
 """
 import os
 import sys
@@ -103,8 +106,10 @@ def test_the_gates_refusal_of_the_editable_path_names_the_copy_first():
     c._policy_grants = lambda: ((str(ws / "governance"),), ((str(ws / "governance"), True),))
     env = c._dispatch_resolved(BeingIntent("memory_read", {"path": edit}))
     assert env.refused
-    assert env.error.startswith(f"You can already read this: the same path exists at {copy}"), env.error
-    assert "do not request_scope" in env.error and "'hestia' is not granted" in env.error
+    assert env.error.startswith(f"A copy at the same path exists under a grant you already hold: {copy}"), env.error
+    assert "may differ" in env.error and f"If you need '{edit}' itself" in env.error
+    assert "'hestia' is not granted" in env.error
+    assert "no grant is needed" not in env.error.lower(), "a copy is never proof no grant is needed"
     # a refused write is not answered with a read-only copy
     env = c._dispatch_resolved(BeingIntent("memory_write", {"path": edit, "content": "x"}))
     assert copy not in env.error
@@ -119,31 +124,41 @@ def test_the_dispatchers_out_of_reach_refusal_names_the_copy_first():
     except ValueError as e:
         msg = str(e)
     assert msg.index(copy) < msg.index("outside your reach. You can read"), msg
-    assert "real boundary" not in msg, "the boundary text is what sent the being to request_scope"
+    assert "may differ" in msg and f"If you need '{edit}' itself" in msg, msg
 
 
-def test_a_relative_read_points_at_the_copy_not_the_editable_tree():
+def test_a_relative_read_names_the_original_as_out_of_reach_and_the_copy_as_the_alternative():
     ws, edit, copy, home = _ws()
     r = _reference(home, ((str(ws / "governance"), True),))
     env = r._do_memory_read(BeingIntent("memory_read", {"path": "/".join(REL)}))
-    assert env.ok and copy in env.result and edit not in env.result, env.result
+    assert env.ok and f"'{edit}', outside your reach" in env.result, env.result
+    assert f"memory_read that copy now" in env.result and copy in env.result
+    assert "To read it: memory_read" not in env.result, "the original must not be offered as readable"
     # with no copy in reach, the pointer to the real file stands, as before
     r = _reference(home, ())
     env = r._do_memory_read(BeingIntent("memory_read", {"path": "/".join(REL)}))
     assert edit in env.result, env.result
 
 
-def test_request_scope_for_a_path_with_a_copy_in_reach_files_nothing():
+def test_request_scope_with_a_copy_in_reach_is_still_filed_and_names_the_copy():
+    """Nova, 78efe4a44: a copy is not the original. The fixture's copy differs from the
+    original on purpose (a stale snapshot), and an ask to edit the original must reach a
+    decider; so must an ask to read it."""
     from sage.gateway.tests.test_hestia_dispatch import FakeMcp, _disp
     ws, edit, copy, home = _ws()
+    assert Path(edit).read_text() != Path(copy).read_text(), "the copy is stale on purpose"
     d, _ = _disp()
-    FakeMcp.calls.clear()
     gov = str(ws / "governance")
     v = GatewayVerdict("allow", granted=(gov,), granted_reach=((gov, True),))
-    env = d(BeingIntent("request_scope", {"path": edit, "reason": "to read the closure table"}), v)
-    assert env.ok and env.result["status"] == "same_path_in_reach", env
-    assert env.result["in_reach"] == [copy] and "No request was filed" in env.result["next"]
-    assert not [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"]
-    # a path with no copy is still filed
+    for reason in ("I need to edit the original closure table", "to read the closure table"):
+        FakeMcp.calls.clear()
+        env = d(BeingIntent("request_scope", {"path": edit, "reason": reason}), v)
+        filed = [a for n, a in FakeMcp.calls if n == "hestia_request_scope"]
+        assert filed and filed[0]["path"] == edit, (reason, env)
+        assert env.ok and env.result["copy_in_reach"] == [copy], env
+        assert "may differ" in env.result["meanwhile"]
+    # with no copy, the result is exactly as before
+    FakeMcp.calls.clear()
     env = d(BeingIntent("request_scope", {"path": str(ws / "hestia" / "other.py"), "reason": "to read it"}), v)
     assert [n for n, _ in FakeMcp.calls if n == "hestia_request_scope"], env
+    assert "copy_in_reach" not in env.result

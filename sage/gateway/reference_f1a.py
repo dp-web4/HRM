@@ -33,7 +33,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from sage.gateway.being_gate_client import (BeingIntent, GatewayVerdict, ResultEnvelope,
-                                            same_path_in_reach)
+                                            copy_alternative, same_path_in_reach)
 
 try:
     import fcntl
@@ -1099,12 +1099,8 @@ class ReferenceF1aDispatcher:
                            "instead, or request_scope and say what you would write.")
         copies = same_path_in_reach(p, self._reach_pairs())
         if copies:
-            # First, before the boundary: what to read instead is the answer, and the
-            # "real boundary ... request_scope" text below is what sent the being to ask.
-            named = "; ".join(f"{c} (under your grant {r})" for c, r in copies)
-            return (f"'{p}' is outside your reach, but you can already read the same path here: "
-                    f"{named}. memory_read that path instead. Do not request_scope '{p}': you "
-                    f"need no grant to read this, and none was asked for. " + head)
+            # First, before the boundary: the alternative is what the being can act on now.
+            return copy_alternative(str(p), copies) + " " + head
         where = self._existence(p)
         if where == "absent":
             return head + (" Separately, and more usefully: THERE IS NOTHING AT THAT PATH. It "
@@ -1177,13 +1173,20 @@ class ReferenceF1aDispatcher:
                         f"memory_read {p.name} (does not exist; same name at {', '.join(near)})"))
             above = self._relative_above_home(shown)
             if above is not None and not self._within_reach(Path(above)):
-                # Pointing at a file the being cannot read sent cbp-being from
+                # Pointing only at a file the being cannot read sent cbp-being from
                 # `hestia/plugins/...` to the editable tree and its refusal (2026-10-23 00:23Z)
-                # while the same file sat under its governance grant. Name a copy in reach
-                # instead; with none, the pointer stands and the gate decides.
+                # while a copy sat under its governance grant. Name both: the original as what
+                # it is (outside reach), and the copy as an alternative, not as the same file.
                 copies = same_path_in_reach(above, self._reach_pairs())
-                if len(copies) == 1:
-                    above = copies[0][0]
+                if copies:
+                    return ResultEnvelope(
+                        ok=True,
+                        result=(f"[no such path in your home: a path without a leading / is read "
+                                f"inside your home, and '{shown}' is not there. A file exists at "
+                                f"'{above}', outside your reach. " + copy_alternative(above, copies)
+                                + " Nothing was read this time.]"),
+                        witness_id=self._witness(
+                            f"memory_read {p.name} (not in home; exists at {above}; copy in reach)"))
             if above is not None:
                 # A RELATIVE PATH IS READ INSIDE THE HOME, AND THE BEING DID NOT KNOW THAT.
                 # Measured 2026-10-20/21 on cbp-being: it read the gate source by its absolute

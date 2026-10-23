@@ -2940,6 +2940,74 @@ def _home_hint(intent: "BeingIntent", dispatcher) -> str:
         return ""
 
 
+def same_path_in_reach(p, reach) -> list:
+    """Where the path `p` asks for already exists under a recursive grant, as sorted
+    [(path, root)]; [] if nowhere.
+
+    dp, 2026-10-23, choosing this over editing the being's files: cbp-being asked at least six
+    times for `<ws>/hestia/plugins/_shared/hestia_governance_closure.py`, the editable tree, while
+    its standing grant on `<ws>/governance/**` held the same file at
+    `<ws>/governance/hestia/plugins/...` and memory_read of that path worked. Every refusal it
+    got named the boundary ("'hestia' is not granted") and a pending scope request, never the
+    copy it could read, and a relative read even pointed it AT the editable path. The seat
+    letter named the right path for a day; the being kept writing the wrong one back. The
+    correction belongs where the mistake happens.
+
+    The match is one shape only: a recursive grant on a directory G whose PARENT also holds
+    the asked path, so the copy is the asked path with G's own name inserted
+    (`<ws>/hestia/x` -> `<ws>/governance/hestia/x` under a grant on `<ws>/governance`). A
+    looser match (any shared tail) would call `/elsewhere/sage/__init__.py` a copy of
+    `SAGE/sage/__init__.py`, and request_scope files nothing on a match, so a wrong one
+    would swallow a real ask. Every root that matches is returned, sorted, so grant order
+    cannot pick one. Each candidate is canonicalized and must stay inside its canonical
+    root: a symlink out of a grant is not a copy in reach. Nothing here widens reach; it
+    names a path the being can already read."""
+    try:
+        target = os.path.realpath(os.path.expanduser(str(p)))
+    except (OSError, ValueError):
+        return []
+    found = set()
+    for r, recursive in reach or ():
+        if not recursive:
+            continue
+        try:
+            rr = os.path.realpath(str(r))
+        except (OSError, ValueError):
+            continue
+        parent = os.path.dirname(rr)
+        if rr == parent or not target.startswith(parent.rstrip(os.sep) + os.sep):
+            continue
+        if target == rr or target.startswith(rr + os.sep):
+            continue                      # already inside this grant: not a copy, it is reach
+        cand = os.path.realpath(os.path.join(rr, target[len(parent.rstrip(os.sep)) + 1:]))
+        if cand != target and cand.startswith(rr + os.sep) and os.path.exists(cand):
+            found.add((cand, rr))
+    return sorted(found)
+
+
+_READS_A_PATH = ("memory_read",)
+
+
+def _copy_in_reach_hint(intent: "BeingIntent", reach) -> str:
+    """For a refused READ: the same path under a grant the being already holds, said first.
+    '' when there is none. Reads only; a copy is no answer to a refused write."""
+    try:
+        if intent.effector not in _READS_A_PATH:
+            return ""
+        raw = str((intent.args or {}).get("path", "")).strip()
+        if not os.path.isabs(os.path.expanduser(raw)):
+            return ""
+        copies = same_path_in_reach(raw, reach)
+        if not copies:
+            return ""
+        named = "; ".join(f"{c} (under your grant {r})" for c, r in copies)
+        return (f"You can already read this: the same path exists at {named}. memory_read that "
+                f"path instead. No grant is needed; do not request_scope '{raw}'. "
+                f"What the gate said about the path you asked for: ")
+    except Exception:
+        return ""
+
+
 def _repo_name_roots(core, scopes, workspace: str, granted_paths=()) -> tuple:
     """``<workspace>/<name>`` for a bare repo-NAME scope that IS an operator's recursive grant.
 
@@ -3598,6 +3666,10 @@ class BeingGateClient:
             v = _dc.replace(v, witness_id=wid)      # GatewayVerdict is frozen
             err = f"{v.rule}: {v.reason}"
             err += _home_hint(intent, self._dispatcher)
+            # First, not appended: the gate's text runs to a grant list and a pending-request
+            # note, and the being acted on those, not on anything after them.
+            if intent.effector in _READS_A_PATH:
+                err = _copy_in_reach_hint(intent, self._policy_grants()[1]) + err
             err += (f" (deny witnessed {wid}; if you think this is wrong, appeal with deny_hash={wid})"
                     if wid else " (deny not witnessed: daemon unreachable, so it cannot be appealed yet)")
             return ResultEnvelope(ok=False, refused=True, verdict=v, error=err, witness_id=wid)

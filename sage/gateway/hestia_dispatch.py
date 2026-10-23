@@ -44,7 +44,8 @@ from pathlib import Path
 import time
 from typing import Any, Callable, Dict, List, Optional
 
-from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEnvelope, camera_command
+from sage.gateway.being_gate_client import (BeingIntent, GatewayVerdict, ResultEnvelope, camera_command,
+                                            same_path_in_reach)
 from sage.gateway.hestia_witness import _ENDPOINT, _Mcp, _unwrap, make_hestia_witness_fn
 from sage.gateway.reference_f1a import ReferenceF1aDispatcher
 
@@ -3757,6 +3758,19 @@ class HestiaF1aDispatcher:
                 "next": (f"your grant on {exact_above} is EXACT: it reaches that path and nothing beneath it. "
                          f"Only the operator can make it recursive (path:{exact_above}/**). No request was filed; "
                          f"your seat has been told. Do not retry this write in this beat.")})
+        # The same path already exists under a grant it holds (cbp-being, 2026-10-22..23: at
+        # least six asks for the editable hestia tree's closure file while its governance grant
+        # held the same file and it had read it). Answer here and file nothing: no human or
+        # peer rules on an ask whose answer is a path the being can read now. Wanting the
+        # original itself, not its content, is a thing to tell the seat in words.
+        copies = same_path_in_reach(path, _granted_reach_of(getattr(self, "_verdict", None)))
+        if copies:
+            named = "; ".join(f"{c} (under your grant {r})" for c, r in copies)
+            return ResultEnvelope(ok=True, result={
+                "status": "same_path_in_reach", "path": path, "in_reach": [c for c, _ in copies],
+                "next": (f"you can already read this: the same path exists at {named}. memory_read "
+                         f"that path. No request was filed, and none is needed. If you need '{path}' "
+                         f"itself rather than what it says, tell your seat why in a say.")})
         args: Dict[str, Any] = {"plugin_id": self.plugin_id, "path": path,
                                 "reason": f"[{self.plugin_id}] {reason}"}
         out = self._call("hestia_request_scope", args)

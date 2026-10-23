@@ -7,11 +7,13 @@ governance closure file on every beat, and scratch/check_file.py, run in the san
 "File exists: False" for the same path. The being believed its check and filed a dozen scope
 requests for a file it already had.
 
+The mounts are READ-ONLY (Nova's HOLD on 76f079bf0): grant modes are not enforced by the gate
+yet, so a run supplies no write, delete or new file through any grant.
+
 The real-run tests assert on what a script prints from INSIDE bubblewrap, so a mount that stopped
 mounting, or started showing the home, turns them red.
 """
 import os
-import stat
 import sys
 import types
 from pathlib import Path
@@ -78,7 +80,7 @@ def test_the_home_is_never_a_mount_and_a_grant_around_it_masks_it(tmp_path):
     cmd = run_command({"path": "scratch/a.py"}, {"memory_root": str(home), "member": "test-being",
                                                   "granted_reach": ((str(root), True),)})
     assert f"--tmpfs {home} --remount-ro {home}" in cmd
-    assert cmd.index(f"--bind {root} {root}") < cmd.index(f"--tmpfs {home}")
+    assert cmd.index(f"--ro-bind {root} {root}") < cmd.index(f"--tmpfs {home}")
 
 
 def test_system_paths_and_tmp_itself_are_not_mounted_and_nesting_collapses(tmp_path):
@@ -97,7 +99,7 @@ def test_the_line_is_the_same_whatever_order_the_grants_arrive_in(tmp_path):
     base = {"memory_root": str(home), "member": "test-being"}
     a = run_command(args, {**base, "granted_reach": _reach(ws)})
     b = run_command(args, {**base, "granted_reach": tuple(reversed(_reach(ws)))})
-    assert a == b and f"--bind {ws / 'gov'} {ws / 'gov'}" in a
+    assert a == b and f"--ro-bind {ws / 'gov'} {ws / 'gov'}" in a
 
 
 def test_the_gate_side_hands_run_the_policy_grants_and_no_other_verb():
@@ -122,39 +124,72 @@ def test_a_line_judged_without_the_grants_is_not_executed_with_them(tmp_path):
 # -- from inside the sandbox ------------------------------------------------------------------
 
 @needs_bwrap
-def test_inside_a_run_granted_paths_read_and_write_as_they_do_directly(tmp_path):
+def test_inside_a_run_granted_paths_read_and_none_can_be_written_changed_or_removed(tmp_path):
+    """Nova's HOLD on 76f079bf0: grant modes (hestia #1370) are not enforced by the gate yet,
+    so a run must never supply a write, a delete or a new file where a grant may only allow a
+    read. Every target here is writable on disk, so only the mount can be what refuses."""
     root, home, ws = _world(tmp_path)
-    os.chmod(ws / "ro", stat.S_IRUSR | stat.S_IXUSR)
-    try:
-        (home / "scratch" / "probe.py").write_text(
-            "import os\n"
-            f"print('granted-file:', open({str(ws / 'gov' / 'closure.py')!r}).read().strip())\n"
-            f"print('exact-file:', open({str(ws / 'one.txt')!r}).read().strip())\n"
-            f"open({str(ws / 'gov' / 'new.txt')!r}, 'w').write('from the run')\n"
-            "print('write-granted: ok')\n"
-            "try:\n"
-            f"    open({str(ws / 'ro' / 'new.txt')!r}, 'w').write('x'); print('write-readonly: REACHED')\n"
-            "except OSError as e:\n"
-            "    print('write-readonly: denied', type(e).__name__)\n"
-            f"print('ungranted:', os.path.exists({str(ws / 'ungranted' / 'x.txt')!r}))\n"
-            f"print('exact-dir-content:', os.path.exists({str(ws / 'exactdir' / 'secret.txt')!r}))\n"
-            f"print('via-symlink:', os.path.exists({str(ws / 'link' / 'x.txt')!r}))\n"
-            f"print('home:', os.path.exists({str(home / 'journal.md')!r}))\n")
-        d = _dispatcher(home, _reach(ws))
-        r = d._do_run(BeingIntent("run", {"path": "scratch/probe.py"}))
-        assert r.ok, r.error
-        out = r.result["stdout"]
-        for line in ("granted-file: CLOSURE = 1", "exact-file: ONE", "write-granted: ok",
-                     "write-readonly: denied PermissionError", "ungranted: False",
-                     "exact-dir-content: False", "via-symlink: False", "home: False"):
-            assert line in out, out
-        assert (ws / "gov" / "new.txt").read_text() == "from the run"
-        assert str(ws / "gov" / "new.txt") in r.result["changed_in_your_grants"]
-        note = r.result["note"]
-        assert str(ws / "gov") in note and "os.path.exists() is False" in note
-        assert "Not mounted" in note and str(ws / "exactdir") in note
-    finally:
-        os.chmod(ws / "ro", stat.S_IRWXU)
+    (home / "scratch" / "probe.py").write_text(
+        "import os\n"
+        f"print('granted-file:', open({str(ws / 'gov' / 'closure.py')!r}).read().strip())\n"
+        f"print('exact-file:', open({str(ws / 'one.txt')!r}).read().strip())\n"
+        "def attempt(name, fn):\n"
+        "    try:\n"
+        "        fn(); print(name + ': REACHED')\n"
+        "    except OSError as e:\n"
+        "        print(name + ': denied', type(e).__name__)\n"
+        f"attempt('create', lambda: open({str(ws / 'gov' / 'new.txt')!r}, 'w').write('x'))\n"
+        f"attempt('overwrite', lambda: open({str(ws / 'gov' / 'closure.py')!r}, 'w').write('x'))\n"
+        f"attempt('append-file-grant', lambda: open({str(ws / 'one.txt')!r}, 'a').write('x'))\n"
+        f"attempt('delete', lambda: os.remove({str(ws / 'gov' / 'closure.py')!r}))\n"
+        f"attempt('chmod', lambda: os.chmod({str(ws / 'gov' / 'closure.py')!r}, 0o777))\n"
+        f"attempt('mkdir', lambda: os.mkdir({str(ws / 'gov' / 'sub')!r}))\n"
+        f"print('ungranted:', os.path.exists({str(ws / 'ungranted' / 'x.txt')!r}))\n"
+        f"print('exact-dir-content:', os.path.exists({str(ws / 'exactdir' / 'secret.txt')!r}))\n"
+        f"print('via-symlink:', os.path.exists({str(ws / 'link' / 'x.txt')!r}))\n"
+        f"print('home:', os.path.exists({str(home / 'journal.md')!r}))\n")
+    before = {p: p.read_bytes() for p in (ws / "gov" / "closure.py", ws / "one.txt")}
+    modes = {p: p.stat().st_mode for p in before}
+    d = _dispatcher(home, _reach(ws))
+    r = d._do_run(BeingIntent("run", {"path": "scratch/probe.py"}))
+    assert r.ok, r.error
+    out = r.result["stdout"]
+    assert "REACHED" not in out, out
+    for line in ("granted-file: CLOSURE = 1", "exact-file: ONE", "create: denied",
+                 "overwrite: denied", "append-file-grant: denied", "delete: denied",
+                 "chmod: denied", "mkdir: denied", "ungranted: False",
+                 "exact-dir-content: False", "via-symlink: False", "home: False"):
+        assert line in out, out
+    assert {p: p.read_bytes() for p in before} == before
+    assert {p: p.stat().st_mode for p in before} == modes
+    assert not (ws / "gov" / "new.txt").exists() and not (ws / "gov" / "sub").exists()
+    note = r.result["note"]
+    assert str(ws / "gov") in note and "READ-ONLY" in note and "os.path.exists() is False" in note
+    assert "Not mounted" in note and str(ws / "exactdir") in note
+
+
+@needs_bwrap
+@pytest.mark.parametrize("around", [False, True])
+def test_a_symlink_inside_a_grant_that_points_into_the_home_reaches_nothing(tmp_path, around):
+    """Nova: home masking must not be bypassable by a symlink path. A link resolves inside the
+    sandbox's namespace, where the home is either absent (grant beside it) or the empty mask
+    (grant around it)."""
+    root, home, ws = _world(tmp_path)
+    os.symlink(str(home / "journal.md"), str(ws / "gov" / "tohome"))
+    os.symlink(str(home), str(ws / "gov" / "homedir"))
+    (home / "scratch" / "probe.py").write_text(
+        "import os\n"
+        f"print('link-file:', os.path.exists({str(ws / 'gov' / 'tohome')!r}))\n"
+        f"print('link-dir:', os.path.isdir({str(ws / 'gov' / 'homedir')!r}) and "
+        f"os.listdir({str(ws / 'gov' / 'homedir')!r}))\n")
+    reach = (((str(root), True), (str(home / "scratch"), True)) if around
+             else ((str(ws / "gov"), True),))
+    d = _dispatcher(home, reach)
+    r = d._do_run(BeingIntent("run", {"path": "scratch/probe.py"}))
+    assert r.ok, r.error
+    out = r.result["stdout"]
+    assert "link-file: False" in out, out
+    assert ("link-dir: []" if around else "link-dir: False") in out, out
 
 
 @needs_bwrap
@@ -183,5 +218,4 @@ def test_with_no_grants_the_run_is_what_it_was(tmp_path):
     d = _dispatcher(home, ())
     r = d._do_run(BeingIntent("run", {"path": "scratch/a.py"}))
     assert r.ok and "['a.py']" in r.result["stdout"]
-    assert "changed_in_your_grants" not in r.result
     assert "no grant of yours reaches a path a run can mount" in r.result["note"]

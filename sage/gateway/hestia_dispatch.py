@@ -3293,7 +3293,6 @@ class HestiaF1aDispatcher:
                                               kill_as=[SUDO, "-n", "-u", RUN_USER])
                     stopped = why == "time"
                 else:
-                    started = time.time()
                     proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL,
                                             stdout=fo, stderr=fe)
                     try:
@@ -3337,12 +3336,6 @@ class HestiaF1aDispatcher:
         if not seatbelt:
             mounts, skipped, _mask = grant_mounts
             result["note"] += _run_reach_note(mounts, skipped)
-            if mounts:
-                changed, complete = _changed_since([p for p, _k in mounts], started)
-                result["changed_in_your_grants"] = changed
-                if not complete:
-                    result["changed_in_your_grants_scan"] = (
-                        f"stopped after {RUN_SCAN_MAX_ENTRIES} entries; later changes are not listed")
         return ResultEnvelope(ok=True, witness_id=action_id, result=result)
 
 
@@ -4736,47 +4729,6 @@ def _named_scope_fact(rid: str, row) -> str:
     return f"{rid}: {status}{by} (path {row.get('path')})"
 
 
-#: How many entries a run's post-run scan of the grants it could write will stat, at most.
-RUN_SCAN_MAX_ENTRIES = 50000
-#: How many changed paths a run receipt lists.
-RUN_CHANGED_SHOWN = 25
-
-
-def _changed_since(roots: list, since: float) -> tuple:
-    """([path, ...], complete): files and directories under `roots` whose mtime or ctime is at
-    or after `since`, without following links, stopping after RUN_SCAN_MAX_ENTRIES entries.
-
-    A WRITE THROUGH A GRANT IS A WRITE, AND THE RECEIPT NAMES IT. memory_write leaves a receipt
-    per file; a run that writes the same files through its mounts would leave none, and the
-    being's file history is read from its receipts. One second of slack for coarse mtimes. A
-    deletion leaves no entry to stat, so the parent directory's change is what shows it."""
-    import os
-    since -= 1.0
-    out, seen, complete = [], 0, True
-    stack = list(roots)
-    while stack:
-        p = stack.pop()
-        try:
-            st = os.lstat(p)
-        except OSError:
-            continue
-        seen += 1
-        if seen > RUN_SCAN_MAX_ENTRIES:
-            complete = False
-            break
-        if max(st.st_mtime, st.st_ctime) >= since:
-            out.append(p)
-        if os.path.isdir(p) and not os.path.islink(p):
-            try:
-                stack.extend(os.path.join(p, n) for n in os.listdir(p))
-            except OSError:
-                pass
-    out.sort()
-    if len(out) > RUN_CHANGED_SHOWN:
-        out = out[:RUN_CHANGED_SHOWN] + [f"... and {len(out) - RUN_CHANGED_SHOWN} more"]
-    return out, complete
-
-
 def _run_reach_note(mounts: list, skipped: list) -> str:
     """What the run could see beyond its own copies, said where it reads its result.
 
@@ -4786,9 +4738,8 @@ def _run_reach_note(mounts: list, skipped: list) -> str:
     the sandbox, never about the disk."""
     seen = ", ".join(p + ("/" if k == "dir" else "") for p, k in mounts)
     text = (" Inside the run, besides your copies in /work, you could see only "
-            + (f"what your grants reach, at the same paths: {seen}. Writes there are real and "
-               "stay, wherever file permissions allow them (a read-only tree stays read-only); "
-               "changed_in_your_grants lists what changed. "
+            + (f"what your grants reach, at the same paths, READ-ONLY: {seen}. A run cannot "
+               "change them; memory_write and memory_edit do that, with a receipt per file. "
                if mounts else "the system's own files: no grant of yours reaches a path a run "
                               "can mount. ")
             + "Any other path, your home included, does not exist in there, so a check like "
@@ -4841,9 +4792,8 @@ def _run_note_core(rc: int, stderr: str, files: list) -> str:
     about this run, so stating it keeps the note evidence-only."""
     if rc == 0:
         return ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                "read-only unless a grant of yours covers it). The copies and every file the run "
-                "wrote are gone now, except what it wrote through your grants: the next run "
-                "starts with only the files it names. What you printed survives.")
+                "read-only). The copies and every file the run wrote are gone now: the next run "
+                "starts with only the files it names. Only what you printed survives.")
     ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
     if "Traceback (most recent call last)" in stderr:
         return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "

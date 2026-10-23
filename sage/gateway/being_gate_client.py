@@ -1677,9 +1677,13 @@ def run_grant_mounts(ctx: Optional[dict] = None) -> tuple:
     own check over its reads and filed a dozen scope requests for a file it already had.
 
     `mounts` is [(path, "dir"|"file")], from ctx["granted_reach"] ((root, recursive), ...): a
-    recursive grant mounts its directory, a grant on a file mounts that file, each WRITABLE.
-    Writable is the grant's reach, not a promise: file permissions still hold inside, so a
-    read-only tree (the governance snapshot is a-w) is read-only there, as it is to memory_write.
+    recursive grant mounts its directory, a grant on a file mounts that file, each READ-ONLY.
+    Not writable, though dp asked for writes where granted (Nova's HOLD on 76f079bf0): hestia
+    #1370 gave grants r/w/e/d modes that the gate does not enforce yet, and withholds narrowed
+    grants from it until it does, so `granted_reach` cannot say which grants allow a write, and
+    a file mode inside the sandbox is no grant mode. A run that writes through a grant would
+    also leave no per-file receipt, where memory_write leaves one. Writable binds wait for
+    enforced modes; a read is what the measured misalignment was about.
     `skipped` is [(path, why)] for grants that are not mounted, so a receipt can say so:
       * an EXACT grant on a directory reaches that directory alone, and a bind cannot show a
         directory without what is in it;
@@ -1788,11 +1792,11 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
         q = _shlex.quote(_wt)
         wt_bind = f" --ro-bind {q} {q}"
         wt_env = f" --setenv PYTHONPATH {q}"
-    # THE BEING'S GRANTS, AT THEIR OWN PATHS (run_grant_mounts). After the worktree, so a grant
-    # that covers it gives the run the same reach there as memory_write has; the home is masked
-    # last, so no grant can show it.
+    # THE BEING'S GRANTS, AT THEIR OWN PATHS, READ-ONLY (run_grant_mounts). The home is masked
+    # last, so no grant can show it, and a symlink inside a granted tree that points into the
+    # home resolves inside the sandbox, to the mask.
     mounts, _skipped, mask_home = run_grant_mounts(ctx)
-    grant_binds = "".join(f" --bind {shlex.quote(p)} {shlex.quote(p)}" for p, _k in mounts)
+    grant_binds = "".join(f" --ro-bind {shlex.quote(p)} {shlex.quote(p)}" for p, _k in mounts)
     if mask_home:
         _qh = shlex.quote(_home)
         grant_binds += f" --tmpfs {_qh} --remount-ro {_qh}"

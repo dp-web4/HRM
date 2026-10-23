@@ -2967,7 +2967,8 @@ def same_path_in_reach(p, reach) -> list:
     except (OSError, ValueError):
         return []
     found = set()
-    for r, recursive in reach or ():
+    for item in reach or ():
+        r, recursive = item[0], item[1]       # (root, recursive[, modes]) since #521
         if not recursive:
             continue
         try:

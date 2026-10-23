@@ -69,6 +69,14 @@ def test_only_the_mirror_shape_matches_not_any_shared_tail():
     assert same_path_in_reach(str(other), ((str(ws / "SAGE"), True),)) == []
 
 
+def test_grants_carrying_modes_match_the_same():
+    """#521 lets a grant be (root, recursive, modes); the matcher reads the first two."""
+    ws, edit, copy, _ = _ws()
+    gov = str(ws / "governance")
+    assert same_path_in_reach(edit, ((gov, True, "r"),)) == [(copy, gov)]
+    assert same_path_in_reach(edit, ((gov, False, "rwed"),)) == []
+
+
 def test_exact_grants_absent_copies_and_paths_already_in_reach_do_not_match():
     ws, edit, copy, _ = _ws()
     gov = str(ws / "governance")

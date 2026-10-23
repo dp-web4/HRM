@@ -2966,7 +2966,12 @@ def _repo_name_roots(core, scopes, workspace: str, granted_paths=()) -> tuple:
     parts = getattr(core, "_scope_parts", None)
     if parts is None or not granted_paths:
         return ()
-    ws = os.path.realpath(os.path.expanduser(workspace))
+    bases = []
+    for b in (workspace, _hestia_workspace_root(core)):
+        if b:
+            b = os.path.realpath(os.path.expanduser(b))
+            if b not in bases:
+                bases.append(b)
     granted = set()
     for g in granted_paths:
         if isinstance(g, str) and g.strip():
@@ -2979,11 +2984,29 @@ def _repo_name_roots(core, scopes, workspace: str, granted_paths=()) -> tuple:
         if not (isinstance(name, str) and name and name not in (".", "..")
                 and ":" not in name and "/" not in name and "\\" not in name):
             continue
-        lexical = os.path.join(ws, name)
-        if (lexical in granted and not os.path.islink(lexical) and os.path.isdir(lexical)
-                and os.path.realpath(lexical) == lexical):
-            out.append(lexical)
+        for ws in bases:
+            lexical = os.path.join(ws, name)
+            if (lexical in granted and lexical not in out and not os.path.islink(lexical)
+                    and os.path.isdir(lexical) and os.path.realpath(lexical) == lexical):
+                out.append(lexical)
     return tuple(out)
+
+
+def _hestia_workspace_root(core):
+    """The root hestia's grant mapping names a bare repo against: the core's own
+    `detect_workspace`, which `hestia_gate_mechanism._workspace_root` delegates to.
+
+    NOT THE CLIENT'S `workspace`. A being's beat builds its client with the SAGE checkout as
+    the workspace (heartbeat.py: `parents[2]` of the gateway), while hestia mapped
+    `<ai-workspace>/governance/**` to `governance` against the directory above it. Read against
+    the client's workspace, the name became `<SAGE>/governance`, matched no grant, and the
+    being's governance reads stayed refused "outside your reach" after #516 merged (measured on
+    cbp-being, 2026-10-23 00:41Z: snapshot held the grant, reach list omitted it). None when the
+    core cannot say."""
+    try:
+        return core.detect_workspace(core.HarnessProfile(member_id="", identity_path=""))
+    except Exception:
+        return None
 
 
 def _snapshot_grant_paths(snap) -> tuple:

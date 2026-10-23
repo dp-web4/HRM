@@ -860,6 +860,15 @@ class ReferenceF1aDispatcher:
     def __call__(self, intent: BeingIntent, verdict: GatewayVerdict) -> ResultEnvelope:
         # confinement = the home + whatever the law just consulted as granted for THIS verdict
         self._extra_roots = tuple(Path(r).resolve() for r in (getattr(verdict, "granted", ()) or ()))
+        # AN EXACT GRANT REACHES ITS OWN PATH, NOT WHAT IS UNDER IT. `granted` is the bare list of
+        # roots; `granted_reach` says which are recursive. Reading only `granted` by prefix made an
+        # exact grant on a directory reach every file beneath it, read and write (cbp-claude,
+        # 2026-10-22, writing SAGE #516's exact-grant test; the gate did not deny it either).
+        # hestia_dispatch._granted_reach_of has read reach this way since #1002. A verdict without
+        # reach (older client, hand-made in tests) keeps the prefix reading, as it does there.
+        reach = tuple(getattr(verdict, "granted_reach", ()) or ())
+        self._extra_reach = (tuple((Path(r).resolve(), bool(rec)) for r, rec in reach) if reach
+                             else tuple((r, True) for r in self._extra_roots))
         handler = getattr(self, f"_do_{intent.effector}", None)
         if handler is None:
             # a consequential network act the reference won't run — real F1a's job
@@ -929,8 +938,10 @@ class ReferenceF1aDispatcher:
                     f"notes/{p.name} is what was said TO you, and it stays as it was said. Your "
                     "reply belongs in your journal, in a conversation with `say`, or in an "
                     "appeal, all of which are read")
-        roots = (self.memory_root,) + tuple(getattr(self, "_extra_roots", ()) or ())
-        if not any(p == r or r in p.parents for r in roots):
+        reach =((self.memory_root, True),) + tuple(
+            getattr(self, "_extra_reach", None)
+            or ((r, True) for r in (getattr(self, "_extra_roots", ()) or ())))
+        if not any(p == r or (recursive and r in p.parents) for r, recursive in reach):
             # A NEAR MISS OF ITS OWN HOUSE IS NOT A TRESPASS. dp, 2026-09-25, fleet directive:
             # "each being has a home ... i want each to feel at home there ... addressing
             # unnecessary frictions."
@@ -958,7 +969,11 @@ class ReferenceF1aDispatcher:
             if landed is not None:
                 self._rerouted_from = str(p)      # the receipt says so; nothing is hidden
                 return self._safe_path(str(landed.relative_to(self.memory_root)), writing=writing)
-            raise ValueError(self._out_of_reach(p, roots, writing))
+            # An exact grant is named as one, so "you can read and write under X" does not read
+            # as reach into X's subtree when X is a directory granted exactly.
+            shown = tuple(r if recursive else f"{r} (exactly this path, nothing under it)"
+                          for r, recursive in reach)
+            raise ValueError(self._out_of_reach(p, shown, writing))
         return p
 
     def _tail_in_home(self, p: Path) -> Optional[Path]:

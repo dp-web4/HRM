@@ -138,7 +138,8 @@ def test_a_deploy_step_reads_the_deploys_own_clone_at_the_deployed_build_without
 
 
 def _group_is_private(path):
-    """The script's rule, asked of Python: nobody but the invoker is in the file's group."""
+    """The script's rule, asked of Python: nobody but the invoker is in the file's group.
+    It restates the rule, so it proves which branch the script takes, not that the rule is right."""
     import grp, pwd
     gid, me = os.stat(path).st_gid, pwd.getpwuid(os.getuid()).pw_name
     try:

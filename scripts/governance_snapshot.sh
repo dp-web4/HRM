@@ -64,12 +64,15 @@ g() {
 # group of their own and a umask of 002, so every clone there is g+w: on pub the hourly snapshot refused its
 # own checkout from the hour #520 landed. A group bit reaches someone else only if the group has someone
 # else in it, so g+w passes when the file's group lists no member but the invoker and is no other account's
-# primary group. Without getent (macOS) that cannot be asked, and g+w is refused as before.
+# primary group. Without getent (macOS) that cannot be asked, and g+w is refused as before; a gid with no
+# group entry is refused too. The check is absence-of-evidence: it trusts getent to enumerate every account,
+# which holds on files-backed hosts (pub, cbp, HUB) but not under sssd/LDAP with enumeration off.
 private_group() {
   command -v getent >/dev/null 2>&1 || return 1
   pg_gid="$(stat -c %g "$1" 2>/dev/null || stat -f %g "$1" 2>/dev/null)" || return 1
   pg_me="$(id -un)"
-  pg_members="$(getent group "$pg_gid" | cut -d: -f4)" || return 1
+  pg_entry="$(getent group "$pg_gid")" || return 1
+  pg_members="$(printf '%s\n' "$pg_entry" | cut -d: -f4)"
   [ -z "$pg_members" ] || [ "$pg_members" = "$pg_me" ] || return 1
   [ -z "$(getent passwd | awk -F: -v g="$pg_gid" -v me="$pg_me" '$4 == g && $1 != me')" ]
 }

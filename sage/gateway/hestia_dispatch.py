@@ -379,8 +379,8 @@ class HestiaF1aDispatcher:
     def _attach_named_scope_status(self, intent: BeingIntent, env: ResultEnvelope) -> None:
         """A SCOPE ID THE BEING NAMES GETS ITS STATUS IN THE SAME RECEIPT.
 
-        Measured on Sprout, 2026-10-20..23: sprout-being named scope-ef204d003703 (/dev/video0) as
-        "pending since 10-19" in request_scope reasons and in peer_asks, 194 times in three days. That
+        Measured on Sprout, 2026-10-20..23: sprout-being held scope-ef204d003703 (/dev/video0) as
+        "pending since 10-19"; 194 of its acts in three days mention it (reasons, asks, notes). That
         request expired on 10-17 and the grant it wanted was standing. Every receipt answered the act
         ("already_granted", an ask published) and never the id, so the belief met no fact where it
         acted. Peers' answers were delivered as forum replies a beat later (mcnugget, 10-22: "a Sprout

@@ -2572,8 +2572,8 @@ def _qdisp():
 
 
 def test_a_scope_id_the_being_names_comes_back_with_its_status_in_the_same_receipt():
-    """sprout-being, 2026-10-20..23: 'scope-ef204d003703 pending since 10-19' 194 times in three days, in
-    request_scope reasons and peer_asks. It expired 10-17; no receipt ever said so."""
+    """sprout-being, 2026-10-20..23: 'scope-ef204d003703 pending since 10-19', in 194 of its acts over three
+    days (reasons, asks, notes). It expired 10-17; no receipt ever said so."""
     d, _ = _qdisp()
     env = d(BeingIntent("request_scope", {"path": "/srv/elsewhere/x", "reason":
             "scope-ef204d003703 has been pending since 10-19; also scope-aaaaaaaaaaaa and scope-123456789abc"}), _ALLOW)

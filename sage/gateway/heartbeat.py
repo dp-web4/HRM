@@ -1067,6 +1067,40 @@ REFLECT = """The beat is ending. Call these tools, then stop:
 """
 
 
+# THE JOURNAL AND TODO, REQUIRED UNTIL THE SEAT SAYS OTHERWISE (dp, 2026-10-17: "it was appropriate
+# at the start. at some point we should make it optional, when they have had a chance to learn
+# whether it's a benefit or a chore. i'll leave that bar up to each seat"). PER-INSTANCE:
+# instance.json "reflect_optional": ["journal"], ["todo"] or both. Absent means both are required,
+# as before. What a being does once a record is optional (keeps it, reshapes it, drops it) is the
+# measurement, so the setting is recorded in every beat record where it is on.
+REFLECT_RECORDS = ("journal", "todo")
+# Keyed on the call alone, not the instruction after it: the todo line's wording changed on main
+# (10-20) and a key that quoted it matched nothing, so "todo" optional silently changed nothing.
+_REFLECT_OPTIONAL_LINE = {
+    "journal": ('memory_write path "journal.md":',
+                'if you keep a journal and want to: memory_write path "journal.md":'),
+    "todo": ('memory_write path "todo.md":',
+             'if you keep a todo list and want to: memory_write path "todo.md":'),
+}
+
+
+def reflect_optional_for(cfg: Optional[dict]) -> list:
+    """instance.json `reflect_optional`: which of the reflect turn's records are the being's choice."""
+    v = (cfg or {}).get("reflect_optional")
+    if isinstance(v, str):
+        v = [v]
+    return [r for r in REFLECT_RECORDS if isinstance(v, list) and r in v]
+
+
+def reflect_prompt(optional=(), **kw) -> str:
+    """REFLECT, with the records in `optional` offered rather than required."""
+    body = REFLECT.format(**kw)
+    for r in optional:
+        old, new = _REFLECT_OPTIONAL_LINE[r]
+        body = body.replace(old, new, 1)
+    return body
+
+
 def _read(p: Path, limit: int = 4000) -> str:
     try:
         t = p.read_text(errors="replace")
@@ -4692,8 +4726,9 @@ def main(argv=None) -> int:
             # across a turn boundary to use it.
             if pending_block:
                 convo.append({"role": "user", "content": pending_block})
-            convo.append({"role": "user", "content": REFLECT.format(date=f"{now:%Y-%m-%d %H:%M} UTC",
-                                                                    say_line=say_line, say_first=say_first)})
+            convo.append({"role": "user", "content": reflect_prompt(
+                reflect_optional_for(instance_config(instance)), date=f"{now:%Y-%m-%d %H:%M} UTC",
+                say_line=say_line, say_first=say_first)})
             # One extra step when someone is waiting, because the routine three fill the budget exactly.
             # Measured 2026-09-18, the first beat after the being could finally SEE what it was being
             # asked: reflect spent all three steps on journal, todo and remember, and there was no
@@ -4935,6 +4970,7 @@ def main(argv=None) -> int:
         "no_result_line": no_result_line_for(instance_config(instance)),
         "answered_run_wake": answered_run_wake_for(instance_config(instance)),
         "posture_framing": posture_framing_for(instance_config(instance)),
+        **({"reflect_optional": _ro} if (_ro := reflect_optional_for(instance_config(instance))) else {}),
         **({} if proprioception_for(instance_config(instance)) else {"proprioception": False}),
         "host_session_id": host_session_id, "gate_only": args.gate_only, "act_first": act_first,
         # the window and budget actually sent, so a beat is verifiable from this file alone

@@ -5,6 +5,7 @@ this exercises the Stage-2 policy in isolation. Runnable under pytest or directl
 (`python3 test_being_gate_client.py`).
 """
 import os
+import pytest
 import tempfile
 import sys
 from types import SimpleNamespace
@@ -503,6 +504,57 @@ def test_granted_reach_reads_the_cores_reach_resolver_and_an_older_core_is_recur
     older = _granted_reach(object(), Pol, "/ws")
     assert older and all(rec for _, rec in older)
     assert _granted_reach(Core, None, "/ws") == () and GatewayVerdict("allow").granted_reach == ()
+
+
+def test_a_recursive_grant_on_a_workspace_directory_reaches_the_dispatcher(tmp_path):
+    """cbp-being, 2026-10-22: dp widened governance/hestia/** to governance/**. hestia maps a
+    recursive grant on a workspace-direct directory to the bare name `governance`; the roots
+    were read from path: scopes only, so the gate allowed memory_read and the dispatcher
+    refused it "outside your reach" for 3.5 hours. The widening removed the reach."""
+    import importlib, sys
+    from sage.gateway.being_gate_client import _granted_roots, _granted_reach, GatewayVerdict
+    from sage.gateway.being_gate_client import BeingIntent
+    from sage.gateway.reference_f1a import ReferenceF1aDispatcher
+    shared = os.path.expanduser("~/ai-workspace/governance/hestia/plugins/_shared")
+    if not os.path.isfile(os.path.join(shared, "hestia_gate_core.py")):
+        pytest.skip("no hestia core on this machine")
+    sys.path.insert(0, shared)
+    try:
+        core = importlib.import_module("hestia_gate_core")
+        mech = importlib.import_module("hestia_gate_mechanism")
+    finally:
+        sys.path.remove(shared)
+    ws = tmp_path / "ws"
+    (ws / "governance" / "hestia").mkdir(parents=True)
+    target = ws / "governance" / "hestia" / "closure.py"
+    target.write_text("CLOSURE = 1\n")
+    home = tmp_path / "home"
+    home.mkdir()
+    orig = mech._workspace_root
+    mech._workspace_root = lambda: str(ws)
+    try:
+        entry = mech._scope_entry_for_grant(str(ws / "governance"), True)
+        exact = mech._scope_entry_for_grant(str(ws / "governance"), False)
+    finally:
+        mech._workspace_root = orig
+    assert entry == "governance"                        # the real mapping: a bare name
+    class Pol: scope = (entry, "repo:sage")
+    minted = (str(ws / "governance") + "/**",)          # the snapshot's scope_grants for it
+    assert _granted_roots(core, Pol, str(ws)) == ()     # a bare name no grant stands behind: nothing
+    roots = _granted_roots(core, Pol, str(ws), minted)
+    assert roots == (os.path.realpath(ws / "governance"),)          # repo:sage is not a dir
+    assert _granted_reach(core, Pol, str(ws), minted) == ((os.path.realpath(ws / "governance"), True),)
+    # an EXACT grant on the same directory keeps the path: form and stays exact
+    class Exact: scope = (exact,)
+    assert _granted_reach(core, Exact, str(ws)) == ((os.path.realpath(ws / "governance"), False),)
+    # the last mile: the dispatcher reads the file the gate allowed
+    d = ReferenceF1aDispatcher(str(home))
+    env = d(BeingIntent("memory_read", {"path": str(target)}),
+            GatewayVerdict("allow", granted=roots, granted_reach=_granted_reach(core, Pol, str(ws), minted)))
+    assert env.ok and "CLOSURE = 1" in str(env.result), env.error
+    # and without the grant it is still refused
+    env = d(BeingIntent("memory_read", {"path": str(target)}), GatewayVerdict("allow"))
+    assert not env.ok and "outside your reach" in str(env.error)
 
 
 def test_search_quotes_its_pattern_so_judged_equals_executed():

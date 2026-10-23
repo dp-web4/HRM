@@ -85,6 +85,18 @@ if [ -d "$(dirname "$SAGE_DIR")/governance" ]; then
     GOV_LINE="; governance hestia $(printf '%s' "$GOV_H" | grep -oE '[0-9a-f]{40}' | cut -c1-8), sage $(printf '%s' "$GOV_S" | grep -oE '[0-9a-f]{40}' | cut -c1-9)"
 fi
 
+# === 2a. THE BEING'S WORKTREE ===
+# Keeping it current is the seat's job (being_gate_client.pr_base_branch: "it sets the upstream
+# when it syncs your worktree"). Nothing on McNugget did: the worktree sat on a detached HEAD from
+# 2026-10-03 until 10-23, so the being's git_read and search showed three-week-old code. Fast-forward
+# only; the being's modified files or an open PR branch stop it (scripts/sync_being_worktree.sh).
+BEING_WT="$(dirname "$SAGE_DIR")/being-worktrees/mcnugget-being"
+if [ -d "$BEING_WT" ]; then
+    WT_OUT="$(bash "$SAGE_DIR/scripts/sync_being_worktree.sh" "$BEING_WT" main mcnugget-being 2>&1 | tail -1)"
+    echo "[McNugget-Supervisor] being worktree: $WT_OUT"
+    GOV_LINE="${GOV_LINE}; being worktree: $(printf '%s' "$WT_OUT" | cut -c1-60)"
+fi
+
 # === 3. READ FORUMS ===
 cd "$SHARED"
 RECENT_FORUM=$(find forum/ -name "*.md" -mtime -1 -type f 2>/dev/null | wc -l | tr -d ' ')

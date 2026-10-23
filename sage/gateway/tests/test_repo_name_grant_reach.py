@@ -137,6 +137,36 @@ def test_an_exact_grant_on_the_same_directory_mints_no_bare_name_root_and_stays_
             == B._granted_roots(c._core, policy, ws))
 
 
+def test_the_beats_layout_names_the_grant_against_hestias_root_not_the_sage_checkout(monkeypatch):
+    """A being's beat builds its client with the SAGE checkout as `workspace` (heartbeat.py:
+    `parents[2]`), while hestia mapped `<ws>/governance/**` to `governance` against <ws>, the
+    root its core detects. Measured on cbp-being after #516 merged (2026-10-23 00:41Z): the
+    snapshot held the grant and the reach list still omitted it, because the name was read as
+    `<ws>/SAGE/governance`. The recursive grant reads; a declarative `SAGE` still reaches
+    nothing; a grant on a same-named directory under the checkout is not the one named."""
+    _need_core()
+    ws, home = _world()
+    monkeypatch.setenv("HESTIA_WORKSPACE", ws)
+    sage = os.path.join(ws, "SAGE")
+    gov = os.path.join(ws, "governance")
+    c = _client(ws, {"in_scope": ["governance"], "scope_grants": [gov + "/**"]})
+    c.workspace = sage
+    dec, env = _act(c, home, "memory_read", {"path": os.path.join(gov, "hestia", "closure.py")})
+    assert dec != "deny" and env.ok and "CLOSURE = 1" in str(env.result), (dec, env and env.error)
+    assert c._policy_grants() == ((gov,), ((gov, True),))
+
+    c = _client(ws, {"in_scope": ["SAGE"], "scope_grants": [gov + "/**"]})
+    c.workspace = sage
+    _, env = _act(c, home, "memory_read", {"path": os.path.join(sage, "code.py")})
+    assert _refused(env), env and (env.ok, env.result, env.error)
+
+    inner = os.path.join(sage, "governance")
+    os.makedirs(inner)
+    c = _client(ws, {"in_scope": ["governance"], "scope_grants": [gov + "/**"]})
+    c.workspace = sage
+    assert c._policy_grants()[0] == (gov,)
+
+
 def test_no_grant_no_reach():
     _need_core()
     ws, home = _world()

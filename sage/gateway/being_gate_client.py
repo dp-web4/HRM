@@ -1676,14 +1676,27 @@ def run_grant_mounts(ctx: Optional[dict] = None) -> tuple:
     The sandbox had no grant in it, so every granted path read as absent; the being believed its
     own check over its reads and filed a dozen scope requests for a file it already had.
 
-    `mounts` is [(path, "dir"|"file")], from ctx["granted_reach"] ((root, recursive), ...): a
-    recursive grant mounts its directory, a grant on a file mounts that file, each READ-ONLY.
-    Not writable, though dp asked for writes where granted (Nova's HOLD on 76f079bf0): hestia
-    #1370 gave grants r/w/e/d modes that the gate does not enforce yet, and withholds narrowed
-    grants from it until it does, so `granted_reach` cannot say which grants allow a write, and
-    a file mode inside the sandbox is no grant mode. A run that writes through a grant would
-    also leave no per-file receipt, where memory_write leaves one. Writable binds wait for
-    enforced modes; a read is what the measured misalignment was about.
+    BY REFERENCE, NOT REWRITE (dp, 2026-10-23: "the intent is that sandbox inherits being's
+    actual grants by reference, not rewrite (so any that are subsequently changed/modified
+    automatically update in the box)"). The source is ctx["granted_reach"], which is the LAW'S
+    OWN policy grants re-read for this act (gate: `_compose_ctx("run")` -> `_policy_grants()`;
+    dispatcher: the verdict's granted_reach). Nothing is cached or copied, so a grant changed,
+    narrowed or revoked between two runs changes the second run's mounts and its judged line.
+
+    `mounts` is [(path, "dir"|"file", "rw"|"ro")]. Each granted_reach item is (root, recursive)
+    or (root, recursive, modes), modes being r/w/e/d letters as on hestia #1370's wire; a
+    pair carries the modes of a grant on the mode-blind lists, "rwed". The bind type IS the
+    mode enforcement, and it fails closed (Nova's HOLD on 76f079bf0):
+      * writable (`--bind`) only with BOTH w and d: a bind cannot let a run write a file and
+        stop it deleting one;
+      * read-only (`--ro-bind`) with r and not both w and d;
+      * not mounted without r (said in `skipped`).
+    File permissions still hold inside, so a read-only tree (the governance snapshot is a-w)
+    stays read-only even under an rwed grant, as it is to memory_write. A grant the policy
+    does not carry (hestia #1370 withholds narrowed grants from the mode-blind lists until
+    the gate enforces modes) is never mounted: the line names every mount, the law judges
+    that line's paths, and a box that reached past the law would be refused or worse. When
+    the policy carries modes, the box follows them with no change here.
     `skipped` is [(path, why)] for grants that are not mounted, so a receipt can say so:
       * an EXACT grant on a directory reaches that directory alone, and a bind cannot show a
         directory without what is in it;
@@ -1699,14 +1712,20 @@ def run_grant_mounts(ctx: Optional[dict] = None) -> tuple:
     import os
     ctx = ctx or {}
     home = os.path.realpath(ctx.get("memory_root") or "/nonexistent-home")
-    found, skipped = set(), []
+    found, skipped = {}, []          # real path -> (kind, "rw"|"ro")
     for item in ctx.get("granted_reach") or ():
         try:
-            root, recursive = item
-        except (TypeError, ValueError):
+            root, recursive = item[0], item[1]
+            modes = str(item[2]) if len(item) > 2 else "rwed"
+        except (TypeError, ValueError, IndexError):
             continue
         if not isinstance(root, str) or not root.strip():
             continue
+        if "r" not in modes:
+            skipped.append((os.path.abspath(os.path.expanduser(root.strip())),
+                            f"your grant there is '{modes}', without r (read)"))
+            continue
+        how = "rw" if ("w" in modes and "d" in modes) else "ro"
         lexical = os.path.abspath(os.path.expanduser(root.strip()))
         real = os.path.realpath(lexical)
         if real == home or real.startswith(home + os.sep):
@@ -1722,15 +1741,22 @@ def run_grant_mounts(ctx: Optional[dict] = None) -> tuple:
             if not recursive:
                 skipped.append((real, "an exact grant on a directory reaches only the directory"))
                 continue
-            found.add((real, "dir"))
+            kind = "dir"
         elif os.path.isfile(real):
-            found.add((real, "file"))
+            kind = "file"
         else:
             skipped.append((real, "nothing is there"))
-    dirs = [p for p, k in found if k == "dir"]
-    mounts = sorted((p, k) for p, k in found
-                    if not any(p != d and p.startswith(d + os.sep) for d in dirs))
-    mask_home = any(k == "dir" and home.startswith(p + os.sep) for p, k in mounts)
+            continue
+        # Two grants on one path: the law's reach is their union, so the wider bind wins.
+        if found.get(real, (kind, "ro"))[1] != "rw":
+            found[real] = (kind, how)
+    # De-nesting by the union rule: a mount inside a directory mount adds nothing unless it
+    # is WIDER there (rw inside ro). Kept ones bind after their parent (sorted), so they win.
+    dirs = [(p, h) for p, (k, h) in found.items() if k == "dir"]
+    mounts = sorted((p, k, h) for p, (k, h) in found.items()
+                    if not any(p != d and p.startswith(d + os.sep) and (dh == "rw" or h == "ro")
+                               for d, dh in dirs))
+    mask_home = any(k == "dir" and home.startswith(p + os.sep) for p, k, _h in mounts)
     return mounts, sorted(set(skipped)), mask_home
 
 
@@ -1792,11 +1818,14 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
         q = _shlex.quote(_wt)
         wt_bind = f" --ro-bind {q} {q}"
         wt_env = f" --setenv PYTHONPATH {q}"
-    # THE BEING'S GRANTS, AT THEIR OWN PATHS, READ-ONLY (run_grant_mounts). The home is masked
-    # last, so no grant can show it, and a symlink inside a granted tree that points into the
-    # home resolves inside the sandbox, to the mask.
+    # THE BEING'S GRANTS, AT THEIR OWN PATHS, AS THE POLICY HOLDS THEM (run_grant_mounts): the
+    # bind type is the grant's mode. After the worktree, so a grant covering it gives the run
+    # the reach memory_write has there. The home is masked last, so no grant can show it, and a
+    # symlink inside a granted tree that points into the home resolves inside the sandbox, to
+    # the mask.
     mounts, _skipped, mask_home = run_grant_mounts(ctx)
-    grant_binds = "".join(f" --ro-bind {shlex.quote(p)} {shlex.quote(p)}" for p, _k in mounts)
+    grant_binds = "".join(f" {'--bind' if h == 'rw' else '--ro-bind'} {shlex.quote(p)} {shlex.quote(p)}"
+                          for p, _k, h in mounts)
     if mask_home:
         _qh = shlex.quote(_home)
         grant_binds += f" --tmpfs {_qh} --remount-ro {_qh}"
@@ -3136,7 +3165,10 @@ def _granted_reach(core, policy, workspace: str, granted_paths=()) -> tuple:
         reach = getattr(core, "_scope_roots_with_reach", None)
         if reach is not None:
             scopes = list(getattr(policy, "scope", ()) or ())
-            return (tuple((str(r), bool(rec)) for r, rec in reach(scopes, workspace))
+            # A third element, the grant's modes, passes through when the core supplies one
+            # (hestia #1345 part B); every consumer unpacks `r, rec, *_`.
+            return (tuple((str(it[0]), bool(it[1])) + tuple(str(m) for m in it[2:3])
+                          for it in reach(scopes, workspace))
                     + tuple((r, True) for r in _repo_name_roots(core, scopes, workspace, granted_paths)))
         return tuple((r, True) for r in _granted_roots(core, policy, workspace, granted_paths))
     except Exception:
@@ -3648,7 +3680,7 @@ class BeingGateClient:
                 if not os.path.exists(cand):
                     continue
                 if any(cand == r or (rec and cand.startswith(r.rstrip(os.sep) + os.sep))
-                       for r, rec in ((os.path.realpath(str(r)), bool(rec)) for r, rec in reach)):
+                       for r, rec in ((os.path.realpath(str(r)), bool(rec)) for r, rec, *_ in reach)):
                     args[a] = cand
                     moved.append((raw, cand))
                 break   # nearest existing candidate decides; an ungranted one is not skipped past

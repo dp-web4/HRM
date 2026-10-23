@@ -2812,7 +2812,7 @@ class HestiaF1aDispatcher:
         reach = _granted_reach_of(getattr(self, "_verdict", None))
         inside = target is not None and any(
             target == os.path.realpath(r) or (rec and target.startswith(os.path.realpath(r) + os.sep))
-            for r, rec in reach)
+            for r, rec, *_ in reach)
         if not inside:
             return ResultEnvelope(ok=False, error=(
                 f"search refused: {target or 'that path'} is outside the reach you hold. "
@@ -3106,7 +3106,7 @@ class HestiaF1aDispatcher:
                 f"record is written, and a run must not outlive its beat. Ask again next beat; "
                 f"the file is unchanged and nothing of yours was touched."))
         root = os.path.realpath(self.memory_root)
-        granted = [(os.path.realpath(r), rec) for r, rec in
+        granted = [(os.path.realpath(r), rec) for r, rec, *_ in
                    _granted_reach_of(getattr(self, "_verdict", None))]
 
         def _allowed(full: str, is_script: bool) -> bool:
@@ -3293,6 +3293,7 @@ class HestiaF1aDispatcher:
                                               kill_as=[SUDO, "-n", "-u", RUN_USER])
                     stopped = why == "time"
                 else:
+                    started = time.time()
                     proc = subprocess.Popen(shlex.split(cmd), stdin=subprocess.DEVNULL,
                                             stdout=fo, stderr=fe)
                     try:
@@ -3336,6 +3337,13 @@ class HestiaF1aDispatcher:
         if not seatbelt:
             mounts, skipped, _mask = grant_mounts
             result["note"] += _run_reach_note(mounts, skipped)
+            writable = [p for p, _k, h in mounts if h == "rw"]
+            if writable:
+                changed, complete = _changed_since(writable, started)
+                result["changed_in_your_grants"] = changed
+                if not complete:
+                    result["changed_in_your_grants_scan"] = (
+                        f"stopped after {RUN_SCAN_MAX_ENTRIES} entries; later changes are not listed")
         return ResultEnvelope(ok=True, witness_id=action_id, result=result)
 
 
@@ -3730,7 +3738,7 @@ class HestiaF1aDispatcher:
                 return ResultEnvelope(ok=False, error=(
                     f"request_scope: '{path}' is ambiguous, it names different files under the roots "
                     f"you hold: {readings}. Ask again with the absolute path you mean"))
-            roots = ", ".join(str(r) for r, _ in reach) or "none known"
+            roots = ", ".join(str(r) for r, *_ in reach) or "none known"
             return ResultEnvelope(ok=False, error=(
                 f"request_scope 'path' must be absolute, and '{path}' is not inside any root you hold "
                 f"({roots}). Do not guess a root: a repo-relative pointer names a file under one of those"))
@@ -3742,7 +3750,7 @@ class HestiaF1aDispatcher:
         import os as _os
         rp = _os.path.realpath(_os.path.expanduser(path))
         exact_above = None
-        for r, recursive in _granted_reach_of(getattr(self, "_verdict", None)):
+        for r, recursive, *_ in _granted_reach_of(getattr(self, "_verdict", None)):
             r = _os.path.realpath(str(r))
             if rp == r or (recursive and rp.startswith(r + "/")):
                 if _HARDWARE_DEV.match(rp):
@@ -4537,7 +4545,7 @@ def _resolve_relative_in_reach(rel: str, reach) -> list:
         return cand == r or (recursive and cand.startswith(r + "/"))
 
     found = {}
-    for root, recursive in reach:
+    for root, recursive, *_ in reach:
         r = os.path.realpath(str(root))
         base = os.path.dirname(r)
         while True:
@@ -4729,6 +4737,46 @@ def _named_scope_fact(rid: str, row) -> str:
     return f"{rid}: {status}{by} (path {row.get('path')})"
 
 
+#: How many entries a run's post-run scan of the grants it could write will stat, at most.
+RUN_SCAN_MAX_ENTRIES = 50000
+#: How many changed paths a run receipt lists.
+RUN_CHANGED_SHOWN = 25
+
+
+def _changed_since(roots: list, since: float) -> tuple:
+    """([path, ...], complete): files and directories under `roots` whose mtime or ctime is at
+    or after `since`, without following links, stopping after RUN_SCAN_MAX_ENTRIES entries.
+
+    A WRITE THROUGH A GRANT IS A WRITE, AND THE RECEIPT NAMES IT. memory_write leaves a receipt
+    per file; a run that writes the same files through its writable mounts would leave none,
+    and the being's file history is read from its receipts. One second of slack for coarse
+    mtimes. A deletion leaves no entry to stat, so the parent directory's change shows it."""
+    since -= 1.0
+    out, seen, complete = [], 0, True
+    stack = list(roots)
+    while stack:
+        p = stack.pop()
+        try:
+            st = os.lstat(p)
+        except OSError:
+            continue
+        seen += 1
+        if seen > RUN_SCAN_MAX_ENTRIES:
+            complete = False
+            break
+        if max(st.st_mtime, st.st_ctime) >= since:
+            out.append(p)
+        if stat.S_ISDIR(st.st_mode):
+            try:
+                stack.extend(os.path.join(p, n) for n in os.listdir(p))
+            except OSError:
+                pass
+    out.sort()
+    if len(out) > RUN_CHANGED_SHOWN:
+        out = out[:RUN_CHANGED_SHOWN] + [f"... and {len(out) - RUN_CHANGED_SHOWN} more"]
+    return out, complete
+
+
 def _run_reach_note(mounts: list, skipped: list) -> str:
     """What the run could see beyond its own copies, said where it reads its result.
 
@@ -4736,10 +4784,20 @@ def _run_reach_note(mounts: list, skipped: list) -> str:
     its check_file.py printed "File exists: False" for a file it had been reading with
     memory_read all morning, and it trusted the run. os.path.exists() inside a run answers about
     the sandbox, never about the disk."""
-    seen = ", ".join(p + ("/" if k == "dir" else "") for p, k in mounts)
+    def _shown(how):
+        return ", ".join(p + ("/" if k == "dir" else "") for p, k, h in mounts if h == how)
+    rw, ro = _shown("rw"), _shown("ro")
+    parts = []
+    if rw:
+        parts.append(f"WRITABLE where your grant allows writing and deleting: {rw}. Writes there "
+                     "are real and stay, wherever file permissions allow them (a read-only tree "
+                     "stays read-only); changed_in_your_grants lists what changed")
+    if ro:
+        parts.append(f"READ-ONLY, because your grant there does not allow both writing and "
+                     f"deleting: {ro}. memory_write and memory_edit act on what your grant allows")
     text = (" Inside the run, besides your copies in /work, you could see only "
-            + (f"what your grants reach, at the same paths, READ-ONLY: {seen}. A run cannot "
-               "change them; memory_write and memory_edit do that, with a receipt per file. "
+            + ("what your grants reach, at the same paths, as your grants hold them right now: "
+               + "; ".join(parts) + ". "
                if mounts else "the system's own files: no grant of yours reaches a path a run "
                               "can mount. ")
             + "Any other path, your home included, does not exist in there, so a check like "
@@ -4792,8 +4850,9 @@ def _run_note_core(rc: int, stderr: str, files: list) -> str:
     about this run, so stating it keeps the note evidence-only."""
     if rc == 0:
         return ("Ran in a sandbox with no network and no home (your worktree, if any, "
-                "read-only). The copies and every file the run wrote are gone now: the next run "
-                "starts with only the files it names. Only what you printed survives.")
+                "read-only unless a grant of yours covers it). The copies and every file the run "
+                "wrote are gone now, except what it wrote through your grants: the next run "
+                "starts with only the files it names. What you printed survives.")
     ended = f"Ended by signal {-rc}" if rc < 0 else f"Exit {rc}"
     if "Traceback (most recent call last)" in stderr:
         return (f"{ended}. stderr holds a Python traceback: its last frame in your own file "

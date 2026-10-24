@@ -1187,6 +1187,22 @@ class ReferenceF1aDispatcher:
                                 + " Nothing was read this time.]"),
                         witness_id=self._witness(
                             f"memory_read {p.name} (not in home; exists at {above}; copy in reach)"))
+                if self._reach_pairs():
+                    # AND WITH NO COPY, IT IS STILL NOT A READ TO OFFER (SAGE #530). Falling through
+                    # to "To read it:" hands the member a path its grants do not cover, as one it
+                    # can read. Say what is true and suggest no door; asking stays its decision.
+                    # Only when the verdict said what the member holds: a verdict with no grants
+                    # on it (hand-made, or a failed policy fetch) cannot tell, and keeps the old line.
+                    return ResultEnvelope(
+                        ok=True,
+                        result=(f"[no such path in your home: a path without a leading / is read "
+                                f"inside your home, and '{shown}' is not there. A file exists at "
+                                f"'{above}', but it is outside what you hold, so a read of it "
+                                f"would be refused, and nothing you hold has a copy of it. The "
+                                f"paths you hold are in your beat under 'granted paths'. Nothing "
+                                f"was read this time.]"),
+                        witness_id=self._witness(
+                            f"memory_read {p.name} (not in home; exists only outside reach at {above})"))
             if above is not None:
                 # A RELATIVE PATH IS READ INSIDE THE HOME, AND THE BEING DID NOT KNOW THAT.
                 # Measured 2026-10-20/21 on cbp-being: it read the gate source by its absolute

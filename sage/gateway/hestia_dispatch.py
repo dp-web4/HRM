@@ -645,6 +645,21 @@ class HestiaF1aDispatcher:
         base = (to or "").split("/", 1)[0].strip().lower()
         if not base:
             return None
+        # "SEAT" IS WHAT EVERY RECEIPT CALLS THE SEAT. cbp-being sent peer_ask to="seat" seven
+        # times (to 2026-10-24) and each time got only "not on the hub roster" and a list of
+        # boxes, nothing leading back: the seat's own conversation title says "(the seat)" and
+        # receipts say "hand the seat", but the name resolved only through a per-instance
+        # `also_known_as`, which no seat had declared. The seat's conversation answers to it here.
+        if base in ("seat", "the seat", "my seat"):
+            seat_conv = self._seat_conversation()
+            if seat_conv:
+                return (f"'{to}' is your seat, and you are already in a conversation with it: "
+                        f"\"{seat_conv}\". The hub is the wrong door and nothing was sent. Use say "
+                        f"with the conversation id \"{seat_conv}\"; it reaches the seat directly "
+                        f"and is not rate-limited the way asks are. This did not count against any "
+                        f"limit. If what you want is for one of your files to be RUN, call "
+                        f"request_run with the path: a message asking for a run is not a run "
+                        f"request.")
         try:
             from sage.gateway import conversations as _conv
             for m in _conv.listing(self.memory_root):

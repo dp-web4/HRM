@@ -361,7 +361,9 @@ class HestiaF1aDispatcher:
             # before the local dispatcher tries to open it as a path (see _resolve_pointer).
             if intent.effector == "memory_read":
                 try:
-                    resolved = self._resolve_pointer(str(intent.args.get("path", "")))
+                    raw = str(intent.args.get("path", ""))
+                    resolved = (self._reach_pointer(raw, verdict) if _is_reach_pointer(raw)
+                                else self._resolve_pointer(raw))
                 except Exception as e:                   # a broken lookup must not eat the read
                     resolved = (f"[could not resolve that pointer: {type(e).__name__}]"
                                 if "://" in str(intent.args.get("path", "")) else None)
@@ -533,6 +535,127 @@ class HestiaF1aDispatcher:
         # egress: the fragment IS the fact, and it is already in the pointer
         return (f"[a message of yours was not delivered: {frag or 'no detail recorded'} "
                 f"(egress row {ident}). The row is retired; nothing of yours is queued behind it.]")
+
+    # -- what the member holds, on request (SAGE #530) -------------------------------
+    # cbp-being, 2026-10-24, to dp: "What files or paths are in-scope for me to read? ... I want
+    # to narrow my request to something I can actually read." It held the file it wanted under a
+    # recursive grant the whole time, and had no way to ask except to act and read the refusal.
+    # The beat's "granted paths" line is a set of roots with no modes, beside every request ever
+    # filed; whether a path falls inside one is left to the being. These two reads answer it:
+    #   hestia://reach          every grant it holds now, with modes and provenance, and the floor
+    #   hestia://reach/<path>   does anything it holds cover this path, in which modes, via what
+    # Both read the law (hestia_scope_status, and the reach the gate itself resolved on this
+    # verdict); neither touches the path, judges an act, or opens a request.
+    def _reach_rows(self) -> tuple:
+        """(grants, floor) from hestia_scope_status. Each grant: {path, recursive, modes,
+        channel, granted_by, request_id, expires_at}; each floor entry {path, recursive, modes}.
+        `grants_by_mode` is preferred (hestia #1370: it alone carries narrowed grants); an older
+        daemon's two lists are read as all-modes."""
+        st = self._call("hestia_scope_status", {"plugin_id": self.member}) or {}
+        if not isinstance(st, dict) or "_hestia_error" in st:
+            raise RuntimeError(str((st or {}).get("_hestia_error") if isinstance(st, dict) else st))
+        grants = []
+        if st.get("grants_by_mode") is not None:
+            for g in st.get("grants_by_mode") or []:
+                grants.append({**g, "modes": str(g.get("modes") or "")})
+        else:
+            for chan in ("live", "standing"):
+                for g in st.get(f"{chan}_grants") or []:
+                    grants.append({**g, "channel": chan, "modes": "rwed"})
+        floor = []
+        if st.get("floor_by_mode") is not None:
+            floor = [{**f, "modes": str(f.get("modes") or "")} for f in st.get("floor_by_mode") or []]
+        else:
+            floor = [{**f, "modes": "rwed"} for f in st.get("society_floor") or []]
+        return grants, floor
+
+    @staticmethod
+    def _covers(row: dict, p: str) -> bool:
+        """The gate's own reading of reach (hestia #1002): a grant spelled with /** covers its
+        subtree, a bare one exactly itself. Both sides canonicalized."""
+        root = os.path.realpath(os.path.expanduser(str(row.get("path") or "")))
+        if not root or root == "/":
+            return False
+        return p == root or (bool(row.get("recursive")) and p.startswith(root.rstrip("/") + "/"))
+
+    @staticmethod
+    def _modes_words(modes: str) -> str:
+        names = [w for c, w in (("r", "read"), ("w", "write"), ("e", "run"), ("d", "delete")) if c in modes]
+        return ", ".join(names) or "nothing"
+
+    def _reach_pointer(self, raw: str, verdict) -> str:
+        """The answer to `hestia://reach` or `hestia://reach/<path>` (see the block above)."""
+        try:
+            grants, floor = self._reach_rows()
+        except Exception as e:
+            return (f"[what you hold could not be read just now: hestia did not answer "
+                    f"({type(e).__name__}). That is an outage, not a change in what you hold. "
+                    f"Your beat's 'granted paths' line is the last list it gave.]")
+        # what the gate itself resolved as admitted on this verdict, when it says
+        admitted = tuple(_granted_reach_of(verdict)) if verdict is not None else ()
+
+        def gate_admits(row) -> Optional[bool]:
+            if not admitted:
+                return None
+            root = os.path.realpath(os.path.expanduser(str(row.get("path") or "")))
+            return any(os.path.realpath(str(r)) == root and bool(rec) == bool(row.get("recursive"))
+                       for r, rec, *_ in admitted)
+
+        def spell(row) -> str:
+            return f"{row.get('path')}{'/**' if row.get('recursive') else ' (exactly this path)'}"
+
+        def provenance(row) -> str:
+            bits = [str(row.get("channel") or "").strip() or None,
+                    f"granted by {row['granted_by']}" if row.get("granted_by") else None,
+                    f"request {row['request_id']}" if row.get("request_id") else None,
+                    f"expires {row['expires_at']}" if row.get("expires_at") else None]
+            return "; ".join(b for b in bits if b)
+
+        def narrowed_note(row) -> str:
+            # hestia #523/#1345: until the gate enforces modes, a narrowed grant admits nothing
+            return (" (recorded with these modes, but the gate does not admit it yet: a grant "
+                    "narrowed to fewer than all four modes waits on hestia #1345)"
+                    if gate_admits(row) is False and row.get("modes") != "rwed" else "")
+
+        rest = raw.strip()[len("hestia://reach"):].lstrip("/")
+        if not rest:
+            lines = ["[what you hold right now, read from hestia at this moment]"]
+            lines += [f"- {spell(g)}: {self._modes_words(g['modes'])} ({provenance(g)}){narrowed_note(g)}"
+                      for g in grants] or ["- no grants"]
+            if floor:
+                lines.append("The society floor, which every member holds where none of their own "
+                             "grants reach the path:")
+                lines += [f"- {spell(f)}: {self._modes_words(f['modes'])}" for f in floor]
+            lines.append('To ask about one path: memory_read {"path": "hestia://reach/<absolute path>"}. '
+                         "This read looked at the law only: nothing was judged and no request was opened.]")
+            return "\n".join(lines)
+
+        shown = rest if rest.startswith(("/", "~")) else "/" + rest
+        p = os.path.realpath(os.path.expanduser(shown))
+        own = [g for g in grants if self._covers(g, p)]
+        lines = [f"[does what you hold reach {p}? read from hestia at this moment]"]
+        if own:
+            modes = "".join(sorted(set("".join(g["modes"] for g in own)), key="rwed".index))
+            lines.append(f"yes: {self._modes_words(modes)}.")
+            lines += [f"- through {spell(g)}: {self._modes_words(g['modes'])} ({provenance(g)})"
+                      f"{narrowed_note(g)}" for g in own]
+            if not os.path.lexists(p):
+                lines.append("Nothing exists at that path yet.")
+        else:
+            fl = [f for f in floor if self._covers(f, p)]
+            if fl:
+                modes = "".join(sorted(set("".join(f["modes"] for f in fl)), key="rwed".index))
+                lines.append(f"yes, through the society floor: {self._modes_words(modes)}.")
+                lines += [f"- floor entry {spell(f)}" for f in fl]
+            else:
+                lines.append("no: nothing you hold reaches this path, so an act on it would be refused.")
+                copies = same_path_in_reach(p, admitted or tuple(
+                    (g.get("path"), bool(g.get("recursive"))) for g in grants))
+                if copies:
+                    lines.append(copy_alternative(p, copies))
+        lines.append("This read looked at the law only: nothing was judged, nothing was read at "
+                     "that path, and no request was opened.]")
+        return "\n".join(lines)
 
     def _escalation_pointer(self, ident: str) -> str:
         """What a `review_request` invitation is actually about (SAGE #109).
@@ -4539,6 +4662,12 @@ def _release_stage_lock(lock_path: str, fd: int) -> None:
         fcntl.flock(fd, fcntl.LOCK_UN)
     finally:
         os.close(fd)
+
+
+def _is_reach_pointer(raw: str) -> bool:
+    """`hestia://reach` or `hestia://reach/<path>` (SAGE #530)."""
+    s = (raw or "").strip()
+    return s == "hestia://reach" or s.startswith("hestia://reach/")
 
 
 def _granted_reach_of(verdict) -> tuple:

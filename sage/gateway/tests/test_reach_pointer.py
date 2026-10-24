@@ -22,7 +22,20 @@ def _world():
     return ws, home
 
 
-def _status(ws, home, by_mode=True, floor=None):
+def _status(ws, home, by_mode=True, floor=None, served=None, served_read=None, withheld=None):
+    """`floor` is floor_by_mode (recorded); served/served_read/withheld are #1381's per-member
+    society_floor / society_floor_read / society_floor_withheld."""
+    st = _status_grants(ws, home, by_mode)
+    if floor is not None:
+        st["floor_by_mode"] = floor
+    for k, v in (("society_floor", served), ("society_floor_read", served_read),
+                 ("society_floor_withheld", withheld)):
+        if v is not None:
+            st[k] = v
+    return st
+
+
+def _status_grants(ws, home, by_mode=True):
     gov = {"path": os.path.join(ws, "governance"), "recursive": True, "granted_by": "dp",
            "request_id": "scope-gov", "expires_at": None}
     home_g = {"path": home, "recursive": True, "granted_by": "operator", "request_id": None,
@@ -36,8 +49,6 @@ def _status(ws, home, by_mode=True, floor=None):
               "standing_grants": [gov], "live_grants": []}
     else:
         st = {"standing_grants": [home_g, gov], "live_grants": []}
-    if floor is not None:
-        st["floor_by_mode"] = floor
     return st
 
 
@@ -70,24 +81,49 @@ def _read(d, path, verdict):
 
 def test_the_list_names_every_grant_with_modes_provenance_and_the_floor():
     ws, home = _world()
-    floor = [{"path": os.path.join(ws, "governance", "hestia"), "recursive": True, "modes": "r"}]
-    d = _disp(_status(ws, home, floor=floor))
+    snap = {"path": os.path.join(ws, "governance", "hestia"), "recursive": True}
+    d = _disp(_status(ws, home, floor=[{**snap, "modes": "r"}], served=[], served_read=[snap], withheld=[]))
     out = _read(d, "hestia://reach", _verdict(ws, home))
-    assert f"- {ws}/governance/**: read, write, run, delete (standing; granted by dp; request scope-gov)" in out, out
-    assert f"- {home}/**: read, write, run (" in out, out
-    # the narrowed grant is listed, and said plainly not to admit anything yet
-    assert f"{ws}/escalations/**: read (" in out and "does not admit it yet" in out, out
-    assert "society floor" in out and f"- {ws}/governance/hestia/**: read" in out, out
+    assert (f"- {ws}/governance/**: read, write, run, delete (standing; granted by dp; request "
+            f"scope-gov). the gate admits it now.") in out, out
+    # the narrowed grant is listed, and said plainly not to be admitted now
+    assert f"{ws}/escalations/**: read (" in out and "does NOT admit it now" in out, out
+    assert f"- {ws}/governance/hestia/**: read. served to your gate now: read." in out, out
     assert 'hestia://reach/<absolute path>' in out and "no request was opened" in out, out
 
 
-def test_a_path_under_a_recursive_grant_is_reached_and_names_the_grant():
+def test_a_path_under_an_admitted_grant_is_reached_now_and_names_the_grant():
     ws, home = _world()
     d = _disp(_status(ws, home))
     out = _read(d, f"hestia://reach{ws}/governance/hestia/_shared/gate.py", _verdict(ws, home))
-    assert "yes: read, write, run, delete." in out, out
-    assert f"through {ws}/governance/**" in out and "request scope-gov" in out, out
+    assert out.splitlines()[1] == "now: yes, read, write, run, delete.", out
+    assert f"your grant {ws}/governance/**" in out and "request scope-gov" in out, out
     assert "x = 1" not in out, "the answer reads the law, never the file"
+
+
+def test_a_path_under_a_narrowed_grant_the_gate_does_not_admit_is_no_now():
+    """Nova, HOLD on #532: a recorded r grant the mode-blind gate does not admit must not read
+    as yes. It is listed, labelled, and the effective answer is no."""
+    ws, home = _world()
+    d = _disp(_status(ws, home))
+    out = _read(d, f"hestia://reach{ws}/escalations/x.md", _verdict(ws, home))
+    assert out.splitlines()[1].startswith("now: no. Something recorded reaches this path"), out
+    assert "yes" not in out.splitlines()[1], out
+    assert f"your grant {ws}/escalations/**: read" in out and "does NOT admit it now" in out, out
+    assert "hestia #1345 part B" in out, out
+
+
+def test_a_floor_entry_withheld_from_this_member_is_no_now():
+    """Nova, HOLD on #532: an entry in society_floor_withheld is recorded in floor_by_mode but not
+    served to this member's gate; it must not read as yes."""
+    ws, home = _world()
+    live = {"path": os.path.join(ws, "hestia"), "recursive": True}
+    why = "overlaps your narrowed grant; the floor does not override it"
+    d = _disp(_status(ws, home, floor=[{**live, "modes": "r"}], served=[], served_read=[],
+                      withheld=[{"path": live["path"], "why": why}]))
+    out = _read(d, f"hestia://reach{ws}/hestia/_shared/gate.py", _verdict(ws, home))
+    assert out.splitlines()[1].startswith("now: no."), out
+    assert f"floor entry {ws}/hestia/**: read. NOT served to you now ({why})." in out, out
 
 
 def test_a_path_outside_every_grant_says_no_and_names_the_copy_in_reach():
@@ -95,7 +131,8 @@ def test_a_path_outside_every_grant_says_no_and_names_the_copy_in_reach():
     ws, home = _world()
     d = _disp(_status(ws, home))
     out = _read(d, f"hestia://reach{ws}/hestia/_shared/gate.py", _verdict(ws, home))
-    assert "no: nothing you hold reaches this path" in out, out
+    assert out.splitlines()[1] == ("now: no. Nothing you hold reaches this path, so an act on it "
+                                   "would be refused."), out
     assert f"{ws}/governance/hestia/_shared/gate.py" in out, out
     assert not [n for n, _ in FakeMcp.calls if n in ("hestia_request_scope", "hestia_member_notify")], \
         "asking about reach must open nothing"
@@ -108,26 +145,38 @@ def test_an_exact_grant_reaches_itself_not_its_subtree():
     d = _disp(st)
     v = GatewayVerdict("allow", granted=(os.path.join(ws, "hestia"),),
                        granted_reach=((os.path.join(ws, "hestia"), False),))
-    assert "yes:" in _read(d, f"hestia://reach{ws}/hestia", v)
-    assert "no: nothing you hold" in _read(d, f"hestia://reach{ws}/hestia/_shared/gate.py", v)
+    assert "now: yes" in _read(d, f"hestia://reach{ws}/hestia", v)
+    assert "now: no. Nothing you hold" in _read(d, f"hestia://reach{ws}/hestia/_shared/gate.py", v)
 
 
-def test_the_floor_answers_only_where_no_own_grant_reaches():
+def test_a_served_floor_entry_answers_where_no_own_grant_reaches():
     ws, home = _world()
-    floor = [{"path": os.path.join(ws, "hestia"), "recursive": True, "modes": "r"}]
-    d = _disp(_status(ws, home, floor=floor))
+    live = {"path": os.path.join(ws, "hestia"), "recursive": True}
+    d = _disp(_status(ws, home, floor=[{**live, "modes": "r"}], served=[], served_read=[live], withheld=[]))
     out = _read(d, f"hestia://reach{ws}/hestia/_shared/gate.py", _verdict(ws, home))
-    assert "yes, through the society floor: read." in out, out
+    assert out.splitlines()[1] == "now: yes, read.", out
+    assert "served to your gate now: read" in out, out
     out = _read(d, f"hestia://reach{ws}/governance/hestia/_shared/gate.py", _verdict(ws, home))
-    assert "yes: read, write, run, delete." in out and "floor" not in out, out
+    assert "now: yes, read, write, run, delete." in out and "floor" not in out, out
 
 
-def test_an_older_daemon_without_modes_reads_every_grant_as_all_modes():
+def test_an_older_daemon_serves_its_whole_floor_and_reads_every_grant_as_all_modes():
     ws, home = _world()
-    d = _disp(_status(ws, home, by_mode=False))
+    st = _status(ws, home, by_mode=False)
+    st["society_floor"] = [{"path": os.path.join(ws, "hestia"), "recursive": True}]
+    d = _disp(st)
     out = _read(d, "hestia://reach", _verdict(ws, home))
     assert f"{ws}/governance/**: read, write, run, delete" in out, out
-    assert "does not admit" not in out, out
+    assert "does NOT admit" not in out, out
+    assert "served to your gate now: read, write, run, delete" in out, out
+
+
+def test_a_verdict_without_reach_reports_admission_as_unconfirmed():
+    ws, home = _world()
+    d = _disp(_status(ws, home))
+    out = _read(d, f"hestia://reach{ws}/governance/x", GatewayVerdict("allow"))
+    assert out.splitlines()[1].startswith("now: unconfirmed."), out
+    assert "could not be confirmed" in out and "now: yes" not in out, out
 
 
 def test_a_daemon_that_does_not_answer_is_an_outage_not_a_change():
@@ -141,15 +190,15 @@ def test_a_missing_leading_slash_is_read_as_absolute():
     ws, home = _world()
     d = _disp(_status(ws, home))
     out = _read(d, f"hestia://reach/{ws.lstrip('/')}/governance/hestia/_shared/gate.py", _verdict(ws, home))
-    assert "yes: read, write, run, delete." in out, out
-
+    assert "now: yes, read, write, run, delete." in out, out
 
 def test_the_beat_lists_grants_with_modes_and_keeps_narrowed_ones():
     """#523: a grant narrowed below rwed is only in grants_by_mode; the beat kept it out."""
     from sage.gateway.heartbeat import scope_grant_lines
     ws, home = _world()
     lines = scope_grant_lines(_status(ws, home))
-    assert f"{ws}/escalations/** (r)" in lines and f"{ws}/governance/** (rwed)" in lines, lines
-    assert f"{home}/** (rwe)" in lines, lines
+    narrowed = "; narrowed: recorded, may not be admitted yet, see hestia://reach)"
+    assert f"{ws}/escalations/** (r{narrowed}" in lines and f"{ws}/governance/** (rwed)" in lines, lines
+    assert f"{home}/** (rwe{narrowed}" in lines, lines
     old = scope_grant_lines(_status(ws, home, by_mode=False))
     assert f"{ws}/governance/**" in old and not any("(" in x for x in old), old

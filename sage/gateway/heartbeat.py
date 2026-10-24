@@ -1126,9 +1126,15 @@ def scope_grant_lines(st: dict) -> list:
     WITH ITS MODES, AND NARROWED GRANTS KEPT (#523): since hestia #1370 a grant narrowed below
     rwed appears only in `grants_by_mode`, so reading the two old lists made it vanish from the
     beat while its request still read "granted". An older daemon has no such key, and its two
-    lists are read as before."""
+    lists are read as before.
+
+    A NARROWED GRANT IS RECORDED, NOT NECESSARILY ADMITTED (Nova on #532): a mode-blind gate
+    admits nothing for it (hestia #1345 part B). The line says so in those words rather than
+    guess which gate is installed; hestia://reach/<path> gives the effective answer."""
     if st.get("grants_by_mode") is not None:
-        return [f"{g.get('path')}{'/**' if g.get('recursive') else ''} ({g.get('modes') or '-'})"
+        return [f"{g.get('path')}{'/**' if g.get('recursive') else ''} ({g.get('modes') or '-'}"
+                + ("" if (g.get("modes") or "") == "rwed" else
+                   "; narrowed: recorded, may not be admitted yet, see hestia://reach") + ")"
                 for g in st.get("grants_by_mode") or []]
     return [f"{g.get('path')}{'/**' if g.get('recursive') else ''}"
             for g in (st.get("live_grants") or []) + (st.get("standing_grants") or [])]

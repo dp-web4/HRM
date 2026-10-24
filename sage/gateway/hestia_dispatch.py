@@ -547,10 +547,17 @@ class HestiaF1aDispatcher:
     # Both read the law (hestia_scope_status, and the reach the gate itself resolved on this
     # verdict); neither touches the path, judges an act, or opens a request.
     def _reach_rows(self) -> tuple:
-        """(grants, floor) from hestia_scope_status. Each grant: {path, recursive, modes,
-        channel, granted_by, request_id, expires_at}; each floor entry {path, recursive, modes}.
+        """(grants, floor) from hestia_scope_status.
+
+        Each grant: {path, recursive, modes, channel, granted_by, request_id, expires_at}.
         `grants_by_mode` is preferred (hestia #1370: it alone carries narrowed grants); an older
-        daemon's two lists are read as all-modes."""
+        daemon's two lists are read as all-modes.
+
+        Each floor entry: {path, recursive, modes, served, why}. `modes` is what the floor
+        RECORDS; `served` is what this member's gate is actually handed: "rwed" for an entry in
+        `society_floor`, "r" for one in `society_floor_read` (#1381, read acts only), "" for one
+        in `society_floor_withheld` (with its `why`). A daemon without those keys serves every
+        `society_floor` entry as all-modes, as its gate does."""
         st = self._call("hestia_scope_status", {"plugin_id": self.member}) or {}
         if not isinstance(st, dict) or "_hestia_error" in st:
             raise RuntimeError(str((st or {}).get("_hestia_error") if isinstance(st, dict) else st))
@@ -562,11 +569,20 @@ class HestiaF1aDispatcher:
             for chan in ("live", "standing"):
                 for g in st.get(f"{chan}_grants") or []:
                     grants.append({**g, "channel": chan, "modes": "rwed"})
+
+        def key(f):
+            return (os.path.realpath(os.path.expanduser(str(f.get("path") or ""))), bool(f.get("recursive")))
+        served = {key(f): "rwed" for f in st.get("society_floor") or []}
+        served.update({key(f): "r" for f in st.get("society_floor_read") or []})
+        withheld = {os.path.realpath(os.path.expanduser(str(w.get("path") or ""))): str(w.get("why") or "")
+                    for w in st.get("society_floor_withheld") or []}
+        recorded = (st.get("floor_by_mode") if st.get("floor_by_mode") is not None
+                    else [{**f, "modes": "rwed"} for f in st.get("society_floor") or []])
         floor = []
-        if st.get("floor_by_mode") is not None:
-            floor = [{**f, "modes": str(f.get("modes") or "")} for f in st.get("floor_by_mode") or []]
-        else:
-            floor = [{**f, "modes": "rwed"} for f in st.get("society_floor") or []]
+        for f in recorded or []:
+            k = key(f)
+            floor.append({**f, "modes": str(f.get("modes") or ""), "served": served.get(k, ""),
+                          "why": withheld.get(k[0], "" if k in served else "not served to you")})
         return grants, floor
 
     @staticmethod
@@ -583,8 +599,20 @@ class HestiaF1aDispatcher:
         names = [w for c, w in (("r", "read"), ("w", "write"), ("e", "run"), ("d", "delete")) if c in modes]
         return ", ".join(names) or "nothing"
 
+    @staticmethod
+    def _union(modes) -> str:
+        return "".join(sorted(set("".join(modes)), key="rwed".index))
+
     def _reach_pointer(self, raw: str, verdict) -> str:
-        """The answer to `hestia://reach` or `hestia://reach/<path>` (see the block above)."""
+        """The answer to `hestia://reach` or `hestia://reach/<path>` (see the block above).
+
+        WHAT THE GATE ADMITS NOW IS NOT WHAT IS RECORDED (Nova, HOLD on #532). A member asks this
+        to know which acts will go through, so the first line is always the EFFECTIVE answer:
+        the member's grants the gate itself resolved as admitted on this verdict, plus the floor
+        entries this member's gate is served. A recorded grant the gate does not admit (a
+        narrowed grant on a mode-blind gate, hestia #523/#1345) and a floor entry withheld from
+        this member are listed under it, labelled as such, and never counted as "yes". Where
+        the verdict says nothing about reach, admission is reported as unconfirmed."""
         try:
             grants, floor = self._reach_rows()
         except Exception as e:
@@ -611,21 +639,30 @@ class HestiaF1aDispatcher:
                     f"expires {row['expires_at']}" if row.get("expires_at") else None]
             return "; ".join(b for b in bits if b)
 
-        def narrowed_note(row) -> str:
-            # hestia #523/#1345: until the gate enforces modes, a narrowed grant admits nothing
-            return (" (recorded with these modes, but the gate does not admit it yet: a grant "
-                    "narrowed to fewer than all four modes waits on hestia #1345)"
-                    if gate_admits(row) is False and row.get("modes") != "rwed" else "")
+        def grant_status(row) -> str:
+            a = gate_admits(row)
+            if a is True:
+                return "the gate admits it now"
+            if a is None:
+                return "whether the gate admits it right now could not be confirmed"
+            if row.get("modes") != "rwed":
+                return ("recorded, but the gate does NOT admit it now: a grant narrowed to fewer "
+                        "than all four modes admits nothing until hestia #1345 part B")
+            return "recorded, but the gate does NOT admit it now"
+
+        def floor_status(f) -> str:
+            if f["served"]:
+                return f"served to your gate now: {self._modes_words(f['served'])}"
+            return f"NOT served to you now ({f['why'] or 'withheld'})"
 
         rest = raw.strip()[len("hestia://reach"):].lstrip("/")
         if not rest:
-            lines = ["[what you hold right now, read from hestia at this moment]"]
-            lines += [f"- {spell(g)}: {self._modes_words(g['modes'])} ({provenance(g)}){narrowed_note(g)}"
+            lines = ["[what you hold, read from hestia at this moment]"]
+            lines += [f"- {spell(g)}: {self._modes_words(g['modes'])} ({provenance(g)}). {grant_status(g)}."
                       for g in grants] or ["- no grants"]
             if floor:
-                lines.append("The society floor, which every member holds where none of their own "
-                             "grants reach the path:")
-                lines += [f"- {spell(f)}: {self._modes_words(f['modes'])}" for f in floor]
+                lines.append("The society floor (every member's, where none of their own grants reach):")
+                lines += [f"- {spell(f)}: {self._modes_words(f['modes'])}. {floor_status(f)}." for f in floor]
             lines.append('To ask about one path: memory_read {"path": "hestia://reach/<absolute path>"}. '
                          "This read looked at the law only: nothing was judged and no request was opened.]")
             return "\n".join(lines)
@@ -633,26 +670,34 @@ class HestiaF1aDispatcher:
         shown = rest if rest.startswith(("/", "~")) else "/" + rest
         p = os.path.realpath(os.path.expanduser(shown))
         own = [g for g in grants if self._covers(g, p)]
+        fl = [f for f in floor if self._covers(f, p)]
+        own_now = [g for g in own if gate_admits(g) is True]
+        unknown = [g for g in own if gate_admits(g) is None]
+        floor_now = [f for f in fl if f["served"]]
+        now = self._union([g["modes"] for g in own_now] + [f["served"] for f in floor_now])
         lines = [f"[does what you hold reach {p}? read from hestia at this moment]"]
-        if own:
-            modes = "".join(sorted(set("".join(g["modes"] for g in own)), key="rwed".index))
-            lines.append(f"yes: {self._modes_words(modes)}.")
-            lines += [f"- through {spell(g)}: {self._modes_words(g['modes'])} ({provenance(g)})"
-                      f"{narrowed_note(g)}" for g in own]
-            if not os.path.lexists(p):
-                lines.append("Nothing exists at that path yet.")
+        if now:
+            lines.append(f"now: yes, {self._modes_words(now)}.")
+        elif unknown:
+            lines.append(f"now: unconfirmed. You hold a grant here recording "
+                         f"{self._modes_words(self._union(g['modes'] for g in unknown))}, but whether "
+                         f"the gate admits it right now could not be confirmed.")
+        elif own or fl:
+            lines.append("now: no. Something recorded reaches this path, but the gate does not admit "
+                         "it at the moment (see below), so an act on it would be refused.")
         else:
-            fl = [f for f in floor if self._covers(f, p)]
-            if fl:
-                modes = "".join(sorted(set("".join(f["modes"] for f in fl)), key="rwed".index))
-                lines.append(f"yes, through the society floor: {self._modes_words(modes)}.")
-                lines += [f"- floor entry {spell(f)}" for f in fl]
-            else:
-                lines.append("no: nothing you hold reaches this path, so an act on it would be refused.")
-                copies = same_path_in_reach(p, admitted or tuple(
-                    (g.get("path"), bool(g.get("recursive"))) for g in grants))
-                if copies:
-                    lines.append(copy_alternative(p, copies))
+            lines.append("now: no. Nothing you hold reaches this path, so an act on it would be refused.")
+        for g in own:
+            lines.append(f"- your grant {spell(g)}: {self._modes_words(g['modes'])} ({provenance(g)}). "
+                         f"{grant_status(g)}.")
+        for f in fl:
+            lines.append(f"- floor entry {spell(f)}: {self._modes_words(f['modes'])}. {floor_status(f)}.")
+        if now and not os.path.lexists(p):
+            lines.append("Nothing exists at that path yet.")
+        if not now:
+            copies = same_path_in_reach(p, admitted)
+            if copies:
+                lines.append(copy_alternative(p, copies))
         lines.append("This read looked at the law only: nothing was judged, nothing was read at "
                      "that path, and no request was opened.]")
         return "\n".join(lines)

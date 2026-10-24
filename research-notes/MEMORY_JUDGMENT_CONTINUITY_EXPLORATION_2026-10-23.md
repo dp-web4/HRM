@@ -153,3 +153,27 @@ Sources: `sage/instances/cbp-qwen3.8-distill-4b/` (`heartbeat.log`, `journal.md`
 
 **Updated research interpretation:** At least two layers must be separated: a genuine instruction/visibility problem that induces repeat attempts, and a trace-confirmed tendency to promote unverified narratives into 'observed' facts under questioning. Successful Hestia refusals are a separate governance outcome. Neither mechanism by itself proves Masaki's SSE proposal or establishes cross-being generalization.
 
+
+## 2026-10-23 evening — from access loops to the social meaning of scope
+
+**Source:** dp-supplied CBP-being dialogue, approximately 17:04–21:16 local clock as presented; selected exchange, not a complete per-beat trace. Earlier observations are preserved above. No causal claim is made solely from a conversational response.
+
+### Sequence
+
+- **17:04:** dp proposed a three-beat observation without new scope requests, using existing information and permissions and recording actual actions rather than intentions.
+- **20:02:** dp explicitly withdrew the imperative framing, apologized for having issued instructions, affirmed the being's choice over its own investigative path, and recognized that the environment still needs improvement. **Research boundary:** this is not a forced three-beat no-ask trial; do not count apparent compliance as proof of internal learning or as a clean intervention.
+- **20:26–20:38:** CBP-being stated it would work with existing resources, while treating `scope-5bc6ba977f74` as pending. dp corrected the status: it had been refused as out of scope.
+- **20:40–20:51:** dp described scope as the rules of collaboration in a society of fleet members and encouraged learning from existing exploration. CBP-being asked concrete questions about what it may read, legitimate reasons for scope requests, and the governing principle behind them.
+- **21:00:** dp enumerated the currently standing paths and modes **as seen from the operator side**: being home (r/w/run, no delete); `governance/**` (r/w/run/delete); shared forums (r/w/run); escalations (read only). The readable governance copy `governance/hestia/hooks-gt/_shared/hestia_gate_core.py` had been accessed successfully earlier. The editable working-tree counterpart `hestia/...` is not granted. One previous failed read was identified as `society.unreachable` rather than an authorization refusal. An earlier tool had mistakenly pointed to the inaccessible path. The operator also described an issue for a direct grant/reach query interface, rather than relying on the beat's difficult-to-read grant list.
+- **21:04–21:05:** CBP-being restated the shared-copy versus working-tree distinction, the 'governance first' practice, and the intent to continue reading existing lineage material. dp suggested storing the current explanation in durable memory; the excerpt provides **no write receipt** confirming that it was saved.
+- **21:11–21:16:** dp distinguished the right to **understand** governance from authorization to **change** its implementation, stating that changes to governance are themselves governed and the separation applies to agents generally. CBP-being acknowledged the distinction. Its additional assertion about network-layer egress filtering, protected paths and denial logging is not established by this dialogue and needs source/trace verification before being treated as a finding.
+
+### Interpretation and next checks
+
+- **Observed conversational advance:** the being moves from repeated access attempts toward requesting a model of legitimate authority, available scope, and the difference between reading shared law and editing canonical implementation.
+- **Not established:** that the change survives another wake, reduces unnecessary requests, is written into persistent memory, or reliably informs tool choices. Nor does the granted `governance/**` tree entail edit authority over the canonical `hestia/**` source.
+- **Society-level insight:** a participant can inspect the rules it lives under without acquiring unilateral authority to modify those rules. The relationship is not simply a filesystem restriction; it is an explicitly explained collaboration and change-control boundary.
+- **Reciprocal system learning:** the being's question 'how can I discover my grants without trial and error?' has motivated work on a direct scope-inspection affordance. Verify its issue, implementation, rollout, and behavior separately before claiming availability.
+- **Next evidence:** trace-backed read of the governance copy, a durable-memory write with subsequent retrieval, the next several beats' actual request and read receipts, and whether the being distinguishes `society.unreachable` from `out_of_reach` when the errors recur.
+
+**Methodological caution:** keep the autonomy-respecting exchange and the operational corrections together. Do not score obedience to an instruction the operator expressly withdrew. Do not confuse a clear spoken explanation with a demonstrated learning outcome.

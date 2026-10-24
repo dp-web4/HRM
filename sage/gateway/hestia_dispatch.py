@@ -3763,10 +3763,12 @@ class HestiaF1aDispatcher:
         err = _hestia_error(out)
         if err:
             return ResultEnvelope(ok=False, error=err)
+        rid = out.get("request_id")
         return ResultEnvelope(ok=True, witness_id=out.get("witnessEntryHash"),
-                              result={"request_id": out.get("request_id"), "status": out.get("status"),
+                              result={"request_id": rid, "status": out.get("status"),
                                       "path": path,
-                                      "next": out.get("next"), "on_timeout": out.get("on_timeout")})
+                                      "next": _scope_next(rid, out.get("next")),
+                                      "on_timeout": out.get("on_timeout")})
 
     def _do_say(self, intent: BeingIntent) -> ResultEnvelope:
         """Add a turn to a conversation the being is in.
@@ -4706,6 +4708,26 @@ _HARDWARE_DEV = re.compile(r"/dev/(?!" + _SANDBOX_DEV + r")[A-Za-z]")
 # Verbs whose free text may name a scope request; their receipts carry its status
 # (HestiaF1aDispatcher._attach_named_scope_status).
 _NAMES_SCOPE_IDS = ("request_scope", "peer_ask", "request_run")
+
+
+def _scope_next(request_id, daemon_next) -> str:
+    """What a being does after filing a scope request, in ITS verbs.
+
+    hestia's own `next` is written for a seat: "poll hestia_scope_status; a human decides this,
+    out of band". hestia_scope_status is a daemon tool, not a verb a being has and not a file.
+    cbp-being, 2026-10-23: after reading that line on every ask, it searched the writable hestia
+    tree and the workspace root for a `hestia_scope_status` file, wrote scripts to start hestia
+    and poll it over HTTP (its run has no network and cannot see the daemon), and filed asks to
+    reach the places it searched: a chain of 47 scope requests in 12 hours, most of them for
+    things that do not exist. The being already has the read: memory_read of the request's
+    `hestia://scope/<id>` pointer answers its status, who ruled and their note."""
+    if not request_id:
+        return daemon_next or ""
+    return (f"A human or a peer decides this; you cannot speed it up and nothing needs starting "
+            f"(hestia is running: it is what answered this request). The ruling reaches you by "
+            f"itself, in your beat's scope status and your inbox. To check it now: memory_read "
+            f'{{"path": "hestia://scope/{request_id}"}}. There is no file or script to find for '
+            f"this; do not search for one.")
 _SCOPE_ID = re.compile(r"\bscope-[0-9a-f]{12}\b")
 
 

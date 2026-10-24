@@ -2576,6 +2576,33 @@ def test_say_instead_also_names_request_run():
     assert "request_run" in msg, msg
 
 
+def test_peer_ask_to_seat_is_sent_to_the_seat_conversation():
+    """SAGE #530 follow-up: every receipt calls the seat "the seat", and cbp-being sent
+    peer_ask to="seat" seven times, each answered only "not on the hub roster". The seat's own
+    conversation (named for the seat, the seat and the being, with a notify route) answers to
+    "seat"; with no identifiable seat conversation the name is not resolved."""
+    import json as _json
+    from pathlib import Path
+    from sage.gateway import conversations as conv
+    published = []
+    d, root = _disp(publish_fn=lambda to, body: published.append((to, body)) or "ptr")
+    assert d._say_instead("seat") is None, "no seat conversation: nothing to point at"
+    conv.create(Path(root), "sprout-claude", title="seat", participants=["sprout-claude", "sprout-being"],
+                writable_by=["sprout-claude", "sprout-being"])
+    meta = conv.conv_dir(Path(root)) / "sprout-claude.meta.json"
+    m = _json.loads(meta.read_text())
+    m["notify"] = {"sprout-claude": "claude-code"}
+    meta.write_text(_json.dumps(m))
+    for name in ("seat", "Seat", "the seat"):
+        msg = d._say_instead(name)
+        assert msg and 'say with the conversation id "sprout-claude"' in msg, (name, msg)
+        assert "request_run" in msg and "did not count against any limit" in msg, msg
+    r = d(BeingIntent("peer_ask", {"to": "seat", "body": "are you there?"}), _ALLOW)
+    assert not r.ok and 'conversation id "sprout-claude"' in (r.error or ""), r
+    assert d.recent_asks() == [], "a redirected ask must not spend the per-peer cap"
+    assert published == [], "and must leave no forum file behind"
+
+
 def test_a_stale_transport_session_reconnects_once():
     """The daemon's HTTP-level "Session not found" (a stale mcp-session-id) is a lost session
     like the JSON one: reconnect once and send again. 2026-09-23 20:04Z a request_run died on

@@ -89,6 +89,40 @@ def test_a_relative_miss_names_the_file_under_an_ancestor_of_the_home():
     assert "DOES exist at" not in (r.result or ""), r.result
 
 
+def test_a_relative_miss_never_offers_a_file_outside_reach_as_a_read():
+    """SAGE #530, cbp-being 2026-10-24 (on a tree without #522): `hestia/hooks-gt/_shared/gate.py`
+    relative was answered with the seats' live tree, outside its grants, and "To read it:"; it
+    filed scope requests for that copy. #522 names a copy in reach; with no copy, the file is
+    named as existing and outside reach, never as a read. Exact grants do not count as reach."""
+    ws = tempfile.mkdtemp(prefix="ref-f1a-ws-")
+    root = os.path.join(ws, "SAGE", "sage", "instances", "b")
+    os.makedirs(root)
+    for tree in (os.path.join(ws, "hestia"), os.path.join(ws, "governance", "hestia")):
+        os.makedirs(os.path.join(tree, "_shared"))
+        open(os.path.join(tree, "_shared", "gate.py"), "w").write("x = 1")
+    live = os.path.realpath(os.path.join(ws, "hestia", "_shared", "gate.py"))
+    snap = os.path.realpath(os.path.join(ws, "governance", "hestia", "_shared", "gate.py"))
+    gov = GatewayVerdict("allow", granted=(os.path.join(ws, "governance"),),
+                         granted_reach=((os.path.join(ws, "governance"), True),))
+    disp = ReferenceF1aDispatcher(memory_root=root)
+    r = disp(BeingIntent("memory_read", {"path": "hestia/_shared/gate.py"}), gov)
+    assert r.ok and snap in r.result and "outside your reach" in r.result, r.result
+    assert f"memory_read {{\"path\": \"{live}\"}}" not in r.result, r.result
+
+    # only the live copy exists: it is named as existing and outside reach, never as a read
+    os.remove(snap)
+    r = disp(BeingIntent("memory_read", {"path": "hestia/_shared/gate.py"}), gov)
+    assert r.ok and f"exists at '{live}'" in r.result and "outside what you hold" in r.result, r.result
+    assert "To read it" not in r.result and "Nothing was read" in r.result, r.result
+
+    # an exact grant on the governance dir does not reach a file under it
+    exact = GatewayVerdict("allow", granted=(os.path.join(ws, "governance"),),
+                           granted_reach=((os.path.join(ws, "governance"), False),))
+    open(snap, "w").write("x = 1")
+    r = disp(BeingIntent("memory_read", {"path": "hestia/_shared/gate.py"}), exact)
+    assert "outside what you hold" in r.result and "To read it" not in r.result, r.result
+
+
 def test_a_miss_with_several_same_named_files_lists_them_all_and_prefers_none():
     """GPT review on #140: with notes/script.py AND scratch/script.py, the old answer listed
     both and then called the first in sort order the one the being "probably meant". Nothing

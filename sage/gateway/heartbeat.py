@@ -1119,6 +1119,27 @@ def fleet_digest(hours: float, forum_dir: Path, repos: list[str]) -> str:
     return "\n\n".join(out) if out else "(nothing new in the window)"
 
 
+def scope_grant_lines(st: dict) -> list:
+    """The beat's "granted paths", from hestia_scope_status. Spelled with the gate's own suffix:
+    `<root>/**` reaches the subtree, bare is EXACT.
+
+    WITH ITS MODES, AND NARROWED GRANTS KEPT (#523): since hestia #1370 a grant narrowed below
+    rwed appears only in `grants_by_mode`, so reading the two old lists made it vanish from the
+    beat while its request still read "granted". An older daemon has no such key, and its two
+    lists are read as before.
+
+    A NARROWED GRANT IS RECORDED, NOT NECESSARILY ADMITTED (Nova on #532): a mode-blind gate
+    admits nothing for it (hestia #1345 part B). The line says so in those words rather than
+    guess which gate is installed; hestia://reach/<path> gives the effective answer."""
+    if st.get("grants_by_mode") is not None:
+        return [f"{g.get('path')}{'/**' if g.get('recursive') else ''} ({g.get('modes') or '-'}"
+                + ("" if (g.get("modes") or "") == "rwed" else
+                   "; narrowed: recorded, may not be admitted yet, see hestia://reach") + ")"
+                for g in st.get("grants_by_mode") or []]
+    return [f"{g.get('path')}{'/**' if g.get('recursive') else ''}"
+            for g in (st.get("live_grants") or []) + (st.get("standing_grants") or [])]
+
+
 def decided_requests(reqs):
     """The settled subset of hestia_scope_status `requests[]`, as (request_id, path, decision).
     hestia's `ScopeRequest::status` emits granted | refused | pending | expired, and its
@@ -4112,9 +4133,7 @@ def main(argv=None) -> int:
     if disp is not None and hasattr(disp, "_call"):
         try:
             st = disp._call("hestia_scope_status", {"plugin_id": args.member})
-            # spelled with the gate's own suffix: `<root>/**` reaches the subtree, bare is EXACT
-            grants = [f"{g.get('path')}{'/**' if g.get('recursive') else ''}"
-                      for g in (st.get("live_grants") or []) + (st.get("standing_grants") or [])]
+            grants = scope_grant_lines(st)
             reqs = [(r.get("request_id"), r.get("path"), r.get("decision") or r.get("status"))
                     for r in (st.get("requests") or [])]
             who_ruled = {r.get("request_id"): r.get("decided_by") for r in (st.get("requests") or [])
@@ -4149,7 +4168,11 @@ def main(argv=None) -> int:
                             + (f". Their note: \"{str(why_ruled[i]).strip()[:400]}\"" if why_ruled.get(i) else "")
                             for i, p_, d in new_decisions) + "\n"
                         if new_decisions else "")
-                     + "(live grants die when the daemon restarts; only standing grants persist)")
+                     + "(live grants die when the daemon restarts; only standing grants persist)\n"
+                     # SAGE #530: the being can ask, instead of acting to find out
+                     + "(modes: r read, w write, e run, d delete. To see what you hold with who "
+                       "granted it, or to ask whether one path is inside it: memory_read "
+                       "{\"path\": \"hestia://reach\"} or {\"path\": \"hestia://reach/<absolute path>\"})")
         except Exception as e:
             scope = f"(scope status unavailable: {type(e).__name__})"
     # the being's own appeals and any ruling new since the last beat (see appeals_block)

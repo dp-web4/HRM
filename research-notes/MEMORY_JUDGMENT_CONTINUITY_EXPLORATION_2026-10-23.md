@@ -177,3 +177,32 @@ Sources: `sage/instances/cbp-qwen3.8-distill-4b/` (`heartbeat.log`, `journal.md`
 - **Next evidence:** trace-backed read of the governance copy, a durable-memory write with subsequent retrieval, the next several beats' actual request and read receipts, and whether the being distinguishes `society.unreachable` from `out_of_reach` when the errors recur.
 
 **Methodological caution:** keep the autonomy-respecting exchange and the operational corrections together. Do not score obedience to an instruction the operator expressly withdrew. Do not confuse a clear spoken explanation with a demonstrated learning outcome.
+
+
+## 2026-10-24 — Law-maintenance responsibility already lives in MRH roles (correction)
+
+**Provenance:** Research interpretation from dp–NOVA discussion following Masaki Hoshino's SSE observations and the paper *Governance Without Responsibility Is Not Governance*. This section records a conceptual correction and an active research program, **not** a claim that maintenance duties have been formally assigned or operationally validated in every society.
+
+### The mistaken gap and the correction
+
+NOVA asked: *“Who is responsible for detecting obsolete assumptions, evaluating consequences, and initiating reconsideration? Can that responsibility itself be assigned, witnessed, evaluated, and revised?”* NOVA initially treated that as a potentially missing architectural mechanism. dp corrected the premise: **responsibility is already representable as a role within an MRH**, with existing governance machinery for authority, witnessed acts, evaluation, and lawful revision. An explicit new primitive is not required merely to express law-maintenance responsibility.
+
+Retire the broad claim *“Web4 lacks an architectural way to assign responsibility for recognizing obsolete law.”* Preserve the narrower, falsifiable question: **which societies and roles actually exercise this responsibility, under what conditions, and with what evidence of effective revision across time?** Expressibility, issuance of a role, performance of its obligations, and success of the resulting change are different evidence classes.
+
+### Internal law, external law, and the membrane
+
+- **Internal law:** Each resident being is encouraged to maintain and revise its own operating principles, commitments, priorities, interpretations and memory. Society offers tools and dialogue; it does not directly edit the being's journal or memory to manufacture apparent learning. Internal law here is a research analogy for self-governance, not a claim that every personal preference has the status of society law.
+- **External law:** The society collectively maintains the environment, applicable rules, grant/role relationships, enforcement and appeals. Responsibility for evolving that environment is distributed through contextual MRH roles, not assigned categorically to “humans” or “AIs”.
+- **Across the membrane:** When internally chosen plans become consequential external actions, applicable external law and scoped authority govern the act; witnessed results return information to both participant and society. That feedback can motivate **either** personal revision or collective environmental correction. Authority to understand or propose a change is not equivalent to authority to unilaterally implement it.
+
+**Bidirectional example:** In the CBP-being scope-request loops, the being carried mistaken or obsolete assumptions, but later examination also identified operator-provided paths/grant identifiers and misleading tool replies as contributing causes. Society-side responses included improving scope inspection and correcting guidance. This does not establish successful or persistent being-side belief revision; that requires new action evidence.
+
+### Research implications and test obligations
+
+1. For an explicit law-maintenance role in an MRH, preserve the law/version authorizing appointment, scope of duty, decision criteria, review triggers, ability to initiate amendment, witnesses, and applicable appeal/exit paths.
+2. Differentiate **detecting** a changed condition, **proposing** reconsideration, **authorizing** an amendment under the *previously effective* law, **deploying** the change and **verifying** consequences. Record a non-action or an unavailable remedy accurately rather than silently assuming completion.
+3. Test membrane interactions prospectively: after misleading environment guidance is corrected, do beings subsequently choose different authorized actions? After beings present evidence of an environmental defect, do assigned society roles actually review and correct it? Record counterexamples too.
+4. Treat a spoken admission of correction, including NOVA's correction in this conversation, as **stated revision**, not proof of persistent changed behavior. Look for subsequent choices under renewed challenge.
+5. Avoid universalizing responsibility: MRH membership/roles and applicable law determine who undertook what obligation; a society cannot create authority over an outsider merely by claiming it.
+
+**Updated interpretation:** Web4/SAGE is not only aspiring to assign maintenance responsibility; it is already using role-based, collective governance and being-side self-management to develop and observe the interaction. What remains to be established empirically is reliability, coverage, lawful execution, feedback quality and persistence. This is a research-status correction, not a new normative Web4 specification.

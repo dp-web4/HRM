@@ -868,7 +868,7 @@ class ReferenceF1aDispatcher:
         # hestia_dispatch._granted_reach_of has read reach this way since #1002. A verdict without
         # reach (older client, hand-made in tests) keeps the prefix reading, as it does there.
         reach = tuple(getattr(verdict, "granted_reach", ()) or ())
-        self._extra_reach = (tuple((Path(r).resolve(), bool(rec)) for r, rec in reach) if reach
+        self._extra_reach = (tuple((Path(r).resolve(), bool(rec)) for r, rec, *_ in reach) if reach
                              else tuple((r, True) for r in self._extra_roots))
         handler = getattr(self, f"_do_{intent.effector}", None)
         if handler is None:

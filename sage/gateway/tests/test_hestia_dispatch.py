@@ -286,13 +286,73 @@ def test_drain_inbox_returns_notices():
     assert [a for n, a in FakeMcp.calls if n == "hestia_member_inbox"][-1]["session_id"] == "sid-1"
 
 
-def test_channel_egress_pending_not_built():
-    d, _ = _disp()
-    env = d(BeingIntent("channel_egress", {"to": "x", "body": "y"}), _ALLOW)
-    assert not env.ok and env.pending and "not built yet" in env.note
-    # the being gets the fact, not design jargon it can mistake for a setting (room seq 306, 2026-10-19)
-    assert "calibration" not in env.note and "no step or setting" in env.note
-    assert "never runs anything" in env.note
+class _Channels(FakeMcp):
+    """hestia_channel_send as #1372's daemon answers it: one bound channel, shadow, nothing sent."""
+    known = True
+
+    def call(self, name, args):
+        if name != "hestia_channel_send":
+            return super().call(name, args)
+        FakeMcp.calls.append((name, args))
+        if not _Channels.known:
+            body = {"_hestia_error": {"code": "hestia.unknown_tool", "message": "Unknown tool: hestia_channel_send"}}
+        elif args.get("channel_id") != "dp-email":
+            body = {"_hestia_error": {"code": "hestia.channel_unbound", "message":
+                    f"no channel '{args.get('channel_id')}' is bound for you. Your bound channels: dp-email. "
+                    "Nothing was sent or recorded."}, "bound_channels": ["dp-email"]}
+        else:
+            body = {"shadow": True, "sent": False, "outbox_id": 4, "channel_id": "dp-email",
+                    "recipient_class": "operator", "decision": "would_send",
+                    "budget": {"limit": 3, "window": "1h", "unanswered": 0, "would_deny": False},
+                    "witnessEntryHash": "chan-hash",
+                    "note": "Shadow: nothing left this machine. Once sends are enforced this would go to "
+                            "'dp-email' (operator). It is in your outbox as #4."}
+        return {"result": {"structuredContent": body}}
+
+
+def _cdisp():
+    FakeMcp.calls, FakeMcp.fail, _Channels.known = [], {}, True
+    root = tempfile.mkdtemp(prefix="hd-")
+    return HestiaF1aDispatcher("sprout-being", root, mcp_factory=lambda ep, pid: _Channels(ep, pid)), root
+
+
+def test_channel_egress_sends_through_the_daemon_and_says_it_was_a_shadow():
+    """hestia #1372: judged, witnessed and kept, not delivered. The receipt must not read as a sent message."""
+    d, _ = _cdisp()
+    env = d(BeingIntent("channel_egress", {"channel": "dp-email", "body": "a test message"}), _ALLOW)
+    assert env.ok and env.witness_id == "chan-hash", env
+    assert env.result["sent"] is False and env.result["shadow"] is True and env.result["outbox_id"] == 4
+    assert env.result["note"].startswith("Shadow: nothing left this machine")
+    assert env.result["budget"]["limit"] == 3
+    (sent,) = _mb_calls("hestia_channel_send")
+    # the channel id and the text, with the being's own session; never a recipient or an address
+    assert sent == {"channel_id": "dp-email", "content": "a test message", "session_id": "sid-1"}
+
+
+def test_channel_egress_reads_the_old_to_as_the_channel_id_never_as_a_recipient():
+    d, _ = _cdisp()
+    env = d(BeingIntent("channel_egress", {"to": "dp-email", "body": "hi"}), _ALLOW)
+    assert env.ok and _mb_calls("hestia_channel_send")[-1]["channel_id"] == "dp-email"
+    env = d(BeingIntent("channel_egress", {"to": "dp", "body": "hi"}), _ALLOW)
+    assert not env.ok and env.error.startswith("hestia.channel_unbound") and "dp-email" in env.error, env
+
+
+def test_channel_egress_on_a_daemon_without_the_tool_says_so_plainly():
+    d, _ = _cdisp()
+    _Channels.known = False
+    env = d(BeingIntent("channel_egress", {"channel": "dp-email", "body": "hi"}), _ALLOW)
+    assert not env.ok and "no channel send yet" in env.error and "nothing for you to do" in env.error
+    # the old stub's design words never come back (room seq 306, 2026-10-19)
+    assert "calibration" not in env.error
+
+
+def test_channel_egress_without_a_channel_or_body_asks_nothing_of_the_daemon():
+    d, _ = _cdisp()
+    env = d(BeingIntent("channel_egress", {"channel": "dp-email", "body": "  "}), _ALLOW)
+    assert not env.ok and "body" in env.error
+    env = d(BeingIntent("channel_egress", {"body": "hi"}), _ALLOW)
+    assert not env.ok and "channel" in env.error
+    assert _mb_calls("hestia_channel_send") == []
 
 
 def test_local_verbs_delegate_to_reference():

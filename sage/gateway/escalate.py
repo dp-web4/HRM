@@ -113,7 +113,7 @@ def exact_root_above(env: ResultEnvelope, path: str) -> Optional[str]:
     v = env.verdict
     p = os.path.realpath(os.path.expanduser(path))
     best = None
-    for r, recursive in ((getattr(v, "granted_reach", ()) or ()) if v else ()):
+    for r, recursive, *_ in ((getattr(v, "granted_reach", ()) or ()) if v else ()):
         r = os.path.realpath(str(r))
         if recursive and (p == r or p.startswith(r + "/")):
             return None                                   # reachable after all; not this case

@@ -32,7 +32,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable, Optional
 
-from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEnvelope
+from sage.gateway.being_gate_client import (BeingIntent, GatewayVerdict, ResultEnvelope,
+                                            copy_alternative, same_path_in_reach)
 
 try:
     import fcntl
@@ -941,7 +942,7 @@ class ReferenceF1aDispatcher:
         # a dispatcher that guessed "recursive" would be wider than the law it enforces.
         roots = []
         for g in (getattr(verdict, "granted_reach", ()) or getattr(verdict, "granted", ()) or ()):
-            if isinstance(g, (tuple, list)) and len(g) == 2:
+            if isinstance(g, (tuple, list)) and len(g) >= 2:     # (root, recursive[, modes]) since #521
                 roots.append((Path(str(g[0])).resolve(), bool(g[1])))
             else:
                 # A BARE ENTRY IS READ AS EXACT, NEVER GUESSED WIDER (hestia #1002: exact is the
@@ -952,6 +953,7 @@ class ReferenceF1aDispatcher:
                 # assumed bare = prefix; it now states its reach explicitly instead.)
                 roots.append((Path(str(g)).resolve(), False))
         self._extra_roots = tuple(roots)
+        self._extra_reach = self._extra_roots     # main's name for the same pairs (#519)
         handler = getattr(self, f"_do_{intent.effector}", None)
         if handler is None:
             # a consequential network act the reference won't run — real F1a's job
@@ -1023,7 +1025,7 @@ class ReferenceF1aDispatcher:
         # (root, recursive) pairs. The home is always a subtree — it is the being's own.
         roots = [(self.memory_root, True)]
         if not writing:
-            roots += list(getattr(self, "_extra_roots", ()) or ())
+            roots += list(self._reach_pairs())
         else:
             # M1. Writes reach the being's own WORKTREE — and only when `check` runs under
             # a principal that is not the seat. The 2026-09-07 stopgap confined every write
@@ -1089,8 +1091,7 @@ class ReferenceF1aDispatcher:
                         f"{p} is inside your FORMER home, which is now a frozen record and is "
                         f"not written. Your home moved; the same file is {moved} — write there "
                         f"(or use the relative path, which always means your current home)")
-            if writing and any(_covered(p, r, rec)
-                               for r, rec in (getattr(self, "_extra_roots", ()) or ())):
+            if writing and any(_covered(p, r, rec) for r, rec in self._reach_pairs()):
                 wt = getattr(self, "worktree", None)
                 in_wt = bool(wt) and (p == Path(wt).resolve() or Path(wt).resolve() in p.parents)
                 if in_wt:
@@ -1121,8 +1122,27 @@ class ReferenceF1aDispatcher:
             if landed is not None:
                 self._rerouted_from = str(p)      # the receipt says so; nothing is hidden
                 return self._safe_path(str(landed.relative_to(self.memory_root)), writing=writing)
-            raise ValueError(self._out_of_reach(p, roots, writing))
+            # An exact grant is named as one, so "you can read and write under X" does not read
+            # as reach into X's subtree when X is a directory granted exactly.
+            shown = tuple(r if recursive else f"{r} (exactly this path, nothing under it)"
+                          for r, recursive in roots)     # carrier: `roots` is main's `reach` here
+            raise ValueError(self._out_of_reach(p, shown, writing))
         return p
+
+    def _reach_pairs(self) -> tuple:
+        """((root, recursive), ...) beyond the home for this verdict. `_extra_reach` when the
+        verdict carried reach; otherwise the bare roots, read by prefix as _safe_path reads them."""
+        # Carrier: `_extra_roots` holds PAIRS (set in __call__); main and main's tests set bare
+        # Paths there beside pairs in `_extra_reach`. Accept both, and always yield resolved pairs.
+        items = getattr(self, "_extra_reach", None) or tuple(
+            g if isinstance(g, (tuple, list)) else (g, True)
+            for g in (getattr(self, "_extra_roots", ()) or ()))
+        return tuple((Path(g[0]).resolve(), bool(g[1])) for g in items)
+
+    def _within_reach(self, p: Path) -> bool:
+        p = p.resolve()
+        pairs = ((self.memory_root, True),) + tuple((Path(r).resolve(), rec) for r, rec in self._reach_pairs())
+        return any(p == r or (rec and r in p.parents) for r, rec in pairs)
 
     def _tail_in_home(self, p: Path) -> Optional[Path]:
         """The longest tail of `p` that names an existing file in this being's home, or None.
@@ -1234,6 +1254,10 @@ class ReferenceF1aDispatcher:
         if writing:
             return head + (" memory_write creates a file inside your home; name a path there "
                            "instead, or request_scope and say what you would write.")
+        copies = same_path_in_reach(p, self._reach_pairs())
+        if copies:
+            # First, before the boundary: the alternative is what the being can act on now.
+            return copy_alternative(str(p), copies) + " " + head
         where = self._existence(p)
         if where == "absent":
             return head + (" Separately, and more usefully: THERE IS NOTHING AT THAT PATH. It "
@@ -1305,6 +1329,37 @@ class ReferenceF1aDispatcher:
                     witness_id=self._witness(
                         f"memory_read {p.name} (does not exist; same name at {', '.join(near)})"))
             above = self._relative_above_home(shown)
+            if above is not None and not self._within_reach(Path(above)):
+                # Pointing only at a file the being cannot read sent cbp-being from
+                # `hestia/plugins/...` to the editable tree and its refusal (2026-10-23 00:23Z)
+                # while a copy sat under its governance grant. Name both: the original as what
+                # it is (outside reach), and the copy as an alternative, not as the same file.
+                copies = same_path_in_reach(above, self._reach_pairs())
+                if copies:
+                    return ResultEnvelope(
+                        ok=True,
+                        result=(f"[no such path in your home: a path without a leading / is read "
+                                f"inside your home, and '{shown}' is not there. A file exists at "
+                                f"'{above}', outside your reach. " + copy_alternative(above, copies)
+                                + " Nothing was read this time.]"),
+                        witness_id=self._witness(
+                            f"memory_read {p.name} (not in home; exists at {above}; copy in reach)"))
+                if self._reach_pairs():
+                    # AND WITH NO COPY, IT IS STILL NOT A READ TO OFFER (SAGE #530). Falling through
+                    # to "To read it:" hands the member a path its grants do not cover, as one it
+                    # can read. Say what is true and suggest no door; asking stays its decision.
+                    # Only when the verdict said what the member holds: a verdict with no grants
+                    # on it (hand-made, or a failed policy fetch) cannot tell, and keeps the old line.
+                    return ResultEnvelope(
+                        ok=True,
+                        result=(f"[no such path in your home: a path without a leading / is read "
+                                f"inside your home, and '{shown}' is not there. A file exists at "
+                                f"'{above}', but it is outside what you hold, so a read of it "
+                                f"would be refused, and nothing you hold has a copy of it. The "
+                                f"paths you hold are in your beat under 'granted paths'. Nothing "
+                                f"was read this time.]"),
+                        witness_id=self._witness(
+                            f"memory_read {p.name} (not in home; exists only outside reach at {above})"))
             if above is not None:
                 # A RELATIVE PATH IS READ INSIDE THE HOME, AND THE BEING DID NOT KNOW THAT.
                 # Measured 2026-10-20/21 on cbp-being: it read the gate source by its absolute

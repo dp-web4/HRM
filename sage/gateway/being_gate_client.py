@@ -1748,6 +1748,108 @@ def _run_command_seatbelt(interp: str, stage: str, script: str, worktree: Option
                     + [shlex.quote(f"{interp}/bin/python3"), shlex.quote(f"{st}/{script}")])
 
 
+#: Places inside the sandbox the seat owns: a grant at or under one is not mounted. /tmp is
+#: different: the run's own /tmp is mounted first, so a grant UNDER it binds on top, and only a
+#: grant on /tmp itself (or the root) would replace what the sandbox put there.
+_RUN_SEAT_PATHS = ("/usr", "/lib", "/lib64", "/bin", "/etc", "/proc", "/dev", "/work")
+
+
+def run_grant_mounts(ctx: Optional[dict] = None) -> tuple:
+    """(mounts, skipped, mask_home): the being's grants as a run's sandbox sees them.
+
+    A RUN SEES WHAT THE BEING MAY TOUCH, AT THE SAME PATHS (dp, 2026-10-23: "the sandbox might
+    need to reflect being's actual grants, including writes where granted. otherwise there is a
+    misalignment of permissions between what it can do directly vs what it can do using
+    tools/code"). Measured that morning on cbp-being: memory_read had read
+    <ws>/governance/hestia/plugins/_shared/hestia_governance_closure.py on every beat, and its
+    scratch/check_file.py, run in the sandbox, printed "File exists: False" for the same path.
+    The sandbox had no grant in it, so every granted path read as absent; the being believed its
+    own check over its reads and filed a dozen scope requests for a file it already had.
+
+    BY REFERENCE, NOT REWRITE (dp, 2026-10-23: "the intent is that sandbox inherits being's
+    actual grants by reference, not rewrite (so any that are subsequently changed/modified
+    automatically update in the box)"). The source is ctx["granted_reach"], which is the LAW'S
+    OWN policy grants re-read for this act (gate: `_compose_ctx("run")` -> `_policy_grants()`;
+    dispatcher: the verdict's granted_reach). Nothing is cached or copied, so a grant changed,
+    narrowed or revoked between two runs changes the second run's mounts and its judged line.
+
+    `mounts` is [(path, "dir"|"file", "rw"|"ro")]. Each granted_reach item is (root, recursive)
+    or (root, recursive, modes), modes being r/w/e/d letters as on hestia #1370's wire; a
+    pair carries the modes of a grant on the mode-blind lists, "rwed". The bind type IS the
+    mode enforcement, and it fails closed (Nova's HOLD on 76f079bf0):
+      * writable (`--bind`) only with BOTH w and d: a bind cannot let a run write a file and
+        stop it deleting one;
+      * read-only (`--ro-bind`) with r and not both w and d;
+      * not mounted without r (said in `skipped`).
+    File permissions still hold inside, so a read-only tree (the governance snapshot is a-w)
+    stays read-only even under an rwed grant, as it is to memory_write. A grant the policy
+    does not carry (hestia #1370 withholds narrowed grants from the mode-blind lists until
+    the gate enforces modes) is never mounted: the line names every mount, the law judges
+    that line's paths, and a box that reached past the law would be refused or worse. When
+    the policy carries modes, the box follows them with no change here.
+    `skipped` is [(path, why)] for grants that are not mounted, so a receipt can say so:
+      * an EXACT grant on a directory reaches that directory alone, and a bind cannot show a
+        directory without what is in it;
+      * a grant whose path is or passes through a symlink (a bind would follow it);
+      * a path the sandbox itself owns (/usr, /work, ...), /tmp itself, and the root;
+      * nothing there now.
+    THE HOME IS NEVER MOUNTED (test_run_sandbox_denies_the_seat_falsified_from_inside): a run
+    works on copies, so it cannot reach the conversation store or the seat-owned notes that
+    memory_write refuses. A grant inside the home adds nothing; a grant that CONTAINS the home
+    sets `mask_home`, and the composer lays an empty read-only directory over it.
+    Sorted and de-nested, so the gate and the dispatcher compose the same line from the same
+    grants in any order."""
+    import os
+    ctx = ctx or {}
+    home = os.path.realpath(ctx.get("memory_root") or "/nonexistent-home")
+    found, skipped = {}, []          # real path -> (kind, "rw"|"ro")
+    for item in ctx.get("granted_reach") or ():
+        try:
+            root, recursive = item[0], item[1]
+            modes = str(item[2]) if len(item) > 2 else "rwed"
+        except (TypeError, ValueError, IndexError):
+            continue
+        if not isinstance(root, str) or not root.strip():
+            continue
+        if "r" not in modes:
+            skipped.append((os.path.abspath(os.path.expanduser(root.strip())),
+                            f"your grant there is '{modes}', without r (read)"))
+            continue
+        how = "rw" if ("w" in modes and "d" in modes) else "ro"
+        lexical = os.path.abspath(os.path.expanduser(root.strip()))
+        real = os.path.realpath(lexical)
+        if real == home or real.startswith(home + os.sep):
+            continue                                   # the home: staged copies only
+        if real != lexical:
+            skipped.append((lexical, "it is or passes through a symlink"))
+            continue
+        if real in ("/", "/tmp") or any(real == s or real.startswith(s + os.sep)
+                                         for s in _RUN_SEAT_PATHS):
+            skipped.append((real, "the sandbox uses that path itself"))
+            continue
+        if os.path.isdir(real):
+            if not recursive:
+                skipped.append((real, "an exact grant on a directory reaches only the directory"))
+                continue
+            kind = "dir"
+        elif os.path.isfile(real):
+            kind = "file"
+        else:
+            skipped.append((real, "nothing is there"))
+            continue
+        # Two grants on one path: the law's reach is their union, so the wider bind wins.
+        if found.get(real, (kind, "ro"))[1] != "rw":
+            found[real] = (kind, how)
+    # De-nesting by the union rule: a mount inside a directory mount adds nothing unless it
+    # is WIDER there (rw inside ro). Kept ones bind after their parent (sorted), so they win.
+    dirs = [(p, h) for p, (k, h) in found.items() if k == "dir"]
+    mounts = sorted((p, k, h) for p, (k, h) in found.items()
+                    if not any(p != d and p.startswith(d + os.sep) and (dh == "rw" or h == "ro")
+                               for d, dh in dirs))
+    mask_home = any(k == "dir" and home.startswith(p + os.sep) for p, k, _h in mounts)
+    return mounts, sorted(set(skipped)), mask_home
+
+
 def run_command(args: dict, ctx: Optional[dict] = None) -> str:
     """The sandboxed interpreter invocation for a `run` intent.
 
@@ -1806,6 +1908,17 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
         q = _shlex.quote(_wt)
         wt_bind = f" --ro-bind {q} {q}"
         wt_env = f" --setenv PYTHONPATH {q}"
+    # THE BEING'S GRANTS, AT THEIR OWN PATHS, AS THE POLICY HOLDS THEM (run_grant_mounts): the
+    # bind type is the grant's mode. After the worktree, so a grant covering it gives the run
+    # the reach memory_write has there. The home is masked last, so no grant can show it, and a
+    # symlink inside a granted tree that points into the home resolves inside the sandbox, to
+    # the mask.
+    mounts, _skipped, mask_home = run_grant_mounts(ctx)
+    grant_binds = "".join(f" {'--bind' if h == 'rw' else '--ro-bind'} {shlex.quote(p)} {shlex.quote(p)}"
+                          for p, _k, h in mounts)
+    if mask_home:
+        _qh = shlex.quote(_home)
+        grant_binds += f" --tmpfs {_qh} --remount-ro {_qh}"
     return (
         (f"{PRLIMIT} --as={run_mem_cap_bytes()} --fsize={RUN_FSIZE_BYTES} -- "
          if os.path.exists(PRLIMIT) else "")
@@ -1817,7 +1930,8 @@ def run_command(args: dict, ctx: Optional[dict] = None) -> str:
         f" --ro-bind {interp} {interp}"
         f" --proc /proc --dev /dev --size {RUN_TMP_BYTES} --tmpfs /tmp"
         f"{wt_bind}"
-        # THE ONLY WRITABLE PLACES IN THERE are these two size-limited tmpfs.
+        f"{grant_binds}"
+        # Writable in there: these two size-limited tmpfs, and what the being's grants reach.
         f" --size {RUN_WORK_BYTES} --tmpfs /work{inputs}"
         " --unshare-pid --unshare-net --unshare-ipc --unshare-uts"
         " --new-session --die-with-parent"
@@ -2728,8 +2842,13 @@ _TOOL_SCHEMAS = {
                       "content": "what to write",
                       "mode": "'append' (default), 'replace' (overwrites the whole file; a file of 4 KB or more is kept first), or 'restore' (puts back the version the last replace kept; content may be empty)"},
                      ["path", "content"]),
-    "channel_egress": ("Send a message out through a sealed channel.",
-                       {"to": "recipient", "body": "your message"}, ["to", "body"]),
+    "channel_egress": ("Send a message out through a channel the operator bound for you. You name the channel; "
+                       "who it reaches is set by the operator's binding, not by you. Asking for a channel you do not "
+                       "have answers with the ones you do. Today every send is a SHADOW: judged, witnessed and kept "
+                       "in your outbox, and NOT delivered; the receipt says so. Once sends are delivered, a fourth "
+                       "unanswered message on one channel within the same hour will not go.",
+                       {"channel": "the id of a channel bound for you", "body": "your message"},
+                       ["channel", "body"]),
     "mesh": ("Wake another member through the fractal mesh with a pointer-based notice "
              "(no body — point at content you already posted).",
              {"to": "member name", "kind": "notice kind, e.g. coordination, reply, ack",
@@ -3157,6 +3276,84 @@ def _pattern_collision_hint(intent: "BeingIntent", reason: str) -> str:
     return ""
 
 
+def same_path_in_reach(p, reach) -> list:
+    """Where the path `p` asks for already exists under a recursive grant, as sorted
+    [(path, root)]; [] if nowhere.
+
+    dp, 2026-10-23, choosing this over editing the being's files: cbp-being asked at least six
+    times for `<ws>/hestia/plugins/_shared/hestia_governance_closure.py`, the editable tree, while
+    its standing grant on `<ws>/governance/**` held the same file at
+    `<ws>/governance/hestia/plugins/...` and memory_read of that path worked. Every refusal it
+    got named the boundary ("'hestia' is not granted") and a pending scope request, never the
+    copy it could read, and a relative read even pointed it AT the editable path. The seat
+    letter named the right path for a day; the being kept writing the wrong one back. The
+    correction belongs where the mistake happens.
+
+    The match is one shape only: a recursive grant on a directory G whose PARENT also holds
+    the asked path, so the copy is the asked path with G's own name inserted
+    (`<ws>/hestia/x` -> `<ws>/governance/hestia/x` under a grant on `<ws>/governance`). A
+    looser match (any shared tail) would call `/elsewhere/sage/__init__.py` a copy of
+    `SAGE/sage/__init__.py`, and request_scope files nothing on a match, so a wrong one
+    would swallow a real ask. Every root that matches is returned, sorted, so grant order
+    cannot pick one. Each candidate is canonicalized and must stay inside its canonical
+    root: a symlink out of a grant is not a copy in reach. Nothing here widens reach; it
+    names a path the being can already read."""
+    try:
+        target = os.path.realpath(os.path.expanduser(str(p)))
+    except (OSError, ValueError):
+        return []
+    found = set()
+    for item in reach or ():
+        r, recursive = item[0], item[1]       # (root, recursive[, modes]) since #521
+        if not recursive:
+            continue
+        try:
+            rr = os.path.realpath(str(r))
+        except (OSError, ValueError):
+            continue
+        parent = os.path.dirname(rr)
+        if rr == parent or not target.startswith(parent.rstrip(os.sep) + os.sep):
+            continue
+        if target == rr or target.startswith(rr + os.sep):
+            continue                      # already inside this grant: not a copy, it is reach
+        cand = os.path.realpath(os.path.join(rr, target[len(parent.rstrip(os.sep)) + 1:]))
+        if cand != target and cand.startswith(rr + os.sep) and os.path.exists(cand):
+            found.add((cand, rr))
+    return sorted(found)
+
+
+_READS_A_PATH = ("memory_read",)
+
+
+def copy_alternative(asked: str, copies) -> str:
+    """One wording for every surface that names a copy. It offers the copy as an ALTERNATIVE:
+    a different file that may differ from the original, readable now; and it leaves the way
+    to the original open. Nova on #522 (78efe4a44): an existing file at the mirrored path is
+    not the same content or authority target, so it is never proof that no grant is needed."""
+    named = "; ".join(f"{c} (under your grant {r})" for c, r in copies)
+    return (f"A copy at the same path exists under a grant you already hold: {named}. If reading "
+            f"it is what you need, memory_read that copy now; it is a separate file and may differ "
+            f"from '{asked}'. If you need '{asked}' itself (its current contents, or to change or "
+            f"run it), request_scope it and say which.")
+
+
+def _copy_in_reach_hint(intent: "BeingIntent", reach) -> str:
+    """For a refused READ: a copy at the same path under a grant the being already holds,
+    said first. '' when there is none. Reads only; a copy is no answer to a refused write."""
+    try:
+        if intent.effector not in _READS_A_PATH:
+            return ""
+        raw = str((intent.args or {}).get("path", "")).strip()
+        if not os.path.isabs(os.path.expanduser(raw)):
+            return ""
+        copies = same_path_in_reach(raw, reach)
+        if not copies:
+            return ""
+        return copy_alternative(raw, copies) + " What the gate said about the path you asked for: "
+    except Exception:
+        return ""
+
+
 def _repo_name_roots(core, scopes, workspace: str, granted_paths=()) -> tuple:
     """``<workspace>/<name>`` for a bare repo-NAME scope that IS an operator's recursive grant.
 
@@ -3268,7 +3465,10 @@ def _granted_reach(core, policy, workspace: str, granted_paths=()) -> tuple:
         reach = getattr(core, "_scope_roots_with_reach", None)
         if reach is not None:
             scopes = list(getattr(policy, "scope", ()) or ())
-            return (tuple((str(r), bool(rec)) for r, rec in reach(scopes, workspace))
+            # A third element, the grant's modes, passes through when the core supplies one
+            # (hestia #1345 part B); every consumer unpacks `r, rec, *_`.
+            return (tuple((str(it[0]), bool(it[1])) + tuple(str(m) for m in it[2:3])
+                          for it in reach(scopes, workspace))
                     + tuple((r, True) for r in _repo_name_roots(core, scopes, workspace, granted_paths)))
         return tuple((r, True) for r in _granted_roots(core, policy, workspace, granted_paths))
     except Exception:
@@ -3496,7 +3696,7 @@ class BeingGateClient:
             # being's args, and THAT is what the law judges. Bad args raise here and gate()
             # turns that into a deny (gate.raised), never a silent pass. The being never
             # fills a command; the registry never carries a cmd_arg for a composed verb.
-            command = compose(intent.args, self._compose_ctx())
+            command = compose(intent.args, self._compose_ctx(intent.effector))
         # Text that leaves the machine rides the law's `egress` field (hestia #1201), only when there is some: an
         # event that declares none is built exactly as before, so a pre-#1201 core still judges every other verb.
         egress = _egress_text(intent)
@@ -3506,11 +3706,14 @@ class BeingGateClient:
             **({"egress": egress} if egress else {}),
         )
 
-    def _compose_ctx(self) -> dict:
+    def _compose_ctx(self, effector: Optional[str] = None) -> dict:
         """What a composed verb is allowed to know about this seat.
 
-        Deliberately the two facts the dispatcher composes from and nothing else: a composer
-        that needed more would be reaching past the law's view of the act."""
+        Deliberately the facts the dispatcher composes from and nothing else: a composer
+        that needed more would be reaching past the law's view of the act. For `run`, that
+        includes the grants (run_grant_mounts): the line names every path it mounts, so the
+        law judges the grants the run will see, and the dispatcher composes the same line
+        from the verdict's granted_reach, which is these same grants."""
         # getattr, not attribute access: this module's hermetic tests build a client by
         # bypassing __init__ and injecting a fake core, and a ctx builder must not be the thing
         # that breaks them -- it would turn every such test into a KeyError three frames away
@@ -3523,9 +3726,8 @@ class BeingGateClient:
                 "member": getattr(self, "member_id", None),
                 # where `camera` gets a frame (instance.json camera_source; "cortex" or absent)
                 "camera_source": getattr(self, "camera_source", None),
-                # Legion carrier: search reaches the fleet repo root from here (_search_reach),
-                # and the dispatcher composes search with the same workspace, so judged == run
-                "workspace": getattr(self, "workspace", None)}
+                "workspace": getattr(self, "workspace", None),
+                **({"granted_reach": self._policy_grants()[1]} if effector == "run" else {})}
 
     # -- gate one intent (intent -> verdict), fail-closed --------------------
     def _policy_grants(self) -> tuple:
@@ -3787,7 +3989,7 @@ class BeingGateClient:
                 if not os.path.exists(cand):
                     continue
                 if any(cand == r or (rec and cand.startswith(r.rstrip(os.sep) + os.sep))
-                       for r, rec in ((os.path.realpath(str(r)), bool(rec)) for r, rec in reach)):
+                       for r, rec in ((os.path.realpath(str(r)), bool(rec)) for r, rec, *_ in reach)):
                     args[a] = cand
                     moved.append((raw, cand))
                 break   # nearest existing candidate decides; an ungranted one is not skipped past
@@ -3827,6 +4029,10 @@ class BeingGateClient:
             err = f"{v.rule}: {v.reason}"
             err += _pattern_collision_hint(intent, v.reason or "")
             err += _home_hint(intent, self._dispatcher)
+            # First, not appended: the gate's text runs to a grant list and a pending-request
+            # note, and the being acted on those, not on anything after them.
+            if intent.effector in _READS_A_PATH:
+                err = _copy_in_reach_hint(intent, self._policy_grants()[1]) + err
             err += (f" (deny witnessed {wid}; if you think this is wrong, appeal with deny_hash={wid})"
                     if wid else " (deny not witnessed: daemon unreachable, so it cannot be appealed yet)")
             return ResultEnvelope(ok=False, refused=True, verdict=v, error=err, witness_id=wid)

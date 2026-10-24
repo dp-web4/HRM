@@ -32,7 +32,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable, Optional
 
-from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEnvelope
+from sage.gateway.being_gate_client import (BeingIntent, GatewayVerdict, ResultEnvelope,
+                                            copy_alternative, same_path_in_reach)
 
 try:
     import fcntl
@@ -976,6 +977,17 @@ class ReferenceF1aDispatcher:
             raise ValueError(self._out_of_reach(p, shown, writing))
         return p
 
+    def _reach_pairs(self) -> tuple:
+        """((root, recursive), ...) beyond the home for this verdict. `_extra_reach` when the
+        verdict carried reach; otherwise the bare roots, read by prefix as _safe_path reads them."""
+        return tuple(getattr(self, "_extra_reach", None) or (
+            (r, True) for r in (getattr(self, "_extra_roots", ()) or ())))
+
+    def _within_reach(self, p: Path) -> bool:
+        p = p.resolve()
+        pairs = ((self.memory_root, True),) + tuple((Path(r).resolve(), rec) for r, rec in self._reach_pairs())
+        return any(p == r or (rec and r in p.parents) for r, rec in pairs)
+
     def _tail_in_home(self, p: Path) -> Optional[Path]:
         """The longest tail of `p` that names an existing file in this being's home, or None.
 
@@ -1085,6 +1097,10 @@ class ReferenceF1aDispatcher:
         if writing:
             return head + (" memory_write creates a file inside your home; name a path there "
                            "instead, or request_scope and say what you would write.")
+        copies = same_path_in_reach(p, self._reach_pairs())
+        if copies:
+            # First, before the boundary: the alternative is what the being can act on now.
+            return copy_alternative(str(p), copies) + " " + head
         where = self._existence(p)
         if where == "absent":
             return head + (" Separately, and more usefully: THERE IS NOTHING AT THAT PATH. It "
@@ -1156,6 +1172,21 @@ class ReferenceF1aDispatcher:
                     witness_id=self._witness(
                         f"memory_read {p.name} (does not exist; same name at {', '.join(near)})"))
             above = self._relative_above_home(shown)
+            if above is not None and not self._within_reach(Path(above)):
+                # Pointing only at a file the being cannot read sent cbp-being from
+                # `hestia/plugins/...` to the editable tree and its refusal (2026-10-23 00:23Z)
+                # while a copy sat under its governance grant. Name both: the original as what
+                # it is (outside reach), and the copy as an alternative, not as the same file.
+                copies = same_path_in_reach(above, self._reach_pairs())
+                if copies:
+                    return ResultEnvelope(
+                        ok=True,
+                        result=(f"[no such path in your home: a path without a leading / is read "
+                                f"inside your home, and '{shown}' is not there. A file exists at "
+                                f"'{above}', outside your reach. " + copy_alternative(above, copies)
+                                + " Nothing was read this time.]"),
+                        witness_id=self._witness(
+                            f"memory_read {p.name} (not in home; exists at {above}; copy in reach)"))
             if above is not None:
                 # A RELATIVE PATH IS READ INSIDE THE HOME, AND THE BEING DID NOT KNOW THAT.
                 # Measured 2026-10-20/21 on cbp-being: it read the gate source by its absolute

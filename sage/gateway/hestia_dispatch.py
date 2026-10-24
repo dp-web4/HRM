@@ -44,7 +44,8 @@ from pathlib import Path
 import time
 from typing import Any, Callable, Dict, List, Optional
 
-from sage.gateway.being_gate_client import BeingIntent, GatewayVerdict, ResultEnvelope, camera_command
+from sage.gateway.being_gate_client import (BeingIntent, GatewayVerdict, ResultEnvelope, camera_command,
+                                            copy_alternative, same_path_in_reach)
 from sage.gateway.hestia_witness import _ENDPOINT, _Mcp, _unwrap, make_hestia_witness_fn
 from sage.gateway.reference_f1a import ReferenceF1aDispatcher
 
@@ -3775,18 +3776,25 @@ class HestiaF1aDispatcher:
                 "next": (f"your grant on {exact_above} is EXACT: it reaches that path and nothing beneath it. "
                          f"Only the operator can make it recursive (path:{exact_above}/**). No request was filed; "
                          f"your seat has been told. Do not retry this write in this beat.")})
+        # A copy at the same path under a grant it holds (cbp-being, 2026-10-22..23: at least
+        # six asks for the editable hestia tree's closure file while its governance grant held
+        # a copy it had read). The ask is STILL FILED: a copy is a different file that may
+        # differ, and is no answer to a need for the original's current bytes or to change or
+        # run it (Nova, #522 78efe4a44). The being is told the alternative alongside.
+        copies = same_path_in_reach(path, _granted_reach_of(getattr(self, "_verdict", None)))
         args: Dict[str, Any] = {"plugin_id": self.plugin_id, "path": path,
                                 "reason": f"[{self.plugin_id}] {reason}"}
         out = self._call("hestia_request_scope", args)
         err = _hestia_error(out)
         if err:
-            return ResultEnvelope(ok=False, error=err)
+            return ResultEnvelope(ok=False, error=err + (" " + copy_alternative(path, copies) if copies else ""))
         rid = out.get("request_id")
-        return ResultEnvelope(ok=True, witness_id=out.get("witnessEntryHash"),
-                              result={"request_id": rid, "status": out.get("status"),
-                                      "path": path,
-                                      "next": _scope_next(rid, out.get("next")),
-                                      "on_timeout": out.get("on_timeout")})
+        result = {"request_id": rid, "status": out.get("status"), "path": path,
+                  "next": _scope_next(rid, out.get("next")), "on_timeout": out.get("on_timeout")}
+        if copies:
+            result["copy_in_reach"] = [c for c, _ in copies]
+            result["meanwhile"] = copy_alternative(path, copies)
+        return ResultEnvelope(ok=True, witness_id=out.get("witnessEntryHash"), result=result)
 
     def _do_say(self, intent: BeingIntent) -> ResultEnvelope:
         """Add a turn to a conversation the being is in.

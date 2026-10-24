@@ -57,6 +57,30 @@ Across session boundaries, current model templates/generation patterns can repri
 - **Independent source check in the conversation:** an exact-string inspection of the **complete GitHub `main`** `hestia/plugins/_shared/hestia_governance_closure.py` (blob `5fc754085e288393c3863dd7422debfdde66f5a7`, approx. 100 KB) found **zero** occurrences of `CLOSURE_TABLE`, `RULE_CREATE_EXTERNAL`, or `RULE_CREATE_EXTERNA`. This refutes the claim **for that GitHub blob only**; the deployed read-only snapshot was not independently inspected. A specific invented symbol can arise from a generated hypothesis or earlier scratch text; specificity is not provenance.
 - A subsequent reflection distinguished 'not in code' from 'expected by my mental model'. That is promising epistemic language; no source-verified retraction or persistent journal correction has yet been shown.
 
+### 2026-10-23 evening (UTC 21:52 to 10-24 00:04): an invented explanation, and requests that kept coming
+
+Sources: `sage/instances/cbp-qwen3.8-distill-4b/` (`heartbeat.log`, `journal.md`, `conversations/dp.jsonl` seq 538-549, `scratch/`), and the operator's escalation records for each scope request. Times are UTC. The Hestia chain itself was not queried for this entry; scope outcomes are as recorded in the escalation files.
+
+**The "stale inbox directory".**
+- **Evidence:** at 23:32:57 the being called `memory_write` on `inbox/20261023-222421-reply-0f1073f1-6f8.md` and got `FileExistsError: [Errno 17] File exists: '.../inbox'`. The instance's `inbox` is an ordinary file (13,260 bytes), not a directory, so a write beneath it fails. The same error appears 79 times in `heartbeat.log` since at least 2026-09-25. Working inbox directories exist at `notes/inbox/` and `scratch/inbox/`.
+- **The being's account (seq 546, 23:37):** "HUB cannot poll scope-0c533d78211e because the inbox directory already exists". It proposed: "Clean up the stale inbox directory". In the same message it said `hestia_governance_closure.py` "doesn't exist here".
+- **dp (seq 547, 23:40):** which operation produced the error, what path, and how did it know the directory was stale? Do not remove anything.
+- **The being's explanation (seq 548, 23:43):** "I attempted to remove the inbox directory using os.remove() … os.remove() cannot remove a directory"; the directory was a residue of "the HUB polling process"; "cleanup is authorized … safe".
+- **What the evidence shows against that explanation:**
+  - there is no remove call anywhere in the log; the failing call was a write;
+  - `os.remove` on a directory raises `IsADirectoryError`, not `FileExistsError`;
+  - the target is not a directory;
+  - HUB polling does not touch this path;
+  - the closure file is present in the being's granted snapshot (`governance/hestia/plugins/_shared/`).
+- **What it did with the explanation:** it wrote the account into `journal.md`, added a todo to remove the path "using rmtree()", and stored a `remember` entry. It deleted nothing; the file is unchanged.
+- **Reading:** this is a fluent, specific, causally structured explanation for an action that never happened, and it was immediately made durable in three memory surfaces. The coherence of the explanation carried no information about its truth. This is the "autobiographical reconstruction" target above, observed naturally, and it is the clearest example so far of why explanations and evidence-supported actions must be scored separately.
+
+**A path invisible in the sandbox, treated as missing.** At 21:52 a scratch script (`scratch/start_hestia.py`) found `/home/dp/ai-workspace/hestia` absent inside the sandbox and created it there ("created directory … hestia exists: False"). At 22:43 the being concluded the daemon "isn't installed at … /home/dp/ai-workspace/hestia/". On the host that directory exists and predates the script. This is the *missing file* vs *sandbox-invisible file* distinction dp had explained that morning, applied in the wrong direction one evening later.
+
+**Scope requests.** On 2026-10-22, six requests outside the grant: workspace-root searches, `systemctl restart hestia`, and reads of the live closure file. On 2026-10-23, thirteen more, all aimed at live `hestia/` source or the workspace root, while the same file was readable in the granted snapshot. Of the thirteen, eleven were refused ("out of scope", "still out of scope"), and two have no recorded outcome. The last was at 23:55, after the morning's explicit lesson and the afternoon's promise not to repeat refused requests. At 23:59 the journal called the access "critical … cannot complete the analysis" without it. At 23:25 (seq 543) it had claimed to have "confirmed CLOSURE_TABLE and RULE_CREATE_EXTERNAL exist"; its own earlier message (seq 539) and a search of the snapshot (0 hits) contradict that.
+
+**Open at the time of writing:** at seq 549 (10-24 00:04) dp asked for no new scope requests for three beats. No later beats are recorded yet, so compliance is untested, not refuted. Four scope ids the being cites in its journal (`0c533d78211e`, `a6ad69c7975b`, `56b834e5725a`, `70f26612767e`) have no matching escalation record; whether they exist on the chain was not checked.
+
 ### What this case currently demonstrates, and what it does not
 
 - **Observed:** named interpersonal roles, a persistent self-described task, repeated permission appeals, correct verbal corrections that sometimes failed to alter later planning, and unsupported symbol claims.

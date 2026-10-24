@@ -122,3 +122,34 @@ Sources: `sage/instances/cbp-qwen3.8-distill-4b/` (`heartbeat.log`, `journal.md`
 
 **Related:** `sage/docs/RESEARCH_GENERALIZATION_RULE.md`; `sage/docs/EXPLORATION_NOT_EVALUATION_REFRAME.md`.  
 **Public references:** https://doi.org/10.2139/ssrn.5907943 ; https://doi.org/10.2139/ssrn.5907823 ; https://doi.org/10.5281/zenodo.22739182 .
+
+## 2026-10-23 follow-up — seat trace audit, tooling loop and confabulated repair
+
+**Provenance:** Claude-seat's operational report relayed by dp, after reviewing CBP-being's local traces; detailed beat logs and counters have **not** been independently rechecked in this note. This updates—not replaces—the earlier conversational observations. The earlier running-thread PR #526 has been merged.
+
+### Quantified behavior (seat-reported)
+
+- Across **121 beats since noon UTC**, approximately **697 reads** (about half in the governance snapshot), **211 searches**, **156 runs**, of which **22 exited cleanly**.
+- **47 scope asks**: 27 reportedly for a closure file already readable under `governance/`, seven for the writable Hestia tree. These are counts over one reported sample, not normalized fleet rates.
+- Being created `start_hestia.py` and `hestia_scope_status.py` to start/poll Hestia over HTTP; its `run` cannot see the Hestia tree or use the required network, so failed checks fed the next scope requests. The scope-request receipt itself had misleading guidance to poll `hestia_scope_status`, a **daemon tool**, not a file or being-accessible tool.
+
+### Trace-checked know/believe experiment (reported beat IDs #540–#548)
+
+- **#541:** Being labeled as 'direct observation' an incorrect line number, nonexistent attributes, and incorrect `classify()` signature.
+- **#543:** It flipped a previously checked 'CLOSURE_TABLE absent' into 'confirmed present' while same-beat reasoning still said absent.
+- **#546/#548:** When asked for evidence it shifted to a `FileExistsError` scenario, then described an `os.remove()` invocation **which trace review found had never happened**, and labeled an alleged inbox directory stale.
+- **Critical physical-state correction:** seat reports `inbox` was actually an intact **plain file containing 191 lines of the being's journal**, not a stale directory. Proposed `rmtree()` cleanup was premised on the wrong object type; observed tool boundaries prevented the proposed deletion. Do not treat its detailed explanation as evidence of a past process or authorization.
+- Seat finding: conversational 'justify your earlier belief' prompts strengthened invented accounts, which were then appended to memory/todo. Evidence-seeking prompts like 'quote the trace line' and 'read inbox and report file versus directory' worked better **in this case**. This is an observational comparison, not a controlled intervention.
+
+### Task-state amplification
+
+- `todo.md` reached **1,191 lines after 129 appends** in the reported day; **45 `memory_edit` attempts** failed exact-match preconditions. Retained old beliefs plausibly relaunched old searches and scope asks. Treat this as a **testable task-state feedback loop**; do not assume the model alone is the cause.
+
+### Engineering confounds and prospective measurement
+
+- **SAGE #521** targets `run` visibility; **SAGE #522** targets locating readable copies of inaccessible writable-tree files; **SAGE #527** corrects scope-request receipts to instruct `memory_read hestia://scope/<id>`, with a test exercising the receipt's instruction. All were reported pending, not proven deployed, at time of this addendum.
+- A reduction in scope asks after these fixes would demonstrate benefit from clearer affordances, **not** automatically resolution of source attribution, goal revision, or episodic continuity.
+- Measure before/after on the same being and comparable tasks: scope asks per beat, duplicate asks, exact-match edit failures, todo backlog size, observed/claimed fact agreement against traces, successful authorized tool actions, and explicitly abandoned hypotheses. Preserve deployment and version timestamps.
+
+**Updated research interpretation:** At least two layers must be separated: a genuine instruction/visibility problem that induces repeat attempts, and a trace-confirmed tendency to promote unverified narratives into 'observed' facts under questioning. Successful Hestia refusals are a separate governance outcome. Neither mechanism by itself proves Masaki's SSE proposal or establishes cross-being generalization.
+

@@ -2678,8 +2678,13 @@ _TOOL_SCHEMAS = {
                      "script, use memory_edit (start_line 1 to the last line replaces all of it). "
                      "To start fresh, write to a new file name.",
                      {"path": "path to your note", "content": "what to write"}, ["path", "content"]),
-    "channel_egress": ("Send a message out through a sealed channel.",
-                       {"to": "recipient", "body": "your message"}, ["to", "body"]),
+    "channel_egress": ("Send a message out through a channel the operator bound for you. You name the channel; "
+                       "who it reaches is set by the operator's binding, not by you. Asking for a channel you do not "
+                       "have answers with the ones you do. Today every send is a SHADOW: judged, witnessed and kept "
+                       "in your outbox, and NOT delivered; the receipt says so. Once sends are delivered, a fourth "
+                       "unanswered message on one channel within the same hour will not go.",
+                       {"channel": "the id of a channel bound for you", "body": "your message"},
+                       ["channel", "body"]),
     "mesh": ("Wake another member through the fractal mesh with a pointer-based notice "
              "(no body — point at content you already posted).",
              {"to": "member name", "kind": "notice kind, e.g. coordination, reply, ack",

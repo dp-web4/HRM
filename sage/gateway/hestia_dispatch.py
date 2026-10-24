@@ -11,8 +11,8 @@ forum/legion-reply-sprout-f1a-r1-stands-verb-map-2026-09-02.md, read from handle
     peer_ask         none — a COMPOSE: publish the question at a         EXECUTED as the compose
                        pointer, member_notify(kind=coordination),
                        drain hestia_member_inbox for the answer
-    channel_egress   hestia_egress_pending is read-side only;           honest `pending`
-                       no send-side tool exists
+    channel_egress   hestia_channel_send(channel_id, content,           EXECUTED, in shadow:
+                       session_id); the binding names the recipient       judged, kept, not delivered
 
 Result envelope (r1, pinned from the owner seat): {ok, result|error, witness_id}. When the
 failure originates in the daemon, `error` carries hestia's own `hestia.<code>` string as its
@@ -4391,16 +4391,39 @@ class HestiaF1aDispatcher:
             return ", ".join(woke)
         return None
 
-    # -- channel_egress: not built on the daemon ----------------------------
+    # -- channel_egress: hestia_channel_send (hestia #1344 slice 1, SHADOW) -----
     def _do_channel_egress(self, intent: BeingIntent) -> ResultEnvelope:
-        # SAY WHAT IT IS, NOT WHAT IT AWAITS. The note named design work ("F5 enforcement gated on rate-governor
-        # calibration, PRD §12"), and sprout-being took it for a setting it could complete and asked dp what
-        # "rate-governor calibration" required (room seq 306, 2026-10-19), having tried to run shell scripts by
-        # egressing them to stdout. The design state stays in this comment; the being gets the fact.
-        return ResultEnvelope(ok=False, pending=True,
-                              note="channel_egress is not built yet. Nothing was sent, whatever you give it, and "
-                                   "there is no step or setting that makes it work today. It sends messages out; "
-                                   "it never runs anything. To have a script run, request_run asks your seat.")
+        """A message to a channel the operator bound for the being (hestia #1372).
+
+        THE BEING NAMES A CHANNEL, NEVER A RECIPIENT. Who a channel reaches is the operator's
+        binding; the daemon builds the gate target from it and never from caller text. So `to`
+        (the old schema's word) is read as the channel's id, and nothing here turns a name or an
+        address into one.
+
+        SHADOW IS SAID, NOT IMPLIED. The daemon judges, witnesses and keeps every send and
+        delivers none until the delivery slice. A receipt that reads like a sent message would
+        be the misleading kind (sprout-being took the old stub's design words for a setting it
+        could complete, room seq 306): `sent: false` and the daemon's own note go through as they
+        are, with the budget."""
+        channel = str(intent.args.get("channel") or intent.args.get("to") or "").strip()
+        body = str(intent.args.get("body") or intent.args.get("content") or "")
+        if not channel or not body.strip():
+            from sage.gateway.reference_f1a import missing_args
+            return ResultEnvelope(ok=False, error=missing_args(intent.args, ("channel", "body"), "channel_egress"))
+        out = self._call("hestia_channel_send", {"channel_id": channel, "content": body})
+        err = _hestia_error(out)
+        if err:
+            if "unknown_tool" in err:
+                # A daemon from before hestia #1372: say it, rather than a bare code.
+                return ResultEnvelope(ok=False, error=(
+                    "channel_egress: this machine's hestia has no channel send yet, so nothing was sent or "
+                    "recorded. It arrives with a hestia deploy; there is nothing for you to do."))
+            return ResultEnvelope(ok=False, error=err)
+        return ResultEnvelope(ok=True, witness_id=out.get("witnessEntryHash"), result={
+            "sent": bool(out.get("sent")), "shadow": bool(out.get("shadow")),
+            "channel": out.get("channel_id"), "recipient_class": out.get("recipient_class"),
+            "outbox_id": out.get("outbox_id"), "decision": out.get("decision"),
+            "budget": out.get("budget"), "note": out.get("note")})
 
 
 def _fd_path(fd: int, fallback: str) -> str:
